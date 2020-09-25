@@ -1,0 +1,7 @@
+data/org.gnome.Health.desktop.in
+data/org.gnome.Health.appdata.xml.in
+data/org.gnome.Health.gschema.xml
+src/window.ui
+src/main.vala
+src/window.vala
+
