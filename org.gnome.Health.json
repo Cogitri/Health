@@ -1,0 +1,71 @@
+{
+    "app-id": "org.gnome.Health",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "3.38",
+    "sdk": "org.gnome.Sdk",
+    "command": "gnome-health",
+    "finish-args": [
+        "--share=network",
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--socket=wayland"
+    ],
+    "cleanup": [
+        "/include",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/doc",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "/share/vala",
+        "*.la",
+        "*.a"
+    ],
+    "modules": [
+        {
+            "name": "caroline",
+            "builddir": true,
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://github.com/dcharles525/Caroline",
+                    "commit": "ac4c29d32ca40d7b148d578e9b61570b31b1a36e"
+                }
+            ]
+        },
+        {
+            "name": "libhandy",
+            "builddir": true,
+            "buildsystem": "meson",
+            "config-opts": [
+                "-Dprofiling=false",
+                "-Dintrospection=enabled",
+                "-Dgtk_doc=false",
+                "-Dtests=false",
+                "-Dexamples=false",
+                "-Dvapi=true",
+                "-Dglade_catalog=disabled"
+            ],
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/GNOME/libhandy",
+                    "tag": "1.0.0"
+                }
+            ]
+        },
+        {
+            "name": "gnome-health",
+            "builddir": true,
+            "buildsystem": "meson",
+            "sources": [
+                {
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/Cogitri/gnome-health.git"
+                }
+            ]
+        }
+    ]
+}
