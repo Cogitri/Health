@@ -1,0 +1,25 @@
+image: alpine:edge
+
+stages:
+  - qa
+  - test
+
+lint:
+  stage: qa
+  before_script:
+    - apk add --no-cache vala-lint
+  script:
+    - io.elementary.vala-lint
+
+test:
+  stage: test
+  before_script:
+    - apk add --no-cache vala gtk+3.0-dev libgee-dev sqlite-dev libhandy1-dev meson alpine-sdk git
+    - git clone https://github.com/dcharles525/Caroline
+    - cd Caroline
+    - meson build
+    - ninja -C build install
+    - cd ..
+  script:
+    - meson build
+    - meson test -v -C build
