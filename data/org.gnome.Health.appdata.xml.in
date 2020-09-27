@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component type="desktop">
-	<id>org.gnome.Health.desktop</id>
+<component type="desktop-application">
+	<id>org.gnome.Health</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
+	<summary>A health tracking app for the GNOME desktop.</summary>
 	<description>
+		<p>
+			A health tracking app for the GNOME desktop.
+		</p>
 	</description>
 </component>
