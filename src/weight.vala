@@ -87,22 +87,34 @@ namespace Health {
         private Gtk.Label title_label;
         [GtkChild]
         private Gtk.Box main_box;
+        private Settings settings;
         private WeightGraphView weight_graph_view;
         private WeightGraphModel weight_graph_model;
 
-        public WeightView (WeightGraphModel model) {
+        public WeightView (WeightGraphModel model, Settings settings) {
             this.name = "Weight";
+            this.settings = settings;
             this.title = _ ("Weight");
-            this.title_label.set_text (_ ("Current weight: %4.lf KG").printf (model.get_last_weight ()));
-            this.weight_graph_view = new WeightGraphView (model);
             this.weight_graph_model = model;
+            this.weight_graph_view = new WeightGraphView (model);
+
+            this.title_label.set_text (_ ("Current BMI: %.2lf").printf (this.get_bmi ()));
             this.main_box.pack_start (this.weight_graph_view, true, true, 0);
             this.main_box.show_all ();
+            this.settings.changed.connect ((key) => {
+                if (key == "user-height") {
+                    this.update ();
+                }
+            });
+        }
+
+        private double get_bmi () {
+            return this.weight_graph_model.get_last_weight () / GLib.Math.pow (this.settings.user_height / 100.0, 2);
         }
 
         public override void update () {
             this.weight_graph_model.reload ();
-            this.title_label.set_text (_ ("Current weight: %4.lf KG").printf (this.weight_graph_model.get_last_weight ()));
+            this.title_label.set_text (_ ("Current BMI: %2.lf").printf (this.get_bmi ()));
             this.main_box.remove (this.weight_graph_view);
             this.weight_graph_view = new WeightGraphView (this.weight_graph_model);
             this.main_box.pack_start (this.weight_graph_view, true, true, 0);

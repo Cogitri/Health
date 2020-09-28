@@ -5,7 +5,7 @@ namespace Health {
 
         public Application () {
             Object (application_id: Config.APPLICATION_ID, flags : ApplicationFlags.FLAGS_NONE);
-            this.settings = new Settings();
+            this.settings = new Settings ();
         }
 
         private const GLib.ActionEntry APP_ENTRIES[] = {
@@ -17,14 +17,14 @@ namespace Health {
             if (window != null) {
                 return;
             } else if (this.settings.did_initial_setup) {
-                this.window = new Window (this);
+                this.window = new Window (this, settings);
                 window.show ();
             } else {
                 var setup_window = new SetupWindow (this, this.settings);
                 setup_window.setup_done.connect (() => {
                     setup_window.destroy ();
                     this.settings.did_initial_setup = true;
-                    this.window = new Window (this);
+                    this.window = new Window (this, settings);
                     window.show ();
                 });
                 setup_window.show ();

@@ -35,14 +35,14 @@ namespace Health {
         private ViewModes current_view;
         private View[] views;
 
-        public Window (Gtk.Application app) {
+        public Window (Gtk.Application app, Settings settings) {
             Object (application: app);
             this.current_view = ViewModes.STEPS;
             var menu = new PrimaryMenu ();
             this.primary_menu_button.set_popover (menu);
             var weight_model = new WeightGraphModel ();
             var steps_model = new StepsGraphModel ();
-            views = new View[] { new StepView (steps_model), new WeightView (weight_model), };
+            views = new View[] { new StepView (steps_model), new WeightView (weight_model, settings), };
             foreach (var view in views) {
                 stack.add_titled (view, view.name, view.title);
                 stack.child_set (view, "icon-name", view.icon_name, null);
