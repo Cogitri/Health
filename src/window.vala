@@ -40,7 +40,7 @@ namespace Health {
             this.current_view = ViewModes.STEPS;
             var menu = new PrimaryMenu ();
             this.primary_menu_button.set_popover (menu);
-            var weight_model = new WeightGraphModel ();
+            var weight_model = new WeightGraphModel (settings);
             var steps_model = new StepsGraphModel ();
             views = new View[] { new StepView (steps_model), new WeightView (weight_model, settings), };
             foreach (var view in views) {
@@ -54,7 +54,7 @@ namespace Health {
                     dialog = new StepsAddDialog (this);
                     break;
                 case WEIGHT:
-                    dialog = new WeightAddDialog (this);
+                    dialog = new WeightAddDialog (this, settings);
                     break;
                 }
                 dialog.run ();

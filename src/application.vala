@@ -11,6 +11,7 @@ namespace Health {
         private const GLib.ActionEntry APP_ENTRIES[] = {
             { "about", on_about },
             { "quit", on_quit },
+            { "units", on_units, "s" },
         };
 
         public override void activate () {
@@ -58,6 +59,20 @@ namespace Health {
                 version: Config.VERSION,
                 license_type: Gtk.License.GPL_3_0
                 );
+        }
+
+        private void on_units (GLib.SimpleAction action, GLib.Variant? parameter) {
+            switch (parameter.get_string ()) {
+                case "imperial":
+                    this.settings.unitsystem = Unitsystem.IMPERIAL;
+                    break;
+                case "metric":
+                    this.settings.unitsystem = Unitsystem.METRIC;
+                    break;
+                default:
+                    warning (_ ("Unknown unitsystem %s"), parameter.get_string ());
+                    break;
+            }
         }
 
         private void on_quit (GLib.SimpleAction action, GLib.Variant? parameter) {

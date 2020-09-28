@@ -86,8 +86,12 @@ namespace Health {
     }
 
     public class WeightAddDialog : AddDialog {
-        public WeightAddDialog (Gtk.Window? parent) {
+        private Settings settings;
+
+        public WeightAddDialog (Gtk.Window? parent, Settings settings) {
             base (parent);
+
+            this.settings = settings;
             this.dialog_label.set_text (_ ("Add new weight record"));
             this.dialog_entry.set_max_length (6);
         }
@@ -99,6 +103,10 @@ namespace Health {
             double weight = 0;
             if (!double.try_parse (this.dialog_entry.get_text (), out weight)) {
                 warning (_ ("Failed to parse weight '%s' as floating point number"), this.dialog_entry.get_text ());
+            }
+
+            if (settings.unitsystem == Unitsystem.IMPERIAL) {
+                weight = pb_to_kg (weight);
             }
 
             db.save_weight (new Weight (get_today_date (), weight));

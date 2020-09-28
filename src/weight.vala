@@ -29,6 +29,12 @@ namespace Health {
     }
 
     public class WeightGraphModel : GraphModel<Weight> {
+        private Settings settings;
+
+        public WeightGraphModel (Settings settings) {
+            base ();
+            this.settings = settings;
+        }
 
         public override bool reload () {
             var db = new SqliteDatabase ();
@@ -54,7 +60,11 @@ namespace Health {
             var first_date = this.arr.get (0).date;
             int i = 0;
             foreach (var weight in this.arr) {
-                values[i] = weight.weight;
+                if (settings.unitsystem == Unitsystem.IMPERIAL) {
+                    values[i] = kg_to_pb (weight.weight);
+                } else {
+                    values[i] = weight.weight;
+                }
                 days[i] = first_date.days_between (weight.date);
                 i++;
             }
@@ -106,10 +116,11 @@ namespace Health {
             this.title_label.set_text (_ ("Current BMI: %.2lf").printf (this.get_bmi ()));
             this.main_box.pack_start (this.weight_graph_view, true, true, 0);
             this.main_box.show_all ();
-            this.settings.changed.connect ((key) => {
-                if (key == "user-height") {
-                    this.update ();
-                }
+            this.settings.changed[Settings.USER_HEIGHT_KEY].connect (() => {
+                this.update ();
+            });
+            this.settings.changed[Settings.UNITSYSTEM_KEY].connect (() => {
+                this.update ();
             });
         }
 

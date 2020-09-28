@@ -18,12 +18,12 @@
 
 namespace Health {
     public class PrimaryMenu : Gtk.Popover {
-        public PrimaryMenu() {
-            Object();
+        public PrimaryMenu () {
+            Object ();
 
             var builder = new Gtk.Builder.from_resource ("/org/gnome/Health/primary_menu.ui");
             var menu = builder.get_object ("primary_menu") as GLib.Menu;
-            this.bind_model(menu, null);
+            this.bind_model (menu, null);
         }
     }
 }

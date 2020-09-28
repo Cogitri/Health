@@ -17,10 +17,16 @@
  */
 
  namespace Health {
+    public enum Unitsystem {
+        IMPERIAL,
+        METRIC,
+    }
+
     public class Settings : GLib.Settings {
-        private const string DID_INITIAL_SETUP_KEY = "did-initial-setup";
-        private const string USER_AGE_KEY = "user-age";
-        private const string USER_HEIGHT_KEY = "user-height";
+        public const string DID_INITIAL_SETUP_KEY = "did-initial-setup";
+        public const string UNITSYSTEM_KEY = "unitsystem";
+        public const string USER_AGE_KEY = "user-age";
+        public const string USER_HEIGHT_KEY = "user-height";
 
         public bool did_initial_setup {
             get {
@@ -28,6 +34,15 @@
             }
             set {
                 this.set_boolean (DID_INITIAL_SETUP_KEY, value);
+            }
+        }
+
+        public Unitsystem unitsystem {
+            get {
+                return (Unitsystem) this.get_enum (UNITSYSTEM_KEY);
+            }
+            set {
+                this.set_enum (UNITSYSTEM_KEY, value);
             }
         }
 
