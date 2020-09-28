@@ -37,7 +37,7 @@ namespace Health {
                 this.arr = db.get_weights_after (get_date_in_n_days (-30));
                 return true;
             } catch (DatabaseError e) {
-                warning ("Failed to load weights from database due to error %s", e.message);
+                warning (_ ("Failed to load weights from database due to error %s"), e.message);
                 return false;
             }
         }
