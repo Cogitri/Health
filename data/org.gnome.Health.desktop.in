@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=gnome-health
+Name=Health
 Exec=gnome-health
 Terminal=false
 Type=Application

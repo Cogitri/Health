@@ -37,7 +37,7 @@ namespace Health {
                 this.window,
                 logo_icon_name: Config.APPLICATION_ID,
                 program_name: _ ("Health"),
-                comments: _ (""),
+                comments: _ ("A health tracking app for the GNOME desktop."),
                 authors: authors,
                 translator_credits: _ ("translator-credits"),
                 website: "https://gitlab.gnome.org/Cogitri/gnome-health",

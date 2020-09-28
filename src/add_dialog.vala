@@ -49,7 +49,7 @@ namespace Health {
                     try {
                         this.save ();
                     } catch (DatabaseError e) {
-                        error ("Failed to save new data due to error %s", e.message);
+                        warning (_ ("Failed to save new data due to error %s"), e.message);
                     }
                     break;
                 }
@@ -77,7 +77,7 @@ namespace Health {
             try {
                 uint64.from_string (this.dialog_entry.get_text (), out steps);
             } catch (NumberParserError e) {
-                error ("Failed to parse steps due to error %s", e.message);
+                warning (_("Failed to parse steps due to error %s"), e.message);
             }
 
             db.save_steps (new Steps (get_today_date (), (uint32) steps));
@@ -98,7 +98,7 @@ namespace Health {
 
             double weight = 0;
             if (!double.try_parse (this.dialog_entry.get_text (), out weight)) {
-                error ("Failed to parse weight");
+                warning (_ ("Failed to parse weight '%s' as floating point number"), this.dialog_entry.get_text ());
             }
 
             db.save_weight (new Weight (get_today_date (), weight));
