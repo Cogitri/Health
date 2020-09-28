@@ -81,6 +81,7 @@ namespace Health {
             this.dataTypeX = _ ("Days");
             /* TRANSLATORS: "Weight" is used as the descriptor for the Y axis in the weight graph */
             this.dataTypeY = _ ("Weight");
+            this.margin = 6;
         }
 
     }

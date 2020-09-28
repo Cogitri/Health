@@ -80,6 +80,7 @@ namespace Health {
             this.dataTypeX = _ ("Days");
             /* TRANSLATORS: "Steps" is used as the descriptor for the Y axis in the steps graph */
             this.dataTypeY = _ ("Steps");
+            this.margin = 6;
         }
 
     }
