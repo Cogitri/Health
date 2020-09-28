@@ -76,6 +76,10 @@ namespace Health {
             double[] steps;
             model.to_arrays (out days, out steps);
             base (days, steps, "smooth-line", true, true);
+            /* TRANSLATORS: "Days" is used as the descriptor for the X axis in the steps graph */
+            this.dataTypeX = _ ("Days");
+            /* TRANSLATORS: "Steps" is used as the descriptor for the Y axis in the steps graph */
+            this.dataTypeY = _ ("Steps");
         }
 
     }

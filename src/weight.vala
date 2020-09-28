@@ -77,6 +77,10 @@ namespace Health {
             double[] weights;
             model.to_arrays (out days, out weights);
             base (days, weights, "smooth-line", true, true);
+            /* TRANSLATORS: "Days" is used as the descriptor for the X axis in the weight graph */
+            this.dataTypeX = _ ("Days");
+            /* TRANSLATORS: "Weight" is used as the descriptor for the Y axis in the weight graph */
+            this.dataTypeY = _ ("Weight");
         }
 
     }
