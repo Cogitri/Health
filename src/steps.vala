@@ -52,7 +52,7 @@ namespace Health {
             this.arr.sort ((a, b) => { return a.date.compare (b.date); });
 
             var first_date = this.arr.get (0).date;
-            var last_date = this.arr.get (this.arr.size - 1).date;
+            var last_date = get_today_date ();
             var date_delta = first_date.days_between (last_date);
             values.resize (date_delta + 1);
             days.resize (date_delta + 1);
@@ -71,6 +71,12 @@ namespace Health {
                 values[i] = steps.steps;
                 days[i] = days_between;
                 i++;
+            }
+            var days_since_last_entry = this.arr.get (this.arr.size - 1).date.days_between (last_date);
+            var last_entry_delta = first_date.days_between (this.arr.get (this.arr.size - 1).date);
+            for (int j = 0; j < days_since_last_entry; j++) {
+                values[j + i] = 0;
+                days[j + i] = last_entry_delta + j + 1;
             }
         }
 
