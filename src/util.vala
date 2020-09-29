@@ -17,6 +17,14 @@
  */
 
 namespace Health {
+    double kg_to_pb (double kg) {
+        return kg / 0.45359237;
+    }
+
+    double pb_to_kg (double pb) {
+        return pb * 0.45359237;
+    }
+
     GLib.Date get_today_date () {
         return get_date_in_n_days (0);
     }

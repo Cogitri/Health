@@ -29,6 +29,12 @@ namespace Health {
     }
 
     public class WeightGraphModel : GraphModel<Weight> {
+        private Settings settings;
+
+        public WeightGraphModel (Settings settings) {
+            base ();
+            this.settings = settings;
+        }
 
         public override bool reload () {
             var db = new SqliteDatabase ();
@@ -54,7 +60,11 @@ namespace Health {
             var first_date = this.arr.get (0).date;
             int i = 0;
             foreach (var weight in this.arr) {
-                values[i] = weight.weight;
+                if (settings.unitsystem == Unitsystem.IMPERIAL) {
+                    values[i] = kg_to_pb (weight.weight);
+                } else {
+                    values[i] = weight.weight;
+                }
                 days[i] = first_date.days_between (weight.date);
                 i++;
             }
@@ -77,6 +87,11 @@ namespace Health {
             double[] weights;
             model.to_arrays (out days, out weights);
             base (days, weights, "smooth-line", true, true);
+            /* TRANSLATORS: "Days" is used as the descriptor for the X axis in the weight graph */
+            this.dataTypeX = _ ("Days");
+            /* TRANSLATORS: "Weight" is used as the descriptor for the Y axis in the weight graph */
+            this.dataTypeY = _ ("Weight");
+            this.margin = 6;
         }
 
     }
@@ -87,22 +102,35 @@ namespace Health {
         private Gtk.Label title_label;
         [GtkChild]
         private Gtk.Box main_box;
+        private Settings settings;
         private WeightGraphView weight_graph_view;
         private WeightGraphModel weight_graph_model;
 
-        public WeightView (WeightGraphModel model) {
+        public WeightView (WeightGraphModel model, Settings settings) {
             this.name = "Weight";
+            this.settings = settings;
             this.title = _ ("Weight");
-            this.title_label.set_text (_ ("Current weight: %4.lf KG").printf (model.get_last_weight ()));
-            this.weight_graph_view = new WeightGraphView (model);
             this.weight_graph_model = model;
+            this.weight_graph_view = new WeightGraphView (model);
+
+            this.title_label.set_text (_ ("Current BMI: %.2lf").printf (this.get_bmi ()));
             this.main_box.pack_start (this.weight_graph_view, true, true, 0);
             this.main_box.show_all ();
+            this.settings.changed[Settings.USER_HEIGHT_KEY].connect (() => {
+                this.update ();
+            });
+            this.settings.changed[Settings.UNITSYSTEM_KEY].connect (() => {
+                this.update ();
+            });
+        }
+
+        private double get_bmi () {
+            return this.weight_graph_model.get_last_weight () / GLib.Math.pow (this.settings.user_height / 100.0, 2);
         }
 
         public override void update () {
             this.weight_graph_model.reload ();
-            this.title_label.set_text (_ ("Current weight: %4.lf KG").printf (this.weight_graph_model.get_last_weight ()));
+            this.title_label.set_text (_ ("Current BMI: %2.lf").printf (this.get_bmi ()));
             this.main_box.remove (this.weight_graph_view);
             this.weight_graph_view = new WeightGraphView (this.weight_graph_model);
             this.main_box.pack_start (this.weight_graph_view, true, true, 0);

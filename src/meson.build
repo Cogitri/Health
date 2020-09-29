@@ -4,6 +4,8 @@ gnome_health_sources = [
   'database.vala',
   'main.vala',
   'primary_menu.vala',
+  'settings.vala',
+  'setup_window.vala',
   'steps.vala',
   'util.vala',
   'views.vala',

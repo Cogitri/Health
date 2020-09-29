@@ -52,10 +52,24 @@ namespace Health {
             this.arr.sort ((a, b) => { return a.date.compare (b.date); });
 
             var first_date = this.arr.get (0).date;
+            var last_date = this.arr.get (this.arr.size - 1).date;
+            var date_delta = first_date.days_between (last_date);
+            values.resize (date_delta + 1);
+            days.resize (date_delta + 1);
             int i = 0;
             foreach (var steps in this.arr) {
+                var days_between = first_date.days_between (steps.date);
+
+                int x;
+                // fill in gaps where user didn't set a step count
+                for (x = 0; x < days_between - i; x++) {
+                    values[x + i] = 0;
+                    days[x + i] = x + i;
+                }
+                i += x;
+
                 values[i] = steps.steps;
-                days[i] = first_date.days_between (steps.date);
+                days[i] = days_between;
                 i++;
             }
         }
@@ -76,6 +90,11 @@ namespace Health {
             double[] steps;
             model.to_arrays (out days, out steps);
             base (days, steps, "smooth-line", true, true);
+            /* TRANSLATORS: "Days" is used as the descriptor for the X axis in the steps graph */
+            this.dataTypeX = _ ("Days");
+            /* TRANSLATORS: "Steps" is used as the descriptor for the Y axis in the steps graph */
+            this.dataTypeY = _ ("Steps");
+            this.margin = 6;
         }
 
     }

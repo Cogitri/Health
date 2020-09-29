@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="gnome-health">
-	<schema id="org.gnome.Health" path="/org/gnome/Health/">
+  <enum id="org.gnome.Health.Units">
+    <value nick="imperial" value="0"/>
+    <value nick="metric" value="1"/>
+  </enum>
+
+	<schema id="org.gnome.Health" path="/org/gnome/Health/" gettext-domain="gnome-health">
+    <key name="did-initial-setup" type="b">
+      <default>false</default>
+      <summary>First time setup done</summary>
+      <description>Whether the user has completed the setup wizard</description>
+    </key>
+    <key name="unitsystem" enum="org.gnome.Health.Units">
+      <default>'metric'</default>
+      <summary>Unitsystem used</summary>
+      <description>The unitsystem the user chose, e.g. for cm vs inch for height</description>
+    </key>
+    <key name="user-age" type="u">
+      <default>0</default>
+      <summary>User age</summary>
+      <description>The age of the user.</description>
+    </key>
+    <key name="user-height" type="u">
+      <default>0</default>
+      <summary>User height</summary>
+      <description>The height of the user.</description>
+    </key>
 	</schema>
 </schemalist>
