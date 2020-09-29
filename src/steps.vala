@@ -82,6 +82,24 @@ namespace Health {
             return steps != null ? steps.steps : 0;
         }
 
+        public uint32 get_streak_count (uint step_goal) {
+            uint32 streak = 0;
+            this.arr.sort ((a, b) => { return b.date.compare (a.date); });
+
+            var last_date = this.arr.get (0).date;
+            if (last_date.get_julian () != get_today_date ().get_julian ()) {
+                return 0;
+            }
+            foreach (var steps in this.arr) {
+                if (steps.date.days_between (last_date) == streak && steps.steps >= step_goal) {
+                    streak++;
+                } else {
+                    break;
+                }
+            }
+            return streak;
+        }
+
     }
 
     public class StepsGraphView : Caroline {
@@ -103,16 +121,30 @@ namespace Health {
     [GtkTemplate (ui = "/org/gnome/Health/step_view.ui")]
     public class StepView : View {
         [GtkChild]
+        private Gtk.Label streak_label;
+        [GtkChild]
         private Gtk.Label title_label;
         [GtkChild]
         private Gtk.Box main_box;
         private StepsGraphView steps_graph_view;
         private StepsGraphModel steps_graph_model;
 
-        public StepView (StepsGraphModel model) {
+        public StepView (StepsGraphModel model, Settings settings) {
             this.name = "Steps";
             this.title = _ ("Steps");
             this.title_label.set_text (_ ("Today's steps: %u").printf (model.get_today_step_count ()));
+            var streak_count = model.get_streak_count (settings.user_stepgoal);
+            switch (streak_count) {
+                case 0:
+                    this.streak_label.set_text (_ ("No streak yet. Reach your stepgoal for multiple days to start a streak!"));
+                    break;
+                case 1:
+                    this.streak_label.set_text (_ ("You've reached your stepgoal today. Keep going to start a streak!"));
+                    break;
+                default:
+                    this.streak_label.set_text (_ ("You're on a streak for %u days. Good job!").printf (streak_count));
+                    break;
+            }
             this.steps_graph_view = new StepsGraphView (model);
             this.steps_graph_model = model;
             this.main_box.pack_start (this.steps_graph_view, true, true, 0);

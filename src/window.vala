@@ -46,7 +46,7 @@ namespace Health {
             this.settings = settings;
             var weight_model = new WeightGraphModel (this.settings);
             var steps_model = new StepsGraphModel ();
-            views = new View[] { new StepView (steps_model), new WeightView (weight_model, settings), };
+            views = new View[] { new StepView (steps_model, this.settings), new WeightView (weight_model, settings), };
             foreach (var view in views) {
                 stack.add_titled (view, view.name, view.title);
                 stack.child_set (view, "icon-name", view.icon_name, null);
