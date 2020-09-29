@@ -101,6 +101,10 @@
                           <object class="GtkListBox" id="setup_listbox">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
+                            <property name="selection_mode">none</property>
+                            <style>
+                              <class name="frame"/>
+                            </style>
                             <child>
                               <object class="HdyActionRow" id="age_actionrow">
                                 <property name="visible">True</property>
@@ -177,6 +181,9 @@
             <property name="can-focus">False</property>
             <property name="receives-default">False</property>
             <property name="use-underline">True</property>
+            <style>
+              <class name="suggested-action"/>
+            </style>
           </object>
           <packing>
             <property name="pack-type">end</property>
