@@ -27,6 +27,9 @@
         public const string UNITSYSTEM_KEY = "unitsystem";
         public const string USER_AGE_KEY = "user-age";
         public const string USER_HEIGHT_KEY = "user-height";
+        public const string WINDOW_HEIGHT_KEY = "window-height";
+        public const string WINDOW_IS_MAXIMIZED_KEY = "window-is-maximized";
+        public const string WINDOW_WIDTH_KEY = "window-width";
 
         public bool did_initial_setup {
             get {
@@ -61,6 +64,33 @@
             }
             set {
                 this.set_uint (USER_HEIGHT_KEY, value);
+            }
+        }
+
+        public int window_height {
+            get {
+                return this.get_int (WINDOW_HEIGHT_KEY);
+            }
+            set {
+                this.set_int (WINDOW_HEIGHT_KEY, value);
+            }
+        }
+
+        public bool window_is_maximized {
+            get {
+                return this.get_boolean (WINDOW_IS_MAXIMIZED_KEY);
+            }
+            set {
+                this.set_boolean (WINDOW_IS_MAXIMIZED_KEY, value);
+            }
+        }
+
+        public int window_width {
+            get {
+                return this.get_int (WINDOW_WIDTH_KEY);
+            }
+            set {
+                this.set_int (WINDOW_WIDTH_KEY, value);
             }
         }
 
