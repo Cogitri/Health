@@ -35,6 +35,12 @@
     </submenu>
     <section>
       <item>
+        <attribute name="action">app.preferences</attribute>
+        <attribute name="label" translatable="yes">_Preferences</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
         <attribute name="action">app.about</attribute>
         <attribute name="label" translatable="yes">_About Health</attribute>
       </item>

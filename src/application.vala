@@ -10,6 +10,7 @@ namespace Health {
 
         private const GLib.ActionEntry APP_ENTRIES[] = {
             { "about", on_about },
+            { "preferences", on_preferences },
             { "quit", on_quit },
             { "units", on_units, "s" },
         };
@@ -59,6 +60,10 @@ namespace Health {
                 version: Config.VERSION,
                 license_type: Gtk.License.GPL_3_0
                 );
+        }
+
+        private void on_preferences (GLib.SimpleAction action, GLib.Variant? parameter) {
+            new PreferencesWindow (this.settings, this.window);
         }
 
         private void on_units (GLib.SimpleAction action, GLib.Variant? parameter) {
