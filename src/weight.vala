@@ -130,7 +130,7 @@ namespace Health {
 
         public override void update () {
             this.weight_graph_model.reload ();
-            this.title_label.set_text (_ ("Current BMI: %2.lf").printf (this.get_bmi ()));
+            this.title_label.set_text (_ ("Current BMI: %.2lf").printf (this.get_bmi ()));
             this.main_box.remove (this.weight_graph_view);
             this.weight_graph_view = new WeightGraphView (this.weight_graph_model);
             this.main_box.pack_start (this.weight_graph_view, true, true, 0);
