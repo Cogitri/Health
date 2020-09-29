@@ -32,6 +32,9 @@ namespace Health {
         [GtkChild]
         private Gtk.Button add_data_button;
 
+        private int current_height;
+        private int current_width;
+        private Settings settings;
         private ViewModes current_view;
         private View[] views;
 
@@ -40,7 +43,8 @@ namespace Health {
             this.current_view = ViewModes.STEPS;
             var menu = new PrimaryMenu ();
             this.primary_menu_button.set_popover (menu);
-            var weight_model = new WeightGraphModel (settings);
+            this.settings = settings;
+            var weight_model = new WeightGraphModel (this.settings);
             var steps_model = new StepsGraphModel ();
             views = new View[] { new StepView (steps_model), new WeightView (weight_model, settings), };
             foreach (var view in views) {
@@ -54,12 +58,33 @@ namespace Health {
                     dialog = new StepsAddDialog (this);
                     break;
                 case WEIGHT:
-                    dialog = new WeightAddDialog (this, settings);
+                    dialog = new WeightAddDialog (this, this.settings);
                     break;
                 }
                 dialog.run ();
                 this.views[this.current_view].update ();
             });
+
+            this.current_height = this.settings.window_height;
+            this.current_width = this.settings.window_width;
+            this.resize (this.current_width, this.current_height);
+            if (this.settings.window_is_maximized) {
+                this.maximize ();
+            }
+        }
+
+        public override void size_allocate (Gtk.Allocation alloc) {
+            base.size_allocate (alloc);
+            if (!this.is_maximized) {
+                this.get_size (out this.current_width, out this.current_height);
+            }
+        }
+
+        public override void destroy () {
+            this.settings.window_is_maximized = this.is_maximized;
+            this.settings.window_height = this.current_height;
+            this.settings.window_width = this.current_width;
+            base.destroy ();
         }
 
         [GtkCallback]

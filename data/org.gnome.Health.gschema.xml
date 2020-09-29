@@ -26,5 +26,20 @@
       <summary>User height</summary>
       <description>The height of the user.</description>
     </key>
+    <key name="window-height" type="i">
+      <default>-1</default>
+      <summary>Window height</summary>
+      <description>The height of the window.</description>
+    </key>
+    <key name="window-is-maximized" type="b">
+      <default>false</default>
+      <summary>Window maximized</summary>
+      <description>Whether the window is maximized.</description>
+    </key>
+    <key name="window-width" type="i">
+      <default>-1</default>
+      <summary>Window width</summary>
+      <description>The width of the window.</description>
+    </key>
 	</schema>
 </schemalist>
