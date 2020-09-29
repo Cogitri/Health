@@ -24,6 +24,8 @@ namespace Health {
         [GtkChild]
         private Gtk.SpinButton height_spinner;
         [GtkChild]
+        private Gtk.SpinButton stepgoal_spinner;
+        [GtkChild]
         private Gtk.Button setup_finished_button;
         [GtkChild]
         private Gtk.Button setup_cancel_button;
@@ -35,6 +37,7 @@ namespace Health {
             setup_finished_button.clicked.connect (() => {
                 settings.user_age = uint.parse (this.age_spinner.get_text ());
                 settings.user_height = uint.parse (this.height_spinner.get_text ());
+                settings.user_stepgoal = uint.parse (this.stepgoal_spinner.get_text ());
                 this.setup_done ();
             });
             setup_cancel_button.clicked.connect (() => {
