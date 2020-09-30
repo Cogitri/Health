@@ -32,6 +32,12 @@ namespace Health {
     public abstract class GraphModel<T>: GLib.Object {
         protected Gee.ArrayList<T> arr;
 
+        public bool is_empty {
+            get {
+                return this.arr.is_empty;
+            }
+        }
+
         protected void init () {
             this.arr = new Gee.ArrayList<T> ();
             this.reload ();

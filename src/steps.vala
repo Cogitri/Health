@@ -113,6 +113,7 @@ namespace Health {
         private Gtk.Label title_label;
         [GtkChild]
         private Gtk.Box main_box;
+        private Gtk.Label no_data_label;
         private Settings settings;
         private StepsGraphView steps_graph_view;
         private StepsGraphModel steps_graph_model;
@@ -121,11 +122,17 @@ namespace Health {
             this.name = "Steps";
             this.title = _ ("Steps");
             this.settings = settings;
-            this.steps_graph_view = new StepsGraphView (model, this.settings.user_stepgoal);
             this.steps_graph_model = model;
 
+            if (this.steps_graph_model.is_empty) {
+                this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new step count."));
+                this.main_box.pack_start (this.no_data_label);
+            } else {
+                this.steps_graph_view = new StepsGraphView (model, this.settings.user_stepgoal);
+                this.main_box.pack_start (this.steps_graph_view);
+            }
+
             this.update ();
-            this.main_box.pack_start (this.steps_graph_view, true, true, 0);
             this.main_box.show_all ();
         }
 
@@ -146,7 +153,14 @@ namespace Health {
                     break;
             }
             this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
-            this.steps_graph_view.points = this.steps_graph_model.to_points ();
+
+            if (this.steps_graph_view == null && !this.steps_graph_model.is_empty) {
+                this.main_box.remove (this.no_data_label);
+                this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
+                this.main_box.pack_start (this.steps_graph_view);
+            } else if (this.steps_graph_view != null) {
+                this.steps_graph_view.points = this.steps_graph_model.to_points ();
+            }
         }
 
     }
