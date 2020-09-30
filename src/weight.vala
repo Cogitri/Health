@@ -90,6 +90,7 @@ namespace Health {
         private Gtk.Label title_label;
         [GtkChild]
         private Gtk.Box main_box;
+        private Gtk.Label no_data_label;
         private Settings settings;
         private WeightGraphView weight_graph_view;
         private WeightGraphModel weight_graph_model;
@@ -99,10 +100,16 @@ namespace Health {
             this.settings = settings;
             this.title = _ ("Weight");
             this.weight_graph_model = model;
-            this.weight_graph_view = new WeightGraphView (model);
+
+            if (this.weight_graph_model.is_empty) {
+                this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new weight measurement."));
+                this.main_box.pack_start (this.no_data_label);
+            } else {
+                this.weight_graph_view = new WeightGraphView (model);
+                this.main_box.pack_start (this.weight_graph_view);
+            }
 
             this.update ();
-            this.main_box.pack_start (this.weight_graph_view, true, true, 0);
             this.main_box.show_all ();
             this.settings.changed[Settings.USER_HEIGHT_KEY].connect (() => {
                 this.update ();
@@ -119,7 +126,14 @@ namespace Health {
         public override void update () {
             this.weight_graph_model.reload ();
             this.title_label.set_text (_ ("Current BMI: %.2lf").printf (this.get_bmi ()));
-            this.weight_graph_view.points = this.weight_graph_model.to_points ();
+
+            if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
+                this.main_box.remove (this.no_data_label);
+                this.weight_graph_view = new WeightGraphView (this.weight_graph_model);
+                this.main_box.pack_start (this.weight_graph_view);
+            } else if (this.weight_graph_view != null) {
+                this.weight_graph_view.points = this.weight_graph_model.to_points ();
+            }
         }
 
     }
