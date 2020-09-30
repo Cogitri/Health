@@ -69,7 +69,7 @@ namespace Health {
             }
             var height = alloc.height - this.y_padding;
             var width = alloc.width - this.x_padding;
-            var scale_x = width / (this.points.size - 1);
+            var scale_x = width / (this.points.size > 1 ? (this.points.size - 1) : 1);
             var scale_y = height / biggest_value;
             var style_context = this.get_style_context ();
 
@@ -85,7 +85,9 @@ namespace Health {
                 var mul = (height) / 4.0;
                 cr.move_to (width + this.x_padding / 2, mul * i + this.y_padding / 2);
                 cr.line_to (this.x_padding / 2, mul * i + this.y_padding / 2);
-                cr.show_text ("%u".printf ((uint) (biggest_value / 4.0) * (4 - i)));
+                if (!this.points.is_empty) {
+                    cr.show_text ("%u".printf ((uint) (biggest_value / 4.0) * (4 - i)));
+                }
             }
 
             cr.stroke ();
@@ -126,6 +128,10 @@ namespace Health {
 
                 cr.stroke ();
                 cr.restore ();
+            }
+
+            if (this.points.is_empty) {
+                return false;
             }
 
             /*
@@ -169,7 +175,7 @@ namespace Health {
 
             cr.stroke ();
 
-            return true;
+            return false;
         }
     }
 }
