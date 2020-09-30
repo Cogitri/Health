@@ -105,8 +105,8 @@ namespace Health {
                 cr.set_font_size (font_size);
 
                 cr.move_to (i * scale_x + this.x_padding / 2 - font_size, height + this.y_padding / 1.25);
-                // FIXME: This has to handle other date formats
-                cr.show_text ("%d/%d".printf (point.date.get_day (), point.date.get_month ()));
+                /* TRANSLATORS: This is the date as displayed in the graph, e.g. 30/9 for September 30 */
+                cr.show_text (_ ("%d/%d").printf (point.date.get_day (), point.date.get_month ()));
             }
 
             cr.stroke ();
