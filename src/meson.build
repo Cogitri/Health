@@ -2,6 +2,7 @@ gnome_health_sources = [
   'add_dialog.vala',
   'application.vala',
   'database.vala',
+  'graph_view.vala',
   'main.vala',
   'preferences_window.vala',
   'primary_menu.vala',
@@ -18,7 +19,6 @@ gnome_health_deps = [
   dependency('gio-2.0', version: '>= 2.50'),
   dependency('gtk+-3.0', version: '>= 3.24'),
   dependency('libhandy-1'),
-  dependency('caroline-0.2'),
   dependency('gee-0.8'),
   dependency('sqlite3', version: '>=3.24'),
 ]

@@ -30,6 +30,10 @@ namespace Health {
 
     public class StepsGraphModel : GraphModel<Steps> {
 
+        public StepsGraphModel () {
+            this.init ();
+        }
+
         public override bool reload () {
             var db = new SqliteDatabase ();
             try {
@@ -42,42 +46,26 @@ namespace Health {
             }
         }
 
-        public override void to_arrays (out double[] days, out double[] values) {
-            base.to_arrays (out days, out values);
-
-            if (this.arr.is_empty) {
-                return;
-            }
+        public override Gee.ArrayList<Point> to_points () {
+            var ret = new Gee.ArrayList<Point> ();
 
             this.arr.sort ((a, b) => { return a.date.compare (b.date); });
 
             var first_date = this.arr.get (0).date;
             var last_date = get_today_date ();
             var date_delta = first_date.days_between (last_date);
-            values.resize (date_delta + 1);
-            days.resize (date_delta + 1);
-            int i = 0;
-            foreach (var steps in this.arr) {
-                var days_between = first_date.days_between (steps.date);
-
-                int x;
-                // fill in gaps where user didn't set a step count
-                for (x = 0; x < days_between - i; x++) {
-                    values[x + i] = 0;
-                    days[x + i] = x + i;
+            var target_date = GLib.Date ();
+            for (int i = 0; i <= date_delta; i++) {
+                target_date.set_julian (first_date.get_julian () + i);
+                var item = this.arr.first_match ((s) => { return s.date.get_julian () == target_date.get_julian (); });
+                if (item == null) {
+                    ret.add (new Point (target_date, 0));
+                } else {
+                    ret.add (new Point (item.date, item.steps));
                 }
-                i += x;
+            }
 
-                values[i] = steps.steps;
-                days[i] = days_between;
-                i++;
-            }
-            var days_since_last_entry = this.arr.get (this.arr.size - 1).date.days_between (last_date);
-            var last_entry_delta = first_date.days_between (this.arr.get (this.arr.size - 1).date);
-            for (int j = 0; j < days_since_last_entry; j++) {
-                values[j + i] = 0;
-                days[j + i] = last_entry_delta + j + 1;
-            }
+            return ret;
         }
 
         public uint32 get_today_step_count () {
@@ -108,16 +96,9 @@ namespace Health {
 
     }
 
-    public class StepsGraphView : Caroline {
-        public StepsGraphView (StepsGraphModel model) {
-            double[] days;
-            double[] steps;
-            model.to_arrays (out days, out steps);
-            base (days, steps, "smooth-line", true, true);
-            /* TRANSLATORS: "Days" is used as the descriptor for the X axis in the steps graph */
-            this.dataTypeX = _ ("Days");
-            /* TRANSLATORS: "Steps" is used as the descriptor for the Y axis in the steps graph */
-            this.dataTypeY = _ ("Steps");
+    public class StepsGraphView : GraphView {
+        public StepsGraphView (StepsGraphModel model, double stepgoal) {
+            base (model.to_points (), stepgoal);
             this.margin = 6;
         }
 
@@ -132,14 +113,27 @@ namespace Health {
         private Gtk.Label title_label;
         [GtkChild]
         private Gtk.Box main_box;
+        private Settings settings;
         private StepsGraphView steps_graph_view;
         private StepsGraphModel steps_graph_model;
 
         public StepView (StepsGraphModel model, Settings settings) {
             this.name = "Steps";
             this.title = _ ("Steps");
-            this.title_label.set_text (_ ("Today's steps: %u").printf (model.get_today_step_count ()));
-            var streak_count = model.get_streak_count (settings.user_stepgoal);
+            this.settings = settings;
+            this.steps_graph_view = new StepsGraphView (model, this.settings.user_stepgoal);
+            this.steps_graph_model = model;
+
+            this.update ();
+            this.main_box.pack_start (this.steps_graph_view, true, true, 0);
+            this.main_box.show_all ();
+        }
+
+        public override void update () {
+            this.steps_graph_model.reload ();
+
+            this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
+            var streak_count = this.steps_graph_model.get_streak_count (this.settings.user_stepgoal);
             switch (streak_count) {
                 case 0:
                     this.streak_label.set_text (_ ("No streak yet. Reach your stepgoal for multiple days to start a streak!"));
@@ -151,19 +145,8 @@ namespace Health {
                     this.streak_label.set_text (_ ("You're on a streak for %u days. Good job!").printf (streak_count));
                     break;
             }
-            this.steps_graph_view = new StepsGraphView (model);
-            this.steps_graph_model = model;
-            this.main_box.pack_start (this.steps_graph_view, true, true, 0);
-            this.main_box.show_all ();
-        }
-
-        public override void update () {
-            this.steps_graph_model.reload ();
             this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
-            this.main_box.remove (this.steps_graph_view);
-            this.steps_graph_view = new StepsGraphView (this.steps_graph_model);
-            this.main_box.pack_start (this.steps_graph_view, true, true, 0);
-            this.main_box.show_all ();
+            this.steps_graph_view.points = this.steps_graph_model.to_points ();
         }
 
     }
