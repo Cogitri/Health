@@ -32,7 +32,8 @@ namespace Health {
         private Settings settings;
 
         public WeightGraphModel (Settings settings) {
-            base ();
+            this.init ();
+
             this.settings = settings;
         }
 
@@ -48,26 +49,20 @@ namespace Health {
             }
         }
 
-        public override void to_arrays (out double[] days, out double[] values) {
-            base.to_arrays (out days, out values);
-
-            if (this.arr.is_empty) {
-                return;
-            }
+        public override Gee.ArrayList<Point> to_points () {
+            var ret = new Gee.ArrayList<Point> ();
 
             this.arr.sort ((a, b) => { return a.date.compare (b.date); });
 
-            var first_date = this.arr.get (0).date;
-            int i = 0;
             foreach (var weight in this.arr) {
                 if (settings.unitsystem == Unitsystem.IMPERIAL) {
-                    values[i] = kg_to_pb (weight.weight);
+                    ret.add (new Point (weight.date, kg_to_pb (weight.weight)));
                 } else {
-                    values[i] = weight.weight;
+                    ret.add (new Point (weight.date, weight.weight));
                 }
-                days[i] = first_date.days_between (weight.date);
-                i++;
             }
+
+            return ret;
         }
 
         public double get_last_weight () {
@@ -81,16 +76,9 @@ namespace Health {
 
     }
 
-    public class WeightGraphView : Caroline {
+    public class WeightGraphView : GraphView {
         public WeightGraphView (WeightGraphModel model) {
-            double[] days;
-            double[] weights;
-            model.to_arrays (out days, out weights);
-            base (days, weights, "smooth-line", true, true);
-            /* TRANSLATORS: "Days" is used as the descriptor for the X axis in the weight graph */
-            this.dataTypeX = _ ("Days");
-            /* TRANSLATORS: "Weight" is used as the descriptor for the Y axis in the weight graph */
-            this.dataTypeY = _ ("Weight");
+            base (model.to_points ());
             this.margin = 6;
         }
 
@@ -113,7 +101,7 @@ namespace Health {
             this.weight_graph_model = model;
             this.weight_graph_view = new WeightGraphView (model);
 
-            this.title_label.set_text (_ ("Current BMI: %.2lf").printf (this.get_bmi ()));
+            this.update ();
             this.main_box.pack_start (this.weight_graph_view, true, true, 0);
             this.main_box.show_all ();
             this.settings.changed[Settings.USER_HEIGHT_KEY].connect (() => {
@@ -131,10 +119,7 @@ namespace Health {
         public override void update () {
             this.weight_graph_model.reload ();
             this.title_label.set_text (_ ("Current BMI: %.2lf").printf (this.get_bmi ()));
-            this.main_box.remove (this.weight_graph_view);
-            this.weight_graph_view = new WeightGraphView (this.weight_graph_model);
-            this.main_box.pack_start (this.weight_graph_view, true, true, 0);
-            this.main_box.show_all ();
+            this.weight_graph_view.points = this.weight_graph_model.to_points ();
         }
 
     }

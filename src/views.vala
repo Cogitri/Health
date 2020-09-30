@@ -29,33 +29,17 @@ namespace Health {
 
     }
 
-    public class GraphModel<T>: GLib.Object {
+    public abstract class GraphModel<T>: GLib.Object {
         protected Gee.ArrayList<T> arr;
 
-        public GraphModel () {
+        protected void init () {
             this.arr = new Gee.ArrayList<T> ();
             this.reload ();
         }
 
-        public void add (T w) {
-            this.arr.add (w);
-        }
+        public abstract Gee.ArrayList<Point> to_points ();
 
-        public virtual void to_arrays (out double[] days, out double[] values) {
-            var reserve_size = this.arr.is_empty ? 1 : this.arr.size;
-            days = new double[reserve_size];
-            values = new double[reserve_size];
-
-            if (this.arr.is_empty) {
-                days[0] = 0;
-                values[0] = 0;
-                return;
-            }
-        }
-
-        public virtual bool reload () {
-            return false;
-        }
+        public abstract bool reload ();
 
     }
 }
