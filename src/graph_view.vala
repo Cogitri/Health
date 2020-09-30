@@ -129,6 +129,24 @@ namespace Health {
             }
 
             /*
+                Draw a point for each datapoint
+            */
+            cr.save ();
+
+            cr.set_source_rgba (0, 174, 174, 1.0);
+            cr.set_line_width (4);
+            for (int i = 0; i < this.points.size; i++) {
+                var value = this.points[i].value;
+                var x = i * scale_x + this.x_padding / 2;
+                var y = height - value * scale_y + this.y_padding / 2;
+                cr.move_to (x, y);
+                cr.arc (x, y, 2, 0, 2 * GLib.Math.PI);
+            }
+
+            cr.stroke ();
+            cr.restore ();
+
+            /*
                 Draw the graph itself
             */
             cr.set_source_rgba (0, 174, 174, 0.8);
@@ -138,6 +156,7 @@ namespace Health {
                 var previous_value = this.points[i].value;
                 var current_value = ((i + 1) >= this.points.size) ? this.points[i].value : this.points[i + 1].value;
                 var smoothness_factor = 0.5;
+
                 cr.curve_to (
                   (i + smoothness_factor) * scale_x + this.x_padding / 2,
                   height - previous_value * scale_y + this.y_padding / 2,
@@ -146,8 +165,8 @@ namespace Health {
                   (i + 1) * scale_x + this.x_padding / 2,
                   height - current_value * scale_y + this.y_padding / 2
                 );
-
             }
+
             cr.stroke ();
 
             return true;
