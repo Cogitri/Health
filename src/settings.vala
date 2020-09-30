@@ -27,6 +27,7 @@
         public const string UNITSYSTEM_KEY = "unitsystem";
         public const string USER_AGE_KEY = "user-age";
         public const string USER_HEIGHT_KEY = "user-height";
+        public const string USER_STEPGOAL_KEY = "user-stepgoal";
         public const string WINDOW_HEIGHT_KEY = "window-height";
         public const string WINDOW_IS_MAXIMIZED_KEY = "window-is-maximized";
         public const string WINDOW_WIDTH_KEY = "window-width";
@@ -64,6 +65,15 @@
             }
             set {
                 this.set_uint (USER_HEIGHT_KEY, value);
+            }
+        }
+
+        public uint user_stepgoal {
+            get {
+                return this.get_uint (USER_STEPGOAL_KEY);
+            }
+            set {
+                this.set_uint (USER_STEPGOAL_KEY, value);
             }
         }
 

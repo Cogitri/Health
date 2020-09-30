@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/org/gnome/Health">
+    <file>preferences_window.ui</file>
     <file>primary_menu.ui</file>
     <file>setup_window.ui</file>
     <file>step_view.ui</file>

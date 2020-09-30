@@ -26,6 +26,11 @@
       <summary>User height</summary>
       <description>The height of the user.</description>
     </key>
+    <key name="user-stepgoal" type="u">
+      <default>10000</default>
+      <summary>User stepgoal</summary>
+      <description>The amount of steps the user wants to reach daily.</description>
+    </key>
     <key name="window-height" type="i">
       <default>-1</default>
       <summary>Window height</summary>
