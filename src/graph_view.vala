@@ -27,9 +27,18 @@ namespace Health {
     }
 
     public class GraphView : Gtk.DrawingArea {
-        private double limit;
         private double x_padding;
         private double y_padding;
+        private double _limit;
+        public double limit {
+            get {
+                return _limit;
+            }
+            set {
+                this._limit = value;
+                this.queue_draw ();
+            }
+        }
         private Gee.ArrayList<Point> _points;
         public Gee.ArrayList<Point> points {
             get {
@@ -102,6 +111,22 @@ namespace Health {
 
             cr.stroke ();
             cr.restore ();
+
+            /*
+                Draw limit/goal (if any)
+            */
+            if (this.limit > 0) {
+                cr.save ();
+
+                cr.set_source_rgba (outline_color.red, outline_color.green, outline_color.blue, 0.5);
+                cr.set_dash ({10, 5}, 0);
+                cr.move_to (this.x_padding / 2, height - limit * scale_y + this.y_padding / 2);
+                cr.show_text (_ ("Stepgoal"));
+                cr.line_to (width + this.x_padding / 2, height - limit * scale_y + this.y_padding / 2);
+
+                cr.stroke ();
+                cr.restore ();
+            }
 
             /*
                 Draw the graph itself

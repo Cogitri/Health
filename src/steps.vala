@@ -97,8 +97,8 @@ namespace Health {
     }
 
     public class StepsGraphView : GraphView {
-        public StepsGraphView (StepsGraphModel model) {
-            base (model.to_points ());
+        public StepsGraphView (StepsGraphModel model, double stepgoal) {
+            base (model.to_points (), stepgoal);
             this.margin = 6;
         }
 
@@ -121,7 +121,7 @@ namespace Health {
             this.name = "Steps";
             this.title = _ ("Steps");
             this.settings = settings;
-            this.steps_graph_view = new StepsGraphView (model);
+            this.steps_graph_view = new StepsGraphView (model, this.settings.user_stepgoal);
             this.steps_graph_model = model;
 
             this.update ();
