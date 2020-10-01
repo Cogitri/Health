@@ -38,7 +38,7 @@ namespace Health {
 
     public interface Database {
         /**
-         * Gets all step records that have a date <= the date parameter
+         * Gets all step records that have a date >= the date parameter
          *
          * If date is 30 of September 2020 then all step records that have been
          * added on the 30th of September or later will be returned.
@@ -49,7 +49,7 @@ namespace Health {
         public abstract Gee.ArrayList<Steps> get_steps_after (GLib.Date date) throws DatabaseError;
 
         /**
-         * Gets all weight records that have a date <= the date parameter
+         * Gets all weight records that have a date >= the date parameter
          *
          * If date is 30 of September 2020 then all weight records that have been
          * added on the 30th of September or later will be returned.
@@ -151,7 +151,7 @@ namespace Health {
         }
 
         /**
-         * Gets all weight records that have a date <= the date parameter
+         * Gets all weight records that have a date >= the date parameter
          *
          * If date is 30 of September 2020 then all weight records that have been
          * added on the 30th of September or later will be returned.
@@ -187,7 +187,7 @@ namespace Health {
         }
 
         /**
-         * Gets all step records that have a date <= the date parameter
+         * Gets all step records that have a date >= the date parameter
          *
          * If date is 30 of September 2020 then all step records that have been
          * added on the 30th of September or later will be returned.
