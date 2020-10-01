@@ -25,6 +25,9 @@ namespace Health {
         DATA_MALFORMED,
     }
 
+    /**
+     * Gets the default location of the DB.
+     */
     public string get_default_path () {
         GLib.DirUtils.create_with_parents (
             GLib.Path.build_filename (GLib.Environment.get_user_data_dir (), "gnome-health"),
@@ -34,19 +37,63 @@ namespace Health {
     }
 
     public interface Database {
+        /**
+         * Gets all step records that have a date <= the date parameter
+         *
+         * If date is 30 of September 2020 then all step records that have been
+         * added on the 30th of September or later will be returned.
+         *
+         * @param date The earliest date that steps should be retrieved from.
+         * @throws DatabaseError If querying the DB fails.
+         */
         public abstract Gee.ArrayList<Steps> get_steps_after (GLib.Date date) throws DatabaseError;
 
+        /**
+         * Gets all weight records that have a date <= the date parameter
+         *
+         * If date is 30 of September 2020 then all weight records that have been
+         * added on the 30th of September or later will be returned.
+         *
+         * @param date The earliest date that steps should be retrieved from.
+         * @throws DatabaseError If querying the DB fails.
+         */
         public abstract Gee.ArrayList<Weight> get_weights_after (GLib.Date date) throws DatabaseError;
 
+        /**
+         * Opens the database located at filename, or creates a new one.
+         *
+         *
+         * @param filename The filename (including path) to the db, e.g. `/tmp/gnome_health.db`
+         * @throws DatabaseError If opening or creating the DB fails.
+         */
         public abstract void open (string filename = get_default_path ()) throws DatabaseError;
 
+        /**
+         * Saves a `Weight` to the DB. Updates the weight if there's already one for the weight's date.
+         *
+         * @param w The `Weight` that should be saved.
+         * @throws DatabaseError If saving to the DB fails.
+         */
         public abstract void save_weight (Weight w) throws DatabaseError;
 
-        public abstract void save_steps (Steps w) throws DatabaseError;
+        /**
+         * Saves a `Steps` to the DB. Updates the steps if there's already one for the steps's date.
+         *
+         * @param s The `Steps` that should be saved.
+         * @throws DatabaseError If saving to the DB fails.
+         */
+        public abstract void save_steps (Steps s) throws DatabaseError;
 
     }
 
     public class SqliteDatabase : GLib.Object, Database {
+        /**
+         * Opens the database located at filename, or creates a new one.
+         *
+         *
+         * @param filename The filename (including path) to the db, e.g. `/tmp/gnome_health.db`
+         * @throws DatabaseError If opening or creating the DB fails.
+         */
         public void open (string filename = get_default_path ()) throws DatabaseError {
             int rc;
             const string SETUP_QUERY = """
@@ -71,6 +118,12 @@ namespace Health {
 
         }
 
+        /**
+         * Saves a `Weight` to the DB. Updates the weight if there's already one for the weight's date.
+         *
+         * @param w The `Weight` that should be saved.
+         * @throws DatabaseError If saving to the DB fails.
+         */
         public void save_weight (Weight w) throws DatabaseError {
             string query = "INSERT INTO HealthData (date, weight) VALUES (%u, %lf) ON CONFLICT(date) DO UPDATE SET weight=excluded.weight;".printf (w.date.get_julian (), w.weight);
             int rc;
@@ -81,6 +134,12 @@ namespace Health {
             }
         }
 
+        /**
+         * Saves a `Steps` to the DB. Updates the steps if there's already one for the steps's date.
+         *
+         * @param s The `Steps` that should be saved.
+         * @throws DatabaseError If saving to the DB fails.
+         */
         public void save_steps (Steps s) throws DatabaseError {
             string query = "INSERT INTO HealthData (date, steps) VALUES (%u, %u) ON CONFLICT(date) DO UPDATE SET steps=excluded.steps;".printf (s.date.get_julian (), s.steps);
             int rc;
@@ -91,6 +150,15 @@ namespace Health {
             }
         }
 
+        /**
+         * Gets all weight records that have a date <= the date parameter
+         *
+         * If date is 30 of September 2020 then all weight records that have been
+         * added on the 30th of September or later will be returned.
+         *
+         * @param date The earliest date that steps should be retrieved from.
+         * @throws DatabaseError If querying the DB fails.
+         */
         public Gee.ArrayList<Weight> get_weights_after (GLib.Date date) throws DatabaseError {
             int rc;
             Sqlite.Statement stmt;
@@ -118,6 +186,15 @@ namespace Health {
             return ret;
         }
 
+        /**
+         * Gets all step records that have a date <= the date parameter
+         *
+         * If date is 30 of September 2020 then all step records that have been
+         * added on the 30th of September or later will be returned.
+         *
+         * @param date The earliest date that steps should be retrieved from.
+         * @throws DatabaseError If querying the DB fails.
+         */
         public Gee.ArrayList<Steps> get_steps_after (GLib.Date date) throws DatabaseError {
             int rc;
             Sqlite.Statement stmt;

@@ -17,6 +17,9 @@
  */
 namespace Health {
 
+    /**
+     * AddDialog is a generic dialog used for adding new data to the DB via user input.
+     */
     public class AddDialog : Gtk.Dialog {
         protected Gtk.Label dialog_label;
         protected Gtk.Entry dialog_entry;
@@ -57,11 +60,17 @@ namespace Health {
             });
         }
 
+        /**
+         * save() should save the user's input to the DB.
+         */
         public virtual void save () throws DatabaseError {
         }
 
     }
 
+    /**
+     * An `AddDialog` for adding a new step record.
+     */
     public class StepsAddDialog : AddDialog {
         public StepsAddDialog (Gtk.Window? parent) {
             base (parent);
@@ -85,6 +94,9 @@ namespace Health {
 
     }
 
+    /**
+     * An `AddDialog` for adding a new weight record.
+     */
     public class WeightAddDialog : AddDialog {
         private Settings settings;
 

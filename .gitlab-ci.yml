@@ -3,6 +3,7 @@ image: alpine:edge
 stages:
   - qa
   - test
+  - deploy
 
 lint:
   stage: qa
@@ -26,3 +27,18 @@ non-null:
   script:
     - env VALAC_FLAGS="--enable-experimental-non-null" meson build
     - meson test -v -C build
+
+pages:
+  stage: deploy
+  before_script:
+    - apk add --no-cache vala gtk+3.0-dev libgee-dev sqlite-dev libhandy1-dev meson alpine-sdk git
+  script:
+    - meson -Ddocs=true build
+    - meson compile -C build
+    - rm -rf public
+    - mv build/docs/ public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
