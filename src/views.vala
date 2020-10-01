@@ -17,6 +17,9 @@
  */
 
 namespace Health {
+    /**
+     * View is a toplevel container, used for e.g. the StepView and WeightView.
+     */
     public abstract class View : Gtk.Bin {
         public string title;
         public string icon_name;
@@ -25,10 +28,21 @@ namespace Health {
             this.visible = true;
         }
 
+        /**
+         * Update the view when new data is available.
+         *
+         * This can query a DB and then refresh the view.
+         */
         public abstract void update ();
 
     }
 
+    /**
+     * A GraphModel is the dataclass for a GraphView.
+     *
+     * It can retrieve data from a DB and provides it to
+     * a GraphView to display it to the user.
+     */
     public abstract class GraphModel<T>: GLib.Object {
         protected Gee.ArrayList<T> arr;
 
@@ -43,8 +57,14 @@ namespace Health {
             this.reload ();
         }
 
+        /**
+         * Converts the GraphModel's data to data points so it can be displayed in the GraphView.
+         */
         public abstract Gee.ArrayList<Point> to_points ();
 
+        /**
+         * Reloads the GraphModel's data, e.g. by loading it from the DB again.
+         */
         public abstract bool reload ();
 
     }

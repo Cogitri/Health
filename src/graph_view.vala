@@ -16,6 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 namespace Health {
+    /**
+     * A Point describes a single datapoint in a `GraphView`.
+     */
     public class Point {
         public Date date;
         public double value;
@@ -26,6 +29,9 @@ namespace Health {
         }
     }
 
+    /**
+     * A View for visualizing the development of data over time.
+     */
     public class GraphView : Gtk.DrawingArea {
         private double x_padding;
         private double y_padding;

@@ -17,6 +17,9 @@
  */
 
 namespace Health {
+    /**
+     * The `PrimaryMenu` is displayed when the user opens the hamburger menu at the top right.
+     */
     public class PrimaryMenu : Gtk.Popover {
         public PrimaryMenu () {
             Object ();

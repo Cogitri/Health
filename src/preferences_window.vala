@@ -17,6 +17,10 @@
  */
 
  namespace Health {
+    /**
+     * The PreferencesWindow is presented to the user to set certain settings
+     * in the applcation.
+     */
     [GtkTemplate (ui = "/org/gnome/Health/preferences_window.ui")]
     public class PreferencesWindow : Hdy.PreferencesWindow {
         [GtkChild]

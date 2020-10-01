@@ -22,6 +22,9 @@
         METRIC,
     }
 
+    /**
+     * Settings utilizes GSettings to save the user's preferences.
+     */
     public class Settings : GLib.Settings {
         public const string DID_INITIAL_SETUP_KEY = "did-initial-setup";
         public const string UNITSYSTEM_KEY = "unitsystem";
