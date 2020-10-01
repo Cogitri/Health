@@ -56,7 +56,7 @@ namespace Health {
                     weight                          REAL
                 );
             """;
-            string errmsg;
+            string? errmsg;
             bool db_exists_already = FileUtils.test (filename, FileTest.IS_REGULAR);
 
             if ((rc = Sqlite.Database.open_v2 (filename, out this.db)) != 0) {
@@ -65,7 +65,7 @@ namespace Health {
 
             if (!db_exists_already) {
                 if ((rc = this.db.exec (SETUP_QUERY, null, out errmsg)) != Sqlite.OK) {
-                    throw new DatabaseError.SETUP_FAILED (_ ("Failed to setup SQLite database due to error %s"), errmsg);
+                    throw new DatabaseError.SETUP_FAILED (_ ("Failed to setup SQLite database due to error %s"), errmsg == null ? _ ("Unknown error") : (!) errmsg);
                 }
             }
 
@@ -74,20 +74,20 @@ namespace Health {
         public void save_weight (Weight w) throws DatabaseError {
             string query = "INSERT INTO HealthData (date, weight) VALUES (%u, %lf) ON CONFLICT(date) DO UPDATE SET weight=excluded.weight;".printf (w.date.get_julian (), w.weight);
             int rc;
-            string errmsg;
+            string? errmsg;
 
             if ((rc = this.db.exec (query, null, out errmsg)) != Sqlite.OK) {
-                throw new DatabaseError.SAVE_FAILED (_ ("Failed to save weight to SQLite database due to error %s"), errmsg);
+                throw new DatabaseError.SAVE_FAILED (_ ("Failed to save weight to SQLite database due to error %s"), errmsg == null ? _ ("Unknown error") : (!) errmsg);
             }
         }
 
         public void save_steps (Steps s) throws DatabaseError {
             string query = "INSERT INTO HealthData (date, steps) VALUES (%u, %u) ON CONFLICT(date) DO UPDATE SET steps=excluded.steps;".printf (s.date.get_julian (), s.steps);
             int rc;
-            string errmsg;
+            string? errmsg;
 
             if ((rc = this.db.exec (query, null, out errmsg)) != Sqlite.OK) {
-                throw new DatabaseError.SAVE_FAILED (_ ("Failed to save steps to SQLite database due to error %s"), errmsg);
+                throw new DatabaseError.SAVE_FAILED (_ ("Failed to save steps to SQLite database due to error %s"), errmsg == null ? _ ("Unknown error") : (!) errmsg);
             }
         }
 
