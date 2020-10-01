@@ -25,7 +25,6 @@ flatpak run org.gnome.Health
 
 First off, you need the following dependencies installed:
 
-* [caroline](https://github.com/dcharles525/Caroline)
 * gtk+3.0 >= 3.24
 * libgee-0.8
 * libhandy >= 1.0
