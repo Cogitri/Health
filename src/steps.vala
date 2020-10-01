@@ -29,15 +29,16 @@ namespace Health {
     }
 
     public class StepsGraphModel : GraphModel<Steps> {
+        private SqliteDatabase db;
 
-        public StepsGraphModel () {
+        public StepsGraphModel (SqliteDatabase db) {
+            this.db = db;
+
             this.init ();
         }
 
         public override bool reload () {
-            var db = new SqliteDatabase ();
             try {
-                db.open ();
                 this.arr = db.get_steps_after (get_date_in_n_days (-30));
                 return true;
             } catch (DatabaseError e) {

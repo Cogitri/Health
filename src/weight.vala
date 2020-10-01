@@ -30,17 +30,17 @@ namespace Health {
 
     public class WeightGraphModel : GraphModel<Weight> {
         private Settings settings;
+        private SqliteDatabase db;
 
-        public WeightGraphModel (Settings settings) {
-            this.init ();
-
+        public WeightGraphModel (Settings settings, SqliteDatabase db) {
             this.settings = settings;
+            this.db = db;
+
+            this.init ();
         }
 
         public override bool reload () {
-            var db = new SqliteDatabase ();
             try {
-                db.open ();
                 this.arr = db.get_weights_after (get_date_in_n_days (-30));
                 return true;
             } catch (DatabaseError e) {
