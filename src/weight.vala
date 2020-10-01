@@ -92,7 +92,7 @@ namespace Health {
         private Gtk.Box main_box;
         private Gtk.Label no_data_label;
         private Settings settings;
-        private WeightGraphView weight_graph_view;
+        private WeightGraphView? weight_graph_view;
         private WeightGraphModel weight_graph_model;
 
         public WeightView (WeightGraphModel model, Settings settings) {
@@ -106,7 +106,7 @@ namespace Health {
                 this.main_box.pack_start (this.no_data_label);
             } else {
                 this.weight_graph_view = new WeightGraphView (model);
-                this.main_box.pack_start (this.weight_graph_view);
+                this.main_box.pack_start ((!) this.weight_graph_view);
             }
 
             this.update ();
@@ -130,9 +130,9 @@ namespace Health {
             if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
                 this.main_box.remove (this.no_data_label);
                 this.weight_graph_view = new WeightGraphView (this.weight_graph_model);
-                this.main_box.pack_start (this.weight_graph_view);
+                this.main_box.pack_start ((!) this.weight_graph_view);
             } else if (this.weight_graph_view != null) {
-                this.weight_graph_view.points = this.weight_graph_model.to_points ();
+                ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();
             }
         }
 

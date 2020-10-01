@@ -52,7 +52,7 @@ namespace Health {
                 stack.child_set (view, "icon-name", view.icon_name, null);
             }
             add_data_button.clicked.connect (() => {
-                AddDialog dialog = null;
+                AddDialog dialog;
                 switch (this.current_view) {
                 case STEPS:
                     dialog = new StepsAddDialog (this);
@@ -60,6 +60,8 @@ namespace Health {
                 case WEIGHT:
                     dialog = new WeightAddDialog (this, this.settings);
                     break;
+                default:
+                    error ("Can't create add dialog for unknown view type %d", this.current_view);
                 }
                 dialog.run ();
                 this.views[this.current_view].update ();

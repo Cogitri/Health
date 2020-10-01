@@ -57,11 +57,12 @@ namespace Health {
             var target_date = GLib.Date ();
             for (int i = 0; i <= date_delta; i++) {
                 target_date.set_julian (first_date.get_julian () + i);
-                var item = this.arr.first_match ((s) => { return s.date.get_julian () == target_date.get_julian (); });
+                Steps? item;
+                item = this.arr.first_match ((s) => { return s.date.get_julian () == target_date.get_julian (); });
                 if (item == null) {
                     ret.add (new Point (target_date, 0));
                 } else {
-                    ret.add (new Point (item.date, item.steps));
+                    ret.add (new Point (((!) item).date, ((!) item).steps));
                 }
             }
 
@@ -70,10 +71,11 @@ namespace Health {
 
         public uint32 get_today_step_count () {
             var today = get_today_date ();
-            var steps = this.arr.first_match ((s) => {
+            Steps? steps;
+            steps = this.arr.first_match ((s) => {
                 return s.date.get_julian () == today.get_julian ();
             });
-            return steps != null ? steps.steps : 0;
+            return steps != null ? ((!) steps).steps : 0;
         }
 
         public uint32 get_streak_count (uint step_goal) {
@@ -115,7 +117,7 @@ namespace Health {
         private Gtk.Box main_box;
         private Gtk.Label no_data_label;
         private Settings settings;
-        private StepsGraphView steps_graph_view;
+        private StepsGraphView? steps_graph_view;
         private StepsGraphModel steps_graph_model;
 
         public StepView (StepsGraphModel model, Settings settings) {
@@ -129,7 +131,7 @@ namespace Health {
                 this.main_box.pack_start (this.no_data_label);
             } else {
                 this.steps_graph_view = new StepsGraphView (model, this.settings.user_stepgoal);
-                this.main_box.pack_start (this.steps_graph_view);
+                this.main_box.pack_start ((!) this.steps_graph_view);
             }
 
             this.update ();
@@ -157,9 +159,9 @@ namespace Health {
             if (this.steps_graph_view == null && !this.steps_graph_model.is_empty) {
                 this.main_box.remove (this.no_data_label);
                 this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
-                this.main_box.pack_start (this.steps_graph_view);
+                this.main_box.pack_start ((!) this.steps_graph_view);
             } else if (this.steps_graph_view != null) {
-                this.steps_graph_view.points = this.steps_graph_model.to_points ();
+                ((!) this.steps_graph_view).points = this.steps_graph_model.to_points ();
             }
         }
 
