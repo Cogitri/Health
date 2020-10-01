@@ -2,6 +2,8 @@
 
 A health tracking app for the GNOME desktop.
 
+![screenshot](https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot.png)
+
 ## Building from Source
 
 ## Building in Flatpak
@@ -12,7 +14,7 @@ You can build Health with the following command:
 flatpak-builder --install --force-clean app org.gnome.Health.json
 ```
 
-Aftwards you can run it with:
+Afterwards you can run it with:
 
 ```sh
 flatpak run org.gnome.Health
