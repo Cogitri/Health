@@ -77,8 +77,8 @@ namespace Health {
     }
 
     public class WeightGraphView : GraphView {
-        public WeightGraphView (WeightGraphModel model) {
-            base (model.to_points ());
+        public WeightGraphView (WeightGraphModel model, double weightgoal) {
+            base (model.to_points (), _ ("Weightgoal"), weightgoal);
             this.margin = 6;
         }
 
@@ -91,6 +91,7 @@ namespace Health {
         [GtkChild]
         private Gtk.Box main_box;
         private Gtk.Label no_data_label;
+        private Gtk.Label? weight_goal_label;
         private Settings settings;
         private WeightGraphView? weight_graph_view;
         private WeightGraphModel weight_graph_model;
@@ -101,17 +102,22 @@ namespace Health {
             this.title = _ ("Weight");
             this.weight_graph_model = model;
 
+            this.update_weightgoal_label ();
+
             if (this.weight_graph_model.is_empty) {
                 this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new weight measurement."));
                 this.main_box.pack_start (this.no_data_label);
             } else {
-                this.weight_graph_view = new WeightGraphView (model);
+                this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal);
                 this.main_box.pack_start ((!) this.weight_graph_view);
             }
 
             this.update ();
             this.main_box.show_all ();
             this.settings.changed[Settings.USER_HEIGHT_KEY].connect (() => {
+                this.update ();
+            });
+            this.settings.changed[Settings.USER_WEIGHTGOAL_KEY].connect (() => {
                 this.update ();
             });
             this.settings.changed[Settings.UNITSYSTEM_KEY].connect (() => {
@@ -123,16 +129,59 @@ namespace Health {
             return this.weight_graph_model.get_last_weight () / GLib.Math.pow (this.settings.user_height / 100.0, 2);
         }
 
+        private void update_weightgoal_label () {
+            var weight_goal = this.settings.user_weightgoal;
+            if (weight_goal > 0.01 && !this.weight_graph_model.is_empty) {
+                var goal_diff = this.weight_graph_model.get_last_weight () - weight_goal;
+
+                if (goal_diff < 0) {
+                    goal_diff *= -1;
+                }
+
+                if (goal_diff == 0) {
+                    if (this.weight_goal_label == null) {
+                        this.weight_goal_label = new Gtk.Label (_ ("You've reached your weightgoal, great job!"));
+                        this.weight_goal_label.visible = true;
+                        this.main_box.pack_start (this.weight_goal_label);
+                    } else {
+                        ((!) this.weight_goal_label).set_text (_ ("You've reached your weightgoal, great job!"));
+                    }
+                } else {
+                    string unitsystem;
+                    if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
+                        weight_goal = kg_to_pb (weight_goal);
+                        goal_diff = kg_to_pb (goal_diff);
+                        unitsystem = _ ("pounds");
+                    } else {
+                        unitsystem = _ ("kilogram");
+                    };
+
+                    if (this.weight_goal_label == null) {
+                        /* TRANSLATORS: the two %s format strings are the weight unit, e.g. kilogram */
+                        this.weight_goal_label = new Gtk.Label (_ ("%.2lf %s left to reach your weightgoal of %.2lf %s").printf (goal_diff, unitsystem, weight_goal, unitsystem));
+                        this.weight_goal_label.visible = true;
+                        this.main_box.pack_start (this.weight_goal_label);
+                    } else {
+                        ((!) this.weight_goal_label).set_text (_ ("%.2lf %s left to reach your weightgoal of %.2lf %s").printf (goal_diff, unitsystem, weight_goal, unitsystem));
+                    }
+                }
+            }
+        }
+
         public override void update () {
             this.weight_graph_model.reload ();
             this.title_label.set_text (_ ("Current BMI: %.2lf").printf (this.get_bmi ()));
 
+            this.update_weightgoal_label ();
+
             if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
                 this.main_box.remove (this.no_data_label);
-                this.weight_graph_view = new WeightGraphView (this.weight_graph_model);
+                this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal);
+                this.weight_graph_view.visible = true;
                 this.main_box.pack_start ((!) this.weight_graph_view);
             } else if (this.weight_graph_view != null) {
                 ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();
+                ((!) this.weight_graph_view).limit = this.settings.user_weightgoal;
             }
         }
 

@@ -101,7 +101,7 @@ namespace Health {
 
     public class StepsGraphView : GraphView {
         public StepsGraphView (StepsGraphModel model, double stepgoal) {
-            base (model.to_points (), stepgoal);
+            base (model.to_points (), _ ("Stepgoal"), stepgoal);
             this.margin = 6;
         }
 
@@ -135,6 +135,10 @@ namespace Health {
                 this.main_box.pack_start ((!) this.steps_graph_view);
             }
 
+            this.settings.changed[Settings.USER_STEPGOAL_KEY].connect (() => {
+                this.update ();
+            });
+
             this.update ();
             this.main_box.show_all ();
         }
@@ -160,9 +164,11 @@ namespace Health {
             if (this.steps_graph_view == null && !this.steps_graph_model.is_empty) {
                 this.main_box.remove (this.no_data_label);
                 this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
+                this.steps_graph_view.visible = true;
                 this.main_box.pack_start ((!) this.steps_graph_view);
             } else if (this.steps_graph_view != null) {
                 ((!) this.steps_graph_view).points = this.steps_graph_model.to_points ();
+                ((!) this.steps_graph_view).limit = this.settings.user_stepgoal;
             }
         }
 

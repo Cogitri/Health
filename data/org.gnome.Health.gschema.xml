@@ -31,6 +31,11 @@
       <summary>User stepgoal</summary>
       <description>The amount of steps the user wants to reach daily.</description>
     </key>
+    <key name="user-weightgoal" type="d">
+      <default>-1</default>
+      <summary>User weightgoal</summary>
+      <description>The weight the user wants to reach.</description>
+    </key>
     <key name="window-height" type="i">
       <default>-1</default>
       <summary>Window height</summary>
