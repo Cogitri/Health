@@ -150,7 +150,7 @@ namespace Health {
                 }
 
                 if (goal_diff == 0) {
-                    this.weightgoal_label.set_text (_ ("You've reached your weightgoal, great job!"));
+                    this.weightgoal_label.set_text (_ ("You've reached your weightgoal. Great job!"));
                 } else {
                     string unitsystem;
                     if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
