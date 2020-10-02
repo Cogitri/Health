@@ -50,7 +50,7 @@ namespace Health {
                 settings.user_age = (uint) this.age_spinner.value;
                 settings.user_height = (uint) this.height_spinner.value;
                 settings.user_stepgoal = (uint) this.stepgoal_spinner.value;
-                settings.user_weightgoal = this.weightgoal_spinner.value;
+                settings.user_weightgoal = new WeightUnitContainer.from_user_value (this.weightgoal_spinner.value, settings);
                 this.setup_done ();
             });
             this.setup_cancel_button.clicked.connect (() => {

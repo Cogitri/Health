@@ -9,6 +9,7 @@ gnome_health_sources = files(
   'settings.vala',
   'setup_window.vala',
   'steps.vala',
+  'units.vala',
   'util.vala',
   'views.vala',
   'weight.vala',

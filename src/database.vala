@@ -55,9 +55,10 @@ namespace Health {
          * added on the 30th of September or later will be returned.
          *
          * @param date The earliest date that steps should be retrieved from.
+         * @param settings The Health.Settings object that is used for determining whether to use imperial or metric units.
          * @throws DatabaseError If querying the DB fails.
          */
-        public abstract Gee.ArrayList<Weight> get_weights_after (GLib.Date date) throws DatabaseError;
+        public abstract Gee.ArrayList<Weight> get_weights_after (GLib.Date date, Settings settings) throws DatabaseError;
 
         /**
          * Opens the database located at filename, or creates a new one.
@@ -140,7 +141,7 @@ namespace Health {
          * @throws DatabaseError If saving to the DB fails.
          */
         public void save_weight (Weight w) throws DatabaseError {
-            string query = "INSERT INTO HealthData (date, weight) VALUES (%u, %lf) ON CONFLICT(date) DO UPDATE SET weight=excluded.weight;".printf (w.date.get_julian (), w.weight);
+            string query = "INSERT INTO HealthData (date, weight) VALUES (%u, %lf) ON CONFLICT(date) DO UPDATE SET weight=excluded.weight;".printf (w.date.get_julian (), w.weight.get_in_kg ());
             int rc;
             string? errmsg;
 
@@ -172,9 +173,10 @@ namespace Health {
          * added on the 30th of September or later will be returned.
          *
          * @param date The earliest date that steps should be retrieved from.
+         * @param settings The Health.Settings object that is used for determining whether to use imperial or metric units.
          * @throws DatabaseError If querying the DB fails.
          */
-        public Gee.ArrayList<Weight> get_weights_after (GLib.Date date) throws DatabaseError {
+        public Gee.ArrayList<Weight> get_weights_after (GLib.Date date, Settings settings) throws DatabaseError {
             int rc;
             Sqlite.Statement stmt;
             string query = "SELECT * FROM HealthData WHERE date >= %u AND weight IS NOT NULL;".printf (date.get_julian ());
@@ -192,7 +194,7 @@ namespace Health {
                 case Sqlite.ROW:
                     var new_date = GLib.Date ();
                     new_date.set_julian (stmt.column_int (0));
-                    ret.add (new Weight (new_date, stmt.column_double (2)));
+                    ret.add (new Weight (new_date, new WeightUnitContainer.from_database_value( stmt.column_double (2), settings)));
                     break;
                 default:
                     throw new DatabaseError.GET_FAILED (_ ("Failed to get data from column due to error %s"), this.db.errmsg ());

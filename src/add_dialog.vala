@@ -147,11 +147,7 @@ namespace Health {
                 warning (_ ("Failed to parse weight '%s' as floating point number"), this.dialog_entry.get_text ());
             }
 
-            if (settings.unitsystem == Unitsystem.IMPERIAL) {
-                weight = pb_to_kg (weight);
-            }
-
-            db.save_weight (new Weight (get_today_date (), weight));
+            db.save_weight (new Weight (get_today_date (), new WeightUnitContainer.from_user_value (weight, this.settings)));
         }
 
     }

@@ -36,7 +36,10 @@
             settings.bind (Settings.USER_AGE_KEY, this.age_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
             settings.bind (Settings.USER_HEIGHT_KEY, this.height_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
             settings.bind (Settings.USER_STEPGOAL_KEY, this.stepgoal_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
-            settings.bind (Settings.USER_WEIGHTGOAL_KEY, this.weightgoal_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
+
+            this.weightgoal_spinner.value_changed.connect ((btn) => {
+                settings.user_weightgoal = new WeightUnitContainer.from_user_value (btn.value, settings);
+            });
 
             this.set_transient_for (parent);
             this.destroy_with_parent = true;

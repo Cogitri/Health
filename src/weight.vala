@@ -19,9 +19,9 @@
 namespace Health {
     public class Weight : GLib.Object {
         public GLib.Date date { get; private set; }
-        public double weight { get; private set; }
+        public WeightUnitContainer weight { get; private set; }
 
-        public Weight (GLib.Date date, double weight) {
+        public Weight (GLib.Date date, WeightUnitContainer weight) {
             this.date = date;
             this.weight = weight;
         }
@@ -41,7 +41,7 @@ namespace Health {
 
         public override bool reload () {
             try {
-                this.arr = db.get_weights_after (get_date_in_n_days (-30));
+                this.arr = db.get_weights_after (get_date_in_n_days (-30), this.settings);
                 return true;
             } catch (DatabaseError e) {
                 warning (_ ("Failed to load weights from database due to error %s"), e.message);
@@ -55,20 +55,16 @@ namespace Health {
             this.arr.sort ((a, b) => { return a.date.compare (b.date); });
 
             foreach (var weight in this.arr) {
-                if (settings.unitsystem == Unitsystem.IMPERIAL) {
-                    ret.add (new Point (weight.date, kg_to_pb (weight.weight)));
-                } else {
-                    ret.add (new Point (weight.date, weight.weight));
-                }
+                ret.add (new Point (weight.date, weight.weight.value));
             }
 
             return ret;
         }
 
-        public double get_last_weight () {
+        public WeightUnitContainer? get_last_weight () {
             this.arr.sort ((a, b) => { return a.date.compare (b.date); });
             if (this.arr.is_empty) {
-                return 0.0;
+                return null;
             }
             var last_weight = this.arr.get (this.arr.size - 1);
             return last_weight.weight;
@@ -109,7 +105,7 @@ namespace Health {
                 this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new weight measurement."));
                 this.main_box.pack_start (this.no_data_label);
             } else {
-                this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal);
+                this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value);
                 this.main_box.pack_start ((!) this.weight_graph_view);
             }
 
@@ -127,12 +123,16 @@ namespace Health {
         }
 
         private double get_bmi () {
-            return this.weight_graph_model.get_last_weight () / GLib.Math.pow (this.settings.user_height / 100.0, 2);
+            var last_weight = this.weight_graph_model.get_last_weight ();
+            if (last_weight == null) {
+                return 0;
+            }
+            return last_weight.get_in_kg () / GLib.Math.pow (this.settings.user_height / 100.0, 2);
         }
 
         private void update_weightgoal_label () {
             var weight_goal = this.settings.user_weightgoal;
-            if (weight_goal > 0.01 && this.weight_graph_model.is_empty) {
+            if (weight_goal.get_in_kg () > 0.01 && this.weight_graph_model.is_empty) {
                 string unitsystem;
                 if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
                     unitsystem = _ ("pounds");
@@ -141,9 +141,9 @@ namespace Health {
                 }
 
                 /* TRANSLATORS: the %s format strings are the weight unit, e.g. kilogram */
-                this.weightgoal_label.set_text (_ ("Your weightgoal is %.2lf %s. Add a first weight measurement to see how close you are to reaching it."). printf (this.settings.user_weightgoal, unitsystem));
-            } else if (weight_goal > 0.01 && !this.weight_graph_model.is_empty) {
-                var goal_diff = this.weight_graph_model.get_last_weight () - weight_goal;
+                this.weightgoal_label.set_text (_ ("Your weightgoal is %.2lf %s. Add a first weight measurement to see how close you are to reaching it."). printf (this.settings.user_weightgoal.value, unitsystem));
+            } else if (weight_goal.get_in_kg () > 0.01 && !this.weight_graph_model.is_empty) {
+                var goal_diff = ((!) this.weight_graph_model).get_last_weight ().value - weight_goal.value;
 
                 if (goal_diff < 0) {
                     goal_diff *= -1;
@@ -154,14 +154,12 @@ namespace Health {
                 } else {
                     string unitsystem;
                     if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
-                        weight_goal = kg_to_pb (weight_goal);
-                        goal_diff = kg_to_pb (goal_diff);
                         unitsystem = _ ("pounds");
                     } else {
                         unitsystem = _ ("kilogram");
                     }
                     /* TRANSLATORS: the two %s format strings are the weight unit, e.g. kilogram */
-                    this.weightgoal_label.set_text (_ ("%.2lf %s left to reach your weightgoal of %.2lf %s").printf (goal_diff, unitsystem, weight_goal, unitsystem));
+                    this.weightgoal_label.set_text (_ ("%.2lf %s left to reach your weightgoal of %.2lf %s").printf (goal_diff, unitsystem, weight_goal.value, unitsystem));
                 }
             } else {
                 this.weightgoal_label.set_text (_ ("No weightgoal set yet. You can set it in Health's preferences."));
@@ -176,12 +174,12 @@ namespace Health {
 
             if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
                 this.main_box.remove (this.no_data_label);
-                this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal);
+                this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value);
                 this.weight_graph_view.visible = true;
                 this.main_box.pack_start ((!) this.weight_graph_view);
             } else if (this.weight_graph_view != null) {
                 ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();
-                ((!) this.weight_graph_view).limit = this.settings.user_weightgoal;
+                ((!) this.weight_graph_view).limit = this.settings.user_weightgoal.value;
             }
         }
 

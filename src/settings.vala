@@ -81,12 +81,12 @@
             }
         }
 
-        public double user_weightgoal {
-            get {
-                return this.get_double (USER_WEIGHTGOAL_KEY);
+        public WeightUnitContainer user_weightgoal {
+            owned get {
+                return new WeightUnitContainer.from_database_value (this.get_double (USER_WEIGHTGOAL_KEY), this);
             }
             set {
-                this.set_double (USER_WEIGHTGOAL_KEY, value);
+                this.set_double (USER_WEIGHTGOAL_KEY, value.get_in_kg ());
             }
         }
 
