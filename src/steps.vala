@@ -81,6 +81,11 @@ namespace Health {
 
         public uint32 get_streak_count (uint step_goal) {
             uint32 streak = 0;
+
+            if (this.arr.is_empty) {
+                return 0;
+            }
+
             this.arr.sort ((a, b) => { return b.date.compare (a.date); });
 
             var last_date = this.arr.get (0).date;
