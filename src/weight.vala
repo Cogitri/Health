@@ -90,8 +90,9 @@ namespace Health {
         private Gtk.Label title_label;
         [GtkChild]
         private Gtk.Box main_box;
+        [GtkChild]
+        private Gtk.Label weightgoal_label;
         private Gtk.Label no_data_label;
-        private Gtk.Label? weight_goal_label;
         private Settings settings;
         private WeightGraphView? weight_graph_view;
         private WeightGraphModel weight_graph_model;
@@ -131,7 +132,17 @@ namespace Health {
 
         private void update_weightgoal_label () {
             var weight_goal = this.settings.user_weightgoal;
-            if (weight_goal > 0.01 && !this.weight_graph_model.is_empty) {
+            if (weight_goal > 0.01 && this.weight_graph_model.is_empty) {
+                string unitsystem;
+                if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
+                    unitsystem = _ ("pounds");
+                } else {
+                    unitsystem = _ ("kilogram");
+                }
+
+                /* TRANSLATORS: the %s format strings are the weight unit, e.g. kilogram */
+                this.weightgoal_label.set_text (_ ("Your weightgoal is %.2lf %s. Add a first weight measurement to see how close you are to reaching it."). printf (this.settings.user_weightgoal, unitsystem));
+            } else if (weight_goal > 0.01 && !this.weight_graph_model.is_empty) {
                 var goal_diff = this.weight_graph_model.get_last_weight () - weight_goal;
 
                 if (goal_diff < 0) {
@@ -139,13 +150,7 @@ namespace Health {
                 }
 
                 if (goal_diff == 0) {
-                    if (this.weight_goal_label == null) {
-                        this.weight_goal_label = new Gtk.Label (_ ("You've reached your weightgoal, great job!"));
-                        this.weight_goal_label.visible = true;
-                        this.main_box.pack_start (this.weight_goal_label);
-                    } else {
-                        ((!) this.weight_goal_label).set_text (_ ("You've reached your weightgoal, great job!"));
-                    }
+                    this.weightgoal_label.set_text (_ ("You've reached your weightgoal, great job!"));
                 } else {
                     string unitsystem;
                     if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
@@ -154,17 +159,12 @@ namespace Health {
                         unitsystem = _ ("pounds");
                     } else {
                         unitsystem = _ ("kilogram");
-                    };
-
-                    if (this.weight_goal_label == null) {
-                        /* TRANSLATORS: the two %s format strings are the weight unit, e.g. kilogram */
-                        this.weight_goal_label = new Gtk.Label (_ ("%.2lf %s left to reach your weightgoal of %.2lf %s").printf (goal_diff, unitsystem, weight_goal, unitsystem));
-                        this.weight_goal_label.visible = true;
-                        this.main_box.pack_start (this.weight_goal_label);
-                    } else {
-                        ((!) this.weight_goal_label).set_text (_ ("%.2lf %s left to reach your weightgoal of %.2lf %s").printf (goal_diff, unitsystem, weight_goal, unitsystem));
                     }
+                    /* TRANSLATORS: the two %s format strings are the weight unit, e.g. kilogram */
+                    this.weightgoal_label.set_text (_ ("%.2lf %s left to reach your weightgoal of %.2lf %s").printf (goal_diff, unitsystem, weight_goal, unitsystem));
                 }
+            } else {
+                this.weightgoal_label.set_text (_ ("No weightgoal set yet. You can set it in Health's preferences."));
             }
         }
 

@@ -39,14 +39,21 @@ namespace Health {
 
         public SetupWindow (Gtk.Application application, Settings settings) {
             Object (application: application);
-            setup_finished_button.clicked.connect (() => {
+
+            this.stepgoal_spinner.value = 10000;
+
+            this.height_spinner.value_changed.connect (() => {
+                const uint OPTIMAL_BMI = 20;
+                this.weightgoal_spinner.value = OPTIMAL_BMI * GLib.Math.pow (this.height_spinner.value / 100, 2);
+            });
+            this.setup_finished_button.clicked.connect (() => {
                 settings.user_age = (uint) this.age_spinner.value;
                 settings.user_height = (uint) this.height_spinner.value;
                 settings.user_stepgoal = (uint) this.stepgoal_spinner.value;
                 settings.user_weightgoal = this.weightgoal_spinner.value;
                 this.setup_done ();
             });
-            setup_cancel_button.clicked.connect (() => {
+            this.setup_cancel_button.clicked.connect (() => {
                 this.destroy ();
             });
         }
