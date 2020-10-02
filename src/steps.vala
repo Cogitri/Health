@@ -101,7 +101,7 @@ namespace Health {
 
     public class StepsGraphView : GraphView {
         public StepsGraphView (StepsGraphModel model, double stepgoal) {
-            base (model.to_points (), stepgoal);
+            base (model.to_points (), _ ("Stepgoal"), stepgoal);
             this.margin = 6;
         }
 

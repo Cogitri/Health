@@ -55,10 +55,21 @@ namespace Health {
                 this.queue_draw ();
             }
         }
+        private string _limitlabel;
+        public string limitlabel {
+            get {
+                return _limitlabel;
+            }
+            set {
+                this._limitlabel = value;
+                this.queue_draw ();
+            }
+        }
 
-        public GraphView (Gee.ArrayList<Point> points, double limit = -1) {
+        public GraphView (Gee.ArrayList<Point> points, string limitlabel = "", double limit = -1) {
             this.points = points;
             this.limit = limit;
+            this.limitlabel = limitlabel;
             this.x_padding = 60;
             this.y_padding = 60;
             this.set_size_request (400, 400);
@@ -129,7 +140,7 @@ namespace Health {
                 cr.set_source_rgba (outline_color.red, outline_color.green, outline_color.blue, 0.5);
                 cr.set_dash ({10, 5}, 0);
                 cr.move_to (this.x_padding / 2, height - limit * scale_y + this.y_padding / 2);
-                cr.show_text (_ ("Stepgoal"));
+                cr.show_text (this.limitlabel);
                 cr.line_to (width + this.x_padding / 2, height - limit * scale_y + this.y_padding / 2);
 
                 cr.stroke ();

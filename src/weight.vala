@@ -78,7 +78,7 @@ namespace Health {
 
     public class WeightGraphView : GraphView {
         public WeightGraphView (WeightGraphModel model, double weightgoal) {
-            base (model.to_points (), weightgoal);
+            base (model.to_points (), _ ("Weightgoal"), weightgoal);
             this.margin = 6;
         }
 
