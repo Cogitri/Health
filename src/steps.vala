@@ -168,6 +168,7 @@ namespace Health {
                 this.main_box.pack_start ((!) this.steps_graph_view);
             } else if (this.steps_graph_view != null) {
                 ((!) this.steps_graph_view).points = this.steps_graph_model.to_points ();
+                ((!) this.steps_graph_view).limit = this.settings.user_stepgoal;
             }
         }
 

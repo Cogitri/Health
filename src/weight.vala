@@ -181,6 +181,7 @@ namespace Health {
                 this.main_box.pack_start ((!) this.weight_graph_view);
             } else if (this.weight_graph_view != null) {
                 ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();
+                ((!) this.weight_graph_view).limit = this.settings.user_weightgoal;
             }
         }
 
