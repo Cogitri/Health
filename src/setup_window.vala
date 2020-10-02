@@ -39,6 +39,9 @@ namespace Health {
 
         public SetupWindow (Gtk.Application application, Settings settings) {
             Object (application: application);
+
+            this.stepgoal_spinner.value = 10000;
+
             setup_finished_button.clicked.connect (() => {
                 settings.user_age = (uint) this.age_spinner.value;
                 settings.user_height = (uint) this.height_spinner.value;
