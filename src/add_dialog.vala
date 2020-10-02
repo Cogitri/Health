@@ -72,9 +72,24 @@ namespace Health {
      * An `AddDialog` for adding a new step record.
      */
     public class StepsAddDialog : AddDialog {
-        public StepsAddDialog (Gtk.Window? parent) {
+        private SqliteDatabase db;
+
+        public StepsAddDialog (Gtk.Window? parent, SqliteDatabase db) {
             base (parent);
-            this.dialog_label.set_text (_ ("Add new step record"));
+
+            this.db = db;
+            var update = false;
+            try {
+                update = db.check_steps_exist_on_date (get_today_date ());
+            } catch (DatabaseError e) {
+                warning (e.message);
+            }
+
+            if (update) {
+                this.dialog_label.set_text (_ ("Update today's step record"));
+            } else {
+                this.dialog_label.set_text (_ ("Add new step record"));
+            }
             this.dialog_entry.set_max_length (6);
         }
 
@@ -99,12 +114,27 @@ namespace Health {
      */
     public class WeightAddDialog : AddDialog {
         private Settings settings;
+        private SqliteDatabase db;
 
-        public WeightAddDialog (Gtk.Window? parent, Settings settings) {
+        public WeightAddDialog (Gtk.Window? parent, Settings settings, SqliteDatabase db) {
             base (parent);
 
+            this.db = db;
             this.settings = settings;
-            this.dialog_label.set_text (_ ("Add new weight record"));
+
+            var update = false;
+            try {
+                update = db.check_weight_exist_on_date (get_today_date ());
+            } catch (DatabaseError e) {
+                warning (e.message);
+            }
+
+            if (update) {
+                this.dialog_label.set_text (_ ("Update today's weight measurement"));
+            } else {
+                this.dialog_label.set_text (_ ("Add new weight measurement"));
+            }
+
             this.dialog_entry.set_max_length (6);
         }
 

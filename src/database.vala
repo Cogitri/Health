@@ -84,6 +84,21 @@ namespace Health {
          */
         public abstract void save_steps (Steps s) throws DatabaseError;
 
+        /**
+         * Checks if there's already a step record for that date
+         *
+         * @param d The Date to check for
+         * @return True if there's already a record, false otherwise.
+         */
+        public abstract bool check_steps_exist_on_date (Date d) throws DatabaseError;
+
+        /**
+         * Checks if there's already a weight measurement for that date
+         *
+         * @param d The Date to check for
+         * @return True if there's already a measurement, false otherwise.
+         */
+        public abstract bool check_weight_exist_on_date (Date d) throws DatabaseError;
     }
 
     public class SqliteDatabase : GLib.Object, Database {
@@ -220,6 +235,44 @@ namespace Health {
                 }
             } while (rc == Sqlite.ROW);
             return ret;
+        }
+
+        /**
+         * Checks if there's already a step record for that date
+         *
+         * @param d The Date to check for
+         * @return True if there's already a record, false otherwise.
+         */
+        public bool check_steps_exist_on_date (GLib.Date d) throws DatabaseError {
+            int rc;
+            Sqlite.Statement stmt;
+            string query = "SELECT EXISTS(SELECT 1 FROM HealthData WHERE date = %u AND steps IS NOT NULL);".printf (d.get_julian ());
+
+            if ((rc = this.db.prepare_v2 (query, -1, out stmt, null)) == 1) {
+                throw new DatabaseError.GET_FAILED (_ ("Failed to check if steps exist on date in database due to error %s"), this.db.errmsg ());
+            }
+
+            stmt.step ();
+            return stmt.column_int (0) == 1;
+        }
+
+        /**
+         * Checks if there's already a weight measurement for that date
+         *
+         * @param d The Date to check for
+         * @return True if there's already a measurement, false otherwise.
+         */
+        public bool check_weight_exist_on_date (GLib.Date d) throws DatabaseError {
+            int rc;
+            Sqlite.Statement stmt;
+            string query = "SELECT EXISTS(SELECT 1 FROM HealthData WHERE date = %u AND weight IS NOT NULL);".printf (d.get_julian ());
+
+            if ((rc = this.db.prepare_v2 (query, -1, out stmt, null)) == 1) {
+                throw new DatabaseError.GET_FAILED (_ ("Failed to check if steps exist on date in database due to error %s"), this.db.errmsg ());
+            }
+
+            stmt.step ();
+            return stmt.column_int (0) == 1;
         }
 
         private Sqlite.Database db;

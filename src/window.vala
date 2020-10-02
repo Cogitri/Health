@@ -35,6 +35,7 @@ namespace Health {
         private int current_height;
         private int current_width;
         private Settings settings;
+        private SqliteDatabase db;
         private ViewModes current_view;
         private View[] views;
 
@@ -42,11 +43,20 @@ namespace Health {
             Object (application: app);
             this.current_view = ViewModes.STEPS;
             var menu = new PrimaryMenu ();
-            this.primary_menu_button.set_popover (menu);
             this.settings = settings;
-            var weight_model = new WeightGraphModel (this.settings);
-            var steps_model = new StepsGraphModel ();
-            views = new View[] { new StepView (steps_model, this.settings), new WeightView (weight_model, settings), };
+            this.db = new SqliteDatabase ();
+
+            try {
+                this.db.open ();
+            } catch (DatabaseError e) {
+                error (e.message);
+            }
+
+            var weight_model = new WeightGraphModel (this.settings, this.db);
+            var steps_model = new StepsGraphModel (this.db);
+            this.views = new View[] { new StepView (steps_model, this.settings), new WeightView (weight_model, settings), };
+
+            this.primary_menu_button.set_popover (menu);
             foreach (var view in views) {
                 stack.add_titled (view, view.name, view.title);
                 stack.child_set (view, "icon-name", view.icon_name, null);
@@ -55,10 +65,10 @@ namespace Health {
                 AddDialog dialog;
                 switch (this.current_view) {
                 case STEPS:
-                    dialog = new StepsAddDialog (this);
+                    dialog = new StepsAddDialog (this, this.db);
                     break;
                 case WEIGHT:
-                    dialog = new WeightAddDialog (this, this.settings);
+                    dialog = new WeightAddDialog (this, this.settings, this.db);
                     break;
                 default:
                     error ("Can't create add dialog for unknown view type %d", this.current_view);
