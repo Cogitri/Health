@@ -69,7 +69,7 @@ namespace Health {
     }
 
     /**
-     * An `AddDialog` for adding a new step record.
+     * An {@link AddDialog} for adding a new step record.
      */
     public class StepsAddDialog : AddDialog {
         private SqliteDatabase db;
@@ -113,7 +113,7 @@ namespace Health {
     }
 
     /**
-     * An `AddDialog` for adding a new weight record.
+     * An {@link AddDialog} for adding a new weight record.
      */
     public class WeightAddDialog : AddDialog {
         private Settings settings;

@@ -18,7 +18,7 @@
 
 namespace Health {
     /**
-     * The `SetupWindow` is shown to the user on the first start of the applcation to fill in some data.
+     * The {@link SetupWindow} is shown to the user on the first start of the applcation to fill in some data.
      */
     [GtkTemplate (ui = "/org/gnome/Health/setup_window.ui")]
     public class SetupWindow : Gtk.ApplicationWindow {

@@ -17,7 +17,7 @@
  */
 namespace Health {
     /**
-     * A Point describes a single datapoint in a `GraphView`.
+     * A Point describes a single datapoint in a {@link GraphView}.
      */
     public class Point {
         public Date date;
