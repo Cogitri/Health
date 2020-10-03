@@ -38,6 +38,8 @@
             settings.bind (Settings.USER_AGE_KEY, this.age_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
             settings.bind (Settings.USER_STEPGOAL_KEY, this.stepgoal_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
 
+            this.weightgoal_spinner.value = settings.user_weightgoal.value;
+
             if (settings.unitsystem == Unitsystem.METRIC) {
                 this.height_actionrow.title = _ ("Height in centimeters");
                 this.height_spinner.value = settings.user_height;
