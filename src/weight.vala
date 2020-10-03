@@ -127,7 +127,7 @@ namespace Health {
             if (last_weight == null) {
                 return 0;
             }
-            return last_weight.get_in_kg () / GLib.Math.pow (this.settings.user_height / 100.0, 2);
+            return ((!) last_weight).get_in_kg () / GLib.Math.pow (this.settings.user_height / 100.0, 2);
         }
 
         private void update_weightgoal_label () {
@@ -143,7 +143,7 @@ namespace Health {
                 /* TRANSLATORS: the %s format strings are the weight unit, e.g. kilogram */
                 this.weightgoal_label.set_text (_ ("Your weightgoal is %.2lf %s. Add a first weight measurement to see how close you are to reaching it."). printf (this.settings.user_weightgoal.value, unitsystem));
             } else if (weight_goal.get_in_kg () > 0.01 && !this.weight_graph_model.is_empty) {
-                var goal_diff = ((!) this.weight_graph_model).get_last_weight ().value - weight_goal.value;
+                var goal_diff = ((!) ((!) this.weight_graph_model).get_last_weight ()).value - weight_goal.value;
 
                 if (goal_diff < 0) {
                     goal_diff *= -1;
@@ -175,7 +175,7 @@ namespace Health {
             if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
                 this.main_box.remove (this.no_data_label);
                 this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value);
-                this.weight_graph_view.visible = true;
+                ((!) this.weight_graph_view).visible = true;
                 this.main_box.pack_start ((!) this.weight_graph_view);
             } else if (this.weight_graph_view != null) {
                 ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();

@@ -169,7 +169,7 @@ namespace Health {
             if (this.steps_graph_view == null && !this.steps_graph_model.is_empty) {
                 this.main_box.remove (this.no_data_label);
                 this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
-                this.steps_graph_view.visible = true;
+                ((!) this.steps_graph_view).visible = true;
                 this.main_box.pack_start ((!) this.steps_graph_view);
             } else if (this.steps_graph_view != null) {
                 ((!) this.steps_graph_view).points = this.steps_graph_model.to_points ();
