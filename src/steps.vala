@@ -79,7 +79,7 @@ namespace Health {
             return steps != null ? ((!) steps).steps : 0;
         }
 
-        public uint32 get_streak_count (uint step_goal) {
+        private uint32 get_streak_count_on_day (uint step_goal, GLib.Date date) {
             uint32 streak = 0;
 
             if (this.arr.is_empty) {
@@ -89,7 +89,7 @@ namespace Health {
             this.arr.sort ((a, b) => { return b.date.compare (a.date); });
 
             var last_date = this.arr.get (0).date;
-            if (last_date.get_julian () != get_today_date ().get_julian ()) {
+            if (last_date.get_julian () != date.get_julian ()) {
                 return 0;
             }
             foreach (var steps in this.arr) {
@@ -100,6 +100,16 @@ namespace Health {
                 }
             }
             return streak;
+        }
+
+        public uint32 get_streak_count_today (uint step_goal) {
+            return this.get_streak_count_on_day (step_goal, get_today_date ());
+        }
+
+        public uint32 get_streak_count_yesterday (uint step_goal) {
+            var date = get_today_date ();
+            date.subtract_days (1);
+            return this.get_streak_count_on_day (step_goal, date);
         }
 
     }
@@ -152,10 +162,15 @@ namespace Health {
             this.steps_graph_model.reload ();
 
             this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
-            var streak_count = this.steps_graph_model.get_streak_count (this.settings.user_stepgoal);
+            var streak_count = this.steps_graph_model.get_streak_count_today (this.settings.user_stepgoal);
             switch (streak_count) {
                 case 0:
-                    this.streak_label.set_text (_ ("No streak yet. Reach your stepgoal for multiple days to start a streak!"));
+                    var previous_streak = this.steps_graph_model.get_streak_count_yesterday (this.settings.user_stepgoal);
+                    if (previous_streak == 0) {
+                        this.streak_label.set_text (_ ("No streak yet. Reach your stepgoal for multiple days to start a streak!"));
+                    } else {
+                        this.streak_label.set_text (_ ("You're on a streak for %u days. Reach your stepgoal today to continue it!").printf (previous_streak));
+                    }
                     break;
                 case 1:
                     this.streak_label.set_text (_ ("You've reached your stepgoal today. Keep going to start a streak!"));
