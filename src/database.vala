@@ -194,7 +194,7 @@ namespace Health {
                 case Sqlite.ROW:
                     var new_date = GLib.Date ();
                     new_date.set_julian (stmt.column_int (0));
-                    ret.add (new Weight (new_date, new WeightUnitContainer.from_database_value( stmt.column_double (2), settings)));
+                    ret.add (new Weight (new_date, new WeightUnitContainer.from_database_value ( stmt.column_double (2), settings)));
                     break;
                 default:
                     throw new DatabaseError.GET_FAILED (_ ("Failed to get data from column due to error %s"), this.db.errmsg ());
