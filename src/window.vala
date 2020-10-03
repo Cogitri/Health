@@ -22,7 +22,9 @@ namespace Health {
         WEIGHT,
     }
 
-
+    /**
+     * The toplevel application window that holds all other widgets.
+     */
     [GtkTemplate (ui = "/org/gnome/Health/window.ui")]
     public class Window : Hdy.ApplicationWindow {
         [GtkChild]
