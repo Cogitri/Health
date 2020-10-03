@@ -75,7 +75,6 @@
             <child>
               <object class="HdyActionRow" id="height_actionrow">
                 <property name="visible">True</property>
-                <property name="title" translatable="yes">Height</property>
                 <child>
                   <object class="GtkSpinButton" id="height_spinner">
                     <property name="visible">True</property>

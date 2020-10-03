@@ -31,11 +31,28 @@
         private Gtk.SpinButton stepgoal_spinner;
         [GtkChild]
         private Gtk.SpinButton weightgoal_spinner;
+        [GtkChild]
+        private Hdy.ActionRow height_actionrow;
 
         public PreferencesWindow (Settings settings, Gtk.Window? parent) {
             settings.bind (Settings.USER_AGE_KEY, this.age_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
-            settings.bind (Settings.USER_HEIGHT_KEY, this.height_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
             settings.bind (Settings.USER_STEPGOAL_KEY, this.stepgoal_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
+
+            if (settings.unitsystem == Unitsystem.METRIC) {
+                this.height_actionrow.title = _ ("Height in centimeters");
+                this.height_spinner.value = settings.user_height;
+            } else {
+                this.height_actionrow.title = _ ("Height in inch");
+                this.height_spinner.value = cm_to_inch (settings.user_height);
+            }
+
+            this.height_spinner.value_changed.connect ((btn) => {
+                if (settings.unitsystem == Unitsystem.METRIC) {
+                    settings.user_height = (uint) btn.value;
+                } else {
+                    settings.user_height = (uint) inch_to_cm (btn.value);
+                }
+            });
 
             this.weightgoal_spinner.value_changed.connect ((btn) => {
                 settings.user_weightgoal = new WeightUnitContainer.from_user_value (btn.value, settings);

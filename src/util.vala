@@ -25,6 +25,14 @@ namespace Health {
         return pb * 0.45359237;
     }
 
+    double inch_to_cm (double inch) {
+        return inch * 2.54;
+    }
+
+    double cm_to_inch (double cm) {
+        return cm / 2.54;
+    }
+
     GLib.Date get_today_date () {
         return get_date_in_n_days (0);
     }

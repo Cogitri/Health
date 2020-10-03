@@ -36,6 +36,8 @@ namespace Health {
         private Gtk.Button setup_finished_button;
         [GtkChild]
         private Gtk.Button setup_cancel_button;
+        [GtkChild]
+        private Hdy.ActionRow height_actionrow;
 
         public signal void setup_done ();
 
@@ -44,22 +46,30 @@ namespace Health {
 
             this.stepgoal_spinner.value = 10000;
             this.unit_metric_radiobutton.active = true;
+            this.height_actionrow.title = _ ("Height in centimeters");
 
-            this.unit_metric_radiobutton.toggled.connect (() => {
+            this.unit_metric_radiobutton.toggled.connect ((btn) => {
+                if (btn.active) {
+                    this.height_actionrow.title = _ ("Height in centimeters");
+                } else {
+                    this.height_actionrow.title = _ ("Height in inch");
+                }
                 this.set_optimal_weightgoal ();
             });
             this.height_spinner.value_changed.connect (() => {
                 this.set_optimal_weightgoal ();
             });
             this.setup_finished_button.clicked.connect (() => {
+                var height_in_cm = (uint) this.height_spinner.value;
                 if (this.unit_metric_radiobutton.active) {
                     settings.unitsystem = Unitsystem.METRIC;
                 } else {
                     settings.unitsystem = Unitsystem.IMPERIAL;
+                    height_in_cm = (uint) GLib.Math.round (inch_to_cm (height_in_cm));
                 }
 
                 settings.user_age = (uint) this.age_spinner.value;
-                settings.user_height = (uint) this.height_spinner.value;
+                settings.user_height = height_in_cm;
                 settings.user_stepgoal = (uint) this.stepgoal_spinner.value;
                 settings.user_weightgoal = new WeightUnitContainer.from_user_value (this.weightgoal_spinner.value, settings);
                 this.setup_done ();
@@ -71,7 +81,11 @@ namespace Health {
 
         private void set_optimal_weightgoal () {
             const uint OPTIMAL_BMI = 20;
-            var optimal_value = OPTIMAL_BMI * GLib.Math.pow (this.height_spinner.value / 100, 2);
+            var height_in_cm = this.height_spinner.value;
+            if (!this.unit_metric_radiobutton.active) {
+                height_in_cm = inch_to_cm (height_in_cm);
+            }
+            var optimal_value = OPTIMAL_BMI * GLib.Math.pow (height_in_cm / 100, 2);
             if (!this.unit_metric_radiobutton.active) {
                 optimal_value = kg_to_pb (optimal_value);
             }
