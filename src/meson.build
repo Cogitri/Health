@@ -3,7 +3,6 @@ gnome_health_sources = files(
   'application.vala',
   'database.vala',
   'graph_view.vala',
-  'main.vala',
   'preferences_window.vala',
   'primary_menu.vala',
   'settings.vala',
@@ -60,9 +59,23 @@ c_args = [
 ]
 
 
+lib = static_library(
+  'gnome-health',
+  [gnome_health_sources, gnome_health_generated_sources],
+  vala_args: '--target-glib=2.50',
+  dependencies: gnome_health_deps,
+  c_args: c_args,
+)
 
-executable('gnome-health', [gnome_health_sources, gnome_health_generated_sources],
-  vala_args: '--target-glib=2.50',  dependencies: gnome_health_deps,
-  install: true,
+lib_dep = declare_dependency(
+  dependencies: gnome_health_deps,
+  link_with: lib,
+)
+
+
+executable('gnome-health',
+  ['main.vala'],
+  vala_args: '--target-glib=2.50',
+  dependencies: lib_dep,
   c_args: c_args,
 )
