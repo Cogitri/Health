@@ -23,6 +23,8 @@ namespace Health {
     [GtkTemplate (ui = "/org/gnome/Health/setup_window.ui")]
     public class SetupWindow : Gtk.ApplicationWindow {
         [GtkChild]
+        private Gtk.RadioButton unit_metric_radiobutton;
+        [GtkChild]
         private Gtk.SpinButton age_spinner;
         [GtkChild]
         private Gtk.SpinButton height_spinner;
@@ -41,12 +43,21 @@ namespace Health {
             Object (application: application);
 
             this.stepgoal_spinner.value = 10000;
+            this.unit_metric_radiobutton.active = true;
 
+            this.unit_metric_radiobutton.toggled.connect (() => {
+                this.set_optimal_weightgoal ();
+            });
             this.height_spinner.value_changed.connect (() => {
-                const uint OPTIMAL_BMI = 20;
-                this.weightgoal_spinner.value = OPTIMAL_BMI * GLib.Math.pow (this.height_spinner.value / 100, 2);
+                this.set_optimal_weightgoal ();
             });
             this.setup_finished_button.clicked.connect (() => {
+                if (this.unit_metric_radiobutton.active) {
+                    settings.unitsystem = Unitsystem.METRIC;
+                } else {
+                    settings.unitsystem = Unitsystem.IMPERIAL;
+                }
+
                 settings.user_age = (uint) this.age_spinner.value;
                 settings.user_height = (uint) this.height_spinner.value;
                 settings.user_stepgoal = (uint) this.stepgoal_spinner.value;
@@ -56,6 +67,15 @@ namespace Health {
             this.setup_cancel_button.clicked.connect (() => {
                 this.destroy ();
             });
+        }
+
+        private void set_optimal_weightgoal () {
+            const uint OPTIMAL_BMI = 20;
+            var optimal_value = OPTIMAL_BMI * GLib.Math.pow (this.height_spinner.value / 100, 2);
+            if (!this.unit_metric_radiobutton.active) {
+                optimal_value = kg_to_pb (optimal_value);
+            }
+            this.weightgoal_spinner.value = optimal_value;
         }
     }
 }
