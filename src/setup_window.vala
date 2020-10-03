@@ -39,6 +39,9 @@ namespace Health {
         [GtkChild]
         private Hdy.ActionRow height_actionrow;
 
+        /**
+         * This signal is fired when the user presses the setup_finish_button and all input data has been saved to GSettings.
+         */
         public signal void setup_done ();
 
         public SetupWindow (Gtk.Application application, Settings settings) {

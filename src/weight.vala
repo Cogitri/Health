@@ -17,6 +17,9 @@
  */
 
 namespace Health {
+    /**
+     * A weight measurement for a single day.
+     */
     public class Weight : GLib.Object {
         public GLib.Date date { get; private set; }
         public WeightUnitContainer weight { get; private set; }
@@ -28,6 +31,9 @@ namespace Health {
 
     }
 
+    /**
+     * An implementation of {@link GraphModel} that interacts with the user's weight measurements.
+     */
     public class WeightGraphModel : GraphModel<Weight> {
         private Settings settings;
         private SqliteDatabase db;
@@ -39,6 +45,12 @@ namespace Health {
             this.init ();
         }
 
+        /**
+         * Reload the data from the DB
+         *
+         * This can be used e.g. after the user added a new weight measurement.
+         * @return true if reloading suceeded.
+         */
         public override bool reload () {
             try {
                 this.arr = db.get_weights_after (get_date_in_n_days (-30), this.settings);
@@ -49,6 +61,9 @@ namespace Health {
             }
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public override Gee.ArrayList<Point> to_points () {
             var ret = new Gee.ArrayList<Point> ();
 
@@ -72,6 +87,9 @@ namespace Health {
 
     }
 
+    /**
+     * An implementation of {@link GraphView} that visualizes the user's weight measurements over time.
+     */
     public class WeightGraphView : GraphView {
         public WeightGraphView (WeightGraphModel model, double weightgoal) {
             base (model.to_points (), _ ("Weightgoal"), weightgoal);
@@ -80,6 +98,9 @@ namespace Health {
 
     }
 
+    /**
+     * An implementation of {@link View} visualizes BMI and weight development.
+     */
     [GtkTemplate (ui = "/org/gnome/Health/weight_view.ui")]
     public class WeightView : View {
         [GtkChild]
@@ -166,6 +187,9 @@ namespace Health {
             }
         }
 
+        /**
+         * Reload the {@link WeightGraphModel}'s data and refresh labels & the {@link WeightGraphView}.
+         */
         public override void update () {
             this.weight_graph_model.reload ();
             this.title_label.set_text (_ ("Current BMI: %.2lf").printf (this.get_bmi ()));

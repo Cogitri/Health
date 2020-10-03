@@ -93,6 +93,9 @@ namespace Health {
             this.dialog_entry.set_max_length (6);
         }
 
+        /**
+         * Saves the data that has been entered into the dialog to the database.
+         */
         public override void save () throws DatabaseError {
             var db = new SqliteDatabase ();
             db.open ();
@@ -138,6 +141,9 @@ namespace Health {
             this.dialog_entry.set_max_length (6);
         }
 
+        /**
+         * Saves the data that has been entered into the dialog to the database.
+         */
         public override void save () throws DatabaseError {
             var db = new SqliteDatabase ();
             db.open ();

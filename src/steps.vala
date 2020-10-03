@@ -17,6 +17,9 @@
  */
 
 namespace Health {
+    /**
+     * A Step record for a single day.
+     */
     public class Steps : GLib.Object {
         public GLib.Date date { get; private set; }
         public uint32 steps { get; private set; }
@@ -28,6 +31,9 @@ namespace Health {
 
     }
 
+    /**
+     * An implementation of {@link GraphModel} that interacts with the user's step record data.
+     */
     public class StepsGraphModel : GraphModel<Steps> {
         private SqliteDatabase db;
 
@@ -37,6 +43,12 @@ namespace Health {
             this.init ();
         }
 
+        /**
+         * Reload the data from the DB
+         *
+         * This can be used e.g. after the user added a new step record.
+         * @return true if reloading suceeded.
+         */
         public override bool reload () {
             try {
                 this.arr = db.get_steps_after (get_date_in_n_days (-30));
@@ -47,6 +59,9 @@ namespace Health {
             }
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public override Gee.ArrayList<Point> to_points () {
             var ret = new Gee.ArrayList<Point> ();
 
@@ -102,10 +117,22 @@ namespace Health {
             return streak;
         }
 
+        /**
+         * Gets streak count, including today.
+         *
+         * If no steps have been recorded today, then this will return 0.
+         */
         public uint32 get_streak_count_today (uint step_goal) {
             return this.get_streak_count_on_day (step_goal, get_today_date ());
         }
 
+
+        /**
+         * Gets streak count, excluding today.
+         *
+         * If no steps have been recorded today, then this can still return >0
+         * if the user had a streak yesterday.
+         */
         public uint32 get_streak_count_yesterday (uint step_goal) {
             var date = get_today_date ();
             date.subtract_days (1);
@@ -114,6 +141,9 @@ namespace Health {
 
     }
 
+    /**
+     * An implementation of {@link GraphView} that visualizes the user's step records over time.
+     */
     public class StepsGraphView : GraphView {
         public StepsGraphView (StepsGraphModel model, double stepgoal) {
             base (model.to_points (), _ ("Stepgoal"), stepgoal);
@@ -123,6 +153,9 @@ namespace Health {
     }
 
 
+    /**
+     * An implementation of {@link View} visualizes streak counts and daily step records.
+     */
     [GtkTemplate (ui = "/org/gnome/Health/step_view.ui")]
     public class StepView : View {
         [GtkChild]
@@ -158,6 +191,9 @@ namespace Health {
             this.main_box.show_all ();
         }
 
+        /**
+         * Reload the {@link StepsGraphModel}'s data and refresh labels & the {@link StepsGraphView}.
+         */
         public override void update () {
             this.steps_graph_model.reload ();
 

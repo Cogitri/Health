@@ -102,6 +102,9 @@ namespace Health {
         public abstract bool check_weight_exist_on_date (Date d) throws DatabaseError;
     }
 
+    /**
+     * An Implementor of the {@link Database} interface that uses SQLite as backend.
+     */
     public class SqliteDatabase : GLib.Object, Database {
         /**
          * Opens the database located at filename, or creates a new one.

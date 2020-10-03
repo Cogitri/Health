@@ -18,7 +18,9 @@
 
 namespace Health {
 
-
+    /**
+     * A Container type which always converts the value to the right unitsystem (imperial or metric).
+     */
     public class WeightUnitContainer : GLib.Object {
         private Settings settings;
 
@@ -39,17 +41,28 @@ namespace Health {
             }
         }
 
-
+        /**
+        * Construct from a database value (in KG!)
+        */
         public WeightUnitContainer.from_database_value (double weight_in_kg, Settings settings) {
             this.settings = settings;
             this._value = weight_in_kg;
         }
 
+        /**
+         * Construct from a value from the user (which can be PB or KG).
+         *
+         * If the unitsystem property of Settings is set to Imperial, we'll convert to KG here,
+         * if not it is assumed that the weight parameter is in KG.
+         */
         public WeightUnitContainer.from_user_value (double weight, Settings settings) {
             this.settings = settings;
             this.value = weight;
         }
 
+        /**
+         * Get the weight value in KG (e.g. for BMI calculations).
+         */
         public double get_in_kg () {
             return this._value;
         }
