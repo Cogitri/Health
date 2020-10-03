@@ -107,11 +107,7 @@ namespace Health {
      */
     public class SqliteDatabase : GLib.Object, Database {
         /**
-         * Opens the database located at filename, or creates a new one.
-         *
-         *
-         * @param filename The filename (including path) to the db, e.g. `/tmp/gnome_health.db`
-         * @throws DatabaseError If opening or creating the DB fails.
+         * {@inheritDoc}
          */
         public void open (string filename = get_default_path ()) throws DatabaseError {
             int rc;
@@ -138,10 +134,7 @@ namespace Health {
         }
 
         /**
-         * Saves a `Weight` to the DB. Updates the weight if there's already one for the weight's date.
-         *
-         * @param w The `Weight` that should be saved.
-         * @throws DatabaseError If saving to the DB fails.
+         * {@inheritDoc}
          */
         public void save_weight (Weight w) throws DatabaseError {
             string query = "INSERT INTO HealthData (date, weight) VALUES (%u, %lf) ON CONFLICT(date) DO UPDATE SET weight=excluded.weight;".printf (w.date.get_julian (), w.weight.get_in_kg ());
@@ -154,10 +147,7 @@ namespace Health {
         }
 
         /**
-         * Saves a `Steps` to the DB. Updates the steps if there's already one for the steps's date.
-         *
-         * @param s The `Steps` that should be saved.
-         * @throws DatabaseError If saving to the DB fails.
+         * {@inheritDoc}
          */
         public void save_steps (Steps s) throws DatabaseError {
             string query = "INSERT INTO HealthData (date, steps) VALUES (%u, %u) ON CONFLICT(date) DO UPDATE SET steps=excluded.steps;".printf (s.date.get_julian (), s.steps);
@@ -170,14 +160,7 @@ namespace Health {
         }
 
         /**
-         * Gets all weight records that have a date >= the date parameter
-         *
-         * If date is 30 of September 2020 then all weight records that have been
-         * added on the 30th of September or later will be returned.
-         *
-         * @param date The earliest date that steps should be retrieved from.
-         * @param settings The Health.Settings object that is used for determining whether to use imperial or metric units.
-         * @throws DatabaseError If querying the DB fails.
+         * {@inheritDoc}
          */
         public Gee.ArrayList<Weight> get_weights_after (GLib.Date date, Settings settings) throws DatabaseError {
             int rc;
@@ -207,13 +190,7 @@ namespace Health {
         }
 
         /**
-         * Gets all step records that have a date >= the date parameter
-         *
-         * If date is 30 of September 2020 then all step records that have been
-         * added on the 30th of September or later will be returned.
-         *
-         * @param date The earliest date that steps should be retrieved from.
-         * @throws DatabaseError If querying the DB fails.
+         * {@inheritDoc}
          */
         public Gee.ArrayList<Steps> get_steps_after (GLib.Date date) throws DatabaseError {
             int rc;
@@ -243,10 +220,7 @@ namespace Health {
         }
 
         /**
-         * Checks if there's already a step record for that date
-         *
-         * @param d The Date to check for
-         * @return True if there's already a record, false otherwise.
+         * {@inheritDoc}
          */
         public bool check_steps_exist_on_date (GLib.Date d) throws DatabaseError {
             int rc;
@@ -262,10 +236,7 @@ namespace Health {
         }
 
         /**
-         * Checks if there's already a weight measurement for that date
-         *
-         * @param d The Date to check for
-         * @return True if there's already a measurement, false otherwise.
+         * {@inheritDoc}
          */
         public bool check_weight_exist_on_date (GLib.Date d) throws DatabaseError {
             int rc;
