@@ -1,3 +1,4 @@
 build/
 builddir/
 _build
+subprojects/vala-unit

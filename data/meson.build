@@ -25,7 +25,7 @@ appstream_file = i18n.merge_file(
 appstream_util = find_program('appstream-util', required: false)
 if appstream_util.found()
   test('Validate appstream file', appstream_util,
-    args: ['validate', appstream_file]
+    args: ['validate-relax', appstream_file]
   )
 endif
 
@@ -39,3 +39,8 @@ if compile_schemas.found()
     args: ['--strict', '--dry-run', meson.current_source_dir()]
   )
 endif
+
+gnome.compile_schemas(
+  build_by_default: true,
+  depend_files: 'org.gnome.Health.gschema.xml',
+)
