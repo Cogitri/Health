@@ -1,4 +1,4 @@
-/* units.vala
+/* test_main.vala
  *
  * Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
  *
@@ -17,19 +17,27 @@
  */
 
 namespace Health {
-    class WeightUnitContainerTest : ValaUnit.TestCase {
-        public WeightUnitContainerTest () {
-            base ("WeightUnitContainerTest");
-            this.add_test ("convert", convert);
-        }
 
-        public void convert () throws ValaUnit.TestError {
-            var settings = new TestSettings ();
-            settings.unitsystem = Unitsystem.IMPERIAL;
-            var val = new WeightUnitContainer.from_user_value (100, settings);
-            assert (val.value == 100);
-            assert (val.get_in_kg () == 45.359237);
-        }
+    int main (string[] args) {
+        Test.init (ref args);
 
+        var suite = new TestSuite ("main");
+        suite.add_suite (new WeightUnitContainerTest ().suite);
+
+        TestSuite root = TestSuite.get_root ();
+        root.add_suite (suite);
+
+        MainLoop loop = new MainLoop ();
+
+        int ret = -1;
+        Idle.add (() => {
+                ret = Test.run ();
+                loop.quit ();
+                return false;
+            });
+
+        loop.run ();
+        return ret;
     }
+
 }

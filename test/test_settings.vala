@@ -1,4 +1,4 @@
-/* units.vala
+/* test_settings.vala
  *
  * Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
  *
