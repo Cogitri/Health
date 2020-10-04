@@ -20,15 +20,24 @@ namespace Health {
     class WeightUnitContainerTest : ValaUnit.TestCase {
         public WeightUnitContainerTest () {
             base ("WeightUnitContainerTest");
-            this.add_test ("convert", convert);
+            this.add_test ("convert", this.convert);
+            this.add_test ("from_database_value", this.from_database_value);
         }
 
         public void convert () throws ValaUnit.TestError {
             var settings = new Settings ();
             settings.unitsystem = Unitsystem.IMPERIAL;
             var val = new WeightUnitContainer.from_user_value (100, settings);
-            assert (val.value == 100);
-            assert (val.get_in_kg () == 45.359237);
+            assert_equal<double?> (val.value, 100);
+            assert_equal<double?> (val.get_in_kg (), 45.359237);
+        }
+
+        public void from_database_value () throws ValaUnit.TestError {
+            var settings = new Settings ();
+            settings.unitsystem = Unitsystem.IMPERIAL;
+            var val = new WeightUnitContainer.from_database_value (100, settings);
+            assert_equal<double?> (val.value, 220.46226218487757);
+            assert_equal<double?> (val.get_in_kg (), 100);
         }
 
     }
