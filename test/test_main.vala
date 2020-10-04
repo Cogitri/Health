@@ -23,6 +23,7 @@ namespace Health {
 
         var suite = new TestSuite ("main");
         suite.add_suite (new WeightUnitContainerTest ().suite);
+        suite.add_suite (new SqliteDatabaseTest ().suite);
 
         TestSuite root = TestSuite.get_root ();
         root.add_suite (suite);

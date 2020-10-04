@@ -17,27 +17,27 @@
  */
 
 namespace Health {
-    double kg_to_pb (double kg) {
+    public double kg_to_pb (double kg) {
         return kg / 0.45359237;
     }
 
-    double pb_to_kg (double pb) {
+    public double pb_to_kg (double pb) {
         return pb * 0.45359237;
     }
 
-    double inch_to_cm (double inch) {
+    public double inch_to_cm (double inch) {
         return inch * 2.54;
     }
 
-    double cm_to_inch (double cm) {
+    public double cm_to_inch (double cm) {
         return cm / 2.54;
     }
 
-    GLib.Date get_today_date () {
+    public GLib.Date get_today_date () {
         return get_date_in_n_days (0);
     }
 
-    GLib.Date get_date_in_n_days (int days) {
+    public GLib.Date get_date_in_n_days (int days) {
         var datetime = new GLib.DateTime.now ().add_days (days);
         var date = GLib.Date ();
         date.set_dmy ((uchar) datetime.get_day_of_month (), datetime.get_month (), (uchar) datetime.get_year ());

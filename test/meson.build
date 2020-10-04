@@ -3,6 +3,7 @@ fs = import('fs')
 vala_unit_dep = dependency('vala-unit', fallback: ['vala-unit', 'vala_unit_dep'])
 
 test_sources = [
+  'database.vala',
   'test_main.vala',
   'units.vala',
 ]
