@@ -23,8 +23,6 @@ gnome_health_deps = [
   dependency('sqlite3', version: '>=3.24'),
 ]
 
-gnome = import('gnome')
-
 # Add our config VAPI
 add_project_arguments(
   [

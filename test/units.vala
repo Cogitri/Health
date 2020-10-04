@@ -24,7 +24,7 @@ namespace Health {
         }
 
         public void convert () throws ValaUnit.TestError {
-            var settings = new TestSettings ();
+            var settings = new Settings ();
             settings.unitsystem = Unitsystem.IMPERIAL;
             var val = new WeightUnitContainer.from_user_value (100, settings);
             assert (val.value == 100);

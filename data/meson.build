@@ -39,3 +39,8 @@ if compile_schemas.found()
     args: ['--strict', '--dry-run', meson.current_source_dir()]
   )
 endif
+
+gnome.compile_schemas(
+  build_by_default: true,
+  depend_files: 'org.gnome.Health.gschema.xml',
+)
