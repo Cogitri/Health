@@ -24,18 +24,6 @@
     ],
     "modules": [
         {
-            "name": "caroline",
-            "builddir": true,
-            "buildsystem": "meson",
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://github.com/dcharles525/Caroline",
-                    "commit": "ac4c29d32ca40d7b148d578e9b61570b31b1a36e"
-                }
-            ]
-        },
-        {
             "name": "libhandy",
             "builddir": true,
             "buildsystem": "meson",
