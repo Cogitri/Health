@@ -120,9 +120,5 @@
         public Settings () {
             Object (schema_id: Config.APPLICATION_ID);
         }
-
-        public Settings.with_backend (GLib.SettingsBackend backend) {
-            Object (schema_id: Config.APPLICATION_ID, backend: backend);
-        }
     }
  }

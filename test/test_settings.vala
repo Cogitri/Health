@@ -17,19 +17,12 @@
  */
 
 namespace Health {
-    void add_weight_tests () {
-        Test.add_func ("/units/weight/from_user", () => {
-            var settings = new TestSettings ();
-            settings.unitsystem = Unitsystem.IMPERIAL;
-            var val = new WeightUnitContainer.from_user_value (100, settings);
-            assert (val.value == 100);
-            assert (val.get_in_kg () == 45.359237);
-        });
-    }
-
-    void main (string[] args) {
-        Test.init (ref args);
-        add_weight_tests ();
-        Test.run ();
+    public class TestSettings : Health.Settings {
+        public TestSettings () {
+            // Ensure the GIO Module extension endpoints have been registered.
+            // Without the call to get_default we get a warning here.
+            GLib.SettingsBackend.get_default ();
+            Object (schema_id: Config.APPLICATION_ID, backend: GLib.SettingsBackend.memory_settings_backend_new ());
+        }
     }
 }
