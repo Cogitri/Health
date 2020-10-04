@@ -1,8 +1,10 @@
+fs = import('fs')
+
 test_sources = [
   'units.vala',
 ]
 
-fs = import('fs')
+valaunit_dep = dependency('vala-unit', fallback: ['vala-unit', 'vala_unit_dep'])
 
 foreach src : test_sources
     lib_test_exe = executable(
