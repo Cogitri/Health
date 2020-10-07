@@ -72,7 +72,7 @@ lib_dep = declare_dependency(
 
 
 executable('gnome-health',
-  ['main.vala'],
+  ['main.vala', gnome_health_generated_sources],
   vala_args: '--target-glib=2.50',
   dependencies: lib_dep,
   c_args: c_args,
