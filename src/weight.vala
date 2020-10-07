@@ -22,7 +22,7 @@ namespace Health {
      */
     public class Weight : GLib.Object {
         public GLib.Date date { get; private set; }
-        public WeightUnitContainer weight { get; private set; }
+        public WeightUnitContainer weight { get; set; }
 
         public Weight (GLib.Date date, WeightUnitContainer weight) {
             this.date = date;

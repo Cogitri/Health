@@ -81,9 +81,17 @@ namespace Health {
 
             this.current_height = this.settings.window_height;
             this.current_width = this.settings.window_width;
-            this.resize (this.current_width, this.current_height);
+            if (this.current_width != -1 && this.current_height != -1) {
+                this.resize (this.current_width, this.current_height);
+            }
             if (this.settings.window_is_maximized) {
                 this.maximize ();
+            }
+        }
+
+        public void update () {
+            foreach (var view in views) {
+                view.update ();
             }
         }
 

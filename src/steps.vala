@@ -22,7 +22,7 @@ namespace Health {
      */
     public class Steps : GLib.Object {
         public GLib.Date date { get; private set; }
-        public uint32 steps { get; private set; }
+        public uint32 steps { get; set; }
 
         public Steps (GLib.Date date, uint32 steps) {
             this.date = date;

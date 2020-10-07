@@ -24,6 +24,8 @@
     [GtkTemplate (ui = "/org/gnome/Health/preferences_window.ui")]
     public class PreferencesWindow : Hdy.PreferencesWindow {
         [GtkChild]
+        private Gtk.Button google_fit_start_sync_button;
+        [GtkChild]
         private Gtk.SpinButton age_spinner;
         [GtkChild]
         private Gtk.SpinButton height_spinner;
@@ -33,6 +35,10 @@
         private Gtk.SpinButton weightgoal_spinner;
         [GtkChild]
         private Hdy.ActionRow height_actionrow;
+
+        private Gtk.Window? parent_window;
+
+        public signal void import_done ();
 
         public PreferencesWindow (Settings settings, Gtk.Window? parent) {
             settings.bind (Settings.USER_AGE_KEY, this.age_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
@@ -60,9 +66,35 @@
                 settings.user_weightgoal = new WeightUnitContainer.from_user_value (btn.value, settings);
             });
 
+            this.google_fit_start_sync_button.clicked.connect (() => {
+                var proxy = new GoogleFitOAuth2Proxy ();
+                proxy.open_authentication_url.begin ((obj, res) => {
+                    try {
+                        proxy.open_authentication_url.end (res);
+                        proxy.import_data.begin (settings, (obj, res) => {
+                            try {
+                                proxy.import_data.end (res);
+                                this.import_done ();
+                            } catch (GLib.Error e) {
+                                this.open_sync_error (e.message);
+                            }
+                        });
+                    } catch (GLib.Error e) {
+                        this.open_sync_error (e.message);
+                    }
+                });
+            });
+
+            this.parent_window = parent;
             this.set_transient_for (parent);
             this.destroy_with_parent = true;
             this.show_all ();
+        }
+
+        private void open_sync_error (string errmsg) {
+            var dialog = new Gtk.MessageDialog (this.parent_window, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, errmsg);
+            dialog.run ();
+            dialog.destroy ();
         }
     }
 }

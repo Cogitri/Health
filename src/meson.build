@@ -3,6 +3,7 @@ gnome_health_sources = files(
   'application.vala',
   'database.vala',
   'graph_view.vala',
+  'oauth2_proxy.vala',
   'preferences_window.vala',
   'primary_menu.vala',
   'settings.vala',
@@ -21,6 +22,10 @@ gnome_health_deps = [
   dependency('libhandy-1'),
   dependency('gee-0.8'),
   dependency('sqlite3', version: '>=3.24'),
+  dependency('libsoup-2.4'),
+  dependency('rest-0.7'),
+  dependency('libsecret-1'),
+  dependency('json-glib-1.0')
 ]
 
 # Add our config VAPI

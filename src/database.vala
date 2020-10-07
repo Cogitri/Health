@@ -23,6 +23,7 @@ namespace Health {
         SAVE_FAILED,
         GET_FAILED,
         DATA_MALFORMED,
+        IMPORT_FAILED,
     }
 
     /**
@@ -100,6 +101,10 @@ namespace Health {
          * @return True if there's already a measurement, false otherwise.
          */
         public abstract bool check_weight_exist_on_date (Date d) throws DatabaseError;
+
+        public abstract void import_steps (Gee.ArrayList<Steps> s) throws DatabaseError;
+
+        public abstract void import_weights (Gee.ArrayList<Weight> w) throws DatabaseError;
     }
 
     /**
@@ -249,6 +254,68 @@ namespace Health {
 
             stmt.step ();
             return stmt.column_int (0) == 1;
+        }
+
+        public void import_steps (Gee.ArrayList<Steps> s) throws DatabaseError {
+            int rc;
+            string? errmsg = null;
+
+            if ((rc = this.db.exec ("BEGIN TRANSACTION", null, out errmsg)) != Sqlite.OK) {
+                throw new DatabaseError.IMPORT_FAILED (_ ("Failed to import steps into database due to error %s"), errmsg == null ? _ ("Unknown error") : (!) errmsg);
+            }
+
+            Sqlite.Statement stmt;
+            const string QUERY = "INSERT INTO HealthData (date, steps) VALUES ($DATE, $STEPS) ON CONFLICT(date) DO UPDATE SET steps=excluded.steps;";
+            if ((rc = this.db.prepare_v2 (QUERY, -1, out stmt, null)) == 1) {
+                throw new DatabaseError.IMPORT_FAILED (_ ("Failed to import steps into database due to error %s"), this.db.errmsg ());
+            }
+
+            var date_pos = stmt.bind_parameter_index ("$DATE");
+            var steps_pos = stmt.bind_parameter_index ("$STEPS");
+            assert (date_pos > 0);
+            assert (steps_pos > 0);
+            foreach (var step in s) {
+                stmt.bind_int64 (date_pos, step.date.get_julian ());
+                stmt.bind_int64 (steps_pos, step.steps);
+                stmt.step ();
+                stmt.clear_bindings ();
+                stmt.reset ();
+            }
+
+            if ((rc = this.db.exec ("END TRANSACTION", null, out errmsg)) != Sqlite.OK) {
+                throw new DatabaseError.IMPORT_FAILED (_ ("Failed to import steps into database due to error %s"), errmsg == null ? _ ("Unknown error") : (!) errmsg);
+            }
+        }
+
+        public void import_weights (Gee.ArrayList<Weight> w) throws DatabaseError {
+            int rc;
+            string? errmsg = null;
+
+            if ((rc = this.db.exec ("BEGIN TRANSACTION", null, out errmsg)) != Sqlite.OK) {
+                throw new DatabaseError.IMPORT_FAILED (_ ("Failed to import weights into database due to error %s"), errmsg == null ? _ ("Unknown error") : (!) errmsg);
+            }
+
+            Sqlite.Statement stmt;
+            const string QUERY = "INSERT INTO HealthData (date, weight) VALUES ($DATE, $WEIGHT) ON CONFLICT(date) DO UPDATE SET weight=excluded.weight;";
+            if ((rc = this.db.prepare_v2 (QUERY, -1, out stmt, null)) == 1) {
+                throw new DatabaseError.IMPORT_FAILED (_ ("Failed to import weights into database due to error %s"), this.db.errmsg ());
+            }
+
+            var date_pos = stmt.bind_parameter_index ("$DATE");
+            var weight_pos = stmt.bind_parameter_index ("$WEIGHT");
+            assert (date_pos > 0);
+            assert (weight_pos > 0);
+            foreach (var weight in w) {
+                stmt.bind_int64 (date_pos, weight.date.get_julian ());
+                stmt.bind_double (weight_pos, weight.weight.get_in_kg ());
+                stmt.step ();
+                stmt.clear_bindings ();
+                stmt.reset ();
+            }
+
+            if ((rc = this.db.exec ("END TRANSACTION", null, out errmsg)) != Sqlite.OK) {
+                throw new DatabaseError.IMPORT_FAILED (_ ("Failed to import weights into database due to error %s"), errmsg == null ? _ ("Unknown error") : (!) errmsg);
+            }
         }
 
         private Sqlite.Database db;
