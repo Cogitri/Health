@@ -15,7 +15,7 @@ lint:
 test:
   stage: test
   before_script:
-    - apk add --no-cache vala gtk+3.0-dev libgee-dev sqlite-dev libhandy1-dev meson build-base git gobject-introspection-dev
+    - apk add --no-cache vala gtk+3.0-dev libgee-dev sqlite-dev libhandy1-dev meson build-base git gobject-introspection-dev libsoup-dev rest-dev json-glib-dev libsecret-dev
   script:
     - meson build
     - meson test -v -C build
@@ -23,7 +23,7 @@ test:
 non-null:
   stage: test
   before_script:
-    - apk add --no-cache vala gtk+3.0-dev libgee-dev sqlite-dev libhandy1-dev meson build-base git gobject-introspection-dev
+    - apk add --no-cache vala gtk+3.0-dev libgee-dev sqlite-dev libhandy1-dev meson build-base git gobject-introspection-dev libsoup-dev rest-dev json-glib-dev libsecret-dev
   script:
     - env VALAC_FLAGS="--enable-experimental-non-null" meson build
     - meson test -v -C build
