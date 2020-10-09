@@ -16,6 +16,8 @@ gnome_health_sources = files(
   'window.vala',
 )
 
+cc = meson.get_compiler('c')
+
 gnome_health_deps = [
   dependency('gio-2.0', version: '>= 2.50'),
   dependency('gtk+-3.0', version: '>= 3.24'),
@@ -25,7 +27,8 @@ gnome_health_deps = [
   dependency('libsoup-2.4'),
   dependency('rest-0.7'),
   dependency('libsecret-1'),
-  dependency('json-glib-1.0')
+  dependency('json-glib-1.0'),
+  cc.find_library('m', required: false),
 ]
 
 # Add our config VAPI
@@ -81,4 +84,5 @@ executable('gnome-health',
   vala_args: '--target-glib=2.50',
   dependencies: lib_dep,
   c_args: c_args,
+  install: true,
 )
