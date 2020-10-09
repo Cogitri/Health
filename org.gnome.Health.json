@@ -22,6 +22,11 @@
         "*.la",
         "*.a"
     ],
+    "build-options": {
+        "build-args": [
+            "--share=network"
+        ]
+    },
     "modules": [
         {
             "name": "libhandy",
@@ -45,13 +50,23 @@
             ]
         },
         {
+            "name":"rest",
+            "sources":[
+              {
+                "type": "archive",
+                "url": "https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz",
+                "sha256": "0513aad38e5d3cedd4ae3c551634e3be1b9baaa79775e53b2dba9456f15b01c9"
+              }
+            ]
+        },
+        {
             "name": "gnome-health",
             "builddir": true,
             "buildsystem": "meson",
             "sources": [
                 {
-                    "type": "git",
-                    "url": "https://gitlab.gnome.org/Cogitri/gnome-health.git"
+                    "type": "dir",
+                    "path": "."
                 }
             ]
         }
