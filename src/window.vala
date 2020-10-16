@@ -87,6 +87,19 @@ namespace Health {
             if (this.settings.window_is_maximized) {
                 this.maximize ();
             }
+            var proxy = new GoogleFitOAuth2Proxy ();
+            proxy.sync_data.begin (settings, (obj, res) => {
+                try {
+                    proxy.sync_data.end (res);
+                    foreach (var view in this.views) {
+                        view.update ();
+                    }
+                } catch (GLib.Error e) {
+                    var dialog = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, _("Synching data from Google Fit failed due to error %s"), e.message);
+                    dialog.run ();
+                    dialog.destroy ();
+                }
+            });
         }
 
         public void update () {

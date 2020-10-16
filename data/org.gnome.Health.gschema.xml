@@ -11,6 +11,11 @@
       <summary>First time setup done</summary>
       <description>Whether the user has completed the setup wizard</description>
     </key>
+    <key name="timestamp-last-sync-google-fit" type="s">
+      <default>"1970-01-01T00:00:01Z"</default>
+      <summary>Last sync with Google Fit</summary>
+      <description>The last time we synched steps, weight etc. with Google Fit</description>
+    </key>
     <key name="unitsystem" enum="org.gnome.Health.Units">
       <default>'metric'</default>
       <summary>Unitsystem used</summary>

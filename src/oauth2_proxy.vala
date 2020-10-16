@@ -94,8 +94,32 @@ namespace Health {
             var call = this.new_call ();
             call.set_function ("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/0-%lld".printf (GLib.get_real_time () * 1000));
             yield call.invoke_async (null);
+            return this.process_weights_json (call.get_payload (), settings);
+        }
 
-            var json = Json.from_string (call.get_payload ()).get_object ();
+        public async Gee.ArrayList<Weight>? get_weights_since (Settings settings, GLib.DateTime since) throws GLib.Error {
+            var call = this.new_call ();
+            call.set_function ("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/%lld-%lld".printf (since.to_unix () * 1000, GLib.get_real_time () * 1000));
+            yield call.invoke_async (null);
+            return this.process_weights_json (call.get_payload (), settings);
+        }
+
+        public async Gee.ArrayList<Steps>? get_all_steps () throws GLib.Error {
+            var call = this.new_call ();
+            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:estimated_steps/datasets/0-%lld".printf (GLib.get_real_time () * 1000));
+            yield call.invoke_async (null);
+            return this.process_steps_json (call.get_payload ());
+        }
+
+        public async Gee.ArrayList<Steps>? get_steps_since (GLib.DateTime since) throws GLib.Error {
+            var call = this.new_call ();
+            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:estimated_steps/datasets/%lld-%lld".printf (since.to_unix () * 1000, GLib.get_real_time () * 1000));
+            yield call.invoke_async (null);
+            return this.process_steps_json (call.get_payload ());
+        }
+
+        private Gee.ArrayList<Weight> process_weights_json (string json_string, Settings settings) throws GLib.Error {
+            var json = Json.from_string (json_string).get_object ();
             var ret = new Gee.ArrayList<Weight> ();
             foreach (var point in json.get_array_member ("point").get_elements ()) {
                 var point_obj = point.get_object ();
@@ -115,20 +139,6 @@ namespace Health {
             }
 
             return ret;
-        }
-
-        public async Gee.ArrayList<Steps>? get_all_steps () throws GLib.Error {
-            var call = this.new_call ();
-            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:estimated_steps/datasets/0-%lld".printf (GLib.get_real_time () * 1000));
-            yield call.invoke_async (null);
-            return this.process_steps_json (call.get_payload ());
-        }
-
-        public async Gee.ArrayList<Steps>? get_steps_since (GLib.DateTime since) throws GLib.Error {
-            var call = this.new_call ();
-            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:estimated_steps/datasets/%lld-%lld".printf (since.to_unix () * 1000, GLib.get_real_time () * 1000));
-            yield call.invoke_async (null);
-            return this.process_steps_json (call.get_payload ());
         }
 
         private Gee.ArrayList<Steps> process_steps_json (string json_string) throws GLib.Error {
@@ -161,6 +171,13 @@ namespace Health {
             db.open ();
             db.import_weights (yield this.get_all_weights (settings));
             db.import_steps (yield this.get_all_steps ());
+        }
+
+        public async void import_data_since (Settings settings, GLib.DateTime since) throws GLib.Error {
+            var db = new SqliteDatabase ();
+            db.open ();
+            db.import_weights (yield this.get_weights_since (settings, since));
+            db.import_steps (yield this.get_steps_since (since));
         }
 
         private async void set_access_token_from_redirect_uri (string redirect_uri) throws GLib.Error {
@@ -201,6 +218,14 @@ namespace Health {
             this.set_access_token (json.get_string_member ("access_token"));
 
             return true;
+        }
+
+        public async void sync_data (Settings settings) throws GLib.Error {
+            if (!yield this.set_access_token_from_libsecret ()) {
+                info ("Google Fit Refresh token not set up, won't sync.");
+            }
+            yield this.import_data_since (settings, settings.last_sync_google_fit);
+            settings.last_sync_google_fit = new GLib.DateTime.now ();
         }
 
         public async override void open_authentication_url () throws GLib.Error {
