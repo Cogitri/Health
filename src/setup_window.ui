@@ -131,6 +131,7 @@
                                         <property name="can-focus">True</property>
                                         <property name="receives-default">False</property>
                                         <property name="draw-indicator">True</property>
+                                        <property name="margin-right">6</property>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
