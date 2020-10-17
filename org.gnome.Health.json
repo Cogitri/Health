@@ -9,7 +9,8 @@
         "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
-        "--talk-name=org.freedesktop.secrets"
+        "--talk-name=org.freedesktop.secrets",
+        "--device=dri"
     ],
     "cleanup": [
         "/include",
@@ -30,6 +31,24 @@
     },
     "modules": [
         {
+            "name": "gtk4.0",
+            "buildsystem": "meson",
+            "builddir": true,
+            "config-opts": [
+                "-Ddemos=false",
+                "-Dbuild-tests=false",
+                "-Dmedia=none",
+                "-Dprint=none"
+            ],
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/gtk/3.99/gtk-3.99.3.tar.xz",
+                    "sha256": "5745df4647e845f8a5fa0dbd59594afbfa6a6ba6a08a7c9632182970e8f49767"
+                }
+            ]
+        },
+        {
             "name": "libhandy",
             "builddir": true,
             "buildsystem": "meson",
@@ -45,8 +64,8 @@
             "sources": [
                 {
                     "type": "git",
-                    "url": "https://gitlab.gnome.org/GNOME/libhandy",
-                    "tag": "1.0.0"
+                    "url": "https://gitlab.gnome.org/exalm/libhandy",
+                    "branch": "gtk4"
                 }
             ]
         },
