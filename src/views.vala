@@ -20,9 +20,13 @@ namespace Health {
     /**
      * View is a toplevel container, used for e.g. the {@link StepView} and {@link WeightView}.
      */
-    public abstract class View : Gtk.Bin {
+    public abstract class View : Gtk.Widget {
         public string title;
         public string icon_name;
+
+        static construct {
+            set_layout_manager_type (typeof (Gtk.BinLayout));
+        }
 
         protected View () {
             this.visible = true;

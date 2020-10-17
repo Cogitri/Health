@@ -23,7 +23,7 @@ namespace Health {
     [GtkTemplate (ui = "/org/gnome/Health/setup_window.ui")]
     public class SetupWindow : Gtk.ApplicationWindow {
         [GtkChild]
-        private Gtk.RadioButton unit_metric_radiobutton;
+        private Gtk.CheckButton unit_metric_checkbutton;
         [GtkChild]
         private Gtk.SpinButton age_spinner;
         [GtkChild]
@@ -48,10 +48,10 @@ namespace Health {
             Object (application: application);
 
             this.stepgoal_spinner.value = 10000;
-            this.unit_metric_radiobutton.active = true;
+            this.unit_metric_checkbutton.active = true;
             this.height_actionrow.title = _ ("Height in centimeters");
 
-            this.unit_metric_radiobutton.toggled.connect ((btn) => {
+            this.unit_metric_checkbutton.toggled.connect ((btn) => {
                 if (btn.active) {
                     this.height_actionrow.title = _ ("Height in centimeters");
                 } else {
@@ -64,7 +64,7 @@ namespace Health {
             });
             this.setup_finished_button.clicked.connect (() => {
                 var height_in_cm = (uint) this.height_spinner.value;
-                if (this.unit_metric_radiobutton.active) {
+                if (this.unit_metric_checkbutton.active) {
                     settings.unitsystem = Unitsystem.METRIC;
                 } else {
                     settings.unitsystem = Unitsystem.IMPERIAL;
@@ -85,11 +85,11 @@ namespace Health {
         private void set_optimal_weightgoal () {
             const uint OPTIMAL_BMI = 20;
             var height_in_cm = this.height_spinner.value;
-            if (!this.unit_metric_radiobutton.active) {
+            if (!this.unit_metric_checkbutton.active) {
                 height_in_cm = inch_to_cm (height_in_cm);
             }
             var optimal_value = OPTIMAL_BMI * GLib.Math.pow (height_in_cm / 100, 2);
-            if (!this.unit_metric_radiobutton.active) {
+            if (!this.unit_metric_checkbutton.active) {
                 optimal_value = kg_to_pb (optimal_value);
             }
             this.weightgoal_spinner.value = optimal_value;
