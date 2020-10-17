@@ -88,13 +88,15 @@
             this.parent_window = parent;
             this.set_transient_for (parent);
             this.destroy_with_parent = true;
-            this.show_all ();
+            this.show ();
         }
 
         private void open_sync_error (string errmsg) {
             var dialog = new Gtk.MessageDialog (this.parent_window, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, errmsg);
-            dialog.run ();
-            dialog.destroy ();
+            unowned var dialog_u = dialog;
+            dialog.response.connect ((obj) => {
+                dialog_u.destroy ();
+            });
         }
     }
 }

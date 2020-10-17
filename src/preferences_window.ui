@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.0 -->
 <!--
   preferences_window.ui
 
@@ -59,15 +58,14 @@
                 <property name="title" translatable="yes">Age</property>
                 <child>
                   <object class="GtkSpinButton" id="age_spinner">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">3</property>
                     <property name="width-chars">3</property>
                     <property name="text" translatable="yes">0</property>
-                    <property name="input-purpose">number</property>
                     <property name="adjustment">age_adjustment</property>
-                    <property name="numeric">True</property>
-                    <property name="margin">6</property>
+                    <property name="numeric">1</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
                   </object>
                 </child>
               </object>
@@ -77,15 +75,14 @@
                 <property name="visible">True</property>
                 <child>
                   <object class="GtkSpinButton" id="height_spinner">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">3</property>
                     <property name="width-chars">3</property>
                     <property name="text" translatable="yes">0</property>
-                    <property name="input-purpose">number</property>
                     <property name="adjustment">height_adjustment</property>
-                    <property name="numeric">True</property>
-                    <property name="margin">6</property>
+                    <property name="numeric">1</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
                   </object>
                 </child>
               </object>
@@ -109,15 +106,14 @@
                 <property name="title" translatable="yes">Stepgoal</property>
                 <child>
                   <object class="GtkSpinButton" id="stepgoal_spinner">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">5</property>
                     <property name="width-chars">5</property>
                     <property name="text" translatable="yes">10000</property>
-                    <property name="input-purpose">number</property>
                     <property name="adjustment">stepgoal_adjustment</property>
-                    <property name="numeric">True</property>
-                    <property name="margin">6</property>
+                    <property name="numeric">1</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
                   </object>
                 </child>
               </object>
@@ -141,13 +137,13 @@
                 <property name="title" translatable="yes">Weightgoal</property>
                 <child>
                   <object class="GtkSpinButton" id="weightgoal_spinner">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="max-length">5</property>
+                    <property name="digits">2</property>
                     <property name="width-chars">5</property>
-                    <property name="input-purpose">number</property>
                     <property name="adjustment">weightgoal_adjustment</property>
-                    <property name="margin">6</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
                   </object>
                 </child>
               </object>
@@ -172,9 +168,10 @@
                 <property name="title" translatable="yes">Start Sync</property>
                 <child>
                   <object class="GtkButton" id="google_fit_start_sync_button">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="margin">6</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
                     <property name="label">Start</property>
                   </object>
                 </child>
