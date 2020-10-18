@@ -44,7 +44,9 @@ namespace Health {
         public Window (Gtk.Application app, Settings settings) {
             Object (application: app);
             this.current_view = ViewModes.STEPS;
-            var menu = new PrimaryMenu ();
+            var builder = new Gtk.Builder.from_resource ("/org/gnome/Health/primary_menu.ui");
+            var menu = builder.get_object ("primary_menu") as GLib.Menu;
+            var menu_popover = new Gtk.PopoverMenu.from_model (menu);
             this.settings = settings;
             this.db = new SqliteDatabase ();
 
@@ -58,11 +60,12 @@ namespace Health {
             var steps_model = new StepsGraphModel (this.db);
             this.views = new View[] { new StepView (steps_model, this.settings), new WeightView (weight_model, settings), };
 
-            this.primary_menu_button.set_popover (menu);
+            this.primary_menu_button.set_popover (menu_popover);
             foreach (var view in views) {
-                stack.add_titled (view, view.name, view.title);
-                stack.child_set (view, "icon-name", view.icon_name, null);
+                var page = this.stack.add_titled (view, view.name, view.title);
+                page.icon_name = view.icon_name;
             }
+            this.stack.set_visible_child (this.views[0]);
             add_data_button.clicked.connect (() => {
                 AddDialog dialog;
                 switch (this.current_view) {
@@ -75,30 +78,56 @@ namespace Health {
                 default:
                     error ("Can't create add dialog for unknown view type %d", this.current_view);
                 }
-                dialog.run ();
-                this.views[this.current_view].update ();
+                dialog.present ();
+                unowned var dialog_u = dialog;
+                dialog.response.connect (() => {
+                    this.views[this.current_view].update ();
+                    dialog_u.destroy ();
+                });
             });
 
             this.current_height = this.settings.window_height;
             this.current_width = this.settings.window_width;
-            this.resize (this.current_width, this.current_height);
+            if (this.current_width != -1 && this.current_height != -1) {
+                this.resize (this.current_width, this.current_height);
+            }
             if (this.settings.window_is_maximized) {
                 this.maximize ();
             }
+            var proxy = new GoogleFitOAuth2Proxy ();
+            proxy.sync_data.begin (settings, (obj, res) => {
+                try {
+                    proxy.sync_data.end (res);
+                    foreach (var view in this.views) {
+                        view.update ();
+                    }
+                } catch (GLib.Error e) {
+                    var dialog = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, _("Synching data from Google Fit failed due to error %s"), e.message);
+                    unowned var dialog_u = dialog;
+                    dialog.response.connect (() => {
+                        dialog_u.destroy ();
+                    });
+                }
+            });
         }
 
-        public override void size_allocate (Gtk.Allocation alloc) {
-            base.size_allocate (alloc);
-            if (!this.is_maximized) {
-                this.get_size (out this.current_width, out this.current_height);
-            }
-        }
-
-        public override void destroy () {
+        ~Window () {
             this.settings.window_is_maximized = this.is_maximized;
             this.settings.window_height = this.current_height;
             this.settings.window_width = this.current_width;
-            base.destroy ();
+        }
+
+        public void update () {
+            foreach (var view in views) {
+                view.update ();
+            }
+        }
+
+        public override void size_allocate (int width, int height, int baseline) {
+            base.size_allocate (width, height, baseline);
+            if (!this.is_maximized) {
+                this.get_size (out this.current_width, out this.current_height);
+            }
         }
 
         [GtkCallback]

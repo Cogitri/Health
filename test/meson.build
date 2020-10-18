@@ -1,6 +1,8 @@
 fs = import('fs')
 
-vala_unit_dep = dependency('vala-unit', fallback: ['vala-unit', 'vala_unit_dep'])
+vala_unit_proj = subproject('vala-unit', default_options: ['install=disabled', 'valadoc=disabled'])
+
+vala_unit_dep = vala_unit_proj.get_variable('vala_unit_dep')
 
 test_sources = [
   'database.vala',

@@ -15,7 +15,12 @@ lint:
 test:
   stage: test
   before_script:
-    - apk add --no-cache vala gtk+3.0-dev libgee-dev sqlite-dev libhandy1-dev meson build-base git gobject-introspection-dev
+    - apk add --no-cache vala gtk4.0-dev libgee-dev sqlite-dev meson build-base git gobject-introspection-dev libsoup-dev rest-dev json-glib-dev libsecret-dev
+    - git clone https://gitlab.gnome.org/exalm/libhandy -b gtk4
+    - cd libhandy
+    - meson build
+    - meson install -C build
+    - cd ..
   script:
     - meson build
     - meson test -v -C build
@@ -23,7 +28,12 @@ test:
 non-null:
   stage: test
   before_script:
-    - apk add --no-cache vala gtk+3.0-dev libgee-dev sqlite-dev libhandy1-dev meson build-base git gobject-introspection-dev
+    - apk add --no-cache vala gtk4.0-dev libgee-dev sqlite-dev meson build-base git gobject-introspection-dev libsoup-dev rest-dev json-glib-dev libsecret-dev
+    - git clone https://gitlab.gnome.org/exalm/libhandy -b gtk4
+    - cd libhandy
+    - meson build
+    - meson install -C build
+    - cd ..
   script:
     - env VALAC_FLAGS="--enable-experimental-non-null" meson build
     - meson test -v -C build
@@ -31,7 +41,7 @@ non-null:
 pages:
   stage: deploy
   before_script:
-    - apk add --no-cache vala gtk+3.0-dev libgee-dev sqlite-dev libhandy1-dev meson alpine-sdk git
+    - apk add --no-cache vala gtk4.0-dev libgee-dev sqlite-dev libhandy1-dev meson alpine-sdk git
   script:
     - meson -Ddocs=true build
     - meson compile -C build

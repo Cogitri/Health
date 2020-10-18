@@ -22,7 +22,7 @@ namespace Health {
      */
     public class Weight : GLib.Object {
         public GLib.Date date { get; private set; }
-        public WeightUnitContainer weight { get; private set; }
+        public WeightUnitContainer weight { get; set; }
 
         public Weight (GLib.Date date, WeightUnitContainer weight) {
             this.date = date;
@@ -93,7 +93,6 @@ namespace Health {
     public class WeightGraphView : GraphView {
         public WeightGraphView (WeightGraphModel model, double weightgoal) {
             base (model.to_points (), _ ("Weightgoal"), weightgoal);
-            this.margin = 6;
         }
 
     }
@@ -124,14 +123,13 @@ namespace Health {
 
             if (this.weight_graph_model.is_empty) {
                 this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new weight measurement."));
-                this.main_box.pack_start (this.no_data_label);
+                this.main_box.append (this.no_data_label);
             } else {
                 this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value);
-                this.main_box.pack_start ((!) this.weight_graph_view);
+                this.main_box.append ((!) this.weight_graph_view);
             }
 
             this.update ();
-            this.main_box.show_all ();
             this.settings.changed[Settings.USER_HEIGHT_KEY].connect (() => {
                 this.update ();
             });
@@ -200,7 +198,7 @@ namespace Health {
                 this.main_box.remove (this.no_data_label);
                 this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value);
                 ((!) this.weight_graph_view).visible = true;
-                this.main_box.pack_start ((!) this.weight_graph_view);
+                this.main_box.append ((!) this.weight_graph_view);
             } else if (this.weight_graph_view != null) {
                 ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();
                 ((!) this.weight_graph_view).limit = this.settings.user_weightgoal.value;

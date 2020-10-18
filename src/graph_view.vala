@@ -73,36 +73,36 @@ namespace Health {
             this.x_padding = 60;
             this.y_padding = 60;
             this.set_size_request (400, 400);
+            this.set_draw_func (this.draw);
         }
 
-        public override bool draw (Cairo.Context cr) {
-            Gtk.Allocation alloc;
-            this.get_allocation (out alloc);
+        private void draw (Gtk.DrawingArea da, Cairo.Context cr, int alloc_width, int alloc_height) {
+            var self = (GraphView) da;
             double biggest_value = 0.000001;
-            foreach (var point in this.points) {
+            foreach (var point in self.points) {
                 if (point.value > biggest_value) {
                     biggest_value = point.value;
                 }
             }
-            var height = alloc.height - this.y_padding;
-            var width = alloc.width - this.x_padding;
-            var scale_x = width / (this.points.size > 1 ? (this.points.size - 1) : 1);
+            var height = alloc_height - self.y_padding;
+            var width = alloc_width - self.x_padding;
+            var scale_x = width / (self.points.size > 1 ? (self.points.size - 1) : 1);
             var scale_y = height / biggest_value;
-            var style_context = this.get_style_context ();
+            var style_context = self.get_style_context ();
 
             /*
                 Draw outlines
             */
             cr.save ();
 
-            var outline_color = style_context.get_color (Gtk.StateFlags.NORMAL);
+            var outline_color = style_context.get_color ();
             cr.set_source_rgba (outline_color.red, outline_color.green, outline_color.blue, 0.5);
 
             for (int i = 0; i < 5; i++) {
                 var mul = (height) / 4.0;
-                cr.move_to (width + this.x_padding / 2, mul * i + this.y_padding / 2);
-                cr.line_to (this.x_padding / 2, mul * i + this.y_padding / 2);
-                if (!this.points.is_empty) {
+                cr.move_to (width + self.x_padding / 2, mul * i + self.y_padding / 2);
+                cr.line_to (self.x_padding / 2, mul * i + self.y_padding / 2);
+                if (!self.points.is_empty) {
                     cr.show_text ("%u".printf ((uint) (biggest_value / 4.0) * (4 - i)));
                 }
             }
@@ -114,17 +114,17 @@ namespace Health {
                 Draw X ticks (dates)
             */
             cr.save ();
-            var text_color = style_context.get_color (Gtk.StateFlags.NORMAL);
+            var text_color = style_context.get_color ();
             cr.set_source_rgba (text_color.red, text_color.green, text_color.blue, text_color.alpha);
 
-            for (int i = 0; i < this.points.size; i++) {
-                var point = this.points.get (i);
+            for (int i = 0; i < self.points.size; i++) {
+                var point = self.points.get (i);
                 var font_size = 10;
 
                 cr.set_font_size (font_size);
 
-                cr.move_to (i * scale_x + this.x_padding / 2 - font_size, height + this.y_padding / 1.25);
-                /* TRANSLATORS: This is the date as displayed in the graph, e.g. 30/9 for September 30 */
+                cr.move_to (i * scale_x + self.x_padding / 2 - font_size, height + self.y_padding / 1.25);
+                /* TRANSLATORS: self is the date as displayed in the graph, e.g. 30/9 for September 30 */
                 cr.show_text (_ ("%d/%d").printf (point.date.get_day (), point.date.get_month ()));
             }
 
@@ -134,21 +134,21 @@ namespace Health {
             /*
                 Draw limit/goal (if any)
             */
-            if (this.limit > 0) {
+            if (self.limit > 0) {
                 cr.save ();
 
                 cr.set_source_rgba (outline_color.red, outline_color.green, outline_color.blue, 0.5);
                 cr.set_dash ({10, 5}, 0);
-                cr.move_to (this.x_padding / 2, height - limit * scale_y + this.y_padding / 2);
-                cr.show_text (this.limitlabel);
-                cr.line_to (width + this.x_padding / 2, height - limit * scale_y + this.y_padding / 2);
+                cr.move_to (self.x_padding / 2, height - limit * scale_y + self.y_padding / 2);
+                cr.show_text (self.limitlabel);
+                cr.line_to (width + self.x_padding / 2, height - limit * scale_y + self.y_padding / 2);
 
                 cr.stroke ();
                 cr.restore ();
             }
 
-            if (this.points.is_empty) {
-                return false;
+            if (self.points.is_empty) {
+                return;
             }
 
             /*
@@ -158,10 +158,10 @@ namespace Health {
 
             cr.set_source_rgba (0, 174, 174, 1.0);
             cr.set_line_width (4);
-            for (int i = 0; i < this.points.size; i++) {
-                var value = this.points[i].value;
-                var x = i * scale_x + this.x_padding / 2;
-                var y = height - value * scale_y + this.y_padding / 2;
+            for (int i = 0; i < self.points.size; i++) {
+                var value = self.points[i].value;
+                var x = i * scale_x + self.x_padding / 2;
+                var y = height - value * scale_y + self.y_padding / 2;
                 cr.move_to (x, y);
                 cr.arc (x, y, 2, 0, 2 * GLib.Math.PI);
             }
@@ -173,26 +173,25 @@ namespace Health {
                 Draw the graph itself
             */
             cr.set_source_rgba (0, 174, 174, 0.8);
-            cr.move_to (this.x_padding / 2, height - points.get (0).value * scale_y + this.y_padding / 2);
+            cr.move_to (self.x_padding / 2, height - points.get (0).value * scale_y + self.y_padding / 2);
 
-            for (int i = 0; i < this.points.size - 1; i++) {
-                var previous_value = this.points[i].value;
-                var current_value = ((i + 1) >= this.points.size) ? this.points[i].value : this.points[i + 1].value;
+            for (int i = 0; i < self.points.size - 1; i++) {
+                var previous_value = self.points[i].value;
+                var current_value = ((i + 1) >= self.points.size) ? self.points[i].value : self.points[i + 1].value;
                 var smoothness_factor = 0.5;
 
                 cr.curve_to (
-                  (i + smoothness_factor) * scale_x + this.x_padding / 2,
-                  height - previous_value * scale_y + this.y_padding / 2,
-                  (i + 1 - smoothness_factor) * scale_x + this.x_padding / 2,
-                  height - current_value * scale_y + this.y_padding / 2,
-                  (i + 1) * scale_x + this.x_padding / 2,
-                  height - current_value * scale_y + this.y_padding / 2
+                  (i + smoothness_factor) * scale_x + self.x_padding / 2,
+                  height - previous_value * scale_y + self.y_padding / 2,
+                  (i + 1 - smoothness_factor) * scale_x + self.x_padding / 2,
+                  height - current_value * scale_y + self.y_padding / 2,
+                  (i + 1) * scale_x + self.x_padding / 2,
+                  height - current_value * scale_y + self.y_padding / 2
                 );
             }
 
             cr.stroke ();
-
-            return false;
         }
+
     }
 }

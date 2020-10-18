@@ -39,6 +39,10 @@ namespace Health {
 
     public GLib.Date get_date_in_n_days (int days) {
         var datetime = new GLib.DateTime.now ().add_days (days);
+        return date_from_datetime (datetime);
+    }
+
+    public GLib.Date date_from_datetime (DateTime datetime) {
         var date = GLib.Date ();
         date.set_dmy ((uchar) datetime.get_day_of_month (), datetime.get_month (), (uchar) datetime.get_year ());
         return date;

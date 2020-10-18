@@ -63,7 +63,12 @@ namespace Health {
         }
 
         private void on_preferences (GLib.SimpleAction action, GLib.Variant? parameter) {
-            new PreferencesWindow (this.settings, this.window);
+            var pref_window = new PreferencesWindow (this.settings, this.window);
+            pref_window.import_done.connect (() => {
+                if (this.window != null) {
+                    this.window.update ();
+                }
+            });
         }
 
         private void on_units (GLib.SimpleAction action, GLib.Variant? parameter) {

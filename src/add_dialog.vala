@@ -35,9 +35,17 @@ namespace Health {
             this.dialog_entry.visible = true;
             this.dialog_entry.input_purpose = Gtk.InputPurpose.DIGITS;
 
+            this.title = "";
             var content_box = this.get_content_area ();
-            content_box.pack_start (this.dialog_label, true, true, 6);
-            content_box.pack_start (this.dialog_entry, true, true, 6);
+            content_box.append (this.dialog_label);
+            content_box.append (this.dialog_entry);
+            content_box.set_halign (Gtk.Align.CENTER);
+            content_box.set_valign (Gtk.Align.CENTER);
+            content_box.spacing = 6;
+            content_box.margin_top = 6;
+            content_box.margin_bottom = 6;
+            content_box.margin_start = 6;
+            content_box.margin_end = 6;
 
             this.add_button (_ ("Save"), Gtk.ResponseType.OK);
             this.add_button (_ ("Cancel"), Gtk.ResponseType.CANCEL);
