@@ -55,7 +55,7 @@
                 <property name="title">Health</property>
               </object>
             </child>
-            <child>
+            <child type="end">
               <object class="GtkMenuButton" id="primary_menu_button">
                 <property name="can-focus">0</property>
                 <child>
