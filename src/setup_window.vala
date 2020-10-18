@@ -23,6 +23,12 @@ namespace Health {
     [GtkTemplate (ui = "/org/gnome/Health/setup_window.ui")]
     public class SetupWindow : Gtk.ApplicationWindow {
         [GtkChild]
+        private Gtk.Box setup_first_page;
+        [GtkChild]
+        private Gtk.Box setup_second_page;
+        [GtkChild]
+        private Gtk.Box setup_third_page;
+        [GtkChild]
         private Gtk.CheckButton unit_metric_checkbutton;
         [GtkChild]
         private Gtk.SpinButton age_spinner;
@@ -33,11 +39,21 @@ namespace Health {
         [GtkChild]
         private Gtk.SpinButton weightgoal_spinner;
         [GtkChild]
-        private Gtk.Button setup_finished_button;
+        private Gtk.Stack setup_right_stack;
         [GtkChild]
-        private Gtk.Button setup_cancel_button;
+        private Gtk.Stack setup_left_stack;
+        [GtkChild]
+        private Gtk.Button setup_done_button;
+        [GtkChild]
+        private Gtk.Button setup_quit_button;
+        [GtkChild]
+        private Gtk.Button setup_next_page_button;
+        [GtkChild]
+        private Gtk.Button setup_previous_page_button;
         [GtkChild]
         private Hdy.ActionRow height_actionrow;
+        [GtkChild]
+        private Hdy.Carousel setup_carousel;
 
         /**
          * This signal is fired when the user presses the setup_finish_button and all input data has been saved to GSettings.
@@ -50,6 +66,10 @@ namespace Health {
             this.stepgoal_spinner.value = 10000;
             this.unit_metric_checkbutton.active = true;
             this.height_actionrow.title = _ ("Height in centimeters");
+            this.setup_left_stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            this.setup_right_stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
+            this.setup_left_stack.transition_duration = 100;
+            this.setup_right_stack.transition_duration = 100;
 
             this.unit_metric_checkbutton.toggled.connect ((btn) => {
                 if (btn.active) {
@@ -62,7 +82,7 @@ namespace Health {
             this.height_spinner.value_changed.connect (() => {
                 this.set_optimal_weightgoal ();
             });
-            this.setup_finished_button.clicked.connect (() => {
+            this.setup_done_button.clicked.connect (() => {
                 var height_in_cm = (uint) this.height_spinner.value;
                 if (this.unit_metric_checkbutton.active) {
                     settings.unitsystem = Unitsystem.METRIC;
@@ -77,8 +97,49 @@ namespace Health {
                 settings.user_weightgoal = new WeightUnitContainer.from_user_value (this.weightgoal_spinner.value, settings);
                 this.setup_done ();
             });
-            this.setup_cancel_button.clicked.connect (() => {
+            this.setup_quit_button.clicked.connect (() => {
                 this.destroy ();
+            });
+            this.setup_right_stack.set_visible_child (this.setup_done_button);
+            this.setup_carousel.page_changed.connect ((index) => {
+                if (this.setup_carousel.n_pages - 1 == index) {
+                    this.setup_done_button.visible = true;
+                    this.setup_right_stack.set_visible_child (this.setup_done_button);
+                } else if (index == 0) {
+                    this.setup_quit_button.visible = true;
+                    this.setup_left_stack.set_visible_child (this.setup_quit_button);
+                } else {
+                    this.setup_next_page_button.visible = true;
+                    this.setup_previous_page_button.visible = true;
+                    this.setup_right_stack.set_visible_child (this.setup_next_page_button);
+                    this.setup_left_stack.set_visible_child (this.setup_previous_page_button);
+                }
+            });
+            this.setup_next_page_button.clicked.connect (() => {
+                var current_page = (uint) (this.setup_carousel.position * this.setup_carousel.n_pages);
+                switch (current_page) {
+                    case 0:
+                        this.setup_carousel.scroll_to (this.setup_second_page);
+                        break;
+                    case 3:
+                        this.setup_carousel.scroll_to (this.setup_third_page);
+                        break;
+                    default:
+                        error ("Scrollled to unknown page %u", current_page);
+                }
+            });
+            this.setup_previous_page_button.clicked.connect (() => {
+                var current_page = (uint) (this.setup_carousel.position * this.setup_carousel.n_pages);
+                switch (current_page) {
+                    case 3:
+                        this.setup_carousel.scroll_to (this.setup_first_page);
+                        break;
+                    case 6:
+                        this.setup_carousel.scroll_to (this.setup_second_page);
+                        break;
+                    default:
+                        error ("Scrollled to unknown page %u", current_page);
+                }
             });
         }
 
