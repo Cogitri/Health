@@ -24,7 +24,9 @@
     [GtkTemplate (ui = "/org/gnome/Health/preferences_window.ui")]
     public class PreferencesWindow : Hdy.PreferencesWindow {
         [GtkChild]
-        private Gtk.Button google_fit_start_sync_button;
+        private Gtk.ListBox provider_sync_start_listbox;
+        [GtkChild]
+        private Gtk.ListBoxRow google_fit_start_sync_row;
         [GtkChild]
         private Gtk.SpinButton age_spinner;
         [GtkChild]
@@ -66,23 +68,25 @@
                 settings.user_weightgoal = new WeightUnitContainer.from_user_value (btn.value, settings);
             });
 
-            this.google_fit_start_sync_button.clicked.connect (() => {
-                var proxy = new GoogleFitOAuth2Proxy ();
-                proxy.open_authentication_url.begin ((obj, res) => {
-                    try {
-                        proxy.open_authentication_url.end (res);
-                        proxy.import_data.begin (settings, (obj, res) => {
-                            try {
-                                proxy.import_data.end (res);
-                                this.import_done ();
-                            } catch (GLib.Error e) {
-                                this.open_sync_error (e.message);
-                            }
-                        });
-                    } catch (GLib.Error e) {
-                        this.open_sync_error (e.message);
-                    }
-                });
+            this.provider_sync_start_listbox.row_activated.connect ((row) => {
+                if (row == this.google_fit_start_sync_row) {
+                    var proxy = new GoogleFitOAuth2Proxy ();
+                    proxy.open_authentication_url.begin ((obj, res) => {
+                        try {
+                            proxy.open_authentication_url.end (res);
+                            proxy.import_data.begin (settings, (obj, res) => {
+                                try {
+                                    proxy.import_data.end (res);
+                                    this.import_done ();
+                                } catch (GLib.Error e) {
+                                    this.open_sync_error (e.message);
+                                }
+                            });
+                        } catch (GLib.Error e) {
+                            this.open_sync_error (e.message);
+                        }
+                    });
+                }
             });
 
             this.parent_window = parent;
