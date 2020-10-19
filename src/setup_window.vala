@@ -29,6 +29,8 @@ namespace Health {
         [GtkChild]
         private Gtk.Box setup_third_page;
         [GtkChild]
+        private Gtk.Box setup_fourth_page;
+        [GtkChild]
         private Gtk.CheckButton unit_metric_checkbutton;
         [GtkChild]
         private Gtk.SpinButton age_spinner;
@@ -39,9 +41,15 @@ namespace Health {
         [GtkChild]
         private Gtk.SpinButton weightgoal_spinner;
         [GtkChild]
+        private Gtk.Spinner google_fit_spinner;
+        [GtkChild]
+        private Gtk.Image google_fit_selected_image;
+        [GtkChild]
         private Gtk.Stack setup_right_stack;
         [GtkChild]
         private Gtk.Stack setup_left_stack;
+        [GtkChild]
+        private Gtk.Stack google_fit_stack;
         [GtkChild]
         private Gtk.Button setup_done_button;
         [GtkChild]
@@ -50,6 +58,10 @@ namespace Health {
         private Gtk.Button setup_next_page_button;
         [GtkChild]
         private Gtk.Button setup_previous_page_button;
+        [GtkChild]
+        private Gtk.ListBox provider_sync_start_listbox;
+        [GtkChild]
+        private Gtk.ListBoxRow google_fit_start_sync_row;
         [GtkChild]
         private Hdy.ActionRow height_actionrow;
         [GtkChild]
@@ -66,10 +78,6 @@ namespace Health {
             this.stepgoal_spinner.value = 10000;
             this.unit_metric_checkbutton.active = true;
             this.height_actionrow.title = _ ("Height in centimeters");
-            this.setup_left_stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            this.setup_right_stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            this.setup_left_stack.transition_duration = 100;
-            this.setup_right_stack.transition_duration = 100;
 
             this.unit_metric_checkbutton.toggled.connect ((btn) => {
                 if (btn.active) {
@@ -116,9 +124,28 @@ namespace Health {
                 }
             });
             this.setup_next_page_button.clicked.connect (() => {
-                var current_page = (uint) (this.setup_carousel.position * this.setup_carousel.n_pages);
+                var current_page = (uint) this.setup_carousel.position;
                 switch (current_page) {
                     case 0:
+                        this.setup_carousel.scroll_to (this.setup_second_page);
+                        break;
+                    case 1:
+                        this.setup_carousel.scroll_to (this.setup_third_page);
+                        break;
+                    case 2:
+                        this.setup_carousel.scroll_to (this.setup_fourth_page);
+                        break;
+                    default:
+                        error ("Scrollled to unknown page %u", current_page);
+                }
+            });
+            this.setup_previous_page_button.clicked.connect (() => {
+                var current_page = (uint) this.setup_carousel.position;
+                switch (current_page) {
+                    case 1:
+                        this.setup_carousel.scroll_to (this.setup_first_page);
+                        break;
+                    case 2:
                         this.setup_carousel.scroll_to (this.setup_second_page);
                         break;
                     case 3:
@@ -128,18 +155,43 @@ namespace Health {
                         error ("Scrollled to unknown page %u", current_page);
                 }
             });
-            this.setup_previous_page_button.clicked.connect (() => {
-                var current_page = (uint) (this.setup_carousel.position * this.setup_carousel.n_pages);
-                switch (current_page) {
-                    case 3:
-                        this.setup_carousel.scroll_to (this.setup_first_page);
-                        break;
-                    case 6:
-                        this.setup_carousel.scroll_to (this.setup_second_page);
-                        break;
-                    default:
-                        error ("Scrollled to unknown page %u", current_page);
+            this.provider_sync_start_listbox.row_activated.connect ((row) => {
+                if (row == this.google_fit_start_sync_row) {
+                    this.google_fit_stack.visible = true;
+                    this.google_fit_spinner.visible = true;
+                    this.google_fit_stack.visible_child = this.google_fit_spinner;
+                    var proxy = new GoogleFitOAuth2Proxy ();
+                    proxy.open_authentication_url.begin ((obj, res) => {
+                        try {
+                            proxy.open_authentication_url.end (res);
+                            proxy.import_data.begin (settings, (obj, res) => {
+                                try {
+                                    proxy.import_data.end (res);
+                                    this.google_fit_selected_image.visible = true;
+                                    this.google_fit_stack.visible_child = this.google_fit_selected_image;
+                                } catch (GLib.Error e) {
+                                    this.open_sync_error (e.message);
+                                    this.google_fit_selected_image.visible = true;
+                                    this.google_fit_selected_image.icon_name = "network-error-symbolic";
+                                    this.google_fit_stack.visible_child = this.google_fit_selected_image;
+                                }
+                            });
+                        } catch (GLib.Error e) {
+                            this.open_sync_error (e.message);
+                            this.google_fit_selected_image.visible = true;
+                            this.google_fit_selected_image.icon_name = "network-error-symbolic";
+                            this.google_fit_stack.visible_child = this.google_fit_selected_image;
+                        }
+                    });
                 }
+            });
+        }
+
+        private void open_sync_error (string errmsg) {
+            var dialog = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, errmsg);
+            unowned var dialog_u = dialog;
+            dialog.response.connect ((obj) => {
+                dialog_u.destroy ();
             });
         }
 
