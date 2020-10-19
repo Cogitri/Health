@@ -40,191 +40,341 @@
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
   </object>
+  <object class="GtkSizeGroup">
+    <property name="mode">horizontal</property>
+    <widgets>
+      <widget name="setup_done_button"/>
+      <widget name="setup_next_page_button"/>
+    </widgets>
+  </object>
+  <object class="GtkSizeGroup">
+    <property name="mode">horizontal</property>
+    <widgets>
+      <widget name="setup_quit_button"/>
+      <widget name="setup_previous_page_button"/>
+    </widgets>
+  </object>
   <template class="HealthSetupWindow" parent="GtkApplicationWindow">
     <property name="can-focus">0</property>
     <property name="default-width">600</property>
     <property name="default-height">500</property>
     <property name="title" translatable="yes">Health Setup</property>
     <child>
-      <object class="GtkScrolledWindow">
-        <property name="hscrollbar-policy">never</property>
-        <property name="propagate-natural-height">1</property>
-        <property name="child">
-          <object class="GtkViewport">
-            <property name="can-focus">0</property>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="HdyCarousel" id="setup_carousel">
+            <property name="vexpand">True</property>
+            <property name="hexpand">True</property>
             <child>
-              <object class="HdyClamp">
-                <property name="valign">center</property>
+              <object class="GtkBox" id="setup_first_page">
+                <property name="orientation">vertical</property>
+                <property name="halign">center</property>
+                <property name="vexpand">True</property>
+                <property name="hexpand">True</property>
                 <child>
-                  <object class="GtkGrid">
-                    <property name="can-focus">0</property>
-                    <property name="halign">center</property>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Welcome to Health!</property>
+                    <property name="margin-top">25</property>
+                    <property name="margin-bottom">10</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
+                      <attribute name="font-desc" value="20.0"></attribute>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Please enter some information to get setup.</property>
+                    <attributes>
+                      <attribute name="font-desc" value="16.0"></attribute>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyClamp">
+                    <property name="maximum-size">400</property>
+                    <property name="tightening-threshold">200</property>
                     <property name="valign">center</property>
+                    <property name="vexpand">True</property>
+                    <property name="hexpand">True</property>
                     <child>
-                      <object class="GtkLabel">
+                      <object class="GtkListBox">
                         <property name="can-focus">0</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-bottom">6</property>
-                        <property name="label" translatable="yes">Let&apos;s get fit!</property>
-                        <attributes>
-                          <attribute name="font-desc" value="20.0"></attribute>
-                          <attribute name="weight" value="bold"></attribute>
-                        </attributes>
-                        <layout>
-                          <property name="column">0</property>
-                          <property name="row">0</property>
-                        </layout>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="can-focus">0</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-bottom">14</property>
-                        <property name="label" translatable="yes">Please fill in some information about you to get started.</property>
-                        <attributes>
-                          <attribute name="font-desc" value="14.0"></attribute>
-                        </attributes>
-                        <layout>
-                          <property name="column">0</property>
-                          <property name="row">1</property>
-                        </layout>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="HdyClamp">
-                        <property name="maximum-size">400</property>
-                        <property name="tightening-threshold">200</property>
+                        <property name="selection-mode">none</property>
+                        <style>
+                          <class name="frame"/>
+                        </style>
                         <child>
-                          <object class="GtkListBox" id="setup_listbox">
-                            <property name="can-focus">0</property>
-                            <property name="selection-mode">none</property>
-                            <style>
-                              <class name="frame"/>
-                            </style>
+                          <object class="HdyActionRow" id="unit_actionrow">
+                            <property name="title" translatable="yes">Unitsystem</property>
                             <child>
-                              <object class="HdyActionRow" id="unit_actionrow">
-                                <property name="title" translatable="yes">Unitsystem</property>
+                              <object class="GtkBox">
+                                <property name="can-focus">0</property>
                                 <child>
-                                  <object class="GtkBox">
-                                    <property name="can-focus">0</property>
-                                    <child>
-                                      <object class="GtkCheckButton" id="unit_imperial_checkbutton">
-                                        <property name="label" translatable="yes">Imperial</property>
-                                      </object>
-                                    </child>
-                                    <child>
-                                      <object class="GtkCheckButton" id="unit_metric_checkbutton">
-                                        <property name="label" translatable="yes">Metric</property>
-                                        <property name="active">1</property>
-                                        <property name="group">unit_imperial_checkbutton</property>
-                                      </object>
-                                    </child>
+                                  <object class="GtkCheckButton" id="unit_imperial_checkbutton">
+                                    <property name="label" translatable="yes">Imperial</property>
                                   </object>
                                 </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="HdyActionRow" id="age_actionrow">
-                                <property name="title" translatable="yes">Age</property>
                                 <child>
-                                  <object class="GtkSpinButton" id="age_spinner">
-                                    <property name="width-chars">5</property>
-                                    <property name="text" translatable="yes">0</property>
-                                    <property name="adjustment">age_adjustment</property>
-                                    <property name="numeric">1</property>
-                                    <property name="margin-start">6</property>
-                                    <property name="margin-end">6</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="margin-bottom">6</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="HdyActionRow" id="height_actionrow">
-                                <child>
-                                  <object class="GtkSpinButton" id="height_spinner">
-                                    <property name="width-chars">5</property>
-                                    <property name="text" translatable="yes">0</property>
-                                    <property name="adjustment">height_adjustment</property>
-                                    <property name="numeric">1</property>
-                                    <property name="margin-start">6</property>
-                                    <property name="margin-end">6</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="margin-bottom">6</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="HdyActionRow" id="stepgoal_actionrow">
-                                <property name="title" translatable="yes">Stepgoal</property>
-                                <child>
-                                  <object class="GtkSpinButton" id="stepgoal_spinner">
-                                    <property name="width-chars">5</property>
-                                    <property name="text" translatable="yes">10000</property>
-                                    <property name="adjustment">stepgoal_adjustment</property>
-                                    <property name="numeric">1</property>
-                                    <property name="margin-start">6</property>
-                                    <property name="margin-end">6</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="margin-bottom">6</property>
-                                  </object>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="HdyActionRow" id="weightgoal_actionrow">
-                                <property name="title" translatable="yes">Weightgoal</property>
-                                <child>
-                                  <object class="GtkSpinButton" id="weightgoal_spinner">
-                                    <property name="digits">2</property>
-                                    <property name="width-chars">5</property>
-                                    <property name="adjustment">weightgoal_adjustment</property>
-                                    <property name="margin-start">6</property>
-                                    <property name="margin-end">6</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="margin-bottom">6</property>
+                                  <object class="GtkCheckButton" id="unit_metric_checkbutton">
+                                    <property name="label" translatable="yes">Metric</property>
+                                    <property name="active">1</property>
+                                    <property name="group">unit_imperial_checkbutton</property>
                                   </object>
                                 </child>
                               </object>
                             </child>
                           </object>
                         </child>
-                        <layout>
-                          <property name="column">0</property>
-                          <property name="row">2</property>
-                        </layout>
+                        <child>
+                          <object class="HdyActionRow" id="age_actionrow">
+                            <property name="title" translatable="yes">Age</property>
+                            <child>
+                              <object class="GtkSpinButton" id="age_spinner">
+                                <property name="width-chars">5</property>
+                                <property name="text" translatable="yes">0</property>
+                                <property name="adjustment">age_adjustment</property>
+                                <property name="numeric">1</property>
+                                <property name="margin-start">6</property>
+                                <property name="margin-end">6</property>
+                                <property name="margin-top">6</property>
+                                <property name="margin-bottom">6</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="HdyActionRow" id="height_actionrow">
+                            <child>
+                              <object class="GtkSpinButton" id="height_spinner">
+                                <property name="width-chars">5</property>
+                                <property name="text" translatable="yes">0</property>
+                                <property name="adjustment">height_adjustment</property>
+                                <property name="numeric">1</property>
+                                <property name="margin-start">6</property>
+                                <property name="margin-end">6</property>
+                                <property name="margin-top">6</property>
+                                <property name="margin-bottom">6</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
                       </object>
                     </child>
+                    <layout>
+                      <property name="column">0</property>
+                      <property name="row">2</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox" id="setup_second_page">
+                <property name="orientation">vertical</property>
+                <property name="halign">center</property>
+                <property name="vexpand">True</property>
+                <property name="hexpand">True</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Please enter your daily stepgoal.</property>
+                    <property name="margin-top">25</property>
+                    <property name="margin-bottom">10</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
+                      <attribute name="font-desc" value="20.0"></attribute>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">The WHO recommends about 10.000 steps per day.</property>
+                    <attributes>
+                      <attribute name="font-desc" value="16.0"></attribute>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyClamp">
+                    <property name="maximum-size">400</property>
+                    <property name="tightening-threshold">200</property>
+                    <property name="valign">center</property>
+                    <property name="vexpand">True</property>
+                    <property name="hexpand">True</property>
+                    <child>
+                      <object class="GtkListBox">
+                        <property name="can-focus">0</property>
+                        <property name="selection-mode">none</property>
+                        <style>
+                          <class name="frame"/>
+                        </style>
+                        <child>
+                          <object class="HdyActionRow" id="stepgoal_actionrow">
+                            <property name="title" translatable="yes">Stepgoal</property>
+                            <child>
+                              <object class="GtkSpinButton" id="stepgoal_spinner">
+                                <property name="width-chars">5</property>
+                                <property name="text" translatable="yes">10000</property>
+                                <property name="adjustment">stepgoal_adjustment</property>
+                                <property name="numeric">1</property>
+                                <property name="margin-start">6</property>
+                                <property name="margin-end">6</property>
+                                <property name="margin-top">6</property>
+                                <property name="margin-bottom">6</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <layout>
+                      <property name="column">0</property>
+                      <property name="row">2</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox" id="setup_third_page">
+                <property name="orientation">vertical</property>
+                <property name="halign">center</property>
+                <property name="vexpand">True</property>
+                <property name="hexpand">True</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Please enter your weightgoal.</property>
+                    <property name="margin-top">25</property>
+                    <property name="margin-bottom">10</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
+                      <attribute name="font-desc" value="20.0"></attribute>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">The WHO recommends a BMI of 18.5-24.9.</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
+                      <attribute name="font-desc" value="16.0"></attribute>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyClamp">
+                    <property name="maximum-size">400</property>
+                    <property name="tightening-threshold">200</property>
+                    <property name="valign">center</property>
+                    <property name="vexpand">True</property>
+                    <property name="hexpand">True</property>
+                    <child>
+                      <object class="GtkListBox">
+                        <property name="can-focus">0</property>
+                        <property name="selection-mode">none</property>
+                        <style>
+                          <class name="frame"/>
+                        </style>
+                        <child>
+                          <object class="HdyActionRow" id="weightgoal_actionrow">
+                            <property name="title" translatable="yes">Weightgoal</property>
+                            <child>
+                              <object class="GtkSpinButton" id="weightgoal_spinner">
+                                <property name="digits">2</property>
+                                <property name="width-chars">5</property>
+                                <property name="adjustment">weightgoal_adjustment</property>
+                                <property name="margin-start">6</property>
+                                <property name="margin-end">6</property>
+                                <property name="margin-top">6</property>
+                                <property name="margin-bottom">6</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <layout>
+                      <property name="column">0</property>
+                      <property name="row">2</property>
+                    </layout>
                   </object>
                 </child>
               </object>
             </child>
           </object>
-        </property>
+        </child>
+        <child>
+          <object class="HdyCarouselIndicatorDots">
+            <property name="carousel">setup_carousel</property>
+          </object>
+        </child>
       </object>
     </child>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
         <property name="can-focus">0</property>
         <child>
-          <object class="GtkButton" id="setup_cancel_button">
-            <property name="label">_Quit</property>
-            <property name="can-focus">0</property>
-            <property name="action-name">app.quit</property>
-            <property name="use-underline">1</property>
+          <object class="GtkStack" id="setup_left_stack">
+            <property name="transition-type">crossfade</property>
+            <child>
+              <object class="GtkStackPage">
+                <property name="child">
+                  <object class="GtkButton" id="setup_quit_button">
+                    <property name="label">_Quit</property>
+                    <property name="can-focus">0</property>
+                    <property name="action-name">app.quit</property>
+                    <property name="use-underline">1</property>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="child">
+                  <object class="GtkButton" id="setup_previous_page_button">
+                    <property name="label">_Previous</property>
+                    <property name="can-focus">0</property>
+                    <property name="use-underline">1</property>
+                    <property name="visible">0</property>
+                  </object>
+                </property>
+              </object>
+            </child>
           </object>
         </child>
         <child type="end">
-          <object class="GtkButton" id="setup_finished_button">
-            <property name="label">_Done</property>
-            <property name="can-focus">0</property>
-            <property name="use-underline">1</property>
-            <style>
-              <class name="suggested-action"/>
-            </style>
+          <object class="GtkStack" id="setup_right_stack">
+            <property name="transition-type">crossfade</property>
+            <child>
+              <object class="GtkStackPage">
+                <property name="child">
+                  <object class="GtkButton" id="setup_next_page_button">
+                    <property name="label">_Next</property>
+                    <property name="can-focus">0</property>
+                    <property name="use-underline">1</property>
+                    <style>
+                      <class name="suggested-action"/>
+                    </style>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="child">
+                  <object class="GtkButton" id="setup_done_button">
+                    <property name="label">_Done</property>
+                    <property name="can-focus">0</property>
+                    <property name="use-underline">1</property>
+                    <property name="visible">0</property>
+                    <style>
+                      <class name="suggested-action"/>
+                    </style>
+                  </object>
+                </property>
+              </object>
+            </child>
           </object>
         </child>
       </object>
