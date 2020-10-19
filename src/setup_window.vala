@@ -81,11 +81,11 @@ namespace Health {
                 }
                 this.set_optimal_weightgoal ();
             });
-            this.height_spinner.value_changed.connect (() => {
+            this.height_spinner.changed.connect (() => {
                 this.set_optimal_weightgoal ();
             });
             this.setup_done_button.clicked.connect (() => {
-                var height_in_cm = (uint) this.height_spinner.value;
+                var height_in_cm = uint.parse (this.height_spinner.text);
                 if (this.unit_metric_checkbutton.active) {
                     settings.unitsystem = Unitsystem.METRIC;
                 } else {
@@ -93,9 +93,9 @@ namespace Health {
                     height_in_cm = (uint) GLib.Math.round (inch_to_cm (height_in_cm));
                 }
 
-                settings.user_age = (uint) this.age_spinner.value;
+                settings.user_age = uint.parse (this.age_spinner.text);
                 settings.user_height = height_in_cm;
-                settings.user_stepgoal = (uint) this.stepgoal_spinner.value;
+                settings.user_stepgoal = uint.parse (this.stepgoal_spinner.text);
                 settings.user_weightgoal = new WeightUnitContainer.from_user_value (this.weightgoal_spinner.value, settings);
                 this.setup_done ();
             });
@@ -153,7 +153,7 @@ namespace Health {
 
         private void set_optimal_weightgoal () {
             const uint OPTIMAL_BMI = 20;
-            var height_in_cm = this.height_spinner.value;
+            var height_in_cm = double.parse (this.height_spinner.text);
             if (!this.unit_metric_checkbutton.active) {
                 height_in_cm = inch_to_cm (height_in_cm);
             }
