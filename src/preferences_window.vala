@@ -24,10 +24,6 @@
     [GtkTemplate (ui = "/org/gnome/Health/preferences_window.ui")]
     public class PreferencesWindow : Hdy.PreferencesWindow {
         [GtkChild]
-        private Gtk.ListBox provider_sync_start_listbox;
-        [GtkChild]
-        private Gtk.ListBoxRow google_fit_start_sync_row;
-        [GtkChild]
         private Gtk.SpinButton age_spinner;
         [GtkChild]
         private Gtk.SpinButton height_spinner;
@@ -37,6 +33,8 @@
         private Gtk.SpinButton weightgoal_spinner;
         [GtkChild]
         private Hdy.ActionRow height_actionrow;
+        [GtkChild]
+        private SyncView sync_view;
 
         private Gtk.Window? parent_window;
 
@@ -47,6 +45,8 @@
             settings.bind (Settings.USER_STEPGOAL_KEY, this.stepgoal_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
 
             this.weightgoal_spinner.value = settings.user_weightgoal.value;
+            this.sync_view.parent_window = parent;
+            this.sync_view.settings = settings;
 
             if (settings.unitsystem == Unitsystem.METRIC) {
                 this.height_actionrow.title = _ ("Height in centimeters");
@@ -68,39 +68,10 @@
                 settings.user_weightgoal = new WeightUnitContainer.from_user_value (btn.value, settings);
             });
 
-            this.provider_sync_start_listbox.row_activated.connect ((row) => {
-                if (row == this.google_fit_start_sync_row) {
-                    var proxy = new GoogleFitOAuth2Proxy ();
-                    proxy.open_authentication_url.begin ((obj, res) => {
-                        try {
-                            proxy.open_authentication_url.end (res);
-                            proxy.import_data.begin (settings, (obj, res) => {
-                                try {
-                                    proxy.import_data.end (res);
-                                    this.import_done ();
-                                } catch (GLib.Error e) {
-                                    this.open_sync_error (e.message);
-                                }
-                            });
-                        } catch (GLib.Error e) {
-                            this.open_sync_error (e.message);
-                        }
-                    });
-                }
-            });
-
             this.parent_window = parent;
             this.set_transient_for (parent);
             this.destroy_with_parent = true;
             this.show ();
-        }
-
-        private void open_sync_error (string errmsg) {
-            var dialog = new Gtk.MessageDialog (this.parent_window, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, errmsg);
-            unowned var dialog_u = dialog;
-            dialog.response.connect ((obj) => {
-                dialog_u.destroy ();
-            });
         }
     }
 }

@@ -23,6 +23,8 @@ namespace Health {
     [GtkTemplate (ui = "/org/gnome/Health/setup_window.ui")]
     public class SetupWindow : Gtk.ApplicationWindow {
         [GtkChild]
+        private SyncView sync_view;
+        [GtkChild]
         private Gtk.Box setup_first_page;
         [GtkChild]
         private Gtk.Box setup_second_page;
@@ -30,26 +32,6 @@ namespace Health {
         private Gtk.Box setup_third_page;
         [GtkChild]
         private Gtk.Box setup_fourth_page;
-        [GtkChild]
-        private Gtk.CheckButton unit_metric_checkbutton;
-        [GtkChild]
-        private Gtk.SpinButton age_spinner;
-        [GtkChild]
-        private Gtk.SpinButton height_spinner;
-        [GtkChild]
-        private Gtk.SpinButton stepgoal_spinner;
-        [GtkChild]
-        private Gtk.SpinButton weightgoal_spinner;
-        [GtkChild]
-        private Gtk.Spinner google_fit_spinner;
-        [GtkChild]
-        private Gtk.Image google_fit_selected_image;
-        [GtkChild]
-        private Gtk.Stack setup_right_stack;
-        [GtkChild]
-        private Gtk.Stack setup_left_stack;
-        [GtkChild]
-        private Gtk.Stack google_fit_stack;
         [GtkChild]
         private Gtk.Button setup_done_button;
         [GtkChild]
@@ -59,9 +41,19 @@ namespace Health {
         [GtkChild]
         private Gtk.Button setup_previous_page_button;
         [GtkChild]
-        private Gtk.ListBox provider_sync_start_listbox;
+        private Gtk.CheckButton unit_metric_checkbutton;
         [GtkChild]
-        private Gtk.ListBoxRow google_fit_start_sync_row;
+        private Gtk.Stack setup_right_stack;
+        [GtkChild]
+        private Gtk.Stack setup_left_stack;
+        [GtkChild]
+        private Gtk.SpinButton age_spinner;
+        [GtkChild]
+        private Gtk.SpinButton height_spinner;
+        [GtkChild]
+        private Gtk.SpinButton stepgoal_spinner;
+        [GtkChild]
+        private Gtk.SpinButton weightgoal_spinner;
         [GtkChild]
         private Hdy.ActionRow height_actionrow;
         [GtkChild]
@@ -78,6 +70,8 @@ namespace Health {
             this.stepgoal_spinner.value = 10000;
             this.unit_metric_checkbutton.active = true;
             this.height_actionrow.title = _ ("Height in centimeters");
+            this.sync_view.parent_window = this;
+            this.sync_view.settings = settings;
 
             this.unit_metric_checkbutton.toggled.connect ((btn) => {
                 if (btn.active) {
@@ -154,44 +148,6 @@ namespace Health {
                     default:
                         error ("Scrollled to unknown page %u", current_page);
                 }
-            });
-            this.provider_sync_start_listbox.row_activated.connect ((row) => {
-                if (row == this.google_fit_start_sync_row) {
-                    this.google_fit_stack.visible = true;
-                    this.google_fit_spinner.visible = true;
-                    this.google_fit_stack.visible_child = this.google_fit_spinner;
-                    var proxy = new GoogleFitOAuth2Proxy ();
-                    proxy.open_authentication_url.begin ((obj, res) => {
-                        try {
-                            proxy.open_authentication_url.end (res);
-                            proxy.import_data.begin (settings, (obj, res) => {
-                                try {
-                                    proxy.import_data.end (res);
-                                    this.google_fit_selected_image.visible = true;
-                                    this.google_fit_stack.visible_child = this.google_fit_selected_image;
-                                } catch (GLib.Error e) {
-                                    this.open_sync_error (e.message);
-                                    this.google_fit_selected_image.visible = true;
-                                    this.google_fit_selected_image.icon_name = "network-error-symbolic";
-                                    this.google_fit_stack.visible_child = this.google_fit_selected_image;
-                                }
-                            });
-                        } catch (GLib.Error e) {
-                            this.open_sync_error (e.message);
-                            this.google_fit_selected_image.visible = true;
-                            this.google_fit_selected_image.icon_name = "network-error-symbolic";
-                            this.google_fit_stack.visible_child = this.google_fit_selected_image;
-                        }
-                    });
-                }
-            });
-        }
-
-        private void open_sync_error (string errmsg) {
-            var dialog = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, errmsg);
-            unowned var dialog_u = dialog;
-            dialog.response.connect ((obj) => {
-                dialog_u.destroy ();
             });
         }
 

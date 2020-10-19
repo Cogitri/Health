@@ -5,6 +5,7 @@
     <file>primary_menu.ui</file>
     <file>setup_window.ui</file>
     <file>step_view.ui</file>
+    <file>sync_view.ui</file>
     <file>weight_view.ui</file>
     <file>window.ui</file>
   </gresource>

@@ -54,13 +54,6 @@
       <widget name="setup_previous_page_button"/>
     </widgets>
   </object>
-  <object class="GtkSizeGroup">
-    <property name="mode">horizontal</property>
-    <widgets>
-      <widget name="google_fit_spinner"/>
-      <widget name="google_fit_selected_image"/>
-    </widgets>
-  </object>
   <template class="HealthSetupWindow" parent="GtkApplicationWindow">
     <property name="can-focus">0</property>
     <property name="default-width">600</property>
@@ -345,56 +338,8 @@
                     <property name="vexpand">True</property>
                     <property name="hexpand">True</property>
                     <child>
-                      <object class="GtkListBox" id="provider_sync_start_listbox">
-                        <property name="can-focus">0</property>
-                        <property name="selection-mode">none</property>
-                        <style>
-                          <class name="frame"/>
-                        </style>
-                        <child>
-                          <object class="GtkListBoxRow" id="google_fit_start_sync_row">
-                          <child>
-                            <object class="GtkBox">
-                              <property name="valign">center</property>
-                              <property name="halign">center</property>
-                              <property name="vexpand">True</property>
-                              <property name="hexpand">True</property>
-                              <child>
-                                <object class="GtkLabel">
-                                  <property name="margin-top">22</property>
-                                  <property name="margin-bottom">22</property>
-                                  <property name="margin-start">6</property>
-                                  <property name="margin-end">6</property>
-                                  <property name="label">Google Fit</property>
-                                </object>
-                              </child>
-                              <child>
-                                <object class="GtkStack" id="google_fit_stack">
-                                  <property name="visible">0</property>
-                                  <child>
-                                    <object class="GtkStackPage">
-                                      <property name="child">
-                                        <object class="GtkSpinner" id="google_fit_spinner">
-                                        </object>
-                                      </property>
-                                    </object>
-                                  </child>
-                                  <child>
-                                    <object class="GtkStackPage">
-                                      <property name="child">
-                                        <object class="GtkImage" id="google_fit_selected_image">
-                                          <property name="icon_name">network-transmit-receive-symbolic</property>
-                                        </object>
-                                      </property>
-                                    </object>
-                                  </child>
-                                </object>
-                              </child>
-                            </object>
-                          </child>
-                        </object>
-                      </child>
-                    </object>
+                      <object class="HealthSyncView" id="sync_view">
+                      </object>
                     </child>
                     <layout>
                       <property name="column">0</property>
