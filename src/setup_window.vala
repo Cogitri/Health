@@ -20,7 +20,7 @@ namespace Health {
     /**
      * The {@link SetupWindow} is shown to the user on the first start of the applcation to fill in some data.
      */
-    [GtkTemplate (ui = "/org/gnome/Health/setup_window.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/setup_window.ui")]
     public class SetupWindow : Gtk.ApplicationWindow {
         [GtkChild]
         private SyncView sync_view;

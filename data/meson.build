@@ -1,6 +1,6 @@
 desktop_file = i18n.merge_file(
-  input: 'org.gnome.Health.desktop.in',
-  output: 'org.gnome.Health.desktop',
+  input: 'dev.Cogitri.Health.desktop.in',
+  output: 'dev.Cogitri.Health.desktop',
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -15,8 +15,8 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-  input: 'org.gnome.Health.appdata.xml.in',
-  output: 'org.gnome.Health.appdata.xml',
+  input: 'dev.Cogitri.Health.appdata.xml.in',
+  output: 'dev.Cogitri.Health.appdata.xml',
   po_dir: '../po',
   install: true,
   install_dir: join_paths(get_option('datadir'), 'appdata')
@@ -29,7 +29,7 @@ if appstream_util.found()
   )
 endif
 
-install_data('org.gnome.Health.gschema.xml',
+install_data('dev.Cogitri.Health.gschema.xml',
   install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
 )
 
@@ -42,5 +42,5 @@ endif
 
 gnome.compile_schemas(
   build_by_default: true,
-  depend_files: 'org.gnome.Health.gschema.xml',
+  depend_files: 'dev.Cogitri.Health.gschema.xml',
 )

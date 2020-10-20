@@ -25,7 +25,7 @@ namespace Health {
     /**
      * The toplevel application window that holds all other widgets.
      */
-    [GtkTemplate (ui = "/org/gnome/Health/window.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/window.ui")]
     public class Window : Hdy.ApplicationWindow {
         [GtkChild]
         private Gtk.Stack stack;
@@ -44,7 +44,7 @@ namespace Health {
         public Window (Gtk.Application app, Settings settings) {
             Object (application: app);
             this.current_view = ViewModes.STEPS;
-            var builder = new Gtk.Builder.from_resource ("/org/gnome/Health/primary_menu.ui");
+            var builder = new Gtk.Builder.from_resource ("/dev/Cogitri/Health/primary_menu.ui");
             var menu = builder.get_object ("primary_menu") as GLib.Menu;
             var menu_popover = new Gtk.PopoverMenu.from_model (menu);
             this.settings = settings;

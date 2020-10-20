@@ -1,4 +1,4 @@
-# GNOME Health
+# Health
 
 A health tracking app for the GNOME desktop.
 
@@ -11,13 +11,13 @@ A health tracking app for the GNOME desktop.
 You can build Health with the following command:
 
 ```sh
-flatpak-builder --install --force-clean app org.gnome.Health.json
+flatpak-builder --install --force-clean app dev.Cogitri.Health.json
 ```
 
 Afterwards you can run it with:
 
 ```sh
-flatpak run org.gnome.Health
+flatpak run dev.Cogitri.Health
 ```
 
 
@@ -33,7 +33,7 @@ First off, you need the following dependencies installed:
 * sqlite >= 3.24
 * Vala
 
-Afterwards you can build gnome-health like so:
+Afterwards you can build Health like so:
 
 ```sh
 meson build

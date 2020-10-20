@@ -1,6 +1,6 @@
-data/org.gnome.Health.desktop.in
-data/org.gnome.Health.appdata.xml.in
-data/org.gnome.Health.gschema.xml
+data/dev.Cogitri.Health.desktop.in
+data/dev.Cogitri.Health.appdata.xml.in
+data/dev.Cogitri.Health.gschema.xml
 src/add_dialog.vala
 src/application.vala
 src/database.vala

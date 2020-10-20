@@ -1,4 +1,4 @@
-gnome_health_sources = files(
+health_sources = files(
   'add_dialog.vala',
   'application.vala',
   'database.vala',
@@ -18,7 +18,7 @@ gnome_health_sources = files(
 
 cc = meson.get_compiler('c')
 
-gnome_health_deps = [
+health_deps = [
   dependency('gio-2.0', version: '>= 2.50'),
   dependency('gtk4'),
   dependency('libhandy-1'),
@@ -42,7 +42,7 @@ add_project_arguments(
 
 # Configuration
 conf = configuration_data()
-conf.set_quoted('APPLICATION_ID', 'org.gnome.Health')
+conf.set_quoted('APPLICATION_ID', 'dev.Cogitri.Health')
 conf.set_quoted('VERSION', meson.project_version())
 
 configure_file(output: 'config.h', configuration: conf)
@@ -53,9 +53,9 @@ add_project_arguments(
 )
 
 
-gnome_health_generated_sources = gnome.compile_resources('gnome_health-resources',
-  'gnome_health.gresource.xml',
-  c_name: 'gnome_health'
+health_generated_sources = gnome.compile_resources('health-resources',
+  'dev.Cogitri.Health.gresource.xml',
+  c_name: 'health'
 )
 
 c_args = [
@@ -66,21 +66,21 @@ c_args = [
 
 
 lib = static_library(
-  'gnome-health',
-  [gnome_health_sources, gnome_health_generated_sources],
+  'dev.Cogitri.Health',
+  [health_sources, health_generated_sources],
   vala_args: '--target-glib=2.50',
-  dependencies: gnome_health_deps,
+  dependencies: health_deps,
   c_args: c_args,
 )
 
 lib_dep = declare_dependency(
-  dependencies: gnome_health_deps,
+  dependencies: health_deps,
   link_with: lib,
 )
 
 
-executable('gnome-health',
-  ['main.vala', gnome_health_generated_sources],
+executable('dev.Cogitri.Health',
+  ['main.vala', health_generated_sources],
   vala_args: '--target-glib=2.50',
   dependencies: lib_dep,
   c_args: c_args,

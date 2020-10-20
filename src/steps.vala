@@ -155,7 +155,7 @@ namespace Health {
     /**
      * An implementation of {@link View} visualizes streak counts and daily step records.
      */
-    [GtkTemplate (ui = "/org/gnome/Health/step_view.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/step_view.ui")]
     public class StepView : View {
         [GtkChild]
         private Gtk.Label streak_label;
