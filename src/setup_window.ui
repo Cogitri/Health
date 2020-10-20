@@ -136,6 +136,7 @@
           <object class="HdyCarousel" id="setup_carousel">
             <property name="vexpand">True</property>
             <property name="hexpand">True</property>
+            <property name="interactive">0</property>
             <child>
               <object class="GtkBox" id="setup_first_page">
                 <property name="orientation">vertical</property>

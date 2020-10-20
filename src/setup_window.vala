@@ -156,7 +156,9 @@ namespace Health {
         }
 
         private void try_enable_next_button () {
-            this.setup_next_page_button.sensitive = this.height_spinner.get_text () != "0" && this.age_spinner.get_text () != "0";
+            var filled_in_data = this.height_spinner.get_text () != "0" && this.age_spinner.get_text () != "0";
+            this.setup_next_page_button.sensitive = filled_in_data;
+            this.setup_carousel.interactive = filled_in_data;
         }
 
         private void set_optimal_weightgoal () {
