@@ -21,7 +21,7 @@ namespace Health {
      * The {@link SetupWindow} is shown to the user on the first start of the applcation to fill in some data.
      */
     [GtkTemplate (ui = "/dev/Cogitri/Health/setup_window.ui")]
-    public class SetupWindow : Gtk.ApplicationWindow {
+    public class SetupWindow : Hdy.ApplicationWindow {
         [GtkChild]
         private SyncView sync_view;
         [GtkChild]
@@ -41,7 +41,7 @@ namespace Health {
         [GtkChild]
         private Gtk.Button setup_previous_page_button;
         [GtkChild]
-        private Gtk.CheckButton unit_metric_checkbutton;
+        private Gtk.ToggleButton unit_metric_togglebutton;
         [GtkChild]
         private Gtk.Stack setup_right_stack;
         [GtkChild]
@@ -68,12 +68,12 @@ namespace Health {
             Object (application: application);
 
             this.stepgoal_spinner.value = 10000;
-            this.unit_metric_checkbutton.active = true;
+            this.unit_metric_togglebutton.active = true;
             this.height_actionrow.title = _ ("Height in centimeters");
             this.sync_view.parent_window = this;
             this.sync_view.settings = settings;
 
-            this.unit_metric_checkbutton.toggled.connect ((btn) => {
+            this.unit_metric_togglebutton.toggled.connect ((btn) => {
                 if (btn.active) {
                     this.height_actionrow.title = _ ("Height in centimeters");
                 } else {
@@ -90,7 +90,7 @@ namespace Health {
             });
             this.setup_done_button.clicked.connect (() => {
                 var height_in_cm = uint.parse (this.height_spinner.text);
-                if (this.unit_metric_checkbutton.active) {
+                if (this.unit_metric_togglebutton.active) {
                     settings.unitsystem = Unitsystem.METRIC;
                 } else {
                     settings.unitsystem = Unitsystem.IMPERIAL;
@@ -162,11 +162,11 @@ namespace Health {
         private void set_optimal_weightgoal () {
             const uint OPTIMAL_BMI = 20;
             var height_in_cm = double.parse (this.height_spinner.text);
-            if (!this.unit_metric_checkbutton.active) {
+            if (!this.unit_metric_togglebutton.active) {
                 height_in_cm = inch_to_cm (height_in_cm);
             }
             var optimal_value = OPTIMAL_BMI * GLib.Math.pow (height_in_cm / 100, 2);
-            if (!this.unit_metric_checkbutton.active) {
+            if (!this.unit_metric_togglebutton.active) {
                 optimal_value = kg_to_pb (optimal_value);
             }
             this.weightgoal_spinner.value = optimal_value;
