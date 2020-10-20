@@ -17,7 +17,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
-<interface domain="gnome-health">
+<interface domain="dev.Cogitri.Health">
   <requires lib="gtk+" version="3.24"/>
   <requires lib="libhandy" version="1.0"/>
   <object class="GtkAdjustment" id="age_adjustment">
@@ -292,6 +292,53 @@
                             </child>
                           </object>
                         </child>
+                      </object>
+                    </child>
+                    <layout>
+                      <property name="column">0</property>
+                      <property name="row">2</property>
+                    </layout>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkBox" id="setup_fourth_page">
+                <property name="orientation">vertical</property>
+                <property name="halign">center</property>
+                <property name="vexpand">True</property>
+                <property name="hexpand">True</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Setup sync with third-party providers.</property>
+                    <property name="margin-top">25</property>
+                    <property name="margin-bottom">10</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
+                      <attribute name="font-desc" value="20.0"></attribute>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">You can sync steps and weight measurements from/to third-party providers.</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-start">6</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
+                      <attribute name="font-desc" value="16.0"></attribute>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyClamp">
+                    <property name="maximum-size">400</property>
+                    <property name="tightening-threshold">200</property>
+                    <property name="valign">center</property>
+                    <property name="vexpand">True</property>
+                    <property name="hexpand">True</property>
+                    <child>
+                      <object class="HealthSyncView" id="sync_view">
                       </object>
                     </child>
                     <layout>

@@ -100,7 +100,7 @@ namespace Health {
     /**
      * An implementation of {@link View} visualizes BMI and weight development.
      */
-    [GtkTemplate (ui = "/org/gnome/Health/weight_view.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/weight_view.ui")]
     public class WeightView : View {
         [GtkChild]
         private Gtk.Label title_label;
@@ -146,6 +146,7 @@ namespace Health {
             if (last_weight == null) {
                 return 0;
             }
+            warning ("%lf / %lf", last_weight.get_in_kg (), GLib.Math.pow (this.settings.user_height / 100.0, 2));
             return ((!) last_weight).get_in_kg () / GLib.Math.pow (this.settings.user_height / 100.0, 2);
         }
 

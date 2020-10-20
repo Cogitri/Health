@@ -65,7 +65,7 @@ namespace Health {
             var schema = new Secret.Schema (Config.APPLICATION_ID, Secret.SchemaFlags.NONE, "oauth2-provider", Secret.SchemaAttributeType.STRING);
 
             try {
-                yield Secret.password_store (schema, Secret.COLLECTION_DEFAULT, "GNOME Health %s OAuth2-Refresh-Token".printf (oauth2_provider), refresh_token, null, "oauth2-provider", oauth2_provider);
+                yield Secret.password_store (schema, Secret.COLLECTION_DEFAULT, "Health %s OAuth2-Refresh-Token".printf (oauth2_provider), refresh_token, null, "oauth2-provider", oauth2_provider);
             } catch (GLib.Error e) {
                 warning ("Failed to store OAuth2 refresh-token via libsecret due to error %s", e.message);
             }

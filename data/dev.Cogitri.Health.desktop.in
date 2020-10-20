@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Health
-Exec=gnome-health
+Exec=dev.Cogitri.health
 Terminal=false
 Type=Application
 Categories=GTK;

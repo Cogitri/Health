@@ -20,8 +20,10 @@ namespace Health {
     /**
      * The {@link SetupWindow} is shown to the user on the first start of the applcation to fill in some data.
      */
-    [GtkTemplate (ui = "/org/gnome/Health/setup_window.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/setup_window.ui")]
     public class SetupWindow : Gtk.ApplicationWindow {
+        [GtkChild]
+        private SyncView sync_view;
         [GtkChild]
         private Gtk.Box setup_first_page;
         [GtkChild]
@@ -29,19 +31,7 @@ namespace Health {
         [GtkChild]
         private Gtk.Box setup_third_page;
         [GtkChild]
-        private Gtk.CheckButton unit_metric_checkbutton;
-        [GtkChild]
-        private Gtk.SpinButton age_spinner;
-        [GtkChild]
-        private Gtk.SpinButton height_spinner;
-        [GtkChild]
-        private Gtk.SpinButton stepgoal_spinner;
-        [GtkChild]
-        private Gtk.SpinButton weightgoal_spinner;
-        [GtkChild]
-        private Gtk.Stack setup_right_stack;
-        [GtkChild]
-        private Gtk.Stack setup_left_stack;
+        private Gtk.Box setup_fourth_page;
         [GtkChild]
         private Gtk.Button setup_done_button;
         [GtkChild]
@@ -50,6 +40,20 @@ namespace Health {
         private Gtk.Button setup_next_page_button;
         [GtkChild]
         private Gtk.Button setup_previous_page_button;
+        [GtkChild]
+        private Gtk.CheckButton unit_metric_checkbutton;
+        [GtkChild]
+        private Gtk.Stack setup_right_stack;
+        [GtkChild]
+        private Gtk.Stack setup_left_stack;
+        [GtkChild]
+        private Gtk.SpinButton age_spinner;
+        [GtkChild]
+        private Gtk.SpinButton height_spinner;
+        [GtkChild]
+        private Gtk.SpinButton stepgoal_spinner;
+        [GtkChild]
+        private Gtk.SpinButton weightgoal_spinner;
         [GtkChild]
         private Hdy.ActionRow height_actionrow;
         [GtkChild]
@@ -66,10 +70,8 @@ namespace Health {
             this.stepgoal_spinner.value = 10000;
             this.unit_metric_checkbutton.active = true;
             this.height_actionrow.title = _ ("Height in centimeters");
-            this.setup_left_stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            this.setup_right_stack.transition_type = Gtk.StackTransitionType.CROSSFADE;
-            this.setup_left_stack.transition_duration = 100;
-            this.setup_right_stack.transition_duration = 100;
+            this.sync_view.parent_window = this;
+            this.sync_view.settings = settings;
 
             this.unit_metric_checkbutton.toggled.connect ((btn) => {
                 if (btn.active) {
@@ -79,11 +81,11 @@ namespace Health {
                 }
                 this.set_optimal_weightgoal ();
             });
-            this.height_spinner.value_changed.connect (() => {
+            this.height_spinner.changed.connect (() => {
                 this.set_optimal_weightgoal ();
             });
             this.setup_done_button.clicked.connect (() => {
-                var height_in_cm = (uint) this.height_spinner.value;
+                var height_in_cm = uint.parse (this.height_spinner.text);
                 if (this.unit_metric_checkbutton.active) {
                     settings.unitsystem = Unitsystem.METRIC;
                 } else {
@@ -91,9 +93,9 @@ namespace Health {
                     height_in_cm = (uint) GLib.Math.round (inch_to_cm (height_in_cm));
                 }
 
-                settings.user_age = (uint) this.age_spinner.value;
+                settings.user_age = uint.parse (this.age_spinner.text);
                 settings.user_height = height_in_cm;
-                settings.user_stepgoal = (uint) this.stepgoal_spinner.value;
+                settings.user_stepgoal = uint.parse (this.stepgoal_spinner.text);
                 settings.user_weightgoal = new WeightUnitContainer.from_user_value (this.weightgoal_spinner.value, settings);
                 this.setup_done ();
             });
@@ -116,9 +118,28 @@ namespace Health {
                 }
             });
             this.setup_next_page_button.clicked.connect (() => {
-                var current_page = (uint) (this.setup_carousel.position * this.setup_carousel.n_pages);
+                var current_page = (uint) this.setup_carousel.position;
                 switch (current_page) {
                     case 0:
+                        this.setup_carousel.scroll_to (this.setup_second_page);
+                        break;
+                    case 1:
+                        this.setup_carousel.scroll_to (this.setup_third_page);
+                        break;
+                    case 2:
+                        this.setup_carousel.scroll_to (this.setup_fourth_page);
+                        break;
+                    default:
+                        error ("Scrollled to unknown page %u", current_page);
+                }
+            });
+            this.setup_previous_page_button.clicked.connect (() => {
+                var current_page = (uint) this.setup_carousel.position;
+                switch (current_page) {
+                    case 1:
+                        this.setup_carousel.scroll_to (this.setup_first_page);
+                        break;
+                    case 2:
                         this.setup_carousel.scroll_to (this.setup_second_page);
                         break;
                     case 3:
@@ -128,24 +149,11 @@ namespace Health {
                         error ("Scrollled to unknown page %u", current_page);
                 }
             });
-            this.setup_previous_page_button.clicked.connect (() => {
-                var current_page = (uint) (this.setup_carousel.position * this.setup_carousel.n_pages);
-                switch (current_page) {
-                    case 3:
-                        this.setup_carousel.scroll_to (this.setup_first_page);
-                        break;
-                    case 6:
-                        this.setup_carousel.scroll_to (this.setup_second_page);
-                        break;
-                    default:
-                        error ("Scrollled to unknown page %u", current_page);
-                }
-            });
         }
 
         private void set_optimal_weightgoal () {
             const uint OPTIMAL_BMI = 20;
-            var height_in_cm = this.height_spinner.value;
+            var height_in_cm = double.parse (this.height_spinner.text);
             if (!this.unit_metric_checkbutton.active) {
                 height_in_cm = inch_to_cm (height_in_cm);
             }

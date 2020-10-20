@@ -1,9 +1,9 @@
 {
-    "app-id": "org.gnome.Health",
+    "app-id": "dev.Cogitri.Health",
     "runtime": "org.gnome.Platform",
     "runtime-version": "3.38",
     "sdk": "org.gnome.Sdk",
-    "command": "gnome-health",
+    "command": "dev.Cogitri.Health",
     "finish-args": [
         "--share=network",
         "--share=ipc",
@@ -70,17 +70,17 @@
             ]
         },
         {
-            "name":"rest",
-            "sources":[
-              {
-                "type": "archive",
-                "url": "https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz",
-                "sha256": "0513aad38e5d3cedd4ae3c551634e3be1b9baaa79775e53b2dba9456f15b01c9"
-              }
+            "name": "rest",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz",
+                    "sha256": "0513aad38e5d3cedd4ae3c551634e3be1b9baaa79775e53b2dba9456f15b01c9"
+                }
             ]
         },
         {
-            "name": "gnome-health",
+            "name": "health",
             "builddir": true,
             "buildsystem": "meson",
             "sources": [

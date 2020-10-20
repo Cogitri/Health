@@ -17,7 +17,7 @@
   You should have received a copy of the GNU General Public License
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
-<interface domain="gnome-health">
+<interface domain="dev.Cogitri.Health">
   <menu id="primary_menu">
     <submenu>
       <attribute translatable="yes" name="label">_Units</attribute>
