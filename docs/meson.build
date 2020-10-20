@@ -19,7 +19,7 @@ custom_target('docs',
     '--vapidir=@0@'.format(meson.current_source_dir() / '..' / 'src'),
     '--directory=@OUTDIR@',
     '--use-svg-images',
-    gnome_health_sources,
+    health_sources,
   ],
   build_by_default: true,
 )
