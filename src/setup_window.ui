@@ -181,10 +181,13 @@
                             <child>
                               <object class="GtkBox" id="unit_box">
                                 <property name="can-focus">0</property>
-                                    <property name="margin-top">6</property>
-                                    <property name="margin-bottom">6</property>
-                                    <property name="margin-start">24</property>
-                                    <property name="margin-end">6</property>
+                                <property name="margin-top">6</property>
+                                <property name="margin-bottom">6</property>
+                                <property name="margin-start">6</property>
+                                <property name="margin-end">6</property>
+                                <style>
+                                  <class name="linked"/>
+                                </style>
                                 <child>
                                   <object class="GtkToggleButton" id="unit_imperial_togglebutton">
                                     <property name="label" translatable="yes">Imperial</property>
