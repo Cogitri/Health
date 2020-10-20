@@ -30,8 +30,6 @@ namespace Health {
         [GtkChild]
         private Gtk.Stack stack;
         [GtkChild]
-        private Gtk.MenuButton primary_menu_button;
-        [GtkChild]
         private Gtk.Button add_data_button;
 
         private int current_height;
@@ -44,9 +42,6 @@ namespace Health {
         public Window (Gtk.Application app, Settings settings) {
             Object (application: app);
             this.current_view = ViewModes.STEPS;
-            var builder = new Gtk.Builder.from_resource ("/dev/Cogitri/Health/primary_menu.ui");
-            var menu = builder.get_object ("primary_menu") as GLib.Menu;
-            var menu_popover = new Gtk.PopoverMenu.from_model (menu);
             this.settings = settings;
             this.db = new SqliteDatabase ();
 
@@ -60,7 +55,6 @@ namespace Health {
             var steps_model = new StepsGraphModel (this.db);
             this.views = new View[] { new StepView (steps_model, this.settings), new WeightView (weight_model, settings), };
 
-            this.primary_menu_button.set_popover (menu_popover);
             foreach (var view in views) {
                 var page = this.stack.add_titled (view, view.name, view.title);
                 page.icon_name = view.icon_name;
