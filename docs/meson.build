@@ -1,6 +1,6 @@
 valadoc = find_program('valadoc')
 custom_target('docs',
-  input: gnome_health_sources,
+  input: health_sources,
   output: 'docs',
   command: [
     valadoc,
