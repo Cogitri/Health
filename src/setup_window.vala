@@ -83,6 +83,10 @@ namespace Health {
             });
             this.height_spinner.changed.connect (() => {
                 this.set_optimal_weightgoal ();
+                this.try_enable_next_button ();
+            });
+            this.age_spinner.changed.connect (() => {
+                this.try_enable_next_button ();
             });
             this.setup_done_button.clicked.connect (() => {
                 var height_in_cm = uint.parse (this.height_spinner.text);
@@ -149,6 +153,10 @@ namespace Health {
                         error ("Scrollled to unknown page %u", current_page);
                 }
             });
+        }
+
+        private void try_enable_next_button () {
+            this.setup_next_page_button.sensitive = this.height_spinner.get_text () != "0" && this.age_spinner.get_text () != "0";
         }
 
         private void set_optimal_weightgoal () {
