@@ -360,6 +360,7 @@
     </child>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
+        <property name="show-title-buttons">0</property>
         <property name="can-focus">0</property>
         <child>
           <object class="GtkStack" id="setup_left_stack">
