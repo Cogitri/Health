@@ -66,6 +66,7 @@
                     <property name="margin-end">6</property>
                     <property name="margin-top">6</property>
                     <property name="margin-bottom">6</property>
+                    <signal name="changed" handler="age_spinner_changed" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -83,6 +84,7 @@
                     <property name="margin-end">6</property>
                     <property name="margin-top">6</property>
                     <property name="margin-bottom">6</property>
+                    <signal name="changed" handler="height_spinner_changed" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -114,6 +116,7 @@
                     <property name="margin-end">6</property>
                     <property name="margin-top">6</property>
                     <property name="margin-bottom">6</property>
+                    <signal name="changed" handler="stepgoal_spinner_changed" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -144,6 +147,7 @@
                     <property name="margin-end">6</property>
                     <property name="margin-top">6</property>
                     <property name="margin-bottom">6</property>
+                    <signal name="changed" handler="weightgoal_spinner_changed" swapped="no"/>
                   </object>
                 </child>
               </object>
