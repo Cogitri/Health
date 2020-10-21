@@ -24,6 +24,10 @@
     [GtkTemplate (ui = "/dev/Cogitri/Health/preferences_window.ui")]
     public class PreferencesWindow : Hdy.PreferencesWindow {
         [GtkChild]
+        private Hdy.ActionRow height_actionrow;
+        [GtkChild]
+        private Gtk.SpinButton height_spinner;
+        [GtkChild]
         private Gtk.SpinButton stepgoal_spinner;
         [GtkChild]
         private Gtk.SpinButton weightgoal_spinner;
@@ -42,6 +46,13 @@
             this.weightgoal_spinner.value = this.settings.user_weightgoal.value;
             this.sync_view.parent_window = parent;
             this.sync_view.settings = settings;
+            if (this.settings.unitsystem == Unitsystem.METRIC) {
+                this.height_actionrow.title = _ ("Height in centimeters");
+                this.height_spinner.value = settings.user_height;
+            } else {
+                this.height_actionrow.title = _ ("Height in inch");
+                this.height_spinner.value = cm_to_inch (settings.user_height);
+            }
 
             this.parent_window = parent;
             this.set_transient_for (parent);
@@ -89,8 +100,10 @@
         private void unit_metric_togglebutton_toggled(Gtk.ToggleButton btn) {
             if (btn.active) {
                 this.settings.unitsystem = Unitsystem.METRIC;
+                this.height_actionrow.title = _ ("Height in centimeters");
             } else {
                 this.settings.unitsystem = Unitsystem.IMPERIAL;
+                this.height_actionrow.title = _ ("Height in inch");
             }
         }
     }
