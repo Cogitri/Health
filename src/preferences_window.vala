@@ -84,5 +84,14 @@
                 }
             }
         }
+
+        [GtkCallback]
+        private void unit_metric_togglebutton_toggled(Gtk.ToggleButton btn) {
+            if (btn.active) {
+                this.settings.unitsystem = Unitsystem.METRIC;
+            } else {
+                this.settings.unitsystem = Unitsystem.IMPERIAL;
+            }
+        }
     }
 }

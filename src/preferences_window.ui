@@ -53,6 +53,36 @@
             <property name="visible">True</property>
             <property name="title" translatable="yes">User</property>
             <child>
+              <object class="HdyActionRow">
+                <property name="title" translatable="yes">Unitsystem</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="can-focus">0</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <style>
+                      <class name="linked"/>
+                    </style>
+                    <child>
+                      <object class="GtkToggleButton" id="unit_imperial_togglebutton">
+                        <property name="label" translatable="yes">Imperial</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkToggleButton">
+                        <property name="label" translatable="yes">Metric</property>
+                        <property name="active">1</property>
+                        <property name="group">unit_imperial_togglebutton</property>
+                        <signal name="toggled" handler="unit_metric_togglebutton_toggled" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
               <object class="HdyActionRow" id="age_actionrow">
                 <property name="visible">True</property>
                 <property name="title" translatable="yes">Age</property>
