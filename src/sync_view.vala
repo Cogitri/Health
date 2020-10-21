@@ -25,52 +25,49 @@ namespace Health {
         [GtkChild]
         private Gtk.Image google_fit_selected_image;
         [GtkChild]
-        private Gtk.ListBox sync_list_box;
-        [GtkChild]
         private Gtk.ListBoxRow google_fit_start_sync_row;
         [GtkChild]
         private Gtk.Stack google_fit_stack;
         [GtkChild]
         private Gtk.Spinner google_fit_spinner;
 
-        public Settings settings { get; set; }
+        public Settings? settings { get; set; }
         public weak Gtk.Window? parent_window { get; set; }
 
         static construct {
             set_layout_manager_type (typeof (Gtk.BinLayout));
         }
 
-        construct {
-            this.sync_list_box.row_activated.connect ((row) => {
-                if (row == this.google_fit_start_sync_row) {
-                    this.google_fit_stack.visible = true;
-                    this.google_fit_spinner.visible = true;
-                    this.google_fit_stack.visible_child = this.google_fit_spinner;
-                    var proxy = new GoogleFitOAuth2Proxy ();
-                    proxy.open_authentication_url.begin ((obj, res) => {
-                        try {
-                            proxy.open_authentication_url.end (res);
-                            proxy.import_data.begin (settings ?? new Health.Settings (), (obj, res) => {
-                                try {
-                                    proxy.import_data.end (res);
-                                    this.google_fit_selected_image.visible = true;
-                                    this.google_fit_stack.visible_child = this.google_fit_selected_image;
-                                } catch (GLib.Error e) {
-                                    this.open_sync_error (e.message);
-                                    this.google_fit_selected_image.visible = true;
-                                    this.google_fit_selected_image.icon_name = "network-error-symbolic";
-                                    this.google_fit_stack.visible_child = this.google_fit_selected_image;
-                                }
-                            });
-                        } catch (GLib.Error e) {
-                            this.open_sync_error (e.message);
-                            this.google_fit_selected_image.visible = true;
-                            this.google_fit_selected_image.icon_name = "network-error-symbolic";
-                            this.google_fit_stack.visible_child = this.google_fit_selected_image;
-                        }
-                    });
-                }
-            });
+        [GtkCallback]
+        private void sync_list_box_row_activated (Gtk.ListBoxRow row) {
+            if (row == this.google_fit_start_sync_row) {
+                this.google_fit_stack.visible = true;
+                this.google_fit_spinner.visible = true;
+                this.google_fit_stack.visible_child = this.google_fit_spinner;
+                var proxy = new GoogleFitOAuth2Proxy ();
+                proxy.open_authentication_url.begin ((obj, res) => {
+                    try {
+                        proxy.open_authentication_url.end (res);
+                        proxy.import_data.begin (settings ?? new Health.Settings (), (obj, res) => {
+                            try {
+                                proxy.import_data.end (res);
+                                this.google_fit_selected_image.visible = true;
+                                this.google_fit_stack.visible_child = this.google_fit_selected_image;
+                            } catch (GLib.Error e) {
+                                this.open_sync_error (e.message);
+                                this.google_fit_selected_image.visible = true;
+                                this.google_fit_selected_image.icon_name = "network-error-symbolic";
+                                this.google_fit_stack.visible_child = this.google_fit_selected_image;
+                            }
+                        });
+                    } catch (GLib.Error e) {
+                        this.open_sync_error (e.message);
+                        this.google_fit_selected_image.visible = true;
+                        this.google_fit_selected_image.icon_name = "network-error-symbolic";
+                        this.google_fit_stack.visible_child = this.google_fit_selected_image;
+                    }
+                });
+            }
         }
 
         private void open_sync_error (string errmsg) {
