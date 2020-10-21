@@ -77,6 +77,8 @@
                         <property name="can-focus">0</property>
                         <property name="action-name">app.quit</property>
                         <property name="use-underline">1</property>
+                        <property name="sensitive">1</property>
+                        <signal name="clicked" handler="setup_quit_button_clicked" swapped="no"/>
                       </object>
                     </property>
                   </object>
@@ -89,6 +91,7 @@
                         <property name="can-focus">0</property>
                         <property name="use-underline">1</property>
                         <property name="visible">0</property>
+                        <signal name="clicked" handler="setup_previous_page_button_clicked" swapped="no"/>
                       </object>
                     </property>
                   </object>
@@ -97,6 +100,7 @@
             </child>
             <child type="end">
               <object class="GtkStack" id="setup_right_stack">
+                <property name="visible-child">setup_done_button</property>
                 <property name="transition-type">crossfade</property>
                 <child>
                   <object class="GtkStackPage">
@@ -106,6 +110,7 @@
                         <property name="can-focus">0</property>
                         <property name="use-underline">1</property>
                         <property name="sensitive">0</property>
+                        <signal name="clicked" handler="setup_next_page_button_clicked" swapped="no"/>
                         <style>
                           <class name="suggested-action"/>
                         </style>
@@ -121,6 +126,7 @@
                         <property name="can-focus">0</property>
                         <property name="use-underline">1</property>
                         <property name="visible">0</property>
+                        <signal name="clicked" handler="setup_done_button_clicked" swapped="no"/>
                         <style>
                           <class name="suggested-action"/>
                         </style>
@@ -137,6 +143,7 @@
             <property name="vexpand">True</property>
             <property name="hexpand">True</property>
             <property name="interactive">0</property>
+            <signal name="page_changed" handler="setup_carousel_page_changed" swapped="no"/>
             <child>
               <object class="GtkBox" id="setup_first_page">
                 <property name="orientation">vertical</property>
@@ -199,6 +206,7 @@
                                     <property name="label" translatable="yes">Metric</property>
                                     <property name="active">1</property>
                                     <property name="group">unit_imperial_togglebutton</property>
+                                    <signal name="toggled" handler="unit_metric_togglebutton_toggled" swapped="no"/>
                                   </object>
                                 </child>
                               </object>
@@ -218,6 +226,7 @@
                                 <property name="margin-end">6</property>
                                 <property name="margin-top">6</property>
                                 <property name="margin-bottom">6</property>
+                                <signal name="changed" handler="age_spinner_changed" swapped="no"/>
                               </object>
                             </child>
                           </object>
@@ -234,6 +243,7 @@
                                 <property name="margin-end">6</property>
                                 <property name="margin-top">6</property>
                                 <property name="margin-bottom">6</property>
+                                <signal name="changed" handler="height_spinner_changed" swapped="no"/>
                               </object>
                             </child>
                           </object>
