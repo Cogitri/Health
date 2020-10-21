@@ -11,7 +11,6 @@ namespace Health {
         private const GLib.ActionEntry APP_ENTRIES[] = {
             { "about", on_about },
             { "preferences", on_preferences },
-            { "units", on_units, "s" },
         };
 
         public override void activate () {
@@ -69,24 +68,6 @@ namespace Health {
                     this.window.update ();
                 }
             });
-        }
-
-        private void on_units (GLib.SimpleAction action, GLib.Variant? parameter) {
-            if (parameter == null) {
-                return;
-            }
-            var unitsystem = ((!) parameter).get_string ();
-            switch ((!) unitsystem) {
-                case "imperial":
-                    this.settings.unitsystem = Unitsystem.IMPERIAL;
-                    break;
-                case "metric":
-                    this.settings.unitsystem = Unitsystem.METRIC;
-                    break;
-                default:
-                    warning (_ ("Unknown unitsystem %s"), unitsystem);
-                    break;
-            }
         }
 
     }
