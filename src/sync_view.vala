@@ -34,7 +34,7 @@ namespace Health {
         private Gtk.Spinner google_fit_spinner;
 
         public Settings settings { get; set; }
-        public Gtk.Window? parent_window { get; set; }
+        public weak Gtk.Window? parent_window { get; set; }
 
         static construct {
             set_layout_manager_type (typeof (Gtk.BinLayout));

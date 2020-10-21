@@ -132,6 +132,7 @@ namespace Health {
             this.settings.user_stepgoal = uint.parse (this.stepgoal_spinner.text);
             this.settings.user_weightgoal = new WeightUnitContainer.from_user_value (this.weightgoal_spinner.value, settings);
             this.setup_done ();
+            this.destroy ();
         }
 
         [GtkCallback]

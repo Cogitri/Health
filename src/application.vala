@@ -24,7 +24,6 @@ namespace Health {
             } else {
                 var setup_window = new SetupWindow (this, this.settings);
                 setup_window.setup_done.connect (() => {
-                    setup_window.destroy ();
                     this.settings.did_initial_setup = true;
                     var window = new Window (this, settings);
                     window.show ();
