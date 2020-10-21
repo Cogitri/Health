@@ -1,7 +1,7 @@
 namespace Health {
     public class Application : Gtk.Application {
         private Settings settings;
-        private Window? window;
+        private weak Window? window;
 
         public Application () {
             Object (application_id: Config.APPLICATION_ID, flags : ApplicationFlags.FLAGS_NONE);
@@ -11,23 +11,24 @@ namespace Health {
         private const GLib.ActionEntry APP_ENTRIES[] = {
             { "about", on_about },
             { "preferences", on_preferences },
-            { "quit", on_quit },
             { "units", on_units, "s" },
         };
 
         public override void activate () {
-            if (window != null) {
+            if (this.window != null) {
                 return;
             } else if (this.settings.did_initial_setup) {
-                this.window = new Window (this, settings);
-                ((!) this.window).show ();
+                var window = new Window (this, settings);
+                window.show ();
+                this.window = window;
             } else {
                 var setup_window = new SetupWindow (this, this.settings);
                 setup_window.setup_done.connect (() => {
                     setup_window.destroy ();
                     this.settings.did_initial_setup = true;
-                    this.window = new Window (this, settings);
-                    ((!) this.window).show ();
+                    var window = new Window (this, settings);
+                    window.show ();
+                    this.window = window;
                 });
                 setup_window.show ();
             }
@@ -86,12 +87,6 @@ namespace Health {
                 default:
                     warning (_ ("Unknown unitsystem %s"), unitsystem);
                     break;
-            }
-        }
-
-        private void on_quit (GLib.SimpleAction action, GLib.Variant? parameter) {
-            if (this.window != null) {
-                ((!) this.window).destroy ();
             }
         }
 

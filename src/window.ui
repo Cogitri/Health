@@ -43,6 +43,7 @@
     <property name="title" translatable="yes">Health</property>
     <property name="default-width">600</property>
     <property name="default-height">300</property>
+    <signal name="close_request" handler="on_close_request" swapped="no"/>
     <child>
       <object class="GtkBox">
         <property name="can-focus">0</property>

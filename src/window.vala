@@ -38,6 +38,7 @@ namespace Health {
         private SqliteDatabase db;
         private ViewModes current_view;
         private View[] views;
+        private uint sync_source_id;
 
         public Window (Gtk.Application app, Settings settings) {
             Object (application: app);
@@ -88,27 +89,11 @@ namespace Health {
             if (this.settings.window_is_maximized) {
                 this.maximize ();
             }
-            var proxy = new GoogleFitOAuth2Proxy ();
-            proxy.sync_data.begin (settings, (obj, res) => {
-                try {
-                    proxy.sync_data.end (res);
-                    foreach (var view in this.views) {
-                        view.update ();
-                    }
-                } catch (GLib.Error e) {
-                    var dialog = new Gtk.MessageDialog (this, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, _("Synching data from Google Fit failed due to error %s"), e.message);
-                    unowned var dialog_u = dialog;
-                    dialog.response.connect (() => {
-                        dialog_u.destroy ();
-                    });
-                }
+            sync_data (null, this.settings, this.views);
+            this.sync_source_id = GLib.Timeout.add (900, () => {
+                sync_data (null, this.settings, this.views);
+                return GLib.Source.CONTINUE;
             });
-        }
-
-        ~Window () {
-            this.settings.window_is_maximized = this.is_maximized;
-            this.settings.window_height = this.current_height;
-            this.settings.window_width = this.current_width;
         }
 
         public void update () {
@@ -122,6 +107,40 @@ namespace Health {
             if (!this.is_maximized) {
                 this.get_size (out this.current_width, out this.current_height);
             }
+        }
+
+        private static void sync_data (Gtk.Window? parent, Settings settings, View[] views) {
+            var proxy = new GoogleFitOAuth2Proxy ();
+            var parent_ref = GLib.WeakRef (parent);
+            proxy.sync_data.begin (settings, (obj, res) => {
+                try {
+                    proxy.sync_data.end (res);
+                    foreach (var view in views) {
+                        view.update ();
+                    }
+                } catch (GLib.Error e) {
+                    var weak_ref = parent_ref.get ();
+                    if (weak_ref != null) {
+                        var window = (Gtk.Window) weak_ref;
+                        var dialog = new Gtk.MessageDialog (window, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, _("Synching data from Google Fit failed due to error %s"), e.message);
+                        unowned var dialog_u = dialog;
+                        dialog.response.connect (() => {
+                            dialog_u.destroy ();
+                        });
+                    }
+                }
+            });
+        }
+
+        [GtkCallback]
+        private bool on_close_request (Gtk.Window window) {
+            this.settings.window_is_maximized = this.is_maximized;
+            this.settings.window_height = this.current_height;
+            this.settings.window_width = this.current_width;
+
+            GLib.Source.remove (this.sync_source_id);
+
+            return false;
         }
 
         [GtkCallback]
