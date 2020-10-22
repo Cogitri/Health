@@ -29,8 +29,6 @@ namespace Health {
     public class Window : Hdy.ApplicationWindow {
         [GtkChild]
         private Gtk.Stack stack;
-        [GtkChild]
-        private Gtk.Button add_data_button;
 
         private int current_height;
         private int current_width;
@@ -61,25 +59,6 @@ namespace Health {
                 page.icon_name = view.icon_name;
             }
             this.stack.set_visible_child (this.views[0]);
-            add_data_button.clicked.connect (() => {
-                AddDialog dialog;
-                switch (this.current_view) {
-                case STEPS:
-                    dialog = new StepsAddDialog (this, this.db);
-                    break;
-                case WEIGHT:
-                    dialog = new WeightAddDialog (this, this.settings, this.db);
-                    break;
-                default:
-                    error ("Can't create add dialog for unknown view type %d", this.current_view);
-                }
-                dialog.present ();
-                unowned var dialog_u = dialog;
-                dialog.response.connect (() => {
-                    this.views[this.current_view].update ();
-                    dialog_u.destroy ();
-                });
-            });
 
             this.current_height = this.settings.window_height;
             this.current_width = this.settings.window_width;
@@ -150,6 +129,27 @@ namespace Health {
             } else if (stack.visible_child_name == views[ViewModes.WEIGHT].name) {
                 this.current_view = ViewModes.WEIGHT;
             }
+        }
+
+        [GtkCallback]
+        private void add_data_button_clicked (Gtk.Button btn) {
+            AddDialog dialog;
+            switch (this.current_view) {
+            case STEPS:
+                dialog = new StepsAddDialog (this, this.db);
+                break;
+            case WEIGHT:
+                dialog = new WeightAddDialog (this, this.settings, this.db);
+                break;
+            default:
+                error ("Can't create add dialog for unknown view type %d", this.current_view);
+            }
+            dialog.present ();
+            unowned var dialog_u = dialog;
+            dialog.response.connect (() => {
+                this.views[this.current_view].update ();
+                dialog_u.destroy ();
+            });
         }
 
     }

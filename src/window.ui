@@ -57,6 +57,7 @@
             <child>
               <object class="GtkButton" id="add_data_button">
                 <property name="can-focus">0</property>
+                <signal name="clicked" handler="add_data_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage">
                     <property name="can-focus">0</property>

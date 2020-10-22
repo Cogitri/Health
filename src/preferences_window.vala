@@ -24,6 +24,8 @@
     [GtkTemplate (ui = "/dev/Cogitri/Health/preferences_window.ui")]
     public class PreferencesWindow : Hdy.PreferencesWindow {
         [GtkChild]
+        private Hdy.ActionRow height_actionrow;
+        [GtkChild]
         private Gtk.SpinButton age_spinner;
         [GtkChild]
         private Gtk.SpinButton height_spinner;
@@ -32,23 +34,22 @@
         [GtkChild]
         private Gtk.SpinButton weightgoal_spinner;
         [GtkChild]
-        private Hdy.ActionRow height_actionrow;
-        [GtkChild]
         private SyncView sync_view;
 
+        private Settings settings;
         private Gtk.Window? parent_window;
 
         public signal void import_done ();
 
         public PreferencesWindow (Settings settings, Gtk.Window? parent) {
-            settings.bind (Settings.USER_AGE_KEY, this.age_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
-            settings.bind (Settings.USER_STEPGOAL_KEY, this.stepgoal_spinner, "value", GLib.SettingsBindFlags.DEFAULT);
+            this.settings = settings;
 
-            this.weightgoal_spinner.value = settings.user_weightgoal.value;
+            this.stepgoal_spinner.value = this.settings.user_stepgoal;
+            this.weightgoal_spinner.value = this.settings.user_weightgoal.value;
+            this.age_spinner.value = this.settings.user_age;
             this.sync_view.parent_window = parent;
             this.sync_view.settings = settings;
-
-            if (settings.unitsystem == Unitsystem.METRIC) {
+            if (this.settings.unitsystem == Unitsystem.METRIC) {
                 this.height_actionrow.title = _ ("Height in centimeters");
                 this.height_spinner.value = settings.user_height;
             } else {
@@ -56,22 +57,56 @@
                 this.height_spinner.value = cm_to_inch (settings.user_height);
             }
 
-            this.height_spinner.value_changed.connect ((btn) => {
-                if (settings.unitsystem == Unitsystem.METRIC) {
-                    settings.user_height = (uint) btn.value;
-                } else {
-                    settings.user_height = (uint) inch_to_cm (btn.value);
-                }
-            });
-
-            this.weightgoal_spinner.value_changed.connect ((btn) => {
-                settings.user_weightgoal = new WeightUnitContainer.from_user_value (btn.value, settings);
-            });
-
             this.parent_window = parent;
             this.set_transient_for (parent);
-            this.destroy_with_parent = true;
             this.show ();
+        }
+
+        [GtkCallback]
+        private void age_spinner_changed (Gtk.Editable editable) {
+            var value = uint.parse (editable.text);
+            if (value != 0) {
+                this.settings.user_age = value;
+            }
+        }
+
+        [GtkCallback]
+        private void stepgoal_spinner_changed (Gtk.Editable editable) {
+            var value = uint.parse (editable.text);
+            if (value != 0) {
+                this.settings.user_stepgoal = value;
+            }
+        }
+
+        [GtkCallback]
+        private void weightgoal_spinner_changed (Gtk.Editable editable) {
+            var value = double.parse (editable.text);
+            if (value != 0) {
+                this.settings.user_weightgoal = new WeightUnitContainer.from_user_value (value, settings);
+            }
+        }
+
+        [GtkCallback]
+        private void height_spinner_changed (Gtk.Editable editable) {
+            var value = uint.parse (editable.text);
+            if (value != 0) {
+                if (this.settings.unitsystem == Unitsystem.METRIC) {
+                    this.settings.user_height = value;
+                } else {
+                    this.settings.user_height = (uint) inch_to_cm (value);
+                }
+            }
+        }
+
+        [GtkCallback]
+        private void unit_metric_togglebutton_toggled (Gtk.ToggleButton btn) {
+            if (btn.active) {
+                this.settings.unitsystem = Unitsystem.METRIC;
+                this.height_actionrow.title = _ ("Height in centimeters");
+            } else {
+                this.settings.unitsystem = Unitsystem.IMPERIAL;
+                this.height_actionrow.title = _ ("Height in inch");
+            }
         }
     }
 }
