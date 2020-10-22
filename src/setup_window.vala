@@ -69,16 +69,14 @@ namespace Health {
         public SetupWindow (Gtk.Application application, Settings settings) {
             Object (application: application);
             this.settings = settings;
-
-            this.stepgoal_spinner.value = 10000;
-            this.unit_metric_togglebutton.active = true;
-            this.height_actionrow.title = _ ("Height in centimeters");
-            this.sync_view.parent_window = this;
             this.sync_view.settings = settings;
+            this.stepgoal_spinner.value = 10000;
         }
 
         private void try_enable_next_button () {
-            var filled_in_data = this.height_spinner.get_text () != "0" && this.age_spinner.get_text () != "0";
+            unowned var age_text = this.age_spinner.text;
+            unowned var height_text = this.height_spinner.text;
+            var filled_in_data = age_text != "0" && age_text != "" && height_text != "0" && height_text != "";
             this.setup_next_page_button.sensitive = filled_in_data;
             this.setup_carousel.interactive = filled_in_data;
         }

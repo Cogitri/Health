@@ -233,6 +233,7 @@
                         </child>
                         <child>
                           <object class="HdyActionRow" id="height_actionrow">
+                            <property name="title" translatable="yes">Height in centimeters</property>
                             <child>
                               <object class="GtkSpinButton" id="height_spinner">
                                 <property name="width-chars">5</property>
@@ -303,7 +304,6 @@
                             <child>
                               <object class="GtkSpinButton" id="stepgoal_spinner">
                                 <property name="width-chars">5</property>
-                                <property name="text" translatable="yes">10000</property>
                                 <property name="adjustment">stepgoal_adjustment</property>
                                 <property name="numeric">1</property>
                                 <property name="margin-start">6</property>
@@ -427,6 +427,7 @@
                     <property name="hexpand">True</property>
                     <child>
                       <object class="HealthSyncView" id="sync_view">
+                        <property name="parent-window">HealthSetupWindow</property>
                       </object>
                     </child>
                     <layout>

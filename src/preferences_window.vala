@@ -56,7 +56,6 @@
 
             this.parent_window = parent;
             this.set_transient_for (parent);
-            this.destroy_with_parent = true;
             this.show ();
         }
 
