@@ -26,6 +26,8 @@
         [GtkChild]
         private Hdy.ActionRow height_actionrow;
         [GtkChild]
+        private Gtk.SpinButton age_spinner;
+        [GtkChild]
         private Gtk.SpinButton height_spinner;
         [GtkChild]
         private Gtk.SpinButton stepgoal_spinner;
@@ -44,6 +46,7 @@
 
             this.stepgoal_spinner.value = this.settings.user_stepgoal;
             this.weightgoal_spinner.value = this.settings.user_weightgoal.value;
+            this.age_spinner.value = this.settings.user_age;
             this.sync_view.parent_window = parent;
             this.sync_view.settings = settings;
             if (this.settings.unitsystem == Unitsystem.METRIC) {
