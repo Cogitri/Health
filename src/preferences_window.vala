@@ -97,7 +97,7 @@
         }
 
         [GtkCallback]
-        private void unit_metric_togglebutton_toggled(Gtk.ToggleButton btn) {
+        private void unit_metric_togglebutton_toggled (Gtk.ToggleButton btn) {
             if (btn.active) {
                 this.settings.unitsystem = Unitsystem.METRIC;
                 this.height_actionrow.title = _ ("Height in centimeters");

@@ -97,7 +97,7 @@ namespace Health {
         }
 
         [GtkCallback]
-        private void unit_metric_togglebutton_toggled(Gtk.ToggleButton btn) {
+        private void unit_metric_togglebutton_toggled (Gtk.ToggleButton btn) {
             if (btn.active) {
                 this.height_actionrow.title = _ ("Height in centimeters");
             } else {
@@ -107,13 +107,13 @@ namespace Health {
         }
 
         [GtkCallback]
-        private void height_spinner_changed(Gtk.Editable editable) {
+        private void height_spinner_changed (Gtk.Editable editable) {
             this.set_optimal_weightgoal ();
             this.try_enable_next_button ();
         }
 
         [GtkCallback]
-        private void age_spinner_changed(Gtk.Editable editable) {
+        private void age_spinner_changed (Gtk.Editable editable) {
             this.try_enable_next_button ();
         }
 
