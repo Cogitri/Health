@@ -11,8 +11,10 @@ A health tracking app for the GNOME desktop.
 You can build Health with the following command:
 
 ```sh
-flatpak-builder --install --force-clean app dev.Cogitri.Health.json
+flatpak-builder --user --install --force-clean app dev.Cogitri.Health.json
 ```
+
+You can also pass `--system` instead of `--user` to flatpak-builder to install Health system-wide instead of only for your user. However, that requires root permissions.
 
 Afterwards you can run it with:
 
@@ -20,24 +22,9 @@ Afterwards you can run it with:
 flatpak run dev.Cogitri.Health
 ```
 
-
-## Building Manually
-
-### Dependencies
-
-First off, you need the following dependencies installed:
-
-* gtk+3.0 >= 3.24
-* libgee-0.8
-* libhandy >= 1.0
-* sqlite >= 3.24
-* Vala
-
-Afterwards you can build Health like so:
+For development purposes you can also run Health directly via flatpak-builder to avoid time cost of packing the flatpak and then installing it like so:
 
 ```sh
-meson build
-meson compile -C build
-meson test -C build
-meson install -C build
+flatpak-builder --user --force-clean app dev.Cogitri.Health.json
+flatpak-builder --run app dev.Cogitri.Health.json dev.Cogitri.Health
 ```
