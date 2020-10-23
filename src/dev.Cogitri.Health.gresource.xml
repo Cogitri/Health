@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/dev/Cogitri/Health">
-    <file>preferences_window.ui</file>
-    <file>setup_window.ui</file>
-    <file>step_view.ui</file>
-    <file>sync_view.ui</file>
-    <file>weight_view.ui</file>
-    <file>window.ui</file>
+    <file preprocess="xml-stripblanks">add_dialog.ui</file>
+    <file preprocess="xml-stripblanks">preferences_window.ui</file>
+    <file preprocess="xml-stripblanks">setup_window.ui</file>
+    <file preprocess="xml-stripblanks">step_view.ui</file>
+    <file preprocess="xml-stripblanks">sync_view.ui</file>
+    <file preprocess="xml-stripblanks">weight_view.ui</file>
+    <file preprocess="xml-stripblanks">window.ui</file>
   </gresource>
 </gresources>

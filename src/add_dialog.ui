@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  add_dialog.ui
+
+  Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<interface domain="dev.Cogitri.Health">
+  <requires lib="gtk+" version="3.99"/>
+  <requires lib="libhandy" version="1.0"/>
+  <template class="HealthAddDialog" parent="GtkDialog">
+    <property name="use-header-bar">1</property>
+    <property name="modal">1</property>
+    <property name="destroy-with-parent">1</property>
+    <property name="title"></property>
+    <signal name="response" handler="on_response" swapped="no"/>
+    <child type="action">
+      <object class="GtkButton" id="button_cancel">
+        <property name="label" translatable="yes">_Cancel</property>
+        <property name="use-underline">1</property>
+      </object>
+    </child>
+    <child type="action">
+      <object class="GtkButton" id="button_ok">
+        <property name="label" translatable="yes">_Save</property>
+        <property name="use-underline">1</property>
+       </object>
+    </child>
+    <action-widgets>
+        <action-widget response="cancel">button_cancel</action-widget>
+        <action-widget response="ok" default="true">button_ok</action-widget>
+    </action-widgets>
+    <child>
+      <object class="GtkBox">
+        <property name="spacing">6</property>
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+        <child>
+          <object class="GtkLabel" id="dialog_label"/>
+        </child>
+        <child>
+          <object class="GtkEntry" id="dialog_entry">
+            <property name="input-purpose">digits</property>
+            <signal name="changed" handler="dialog_entry_changed" swapped="no"/>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
