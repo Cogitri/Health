@@ -20,42 +20,26 @@ namespace Health {
     /**
      * AddDialog is a generic dialog used for adding new data to the DB via user input.
      */
+    [GtkTemplate (ui = "/dev/Cogitri/Health/add_dialog.ui")]
     public class AddDialog : Gtk.Dialog {
+        [GtkChild]
         protected Gtk.Label dialog_label;
+        [GtkChild]
         protected Gtk.Entry dialog_entry;
 
         public AddDialog (Gtk.Window? parent) {
             Object (use_header_bar: 1);
             this.set_transient_for (parent);
-            this.destroy_with_parent = true;
-            this.modal = true;
-            this.dialog_label = new Gtk.Label (null);
-            this.dialog_label.visible = true;
-            this.dialog_entry = new Gtk.Entry ();
-            this.dialog_entry.visible = true;
-            this.dialog_entry.input_purpose = Gtk.InputPurpose.DIGITS;
+        }
 
-            this.title = "";
-            var content_box = this.get_content_area ();
-            content_box.append (this.dialog_label);
-            content_box.append (this.dialog_entry);
-            content_box.set_halign (Gtk.Align.CENTER);
-            content_box.set_valign (Gtk.Align.CENTER);
-            content_box.spacing = 6;
-            content_box.margin_top = 6;
-            content_box.margin_bottom = 6;
-            content_box.margin_start = 6;
-            content_box.margin_end = 6;
+        [GtkCallback]
+        private void dialog_entry_changed (Gtk.Editable editable) {
+            this.set_response_sensitive (Gtk.ResponseType.OK, editable.text.length != 0);
+        }
 
-            this.add_button (_ ("Save"), Gtk.ResponseType.OK);
-            this.add_button (_ ("Cancel"), Gtk.ResponseType.CANCEL);
-            this.set_default_response (Gtk.ResponseType.OK);
-            this.dialog_entry.changed.connect (() => {
-                this.set_response_sensitive (Gtk.ResponseType.OK, this.dialog_entry.get_text_length () != 0);
-            });
-
-            this.response.connect ((response_id) => {
-                switch (response_id) {
+        [GtkCallback]
+        private void on_response (int response_id) {
+            switch (response_id) {
                 case Gtk.ResponseType.OK:
                     try {
                         this.save ();
@@ -63,9 +47,8 @@ namespace Health {
                         warning (_ ("Failed to save new data due to error %s"), e.message);
                     }
                     break;
-                }
-                this.destroy ();
-            });
+            }
+            this.destroy ();
         }
 
         /**
