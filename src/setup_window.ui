@@ -56,7 +56,7 @@
   </object>
   <template class="HealthSetupWindow" parent="HdyApplicationWindow">
     <property name="can-focus">0</property>
-    <property name="default-width">600</property>
+    <property name="default-width">750</property>
     <property name="default-height">500</property>
     <property name="title" translatable="yes">Health Setup</property>
     <child>
@@ -412,6 +412,8 @@
                     <property name="label" translatable="yes">You can sync steps and weight measurements from/to third-party providers.</property>
                     <property name="margin-end">6</property>
                     <property name="margin-start">6</property>
+                    <property name="wrap">1</property>
+                    <property name="wrap-mode">word_char</property>
                     <attributes>
                       <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
                       <attribute name="font-desc" value="16.0"></attribute>
