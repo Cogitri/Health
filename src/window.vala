@@ -70,7 +70,7 @@ namespace Health {
             }
             if (this.settings.sync_provider_setup_google_fit) {
                 this.sync_source_id = GLib.Timeout.add_seconds (900, () => {
-                    sync_data (null, this.settings, this.views, this.sync_source_id);
+                    sync_data (this, this.settings, this.views, this.sync_source_id);
                     return GLib.Source.CONTINUE;
                 });
             }
