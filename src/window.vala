@@ -68,9 +68,8 @@ namespace Health {
             if (this.settings.window_is_maximized) {
                 this.maximize ();
             }
-            sync_data (null, this.settings, this.views);
-            this.sync_source_id = GLib.Timeout.add (900, () => {
-                sync_data (null, this.settings, this.views);
+            this.sync_source_id = GLib.Timeout.add_seconds (900, () => {
+                sync_data (null, this.settings, this.views, this.sync_source_id);
                 return GLib.Source.CONTINUE;
             });
         }
@@ -88,7 +87,7 @@ namespace Health {
             }
         }
 
-        private static void sync_data (Gtk.Window? parent, Settings settings, View[] views) {
+        private static void sync_data (Gtk.Window? parent, Settings settings, View[] views, uint source_id) {
             var proxy = new GoogleFitOAuth2Proxy ();
             var parent_ref = GLib.WeakRef (parent);
             proxy.sync_data.begin (settings, (obj, res) => {
@@ -97,6 +96,9 @@ namespace Health {
                     foreach (var view in views) {
                         view.update ();
                     }
+                } catch (OAuth2Error.NO_LIBSECRET_PASSWORD e) {
+                    warning (e.message);
+                    GLib.Source.remove (source_id);
                 } catch (GLib.Error e) {
                     var weak_ref = parent_ref.get ();
                     if (weak_ref != null) {

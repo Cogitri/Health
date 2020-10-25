@@ -21,6 +21,7 @@ namespace Health {
     errordomain OAuth2Error {
         BAD_PARAMS,
         SERVER_LISTEN_FAILED,
+        NO_LIBSECRET_PASSWORD,
     }
 
     public abstract class OAuth2Proxy : Rest.OAuth2Proxy {
@@ -222,7 +223,7 @@ namespace Health {
 
         public async void sync_data (Settings settings) throws GLib.Error {
             if (!yield this.set_access_token_from_libsecret ()) {
-                info ("Google Fit Refresh token not set up, won't sync.");
+                throw new OAuth2Error.NO_LIBSECRET_PASSWORD ("Google Fit Refresh token not set up, won't sync.");
             }
             yield this.import_data_since (settings, settings.last_sync_google_fit);
             settings.last_sync_google_fit = new GLib.DateTime.now ();
