@@ -146,7 +146,6 @@ namespace Health {
             if (last_weight == null) {
                 return 0;
             }
-            warning ("%lf / %lf", last_weight.get_in_kg (), GLib.Math.pow (this.settings.user_height / 100.0, 2));
             return ((!) last_weight).get_in_kg () / GLib.Math.pow (this.settings.user_height / 100.0, 2);
         }
 

@@ -45,7 +45,7 @@ namespace Health {
             return token;
         }
 
-        public async abstract void open_authentication_url () throws GLib.Error;
+        public async abstract void open_authentication_url (Settings settings) throws GLib.Error;
 
         public string? get_parameter_from_query (string url, string parameter) {
             string? token = null;
@@ -225,12 +225,12 @@ namespace Health {
             if (!yield this.set_access_token_from_libsecret ()) {
                 throw new OAuth2Error.NO_LIBSECRET_PASSWORD ("Google Fit Refresh token not set up, won't sync.");
             }
-            yield this.import_data_since (settings, settings.last_sync_google_fit);
-            settings.last_sync_google_fit = new GLib.DateTime.now ();
+            yield this.import_data_since (settings, settings.timestamp_last_sync_google_fit);
+            settings.timestamp_last_sync_google_fit = new GLib.DateTime.now ();
         }
 
-        public async override void open_authentication_url () throws GLib.Error {
-            if (yield this.set_access_token_from_libsecret ()) {
+        public async override void open_authentication_url (Settings settings) throws GLib.Error {
+            if (settings.sync_provider_setup_google_fit && yield this.set_access_token_from_libsecret ()) {
                 info ("Got token from libsecret; no need to open authentication dialog");
                 return;
             }
@@ -266,6 +266,7 @@ namespace Health {
             yield; // wait for server to get response
             yield this.set_access_token_from_redirect_uri (uri);
             server.disconnect ();
+            settings.sync_provider_setup_google_fit = true;
         }
     }
 

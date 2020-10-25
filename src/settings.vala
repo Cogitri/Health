@@ -27,6 +27,7 @@
      */
     public class Settings : GLib.Settings {
         public const string DID_INITIAL_SETUP_KEY = "did-initial-setup";
+        public const string SYNC_PROVIDER_SETUP_GOOGLE_FIT = "sync-provider-setup-google-fit";
         public const string TIMESTAMP_LAST_SYNC_GOOGLE_FIT_KEY = "timestamp-last-sync-google-fit";
         public const string UNITSYSTEM_KEY = "unitsystem";
         public const string USER_AGE_KEY = "user-age";
@@ -46,7 +47,16 @@
             }
         }
 
-        public GLib.DateTime last_sync_google_fit {
+        public bool sync_provider_setup_google_fit {
+            get {
+                return this.get_boolean (SYNC_PROVIDER_SETUP_GOOGLE_FIT);
+            }
+            set {
+                this.set_boolean (SYNC_PROVIDER_SETUP_GOOGLE_FIT, value);
+            }
+        }
+
+        public GLib.DateTime timestamp_last_sync_google_fit {
             owned get {
                 return new GLib.DateTime.from_iso8601 (this.get_string (TIMESTAMP_LAST_SYNC_GOOGLE_FIT_KEY), null);
             }

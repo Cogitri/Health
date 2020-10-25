@@ -31,7 +31,21 @@ namespace Health {
         [GtkChild]
         private Gtk.Spinner google_fit_spinner;
 
-        public Settings? settings { get; set; }
+        private Settings? _settings;
+        public Settings? settings {
+            get {
+                return this._settings;
+            }
+            set {
+                this._settings = value;
+                if (this._settings.sync_provider_setup_google_fit) {
+                    this.google_fit_selected_image.visible = true;
+                    this.google_fit_selected_image.icon_name = "object-select-symbolic";
+                    this.google_fit_stack.visible_child = this.google_fit_selected_image;
+                    this.google_fit_start_sync_row.activatable = false;
+                }
+            }
+        }
         public weak Gtk.Window? parent_window { get; set; }
 
         static construct {
@@ -45,7 +59,7 @@ namespace Health {
                 this.google_fit_spinner.visible = true;
                 this.google_fit_stack.visible_child = this.google_fit_spinner;
                 var proxy = new GoogleFitOAuth2Proxy ();
-                proxy.open_authentication_url.begin ((obj, res) => {
+                proxy.open_authentication_url.begin (settings ?? new Health.Settings (), (obj, res) => {
                     try {
                         proxy.open_authentication_url.end (res);
                         proxy.import_data.begin (settings ?? new Health.Settings (), (obj, res) => {
@@ -53,6 +67,7 @@ namespace Health {
                                 proxy.import_data.end (res);
                                 this.google_fit_selected_image.visible = true;
                                 this.google_fit_stack.visible_child = this.google_fit_selected_image;
+                                this.google_fit_start_sync_row.activatable = false;
                             } catch (GLib.Error e) {
                                 this.open_sync_error (e.message);
                                 this.google_fit_selected_image.visible = true;

@@ -68,10 +68,12 @@ namespace Health {
             if (this.settings.window_is_maximized) {
                 this.maximize ();
             }
-            this.sync_source_id = GLib.Timeout.add_seconds (900, () => {
-                sync_data (null, this.settings, this.views, this.sync_source_id);
-                return GLib.Source.CONTINUE;
-            });
+            if (this.settings.sync_provider_setup_google_fit) {
+                this.sync_source_id = GLib.Timeout.add_seconds (900, () => {
+                    sync_data (null, this.settings, this.views, this.sync_source_id);
+                    return GLib.Source.CONTINUE;
+                });
+            }
         }
 
         public void update () {
@@ -119,7 +121,9 @@ namespace Health {
             this.settings.window_height = this.current_height;
             this.settings.window_width = this.current_width;
 
-            GLib.Source.remove (this.sync_source_id);
+            if (this.sync_source_id > 0) {
+                GLib.Source.remove (this.sync_source_id);
+            }
 
             return false;
         }
