@@ -68,7 +68,7 @@
                       <object class="GtkStackPage">
                         <property name="child">
                           <object class="GtkImage" id="google_fit_selected_image">
-                            <property name="icon_name">network-transmit-receive-symbolic</property>
+                            <property name="icon_name">object-select-symbolic</property>
                           </object>
                         </property>
                       </object>
