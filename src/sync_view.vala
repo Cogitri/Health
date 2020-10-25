@@ -57,6 +57,7 @@ namespace Health {
             if (row == this.google_fit_start_sync_row) {
                 this.google_fit_stack.visible = true;
                 this.google_fit_spinner.visible = true;
+                this.google_fit_spinner.spinning = true;
                 this.google_fit_stack.visible_child = this.google_fit_spinner;
                 var proxy = new GoogleFitOAuth2Proxy ();
                 proxy.open_authentication_url.begin (settings ?? new Health.Settings (), (obj, res) => {
