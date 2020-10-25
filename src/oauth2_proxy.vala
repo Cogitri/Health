@@ -45,7 +45,7 @@ namespace Health {
             return token;
         }
 
-        public async abstract void open_authentication_url () throws GLib.Error;
+        public async abstract void open_authentication_url (Settings settings) throws GLib.Error;
 
         public string? get_parameter_from_query (string url, string parameter) {
             string? token = null;
@@ -225,12 +225,12 @@ namespace Health {
             if (!yield this.set_access_token_from_libsecret ()) {
                 throw new OAuth2Error.NO_LIBSECRET_PASSWORD ("Google Fit Refresh token not set up, won't sync.");
             }
-            yield this.import_data_since (settings, settings.last_sync_google_fit);
-            settings.last_sync_google_fit = new GLib.DateTime.now ();
+            yield this.import_data_since (settings, settings.timestamp_last_sync_google_fit);
+            settings.timestamp_last_sync_google_fit = new GLib.DateTime.now ();
         }
 
-        public async override void open_authentication_url () throws GLib.Error {
-            if (yield this.set_access_token_from_libsecret ()) {
+        public async override void open_authentication_url (Settings settings) throws GLib.Error {
+            if (settings.sync_provider_setup_google_fit && yield this.set_access_token_from_libsecret ()) {
                 info ("Got token from libsecret; no need to open authentication dialog");
                 return;
             }
@@ -247,25 +247,43 @@ namespace Health {
             params.insert ("prompt", "consent");
             params.insert ("response_type", "code");
 
-            var context = GLib.MainContext.default ();
-            context.push_thread_default ();
-
-            var server = (Soup.Server) Object.new (typeof (Soup.Server));
-            string? uri = null;
             SourceFunc callback = this.open_authentication_url.callback;
 
-            server.add_handler (null, (server, msg, path, query, client) => {
-                uri = msg.get_uri ().to_string (false);
-                msg.set_status (200);
-                // FIXME: Make the HTML response nicer
-                msg.set_response ("text/html", Soup.MemoryUse.STATIC, "<html><head><title>Success.</title></head><body><h1>Successfully retrieved Authorization-Token, please return to GNOME Health.</html>".data);
-                Idle.add ((owned) callback);
+            var listen_thread = new Thread<string?> ("oauth_listen_thread", () => {
+                var context = new GLib.MainContext ();
+                context.push_thread_default ();
+                var loop = new MainLoop (context);
+                var server = (Soup.Server) Object.new (typeof (Soup.Server));
+                string? uri = null;
+
+                server.add_handler (null, (server, msg, path, query, client) => {
+                    uri = msg.get_uri ().to_string (false);
+                    msg.set_status (200);
+                    // FIXME: Make the HTML response nicer
+                    msg.set_response ("text/html", Soup.MemoryUse.STATIC, "<html><head><title>Success.</title></head><body><h1>Successfully retrieved Authorization-Token, please return to GNOME Health.</html>".data);
+                    loop.quit ();
+                });
+                try {
+                    server.listen_local (this.get_server_port (), 0);
+                    loop.run ();
+                    server.disconnect ();
+                    Idle.add ((owned) callback);
+                    return uri;
+                } catch (GLib.Error e) {
+                    warning ("Failed to listen for OAuth2-Redirect due to error %s", e.message);
+                    Idle.add ((owned) callback);
+                    return null;
+                }
             });
-            server.listen_local (this.get_server_port (), 0);
+
+
             yield GLib.AppInfo.launch_default_for_uri_async (this.build_login_url_full (this.get_redirect_url (), params) + "&scope=%s".printf (scopes), null);
-            yield; // wait for server to get response
-            yield this.set_access_token_from_redirect_uri (uri);
-            server.disconnect ();
+            yield;
+            var uri = listen_thread.join ();
+                if (uri != null) {
+                yield this.set_access_token_from_redirect_uri ((!) uri);
+                settings.sync_provider_setup_google_fit = true;
+            }
         }
     }
 
