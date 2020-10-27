@@ -69,6 +69,10 @@ namespace Health {
                 this.maximize ();
             }
             if (this.settings.sync_provider_setup_google_fit) {
+                GLib.Idle.add (() => {
+                    sync_data (this, this.settings, this.views, 0);
+                    return GLib.Source.REMOVE;
+                });
                 this.sync_source_id = GLib.Timeout.add_seconds (900, () => {
                     sync_data (this, this.settings, this.views, this.sync_source_id);
                     return GLib.Source.CONTINUE;
@@ -100,7 +104,9 @@ namespace Health {
                     }
                 } catch (OAuth2Error.NO_LIBSECRET_PASSWORD e) {
                     warning (e.message);
-                    GLib.Source.remove (source_id);
+                    if (source_id > 0) {
+                        GLib.Source.remove (source_id);
+                    }
                 } catch (GLib.Error e) {
                     var weak_ref = parent_ref.get ();
                     if (weak_ref != null) {

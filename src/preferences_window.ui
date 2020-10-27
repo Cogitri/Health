@@ -131,6 +131,7 @@
               <object class="HdyActionRow" id="stepgoal_actionrow">
                 <property name="visible">True</property>
                 <property name="title" translatable="yes">Stepgoal</property>
+                <property name="subtitle" translatable="yes">The WHO recommends 10.000 steps per day.</property>
                 <child>
                   <object class="GtkSpinButton" id="stepgoal_spinner">
                     <property name="width-chars">5</property>
