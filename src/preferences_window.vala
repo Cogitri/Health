@@ -34,6 +34,8 @@
         [GtkChild]
         private Gtk.SpinButton weightgoal_spinner;
         [GtkChild]
+        private Hdy.ActionRow weightgoal_actionrow;
+        [GtkChild]
         private SyncView sync_view;
 
         private Settings settings;
@@ -49,12 +51,17 @@
             this.age_spinner.value = this.settings.user_age;
             this.sync_view.parent_window = parent;
             this.sync_view.settings = settings;
+
+            var lower_weight = 18.5 * GLib.Math.pow ((float) settings.user_height / 100, 2);
+            var upper_weight = 24.9 * GLib.Math.pow ((float) settings.user_height / 100, 2);
             if (this.settings.unitsystem == Unitsystem.METRIC) {
                 this.height_actionrow.title = _ ("Height in centimeters");
                 this.height_spinner.value = settings.user_height;
+                this.weightgoal_actionrow.subtitle = _ ("Your recommended weight is %.2lf-%.2lf KG (18.5-25 BMI).").printf (lower_weight, upper_weight);
             } else {
                 this.height_actionrow.title = _ ("Height in inch");
                 this.height_spinner.value = cm_to_inch (settings.user_height);
+                this.weightgoal_actionrow.subtitle = _ ("Your recommended weight is %.2lf-%.2lf PB (18.5-25 BMI).").printf (kg_to_pb (lower_weight), kg_to_pb (upper_weight));
             }
 
             this.parent_window = parent;
