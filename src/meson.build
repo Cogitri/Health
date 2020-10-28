@@ -21,7 +21,7 @@ cc = meson.get_compiler('c')
 health_deps = [
   dependency('gio-2.0', version: '>= 2.50'),
   dependency('gtk4'),
-  dependency('libhandy-1'),
+  dependency('libhandy-4'),
   dependency('gee-0.8'),
   dependency('sqlite3', version: '>=3.24'),
   dependency('libsoup-2.4'),
