@@ -28,6 +28,7 @@ health_deps = [
   dependency('rest-0.7'),
   dependency('libsecret-1'),
   dependency('json-glib-1.0'),
+  dependency('pangocairo'),
   cc.find_library('m', required: false),
 ]
 

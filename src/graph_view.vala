@@ -106,7 +106,12 @@ namespace Health {
                 cr.move_to (width + this.x_padding / 2, mul * i + this.y_padding / 2);
                 cr.line_to (this.x_padding / 2, mul * i + this.y_padding / 2);
                 if (!this.points.is_empty) {
-                    cr.show_text ("%u".printf ((uint) (biggest_value / 4.0) * (4 - i)));
+                    Pango.Rectangle extents;
+                    var layout = this.create_pango_layout ("%u".printf ((uint) (biggest_value / 4.0) * (4 - i)));
+                    layout.get_extents (null, out extents);
+
+                    cr.rel_move_to (0, Pango.units_to_double (extents.height) * -1);
+                    Pango.cairo_show_layout (cr, layout);
                 }
             }
 
@@ -117,18 +122,17 @@ namespace Health {
                 Draw X ticks (dates)
              */
             cr.save ();
-            var text_color = style_context.get_color ();
-            cr.set_source_rgba (text_color.red, text_color.green, text_color.blue, text_color.alpha);
+            cr.set_source_rgba (outline_color.red, outline_color.green, outline_color.blue, 0.5);
 
             for (int i = 0; i < this.points.size; i++) {
                 var point = this.points.get (i);
-                var font_size = 10;
-
-                cr.set_font_size (font_size);
-
-                cr.move_to (i * scale_x + this.x_padding / 2 - font_size, height + this.y_padding / 1.25);
+                Pango.Rectangle extents;
                 /* TRANSLATORS: this is the date as displayed in the graph, e.g. 30/9 for September 30 */
-                cr.show_text (_ ("%d/%d").printf (point.date.get_day (), point.date.get_month ()));
+                var layout = this.create_pango_layout (_ ("%d/%d").printf (point.date.get_day (), point.date.get_month ()));
+                layout.get_extents (null, out extents);
+
+                cr.move_to (i * scale_x + (this.x_padding - Pango.units_to_double (extents.width)) / 2, height + this.y_padding / 1.5 - Pango.units_to_double (extents.height) / 2);
+                Pango.cairo_show_layout (cr, layout);
             }
 
             cr.stroke ();
