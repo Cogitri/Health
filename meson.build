@@ -7,6 +7,7 @@ project('dev.Cogitri.Health', ['c', 'vala'],
 
 gnome = import('gnome')
 i18n = import('i18n')
+application_id = 'dev.Cogitri.Health'
 
 subdir('data')
 subdir('src')
