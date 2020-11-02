@@ -44,3 +44,4 @@ gnome.compile_schemas(
   build_by_default: true,
   depend_files: 'dev.Cogitri.Health.gschema.xml',
 )
+subdir('icons')
