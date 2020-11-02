@@ -82,6 +82,9 @@ namespace Health {
                     biggest_value = point.value;
                 }
             }
+            // Round up to 500, the graph looks a bit odd if we draw lines at biggest_value / 4 instead of
+            // using even numbers
+            biggest_value = biggest_value + 500 - biggest_value % 500;
             var height = this.get_height () - this.y_padding;
             var width = this.get_width () - this.x_padding;
             var scale_x = width / (this.points.size > 1 ? (this.points.size - 1) : 1);
