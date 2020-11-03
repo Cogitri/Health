@@ -65,6 +65,16 @@ namespace Health {
                 this.queue_draw ();
             }
         }
+        private uint _x_lines_interval = 500;
+        public uint x_lines_interval {
+            get {
+                return _x_lines_interval;
+            }
+            set {
+                this._x_lines_interval = value;
+                this.queue_draw ();
+            }
+        }
 
         public GraphView (Gee.ArrayList<Point> points, string limitlabel = "", double limit = -1) {
             this.points = points;
@@ -84,7 +94,7 @@ namespace Health {
             }
             // Round up to 500, the graph looks a bit odd if we draw lines at biggest_value / 4 instead of
             // using even numbers
-            biggest_value = biggest_value + 500 - biggest_value % 500;
+            biggest_value = biggest_value + this.x_lines_interval - biggest_value % this.x_lines_interval;
             var height = this.get_height () - this.y_padding;
             var width = this.get_width () - this.x_padding;
             var scale_x = width / (this.points.size > 1 ? (this.points.size - 1) : 1);
