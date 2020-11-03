@@ -93,6 +93,7 @@ namespace Health {
     public class WeightGraphView : GraphView {
         public WeightGraphView (WeightGraphModel model, double weightgoal) {
             base (model.to_points (), _ ("Weightgoal"), weightgoal);
+            this.x_lines_interval = 10;
         }
 
     }
