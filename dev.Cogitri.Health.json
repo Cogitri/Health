@@ -43,8 +43,8 @@
             "sources": [
                 {
                     "type": "archive",
-                    "url": "https://download.gnome.org/sources/gtk/3.99/gtk-3.99.3.tar.xz",
-                    "sha256": "5745df4647e845f8a5fa0dbd59594afbfa6a6ba6a08a7c9632182970e8f49767"
+                    "url": "https://download.gnome.org/sources/gtk/3.99/gtk-3.99.4.tar.xz",
+                    "sha256": "8979cb1eb6ad2a496e00e94674d23f90aefae5d3f23b623ffda0b35d11ec85d0"
                 }
             ]
         },
