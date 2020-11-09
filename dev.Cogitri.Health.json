@@ -66,6 +66,10 @@
                     "type": "git",
                     "url": "https://gitlab.gnome.org/exalm/libhandy",
                     "branch": "gtk4"
+                },
+                {
+                    "type": "patch",
+                    "path": "build-aux/libhandy-dark-theme.patch"
                 }
             ]
         },
