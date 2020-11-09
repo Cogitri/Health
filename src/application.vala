@@ -40,7 +40,7 @@ namespace Health {
             Hdy.init ();
 
             if (Gtk.Settings.get_default ().gtk_theme_name.contains ("-dark")) {
-                Gtk.Settings.get_default ().gtk_application_prefer_dark_theme = true;
+                warning ("Using -dark themes (such as Adwaita-dark) is unsupported. Please use your theme in dark-mode instead (e.g. Adwaita:dark instead of Adwaita-dark)");
             }
 
             this.add_action_entries (APP_ENTRIES, this);
