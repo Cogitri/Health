@@ -39,6 +39,10 @@ namespace Health {
             base.startup ();
             Hdy.init ();
 
+            if (Gtk.Settings.get_default().gtk_theme_name.contains("-dark")) {
+                Gtk.Settings.get_default().gtk_application_prefer_dark_theme = true;
+            }
+
             this.add_action_entries (APP_ENTRIES, this);
         }
 
