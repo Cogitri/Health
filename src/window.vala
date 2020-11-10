@@ -33,7 +33,7 @@ namespace Health {
         private int current_height;
         private int current_width;
         private Settings settings;
-        private SqliteDatabase db;
+        private TrackerDatabase db;
         private ViewModes current_view;
         private View[] views;
         private uint sync_source_id;
@@ -42,17 +42,16 @@ namespace Health {
             Object (application: app);
             this.current_view = ViewModes.STEPS;
             this.settings = settings;
-            this.db = new SqliteDatabase ();
 
             try {
-                this.db.open ();
+            this.db = TrackerDatabase.get_instance ();
             } catch (DatabaseError e) {
                 error (e.message);
             }
 
             var weight_model = new WeightGraphModel (this.settings, this.db);
             var steps_model = new StepsGraphModel (this.db);
-            this.views = new View[] { new StepView (steps_model, this.settings), new WeightView (weight_model, settings), };
+            this.views = new View[] { new StepView (steps_model, this.settings, this.db), new WeightView (weight_model, settings, this.db), };
 
             foreach (var view in views) {
                 var page = this.stack.add_titled (view, view.name, view.title);
@@ -159,7 +158,6 @@ namespace Health {
             dialog.present ();
             unowned var dialog_u = dialog;
             dialog.response.connect (() => {
-                this.views[this.current_view].update ();
                 dialog_u.destroy ();
             });
         }

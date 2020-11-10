@@ -35,9 +35,9 @@ namespace Health {
      * An implementation of {@link GraphModel} that interacts with the user's step record data.
      */
     public class StepsGraphModel : GraphModel<Steps> {
-        private SqliteDatabase db;
+        private TrackerDatabase db;
 
-        public StepsGraphModel (SqliteDatabase db) {
+        public StepsGraphModel (TrackerDatabase db) {
             this.db = db;
 
             this.init ();
@@ -49,11 +49,11 @@ namespace Health {
          * This can be used e.g. after the user added a new step record.
          * @return true if reloading suceeded.
          */
-        public override bool reload () {
+        public async override bool reload () {
             try {
-                this.arr = db.get_steps_after (get_date_in_n_days (-30));
+                this.arr = yield db.get_steps_after (get_date_in_n_days (-30), null);
                 return true;
-            } catch (DatabaseError e) {
+            } catch (GLib.Error e) {
                 warning ("Failed to load steps from database due to error %s", e.message);
                 return false;
             }
@@ -169,7 +169,7 @@ namespace Health {
         private StepsGraphView? steps_graph_view;
         private StepsGraphModel steps_graph_model;
 
-        public StepView (StepsGraphModel model, Settings settings) {
+        public StepView (StepsGraphModel model, Settings settings, TrackerDatabase db) {
             this.name = "Steps";
             this.title = _ ("Steps");
             this.settings = settings;
@@ -186,7 +186,9 @@ namespace Health {
             this.settings.changed[Settings.USER_STEPGOAL_KEY].connect (() => {
                 this.update ();
             });
-
+            db.steps_updated.connect (() => {
+                this.update ();
+            });
             this.update ();
         }
 
@@ -194,37 +196,39 @@ namespace Health {
          * Reload the {@link StepsGraphModel}'s data and refresh labels & the {@link StepsGraphView}.
          */
         public override void update () {
-            this.steps_graph_model.reload ();
-
-            this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
-            var streak_count = this.steps_graph_model.get_streak_count_today (this.settings.user_stepgoal);
-            switch (streak_count) {
-                case 0:
-                    var previous_streak = this.steps_graph_model.get_streak_count_yesterday (this.settings.user_stepgoal);
-                    if (previous_streak == 0) {
-                        this.streak_label.set_text (_ ("No streak yet. Reach your stepgoal for multiple days to start a streak!"));
-                    } else {
-                        this.streak_label.set_text (_ ("You're on a streak for %u days. Reach your stepgoal today to continue it!").printf (previous_streak));
+            this.steps_graph_model.reload.begin ((obj, res) => {
+                if (this.steps_graph_model.reload.end (res)) {
+                    this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
+                    var streak_count = this.steps_graph_model.get_streak_count_today (this.settings.user_stepgoal);
+                    switch (streak_count) {
+                        case 0:
+                            var previous_streak = this.steps_graph_model.get_streak_count_yesterday (this.settings.user_stepgoal);
+                            if (previous_streak == 0) {
+                                this.streak_label.set_text (_ ("No streak yet. Reach your stepgoal for multiple days to start a streak!"));
+                            } else {
+                                this.streak_label.set_text (_ ("You're on a streak for %u days. Reach your stepgoal today to continue it!").printf (previous_streak));
+                            }
+                            break;
+                        case 1:
+                            this.streak_label.set_text (_ ("You've reached your stepgoal today. Keep going to start a streak!"));
+                            break;
+                        default:
+                            this.streak_label.set_text (_ ("You're on a streak for %u days. Good job!").printf (streak_count));
+                            break;
                     }
-                    break;
-                case 1:
-                    this.streak_label.set_text (_ ("You've reached your stepgoal today. Keep going to start a streak!"));
-                    break;
-                default:
-                    this.streak_label.set_text (_ ("You're on a streak for %u days. Good job!").printf (streak_count));
-                    break;
-            }
-            this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
+                    this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
 
-            if (this.steps_graph_view == null && !this.steps_graph_model.is_empty) {
-                this.main_box.remove (this.no_data_label);
-                this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
-                ((!) this.steps_graph_view).visible = true;
-                this.main_box.append ((!) this.steps_graph_view);
-            } else if (this.steps_graph_view != null) {
-                ((!) this.steps_graph_view).points = this.steps_graph_model.to_points ();
-                ((!) this.steps_graph_view).limit = this.settings.user_stepgoal;
-            }
+                    if (this.steps_graph_view == null && !this.steps_graph_model.is_empty) {
+                        this.main_box.remove (this.no_data_label);
+                        this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
+                        ((!) this.steps_graph_view).visible = true;
+                        this.main_box.append ((!) this.steps_graph_view);
+                    } else if (this.steps_graph_view != null) {
+                        ((!) this.steps_graph_view).points = this.steps_graph_model.to_points ();
+                        ((!) this.steps_graph_view).limit = this.settings.user_stepgoal;
+                    }
+                }
+            });
         }
 
     }

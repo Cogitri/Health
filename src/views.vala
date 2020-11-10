@@ -58,7 +58,9 @@ namespace Health {
 
         protected void init () {
             this.arr = new Gee.ArrayList<T> ();
-            this.reload ();
+            this.reload.begin ((obj, res) => {
+                this.reload.end (res);
+            });
         }
 
         /**
@@ -69,7 +71,7 @@ namespace Health {
         /**
          * Reloads the {@link GraphModel}'s data, e.g. by loading it from the DB again.
          */
-        public abstract bool reload ();
+        public async abstract bool reload ();
 
     }
 }
