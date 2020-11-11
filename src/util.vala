@@ -44,7 +44,7 @@ namespace Health {
 
     public GLib.Date date_from_datetime (DateTime datetime) {
         var date = GLib.Date ();
-        date.set_dmy ((uchar) datetime.get_day_of_month (), datetime.get_month (), (uchar) datetime.get_year ());
+        date.set_dmy ((uchar) datetime.get_day_of_month (), datetime.get_month (), (ushort) datetime.get_year ());
         return date;
     }
 
