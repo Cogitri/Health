@@ -172,6 +172,7 @@ namespace Health {
         public StepView (StepsGraphModel model, Settings settings, TrackerDatabase db) {
             this.name = "Steps";
             this.title = _ ("Steps");
+            this.icon_name = "dev.Cogitri.Health-steps-symbolic";
             this.settings = settings;
             this.steps_graph_model = model;
 

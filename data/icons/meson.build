@@ -14,3 +14,10 @@ install_data(
   rename: '@0@-symbolic.svg'.format(application_id)
 )
 
+install_data(
+  [
+    symbolic_dir / 'dev.Cogitri.Health-steps-symbolic.svg',
+    symbolic_dir / 'dev.Cogitri.Health-weight-scale-symbolic.svg',
+  ],
+  install_dir: get_option('datadir') / 'icons' / symbolic_dir,
+)

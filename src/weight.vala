@@ -118,6 +118,7 @@ namespace Health {
             this.name = "Weight";
             this.settings = settings;
             this.title = _ ("Weight");
+            this.icon_name = "dev.Cogitri.Health-weight-scale-symbolic";
             this.weight_graph_model = model;
 
             this.update_weightgoal_label ();
