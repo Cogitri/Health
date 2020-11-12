@@ -1,0 +1,29 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix nrl: <http://tracker.api.gnome.org/ontology/v3/nrl#> .
+@prefix health: <https://gitlab.gnome.org/World/health#> .
+
+health: a nrl:Namespace, nrl:Ontology ;
+    nrl:prefix "health" ;
+    nrl:lastModified "2020-11-09T10:00:00Z" .
+
+health:DataPoint a rdfs:Class ;
+    rdfs:comment "Represents a datapoint" ;
+    rdfs:subClassOf rdfs:Resource ;
+    nrl:notify true .
+
+health:date a rdf:Property, nrl:InverseFunctionalProperty;
+    rdfs:domain health:DataPoint ;
+    rdfs:range xsd:date ;
+    nrl:maxCardinality 1 .
+
+health:steps a rdf:Property ;
+    rdfs:domain health:DataPoint ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:weight a rdf:Property ;
+    rdfs:domain health:DataPoint ;
+    rdfs:range xsd:double ;
+    nrl:maxCardinality 1 .

@@ -41,11 +41,13 @@ namespace Health {
         private void on_response (int response_id) {
             switch (response_id) {
                 case Gtk.ResponseType.OK:
-                    try {
-                        this.save ();
-                    } catch (DatabaseError e) {
-                        warning (_ ("Failed to save new data due to error %s"), e.message);
-                    }
+                    this.save.begin ((obj, res) => {
+                        try {
+                            this.save.end (res);
+                        } catch (GLib.Error e) {
+                            warning (_ ("Failed to save new data due to error %s"), e.message);
+                        }
+                    });
                     break;
             }
             this.destroy ();
@@ -54,7 +56,7 @@ namespace Health {
         /**
          * save() should save the user's input to the DB.
          */
-        public virtual void save () throws DatabaseError {
+        public async virtual void save () throws GLib.Error {
         }
 
     }
@@ -63,33 +65,38 @@ namespace Health {
      * An {@link AddDialog} for adding a new step record.
      */
     public class StepsAddDialog : AddDialog {
-        private SqliteDatabase db;
+        private TrackerDatabase db;
 
-        public StepsAddDialog (Gtk.Window? parent, SqliteDatabase db) {
+        public StepsAddDialog (Gtk.Window? parent, TrackerDatabase db) {
             base (parent);
 
             this.db = db;
-            var update = false;
-            try {
-                update = db.check_steps_exist_on_date (get_today_date ());
-            } catch (DatabaseError e) {
-                warning (e.message);
-            }
 
-            if (update) {
-                this.dialog_label.set_text (_ ("Update today's step record"));
-            } else {
-                this.dialog_label.set_text (_ ("Add new step record"));
-            }
+
+            db.check_steps_exist_on_date.begin (get_today_date (), null, (obj, res) => {
+                var update = false;
+                try {
+                    update = db.check_steps_exist_on_date.end (res);
+                } catch (GLib.Error e) {
+                    warning (e.message);
+                }
+
+
+                if (update) {
+                    this.dialog_label.set_text (_ ("Update today's step record"));
+                } else {
+                    this.dialog_label.set_text (_ ("Add new step record"));
+                }
+            });
+
             this.dialog_entry.set_max_length (6);
         }
 
         /**
          * Saves the data that has been entered into the dialog to the database.
          */
-        public override void save () throws DatabaseError {
-            var db = new SqliteDatabase ();
-            db.open ();
+        public async override void save () throws GLib.Error {
+            var db = TrackerDatabase.get_instance ();
 
             uint64 steps = 0;
             try {
@@ -98,7 +105,7 @@ namespace Health {
                 warning (_("Failed to parse steps due to error %s"), e.message);
             }
 
-            db.save_steps (new Steps (get_today_date (), (uint32) steps));
+            yield db.save_steps (new Steps (get_today_date (), (uint32) steps), null);
         }
 
     }
@@ -108,26 +115,28 @@ namespace Health {
      */
     public class WeightAddDialog : AddDialog {
         private Settings settings;
-        private SqliteDatabase db;
+        private TrackerDatabase db;
 
-        public WeightAddDialog (Gtk.Window? parent, Settings settings, SqliteDatabase db) {
+        public WeightAddDialog (Gtk.Window? parent, Settings settings, TrackerDatabase db) {
             base (parent);
 
             this.db = db;
             this.settings = settings;
 
-            var update = false;
-            try {
-                update = db.check_weight_exist_on_date (get_today_date ());
-            } catch (DatabaseError e) {
-                warning (e.message);
-            }
+            db.check_weight_exist_on_date.begin (get_today_date (), null, (obj, res) => {
+                var update = false;
+                try {
+                    update = db.check_weight_exist_on_date.end (res);
+                } catch (GLib.Error e) {
+                    warning (e.message);
+                }
 
-            if (update) {
-                this.dialog_label.set_text (_ ("Update today's weight measurement"));
-            } else {
-                this.dialog_label.set_text (_ ("Add new weight measurement"));
-            }
+                if (update) {
+                    this.dialog_label.set_text (_ ("Update today's weight measurement"));
+                } else {
+                    this.dialog_label.set_text (_ ("Add new weight measurement"));
+                }
+            });
 
             this.dialog_entry.set_max_length (6);
         }
@@ -135,16 +144,15 @@ namespace Health {
         /**
          * Saves the data that has been entered into the dialog to the database.
          */
-        public override void save () throws DatabaseError {
-            var db = new SqliteDatabase ();
-            db.open ();
+        public async override void save () throws GLib.Error {
+            var db = TrackerDatabase.get_instance ();
 
             double weight = 0;
             if (!double.try_parse (this.dialog_entry.get_text (), out weight)) {
                 warning (_ ("Failed to parse weight '%s' as floating point number"), this.dialog_entry.get_text ());
             }
 
-            db.save_weight (new Weight (get_today_date (), new WeightUnitContainer.from_user_value (weight, this.settings)));
+            yield db.save_weight (new Weight (get_today_date (), new WeightUnitContainer.from_user_value (weight, this.settings)), null);
         }
 
     }

@@ -45,3 +45,4 @@ gnome.compile_schemas(
   depend_files: 'dev.Cogitri.Health.gschema.xml',
 )
 subdir('icons')
+subdir('tracker')

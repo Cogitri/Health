@@ -168,17 +168,15 @@ namespace Health {
         }
 
         public async void import_data (Settings settings) throws GLib.Error {
-            var db = new SqliteDatabase ();
-            db.open ();
-            db.import_weights (yield this.get_all_weights (settings));
-            db.import_steps (yield this.get_all_steps ());
+            var db = TrackerDatabase.get_instance ();
+            yield db.import_weights (yield this.get_all_weights (settings), null);
+            yield db.import_steps (yield this.get_all_steps (), null);
         }
 
         public async void import_data_since (Settings settings, GLib.DateTime since) throws GLib.Error {
-            var db = new SqliteDatabase ();
-            db.open ();
-            db.import_weights (yield this.get_weights_since (settings, since));
-            db.import_steps (yield this.get_steps_since (since));
+            var db = TrackerDatabase.get_instance ();
+            yield db.import_weights (yield this.get_weights_since (settings, since), null);
+            yield db.import_steps (yield this.get_steps_since (since), null);
         }
 
         private async void set_access_token_from_redirect_uri (string redirect_uri) throws GLib.Error {

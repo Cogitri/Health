@@ -29,6 +29,7 @@ health_deps = [
   dependency('libsecret-1'),
   dependency('json-glib-1.0'),
   dependency('pangocairo'),
+  dependency('tracker-sparql-3.0'),
   cc.find_library('m', required: false),
 ]
 
@@ -45,6 +46,7 @@ add_project_arguments(
 conf = configuration_data()
 conf.set_quoted('APPLICATION_ID', 'dev.Cogitri.Health')
 conf.set_quoted('VERSION', meson.project_version())
+conf.set_quoted('DATADIR', get_option('prefix') / get_option('datadir') / 'health')
 
 configure_file(output: 'config.h', configuration: conf)
 # Include config.h

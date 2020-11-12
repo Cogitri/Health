@@ -1,0 +1,9 @@
+@prefix dsc: <http://tracker.api.gnome.org/ontology/v3/dsc#> .
+
+<virtual-ontology-uri:health.ontology> a dsc:Ontology ;
+    dsc:title "Health ontology" ;
+    dsc:description "Tracker database schema for Health private data." ;
+
+    dsc:localPrefix "health" ;
+    dsc:baseUrl "https://gitlab.gnome.org/World/health#" ;
+    dsc:relativePath "./health.ontology" ;

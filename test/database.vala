@@ -17,17 +17,17 @@
  */
 
 namespace Health {
-    class SqliteDatabaseTest : ValaUnit.TestCase {
-        public SqliteDatabaseTest () {
-            base ("SqliteDatabaseTest");
+    class TrackerDatabaseTest : ValaUnit.TestCase {
+        public TrackerDatabaseTest () {
+            base ("TrackerDatabaseTest");
             this.add_test ("check_exists_steps", this.check_exists_steps);
             this.add_test ("check_exists_weight", this.check_exists_weight);
             this.add_test ("get_after_steps", this.get_after_steps);
             this.add_test ("get_after_weight", this.get_after_weight);
-            this.add_test ("open", this.open);
-            this.add_test ("open_nonexistant", this.open_nonexistant);
             this.add_test ("save_steps", this.save_steps);
+            this.add_test ("save_steps_and_weight", this.save_steps_and_weight);
             this.add_test ("save_weight", this.save_weight);
+            this.add_test ("save_weight_and_steps", this.save_weight_and_steps);
         }
 
         public void check_exists_steps () throws ValaUnit.TestError {
@@ -35,11 +35,20 @@ namespace Health {
             var date = get_today_date ();
             var steps = new Steps (date, 10000);
             try {
-                db.save_steps (steps);
-                assert (db.check_steps_exist_on_date (date));
+                db.save_steps.begin (steps, null, this.async_completion);
+                db.save_steps.end (this.async_result ());
+                db.check_steps_exist_on_date.begin (date, null, this.async_completion);
+                assert (db.check_steps_exist_on_date.end (this.async_result ()));
                 date.subtract_days (1);
-                assert (!db.check_steps_exist_on_date (date));
+                db.check_steps_exist_on_date.begin (date, null, this.async_completion);
+                assert (!db.check_steps_exist_on_date.end (this.async_result ()));
             } catch (GLib.Error e) {
+                try {
+                    db.reset.begin (this.async_completion);
+                    db.reset.end (this.async_result ());
+                } catch (GLib.Error e) {
+                    assert_no_error (e);
+                }
                 assert_no_error (e);
             }
         }
@@ -50,11 +59,20 @@ namespace Health {
             var settings = new Settings ();
             var weight = new Weight (date, new WeightUnitContainer.from_database_value (100, settings));
             try {
-                db.save_weight (weight);
-                assert (db.check_weight_exist_on_date (date));
+                db.save_weight.begin (weight, null, this.async_completion);
+                db.save_weight.end (this.async_result ());
+                db.check_weight_exist_on_date.begin (date, null, this.async_completion);
+                assert (db.check_weight_exist_on_date.end (this.async_result ()));
                 date.subtract_days (1);
-                assert (!db.check_weight_exist_on_date (date));
+                db.check_weight_exist_on_date.begin (date, null, this.async_completion);
+                assert (!db.check_weight_exist_on_date.end (this.async_result ()));
             } catch (GLib.Error e) {
+                try {
+                    db.reset.begin (this.async_completion);
+                    db.reset.end (this.async_result ());
+                } catch (GLib.Error e) {
+                    assert_no_error (e);
+                }
                 assert_no_error (e);
             }
         }
@@ -64,11 +82,20 @@ namespace Health {
             var date = get_today_date ();
             var steps = new Steps (date, 10000);
             try {
-                db.save_steps (steps);
-                assert_equal<uint?> (db.get_steps_after (date).size, 1);
+                db.save_steps.begin (steps, null, this.async_completion);
+                db.save_steps.end (this.async_result ());
+                db.get_steps_after.begin (date, null, this.async_completion);
+                assert_equal<uint?> (db.get_steps_after.end (this.async_result ()).size, 1);
                 date.subtract_days (1);
-                assert (!db.get_steps_after (date).is_empty);
+                db.get_steps_after.begin (date, null, this.async_completion);
+                assert (!db.get_steps_after.end (this.async_result ()).is_empty);
             } catch (GLib.Error e) {
+                try {
+                    db.reset.begin (this.async_completion);
+                    db.reset.end (this.async_result ());
+                } catch (GLib.Error e) {
+                    assert_no_error (e);
+                }
                 assert_no_error (e);
             }
         }
@@ -79,36 +106,22 @@ namespace Health {
             var settings = new Settings ();
             var weight = new Weight (date, new WeightUnitContainer.from_database_value (100, settings));
             try {
-                db.save_weight (weight);
-                assert_equal<uint?> (db.get_weights_after (date, settings).size, 1);
+                db.save_weight.begin (weight, null, this.async_completion);
+                db.save_weight.end (this.async_result ());
+                db.get_weights_after.begin (date, settings, null, this.async_completion);
+                assert_equal<uint?> (db.get_weights_after.end (this.async_result ()).size, 1);
                 date.subtract_days (1);
-                assert (!db.get_weights_after (date, settings).is_empty);
+                db.get_weights_after.begin (date, settings, null, this.async_completion);
+                assert (!db.get_weights_after.end (this.async_result ()).is_empty);
             } catch (GLib.Error e) {
+                try {
+                    db.reset.begin (this.async_completion);
+                    db.reset.end (this.async_result ());
+                } catch (GLib.Error e) {
+                    assert_no_error (e);
+                }
                 assert_no_error (e);
             }
-        }
-
-        public void open () throws ValaUnit.TestError {
-            this.open_db ();
-        }
-
-        public void open_nonexistant () throws ValaUnit.TestError {
-            GLib.File? tmp_file = null;
-            FileIOStream iostream;
-            try {
-                tmp_file = GLib.File.new_tmp (null, out iostream);
-            } catch (GLib.Error e) {
-                assert_no_error (e);
-            }
-            var path = GLib.Path.build_path ("/", ((!) tmp_file).get_path (), "NONEXISTENT", "DOESNTEXIST.db");
-            var db = new SqliteDatabase ();
-            try {
-                db.open (path);
-            } catch (GLib.Error e) {
-                assert_error (e, new DatabaseError.OPEN_FAILED (""));
-                return;
-            }
-            assert_not_reached ("Expected SqliteDatabase.open () to fail");
         }
 
         public void save_steps () throws ValaUnit.TestError {
@@ -116,13 +129,53 @@ namespace Health {
             var steps = new Steps (get_today_date (), 10000);
             Gee.ArrayList<Steps>? retrieved_steps = null;
             try {
-                db.save_steps (steps);
-                retrieved_steps = db.get_steps_after (get_today_date ());
+                db.save_steps.begin (steps, null, this.async_completion);
+                db.save_steps.end (this.async_result ());
+                db.get_steps_after.begin (get_today_date (), null, this.async_completion);
+                retrieved_steps = db.get_steps_after.end (this.async_result ());
             } catch (GLib.Error e) {
+                try {
+                    db.reset.begin (this.async_completion);
+                    db.reset.end (this.async_result ());
+                } catch (GLib.Error e) {
+                    assert_no_error (e);
+                }
                 assert_no_error (e);
             }
             assert_equal<uint?> (((!) retrieved_steps).first ().date.get_julian (), steps.date.get_julian ());
             assert_equal<uint32?> (((!) retrieved_steps).first ().steps, steps.steps);
+        }
+
+        public void save_steps_and_weight () throws ValaUnit.TestError {
+            var db = this.open_db ();
+            var settings = new Settings ();
+            var steps = new Steps (get_today_date (), 10000);
+            var weight = new Weight (get_today_date (), new WeightUnitContainer.from_database_value (100, settings));
+            Gee.ArrayList<Steps>? retrieved_steps = null;
+            Gee.ArrayList<Weight>? retrieved_weights = null;
+            try {
+                db.save_steps.begin (steps, null, this.async_completion);
+                db.save_steps.end (this.async_result ());
+                db.save_weight.begin (weight, null, this.async_completion);
+                db.save_weight.end (this.async_result ());
+                db.get_steps_after.begin (get_today_date (), null, this.async_completion);
+                retrieved_steps = db.get_steps_after.end (this.async_result ());
+                db.get_weights_after.begin (get_today_date (), settings, null, this.async_completion);
+                retrieved_weights = db.get_weights_after.end (this.async_result ());
+            } catch (GLib.Error e) {
+                try {
+                    db.reset.begin (this.async_completion);
+                    db.reset.end (this.async_result ());
+                } catch (GLib.Error e) {
+                    assert_no_error (e);
+                }
+                assert_no_error (e);
+            }
+
+            assert_equal<uint?> (((!) retrieved_steps).first ().date.get_julian (), steps.date.get_julian ());
+            assert_equal<uint32?> (((!) retrieved_steps).first ().steps, steps.steps);
+            assert_equal<uint?> (((!) retrieved_weights).first ().date.get_julian (), weight.date.get_julian ());
+            assert_equal<double?> (((!) retrieved_weights).first ().weight.value, weight.weight.value);
         }
 
         public void save_weight () throws ValaUnit.TestError {
@@ -131,16 +184,58 @@ namespace Health {
             var weight = new Weight (get_today_date (), new WeightUnitContainer.from_database_value (100, settings));
             Gee.ArrayList<Weight>? retrieved_weight = null;
             try {
-                db.save_weight (weight);
-                retrieved_weight = db.get_weights_after (get_today_date (), settings);
+                db.save_weight.begin (weight, null, this.async_completion);
+                db.save_weight.end (this.async_result ());
+                db.get_weights_after.begin (get_today_date (), settings, null, this.async_completion);
+
+                retrieved_weight = db.get_weights_after.end (this.async_result ());
             } catch (GLib.Error e) {
+                try {
+                    db.reset.begin (this.async_completion);
+                    db.reset.end (this.async_result ());
+                } catch (GLib.Error e) {
+                    assert_no_error (e);
+                }
                 assert_no_error (e);
             }
             assert_equal<uint?> (((!) retrieved_weight).first ().date.get_julian (), weight.date.get_julian ());
             assert_equal<double?> (((!) retrieved_weight).first ().weight.value, weight.weight.value);
         }
 
-        private SqliteDatabase open_db () throws ValaUnit.TestError {
+        public void save_weight_and_steps () throws ValaUnit.TestError {
+            var db = this.open_db ();
+            var settings = new Settings ();
+            var steps = new Steps (get_today_date (), 10000);
+            var weight = new Weight (get_today_date (), new WeightUnitContainer.from_database_value (100, settings));
+            Gee.ArrayList<Steps>? retrieved_steps = null;
+            Gee.ArrayList<Weight>? retrieved_weights = null;
+            try {
+                db.save_weight.begin (weight, null, this.async_completion);
+                db.save_weight.end (this.async_result ());
+                db.save_steps.begin (steps, null, this.async_completion);
+                db.save_steps.end (this.async_result ());
+                db.get_steps_after.begin (get_today_date (), null, this.async_completion);
+                retrieved_steps = db.get_steps_after.end (this.async_result ());
+                db.get_weights_after.begin (get_today_date (), settings, null, this.async_completion);
+                retrieved_weights = db.get_weights_after.end (this.async_result ());
+            } catch (GLib.Error e) {
+                try {
+                    db.reset.begin (this.async_completion);
+                    db.reset.end (this.async_result ());
+                } catch (GLib.Error e) {
+                    assert_no_error (e);
+                }
+                assert_no_error (e);
+            }
+
+            assert_equal<uint?> (((!) retrieved_steps).first ().date.get_julian (), steps.date.get_julian ());
+            assert_equal<uint32?> (((!) retrieved_steps).first ().steps, steps.steps);
+            assert_equal<uint?> (((!) retrieved_weights).first ().date.get_julian (), weight.date.get_julian ());
+            assert_equal<double?> (((!) retrieved_weights).first ().weight.value, weight.weight.value);
+        }
+
+
+        private TrackerDatabase open_db () throws ValaUnit.TestError {
             GLib.File? tmp_file = null;
             FileIOStream iostream;
             try {
@@ -150,13 +245,13 @@ namespace Health {
             } catch (GLib.Error e) {
                 assert_no_error (e);
             }
-            var db = new SqliteDatabase ();
             try {
-                db.open (((!) tmp_file).get_path ());
+                var db = TrackerDatabase.get_instance ((!) tmp_file.get_path ());
+                return db;
             } catch (GLib.Error e) {
                 assert_no_error (e);
+                return null;
             }
-            return db;
         }
     }
 }

@@ -2,4 +2,5 @@
 namespace Config {
     public const string APPLICATION_ID;
     public const string VERSION;
+    public const string DATADIR;
 }

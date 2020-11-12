@@ -36,9 +36,9 @@ namespace Health {
      */
     public class WeightGraphModel : GraphModel<Weight> {
         private Settings settings;
-        private SqliteDatabase db;
+        private TrackerDatabase db;
 
-        public WeightGraphModel (Settings settings, SqliteDatabase db) {
+        public WeightGraphModel (Settings settings, TrackerDatabase db) {
             this.settings = settings;
             this.db = db;
 
@@ -51,11 +51,11 @@ namespace Health {
          * This can be used e.g. after the user added a new weight measurement.
          * @return true if reloading suceeded.
          */
-        public override bool reload () {
+        public async override bool reload () {
             try {
-                this.arr = db.get_weights_after (get_date_in_n_days (-30), this.settings);
+                this.arr = yield db.get_weights_after (get_date_in_n_days (-30), this.settings, null);
                 return true;
-            } catch (DatabaseError e) {
+            } catch (GLib.Error e) {
                 warning (_ ("Failed to load weights from database due to error %s"), e.message);
                 return false;
             }
@@ -114,10 +114,11 @@ namespace Health {
         private WeightGraphView? weight_graph_view;
         private WeightGraphModel weight_graph_model;
 
-        public WeightView (WeightGraphModel model, Settings settings) {
+        public WeightView (WeightGraphModel model, Settings settings, TrackerDatabase db) {
             this.name = "Weight";
             this.settings = settings;
             this.title = _ ("Weight");
+            this.icon_name = "dev.Cogitri.Health-weight-scale-symbolic";
             this.weight_graph_model = model;
 
             this.update_weightgoal_label ();
@@ -139,6 +140,12 @@ namespace Health {
             });
             this.settings.changed[Settings.UNITSYSTEM_KEY].connect (() => {
                 this.update ();
+            });
+            db.weight_updated.connect (() => {
+                this.update ();
+            });
+            this.destroy.connect (() => {
+                this.main_box.unparent ();
             });
         }
 
@@ -190,20 +197,23 @@ namespace Health {
          * Reload the {@link WeightGraphModel}'s data and refresh labels & the {@link WeightGraphView}.
          */
         public override void update () {
-            this.weight_graph_model.reload ();
-            this.title_label.set_text (_ ("Current BMI: %.2lf").printf (this.get_bmi ()));
+            this.weight_graph_model.reload.begin ((obj, res) => {
+                if (this.weight_graph_model.reload.end (res)) {
+                    this.title_label.set_text (_ ("Current BMI: %.2lf").printf (this.get_bmi ()));
 
-            this.update_weightgoal_label ();
+                    this.update_weightgoal_label ();
 
-            if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
-                this.main_box.remove (this.no_data_label);
-                this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value);
-                ((!) this.weight_graph_view).visible = true;
-                this.main_box.append ((!) this.weight_graph_view);
-            } else if (this.weight_graph_view != null) {
-                ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();
-                ((!) this.weight_graph_view).limit = this.settings.user_weightgoal.value;
-            }
+                    if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
+                        this.main_box.remove (this.no_data_label);
+                        this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value);
+                        ((!) this.weight_graph_view).visible = true;
+                        this.main_box.append ((!) this.weight_graph_view);
+                    } else if (this.weight_graph_view != null) {
+                        ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();
+                        ((!) this.weight_graph_view).limit = this.settings.user_weightgoal.value;
+                    }
+                }
+            });
         }
 
     }

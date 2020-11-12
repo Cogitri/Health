@@ -44,8 +44,19 @@ namespace Health {
 
     public GLib.Date date_from_datetime (DateTime datetime) {
         var date = GLib.Date ();
-        date.set_dmy ((uchar) datetime.get_day_of_month (), datetime.get_month (), (uchar) datetime.get_year ());
+        date.set_dmy ((uchar) datetime.get_day_of_month (), datetime.get_month (), (ushort) datetime.get_year ());
         return date;
     }
 
+    public string date_to_iso_8601 (GLib.Date d) {
+        char[] buf = new char[20];
+        assert (d.strftime (buf, "%Y-%m-%d") != 0);
+        return (string) buf;
+    }
+
+    public GLib.Date iso_8601_to_date (string iso) {
+        GLib.Date d = GLib.Date ();
+        d.set_parse (iso);
+        return d;
+    }
 }
