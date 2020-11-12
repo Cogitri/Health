@@ -144,6 +144,9 @@ namespace Health {
             db.weight_updated.connect (() => {
                 this.update ();
             });
+            this.destroy.connect (() => {
+                this.main_box.unparent ();
+            });
         }
 
         private double get_bmi () {

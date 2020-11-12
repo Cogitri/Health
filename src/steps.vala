@@ -191,6 +191,9 @@ namespace Health {
                 this.update ();
             });
             this.update ();
+            this.destroy.connect (() => {
+                this.main_box.unparent ();
+            });
         }
 
         /**
