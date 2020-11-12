@@ -22,5 +22,6 @@ test(
   env: [
     'GSETTINGS_SCHEMA_DIR=' + meson.current_build_dir() / '..' / 'data',
     'GSETTINGS_BACKEND=memory',
+    'HEALTH_ONTOLOGY_OVERRIDE_PATH=' + meson.current_source_dir() / '..' / 'data' / 'tracker' / 'ontology',
   ]
 )

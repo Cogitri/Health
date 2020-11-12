@@ -25,10 +25,14 @@ namespace Health {
     public class TrackerDatabase : GLib.Object {
 
         private TrackerDatabase (string store_path = GLib.Path.build_filename (GLib.Environment.get_user_data_dir (), "health")) throws DatabaseError {
-            var ontology_path = GLib.Path.build_filename (Config.DATADIR, "ontology");
+            string? ontology_path = "";
+
+            if ((ontology_path = GLib.Environ.get_variable (GLib.Environ.get (), "HEALTH_ONTOLOGY_OVERRIDE_PATH")) == null) {
+                ontology_path = GLib.Path.build_filename (Config.DATADIR, "ontology");
+            }
 
             try {
-                this.db = Tracker.Sparql.Connection.new (0, GLib.File.new_for_path (store_path), GLib.File.new_for_path (ontology_path), null);
+                this.db = Tracker.Sparql.Connection.new (0, GLib.File.new_for_path (store_path), GLib.File.new_for_path ((!) ontology_path), null);
             } catch (GLib.Error e) {
                 throw new DatabaseError.SETUP_FAILED (_ ("Failed to setup Tracker database due to error %s!").printf (e.message));
             }
