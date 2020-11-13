@@ -63,7 +63,7 @@ namespace Health {
                 proxy.open_authentication_url.begin (settings ?? new Health.Settings (), (obj, res) => {
                     try {
                         proxy.open_authentication_url.end (res);
-                        proxy.import_data.begin (settings ?? new Health.Settings (), (obj, res) => {
+                        proxy.import_data.begin ((obj, res) => {
                             try {
                                 proxy.import_data.end (res);
                                 this.google_fit_selected_image.visible = true;

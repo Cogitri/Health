@@ -91,37 +91,37 @@ namespace Health {
             return 34981;
         }
 
-        public async Gee.ArrayList<Weight>? get_all_weights (Settings settings) throws GLib.Error {
+        public async Gee.HashMap<string, double?> get_all_weights () throws GLib.Error {
             var call = this.new_call ();
             call.set_function ("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/0-%lld".printf (GLib.get_real_time () * 1000));
             yield call.invoke_async (null);
-            return this.process_weights_json (call.get_payload (), settings);
+            return this.process_weights_json (call.get_payload ());
         }
 
-        public async Gee.ArrayList<Weight>? get_weights_since (Settings settings, GLib.DateTime since) throws GLib.Error {
+        public async Gee.HashMap<string, double?> get_weights_since (GLib.DateTime since) throws GLib.Error {
             var call = this.new_call ();
             call.set_function ("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/%lld-%lld".printf (since.to_unix () * 1000, GLib.get_real_time () * 1000));
             yield call.invoke_async (null);
-            return this.process_weights_json (call.get_payload (), settings);
+            return this.process_weights_json (call.get_payload ());
         }
 
-        public async Gee.ArrayList<Steps>? get_all_steps () throws GLib.Error {
+        public async Gee.HashMap<string, uint32> get_all_steps () throws GLib.Error {
             var call = this.new_call ();
             call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:estimated_steps/datasets/0-%lld".printf (GLib.get_real_time () * 1000));
             yield call.invoke_async (null);
             return this.process_steps_json (call.get_payload ());
         }
 
-        public async Gee.ArrayList<Steps>? get_steps_since (GLib.DateTime since) throws GLib.Error {
+        public async Gee.HashMap<string, uint32> get_steps_since (GLib.DateTime since) throws GLib.Error {
             var call = this.new_call ();
             call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:estimated_steps/datasets/%lld-%lld".printf (since.to_unix () * 1000, GLib.get_real_time () * 1000));
             yield call.invoke_async (null);
             return this.process_steps_json (call.get_payload ());
         }
 
-        private Gee.ArrayList<Weight> process_weights_json (string json_string, Settings settings) throws GLib.Error {
+        private Gee.HashMap<string, double?> process_weights_json (string json_string) throws GLib.Error {
             var json = Json.from_string (json_string).get_object ();
-            var ret = new Gee.ArrayList<Weight> ();
+            var ret = new Gee.HashMap<string, double?> ();
             foreach (var point in json.get_array_member ("point").get_elements ()) {
                 var point_obj = point.get_object ();
                 var datetime = new GLib.DateTime.from_unix_utc (int64.parse (point_obj.get_string_member ("modifiedTimeMillis")) / 1000);
@@ -129,23 +129,21 @@ namespace Health {
                 if (weight_value == 0) {
                     continue;
                 }
-                var date = date_from_datetime (datetime);
-                var existing_weight_record = ret.first_match ((a) => { return a.date.get_julian () == date.get_julian ();});
-                var weight = new WeightUnitContainer.from_database_value (weight_value, settings);
-                if (existing_weight_record != null) {
-                    existing_weight_record.weight = weight;
+                var date = date_to_iso_8601 (date_from_datetime (datetime));
+                if (ret.has_key (date)) {
+                    ret.set (date, ret.get (date) + weight_value);
                 } else {
-                    ret.add (new Weight (date, weight));
+                    ret.set (date, weight_value);
                 }
             }
 
             return ret;
         }
 
-        private Gee.ArrayList<Steps> process_steps_json (string json_string) throws GLib.Error {
+        private Gee.HashMap<string, uint32> process_steps_json (string json_string) throws GLib.Error {
             var json = Json.from_string (json_string).get_object ();
 
-            var ret = new Gee.ArrayList<Steps> ();
+            var ret = new Gee.HashMap<string, uint32> ();
             foreach (var point in json.get_array_member ("point").get_elements ()) {
                 var point_obj = point.get_object ();
                 var modified_time = int64.parse (point_obj.get_string_member ("modifiedTimeMillis"));
@@ -154,29 +152,29 @@ namespace Health {
                 foreach (var value in point_obj.get_array_member ("value").get_elements ()) {
                     step_count += (uint32) value.get_object ().get_int_member_with_default ("intVal", 0);
                 }
-                var date = date_from_datetime (datetime);
-                var existing_step_record = ret.first_match ((a) => { return a.date.get_julian () == date.get_julian ();});
-                if (existing_step_record != null) {
-                    existing_step_record.steps += step_count;
+                var date = date_to_iso_8601 (date_from_datetime (datetime));
+                if (ret.has_key (date)) {
+                    ret.set (date, ret.get (date) + step_count);
                 } else {
-                    var steps = new Steps (date, step_count);
-                    ret.add (steps);
+                    ret.set (date, step_count);
                 }
             }
 
             return ret;
         }
 
-        public async void import_data (Settings settings) throws GLib.Error {
+        public async void import_data () throws GLib.Error {
+            info ("Trying to import all data from Google Fit");
+
             var db = TrackerDatabase.get_instance ();
-            yield db.import_weights (yield this.get_all_weights (settings), null);
-            yield db.import_steps (yield this.get_all_steps (), null);
+            yield db.import_data (yield this.get_all_steps (), yield this.get_all_weights (), null);
         }
 
-        public async void import_data_since (Settings settings, GLib.DateTime since) throws GLib.Error {
+        public async void import_data_since (GLib.DateTime since) throws GLib.Error {
+            info ("Trying to import data since %s from Google Fit", since.format_iso8601 ());
+
             var db = TrackerDatabase.get_instance ();
-            yield db.import_weights (yield this.get_weights_since (settings, since), null);
-            yield db.import_steps (yield this.get_steps_since (since), null);
+            yield db.import_data (yield this.get_steps_since (since), yield this.get_weights_since (since), null);
         }
 
         private async void set_access_token_from_redirect_uri (string redirect_uri) throws GLib.Error {
@@ -223,7 +221,7 @@ namespace Health {
             if (!yield this.set_access_token_from_libsecret ()) {
                 throw new OAuth2Error.NO_LIBSECRET_PASSWORD ("Google Fit Refresh token not set up, won't sync.");
             }
-            yield this.import_data_since (settings, settings.timestamp_last_sync_google_fit);
+            yield this.import_data_since (settings.timestamp_last_sync_google_fit);
             settings.timestamp_last_sync_google_fit = new GLib.DateTime.now ();
         }
 
