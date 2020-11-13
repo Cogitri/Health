@@ -107,14 +107,14 @@ namespace Health {
 
         public async Gee.HashMap<string, uint32> get_all_steps () throws GLib.Error {
             var call = this.new_call ();
-            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:estimated_steps/datasets/0-%lld".printf (GLib.get_real_time () * 1000));
+            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/0-%lld".printf (GLib.get_real_time () * 1000));
             yield call.invoke_async (null);
             return this.process_steps_json (call.get_payload ());
         }
 
         public async Gee.HashMap<string, uint32> get_steps_since (GLib.DateTime since) throws GLib.Error {
             var call = this.new_call ();
-            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:estimated_steps/datasets/%lld-%lld".printf (since.to_unix () * 1000, GLib.get_real_time () * 1000));
+            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/%lld-%lld".printf (since.to_unix () * 1000, GLib.get_real_time () * 1000));
             yield call.invoke_async (null);
             return this.process_steps_json (call.get_payload ());
         }
