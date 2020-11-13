@@ -141,16 +141,42 @@ namespace Health {
             }
         }
 
-        public async void import_steps (Gee.ArrayList<Steps> steps, GLib.Cancellable? cancellable) throws GLib.Error {
-            foreach (var s in steps) {
-                yield this.save_steps (s, cancellable);
-            }
-        }
+        public async void import_data (Gee.HashMap<string, uint32> steps, Gee.HashMap<string, double?> weight, GLib.Cancellable? cancellable) throws GLib.Error {
+            string[] ops = {};
 
-        public async void import_weights (Gee.ArrayList<Weight> weight, GLib.Cancellable? cancellable) throws GLib.Error {
-            foreach (var w in weight) {
-                yield this.save_weight (w, cancellable);
+            info ("Importing %u step counts and %u weight measurements", steps.size, weight.size);
+
+            // Users most probably have more step records than weight records since weight doesn't change as often as daily steps,
+            // so first add all step records with the weight records that are on those days...
+            foreach (var s in steps) {
+                var resource = new Tracker.Resource (null);
+                resource.set_uri ("rdf:type", "health:DataPoint");
+                resource.set_string ("health:date", s.key);
+                resource.set_int64 ("health:steps", s.value);
+
+                if (weight.has_key (s.key)) {
+                    double w;
+                    weight.unset (s.key, out w);
+
+                    resource.set_double ("health:weight", w);
+                }
+
+                ops += resource.print_sparql_update (this.manager, null);
             }
+
+            // ...and afterwards add all the weight records which don't have a step record on that date.
+            foreach (var w in weight) {
+                var resource = new Tracker.Resource (null);
+                resource.set_uri ("rdf:type", "health:DataPoint");
+                resource.set_string ("health:date", w.key);
+                resource.set_double ("health:weight", w.value);
+
+                ops += resource.print_sparql_update (this.manager, null);
+            }
+
+            yield this.db.update_array_async (ops, cancellable);
+            this.steps_updated ();
+            this.weight_updated ();
         }
 
         public async void reset () throws GLib.Error {

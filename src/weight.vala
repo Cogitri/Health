@@ -144,9 +144,13 @@ namespace Health {
             db.weight_updated.connect (() => {
                 this.update ();
             });
-            this.destroy.connect (() => {
-                this.main_box.unparent ();
-            });
+        }
+
+        ~WeightView () {
+            unowned Gtk.Widget child;
+            while ((child = get_first_child ()) != null) {
+                child.unparent ();
+            }
         }
 
         private double get_bmi () {

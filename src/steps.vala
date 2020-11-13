@@ -191,9 +191,13 @@ namespace Health {
                 this.update ();
             });
             this.update ();
-            this.destroy.connect (() => {
-                this.main_box.unparent ();
-            });
+        }
+
+        ~StepView () {
+            unowned Gtk.Widget child;
+            while ((child = get_first_child ()) != null) {
+                child.unparent ();
+            }
         }
 
         /**

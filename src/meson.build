@@ -65,6 +65,7 @@ c_args = [
   '-DVERSION="@0@"'.format(meson.project_version()),
   '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
   '-DGNOMELOCALEDIR="@0@"'.format(join_paths(get_option('prefix'), get_option('localedir'))),
+  '-DG_LOG_DOMAIN="Health"',
 ]
 
 
