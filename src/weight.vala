@@ -106,10 +106,9 @@ namespace Health {
         [GtkChild]
         private Gtk.Label title_label;
         [GtkChild]
-        private Gtk.Box main_box;
+        private Gtk.ScrolledWindow scrolled_window;
         [GtkChild]
         private Gtk.Label weightgoal_label;
-        private Gtk.Label no_data_label;
         private Settings settings;
         private WeightGraphView? weight_graph_view;
         private WeightGraphModel weight_graph_model;
@@ -124,11 +123,9 @@ namespace Health {
             this.update_weightgoal_label ();
 
             if (this.weight_graph_model.is_empty) {
-                this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new weight measurement."));
-                this.main_box.append (this.no_data_label);
+                this.scrolled_window.child = new Gtk.Label (_ ("No data has been added yet. Click + to add a new weight measurement."));
             } else {
-                this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value);
-                this.main_box.append ((!) this.weight_graph_view);
+                this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value);
             }
 
             this.update ();
@@ -208,10 +205,8 @@ namespace Health {
                     this.update_weightgoal_label ();
 
                     if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
-                        this.main_box.remove (this.no_data_label);
-                        this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value);
+                        this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value);
                         ((!) this.weight_graph_view).visible = true;
-                        this.main_box.append ((!) this.weight_graph_view);
                     } else if (this.weight_graph_view != null) {
                         ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();
                         ((!) this.weight_graph_view).limit = this.settings.user_weightgoal.value;

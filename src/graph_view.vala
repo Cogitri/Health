@@ -83,6 +83,15 @@ namespace Health {
             this.x_padding = 60;
             this.y_padding = 60;
             this.hexpand = this.vexpand = true;
+
+            int size_request = -1;
+            if (this.points.size > 30) {
+                size_request = 50 * 30;
+            } else {
+                size_request = 50 * this.points.size;
+            }
+
+            this.set_size_request (size_request, -1);
         }
 
         protected override void snapshot (Gtk.Snapshot snapshot) {

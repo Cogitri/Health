@@ -163,8 +163,7 @@ namespace Health {
         [GtkChild]
         private Gtk.Label title_label;
         [GtkChild]
-        private Gtk.Box main_box;
-        private Gtk.Label no_data_label;
+        private Gtk.ScrolledWindow scrolled_window;
         private Settings settings;
         private StepsGraphView? steps_graph_view;
         private StepsGraphModel steps_graph_model;
@@ -177,11 +176,9 @@ namespace Health {
             this.steps_graph_model = model;
 
             if (this.steps_graph_model.is_empty) {
-                this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new step count."));
-                this.main_box.append (this.no_data_label);
+                this.scrolled_window.child = new Gtk.Label (_ ("No data has been added yet. Click + to add a new step count."));
             } else {
-                this.steps_graph_view = new StepsGraphView (model, this.settings.user_stepgoal);
-                this.main_box.append ((!) this.steps_graph_view);
+                this.scrolled_window.child = this.steps_graph_view = new StepsGraphView (model, this.settings.user_stepgoal);
             }
 
             this.settings.changed[Settings.USER_STEPGOAL_KEY].connect (() => {
@@ -227,10 +224,8 @@ namespace Health {
                     this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
 
                     if (this.steps_graph_view == null && !this.steps_graph_model.is_empty) {
-                        this.main_box.remove (this.no_data_label);
-                        this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
+                        this.scrolled_window.child = this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
                         ((!) this.steps_graph_view).visible = true;
-                        this.main_box.append ((!) this.steps_graph_view);
                     } else if (this.steps_graph_view != null) {
                         ((!) this.steps_graph_view).points = this.steps_graph_model.to_points ();
                         ((!) this.steps_graph_view).limit = this.settings.user_stepgoal;
