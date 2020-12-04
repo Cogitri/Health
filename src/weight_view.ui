@@ -22,7 +22,7 @@
   <template class="HealthWeightView" parent="HealthView">
     <property name="visible">True</property>
     <child>
-      <object class="GtkBox">
+      <object class="GtkBox" id="main_box">
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkLabel" id="title_label">
@@ -44,11 +44,6 @@
             <attributes>
               <attribute name="font-desc" value="10.0"></attribute>
             </attributes>
-          </object>
-        </child>
-        <child>
-          <object class="GtkScrolledWindow" id="scrolled_window">
-            <property name="vscrollbar_policy">never</property>
           </object>
         </child>
       </object>
