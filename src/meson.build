@@ -1,7 +1,9 @@
 health_sources = files(
+  'activity.vala',
   'add_dialog.vala',
   'application.vala',
   'database.vala',
+  'date_editor.vala',
   'graph_view.vala',
   'oauth2_proxy.vala',
   'preferences_window.vala',

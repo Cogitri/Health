@@ -8,22 +8,42 @@ health: a nrl:Namespace, nrl:Ontology ;
     nrl:prefix "health" ;
     nrl:lastModified "2020-11-09T10:00:00Z" .
 
-health:DataPoint a rdfs:Class ;
-    rdfs:comment "Represents a datapoint" ;
+health:Activity a rdfs:Class ;
+    rdfs:comment "Represents a single activity entry" ;
     rdfs:subClassOf rdfs:Resource ;
     nrl:notify true .
 
-health:date a rdf:Property, nrl:InverseFunctionalProperty;
-    rdfs:domain health:DataPoint ;
+health:activity_date a rdf:Property ;
+    rdfs:domain health:Activity ;
     rdfs:range xsd:date ;
     nrl:maxCardinality 1 .
 
-health:steps a rdf:Property ;
-    rdfs:domain health:DataPoint ;
+health:activity_id a rdf:Property ;
+    rdfs:domain health:Activity ;
     rdfs:range xsd:integer ;
     nrl:maxCardinality 1 .
 
+health:steps a rdf:Property ;
+    rdfs:domain health:Activity ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:minutes a rdf:Property ;
+    rdfs:domain health:Activity ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:WeightMeasurement a rdfs:Class ;
+    rdfs:comment "Represents a single weight measurement" ;
+    rdfs:subClassOf rdfs:Resource ;
+    nrl:notify true .
+
+health:weight_date a rdf:Property, nrl:InverseFunctionalProperty;
+    rdfs:domain health:WeightMeasurement ;
+    rdfs:range xsd:date ;
+    nrl:maxCardinality 1 .
+
 health:weight a rdf:Property ;
-    rdfs:domain health:DataPoint ;
+    rdfs:domain health:WeightMeasurement ;
     rdfs:range xsd:double ;
     nrl:maxCardinality 1 .

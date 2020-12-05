@@ -144,10 +144,10 @@ namespace Health {
 
         [GtkCallback]
         private void add_data_button_clicked (Gtk.Button btn) {
-            AddDialog dialog;
+            Gtk.Dialog dialog;
             switch (this.current_view) {
             case STEPS:
-                dialog = new StepsAddDialog (this, this.db);
+                dialog = new ActivityAddDialog (this, this.db);
                 break;
             case WEIGHT:
                 dialog = new WeightAddDialog (this, this.settings, this.db);

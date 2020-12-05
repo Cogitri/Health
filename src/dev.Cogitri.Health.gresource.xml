@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/dev/Cogitri/Health">
-    <file preprocess="xml-stripblanks">add_dialog.ui</file>
+    <file preprocess="xml-stripblanks">add_dialog_activity.ui</file>
+    <file preprocess="xml-stripblanks">add_dialog_weight.ui</file>
+    <file preprocess="xml-stripblanks">date_editor.ui</file>
     <file preprocess="xml-stripblanks">preferences_window.ui</file>
     <file preprocess="xml-stripblanks">setup_window.ui</file>
     <file preprocess="xml-stripblanks">step_view.ui</file>

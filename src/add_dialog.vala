@@ -18,23 +18,78 @@
 namespace Health {
 
     /**
-     * AddDialog is a generic dialog used for adding new data to the DB via user input.
+     * A dialog for adding a new activity record.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/add_dialog.ui")]
-    public class AddDialog : Gtk.Dialog {
+    [GtkTemplate (ui = "/dev/Cogitri/Health/add_dialog_activity.ui")]
+    public class ActivityAddDialog : Gtk.Dialog {
         [GtkChild]
-        protected Gtk.Label dialog_label;
+        DateSelector date_selector;
         [GtkChild]
-        protected Gtk.Entry dialog_entry;
+        private Gtk.ComboBox activity_type_combobox;
+        [GtkChild]
+        private Gtk.ListStore activity_type_model;
+        [GtkChild]
+        private Gtk.SpinButton steps_spinner;
+        [GtkChild]
+        private Gtk.SpinButton minutes_spinner;
 
-        public AddDialog (Gtk.Window? parent) {
+        private TrackerDatabase db;
+
+        public ActivityAddDialog (Gtk.Window? parent, TrackerDatabase db) {
             Object (use_header_bar: 1);
             this.set_transient_for (parent);
+            this.db = db;
+
+            foreach (var x in Activities.get_values ()) {
+                if (x.type == Activities.Enum.WALKING) {
+                    Gtk.TreeIter iter;
+                    this.activity_type_model.insert_with_values (out iter, -1, 0, x.name, -1);
+                    this.activity_type_combobox.set_active_iter (iter);
+                } else {
+                    Gtk.TreeIter iter;
+                    this.activity_type_model.insert_with_values (out iter, -1, 0, x.name, -1);
+                }
+            }
+
+            this.set_response_sensitive (Gtk.ResponseType.OK, false);
         }
 
-        [GtkCallback]
-        private void dialog_entry_changed (Gtk.Editable editable) {
-            this.set_response_sensitive (Gtk.ResponseType.OK, editable.text.length != 0);
+        /**
+         * Saves the data that has been entered into the dialog to the database.
+         */
+        public async void save () throws GLib.Error {
+            var db = TrackerDatabase.get_instance ();
+
+            uint32? steps = null;
+
+            if (this.steps_spinner.text != "") {
+                steps = (uint32) this.steps_spinner.value;
+            }
+
+            yield db.save_activity (new Activity (this.get_selected_activity ().type, date_from_datetime (this.date_selector.selected_date), (uint32) this.minutes_spinner.value, steps));
+        }
+
+        private Activities.ActivityInfo? get_selected_activity () {
+            Gtk.TreeIter iter;
+
+            if (this.activity_type_combobox.get_active_iter (out iter)) {
+                GLib.Value val;
+                this.activity_type_model.get_value (iter, 0, out val);
+
+                return Activities.get_info_by_name (val.get_string ());
+            }
+
+            return null;
+        }
+
+        private void check_response_active () {
+            var selected_activity = this.get_selected_activity ();
+
+            if (selected_activity != null && selected_activity.has_steps) {
+                this.set_response_sensitive (Gtk.ResponseType.OK, steps_spinner.get_text () != "0" && minutes_spinner.get_text () != "0");
+            } else {
+                this.set_response_sensitive (Gtk.ResponseType.OK, minutes_spinner.get_text () != "0");
+            }
         }
 
         [GtkCallback]
@@ -53,77 +108,62 @@ namespace Health {
             this.destroy ();
         }
 
-        /**
-         * save() should save the user's input to the DB.
-         */
-        public async virtual void save () throws GLib.Error {
+
+        [GtkCallback]
+        private void on_activity_type_combobox_changed (Gtk.ComboBox cb) {
+            var selected_activity = this.get_selected_activity ();
+
+            if (selected_activity != null && (!) selected_activity.has_steps) {
+                    this.steps_spinner.sensitive = true;
+            } else {
+                this.steps_spinner.sensitive = false;
+            }
+
+            this.check_response_active ();
         }
 
+        [GtkCallback]
+        private void on_spinner_changed (Gtk.Editable e) {
+            this.check_response_active ();
+        }
     }
 
     /**
-     * An {@link AddDialog} for adding a new step record.
+     * A dialog for adding a new weight record.
      */
-    public class StepsAddDialog : AddDialog {
+    [GtkTemplate (ui = "/dev/Cogitri/Health/add_dialog_weight.ui")]
+    public class WeightAddDialog : Gtk.Dialog {
+        [GtkChild]
+        DateSelector date_selector;
+        [GtkChild]
+        Gtk.SpinButton weight_spinner;
+        private Settings settings;
         private TrackerDatabase db;
 
-        public StepsAddDialog (Gtk.Window? parent, TrackerDatabase db) {
-            base (parent);
-
+        public WeightAddDialog (Gtk.Window? parent, Settings settings, TrackerDatabase db) {
+            Object (use_header_bar: 1);
+            this.set_transient_for (parent);
             this.db = db;
+            this.settings = settings;
 
-
-            db.check_steps_exist_on_date.begin (get_today_date (), null, (obj, res) => {
-                var update = false;
-                try {
-                    update = db.check_steps_exist_on_date.end (res);
-                } catch (GLib.Error e) {
-                    warning (e.message);
-                }
-
-
-                if (update) {
-                    this.dialog_label.set_text (_ ("Update today's step record"));
-                } else {
-                    this.dialog_label.set_text (_ ("Add new step record"));
-                }
+            this.update_title ();
+            this.date_selector.notify["selected_date"].connect (() => {
+                this.update_title ();
             });
-
-            this.dialog_entry.set_max_length (6);
+            this.set_response_sensitive (Gtk.ResponseType.OK, false);
         }
 
         /**
          * Saves the data that has been entered into the dialog to the database.
          */
-        public async override void save () throws GLib.Error {
+        public async void save () throws GLib.Error {
             var db = TrackerDatabase.get_instance ();
 
-            uint64 steps = 0;
-            try {
-                uint64.from_string (this.dialog_entry.get_text (), out steps);
-            } catch (NumberParserError e) {
-                warning (_("Failed to parse steps due to error %s"), e.message);
-            }
-
-            yield db.save_steps (new Steps (get_today_date (), (uint32) steps), null);
+            yield db.save_weight (new Weight (date_from_datetime (this.date_selector.selected_date), new WeightUnitContainer.from_user_value (this.weight_spinner.value, this.settings)), null);
         }
 
-    }
-
-    /**
-     * An {@link AddDialog} for adding a new weight record.
-     */
-    public class WeightAddDialog : AddDialog {
-        private Settings settings;
-        private TrackerDatabase db;
-
-        public WeightAddDialog (Gtk.Window? parent, Settings settings, TrackerDatabase db) {
-            base (parent);
-
-            this.db = db;
-            this.settings = settings;
-
-            db.check_weight_exist_on_date.begin (get_today_date (), null, (obj, res) => {
+        private void update_title () {
+            db.check_weight_exist_on_date.begin (date_from_datetime (this.date_selector.selected_date), null, (obj, res) => {
                 var update = false;
                 try {
                     update = db.check_weight_exist_on_date.end (res);
@@ -132,28 +172,32 @@ namespace Health {
                 }
 
                 if (update) {
-                    this.dialog_label.set_text (_ ("Update today's weight measurement"));
+                    this.title = _ ("Update Weight Record");
                 } else {
-                    this.dialog_label.set_text (_ ("Add new weight measurement"));
+                    this.title = _ ("Add New weight Record");
                 }
             });
-
-            this.dialog_entry.set_max_length (6);
         }
 
-        /**
-         * Saves the data that has been entered into the dialog to the database.
-         */
-        public async override void save () throws GLib.Error {
-            var db = TrackerDatabase.get_instance ();
-
-            double weight = 0;
-            if (!double.try_parse (this.dialog_entry.get_text (), out weight)) {
-                warning (_ ("Failed to parse weight '%s' as floating point number"), this.dialog_entry.get_text ());
+        [GtkCallback]
+        private void on_response (int response_id) {
+            switch (response_id) {
+                case Gtk.ResponseType.OK:
+                    this.save.begin ((obj, res) => {
+                        try {
+                            this.save.end (res);
+                        } catch (GLib.Error e) {
+                            warning (_ ("Failed to save new data due to error %s"), e.message);
+                        }
+                    });
+                    break;
             }
-
-            yield db.save_weight (new Weight (get_today_date (), new WeightUnitContainer.from_user_value (weight, this.settings)), null);
+            this.destroy ();
         }
 
+        [GtkCallback]
+        private void on_weight_spinner_changed (Gtk.Editable e) {
+            this.set_response_sensitive (Gtk.ResponseType.OK, e.get_text () != "0");
+        }
     }
 }

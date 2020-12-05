@@ -48,7 +48,7 @@ namespace Health {
          * @param d The Date to check for
          * @return True if there's already a record, false otherwise.
          */
-        public async bool check_steps_exist_on_date (Date d, GLib.Cancellable? cancellable) throws GLib.Error {
+        public async bool check_steps_exist_on_date (Date d, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_DATE_HAS_STEPS.printf (date_to_iso_8601 (d)), cancellable);
 
             assert (yield cursor.next_async (cancellable));
@@ -62,7 +62,7 @@ namespace Health {
          * @param d The Date to check for
          * @return True if there's already a measurement, false otherwise.
          */
-        public async bool check_weight_exist_on_date (Date d, GLib.Cancellable? cancellable) throws GLib.Error {
+        public async bool check_weight_exist_on_date (Date d, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_DATE_HAS_WEIGHT.printf (date_to_iso_8601 (d)), cancellable);
 
             assert (yield cursor.next_async (cancellable));
@@ -87,26 +87,39 @@ namespace Health {
          * @param date The earliest date that steps should be retrieved from.
          * @throws DatabaseError If querying the DB fails.
          */
-        public async Gee.ArrayList<Steps> get_steps_after (GLib.Date date, GLib.Cancellable? cancellable) throws GLib.Error {
+        public async Gee.ArrayList<Steps> get_steps_after (GLib.Date date, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_STEPS_AFTER.printf (date_to_iso_8601 (date)), cancellable);
-
+            var hashmap = new Gee.HashMap<string, uint32> ();
             var ret = new Gee.ArrayList<Steps> ();
+
             while (yield cursor.next_async (cancellable)) {
-                ret.add (new Steps (iso_8601_to_date (cursor.get_string (0)), (uint32) cursor.get_integer (1)));
+                var date_string = cursor.get_string (0);
+                if (hashmap.has_key (date_string)) {
+                    hashmap.set (date_string, hashmap.get (date_string) + (uint32) cursor.get_integer (1));
+                } else {
+                    hashmap.set (date_string, (uint32) cursor.get_integer (1));
+                }
             }
+
+            foreach (var kv in hashmap) {
+                ret.add (new Steps (iso_8601_to_date (kv.key), kv.value));
+            }
+
+            ret.sort ((a, b) => { return a.date.compare (b.date); });
 
             return ret;
         }
 
-        public async uint32? get_steps_on_date (GLib.Date d, GLib.Cancellable? cancellable) throws GLib.Error {
+        public async uint32? get_steps_on_date (GLib.Date d, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_STEPS_ON_DAY.printf (date_to_iso_8601 (d)), cancellable);
 
+            uint32? steps = null;
 
-            if (yield cursor.next_async (cancellable)) {
-                return (uint32) cursor.get_integer (0);
-            } else {
-                return null;
+            while (yield cursor.next_async (cancellable)) {
+                steps = steps ?? 0 + (uint32) cursor.get_integer (0);
             }
+
+            return steps;
         }
 
 
@@ -120,7 +133,7 @@ namespace Health {
          * @param settings The Health.Settings object that is used for determining whether to use imperial or metric units.
          * @throws DatabaseError If querying the DB fails.
          */
-        public async Gee.ArrayList<Weight> get_weights_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable) throws GLib.Error {
+        public async Gee.ArrayList<Weight> get_weights_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_WEIGHT_AFTER.printf (date_to_iso_8601 (date)), cancellable);
 
             var ret = new Gee.ArrayList<Weight> ();
@@ -141,25 +154,20 @@ namespace Health {
             }
         }
 
-        public async void import_data (Gee.HashMap<string, uint32> steps, Gee.HashMap<string, double?> weight, GLib.Cancellable? cancellable) throws GLib.Error {
+        public async void import_data (Gee.HashMap<string, uint32> steps, Gee.HashMap<string, double?> weight, GLib.Cancellable? cancellable = null) throws GLib.Error {
             string[] ops = {};
 
             info ("Importing %u step counts and %u weight measurements", steps.size, weight.size);
 
-            // Users most probably have more step records than weight records since weight doesn't change as often as daily steps,
-            // so first add all step records with the weight records that are on those days...
+
             foreach (var s in steps) {
                 var resource = new Tracker.Resource (null);
-                resource.set_uri ("rdf:type", "health:DataPoint");
-                resource.set_string ("health:date", s.key);
+                resource.set_uri ("rdf:type", "health:Activity");
+                resource.set_string ("health:activity_date", s.key);
                 resource.set_int64 ("health:steps", s.value);
-
-                if (weight.has_key (s.key)) {
-                    double w;
-                    weight.unset (s.key, out w);
-
-                    resource.set_double ("health:weight", w);
-                }
+                resource.set_int64 ("health:activity_id", Activities.Enum.WALKING);
+                // FIXME: Set correct minutes here
+                resource.set_int64 ("health:minutes", 0);
 
                 ops += resource.print_sparql_update (this.manager, null);
             }
@@ -167,8 +175,8 @@ namespace Health {
             // ...and afterwards add all the weight records which don't have a step record on that date.
             foreach (var w in weight) {
                 var resource = new Tracker.Resource (null);
-                resource.set_uri ("rdf:type", "health:DataPoint");
-                resource.set_string ("health:date", w.key);
+                resource.set_uri ("rdf:type", "health:WeightMeasurement");
+                resource.set_string ("health:weight_date", w.key);
                 resource.set_double ("health:weight", w.value);
 
                 ops += resource.print_sparql_update (this.manager, null);
@@ -184,58 +192,51 @@ namespace Health {
         }
 
         /**
+         * Saves an `Activity` to the DB. Updates the steps if there's already one for the steps's date.
+         *
+         * @param s The `Steps` that should be saved.
+         * @throws DatabaseError If saving to the DB fails.
+         */
+         public async void save_activity (Activity a, GLib.Cancellable? cancellable = null) throws GLib.Error {
+            var resource = new Tracker.Resource (null);
+            resource.set_uri ("rdf:type", "health:Activity");
+            resource.set_string ("health:activity_date", date_to_iso_8601 (a.date));
+            if (a.steps != 0) {
+                resource.set_int64 ("health:steps", a.steps);
+            }
+            resource.set_int64 ("health:activity_id", a.activity_type);
+            resource.set_int64 ("health:minutes", a.minutes);
+
+            yield this.db.update_async (resource.print_sparql_update (this.manager, null));
+            this.steps_updated ();
+        }
+
+        /**
          * Saves a `Weight` to the DB. Updates the weight if there's already one for the weight's date.
          *
          * @param w The `Weight` that should be saved.
          * @throws DatabaseError If saving to the DB fails.
          */
-        public async void save_weight (Weight w, GLib.Cancellable? cancellable) throws GLib.Error {
+        public async void save_weight (Weight w, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var resource = new Tracker.Resource (null);
-            resource.set_uri ("rdf:type", "health:DataPoint");
-            resource.set_string ("health:date", date_to_iso_8601 (w.date));
+            resource.set_uri ("rdf:type", "health:WeightMeasurement");
+            resource.set_string ("health:weight_date", date_to_iso_8601 (w.date));
             resource.set_double ("health:weight", w.weight.get_in_kg ());
 
-            var steps = yield this.get_steps_on_date (w.date, cancellable);
-            if (steps != null) {
-                resource.set_int64 ("health:steps", (!) steps);
-            }
-
-            yield this.db.update_async ("DELETE WHERE { ?u health:date '%s' }; %s".printf (date_to_iso_8601 (w.date), resource.print_sparql_update (this.manager, null)));
+            yield this.db.update_async ("DELETE WHERE { ?u health:weight_date '%s' }; %s".printf (date_to_iso_8601 (w.date), resource.print_sparql_update (this.manager, null)));
             this.weight_updated ();
-        }
-
-        /**
-         * Saves a `Steps` to the DB. Updates the steps if there's already one for the steps's date.
-         *
-         * @param s The `Steps` that should be saved.
-         * @throws DatabaseError If saving to the DB fails.
-         */
-        public async void save_steps (Steps s, GLib.Cancellable? cancellable) throws GLib.Error {
-            var resource = new Tracker.Resource (null);
-            resource.set_uri ("rdf:type", "health:DataPoint");
-            resource.set_string ("health:date", date_to_iso_8601 (s.date));
-            resource.set_int64 ("health:steps", s.steps);
-
-            var weight = yield this.get_weight_on_date (s.date, cancellable);
-            if (weight != null) {
-                resource.set_double ("health:weight", (!) weight);
-            }
-
-            yield this.db.update_async ("DELETE WHERE { ?u health:date '%s' }; %s".printf (date_to_iso_8601 (s.date), resource.print_sparql_update (this.manager, null)));
-            this.steps_updated ();
         }
 
         public signal void steps_updated ();
         public signal void weight_updated ();
 
-        const string INSERT_STEPS = "INSERT OR REPLACE { ?datapoint a health:DataPoint ; health:date '%s' ; health:steps %s . } WHERE { SELECT ?datapoint WHERE { ?datapoint a health:DataPoint ; health:date ?date . FILTER ( ?date = '%s' ) } }";
-        const string INSERT_WEIGHT = "INSERT OR REPLACE { ?datapoint a health:DataPoint ; health:date '%s' ; health:weight %s . } WHERE { SELECT ?datapoint WHERE { ?datapoint a health:DataPoint ; health:date ?date . FILTER ( ?date = '%s' ) } }";
-        const string QUERY_DATE_HAS_STEPS = "ASK { ?datapoint a health:DataPoint ; health:date '%s'; health:steps ?steps . }";
-        const string QUERY_DATE_HAS_WEIGHT = "ASK { ?datapoint a health:DataPoint ; health:date '%s'; health:weight ?weight . }";
-        const string QUERY_STEPS_AFTER = "SELECT ?date ?steps WHERE { ?datapoint a health:DataPoint ; health:date ?date ; health:steps ?steps . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
-        const string QUERY_STEPS_ON_DAY = "SELECT ?steps WHERE { ?datapoint a health:DataPoint; health:date ?date ; health:steps ?steps . FILTER(?date = '%s'^^xsd:date) }";
-        const string QUERY_WEIGHT_AFTER = "SELECT ?date ?weight WHERE { ?datapoint a health:DataPoint ; health:date ?date  ; health:weight ?weight . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
-        const string QUERY_WEIGHT_ON_DAY = "SELECT ?weight WHERE { ?datapoint a health:DataPoint; health:date ?date ; health:weight ?weight . FILTER(?date = '%s'^^xsd:date) }";
+        const string QUERY_DATE_HAS_STEPS = "ASK { ?activity a health:Activity ; health:activity_date '%s'; health:steps ?steps . }";
+        const string QUERY_DATE_HAS_WEIGHT = "ASK { ?datapoint a health:WeightMeasurement ; health:activity_date '%s'; health:weight ?weight . }";
+        const string QUERY_STEPS_AFTER = "SELECT ?date ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:steps ?steps . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
+        const string QUERY_STEPS_ON_DAY = "SELECT ?steps WHERE { ?datapoint a health:Activity; health:activity_date ?date ; health:steps ?steps . FILTER(?date = '%s'^^xsd:date) }";
+        const string QUERY_WEIGHT_AFTER = "SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
+        const string QUERY_WEIGHT_ON_DAY = "SELECT ?weight WHERE { ?datapoint a health:WeightMeasurement; health:weight_date ?date ; health:weight ?weight . FILTER(?date = '%s'^^xsd:date) }";
+
 
         private static TrackerDatabase instance;
         private Tracker.NamespaceManager manager;

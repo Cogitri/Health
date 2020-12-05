@@ -24,8 +24,8 @@ namespace Health {
             this.add_test ("check_exists_weight", this.check_exists_weight);
             this.add_test ("get_after_steps", this.get_after_steps);
             this.add_test ("get_after_weight", this.get_after_weight);
-            this.add_test ("save_steps", this.save_steps);
-            this.add_test ("save_steps_and_weight", this.save_steps_and_weight);
+            this.add_test ("save_steps", this.save_activity);
+            this.add_test ("save_steps_and_weight", this.save_activity_and_weight);
             this.add_test ("save_weight", this.save_weight);
             this.add_test ("save_weight_and_steps", this.save_weight_and_steps);
         }
@@ -33,10 +33,10 @@ namespace Health {
         public void check_exists_steps () throws ValaUnit.TestError {
             var db = this.open_db ();
             var date = get_today_date ();
-            var steps = new Steps (date, 10000);
+            var activity = new Activity (Activities.Enum.WALKING, date, 0, 10000);
             try {
-                db.save_steps.begin (steps, null, this.async_completion);
-                db.save_steps.end (this.async_result ());
+                db.save_activity.begin (activity, null, this.async_completion);
+                db.save_activity.end (this.async_result ());
                 db.check_steps_exist_on_date.begin (date, null, this.async_completion);
                 assert (db.check_steps_exist_on_date.end (this.async_result ()));
                 date.subtract_days (1);
@@ -80,10 +80,10 @@ namespace Health {
         public void get_after_steps () throws ValaUnit.TestError {
             var db = this.open_db ();
             var date = get_today_date ();
-            var steps = new Steps (date, 10000);
+            var activity = new Activity (Activities.Enum.WALKING, date, 0, 10000);
             try {
-                db.save_steps.begin (steps, null, this.async_completion);
-                db.save_steps.end (this.async_result ());
+                db.save_activity.begin (activity, null, this.async_completion);
+                db.save_activity.end (this.async_result ());
                 db.get_steps_after.begin (date, null, this.async_completion);
                 assert_equal<uint?> (db.get_steps_after.end (this.async_result ()).size, 1);
                 date.subtract_days (1);
@@ -124,13 +124,14 @@ namespace Health {
             }
         }
 
-        public void save_steps () throws ValaUnit.TestError {
+        public void save_activity () throws ValaUnit.TestError {
             var db = this.open_db ();
-            var steps = new Steps (get_today_date (), 10000);
+            var date = get_today_date ();
+            var activity = new Activity (Activities.Enum.WALKING, date, 0, 10000);
             Gee.ArrayList<Steps>? retrieved_steps = null;
             try {
-                db.save_steps.begin (steps, null, this.async_completion);
-                db.save_steps.end (this.async_result ());
+                db.save_activity.begin (activity, null, this.async_completion);
+                db.save_activity.end (this.async_result ());
                 db.get_steps_after.begin (get_today_date (), null, this.async_completion);
                 retrieved_steps = db.get_steps_after.end (this.async_result ());
             } catch (GLib.Error e) {
@@ -142,20 +143,21 @@ namespace Health {
                 }
                 assert_no_error (e);
             }
-            assert_equal<uint?> (((!) retrieved_steps).first ().date.get_julian (), steps.date.get_julian ());
-            assert_equal<uint32?> (((!) retrieved_steps).first ().steps, steps.steps);
+            assert_equal<uint?> (((!) retrieved_steps).first ().date.get_julian (), activity.date.get_julian ());
+            assert_equal<uint32?> (((!) retrieved_steps).first ().steps, activity.steps);
         }
 
-        public void save_steps_and_weight () throws ValaUnit.TestError {
+        public void save_activity_and_weight () throws ValaUnit.TestError {
             var db = this.open_db ();
             var settings = new Settings ();
-            var steps = new Steps (get_today_date (), 10000);
-            var weight = new Weight (get_today_date (), new WeightUnitContainer.from_database_value (100, settings));
+            var date = get_today_date ();
+            var activity = new Activity (Activities.Enum.WALKING, date, 0, 10000);
+            var weight = new Weight (date, new WeightUnitContainer.from_database_value (100, settings));
             Gee.ArrayList<Steps>? retrieved_steps = null;
             Gee.ArrayList<Weight>? retrieved_weights = null;
             try {
-                db.save_steps.begin (steps, null, this.async_completion);
-                db.save_steps.end (this.async_result ());
+                db.save_activity.begin (activity, null, this.async_completion);
+                db.save_activity.end (this.async_result ());
                 db.save_weight.begin (weight, null, this.async_completion);
                 db.save_weight.end (this.async_result ());
                 db.get_steps_after.begin (get_today_date (), null, this.async_completion);
@@ -172,8 +174,8 @@ namespace Health {
                 assert_no_error (e);
             }
 
-            assert_equal<uint?> (((!) retrieved_steps).first ().date.get_julian (), steps.date.get_julian ());
-            assert_equal<uint32?> (((!) retrieved_steps).first ().steps, steps.steps);
+            assert_equal<uint?> (((!) retrieved_steps).first ().date.get_julian (), activity.date.get_julian ());
+            assert_equal<uint32?> (((!) retrieved_steps).first ().steps, activity.steps);
             assert_equal<uint?> (((!) retrieved_weights).first ().date.get_julian (), weight.date.get_julian ());
             assert_equal<double?> (((!) retrieved_weights).first ().weight.value, weight.weight.value);
         }
@@ -205,15 +207,16 @@ namespace Health {
         public void save_weight_and_steps () throws ValaUnit.TestError {
             var db = this.open_db ();
             var settings = new Settings ();
-            var steps = new Steps (get_today_date (), 10000);
-            var weight = new Weight (get_today_date (), new WeightUnitContainer.from_database_value (100, settings));
+            var date = get_today_date ();
+            var activity = new Activity (Activities.Enum.WALKING, date, 0, 10000);
+            var weight = new Weight (date, new WeightUnitContainer.from_database_value (100, settings));
             Gee.ArrayList<Steps>? retrieved_steps = null;
             Gee.ArrayList<Weight>? retrieved_weights = null;
             try {
                 db.save_weight.begin (weight, null, this.async_completion);
                 db.save_weight.end (this.async_result ());
-                db.save_steps.begin (steps, null, this.async_completion);
-                db.save_steps.end (this.async_result ());
+                db.save_activity.begin (activity, null, this.async_completion);
+                db.save_activity.end (this.async_result ());
                 db.get_steps_after.begin (get_today_date (), null, this.async_completion);
                 retrieved_steps = db.get_steps_after.end (this.async_result ());
                 db.get_weights_after.begin (get_today_date (), settings, null, this.async_completion);
@@ -228,8 +231,8 @@ namespace Health {
                 assert_no_error (e);
             }
 
-            assert_equal<uint?> (((!) retrieved_steps).first ().date.get_julian (), steps.date.get_julian ());
-            assert_equal<uint32?> (((!) retrieved_steps).first ().steps, steps.steps);
+            assert_equal<uint?> (((!) retrieved_steps).first ().date.get_julian (), activity.date.get_julian ());
+            assert_equal<uint32?> (((!) retrieved_steps).first ().steps, activity.steps);
             assert_equal<uint?> (((!) retrieved_weights).first ().date.get_julian (), weight.date.get_julian ());
             assert_equal<double?> (((!) retrieved_weights).first ().weight.value, weight.weight.value);
         }
