@@ -176,6 +176,10 @@ namespace Health {
         private void setup_previous_page_button_clicked () {
             var current_page = (uint) this.setup_carousel.position;
             switch (current_page) {
+                case 0:
+                    // FIXME: This happens when the user scrolls back quickly and presses the "Previous" button on the last page before the "Quit" button appears
+                    this.destroy ();
+                    break;
                 case 1:
                     this.setup_carousel.scroll_to (this.setup_first_page);
                     break;
