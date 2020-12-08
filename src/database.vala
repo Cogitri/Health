@@ -188,7 +188,8 @@ namespace Health {
         }
 
         public async void reset () throws GLib.Error {
-            yield this.db.update_async ("DELETE WHERE { ?datapoint a health:DataPoint }");
+            yield this.db.update_async ("DELETE WHERE { ?datapoint a health:WeightMeasurement }");
+            yield this.db.update_async ("DELETE WHERE { ?datapoint a health:Activity }");
         }
 
         /**
@@ -231,7 +232,7 @@ namespace Health {
         public signal void weight_updated ();
 
         const string QUERY_DATE_HAS_STEPS = "ASK { ?activity a health:Activity ; health:activity_date '%s'; health:steps ?steps . }";
-        const string QUERY_DATE_HAS_WEIGHT = "ASK { ?datapoint a health:WeightMeasurement ; health:activity_date '%s'; health:weight ?weight . }";
+        const string QUERY_DATE_HAS_WEIGHT = "ASK { ?datapoint a health:WeightMeasurement ; health:weight_date '%s'; health:weight ?weight . }";
         const string QUERY_STEPS_AFTER = "SELECT ?date ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:steps ?steps . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
         const string QUERY_STEPS_ON_DAY = "SELECT ?steps WHERE { ?datapoint a health:Activity; health:activity_date ?date ; health:steps ?steps . FILTER(?date = '%s'^^xsd:date) }";
         const string QUERY_WEIGHT_AFTER = "SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
