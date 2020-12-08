@@ -24,8 +24,8 @@ namespace Health {
             this.add_test ("check_exists_weight", this.check_exists_weight);
             this.add_test ("get_after_steps", this.get_after_steps);
             this.add_test ("get_after_weight", this.get_after_weight);
-            this.add_test ("save_steps", this.save_activity);
-            this.add_test ("save_steps_and_weight", this.save_activity_and_weight);
+            this.add_test ("save_activity", this.save_activity);
+            this.add_test ("save_activity_and_weight", this.save_activity_and_weight);
             this.add_test ("save_weight", this.save_weight);
             this.add_test ("save_weight_and_steps", this.save_weight_and_steps);
         }
@@ -250,6 +250,8 @@ namespace Health {
             }
             try {
                 var db = TrackerDatabase.get_instance ((!) tmp_file.get_path ());
+                db.reset.begin (this.async_completion);
+                db.reset.end (this.async_result ());
                 return db;
             } catch (GLib.Error e) {
                 assert_no_error (e);
