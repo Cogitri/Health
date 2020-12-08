@@ -50,6 +50,11 @@ namespace Health {
             this.selected_date = new GLib.DateTime.now ();
         }
 
+        public override void dispose () {
+            this.date_selector_popover.unparent ();
+            base.dispose ();
+        }
+
         public override void size_allocate (int width, int height, int baseline) {
             base.size_allocate (width, height, baseline);
 
