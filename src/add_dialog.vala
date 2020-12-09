@@ -85,7 +85,7 @@ namespace Health {
         private void check_response_active () {
             var selected_activity = this.get_selected_activity ();
 
-            if (selected_activity != null && selected_activity.has_steps) {
+            if (selected_activity != null && ActivityDataPoints.STEP_COUNT in ((!) selected_activity).available_data_points) {
                 this.set_response_sensitive (Gtk.ResponseType.OK, steps_spinner.get_text () != "0" && minutes_spinner.get_text () != "0");
             } else {
                 this.set_response_sensitive (Gtk.ResponseType.OK, minutes_spinner.get_text () != "0");
@@ -113,7 +113,7 @@ namespace Health {
         private void on_activity_type_combobox_changed (Gtk.ComboBox cb) {
             var selected_activity = this.get_selected_activity ();
 
-            if (selected_activity != null && (!) selected_activity.has_steps) {
+            if (selected_activity != null &&  ActivityDataPoints.STEP_COUNT in ((!) selected_activity).available_data_points) {
                     this.steps_spinner.sensitive = true;
             } else {
                 this.steps_spinner.sensitive = false;

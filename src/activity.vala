@@ -17,6 +17,19 @@
  */
 namespace Health {
 
+    // TODO: Additional data points which might (!) make sense down the road:
+    // * Oxygen saturation & VO2
+    // * Body temperature
+    // * Blood pressure
+    [Flags]
+    public enum ActivityDataPoints {
+        CALORIES_BURNED,
+        DISTANCE,
+        DURATION,
+        HEART_RATE,
+        STEP_COUNT,
+    }
+
     public class Activity : GLib.Object {
         public Activities.Enum activity_type;
         public GLib.Date date { get; private set; }
@@ -62,7 +75,7 @@ namespace Health {
         public struct ActivityInfo {
             Activities.Enum type;
             string name;
-            bool has_steps;
+            ActivityDataPoints available_data_points;
             // As per https://keisan.casio.com/menu/system/000000000140
             uint32 average_calories_burned_per_minute;
             // As per https://www.arhs-nc.org/live-healthy/data/StepConversionChart.pdf
@@ -81,26 +94,26 @@ namespace Health {
 
         public static ActivityInfo[] get_values () {
             return {
-                {Enum.BASKETBALL, _ ("Basketball"), false, 6},
-                {Enum.BICYCLING, _ ("Bicycling"), false, 10},
-                {Enum.BOXING, _ ("Boxing"), false, 7},
-                {Enum.DANCING, _ ("Dancing"), false, 8},
-                {Enum.FOOTBALL, _ ("Football"), false, 3},
-                {Enum.GOLF, _ ("Golf"), false, 4},
-                {Enum.HIKING, _ ("Hiking"), true, 8},
-                {Enum.HOCKEY, _ ("Hockey"), false, 10},
-                {Enum.HORSE_RIDING, _ ("Horse Riding"), false, 5},
-                {Enum.OTHER_SPORTS, _ ("Other Sports"), false, 9},
-                {Enum.ROLLERBLADING, _ ("Rollerblading"), false, 10},
-                {Enum.RUNNING, _ ("Running"), true, 15},
-                {Enum.SKIING, _ ("Skiing"), false, 12},
-                {Enum.SOCCER, _ ("Soccer"), false, 8},
-                {Enum.SOFTBALL, _ ("Softball"), false, 5},
-                {Enum.SWIMMING, _ ("Swimming"), false, 12},
-                {Enum.TENNIS, _ ("Tennis"), false, 6},
-                {Enum.TRACK_AND_FIELD, _ ("Track And Field"), false, 5},
-                {Enum.VOLLEYBAL, _ ("Volleyball"), false, 4},
-                {Enum.WALKING, _ ("Walking"), true, 5},
+                {Enum.BASKETBALL, _ ("Basketball"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 6},
+                {Enum.BICYCLING, _ ("Bicycling"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 10},
+                {Enum.BOXING, _ ("Boxing"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 7},
+                {Enum.DANCING, _ ("Dancing"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 8},
+                {Enum.FOOTBALL, _ ("Football"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 3},
+                {Enum.GOLF, _ ("Golf"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION, 4},
+                {Enum.HIKING, _ ("Hiking"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.STEP_COUNT | ActivityDataPoints.DISTANCE | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DURATION, 8},
+                {Enum.HOCKEY, _ ("Hockey"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 10},
+                {Enum.HORSE_RIDING, _ ("Horse Riding"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 5},
+                {Enum.OTHER_SPORTS, _ ("Other Sports"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 9},
+                {Enum.ROLLERBLADING, _ ("Rollerblading"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 10},
+                {Enum.RUNNING, _ ("Running"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.STEP_COUNT | ActivityDataPoints.DISTANCE | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DURATION, 15},
+                {Enum.SKIING, _ ("Skiing"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 12},
+                {Enum.SOCCER, _ ("Soccer"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 8},
+                {Enum.SOFTBALL, _ ("Softball"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 5},
+                {Enum.SWIMMING, _ ("Swimming"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 12},
+                {Enum.TENNIS, _ ("Tennis"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 6},
+                {Enum.TRACK_AND_FIELD, _ ("Track And Field"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE | ActivityDataPoints.STEP_COUNT, 5},
+                {Enum.VOLLEYBAL, _ ("Volleyball"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 4},
+                {Enum.WALKING, _ ("Walking"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.STEP_COUNT | ActivityDataPoints.DISTANCE | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DURATION, 5},
             };
         }
     }
