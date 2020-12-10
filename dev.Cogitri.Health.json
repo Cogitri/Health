@@ -65,7 +65,7 @@
                 {
                     "type": "git",
                     "url": "https://gitlab.gnome.org/exalm/libhandy",
-                    "branch": "gtk4"
+                    "commit": "c425c1254e2f640ee28d746ac272e16bbc453b2b"
                 },
                 {
                     "type": "patch",
