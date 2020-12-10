@@ -1,6 +1,6 @@
 health_sources = files(
   'activity.vala',
-  'add_dialog.vala',
+  'activity_add_dialog.vala',
   'application.vala',
   'database.vala',
   'date_editor.vala',
@@ -15,6 +15,7 @@ health_sources = files(
   'util.vala',
   'views.vala',
   'weight.vala',
+  'weight_add_dialog.vala',
   'window.vala',
 )
 

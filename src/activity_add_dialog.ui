@@ -50,7 +50,7 @@
     </child>
     <child type="action">
       <object class="GtkButton" id="button_ok">
-        <property name="label" translatable="yes">_Save</prosperty>
+        <property name="label" translatable="yes">_Save</property>
         <property name="use-underline">1</property>
       </object>
     </child>
