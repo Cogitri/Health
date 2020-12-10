@@ -25,14 +25,29 @@ namespace Health {
         [GtkChild]
         DateSelector date_selector;
         [GtkChild]
-        private Gtk.StringList activity_type_model;
+        private Gtk.ListBox activities_list_box;
+        [GtkChild]
+        private Gtk.SpinButton calories_burned_spinner;
+        [GtkChild]
+        private Gtk.SpinButton distance_spinner;
+        [GtkChild]
+        private Gtk.SpinButton duration_spinner;
         [GtkChild]
         private Gtk.SpinButton steps_spinner;
         [GtkChild]
-        private Gtk.SpinButton minutes_spinner;
+        private Gtk.StringList activity_type_model;
+        [GtkChild]
+        private Hdy.ActionRow calories_burned_action_row;
+        [GtkChild]
+        private Hdy.ActionRow distance_action_row;
+        [GtkChild]
+        private Hdy.ActionRow duration_action_row;
+        [GtkChild]
+        private Hdy.ActionRow stepcount_action_row;
         [GtkChild]
         private Hdy.ComboRow activity_type_comborow;
 
+        private Activities.ActivityInfo? previous_activity;
         private TrackerDatabase db;
 
         public ActivityAddDialog (Gtk.Window? parent, TrackerDatabase db) {
@@ -40,12 +55,13 @@ namespace Health {
             this.set_transient_for (parent);
             this.db = db;
 
+            // FIXME: Somehow the activity_type_model doesn't live long enough because it's
+            // unrefed too often (off by one)
+            this.activity_type_model.ref ();
             foreach (var x in Activities.get_values ()) {
                     this.activity_type_model.append (x.name);
             }
-            this.activity_type_comborow.model = this.activity_type_model;
             this.activity_type_comborow.selected = Activities.Enum.WALKING;
-            this.set_response_sensitive (Gtk.ResponseType.OK, false);
         }
 
         /**
@@ -53,26 +69,56 @@ namespace Health {
          */
         public async void save () throws GLib.Error {
             var db = TrackerDatabase.get_instance ();
+            var selected_activity = this.get_selected_activity ();
 
-            uint32? steps = null;
+            yield db.save_activity (
+                new Activity (
+                    this.get_selected_activity ().type,
+                    date_from_datetime (this.date_selector.selected_date),
+                    this.get_spinner_value_if_datapoint (this.calories_burned_spinner, selected_activity, ActivityDataPoints.CALORIES_BURNED),
+                    this.get_spinner_value_if_datapoint (this.distance_spinner, selected_activity, ActivityDataPoints.DISTANCE),
+                    0,
+                    0,
+                    0,
+                    this.get_spinner_value_if_datapoint (this.duration_spinner, selected_activity, ActivityDataPoints.DURATION),
+                    this.get_spinner_value_if_datapoint (this.steps_spinner, selected_activity, ActivityDataPoints.STEP_COUNT)
+                )
+            );
+        }
 
-            if (this.steps_spinner.text != "") {
-                steps = (uint32) this.steps_spinner.value;
+        private uint32 get_spinner_value_if_datapoint (Gtk.SpinButton? b, Activities.ActivityInfo a, ActivityDataPoints d) {
+            if (d in a.available_data_points && b.get_text () != "") {
+                return (uint32) ((!) b).value;
+            } else {
+                return 0;
             }
-
-            yield db.save_activity (new Activity (this.get_selected_activity ().type, date_from_datetime (this.date_selector.selected_date), 0, 0, 0, 0, 0, (uint32) this.minutes_spinner.value, steps));
         }
 
         private Activities.ActivityInfo get_selected_activity () {
             return Activities.get_values ()[this.activity_type_comborow.selected];
         }
 
-        private void check_response_active () {
-            if (ActivityDataPoints.STEP_COUNT in this.get_selected_activity ().available_data_points) {
-                this.set_response_sensitive (Gtk.ResponseType.OK, steps_spinner.get_text () != "0" && minutes_spinner.get_text () != "0");
-            } else {
-                this.set_response_sensitive (Gtk.ResponseType.OK, minutes_spinner.get_text () != "0");
+        private void update_activity_entries () {
+            var selected_activity = this.get_selected_activity ();
+            unowned Gtk.Widget? w;
+
+            while ((w = this.activities_list_box.get_last_child ()) != this.activity_type_comborow) {
+                this.activities_list_box.remove (w);
             }
+
+            if (ActivityDataPoints.CALORIES_BURNED in selected_activity.available_data_points) {
+                this.activities_list_box.append (this.calories_burned_action_row);
+            }
+            if (ActivityDataPoints.DISTANCE in selected_activity.available_data_points) {
+                this.activities_list_box.append (this.distance_action_row);
+            }
+            if (ActivityDataPoints.DURATION in selected_activity.available_data_points) {
+                this.activities_list_box.append (this.duration_action_row);
+            }
+            if (ActivityDataPoints.STEP_COUNT in selected_activity.available_data_points) {
+                this.activities_list_box.append (this.stepcount_action_row);
+            }
+
         }
 
         [GtkCallback]
@@ -94,18 +140,8 @@ namespace Health {
 
         [GtkCallback]
         private void on_activity_type_comborow_selected (GLib.Object o, GLib.ParamSpec p) {
-            if (ActivityDataPoints.STEP_COUNT in this.get_selected_activity ().available_data_points) {
-                    this.steps_spinner.sensitive = true;
-            } else {
-                this.steps_spinner.sensitive = false;
-            }
-
-            this.check_response_active ();
-        }
-
-        [GtkCallback]
-        private void on_spinner_changed (Gtk.Editable e) {
-            this.check_response_active ();
+            this.update_activity_entries ();
+            this.previous_activity = this.get_selected_activity ();
         }
     }
 }

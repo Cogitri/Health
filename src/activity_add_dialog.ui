@@ -25,10 +25,18 @@
     <property name="step-increment">100</property>
     <property name="page-increment">1000</property>
   </object>
-  <object class="GtkAdjustment" id="activity_minutes_adjustment">
+  <object class="GtkAdjustment" id="activity_duration_adjustment">
     <property name="upper">1440</property>
     <property name="step-increment">1</property>
     <property name="page-increment">15</property>
+  </object>
+  <object class="GtkAdjustment" id="calories_burned_adjustment">
+    <property name="step-increment">10</property>
+    <property name="page-increment">100</property>
+  </object>
+  <object class="GtkAdjustment" id="distance_adjustment">
+    <property name="step-increment">100</property>
+    <property name="page-increment">1000</property>
   </object>
   <object class="GtkStringList" id="activity_type_model"/>
   <template class="HealthActivityAddDialog" parent="GtkDialog">
@@ -36,6 +44,7 @@
     <property name="modal">1</property>
     <property name="destroy-with-parent">1</property>
     <property name="title" translatable="yes">Add New Activity</property>
+    <property name="default-width">400</property>
     <signal name="response" handler="on_response" swapped="no"/>
     <child type="action">
       <object class="GtkButton" id="button_cancel">
@@ -68,7 +77,12 @@
             <property name="margin-top">6</property>
             <property name="margin-bottom">6</property>
             <child>
-              <object class="HdyPreferencesGroup">
+              <object class="GtkListBox" id="activities_list_box">
+                <property name="can-focus">0</property>
+                <property name="selection-mode">none</property>
+                <style>
+                  <class name="content"/>
+                </style>
                 <child>
                   <object class="HdyActionRow">
                     <property name="title" translatable="yes">Date</property>
@@ -89,42 +103,6 @@
                     <signal name="notify::selected" handler="on_activity_type_comborow_selected" swapped="no"/>
                   </object>
                 </child>
-                <child>
-                  <object class="HdyActionRow">
-                    <property name="title" translatable="yes">Activity Duration (in Minutes)</property>
-                    <child>
-                      <object class="GtkSpinButton" id="minutes_spinner">
-                        <property name="width-chars">5</property>
-                        <property name="text" translatable="yes">0</property>
-                        <property name="adjustment">activity_minutes_adjustment</property>
-                        <property name="numeric">1</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-bottom">6</property>
-                        <signal name="changed" handler="on_spinner_changed" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="HdyActionRow">
-                    <property name="title" translatable="yes">Stepcount</property>
-                    <child>
-                      <object class="GtkSpinButton" id="steps_spinner">
-                        <property name="width-chars">5</property>
-                        <property name="text" translatable="yes">0</property>
-                        <property name="adjustment">steps_adjustment</property>
-                        <property name="numeric">1</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-bottom">6</property>
-                        <signal name="changed" handler="on_spinner_changed" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
               </object>
             </child>
           </object>
@@ -132,4 +110,64 @@
       </object>
     </child>
   </template>
+  <object class="HdyActionRow" id="calories_burned_action_row">
+    <property name="title" translatable="yes">Calories Burned</property>
+    <child>
+      <object class="GtkSpinButton" id="calories_burned_spinner">
+        <property name="width-chars">5</property>
+        <property name="text" translatable="yes">0</property>
+        <property name="adjustment">calories_burned_adjustment</property>
+        <property name="numeric">1</property>
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+      </object>
+    </child>
+  </object>
+  <object class="HdyActionRow" id="distance_action_row">
+    <property name="title" translatable="yes">Distance</property>
+    <child>
+      <object class="GtkSpinButton" id="distance_spinner">
+        <property name="width-chars">5</property>
+        <property name="text" translatable="yes">0</property>
+        <property name="adjustment">distance_adjustment</property>
+        <property name="numeric">1</property>
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+      </object>
+    </child>
+  </object>
+  <object class="HdyActionRow" id="duration_action_row">
+    <property name="title" translatable="yes">Activity Duration (in Minutes)</property>
+    <child>
+      <object class="GtkSpinButton" id="duration_spinner">
+        <property name="width-chars">5</property>
+        <property name="text" translatable="yes">0</property>
+        <property name="adjustment">activity_duration_adjustment</property>
+        <property name="numeric">1</property>
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+      </object>
+    </child>
+  </object>
+  <object class="HdyActionRow" id="stepcount_action_row">
+    <property name="title" translatable="yes">Stepcount</property>
+    <child>
+      <object class="GtkSpinButton" id="steps_spinner">
+        <property name="width-chars">5</property>
+        <property name="text" translatable="yes">0</property>
+        <property name="adjustment">steps_adjustment</property>
+        <property name="numeric">1</property>
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+      </object>
+    </child>
+  </object>
 </interface>
