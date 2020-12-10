@@ -31,20 +31,38 @@ namespace Health {
     }
 
     public class Activity : GLib.Object {
-        public Activities.Enum activity_type;
-        public GLib.Date date { get; private set; }
-        public uint32 minutes { get; private set; }
-        public uint32 steps { get; private set; }
 
-        public Activity (Activities.Enum activity_type, GLib.Date date, uint32 minutes, uint32 steps = 0) {
-            this.activity_type = activity_type;
-            this.date = date;
-            this.minutes = minutes;
-            this.steps = steps;
-        }
+        public Activities.Enum activity_type { get; construct; }
+        public GLib.Date date { get; construct; }
+        public uint32 calories_burned { get; construct; }
+        public uint32 distance { get; construct; }
+        public uint32 hearth_rate_avg { get; construct; }
+        public uint32 hearth_rate_max { get; construct; }
+        public uint32 hearth_rate_min { get; construct; }
+        public uint32 minutes { get; construct; }
+        public uint32 steps { get; construct; }
 
-        public uint32 get_calories_burned () {
-            return this.minutes * Activities.get_values ()[this.activity_type].average_calories_burned_per_minute;
+        public Activity (
+            Activities.Enum activity_type,
+            GLib.Date date,
+            uint32 calories_burned,
+            uint32 distance,
+            uint32 hearth_rate_avg,
+            uint32 hearth_rate_max,
+            uint32 hearth_rate_min,
+            uint32 minutes,
+            uint32 steps
+        ) {
+            Object (
+                activity_type: activity_type,
+                date: date,
+                distance: distance,
+                hearth_rate_avg: hearth_rate_avg,
+                hearth_rate_max: hearth_rate_max,
+                hearth_rate_min: hearth_rate_min,
+                minutes: minutes,
+                steps: steps
+            );
         }
     }
 

@@ -41,7 +41,6 @@
     <property name="modal">1</property>
     <property name="destroy-with-parent">1</property>
     <property name="title" translatable="yes">Add New Activity</property>
-    <property name="default_width">400</property>
     <signal name="response" handler="on_response" swapped="no"/>
     <child type="action">
       <object class="GtkButton" id="button_cancel">
@@ -51,7 +50,7 @@
     </child>
     <child type="action">
       <object class="GtkButton" id="button_ok">
-        <property name="label" translatable="yes">_Save</property>
+        <property name="label" translatable="yes">_Save</prosperty>
         <property name="use-underline">1</property>
       </object>
     </child>
@@ -60,75 +59,92 @@
       <action-widget response="ok" default="true">button_ok</action-widget>
     </action-widgets>
     <child>
-      <object class="GtkBox">
-        <property name="orientation">vertical</property>
+      <object class="GtkScrolledWindow">
+        <property name="propagate-natural-height">1</property>
         <child>
-          <object class="HdyActionRow">
-            <property name="title" translatable="yes">Date</property>
+          <object class="HdyClamp">
+            <property name="maximum-size">400</property>
+            <property name="tightening-threshold">200</property>
+            <property name="valign">center</property>
+            <property name="vexpand">True</property>
+            <property name="hexpand">True</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
             <child>
-              <object class="HealthDateSelector" id="date_selector">
-                <property name="margin-start">6</property>
-                <property name="margin-end">6</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="HdyActionRow">
-            <property name="title" translatable="yes">Activity Type</property>
-            <child>
-              <object class="GtkComboBox" id="activity_type_combobox">
-                <property name="has-entry">false</property>
-                <property name="model">activity_type_model</property>
-                <property name="margin-start">6</property>
-                <property name="margin-end">6</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-                <signal name="changed" handler="on_activity_type_combobox_changed" swapped="no"/>
+              <object class="HdyPreferencesGroup">
                 <child>
-                  <object class="GtkCellRendererText"/>
-                  <attributes>
-                    <attribute name="text">0</attribute>
-                  </attributes>
+                  <object class="HdyActionRow">
+                    <property name="title" translatable="yes">Date</property>
+                    <child>
+                      <object class="HealthDateSelector" id="date_selector">
+                        <property name="margin-start">6</property>
+                        <property name="margin-end">6</property>
+                        <property name="margin-top">6</property>
+                        <property name="margin-bottom">6</property>
+                      </object>
+                    </child>
+                  </object>
                 </child>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="HdyActionRow">
-            <property name="title" translatable="yes">Activity Duration (in Minutes)</property>
-            <child>
-              <object class="GtkSpinButton" id="minutes_spinner">
-                <property name="width-chars">5</property>
-                <property name="text" translatable="yes">0</property>
-                <property name="adjustment">activity_minutes_adjustment</property>
-                <property name="numeric">1</property>
-                <property name="margin-start">6</property>
-                <property name="margin-end">6</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-                <signal name="changed" handler="on_spinner_changed" swapped="no"/>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="HdyActionRow">
-            <property name="title" translatable="yes">Stepcount</property>
-            <child>
-              <object class="GtkSpinButton" id="steps_spinner">
-                <property name="width-chars">5</property>
-                <property name="text" translatable="yes">0</property>
-                <property name="adjustment">steps_adjustment</property>
-                <property name="numeric">1</property>
-                <property name="margin-start">6</property>
-                <property name="margin-end">6</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-                <signal name="changed" handler="on_spinner_changed" swapped="no"/>
+                <child>
+                  <object class="HdyActionRow">
+                    <property name="title" translatable="yes">Activity Type</property>
+                    <child>
+                      <object class="GtkComboBox" id="activity_type_combobox">
+                        <property name="has-entry">false</property>
+                        <property name="model">activity_type_model</property>
+                        <property name="margin-start">6</property>
+                        <property name="margin-end">6</property>
+                        <property name="margin-top">6</property>
+                        <property name="margin-bottom">6</property>
+                        <signal name="changed" handler="on_activity_type_combobox_changed" swapped="no"/>
+                        <child>
+                          <object class="GtkCellRendererText"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyActionRow">
+                    <property name="title" translatable="yes">Activity Duration (in Minutes)</property>
+                    <child>
+                      <object class="GtkSpinButton" id="minutes_spinner">
+                        <property name="width-chars">5</property>
+                        <property name="text" translatable="yes">0</property>
+                        <property name="adjustment">activity_minutes_adjustment</property>
+                        <property name="numeric">1</property>
+                        <property name="margin-start">6</property>
+                        <property name="margin-end">6</property>
+                        <property name="margin-top">6</property>
+                        <property name="margin-bottom">6</property>
+                        <signal name="changed" handler="on_spinner_changed" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyActionRow">
+                    <property name="title" translatable="yes">Stepcount</property>
+                    <child>
+                      <object class="GtkSpinButton" id="steps_spinner">
+                        <property name="width-chars">5</property>
+                        <property name="text" translatable="yes">0</property>
+                        <property name="adjustment">steps_adjustment</property>
+                        <property name="numeric">1</property>
+                        <property name="margin-start">6</property>
+                        <property name="margin-end">6</property>
+                        <property name="margin-top">6</property>
+                        <property name="margin-bottom">6</property>
+                        <signal name="changed" handler="on_spinner_changed" swapped="no"/>
+                      </object>
+                    </child>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

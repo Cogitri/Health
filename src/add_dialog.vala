@@ -66,7 +66,7 @@ namespace Health {
                 steps = (uint32) this.steps_spinner.value;
             }
 
-            yield db.save_activity (new Activity (this.get_selected_activity ().type, date_from_datetime (this.date_selector.selected_date), (uint32) this.minutes_spinner.value, steps));
+            yield db.save_activity (new Activity (this.get_selected_activity ().type, date_from_datetime (this.date_selector.selected_date), 0, 0, 0, 0, 0, (uint32) this.minutes_spinner.value, steps));
         }
 
         private Activities.ActivityInfo? get_selected_activity () {

@@ -23,12 +23,37 @@ health:activity_id a rdf:Property ;
     rdfs:range xsd:integer ;
     nrl:maxCardinality 1 .
 
-health:steps a rdf:Property ;
+health:calories_burned a rdf:Property ;
+    rdfs:domain health:Activity ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:distance a rdf:Property ;
+    rdfs:domain health:Activity ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:hearth_rate_avg a rdf:Property ;
+    rdfs:domain health:Activity ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:hearth_rate_max a rdf:Property ;
+    rdfs:domain health:Activity ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:hearth_rate_min a rdf:Property ;
     rdfs:domain health:Activity ;
     rdfs:range xsd:integer ;
     nrl:maxCardinality 1 .
 
 health:minutes a rdf:Property ;
+    rdfs:domain health:Activity ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:steps a rdf:Property ;
     rdfs:domain health:Activity ;
     rdfs:range xsd:integer ;
     nrl:maxCardinality 1 .

@@ -202,11 +202,29 @@ namespace Health {
             var resource = new Tracker.Resource (null);
             resource.set_uri ("rdf:type", "health:Activity");
             resource.set_string ("health:activity_date", date_to_iso_8601 (a.date));
+            resource.set_int64 ("health:activity_id", a.activity_type);
+
+            if (a.calories_burned != 0) {
+                resource.set_int64 ("health:calories_burned", a.calories_burned);
+            }
+            if (a.distance != 0) {
+                resource.set_int64 ("health:distance", a.distance);
+            }
+            if (a.hearth_rate_avg != 0) {
+                resource.set_int64 ("health:hearth_rate_avg", a.hearth_rate_avg);
+            }
+            if (a.hearth_rate_max != 0) {
+                resource.set_int64 ("health:hearth_rate_max", a.hearth_rate_max);
+            }
+            if (a.hearth_rate_min != 0) {
+                resource.set_int64 ("health:hearth_rate_min", a.hearth_rate_min);
+            }
+            if (a.minutes != 0) {
+                resource.set_int64 ("health:minutes", a.minutes);
+            }
             if (a.steps != 0) {
                 resource.set_int64 ("health:steps", a.steps);
             }
-            resource.set_int64 ("health:activity_id", a.activity_type);
-            resource.set_int64 ("health:minutes", a.minutes);
 
             yield this.db.update_async (resource.print_sparql_update (this.manager, null));
             this.steps_updated ();
