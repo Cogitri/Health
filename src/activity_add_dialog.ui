@@ -30,12 +30,7 @@
     <property name="step-increment">1</property>
     <property name="page-increment">15</property>
   </object>
-  <object class="GtkListStore" id="activity_type_model">
-    <columns>
-      <!-- column-name activity-name -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
+  <object class="GtkStringList" id="activity_type_model"/>
   <template class="HealthActivityAddDialog" parent="GtkDialog">
     <property name="use-header-bar">1</property>
     <property name="modal">1</property>
@@ -88,25 +83,10 @@
                   </object>
                 </child>
                 <child>
-                  <object class="HdyActionRow">
+                  <object class="HdyComboRow" id="activity_type_comborow">
                     <property name="title" translatable="yes">Activity Type</property>
-                    <child>
-                      <object class="GtkComboBox" id="activity_type_combobox">
-                        <property name="has-entry">false</property>
-                        <property name="model">activity_type_model</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-bottom">6</property>
-                        <signal name="changed" handler="on_activity_type_combobox_changed" swapped="no"/>
-                        <child>
-                          <object class="GtkCellRendererText"/>
-                          <attributes>
-                            <attribute name="text">0</attribute>
-                          </attributes>
-                        </child>
-                      </object>
-                    </child>
+                    <property name="model">activity_type_model</property>
+                    <signal name="notify::selected" handler="on_activity_type_comborow_selected" swapped="no"/>
                   </object>
                 </child>
                 <child>

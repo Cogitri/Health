@@ -25,13 +25,13 @@ namespace Health {
         [GtkChild]
         DateSelector date_selector;
         [GtkChild]
-        private Gtk.ComboBox activity_type_combobox;
-        [GtkChild]
-        private Gtk.ListStore activity_type_model;
+        private Gtk.StringList activity_type_model;
         [GtkChild]
         private Gtk.SpinButton steps_spinner;
         [GtkChild]
         private Gtk.SpinButton minutes_spinner;
+        [GtkChild]
+        private Hdy.ComboRow activity_type_comborow;
 
         private TrackerDatabase db;
 
@@ -41,16 +41,10 @@ namespace Health {
             this.db = db;
 
             foreach (var x in Activities.get_values ()) {
-                if (x.type == Activities.Enum.WALKING) {
-                    Gtk.TreeIter iter;
-                    this.activity_type_model.insert_with_values (out iter, -1, 0, x.name, -1);
-                    this.activity_type_combobox.set_active_iter (iter);
-                } else {
-                    Gtk.TreeIter iter;
-                    this.activity_type_model.insert_with_values (out iter, -1, 0, x.name, -1);
-                }
+                    this.activity_type_model.append (x.name);
             }
-
+            this.activity_type_comborow.model = this.activity_type_model;
+            this.activity_type_comborow.selected = Activities.Enum.WALKING;
             this.set_response_sensitive (Gtk.ResponseType.OK, false);
         }
 
@@ -69,23 +63,12 @@ namespace Health {
             yield db.save_activity (new Activity (this.get_selected_activity ().type, date_from_datetime (this.date_selector.selected_date), 0, 0, 0, 0, 0, (uint32) this.minutes_spinner.value, steps));
         }
 
-        private Activities.ActivityInfo? get_selected_activity () {
-            Gtk.TreeIter iter;
-
-            if (this.activity_type_combobox.get_active_iter (out iter)) {
-                GLib.Value val;
-                this.activity_type_model.get_value (iter, 0, out val);
-
-                return Activities.get_info_by_name (val.get_string ());
-            }
-
-            return null;
+        private Activities.ActivityInfo get_selected_activity () {
+            return Activities.get_values ()[this.activity_type_comborow.selected];
         }
 
         private void check_response_active () {
-            var selected_activity = this.get_selected_activity ();
-
-            if (selected_activity != null && ActivityDataPoints.STEP_COUNT in ((!) selected_activity).available_data_points) {
+            if (ActivityDataPoints.STEP_COUNT in this.get_selected_activity ().available_data_points) {
                 this.set_response_sensitive (Gtk.ResponseType.OK, steps_spinner.get_text () != "0" && minutes_spinner.get_text () != "0");
             } else {
                 this.set_response_sensitive (Gtk.ResponseType.OK, minutes_spinner.get_text () != "0");
@@ -110,10 +93,8 @@ namespace Health {
 
 
         [GtkCallback]
-        private void on_activity_type_combobox_changed (Gtk.ComboBox cb) {
-            var selected_activity = this.get_selected_activity ();
-
-            if (selected_activity != null &&  ActivityDataPoints.STEP_COUNT in ((!) selected_activity).available_data_points) {
+        private void on_activity_type_comborow_selected (GLib.Object o, GLib.ParamSpec p) {
+            if (ActivityDataPoints.STEP_COUNT in this.get_selected_activity ().available_data_points) {
                     this.steps_spinner.sensitive = true;
             } else {
                 this.steps_spinner.sensitive = false;
