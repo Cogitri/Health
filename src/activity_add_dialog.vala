@@ -33,6 +33,12 @@ namespace Health {
         [GtkChild]
         private Gtk.SpinButton duration_spinner;
         [GtkChild]
+        private Gtk.SpinButton heart_rate_average_spinner;
+        [GtkChild]
+        private Gtk.SpinButton heart_rate_max_spinner;
+        [GtkChild]
+        private Gtk.SpinButton heart_rate_min_spinner;
+        [GtkChild]
         private Gtk.SpinButton steps_spinner;
         [GtkChild]
         private Gtk.StringList activity_type_model;
@@ -42,6 +48,12 @@ namespace Health {
         private Hdy.ActionRow distance_action_row;
         [GtkChild]
         private Hdy.ActionRow duration_action_row;
+        [GtkChild]
+        private Hdy.ActionRow heart_rate_average_action_row;
+        [GtkChild]
+        private Hdy.ActionRow heart_rate_max_action_row;
+        [GtkChild]
+        private Hdy.ActionRow heart_rate_min_action_row;
         [GtkChild]
         private Hdy.ActionRow stepcount_action_row;
         [GtkChild]
@@ -92,9 +104,9 @@ namespace Health {
                     date_from_datetime (this.date_selector.selected_date),
                     this.get_spinner_value_if_datapoint (this.calories_burned_spinner, selected_activity, ActivityDataPoints.CALORIES_BURNED),
                     distance,
-                    0,
-                    0,
-                    0,
+                    this.get_spinner_value_if_datapoint (this.heart_rate_average_spinner, selected_activity, ActivityDataPoints.HEART_RATE),
+                    this.get_spinner_value_if_datapoint (this.heart_rate_max_spinner, selected_activity, ActivityDataPoints.HEART_RATE),
+                    this.get_spinner_value_if_datapoint (this.heart_rate_min_spinner, selected_activity, ActivityDataPoints.HEART_RATE),
                     this.get_spinner_value_if_datapoint (this.duration_spinner, selected_activity, ActivityDataPoints.DURATION),
                     this.get_spinner_value_if_datapoint (this.steps_spinner, selected_activity, ActivityDataPoints.STEP_COUNT)
                 )
@@ -129,6 +141,11 @@ namespace Health {
             }
             if (ActivityDataPoints.DURATION in selected_activity.available_data_points) {
                 this.activities_list_box.append (this.duration_action_row);
+            }
+            if (ActivityDataPoints.HEART_RATE in selected_activity.available_data_points) {
+                this.activities_list_box.append (this.heart_rate_min_action_row);
+                this.activities_list_box.append (this.heart_rate_average_action_row);
+                this.activities_list_box.append (this.heart_rate_max_action_row);
             }
             if (ActivityDataPoints.STEP_COUNT in selected_activity.available_data_points) {
                 this.activities_list_box.append (this.stepcount_action_row);
