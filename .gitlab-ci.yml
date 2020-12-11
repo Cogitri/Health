@@ -1,59 +1,71 @@
-image: alpine:edge
+include: "https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml"
+
+variables:
+  BUNDLE: "dev.Cogitri.HealthDevel.flatpak"
+  MANIFEST_PATH: "dev.Cogitri.Health.json"
+  FLATPAK_MODULE: "health"
+  FLATPAK_IMAGE: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master"
+
+.flatpak_cache_template: &flatpak_cache
+  cache:
+    key: "flatpak"
+    paths:
+      - .flatpak-builder/cache/
+      - _build/
 
 stages:
   - qa
-  - test
+  - build
   - deploy
 
 lint:
+  image: alpine:edge
   stage: qa
   before_script:
     - apk add --no-cache vala-lint
   script:
     - io.elementary.vala-lint
 
-test:
-  stage: test
-  before_script:
-    - apk add --no-cache vala gtk4.0-dev libgee-dev tracker-dev meson build-base git gobject-introspection-dev libsoup-dev rest-dev json-glib-dev libsecret-dev
-    - git clone https://gitlab.gnome.org/exalm/libhandy -b gtk4
-    - cd libhandy
-    - meson build
-    - meson install -C build
-    - cd ..
-  script:
-    - meson build
-    - env LANG="en_GB.UTF-8" meson test -v -C build
+flatpak:
+  extends: ".flatpak"
+  stage: build
+  image: "$FLATPAK_IMAGE"
+  variables:
+    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+    APP_ID: "dev.Cogitri.HealthDevel"
 
-non-null:
-  stage: test
-  before_script:
-    - apk add --no-cache vala gtk4.0-dev libgee-dev tracker-dev meson build-base git gobject-introspection-dev libsoup-dev rest-dev json-glib-dev libsecret-dev
-    - git clone https://gitlab.gnome.org/exalm/libhandy -b gtk4
-    - cd libhandy
-    - meson build
-    - meson install -C build
-    - cd ..
+flatpak-non-null:
+  image: "$FLATPAK_IMAGE"
+  stage: build
+  tags:
+    - flatpak
   script:
-    - env VALAC_FLAGS="--enable-experimental-non-null" meson build
-    - env LANG="en_GB.UTF-8" meson test -v -C build
+    - flatpak-builder --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} --force-clean app ${MANIFEST_PATH}
+    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} env VALAC_FLAGS="--enable-experimental-non-null" meson _build
+    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} ninja -C _build
+    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} env LANG="en_GB.UTF-8" meson test -v -C _build
+
+nightly:
+  stage: deploy
+  extends: ".publish_nightly"
+  dependencies: ["flatpak"]
+  needs: ["flatpak"]
 
 pages:
+  image: "$FLATPAK_IMAGE"
   stage: deploy
-  before_script:
-    - apk add --no-cache vala gtk4.0-dev libgee-dev tracker-dev meson build-base git gobject-introspection-dev libsoup-dev rest-dev json-glib-dev libsecret-dev
-    - git clone https://gitlab.gnome.org/exalm/libhandy -b gtk4
-    - cd libhandy
-    - meson build
-    - meson install -C build
-    - cd ..
+  tags:
+    - flatpak
   script:
-    - meson -Ddocs=true build
-    - meson compile -C build
+    - flatpak-builder --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} --force-clean app ${MANIFEST_PATH}
+    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} meson -Ddocs=true _build
+    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} ninja -C _build
+
     - rm -rf public
     - mv build/docs/ public
   artifacts:
     paths:
       - public
-  rules:
-    - if: '$CI_COMMIT_BRANCH == "master"'
+  only:
+    - master
+  <<: *flatpak_cache
