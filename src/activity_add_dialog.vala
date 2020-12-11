@@ -48,12 +48,14 @@ namespace Health {
         private Hdy.ComboRow activity_type_comborow;
 
         private Activities.ActivityInfo? previous_activity;
+        private Settings settings;
         private TrackerDatabase db;
 
-        public ActivityAddDialog (Gtk.Window? parent, TrackerDatabase db) {
+        public ActivityAddDialog (Gtk.Window? parent, TrackerDatabase db, Settings settings) {
             Object (use_header_bar: 1);
             this.set_transient_for (parent);
             this.db = db;
+            this.settings = settings;
 
             // FIXME: Somehow the activity_type_model doesn't live long enough because it's
             // unrefed too often (off by one)
@@ -62,6 +64,13 @@ namespace Health {
                     this.activity_type_model.append (x.name);
             }
             this.activity_type_comborow.selected = Activities.Enum.WALKING;
+
+            // FIXME: Also allow entering distance in KM/Miles
+            if (this.settings.unitsystem == Unitsystem.METRIC) {
+                this.distance_action_row.title = _ ("Distance in Metres");
+            } else {
+                this.distance_action_row.title = _ ("Distance in Yards");
+            }
         }
 
         /**
@@ -70,13 +79,19 @@ namespace Health {
         public async void save () throws GLib.Error {
             var db = TrackerDatabase.get_instance ();
             var selected_activity = this.get_selected_activity ();
+            var distance = this.get_spinner_value_if_datapoint (this.distance_spinner, selected_activity, ActivityDataPoints.DISTANCE);
+
+            if (distance != 0 && settings.unitsystem == Unitsystem.IMPERIAL) {
+                // Yard to Metres
+                distance = (uint32) (distance * 0.9144);
+            }
 
             yield db.save_activity (
                 new Activity (
                     this.get_selected_activity ().type,
                     date_from_datetime (this.date_selector.selected_date),
                     this.get_spinner_value_if_datapoint (this.calories_burned_spinner, selected_activity, ActivityDataPoints.CALORIES_BURNED),
-                    this.get_spinner_value_if_datapoint (this.distance_spinner, selected_activity, ActivityDataPoints.DISTANCE),
+                    distance,
                     0,
                     0,
                     0,

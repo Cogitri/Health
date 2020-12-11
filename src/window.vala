@@ -147,7 +147,7 @@ namespace Health {
             Gtk.Dialog dialog;
             switch (this.current_view) {
             case STEPS:
-                dialog = new ActivityAddDialog (this, this.db);
+                dialog = new ActivityAddDialog (this, this.db, this.settings);
                 break;
             case WEIGHT:
                 dialog = new WeightAddDialog (this, this.settings, this.db);
