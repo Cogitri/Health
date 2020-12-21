@@ -58,7 +58,7 @@ namespace Health {
         public override void size_allocate (int width, int height, int baseline) {
             base.size_allocate (width, height, baseline);
 
-            this.date_selector_popover.check_resize ();
+            this.date_selector_popover.present ();
         }
 
         private void parse_date () {

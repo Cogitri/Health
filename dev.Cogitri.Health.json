@@ -1,7 +1,7 @@
 {
-    "app-id": "dev.Cogitri.Health",
+    "app-id": "dev.Cogitri.HealthDevel",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.38",
+    "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
     "command": "dev.Cogitri.Health",
     "finish-args": [
@@ -11,6 +11,11 @@
         "--socket=wayland",
         "--talk-name=org.freedesktop.secrets",
         "--device=dri"
+    ],
+    "tags": [
+      "devel",
+      "development",
+      "nightly"
     ],
     "cleanup": [
         "/include",
@@ -31,24 +36,6 @@
     },
     "modules": [
         {
-            "name": "gtk4.0",
-            "buildsystem": "meson",
-            "builddir": true,
-            "config-opts": [
-                "-Ddemos=false",
-                "-Dbuild-tests=false",
-                "-Dmedia=none",
-                "-Dprint=none"
-            ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://download.gnome.org/sources/gtk/3.99/gtk-3.99.4.tar.xz",
-                    "sha256": "8979cb1eb6ad2a496e00e94674d23f90aefae5d3f23b623ffda0b35d11ec85d0"
-                }
-            ]
-        },
-        {
             "name": "libhandy",
             "builddir": true,
             "buildsystem": "meson",
@@ -65,7 +52,7 @@
                 {
                     "type": "git",
                     "url": "https://gitlab.gnome.org/exalm/libhandy",
-                    "commit": "c425c1254e2f640ee28d746ac272e16bbc453b2b"
+                    "commit": "3f135124d193f4917fcc89666c84e76c6a022ddc"
                 },
                 {
                     "type": "patch",

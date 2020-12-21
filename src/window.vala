@@ -62,7 +62,7 @@ namespace Health {
             this.current_height = this.settings.window_height;
             this.current_width = this.settings.window_width;
             if (this.current_width != -1 && this.current_height != -1) {
-                this.resize (this.current_width, this.current_height);
+                this.set_default_size (this.current_width, this.current_height);
             }
             if (this.settings.window_is_maximized) {
                 this.maximize ();
@@ -87,8 +87,8 @@ namespace Health {
 
         public override void size_allocate (int width, int height, int baseline) {
             base.size_allocate (width, height, baseline);
-            if (!this.is_maximized) {
-                this.get_size (out this.current_width, out this.current_height);
+            if (!this.maximized) {
+                this.get_default_size (out this.current_width, out this.current_height);
             }
         }
 
@@ -122,7 +122,7 @@ namespace Health {
 
         [GtkCallback]
         private bool on_close_request (Gtk.Window window) {
-            this.settings.window_is_maximized = this.is_maximized;
+            this.settings.window_is_maximized = this.maximized;
             this.settings.window_height = this.current_height;
             this.settings.window_width = this.current_width;
 
