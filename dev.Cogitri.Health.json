@@ -13,9 +13,9 @@
         "--device=dri"
     ],
     "tags": [
-      "devel",
-      "development",
-      "nightly"
+        "devel",
+        "development",
+        "nightly"
     ],
     "cleanup": [
         "/include",
@@ -52,7 +52,7 @@
                 {
                     "type": "git",
                     "url": "https://gitlab.gnome.org/exalm/libhandy",
-                    "commit": "3f135124d193f4917fcc89666c84e76c6a022ddc"
+                    "branch": "gtk4"
                 },
                 {
                     "type": "patch",
