@@ -32,15 +32,15 @@ namespace Health {
 
     public class Activity : GLib.Object {
 
-        public Activities.Enum activity_type { get; construct; }
-        public GLib.Date date { get; construct; }
-        public uint32 calories_burned { get; construct; }
-        public uint32 distance { get; construct; }
-        public uint32 hearth_rate_avg { get; construct; }
-        public uint32 hearth_rate_max { get; construct; }
-        public uint32 hearth_rate_min { get; construct; }
-        public uint32 minutes { get; construct; }
-        public uint32 steps { get; construct; }
+        public Activities.Enum activity_type { get; set; }
+        public GLib.Date date { get; set; }
+        public uint32 calories_burned { get; set; }
+        public uint32 distance { get; set; }
+        public uint32 hearth_rate_avg { get; set; }
+        public uint32 hearth_rate_max { get; set; }
+        public uint32 hearth_rate_min { get; set; }
+        public uint32 minutes { get; set; }
+        public uint32 steps { get; set; }
 
         public Activity (
             Activities.Enum activity_type,

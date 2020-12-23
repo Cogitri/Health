@@ -88,11 +88,47 @@ namespace Health {
          * @throws DatabaseError If querying the DB fails.
          */
          public async Gee.ArrayList<Activity> get_activities_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
-            var cursor = yield this.db.query_async (QUERY_STEPS_AFTER.printf (date_to_iso_8601 (date)), cancellable);
+            var cursor = yield this.db.query_async (QUERY_ACTIVITIES_AFTER.printf (date_to_iso_8601 (date)), cancellable);
             var ret = new Gee.ArrayList<Activity> ();
 
             while (yield cursor.next_async (cancellable)) {
-                // FIXME: Get activities here
+                var activity = (Activity) GLib.Object.new (typeof (Activity));
+
+                for (var i = 0; i < cursor.n_columns; i++) {
+                    switch (cursor.get_variable_name (i)) {
+                        case "id":
+                            activity.activity_type = Activities.get_values ()[cursor.get_integer (i)].type;
+                            break;
+                        case "date":
+                            activity.date = iso_8601_to_date (cursor.get_string (i));
+                            break;
+                        case "calories_burned":
+                            activity.calories_burned = (uint32) cursor.get_integer (i);
+                            break;
+                        case "distance":
+                            activity.distance = (uint32) cursor.get_integer (i);
+                            break;
+                        case "heart_rate_avg":
+                            activity.hearth_rate_avg = (uint32) cursor.get_integer (i);
+                            break;
+                        case "heart_rate_max":
+                            activity.hearth_rate_max = (uint32) cursor.get_integer (i);
+                            break;
+                        case "heart_rate_min":
+                            activity.hearth_rate_min = (uint32) cursor.get_integer (i);
+                            break;
+                        case "minutes":
+                            activity.minutes = (uint32) cursor.get_integer (i);
+                            break;
+                        case "steps":
+                            activity.steps = (uint32) cursor.get_integer (i);
+                            break;
+                        default:
+                            error ("Unknown variable %s", cursor.get_variable_name (i));
+                    }
+                }
+
+                ret.add (activity);
             }
 
             return ret;
@@ -203,7 +239,7 @@ namespace Health {
             }
 
             yield this.db.update_array_async (ops, cancellable);
-            this.steps_updated ();
+            this.activities_updated ();
             this.weight_updated ();
         }
 
@@ -247,7 +283,7 @@ namespace Health {
             }
 
             yield this.db.update_async (resource.print_sparql_update (this.manager, null));
-            this.steps_updated ();
+            this.activities_updated ();
         }
 
         /**
@@ -267,12 +303,11 @@ namespace Health {
         }
 
         public signal void activities_updated ();
-        public signal void steps_updated ();
         public signal void weight_updated ();
 
         const string QUERY_DATE_HAS_STEPS = "ASK { ?activity a health:Activity ; health:activity_date '%s'; health:steps ?steps . }";
         const string QUERY_DATE_HAS_WEIGHT = "ASK { ?datapoint a health:WeightMeasurement ; health:weight_date '%s'; health:weight ?weight . }";
-        const string QUERY_ACTIVITY_AFTER = "SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps { ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id; health:steps ?steps . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
+        const string QUERY_ACTIVITIES_AFTER = "SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes }  FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
         const string QUERY_STEPS_AFTER = "SELECT ?date ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:steps ?steps . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
         const string QUERY_STEPS_ON_DAY = "SELECT ?steps WHERE { ?datapoint a health:Activity; health:activity_date ?date ; health:steps ?steps . FILTER(?date = '%s'^^xsd:date) }";
         const string QUERY_WEIGHT_AFTER = "SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";

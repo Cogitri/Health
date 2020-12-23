@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  activity_row.ui
+
+  Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<interface domain="dev.Cogitri.Health">
+  <requires lib="gtk+" version="3.99"/>
+  <requires lib="libhandy" version="1.0"/>
+  <template class="HealthActivityRow" parent="GtkListBoxRow">
+    <property name="height_request">60</property>
+    <style>
+      <class name="row"/>
+    </style>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkBox">
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <property name="valign">center</property>
+            <property name="vexpand">1</property>
+            <child>
+              <object class="GtkLabel" id="activity_type_label">
+                <property name="halign">start</property>
+                <property name="hexpand">1</property>
+                <property name="margin-start">6</property>
+                <property name="margin-top">6</property>
+                <property name="margin-bottom">6</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="active_minutes_label">
+                <property name="halign">center</property>
+                <property name="hexpand">1</property>
+                <property name="margin-top">6</property>
+                <property name="margin-bottom">6</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="activity_date_label">
+                <property name="halign">end</property>
+                <property name="hexpand">1</property>
+                <property name="margin-end">6</property>
+                <property name="margin-top">6</property>
+                <property name="margin-bottom">6</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkRevealer" id="details_revealer">
+            <child>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="HdyActionRow" id="calories_burned_row">
+                    <property name="title" translatable="yes">Calories Burned</property>
+                    <property name="visible">0</property>
+                    <child>
+                      <object class="GtkLabel" id="calories_burned_label"/>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyActionRow" id="distance_row">
+                    <property name="title" translatable="yes">Distance in Meters</property>
+                    <property name="visible">0</property>
+                    <child>
+                      <object class="GtkLabel" id="distance_label"/>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyActionRow" id="steps_row">
+                    <property name="title" translatable="yes">Steps</property>
+                    <property name="visible">0</property>
+                    <child>
+                      <object class="GtkLabel" id="steps_label"/>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyActionRow" id="average_heart_rate_row">
+                    <property name="title" translatable="yes">Average Heart Rate</property>
+                    <property name="visible">0</property>
+                    <child>
+                      <object class="GtkLabel" id="average_heart_rate_label"/>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyActionRow" id="minimum_heart_rate_row">
+                    <property name="title" translatable="yes">Minimum Heart Rate</property>
+                    <property name="visible">0</property>
+                    <child>
+                      <object class="GtkLabel" id="minimum_heart_rate_label"/>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="HdyActionRow" id="maximum_heart_rate_row">
+                    <property name="title" translatable="yes">Maximum Heart Rate</property>
+                    <property name="visible">0</property>
+                    <child>
+                      <object class="GtkLabel" id="maximum_heart_rate_label"/>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

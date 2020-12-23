@@ -78,9 +78,7 @@ namespace Health {
             this.activity_type_comborow.selected = Activities.Enum.WALKING;
 
             // FIXME: Also allow entering distance in KM/Miles
-            if (this.settings.unitsystem == Unitsystem.METRIC) {
-                this.distance_action_row.title = _ ("Distance in Metres");
-            } else {
+            if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
                 this.distance_action_row.title = _ ("Distance in Yards");
             }
         }
@@ -94,8 +92,8 @@ namespace Health {
             var distance = this.get_spinner_value_if_datapoint (this.distance_spinner, selected_activity, ActivityDataPoints.DISTANCE);
 
             if (distance != 0 && settings.unitsystem == Unitsystem.IMPERIAL) {
-                // Yard to Metres
-                distance = (uint32) (distance * 0.9144);
+                // FIXME: Allow inputting in things other than yards
+                distance = (uint32) yard_to_meters (distance);
             }
 
             yield db.save_activity (

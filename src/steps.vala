@@ -193,7 +193,7 @@ namespace Health {
             this.settings.changed[Settings.USER_STEPGOAL_KEY].connect (() => {
                 this.update ();
             });
-            db.steps_updated.connect (() => {
+            db.activities_updated.connect (() => {
                 this.update ();
             });
             this.update ();

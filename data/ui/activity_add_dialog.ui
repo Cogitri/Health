@@ -143,7 +143,7 @@
     </child>
   </object>
   <object class="HdyActionRow" id="distance_action_row">
-    <property name="title" translatable="yes">Distance</property>
+    <property name="title" translatable="yes">Distance in Meters</property>
     <child>
       <object class="GtkSpinButton" id="distance_spinner">
         <property name="width-chars">5</property>

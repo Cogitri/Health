@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  activity_view.ui
+
+  Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<interface domain="dev.Cogitri.Health">
+  <requires lib="gtk+" version="3.99"/>
+  <requires lib="libhandy" version="1.0"/>
+  <template class="HealthActivityView" parent="HealthView">
+    <child>
+      <object class="GtkBox" id="main_box">
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkLabel" id="title_label">
+            <property name="margin_top">25</property>
+            <property name="label" translatable="yes">Recent Activities</property>
+            <attributes>
+              <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
+              <attribute name="font-desc" value="14.0"></attribute>
+            </attributes>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+  <object class="GtkScrolledWindow" id="scrolled_window">
+    <child>
+      <object class="HdyClamp">
+        <property name="maximum-size">800</property>
+        <property name="tightening-threshold">600</property>
+        <property name="valign">center</property>
+        <property name="vexpand">True</property>
+        <property name="hexpand">True</property>
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+        <child>
+          <object class="GtkListBox" id="activities_list_box">
+            <property name="can-focus">0</property>
+            <property name="selection-mode">none</property>
+            <style>
+              <class name="content"/>
+            </style>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

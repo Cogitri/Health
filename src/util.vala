@@ -59,4 +59,12 @@ namespace Health {
         d.set_parse (iso);
         return d;
     }
+
+    public double yard_to_meters (uint32 yard) {
+        return yard * 0.9144;
+    }
+
+    public double meters_to_yard (uint32 meters) {
+        return meters * 1.09361;
+    }
 }

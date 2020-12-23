@@ -51,7 +51,8 @@ namespace Health {
 
             var weight_model = new WeightGraphModel (this.settings, this.db);
             var steps_model = new StepsGraphModel (this.db);
-            this.views = new View[] { new StepView (steps_model, this.settings, this.db), new WeightView (weight_model, settings, this.db), };
+            var activity_model = new ActivityModel (this.settings, this.db);
+            this.views = new View[] { new StepView (steps_model, this.settings, this.db), new WeightView (weight_model, settings, this.db), new ActivityView (activity_model, this.settings, this.db)};
 
             foreach (var view in views) {
                 var page = this.stack.add_titled (view, view.name, view.title);
@@ -77,6 +78,8 @@ namespace Health {
                     return GLib.Source.CONTINUE;
                 });
             }
+
+            this.update ();
         }
 
         public void update () {
