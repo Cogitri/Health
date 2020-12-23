@@ -25,7 +25,7 @@ namespace Health {
     /**
      * The toplevel application window that holds all other widgets.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/window.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/window.ui")]
     public class Window : Hdy.ApplicationWindow {
         [GtkChild]
         private Gtk.Stack stack;
@@ -44,7 +44,7 @@ namespace Health {
             this.settings = settings;
 
             try {
-            this.db = TrackerDatabase.get_instance ();
+                this.db = TrackerDatabase.get_instance ();
             } catch (DatabaseError e) {
                 error (e.message);
             }

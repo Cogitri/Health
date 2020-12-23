@@ -20,7 +20,7 @@ namespace Health {
     /**
      * A dialog for adding a new activity record.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/activity_add_dialog.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_add_dialog.ui")]
     public class ActivityAddDialog : Gtk.Dialog {
         [GtkChild]
         DateSelector date_selector;

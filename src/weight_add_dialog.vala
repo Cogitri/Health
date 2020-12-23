@@ -21,7 +21,7 @@ namespace Health {
     /**
      * A dialog for adding a new weight record.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/weight_add_dialog.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/weight_add_dialog.ui")]
     public class WeightAddDialog : Gtk.Dialog {
         [GtkChild]
         DateSelector date_selector;

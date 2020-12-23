@@ -44,5 +44,11 @@ gnome.compile_schemas(
   build_by_default: true,
   depend_files: 'dev.Cogitri.Health.gschema.xml',
 )
+
+health_generated_sources = gnome.compile_resources('health-resources',
+  'dev.Cogitri.Health.gresource.xml',
+  c_name: 'health'
+)
+
 subdir('icons')
 subdir('tracker')

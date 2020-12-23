@@ -21,7 +21,7 @@
      * The PreferencesWindow is presented to the user to set certain settings
      * in the applcation.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/preferences_window.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/preferences_window.ui")]
     public class PreferencesWindow : Hdy.PreferencesWindow {
         [GtkChild]
         private Hdy.ActionRow height_actionrow;

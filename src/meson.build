@@ -58,12 +58,6 @@ add_project_arguments(
   language: 'c'
 )
 
-
-health_generated_sources = gnome.compile_resources('health-resources',
-  'dev.Cogitri.Health.gresource.xml',
-  c_name: 'health'
-)
-
 c_args = [
   '-DVERSION="@0@"'.format(meson.project_version()),
   '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),

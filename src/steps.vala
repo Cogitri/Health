@@ -156,7 +156,7 @@ namespace Health {
     /**
      * An implementation of {@link View} visualizes streak counts and daily step records.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/step_view.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/step_view.ui")]
     public class StepView : View {
         [GtkChild]
         private Gtk.Box main_box;
@@ -173,7 +173,7 @@ namespace Health {
         public StepView (StepsGraphModel model, Settings settings, TrackerDatabase db) {
             this.name = "Steps";
             this.title = _ ("Steps");
-            this.icon_name = "dev.Cogitri.Health-steps-symbolic";
+            this.icon_name = "steps-symbolic";
             this.settings = settings;
             this.steps_graph_model = model;
 

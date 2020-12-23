@@ -17,7 +17,7 @@
  */
 
 namespace Health {
-    [GtkTemplate (ui = "/dev/Cogitri/Health/date_editor.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/date_editor.ui")]
     class DateSelector : Gtk.Entry {
         [GtkChild]
         private Gtk.Calendar date_chooser;

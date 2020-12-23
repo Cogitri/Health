@@ -79,6 +79,26 @@ namespace Health {
         }
 
         /**
+         * Gets all activity records that have a date >= the date parameter
+         *
+         * If date is 30 of September 2020 then all activity records that have been
+         * added on the 30th of September or later will be returned.
+         *
+         * @param date The earliest date that steps should be retrieved from.
+         * @throws DatabaseError If querying the DB fails.
+         */
+         public async Gee.ArrayList<Activity> get_activities_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
+            var cursor = yield this.db.query_async (QUERY_STEPS_AFTER.printf (date_to_iso_8601 (date)), cancellable);
+            var ret = new Gee.ArrayList<Activity> ();
+
+            while (yield cursor.next_async (cancellable)) {
+                // FIXME: Get activities here
+            }
+
+            return ret;
+        }
+
+        /**
          * Gets all step records that have a date >= the date parameter
          *
          * If date is 30 of September 2020 then all step records that have been
@@ -246,11 +266,13 @@ namespace Health {
             this.weight_updated ();
         }
 
+        public signal void activities_updated ();
         public signal void steps_updated ();
         public signal void weight_updated ();
 
         const string QUERY_DATE_HAS_STEPS = "ASK { ?activity a health:Activity ; health:activity_date '%s'; health:steps ?steps . }";
         const string QUERY_DATE_HAS_WEIGHT = "ASK { ?datapoint a health:WeightMeasurement ; health:weight_date '%s'; health:weight ?weight . }";
+        const string QUERY_ACTIVITY_AFTER = "SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps { ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id; health:steps ?steps . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
         const string QUERY_STEPS_AFTER = "SELECT ?date ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:steps ?steps . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
         const string QUERY_STEPS_ON_DAY = "SELECT ?steps WHERE { ?datapoint a health:Activity; health:activity_date ?date ; health:steps ?steps . FILTER(?date = '%s'^^xsd:date) }";
         const string QUERY_WEIGHT_AFTER = "SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";

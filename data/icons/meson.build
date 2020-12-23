@@ -1,4 +1,4 @@
-scalable_dir = 'hicolor' / 'scalable' / 'apps'
+scalable_dir =  'scalable' / 'apps'
 
 install_data(
   scalable_dir / '@0@.svg'.format(application_id),
@@ -6,18 +6,10 @@ install_data(
   rename: '@0@.svg'.format(application_id)
 )
 
-symbolic_dir = 'hicolor' / 'symbolic' / 'apps'
+symbolic_dir = 'symbolic' / 'apps'
 
 install_data(
   symbolic_dir / 'dev.Cogitri.Health-symbolic.svg',
   install_dir: get_option('datadir') / 'icons' / symbolic_dir,
   rename: '@0@-symbolic.svg'.format(application_id)
-)
-
-install_data(
-  [
-    symbolic_dir / 'dev.Cogitri.Health-steps-symbolic.svg',
-    symbolic_dir / 'dev.Cogitri.Health-weight-scale-symbolic.svg',
-  ],
-  install_dir: get_option('datadir') / 'icons' / symbolic_dir,
 )

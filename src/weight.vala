@@ -101,7 +101,7 @@ namespace Health {
     /**
      * An implementation of {@link View} visualizes BMI and weight development.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/weight_view.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/weight_view.ui")]
     public class WeightView : View {
         [GtkChild]
         private Gtk.Box main_box;
@@ -119,7 +119,7 @@ namespace Health {
             this.name = "Weight";
             this.settings = settings;
             this.title = _ ("Weight");
-            this.icon_name = "dev.Cogitri.Health-weight-scale-symbolic";
+            this.icon_name = "weight-scale-symbolic";
             this.weight_graph_model = model;
 
             this.update_weightgoal_label ();
