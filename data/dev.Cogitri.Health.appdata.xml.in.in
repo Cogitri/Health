@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>dev.Cogitri.Health</id>
+	<id>@APPLICATION_ID@</id>
 	<name>Health</name>
 	<url type="homepage">https://gitlab.gnome.org/Cogitri/gnome-health</url>
 	<metadata_license>CC0-1.0</metadata_license>
@@ -14,7 +14,7 @@
 	</description>
 	<content_rating type="oars-1.1" />
 	<translation type="gettext">dev.Cogitri.Health</translation>
-	<launchable type="desktop-id">dev.Cogitri.Health.desktop</launchable>
+	<launchable type="desktop-id">@APPLICATION_ID@.desktop</launchable>
 	<screenshots>
 		<screenshot type="default">
 			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot.png</image>
@@ -23,6 +23,6 @@
 	<developer_name>Rasmus “Cogitri” Thomsen</developer_name>
 	<update_contact>oss@cogitri.dev</update_contact>
 	<provides>
-		<binary>dev.Cogitri.Health</binary>
+		<binary>@APPLICATION_ID@</binary>
 	</provides>
 </component>

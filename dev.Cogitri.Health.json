@@ -1,9 +1,9 @@
 {
-    "app-id": "dev.Cogitri.HealthDevel",
+    "app-id": "dev.Cogitri.Health.Devel",
     "runtime": "org.gnome.Platform",
     "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
-    "command": "dev.Cogitri.Health",
+    "command": "dev.Cogitri.Health.Devel",
     "finish-args": [
         "--share=network",
         "--share=ipc",
@@ -74,6 +74,10 @@
             "name": "health",
             "builddir": true,
             "buildsystem": "meson",
+            "config-opts": [
+                "-Dprofile=development"
+            ],
+           "cleanup": ["/usr/"],
             "sources": [
                 {
                     "type": "dir",

@@ -5,7 +5,7 @@
     <value nick="metric" value="1"/>
   </enum>
 
-	<schema id="dev.Cogitri.Health" path="/dev/Cogitri/Health/" gettext-domain="health">
+  <schema id="dev.Cogitri.Health" path="/dev/Cogitri/Health/" gettext-domain="dev.Cogitri.Health">
     <key name="did-initial-setup" type="b">
       <default>false</default>
       <summary>First time setup done</summary>
@@ -61,5 +61,5 @@
       <summary>Window width</summary>
       <description>The width of the window.</description>
     </key>
-	</schema>
+  </schema>
 </schemalist>

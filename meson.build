@@ -7,7 +7,14 @@ project('dev.Cogitri.Health', ['c', 'vala'],
 
 gnome = import('gnome')
 i18n = import('i18n')
-application_id = 'dev.Cogitri.Health'
+if get_option('profile') == 'development'
+  profile = '.Devel'
+else
+  profile = ''
+endif
+
+application_id = 'dev.Cogitri.Health@0@'.format(profile)
+health_data_dir = get_option('prefix') / get_option('datadir') / application_id
 
 subdir('data')
 subdir('src')

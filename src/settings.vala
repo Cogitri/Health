@@ -138,7 +138,7 @@
         }
 
         public Settings () {
-            Object (schema_id: Config.APPLICATION_ID);
+            Object (schema_id: "dev.Cogitri.Health");
         }
     }
  }

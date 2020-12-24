@@ -49,11 +49,15 @@ add_project_arguments(
 
 # Configuration
 conf = configuration_data()
-conf.set_quoted('APPLICATION_ID', 'dev.Cogitri.Health')
+conf.set_quoted('APPLICATION_ID', application_id)
 conf.set_quoted('VERSION', meson.project_version())
-conf.set_quoted('DATADIR', get_option('prefix') / get_option('datadir') / 'health')
+conf.set_quoted('DATADIR', health_data_dir)
 
-configure_file(output: 'config.h', configuration: conf)
+configure_file(
+  output: 'config.h',
+  configuration: conf,
+)
+
 # Include config.h
 add_project_arguments(
   '-I@0@'.format(meson.current_build_dir()),
@@ -69,7 +73,7 @@ c_args = [
 
 
 lib = static_library(
-  'dev.Cogitri.Health',
+  application_id,
   [health_sources, health_generated_sources],
   vala_args: '--target-glib=2.50',
   dependencies: health_deps,
@@ -82,7 +86,8 @@ lib_dep = declare_dependency(
 )
 
 
-executable('dev.Cogitri.Health',
+executable(
+  application_id,
   ['main.vala', health_generated_sources],
   vala_args: '--target-glib=2.50',
   dependencies: lib_dep,
