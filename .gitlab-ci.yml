@@ -1,7 +1,7 @@
 include: "https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml"
 
 variables:
-  BUNDLE: "dev.Cogitri.HealthDevel.flatpak"
+  BUNDLE: "dev.Cogitri.Health.Devel.flatpak"
   MANIFEST_PATH: "dev.Cogitri.Health.json"
   FLATPAK_MODULE: "health"
   FLATPAK_IMAGE: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master"
@@ -32,7 +32,7 @@ flatpak:
   image: "$FLATPAK_IMAGE"
   variables:
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-    APP_ID: "dev.Cogitri.HealthDevel"
+    APP_ID: "dev.Cogitri.Health.Devel"
 
 flatpak-non-null:
   image: "$FLATPAK_IMAGE"
