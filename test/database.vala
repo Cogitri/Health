@@ -254,8 +254,7 @@ namespace Health {
                 db.reset.end (this.async_result ());
                 return db;
             } catch (GLib.Error e) {
-                assert_no_error (e);
-                return null;
+                throw new ValaUnit.TestError.FAILED ("Failed to create Tracker DB! Error: %s".printf (e.message));
             }
         }
     }
