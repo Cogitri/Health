@@ -6,7 +6,7 @@ A health tracking app for the GNOME desktop.
 
 ## Building from Source
 
-## Building in Flatpak
+### Building in Flatpak
 
 You can build Health with the following command:
 
@@ -28,3 +28,24 @@ For development purposes you can also run Health directly via flatpak-builder to
 flatpak-builder --user --force-clean app dev.Cogitri.Health.json
 flatpak-builder --run app dev.Cogitri.Health.json dev.Cogitri.Health
 ```
+
+## Using CI Snapshots
+
+It's possible to use the flatpak bundles that are built in merge requests and branches of the Health repository. This allows for quick testing of changes without having to build Health yourself.
+
+To download the flatpak bundle of a merge requests, go to the merge request, click on "View exposed artifact" and afterwards on "Get Flatpak bundle here":
+
+![screenshot](https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/ci-mr-flatpak-bundle.png)
+
+After downloading the file, you can install it with:
+
+```sh
+# The GNOME Nightly Sdk is required for development snapshots of Health
+flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
+
+tar xf repo.tar
+flatpak build-bundle repo/ health.flatpak dev.Cogitri.Health.Devel
+flatpak install --user health.flatpak
+```
+
+As mentioned above, you can use `--system` instead of `--user` in the first&last command to install Health system-wide.
