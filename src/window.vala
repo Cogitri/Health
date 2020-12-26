@@ -43,6 +43,10 @@ namespace Health {
             this.current_view = ViewModes.STEPS;
             this.settings = settings;
 
+            if (Config.APPLICATION_ID.has_suffix ("Devel")) {
+                this.get_style_context ().add_class ("devel");
+            }
+
             try {
                 this.db = TrackerDatabase.get_instance ();
             } catch (DatabaseError e) {
