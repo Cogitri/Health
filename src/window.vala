@@ -45,6 +45,8 @@ namespace Health {
 
             if (Config.APPLICATION_ID.has_suffix ("Devel")) {
                 this.get_style_context ().add_class ("devel");
+
+                Gtk.IconTheme.get_for_display (this.get_display ()).add_resource_path ("/dev/Cogitri/Health/icons");
             }
 
             try {
