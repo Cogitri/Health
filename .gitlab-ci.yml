@@ -24,7 +24,7 @@ lint:
   before_script:
     - apk add --no-cache vala-lint
   script:
-    - io.elementary.vala-lint
+    - io.elementary.vala-lint --config .vala-lint.conf
 
 flatpak:
   extends: ".flatpak"
