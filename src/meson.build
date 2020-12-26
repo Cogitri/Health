@@ -50,7 +50,7 @@ add_project_arguments(
 # Configuration
 conf = configuration_data()
 conf.set_quoted('APPLICATION_ID', application_id)
-conf.set_quoted('VERSION', meson.project_version())
+conf.set_quoted('VERSION', health_version)
 conf.set_quoted('DATADIR', health_data_dir)
 
 configure_file(
