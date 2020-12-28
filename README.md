@@ -6,6 +6,10 @@ A health tracking app for the GNOME desktop.
 
 ## Building from Source
 
+### With GNOME Builder
+
+Open GNOME Builder, click on `Clone Repository...` and enter the repository URL. Afterwards click on `Clone Project` and you should be all setup. Pressing `F5` or pressing the build button in the topbar should build Health for you.<>
+
 ### Building in Flatpak
 
 You can build Health with the following command:
