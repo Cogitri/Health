@@ -10,6 +10,7 @@ namespace Health {
 
         private const GLib.ActionEntry APP_ENTRIES[] = {
             { "about", on_about },
+            { "fullscreen", on_fullscreen },
             { "hamburger-menu", on_hamburger_menu },
             { "help", on_help },
             { "preferences", on_preferences },
@@ -35,6 +36,7 @@ namespace Health {
                 setup_window.show ();
             }
 
+            this.set_accels_for_action ("app.fullscreen", { "F11" });
             this.set_accels_for_action ("app.hamburger-menu", { "F10" });
             this.set_accels_for_action ("app.help", { "F1" });
             this.set_accels_for_action ("app.quit", { "<Primary>q" });
@@ -69,6 +71,16 @@ namespace Health {
                 version: Config.VERSION,
                 license_type: Gtk.License.GPL_3_0
                 );
+        }
+
+        private void on_fullscreen (GLib.SimpleAction action, GLib.Variant? parameter) {
+            if (this.window != null) {
+                if (this.window.is_fullscreen ()) {
+                    this.window.unfullscreen ();
+                } else {
+                    this.window.fullscreen ();
+                }
+            }
         }
 
         private void on_hamburger_menu (GLib.SimpleAction action, GLib.Variant? parameter) {

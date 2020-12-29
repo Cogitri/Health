@@ -52,6 +52,12 @@
                 <property name="title" translatable="yes">Show primary menu</property>
               </object>
             </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="accelerator">F11</property>
+                <property name="title" translatable="yes">Toggle fullscreen mode</property>
+              </object>
+            </child>
           </object>
         </child>
       </object>
