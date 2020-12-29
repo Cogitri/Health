@@ -29,16 +29,25 @@ namespace Health {
         }
     }
 
+    public delegate string HoverFunc (Point p);
+
     /**
      * A View for visualizing the development of data over time.
      */
     public class GraphView : Gtk.Widget {
-        private double x_padding;
-        private double y_padding;
+        private struct HoverPoint {
+            Point point;
+            double x;
+            double y;
+        }
+        private HoverPoint? hover_point;
+        private int max_pointer_deviation;
+        protected double x_padding;
+        protected double y_padding;
         private double _limit;
         public double limit {
             get {
-                return _limit;
+                return this._limit;
             }
             set {
                 this._limit = value;
@@ -48,7 +57,7 @@ namespace Health {
         private Gee.ArrayList<Point> _points;
         public Gee.ArrayList<Point> points {
             get {
-                return _points;
+                return this._points;
             }
             set {
                 this._points = value;
@@ -58,7 +67,7 @@ namespace Health {
         private string _limitlabel;
         public string limitlabel {
             get {
-                return _limitlabel;
+                return this._limitlabel;
             }
             set {
                 this._limitlabel = value;
@@ -68,13 +77,14 @@ namespace Health {
         private uint _x_lines_interval = 500;
         public uint x_lines_interval {
             get {
-                return _x_lines_interval;
+                return this._x_lines_interval;
             }
             set {
                 this._x_lines_interval = value;
                 this.queue_draw ();
             }
         }
+        protected HoverFunc? hover_func;
 
         public GraphView (Gee.ArrayList<Point> points, string limitlabel = "", double limit = -1) {
             this.points = points;
@@ -83,6 +93,7 @@ namespace Health {
             this.x_padding = 60;
             this.y_padding = 60;
             this.hexpand = this.vexpand = true;
+            this.max_pointer_deviation = 8 * this.get_scale_factor ();
 
             int size_request = -1;
             if (this.points.size > 30) {
@@ -91,7 +102,49 @@ namespace Health {
                 size_request = 50 * this.points.size;
             }
 
+            var controller = new Gtk.EventControllerMotion ();
+            this.add_controller (controller);
+            controller.enter.connect (this.on_motion_event);
+            controller.motion.connect (this.on_motion_event);
+
             this.set_size_request (size_request, -1);
+        }
+
+        private bool approx_matches (double num, double approx_range) {
+            return num > approx_range - max_pointer_deviation && num < approx_range + max_pointer_deviation;
+        }
+
+        private void on_motion_event (double x, double y) {
+            double biggest_value = 0.000001;
+            foreach (var point in this.points) {
+                if (point.value > biggest_value) {
+                    biggest_value = point.value;
+                }
+            }
+            // Round up to 500, the graph looks a bit odd if we draw lines at biggest_value / 4 instead of
+            // using even numbers
+            biggest_value = biggest_value + this.x_lines_interval - biggest_value % this.x_lines_interval;
+            var height = this.get_height () - this.y_padding;
+            var width = this.get_width () - this.x_padding;
+            var scale_x = width / (this.points.size > 1 ? (this.points.size - 1) : 1);
+            var scale_y = height / biggest_value;
+
+            for (int i = 0; i < this.points.size; i++) {
+                var value = this.points[i].value;
+                var point_x = i * scale_x + this.x_padding / 2;
+                var point_y = height - value * scale_y + this.y_padding / 2;
+
+                if (this.approx_matches(x, point_x) && this.approx_matches (y, point_y)) {
+                    this.hover_point = HoverPoint () { x = point_x, y = point_y, point = this.points[i] };
+                    this.queue_draw ();
+                    return;
+                }
+            }
+
+            if (this.hover_point != null) {
+                this.hover_point = null;
+                this.queue_draw ();
+            }
         }
 
         protected override void snapshot (Gtk.Snapshot snapshot) {
@@ -201,6 +254,8 @@ namespace Health {
             /*
                 Draw the graph itself
              */
+            cr.save ();
+
             cr.set_source_rgba (0, 174, 174, 0.8);
             cr.move_to (this.x_padding / 2, height - points.get (0).value * scale_y + this.y_padding / 2);
 
@@ -220,6 +275,44 @@ namespace Health {
             }
 
             cr.stroke ();
+            cr.restore ();
+
+            /*
+                Draw tooltip if user hovers on point
+            */
+            if (this.hover_point != null && this.hover_func != null) {
+
+                unowned var point = (!) this.hover_point;
+                
+                var layout = this.create_pango_layout (this.hover_func (point.point));
+                Pango.Rectangle extents;
+                layout.get_extents (null, out extents);
+
+                var radius = Pango.units_to_double (extents.height) / 5.0;
+                var degrees = GLib.Math.PI / 180.0;
+
+                // X & Y padding that is added/subtracted from the points of the rounded rectangle to add even padding around it. 
+                var padding = 12;
+                // Draw the background (a rounded rectangle) ...
+                cr.new_sub_path();
+                // Bottom right point
+                cr.arc(point.x + Pango.units_to_double (extents.width) - radius + padding * 2, point.y + radius - Pango.units_to_double (extents.height) / 2 - padding / 2, radius, -90 * degrees, 0);
+                // Top right point
+                cr.arc(point.x + Pango.units_to_double (extents.width) - radius + padding * 2, point.y + Pango.units_to_double (extents.height) / 2 + padding / 2 - radius, radius, 0 * degrees, 90 * degrees);
+                // Top left point
+                cr.arc(point.x + radius + padding, point.y + Pango.units_to_double (extents.height) / 2 - radius + padding / 2, radius, 90 * degrees, 180 * degrees);
+                // Bottom left point
+                cr.arc(point.x + radius + padding, point.y + radius - Pango.units_to_double (extents.height) / 2 - padding / 2, radius, 180 * degrees, 270 * degrees);
+                cr.close_path();
+                cr.set_source_rgba (0, 0, 0, 0.65);
+                cr.fill_preserve ();
+
+                // ... and afterwards draw the font onto it.
+                cr.move_to (point.x + padding * 1.5, point.y - Pango.units_to_double (extents.height) / 2);
+                cr.set_source_rgba (1, 1, 1, 1);
+                Pango.cairo_show_layout (cr, layout);
+                cr.stroke ();
+            }
         }
     }
 }

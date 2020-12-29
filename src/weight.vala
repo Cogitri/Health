@@ -91,11 +91,20 @@ namespace Health {
      * An implementation of {@link GraphView} that visualizes the user's weight measurements over time.
      */
     public class WeightGraphView : GraphView {
-        public WeightGraphView (WeightGraphModel model, double weightgoal) {
+        public WeightGraphView (WeightGraphModel model, double weightgoal, Settings settings) {
             base (model.to_points (), _ ("Weightgoal"), weightgoal);
             this.x_lines_interval = 10;
-        }
+            this.hover_func = (point) => {
+                string unit = "KG";
 
+                if (settings.unitsystem == Unitsystem.IMPERIAL) {
+                    unit = "PB";
+                }
+
+                /* TRANSLATORS: This is shown on-hover of points where %u is the weight, the first %s is the unit and the second %s is the already localised date (e.g. 2020-09-11) */
+                return _ ("%u %s on %s").printf ((uint) point.value, unit, datetime_from_date (point.date).format ("%x"));
+            };
+        }
     }
 
     /**
@@ -133,7 +142,7 @@ namespace Health {
             } else {
                 this.scrolled_window = new Gtk.ScrolledWindow ();
                 this.scrolled_window.vscrollbar_policy = Gtk.PolicyType.NEVER;
-                this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value);
+                this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value, this.settings);
                 this.main_box.append (this.scrolled_window);
             }
 
@@ -216,7 +225,7 @@ namespace Health {
                     if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
                         this.scrolled_window = new Gtk.ScrolledWindow ();
                         this.scrolled_window.vscrollbar_policy = Gtk.PolicyType.NEVER;
-                        this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value);
+                        this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value, this.settings);
                         this.main_box.remove (this.no_data_label);
                         this.main_box.append (this.scrolled_window);
                         this.no_data_label = null;

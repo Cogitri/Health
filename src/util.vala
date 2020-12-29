@@ -42,11 +42,16 @@ namespace Health {
         return date_from_datetime (datetime);
     }
 
-    public GLib.Date date_from_datetime (DateTime datetime) {
+    public GLib.Date date_from_datetime (GLib.DateTime datetime) {
         var date = GLib.Date ();
         date.set_dmy ((uchar) datetime.get_day_of_month (), datetime.get_month (), (ushort) datetime.get_year ());
         return date;
     }
+
+    public GLib.DateTime datetime_from_date (GLib.Date date) {
+        return new GLib.DateTime.local (date.get_year (), date.get_month (), date.get_day (), 0, 0, 0);
+    }
+
 
     public string date_to_iso_8601 (GLib.Date d) {
         char[] buf = new char[20];

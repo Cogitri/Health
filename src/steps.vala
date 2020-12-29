@@ -147,9 +147,13 @@ namespace Health {
     public class StepsGraphView : GraphView {
         public StepsGraphView (StepsGraphModel model, double stepgoal) {
             base (model.to_points (), _ ("Stepgoal"), stepgoal);
+
+            this.hover_func = (point) => {
+                /* TRANSLATORS: This is shown on-hover of points where %u is the steps and %s is the already localised date (e.g. 2020-09-11) */
+                return _ ("%u steps on %s").printf ((uint) point.value, datetime_from_date (point.date).format ("%x"));
+            };
             this.x_lines_interval = 500;
         }
-
     }
 
 
