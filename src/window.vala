@@ -20,6 +20,7 @@ namespace Health {
     public enum ViewModes {
         STEPS,
         WEIGHT,
+        ACTIVITIES,
     }
 
     /**
@@ -42,7 +43,7 @@ namespace Health {
 
         public Window (Gtk.Application app, Settings settings) {
             Object (application: app);
-            this.current_view = ViewModes.STEPS;
+
             this.settings = settings;
 
             if (Config.APPLICATION_ID.has_suffix ("Devel")) {
@@ -66,7 +67,23 @@ namespace Health {
                 var page = this.stack.add_titled (view, view.name, view.title);
                 page.icon_name = view.icon_name;
             }
-            this.stack.set_visible_child (this.views[0]);
+            
+            switch (settings.current_view_id) {
+                case 0:
+                    this.current_view = ViewModes.STEPS;
+                    break;
+                case 1:
+                    this.current_view = ViewModes.WEIGHT;
+                    break;
+                case 2:
+                    this.current_view = ViewModes.ACTIVITIES;
+                    break;
+                default:
+                    this.current_view = ViewModes.STEPS;
+                    break;
+            }
+
+            this.stack.set_visible_child (this.views[this.current_view]);
 
             this.current_height = this.settings.window_height;
             this.current_width = this.settings.window_width;
@@ -140,6 +157,7 @@ namespace Health {
             this.settings.window_is_maximized = this.maximized;
             this.settings.window_height = this.current_height;
             this.settings.window_width = this.current_width;
+            this.settings.current_view_id = this.current_view;
 
             if (this.sync_source_id > 0) {
                 GLib.Source.remove (this.sync_source_id);
@@ -154,6 +172,8 @@ namespace Health {
                 this.current_view = ViewModes.STEPS;
             } else if (stack.visible_child_name == views[ViewModes.WEIGHT].name) {
                 this.current_view = ViewModes.WEIGHT;
+            } else if (stack.visible_child_name == views[ViewModes.ACTIVITIES].name) {
+                this.current_view = ViewModes.ACTIVITIES;
             }
         }
 

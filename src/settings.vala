@@ -26,6 +26,7 @@
      * Settings utilizes GSettings to save the user's preferences.
      */
     public class Settings : GLib.Settings {
+        public const string CURRENT_VIEW_ID_KEY = "current-view-id";
         public const string DID_INITIAL_SETUP_KEY = "did-initial-setup";
         public const string SYNC_PROVIDER_SETUP_GOOGLE_FIT = "sync-provider-setup-google-fit";
         public const string TIMESTAMP_LAST_SYNC_GOOGLE_FIT_KEY = "timestamp-last-sync-google-fit";
@@ -37,6 +38,15 @@
         public const string WINDOW_HEIGHT_KEY = "window-height";
         public const string WINDOW_IS_MAXIMIZED_KEY = "window-is-maximized";
         public const string WINDOW_WIDTH_KEY = "window-width";
+
+        public uint current_view_id {
+            get {
+                return this.get_uint (CURRENT_VIEW_ID_KEY);
+            }
+            set {
+                this.set_uint (CURRENT_VIEW_ID_KEY, value);
+            }
+        }
 
         public bool did_initial_setup {
             get {
