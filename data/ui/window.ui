@@ -26,6 +26,10 @@
         <attribute name="action">app.preferences</attribute>
         <attribute name="label" translatable="yes">_Preferences</attribute>
       </item>
+      <item>
+        <attribute name="action">app.shortcuts</attribute>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+      </item>
     </section>
     <section>
       <item>

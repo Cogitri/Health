@@ -29,6 +29,8 @@ namespace Health {
     public class Window : Hdy.ApplicationWindow {
         [GtkChild]
         private Gtk.Stack stack;
+        [GtkChild]
+        private Gtk.Popover primary_menu_popover;
 
         private int current_height;
         private int current_width;
@@ -99,6 +101,10 @@ namespace Health {
             if (!this.maximized) {
                 this.get_default_size (out this.current_width, out this.current_height);
             }
+        }
+
+        public void open_hamburger_menu () {
+            this.primary_menu_popover.popup ();
         }
 
         private static void sync_data (Gtk.Window? parent, Settings settings, View[] views, uint source_id) {
