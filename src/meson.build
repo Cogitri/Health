@@ -4,6 +4,7 @@ health_sources = files(
   'activity_view.vala',
   'activity_add_dialog.vala',
   'application.vala',
+  'bmi_level_bar.vala',
   'database.vala',
   'date_editor.vala',
   'graph_view.vala',
