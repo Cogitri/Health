@@ -91,20 +91,24 @@ namespace Health {
         }
 
         private void recalculate_bmi () {
+            var current_bmi = 0.0;
+            var fraction = 0.0;
             var height = this.height;
             var weight = this.weight;
 
-            if (this.unitsystem == Unitsystem.IMPERIAL) {
-                height = inch_to_cm (height);
-                weight = pb_to_kg (weight);
-            }
-            var current_bmi = weight  / GLib.Math.pow (height / 100, 2);
-            // The BMI should be in the range of 18.5 to 24.9 and we want 5 as margin on both sides, so LEVEL_BAR_MIN is 0% and LEVEL_BAR_MAX 100%
-            var fraction = (current_bmi - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN);
-            if (fraction < 0) {
-                fraction = 0;
-            } else if (fraction > 1) {
-                fraction = 1;
+            if (height != 0 && weight != 0) {
+                if (this.unitsystem == Unitsystem.IMPERIAL) {
+                    height = inch_to_cm (height);
+                    weight = pb_to_kg (weight);
+                }
+                current_bmi = weight  / GLib.Math.pow (height / 100, 2);
+                // The BMI should be in the range of 18.5 to 24.9 and we want 5 as margin on both sides, so LEVEL_BAR_MIN is 0% and LEVEL_BAR_MAX 100%
+                fraction = (current_bmi - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN);
+                if (fraction < 0) {
+                    fraction = 0;
+                } else if (fraction > 1) {
+                    fraction = 1;
+                }
             }
 
             this.level_bar.value = fraction;
