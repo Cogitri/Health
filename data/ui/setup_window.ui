@@ -377,13 +377,27 @@
                           <class name="content"/>
                         </style>
                         <child>
-                          <object class="HdyActionRow" id="weightgoal_actionrow">
-                            <property name="title" translatable="yes">Weightgoal</property>
+                          <object class="GtkBox">
+                            <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkSpinButton" id="weightgoal_spinner">
-                                <property name="digits">2</property>
-                                <property name="width-chars">5</property>
-                                <property name="adjustment">weightgoal_adjustment</property>
+                              <object class="HdyActionRow" id="weightgoal_actionrow">
+                                <property name="title" translatable="yes">Weightgoal</property>
+                                <child>
+                                  <object class="GtkSpinButton" id="weightgoal_spinner">
+                                    <property name="digits">2</property>
+                                    <property name="width-chars">5</property>
+                                    <property name="adjustment">weightgoal_adjustment</property>
+                                    <property name="margin-start">6</property>
+                                    <property name="margin-end">6</property>
+                                    <property name="margin-top">6</property>
+                                    <property name="margin-bottom">6</property>
+                                    <signal name="changed" handler="weightgoal_spinner_changed" swapped="no"/>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkLevelBar" id="bmi_levelbar">
                                 <property name="margin-start">6</property>
                                 <property name="margin-end">6</property>
                                 <property name="margin-top">6</property>

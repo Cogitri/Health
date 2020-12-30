@@ -41,7 +41,7 @@ namespace Health {
         [GtkChild]
         private Gtk.Button setup_previous_page_button;
         [GtkChild]
-        private Gtk.ToggleButton unit_metric_togglebutton;
+        private Gtk.LevelBar bmi_levelbar;
         [GtkChild]
         private Gtk.Stack setup_right_stack;
         [GtkChild]
@@ -55,10 +55,14 @@ namespace Health {
         [GtkChild]
         private Gtk.SpinButton weightgoal_spinner;
         [GtkChild]
+        private Gtk.ToggleButton unit_metric_togglebutton;
+        [GtkChild]
         private Hdy.ActionRow height_actionrow;
         [GtkChild]
         private Hdy.Carousel setup_carousel;
 
+        private const double LEVEL_BAR_MIN = 13.5;
+        private const double LEVEL_BAR_MAX = 29.9;
         private Settings settings;
 
         /**
@@ -71,6 +75,20 @@ namespace Health {
             this.settings = settings;
             this.sync_view.settings = settings;
             this.stepgoal_spinner.value = 10000;
+
+            var provider = new Gtk.CssProvider ();
+            provider.load_from_resource ("/dev/Cogitri/Health/custom.css");
+            Gtk.StyleContext.add_provider_for_display (this.get_display (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+            this.bmi_levelbar.remove_offset_value (Gtk.LEVEL_BAR_OFFSET_LOW);
+            this.bmi_levelbar.remove_offset_value (Gtk.LEVEL_BAR_OFFSET_HIGH);
+            this.bmi_levelbar.remove_offset_value (Gtk.LEVEL_BAR_OFFSET_FULL);
+
+            this.bmi_levelbar.add_offset_value ("severly-underweight-bmi", (18.5 - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN));
+            this.bmi_levelbar.add_offset_value ("underweight-bmi", (20 - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN));
+            this.bmi_levelbar.add_offset_value ("optimal-bmi", (25 - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN));
+            this.bmi_levelbar.add_offset_value ("overweight-bmi", (29.9 - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN));
+            this.bmi_levelbar.add_offset_value ("obese-bmi", 1);
         }
 
         private void try_enable_next_button () {
@@ -82,7 +100,7 @@ namespace Health {
         }
 
         private void set_optimal_weightgoal () {
-            const uint OPTIMAL_BMI = 20;
+            const double OPTIMAL_BMI = 22.5;
             var height_in_cm = double.parse (this.height_spinner.text);
             if (!this.unit_metric_togglebutton.active) {
                 height_in_cm = inch_to_cm (height_in_cm);
@@ -113,6 +131,26 @@ namespace Health {
         [GtkCallback]
         private void age_spinner_changed (Gtk.Editable editable) {
             this.try_enable_next_button ();
+        }
+
+        [GtkCallback]
+        private void weightgoal_spinner_changed (Gtk.Editable editable) {
+            var height = double.parse (this.height_spinner.text);
+            var weight = double.parse (editable.text);
+            if (!this.unit_metric_togglebutton.active) {
+                height = inch_to_cm (height);
+                weight = pb_to_kg (weight);
+            }
+            var current_bmi = weight  / GLib.Math.pow (height / 100, 2);
+            // The BMI should be in the range of 18.5 to 24.9 and we want 5 as margin on both sides, so LEVEL_BAR_MIN is 0% and LEVEL_BAR_MAX 100%
+            var fraction = (current_bmi - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN);
+            if (fraction < 0) {
+                fraction = 0;
+            } else if (fraction > 1) {
+                fraction = 1;
+            }
+
+            this.bmi_levelbar.value = fraction;
         }
 
         [GtkCallback]

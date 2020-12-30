@@ -52,6 +52,10 @@ namespace Health {
                 Gtk.IconTheme.get_for_display (this.get_display ()).add_resource_path ("/dev/Cogitri/Health/icons");
             }
 
+            var provider = new Gtk.CssProvider ();
+            provider.load_from_resource ("/dev/Cogitri/Health/custom.css");
+            Gtk.StyleContext.add_provider_for_display (this.get_display (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
             try {
                 this.db = TrackerDatabase.get_instance ();
             } catch (DatabaseError e) {

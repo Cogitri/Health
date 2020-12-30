@@ -1,0 +1,29 @@
+levelbar block.severly-underweight-bmi {
+    background-color: #ff240b;
+    border-style: solid;
+    border-color: black;
+}
+
+levelbar block.underweight-bmi {
+    background-color: #e9b474;
+    border-style: solid;
+    border-color: black;
+}
+
+levelbar block.optimal-bmi {
+    background-color: #33d17a;
+    border-style: solid;
+    border-color: black;
+}
+
+levelbar block.overweight-bmi {
+    background-color: #e9b474;
+    border-style: solid;
+    border-color: black;
+}
+
+levelbar block.obese-bmi {
+    background-color: #ff240b;
+    border-style: solid;
+    border-color: black;
+}
