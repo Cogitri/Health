@@ -24,6 +24,7 @@ levelbar block.overweight-bmi {
 
 levelbar block.obese-bmi {
     background-color: #e01b24;
-    border-style: solid;
-    border-color: black;
+    /* Otherwise the bar is flat on the right when full */
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
 }

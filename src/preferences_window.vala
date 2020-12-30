@@ -34,7 +34,7 @@
         [GtkChild]
         private Gtk.SpinButton weightgoal_spinner;
         [GtkChild]
-        private Hdy.ActionRow weightgoal_actionrow;
+        private BMILevelBar bmi_levelbar;
         [GtkChild]
         private SyncView sync_view;
 
@@ -52,16 +52,12 @@
             this.sync_view.parent_window = parent;
             this.sync_view.settings = settings;
 
-            var lower_weight = 18.5 * GLib.Math.pow ((float) settings.user_height / 100, 2);
-            var upper_weight = 24.9 * GLib.Math.pow ((float) settings.user_height / 100, 2);
             if (this.settings.unitsystem == Unitsystem.METRIC) {
                 this.height_actionrow.title = _ ("Height in centimeters");
                 this.height_spinner.value = settings.user_height;
-                this.weightgoal_actionrow.subtitle = _ ("Your recommended weight is %.2lf-%.2lf KG (18.5-25 BMI).").printf (lower_weight, upper_weight);
             } else {
                 this.height_actionrow.title = _ ("Height in inch");
                 this.height_spinner.value = cm_to_inch (settings.user_height);
-                this.weightgoal_actionrow.subtitle = _ ("Your recommended weight is %.2lf-%.2lf PB (18.5-25 BMI).").printf (kg_to_pb (lower_weight), kg_to_pb (upper_weight));
             }
 
             this.parent_window = parent;
@@ -90,6 +86,7 @@
             var value = double.parse (editable.text);
             if (value != 0) {
                 this.settings.user_weightgoal = new WeightUnitContainer.from_user_value (value, settings);
+                this.bmi_levelbar.weight = value;
             }
         }
 
@@ -102,16 +99,17 @@
                 } else {
                     this.settings.user_height = (uint) inch_to_cm (value);
                 }
+                this.bmi_levelbar.height = value;
             }
         }
 
         [GtkCallback]
         private void unit_metric_togglebutton_toggled (Gtk.ToggleButton btn) {
             if (btn.active) {
-                this.settings.unitsystem = Unitsystem.METRIC;
+                this.settings.unitsystem = this.bmi_levelbar.unitsystem = Unitsystem.METRIC;
                 this.height_actionrow.title = _ ("Height in centimeters");
             } else {
-                this.settings.unitsystem = Unitsystem.IMPERIAL;
+                this.settings.unitsystem = this.bmi_levelbar.unitsystem = Unitsystem.IMPERIAL;
                 this.height_actionrow.title = _ ("Height in inch");
             }
         }
