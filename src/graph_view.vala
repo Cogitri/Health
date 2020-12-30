@@ -309,25 +309,31 @@ namespace Health {
 
                 var radius = Pango.units_to_double (extents.height) / 5.0;
                 var degrees = GLib.Math.PI / 180.0;
-
                 // X & Y padding that is added/subtracted from the points of the rounded rectangle to add even padding around it. 
                 var padding = 12;
+
+                // If the tooltip doesn't fit to the right of the point, draw it on the left side of the point
+                double x_delta = 0;
+                if (point.x + Pango.units_to_double (extents.width) + padding * 2 > width) {
+                    x_delta = (Pango.units_to_double (extents.width) + padding * 3) * -1;
+                }
+
                 // Draw the background (a rounded rectangle) ...
                 cr.new_sub_path();
                 // Bottom right point
-                cr.arc(point.x + Pango.units_to_double (extents.width) - radius + padding * 2, point.y + radius - Pango.units_to_double (extents.height) / 2 - padding / 2, radius, -90 * degrees, 0);
+                cr.arc(point.x + Pango.units_to_double (extents.width) - radius + padding * 2 + x_delta, point.y + radius - Pango.units_to_double (extents.height) / 2 - padding / 2, radius, -90 * degrees, 0);
                 // Top right point
-                cr.arc(point.x + Pango.units_to_double (extents.width) - radius + padding * 2, point.y + Pango.units_to_double (extents.height) / 2 + padding / 2 - radius, radius, 0 * degrees, 90 * degrees);
+                cr.arc(point.x + Pango.units_to_double (extents.width) - radius + padding * 2 + x_delta, point.y + Pango.units_to_double (extents.height) / 2 + padding / 2 - radius, radius, 0 * degrees, 90 * degrees);
                 // Top left point
-                cr.arc(point.x + radius + padding, point.y + Pango.units_to_double (extents.height) / 2 - radius + padding / 2, radius, 90 * degrees, 180 * degrees);
+                cr.arc(point.x + radius + padding + x_delta, point.y + Pango.units_to_double (extents.height) / 2 - radius + padding / 2, radius, 90 * degrees, 180 * degrees);
                 // Bottom left point
-                cr.arc(point.x + radius + padding, point.y + radius - Pango.units_to_double (extents.height) / 2 - padding / 2, radius, 180 * degrees, 270 * degrees);
+                cr.arc(point.x + radius + padding + x_delta, point.y + radius - Pango.units_to_double (extents.height) / 2 - padding / 2, radius, 180 * degrees, 270 * degrees);
                 cr.close_path();
                 cr.set_source_rgba (0, 0, 0, 0.65);
                 cr.fill_preserve ();
 
                 // ... and afterwards draw the font onto it.
-                cr.move_to (point.x + padding * 1.5, point.y - Pango.units_to_double (extents.height) / 2);
+                cr.move_to (point.x + padding * 1.5 + x_delta, point.y - Pango.units_to_double (extents.height) / 2);
                 cr.set_source_rgba (1, 1, 1, 1);
                 Pango.cairo_show_layout (cr, layout);
                 cr.stroke ();
