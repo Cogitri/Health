@@ -41,6 +41,7 @@ namespace Health {
             double y;
         }
         private HoverPoint? hover_point;
+        private Gtk.EventControllerMotion motion_controller;
         private int max_pointer_deviation;
         protected double x_padding;
         protected double y_padding;
@@ -102,10 +103,20 @@ namespace Health {
                 size_request = 50 * this.points.size;
             }
 
-            var controller = new Gtk.EventControllerMotion ();
-            this.add_controller (controller);
-            controller.enter.connect (this.on_motion_event);
-            controller.motion.connect (this.on_motion_event);
+            var gesture = new Gtk.GestureClick ();
+            this.add_controller (gesture);
+            gesture.touch_only = true;
+            gesture.pressed.connect ((n, x, y) => {
+                this.on_motion_event (x, y, true);
+            });
+            this.motion_controller = new Gtk.EventControllerMotion ();
+            this.add_controller (this.motion_controller);
+            this.motion_controller.enter.connect ((x, y) => {
+                this.on_motion_event (x, y, false);
+            });
+            this.motion_controller.motion.connect ((x, y) => {
+                this.on_motion_event (x, y, false);
+            });
 
             this.set_size_request (size_request, -1);
         }
@@ -114,7 +125,15 @@ namespace Health {
             return num > approx_range - max_pointer_deviation && num < approx_range + max_pointer_deviation;
         }
 
-        private void on_motion_event (double x, double y) {
+        private void on_motion_event (double x, double y, bool allow_touch) {
+            if (!allow_touch) {
+                // Don't handle touch events, we do that via Gtk.GestureClick.
+                var device = this.motion_controller.get_current_event_device();
+                if (device != null && device.source == Gdk.InputSource.TOUCHSCREEN) {
+                    return;
+                }
+            }
+
             double biggest_value = 0.000001;
             foreach (var point in this.points) {
                 if (point.value > biggest_value) {
