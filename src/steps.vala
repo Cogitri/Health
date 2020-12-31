@@ -65,8 +65,6 @@ namespace Health {
         public override Gee.ArrayList<Point> to_points () {
             var ret = new Gee.ArrayList<Point> ();
 
-            this.arr.sort ((a, b) => { return a.date.compare (b.date); });
-
             var first_date = this.arr.get (0).date;
             var last_date = get_today_date ();
             var date_delta = first_date.days_between (last_date);
@@ -100,8 +98,6 @@ namespace Health {
             if (this.arr.is_empty) {
                 return 0;
             }
-
-            this.arr.sort ((a, b) => { return b.date.compare (a.date); });
 
             var last_date = this.arr.get (0).date;
             if (last_date.get_julian () != date.get_julian ()) {

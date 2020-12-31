@@ -67,8 +67,6 @@ namespace Health {
         public override Gee.ArrayList<Point> to_points () {
             var ret = new Gee.ArrayList<Point> ();
 
-            this.arr.sort ((a, b) => { return a.date.compare (b.date); });
-
             foreach (var weight in this.arr) {
                 ret.add (new Point (weight.date, weight.weight.value));
             }
@@ -77,7 +75,6 @@ namespace Health {
         }
 
         public WeightUnitContainer? get_last_weight () {
-            this.arr.sort ((a, b) => { return a.date.compare (b.date); });
             if (this.arr.is_empty) {
                 return null;
             }
