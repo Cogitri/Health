@@ -185,6 +185,7 @@ namespace Health {
         private void add_data_button_clicked (Gtk.Button btn) {
             Gtk.Dialog dialog;
             switch (this.current_view) {
+            case ACTIVITIES:
             case STEPS:
                 dialog = new ActivityAddDialog (this, this.db, this.settings);
                 break;

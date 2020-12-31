@@ -62,7 +62,7 @@ namespace Health {
         private Hdy.ComboRow activity_type_comborow;
 
         private Activities.ActivityInfo? selected_activity;
-        private Gtk.Filter filter;
+        private Gtk.Filter? filter;
         private Settings settings;
         private TrackerDatabase db;
 
@@ -97,6 +97,7 @@ namespace Health {
             this.activities_list_box.bind_model (filter_model, (o) => {
                 return (Gtk.Widget) o;
             });
+
             // FIXME: Also allow entering distance in KM/Miles
             if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
                 this.distance_action_row.title = _ ("Distance in Yards");
@@ -177,7 +178,10 @@ namespace Health {
         [GtkCallback]
         private void on_activity_type_comborow_selected (GLib.Object o, GLib.ParamSpec p) {
             this.selected_activity = this.get_selected_activity ();
-            this.filter.changed (Gtk.FilterChange.DIFFERENT);
+
+            if (this.filter != null) {
+                ((!) this.filter).changed (Gtk.FilterChange.DIFFERENT);
+            }
         }
     }
 }
