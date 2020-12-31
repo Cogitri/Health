@@ -45,6 +45,8 @@ namespace Health {
         [GtkChild]
         private Hdy.ActionRow calories_burned_action_row;
         [GtkChild]
+        private Hdy.ActionRow date_selector_actionrow;
+        [GtkChild]
         private Hdy.ActionRow distance_action_row;
         [GtkChild]
         private Hdy.ActionRow duration_action_row;
@@ -59,7 +61,8 @@ namespace Health {
         [GtkChild]
         private Hdy.ComboRow activity_type_comborow;
 
-        private Activities.ActivityInfo? previous_activity;
+        private Activities.ActivityInfo? selected_activity;
+        private Gtk.Filter filter;
         private Settings settings;
         private TrackerDatabase db;
 
@@ -77,6 +80,23 @@ namespace Health {
             }
             this.activity_type_comborow.selected = Activities.Enum.WALKING;
 
+            var model = new GLib.ListStore (typeof (Gtk.Widget));
+            model.splice (0, 0, {
+                    this.date_selector_actionrow,
+                    this.activity_type_comborow,
+                    this.calories_burned_action_row,
+                    this.distance_action_row,
+                    this.duration_action_row,
+                    this.heart_rate_average_action_row,
+                    this.heart_rate_min_action_row,
+                    this.heart_rate_max_action_row,
+                    this.stepcount_action_row,
+                });
+            this.filter = new Gtk.CustomFilter (filter_activity_entries);
+            var filter_model = new Gtk.FilterListModel (model, filter);
+            this.activities_list_box.bind_model (filter_model, (o) => {
+                return (Gtk.Widget) o;
+            });
             // FIXME: Also allow entering distance in KM/Miles
             if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
                 this.distance_action_row.title = _ ("Distance in Yards");
@@ -123,32 +143,18 @@ namespace Health {
             return Activities.get_values ()[this.activity_type_comborow.selected];
         }
 
-        private void update_activity_entries () {
-            var selected_activity = this.get_selected_activity ();
-            unowned Gtk.Widget? w;
-
-            while ((w = this.activities_list_box.get_last_child ()) != this.activity_type_comborow) {
-                this.activities_list_box.remove (w);
+        private bool filter_activity_entries (Object row) {
+            if ((row == this.activity_type_comborow || row == this.date_selector_actionrow)
+                || (row == this.calories_burned_action_row && ActivityDataPoints.CALORIES_BURNED in this.selected_activity.available_data_points)
+                || (row == this.distance_action_row && ActivityDataPoints.DISTANCE in this.selected_activity.available_data_points)
+                || (row == this.duration_action_row && ActivityDataPoints.DURATION in this.selected_activity.available_data_points)
+                || (row == this.stepcount_action_row && ActivityDataPoints.STEP_COUNT in this.selected_activity.available_data_points)
+                || ((row == this.heart_rate_average_action_row || row == this.heart_rate_max_action_row || row == this.heart_rate_min_action_row) && ActivityDataPoints.HEART_RATE in this.selected_activity.available_data_points)
+            ) {
+                return true;
             }
 
-            if (ActivityDataPoints.CALORIES_BURNED in selected_activity.available_data_points) {
-                this.activities_list_box.append (this.calories_burned_action_row);
-            }
-            if (ActivityDataPoints.DISTANCE in selected_activity.available_data_points) {
-                this.activities_list_box.append (this.distance_action_row);
-            }
-            if (ActivityDataPoints.DURATION in selected_activity.available_data_points) {
-                this.activities_list_box.append (this.duration_action_row);
-            }
-            if (ActivityDataPoints.HEART_RATE in selected_activity.available_data_points) {
-                this.activities_list_box.append (this.heart_rate_min_action_row);
-                this.activities_list_box.append (this.heart_rate_average_action_row);
-                this.activities_list_box.append (this.heart_rate_max_action_row);
-            }
-            if (ActivityDataPoints.STEP_COUNT in selected_activity.available_data_points) {
-                this.activities_list_box.append (this.stepcount_action_row);
-            }
-
+            return false;
         }
 
         [GtkCallback]
@@ -170,8 +176,8 @@ namespace Health {
 
         [GtkCallback]
         private void on_activity_type_comborow_selected (GLib.Object o, GLib.ParamSpec p) {
-            this.update_activity_entries ();
-            this.previous_activity = this.get_selected_activity ();
+            this.selected_activity = this.get_selected_activity ();
+            this.filter.changed (Gtk.FilterChange.DIFFERENT);
         }
     }
 }

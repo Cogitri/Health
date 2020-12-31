@@ -100,26 +100,6 @@
                 <style>
                   <class name="content"/>
                 </style>
-                <child>
-                  <object class="HdyActionRow">
-                    <property name="title" translatable="yes">Date</property>
-                    <child>
-                      <object class="HealthDateSelector" id="date_selector">
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-bottom">6</property>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-                <child>
-                  <object class="HdyComboRow" id="activity_type_comborow">
-                    <property name="title" translatable="yes">Activity Type</property>
-                    <property name="model">activity_type_model</property>
-                    <signal name="notify::selected" handler="on_activity_type_comborow_selected" swapped="no"/>
-                  </object>
-                </child>
               </object>
             </child>
           </object>
@@ -127,6 +107,22 @@
       </object>
     </child>
   </template>
+  <object class="HdyActionRow" id="date_selector_actionrow">
+    <property name="title" translatable="yes">Date</property>
+    <child>
+      <object class="HealthDateSelector" id="date_selector">
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+      </object>
+    </child>
+  </object>
+  <object class="HdyComboRow" id="activity_type_comborow">
+    <property name="title" translatable="yes">Activity Type</property>
+    <property name="model">activity_type_model</property>
+    <signal name="notify::selected" handler="on_activity_type_comborow_selected" swapped="no"/>
+  </object>
   <object class="HdyActionRow" id="calories_burned_action_row">
     <property name="title" translatable="yes">Calories Burned</property>
     <child>
