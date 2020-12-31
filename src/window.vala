@@ -71,7 +71,7 @@ namespace Health {
                 var page = this.stack.add_titled (view, view.name, view.title);
                 page.icon_name = view.icon_name;
             }
-            
+
             switch (settings.current_view_id) {
                 case 0:
                     this.current_view = ViewModes.STEPS;

@@ -128,7 +128,7 @@ namespace Health {
         private void on_motion_event (double x, double y, bool allow_touch) {
             if (!allow_touch) {
                 // Don't handle touch events, we do that via Gtk.GestureClick.
-                var device = this.motion_controller.get_current_event_device();
+                var device = this.motion_controller.get_current_event_device ();
                 if (device != null && device.source == Gdk.InputSource.TOUCHSCREEN) {
                     return;
                 }
@@ -153,7 +153,7 @@ namespace Health {
                 var point_x = i * scale_x + this.x_padding / 2;
                 var point_y = height - value * scale_y + this.y_padding / 2;
 
-                if (this.approx_matches(x, point_x) && this.approx_matches (y, point_y)) {
+                if (this.approx_matches (x, point_x) && this.approx_matches (y, point_y)) {
                     this.hover_point = HoverPoint () { x = point_x, y = point_y, point = this.points[i] };
                     this.queue_draw ();
                     return;
@@ -302,7 +302,7 @@ namespace Health {
             if (this.hover_point != null && this.hover_func != null) {
 
                 unowned var point = (!) this.hover_point;
-                
+
                 var layout = this.create_pango_layout (this.hover_func (point.point));
                 Pango.Rectangle extents;
                 layout.get_extents (null, out extents);
@@ -319,16 +319,16 @@ namespace Health {
                 }
 
                 // Draw the background (a rounded rectangle) ...
-                cr.new_sub_path();
+                cr.new_sub_path ();
                 // Bottom right point
-                cr.arc(point.x + Pango.units_to_double (extents.width) - radius + padding * 2 + x_delta, point.y + radius - Pango.units_to_double (extents.height) / 2 - padding / 2, radius, -90 * degrees, 0);
+                cr.arc (point.x + Pango.units_to_double (extents.width) - radius + padding * 2 + x_delta, point.y + radius - Pango.units_to_double (extents.height) / 2 - padding / 2, radius, -90 * degrees, 0);
                 // Top right point
-                cr.arc(point.x + Pango.units_to_double (extents.width) - radius + padding * 2 + x_delta, point.y + Pango.units_to_double (extents.height) / 2 + padding / 2 - radius, radius, 0 * degrees, 90 * degrees);
+                cr.arc (point.x + Pango.units_to_double (extents.width) - radius + padding * 2 + x_delta, point.y + Pango.units_to_double (extents.height) / 2 + padding / 2 - radius, radius, 0 * degrees, 90 * degrees);
                 // Top left point
-                cr.arc(point.x + radius + padding + x_delta, point.y + Pango.units_to_double (extents.height) / 2 - radius + padding / 2, radius, 90 * degrees, 180 * degrees);
+                cr.arc (point.x + radius + padding + x_delta, point.y + Pango.units_to_double (extents.height) / 2 - radius + padding / 2, radius, 90 * degrees, 180 * degrees);
                 // Bottom left point
-                cr.arc(point.x + radius + padding + x_delta, point.y + radius - Pango.units_to_double (extents.height) / 2 - padding / 2, radius, 180 * degrees, 270 * degrees);
-                cr.close_path();
+                cr.arc (point.x + radius + padding + x_delta, point.y + radius - Pango.units_to_double (extents.height) / 2 - padding / 2, radius, 180 * degrees, 270 * degrees);
+                cr.close_path ();
                 cr.set_source_rgba (0, 0, 0, 0.65);
                 cr.fill_preserve ();
 
