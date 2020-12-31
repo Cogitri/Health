@@ -158,13 +158,6 @@ namespace Health {
             });
         }
 
-        ~WeightView () {
-            unowned Gtk.Widget child;
-            while ((child = get_first_child ()) != null) {
-                child.unparent ();
-            }
-        }
-
         private double get_bmi () {
             var last_weight = this.weight_graph_model.get_last_weight ();
             if (last_weight == null) {

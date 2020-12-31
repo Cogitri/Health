@@ -199,13 +199,6 @@ namespace Health {
             this.update ();
         }
 
-        ~StepView () {
-            unowned Gtk.Widget child;
-            while ((child = get_first_child ()) != null) {
-                child.unparent ();
-            }
-        }
-
         /**
          * Reload the {@link StepsGraphModel}'s data and refresh labels & the {@link StepsGraphView}.
          */

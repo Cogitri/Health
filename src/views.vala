@@ -28,8 +28,11 @@ namespace Health {
             set_layout_manager_type (typeof (Gtk.BinLayout));
         }
 
-        protected View () {
-            this.visible = true;
+        ~View () {
+            unowned Gtk.Widget child;
+            while ((child = get_first_child ()) != null) {
+                child.unparent ();
+            }
         }
 
         /**
