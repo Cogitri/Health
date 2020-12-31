@@ -18,19 +18,19 @@
 
 namespace Health {
     public class ActivityModel : GLib.Object {
-        private Gee.ArrayList<Activity> activities;
         private Settings settings;
         private TrackerDatabase db;
+        public GLib.ListModel activities { get; private set; }
         public bool is_empty {
             get {
-                    return this.activities.is_empty;
+                    return this.activities.get_n_items () == 0;
             }
         }
 
         public ActivityModel (Settings settings, TrackerDatabase db) {
             this.settings = settings;
             this.db = db;
-            this.activities = new Gee.ArrayList<Activity> ();
+            this.activities = new GLib.ListStore (typeof (Activity));
         }
 
         /**
@@ -103,28 +103,13 @@ namespace Health {
         public override void update () {
             this.activity_model.reload.begin ((obj, res) => {
                 if (this.activity_model.reload.end (res)) {
-
                     if (!this.activity_model.is_empty && this.main_box.get_last_child () == this.no_data_label) {
                         this.main_box.remove (this.no_data_label);
                         this.main_box.append (this.scrolled_window);
                         this.no_data_label = null;
                     } else if (!this.activity_model.is_empty) {
-                        // FIXME: Allow adding adjusting this & loading more activities on demand
-                        this.db.get_activities_after.begin (get_date_in_n_days (-30), this.settings, null, (obj, res) => {
-                            try {
-                                var activities = this.db.get_activities_after.end (res);
-                                unowned Gtk.Widget? w;
-
-                                while ((w = this.activities_list_box.get_first_child ()) != null) {
-                                    this.activities_list_box.remove (w);
-                                }
-
-                                foreach (var activity in activities) {
-                                    this.activities_list_box.append ((ActivityRow) GLib.Object.new (typeof (ActivityRow), activity: activity));
-                                }
-                            } catch (GLib.Error e) {
-                                warning ("Failed to retrieve activities from DB due to error %s", e.message);
-                            }
+                        this.activities_list_box.bind_model (this.activity_model.activities, (o) => {
+                            return (Gtk.Widget) GLib.Object.new (typeof (ActivityRow), activity: o);
                         });
                     }
                 }
