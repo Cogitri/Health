@@ -17,20 +17,36 @@
  */
 
 namespace Health {
-    public class ActivityModel : GLib.Object {
+    public class ActivityModel : GLib.Object, GLib.ListModel {
+        private Gee.ArrayList<Activity> activities;
         private Settings settings;
         private TrackerDatabase db;
-        public GLib.ListModel activities { get; private set; }
         public bool is_empty {
             get {
-                    return this.activities.get_n_items () == 0;
+                    return this.activities.is_empty;
             }
         }
 
         public ActivityModel (Settings settings, TrackerDatabase db) {
             this.settings = settings;
             this.db = db;
-            this.activities = new GLib.ListStore (typeof (Activity));
+            this.activities = new Gee.ArrayList<Activity> ();
+        }
+
+        public GLib.Object? get_item (uint position) {
+                if (this.activities.size > position) {
+                return this.activities.get ((int) position);
+            } else {
+                return null;
+            }
+        }
+
+        public GLib.Type get_item_type () {
+            return typeof (Activity);
+        }
+
+        public uint get_n_items () {
+            return this.activities.size;
         }
 
         /**
@@ -41,7 +57,9 @@ namespace Health {
          */
         public async bool reload () {
             try {
+                var previous_size = this.activities.size;
                 this.activities = yield this.db.get_activities_after (get_date_in_n_days (-30), this.settings);
+                this.items_changed (0, previous_size, this.activities.size);
                 return true;
             } catch (GLib.Error e) {
                 warning ("Failed to load activities from database due to error %s", e.message);
@@ -82,7 +100,11 @@ namespace Health {
                 this.main_box.append (this.no_data_label);
             } else {
                 this.main_box.append (this.scrolled_window);
-           }
+            }
+
+           this.activities_list_box.bind_model (this.activity_model, (o) => {
+                return (Gtk.Widget) GLib.Object.new (typeof (ActivityRow), activity: o);
+            });
 
             db.activities_updated.connect (() => {
                 this.update ();
@@ -107,10 +129,6 @@ namespace Health {
                         this.main_box.remove (this.no_data_label);
                         this.main_box.append (this.scrolled_window);
                         this.no_data_label = null;
-                    } else if (!this.activity_model.is_empty) {
-                        this.activities_list_box.bind_model (this.activity_model.activities, (o) => {
-                            return (Gtk.Widget) GLib.Object.new (typeof (ActivityRow), activity: o);
-                        });
                     }
                 }
             });

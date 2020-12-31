@@ -87,9 +87,9 @@ namespace Health {
          * @param date The earliest date that steps should be retrieved from.
          * @throws DatabaseError If querying the DB fails.
          */
-         public async GLib.ListModel get_activities_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
+         public async Gee.ArrayList<Activity> get_activities_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_ACTIVITIES_AFTER.printf (date_to_iso_8601 (date)), cancellable);
-            var ret = new GLib.ListStore (typeof (Activity));
+            var ret = new Gee.ArrayList<Activity> ();
 
             while (yield cursor.next_async (cancellable)) {
                 var activity = (Activity) GLib.Object.new (typeof (Activity));
@@ -128,7 +128,7 @@ namespace Health {
                     }
                 }
 
-                ret.append (activity);
+                ret.add (activity);
             }
 
             return ret;
