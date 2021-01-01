@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Health
-Exec=dev.Cogitri.Health
-Icon=dev.Cogitri.Health
+Exec=@APPLICATION_ID@
+Icon=@APPLICATION_ID@
 Terminal=false
 Type=Application
 Categories=GTK;

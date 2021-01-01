@@ -79,6 +79,62 @@ namespace Health {
         }
 
         /**
+         * Gets all activity records that have a date >= the date parameter
+         *
+         * If date is 30 of September 2020 then all activity records that have been
+         * added on the 30th of September or later will be returned.
+         *
+         * @param date The earliest date that steps should be retrieved from.
+         * @throws DatabaseError If querying the DB fails.
+         */
+         public async Gee.ArrayList<Activity> get_activities_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
+            var cursor = yield this.db.query_async (QUERY_ACTIVITIES_AFTER.printf (date_to_iso_8601 (date)), cancellable);
+            var ret = new Gee.ArrayList<Activity> ();
+
+            while (yield cursor.next_async (cancellable)) {
+                var activity = (Activity) GLib.Object.new (typeof (Activity));
+
+                for (var i = 0; i < cursor.n_columns; i++) {
+                    switch (cursor.get_variable_name (i)) {
+                        case "id":
+                            activity.activity_type = Activities.get_values ()[cursor.get_integer (i)].type;
+                            break;
+                        case "date":
+                            activity.date = iso_8601_to_date (cursor.get_string (i));
+                            break;
+                        case "calories_burned":
+                            activity.calories_burned = (uint32) cursor.get_integer (i);
+                            break;
+                        case "distance":
+                            activity.distance = (uint32) cursor.get_integer (i);
+                            break;
+                        case "heart_rate_avg":
+                            activity.hearth_rate_avg = (uint32) cursor.get_integer (i);
+                            break;
+                        case "heart_rate_max":
+                            activity.hearth_rate_max = (uint32) cursor.get_integer (i);
+                            break;
+                        case "heart_rate_min":
+                            activity.hearth_rate_min = (uint32) cursor.get_integer (i);
+                            break;
+                        case "minutes":
+                            activity.minutes = (uint32) cursor.get_integer (i);
+                            break;
+                        case "steps":
+                            activity.steps = (uint32) cursor.get_integer (i);
+                            break;
+                        default:
+                            error ("Unknown variable %s", cursor.get_variable_name (i));
+                    }
+                }
+
+                ret.add (activity);
+            }
+
+            return ret;
+        }
+
+        /**
          * Gets all step records that have a date >= the date parameter
          *
          * If date is 30 of September 2020 then all step records that have been
@@ -183,7 +239,7 @@ namespace Health {
             }
 
             yield this.db.update_array_async (ops, cancellable);
-            this.steps_updated ();
+            this.activities_updated ();
             this.weight_updated ();
         }
 
@@ -202,14 +258,32 @@ namespace Health {
             var resource = new Tracker.Resource (null);
             resource.set_uri ("rdf:type", "health:Activity");
             resource.set_string ("health:activity_date", date_to_iso_8601 (a.date));
+            resource.set_int64 ("health:activity_id", a.activity_type);
+
+            if (a.calories_burned != 0) {
+                resource.set_int64 ("health:calories_burned", a.calories_burned);
+            }
+            if (a.distance != 0) {
+                resource.set_int64 ("health:distance", a.distance);
+            }
+            if (a.hearth_rate_avg != 0) {
+                resource.set_int64 ("health:hearth_rate_avg", a.hearth_rate_avg);
+            }
+            if (a.hearth_rate_max != 0) {
+                resource.set_int64 ("health:hearth_rate_max", a.hearth_rate_max);
+            }
+            if (a.hearth_rate_min != 0) {
+                resource.set_int64 ("health:hearth_rate_min", a.hearth_rate_min);
+            }
+            if (a.minutes != 0) {
+                resource.set_int64 ("health:minutes", a.minutes);
+            }
             if (a.steps != 0) {
                 resource.set_int64 ("health:steps", a.steps);
             }
-            resource.set_int64 ("health:activity_id", a.activity_type);
-            resource.set_int64 ("health:minutes", a.minutes);
 
             yield this.db.update_async (resource.print_sparql_update (this.manager, null));
-            this.steps_updated ();
+            this.activities_updated ();
         }
 
         /**
@@ -228,11 +302,12 @@ namespace Health {
             this.weight_updated ();
         }
 
-        public signal void steps_updated ();
+        public signal void activities_updated ();
         public signal void weight_updated ();
 
         const string QUERY_DATE_HAS_STEPS = "ASK { ?activity a health:Activity ; health:activity_date '%s'; health:steps ?steps . }";
         const string QUERY_DATE_HAS_WEIGHT = "ASK { ?datapoint a health:WeightMeasurement ; health:weight_date '%s'; health:weight ?weight . }";
+        const string QUERY_ACTIVITIES_AFTER = "SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes }  FILTER  (?date >= '%s'^^xsd:date)} ORDER BY DESC(?date)";
         const string QUERY_STEPS_AFTER = "SELECT ?date ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:steps ?steps . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";
         const string QUERY_STEPS_ON_DAY = "SELECT ?steps WHERE { ?datapoint a health:Activity; health:activity_date ?date ; health:steps ?steps . FILTER(?date = '%s'^^xsd:date) }";
         const string QUERY_WEIGHT_AFTER = "SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . FILTER  (?date >= '%s'^^xsd:date)} ORDER BY ?date";

@@ -67,8 +67,6 @@ namespace Health {
         public override Gee.ArrayList<Point> to_points () {
             var ret = new Gee.ArrayList<Point> ();
 
-            this.arr.sort ((a, b) => { return a.date.compare (b.date); });
-
             foreach (var weight in this.arr) {
                 ret.add (new Point (weight.date, weight.weight.value));
             }
@@ -77,7 +75,6 @@ namespace Health {
         }
 
         public WeightUnitContainer? get_last_weight () {
-            this.arr.sort ((a, b) => { return a.date.compare (b.date); });
             if (this.arr.is_empty) {
                 return null;
             }
@@ -91,26 +88,35 @@ namespace Health {
      * An implementation of {@link GraphView} that visualizes the user's weight measurements over time.
      */
     public class WeightGraphView : GraphView {
-        public WeightGraphView (WeightGraphModel model, double weightgoal) {
+        public WeightGraphView (WeightGraphModel model, double weightgoal, Settings settings) {
             base (model.to_points (), _ ("Weightgoal"), weightgoal);
             this.x_lines_interval = 10;
-        }
+            this.hover_func = (point) => {
+                string unit = "KG";
 
+                if (settings.unitsystem == Unitsystem.IMPERIAL) {
+                    unit = "PB";
+                }
+
+                /* TRANSLATORS: This is shown on-hover of points where %u is the weight, the first %s is the unit and the second %s is the already localised date (e.g. 2020-09-11) */
+                return _ ("%u %s on %s").printf ((uint) point.value, unit, datetime_from_date (point.date).format ("%x"));
+            };
+        }
     }
 
     /**
      * An implementation of {@link View} visualizes BMI and weight development.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/weight_view.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/weight_view.ui")]
     public class WeightView : View {
-        [GtkChild]
-        private Gtk.Box main_box;
         [GtkChild]
         private Gtk.Label title_label;
         [GtkChild]
         private Gtk.Label weightgoal_label;
-        private Gtk.Label no_data_label;
+        [GtkChild]
         private Gtk.ScrolledWindow scrolled_window;
+        [GtkChild]
+        private Gtk.Stack stack;
         private Settings settings;
         private WeightGraphView? weight_graph_view;
         private WeightGraphModel weight_graph_model;
@@ -119,22 +125,14 @@ namespace Health {
             this.name = "Weight";
             this.settings = settings;
             this.title = _ ("Weight");
-            this.icon_name = "dev.Cogitri.Health-weight-scale-symbolic";
+            this.icon_name = "weight-scale-symbolic";
             this.weight_graph_model = model;
 
             this.update_weightgoal_label ();
 
-            if (this.weight_graph_model.is_empty) {
-                this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new weight measurement."));
-                this.no_data_label.wrap = true;
-                this.no_data_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
-                this.no_data_label.margin_start = this.no_data_label.margin_end = 6;
-                this.main_box.append (this.no_data_label);
-            } else {
-                this.scrolled_window = new Gtk.ScrolledWindow ();
-                this.scrolled_window.vscrollbar_policy = Gtk.PolicyType.NEVER;
-                this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value);
-                this.main_box.append (this.scrolled_window);
+            if (!this.weight_graph_model.is_empty) {
+                this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value, this.settings);
+                this.stack.visible_child_name = "data_page";
             }
 
             this.update ();
@@ -150,13 +148,6 @@ namespace Health {
             db.weight_updated.connect (() => {
                 this.update ();
             });
-        }
-
-        ~WeightView () {
-            unowned Gtk.Widget child;
-            while ((child = get_first_child ()) != null) {
-                child.unparent ();
-            }
         }
 
         private double get_bmi () {
@@ -214,13 +205,8 @@ namespace Health {
                     this.update_weightgoal_label ();
 
                     if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
-                        this.scrolled_window = new Gtk.ScrolledWindow ();
-                        this.scrolled_window.vscrollbar_policy = Gtk.PolicyType.NEVER;
-                        this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value);
-                        this.main_box.remove (this.no_data_label);
-                        this.main_box.append (this.scrolled_window);
-                        this.no_data_label = null;
-                        ((!) this.weight_graph_view).visible = true;
+                        this.stack.visible_child_name = "data_page";
+                        this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value, this.settings);
                     } else if (this.weight_graph_view != null) {
                         ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();
                         ((!) this.weight_graph_view).limit = this.settings.user_weightgoal.value;

@@ -1,0 +1,30 @@
+levelbar block.severly-underweight-bmi {
+    background-color: #e01b24;
+    border-style: solid;
+    border-color: black;
+}
+
+levelbar block.underweight-bmi {
+    background-color: #fe7801;
+    border-style: solid;
+    border-color: black;
+}
+
+levelbar block.optimal-bmi {
+    background-color: #34c188;
+    border-style: solid;
+    border-color: black;
+}
+
+levelbar block.overweight-bmi {
+    background-color: #fe7801;
+    border-style: solid;
+    border-color: black;
+}
+
+levelbar block.obese-bmi {
+    background-color: #e01b24;
+    /* Otherwise the bar is flat on the right when full */
+    border-bottom-right-radius: 3px;
+    border-top-right-radius: 3px;
+}

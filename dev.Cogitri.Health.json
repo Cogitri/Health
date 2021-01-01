@@ -1,9 +1,9 @@
 {
-    "app-id": "dev.Cogitri.Health",
+    "app-id": "dev.Cogitri.Health.Devel",
     "runtime": "org.gnome.Platform",
-    "runtime-version": "3.38",
+    "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
-    "command": "dev.Cogitri.Health",
+    "command": "dev.Cogitri.Health.Devel",
     "finish-args": [
         "--share=network",
         "--share=ipc",
@@ -11,6 +11,11 @@
         "--socket=wayland",
         "--talk-name=org.freedesktop.secrets",
         "--device=dri"
+    ],
+    "tags": [
+        "devel",
+        "development",
+        "nightly"
     ],
     "cleanup": [
         "/include",
@@ -22,7 +27,10 @@
         "/share/pkgconfig",
         "/share/vala",
         "*.la",
-        "*.a"
+        "*.a",
+        "/lib/librest-extras*",
+        "/lib/girepository-1.0",
+        "/share/gir-1.0"
     ],
     "build-options": {
         "build-args": [
@@ -30,24 +38,6 @@
         ]
     },
     "modules": [
-        {
-            "name": "gtk4.0",
-            "buildsystem": "meson",
-            "builddir": true,
-            "config-opts": [
-                "-Ddemos=false",
-                "-Dbuild-tests=false",
-                "-Dmedia=none",
-                "-Dprint=none"
-            ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://download.gnome.org/sources/gtk/3.99/gtk-3.99.4.tar.xz",
-                    "sha256": "8979cb1eb6ad2a496e00e94674d23f90aefae5d3f23b623ffda0b35d11ec85d0"
-                }
-            ]
-        },
         {
             "name": "libhandy",
             "builddir": true,
@@ -65,7 +55,7 @@
                 {
                     "type": "git",
                     "url": "https://gitlab.gnome.org/exalm/libhandy",
-                    "commit": "c425c1254e2f640ee28d746ac272e16bbc453b2b"
+                    "branch": "gtk4"
                 },
                 {
                     "type": "patch",
@@ -87,6 +77,12 @@
             "name": "health",
             "builddir": true,
             "buildsystem": "meson",
+            "config-opts": [
+                "-Dprofile=development"
+            ],
+            "cleanup": [
+                "/usr/"
+            ],
             "sources": [
                 {
                     "type": "dir",

@@ -4,3 +4,4 @@ _build
 subprojects/vala-unit
 app
 .flatpak-builder
+.vscode

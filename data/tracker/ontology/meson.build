@@ -5,5 +5,5 @@ ontology_data = files(
 
 install_data(
   ontology_data,
-  install_dir: get_option('datadir') / 'health' / 'ontology'
+  install_dir: health_data_dir / 'ontology',
 )

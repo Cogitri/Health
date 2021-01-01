@@ -65,8 +65,6 @@ namespace Health {
         public override Gee.ArrayList<Point> to_points () {
             var ret = new Gee.ArrayList<Point> ();
 
-            this.arr.sort ((a, b) => { return a.date.compare (b.date); });
-
             var first_date = this.arr.get (0).date;
             var last_date = get_today_date ();
             var date_delta = first_date.days_between (last_date);
@@ -100,8 +98,6 @@ namespace Health {
             if (this.arr.is_empty) {
                 return 0;
             }
-
-            this.arr.sort ((a, b) => { return b.date.compare (a.date); });
 
             var last_date = this.arr.get (0).date;
             if (last_date.get_julian () != date.get_julian ()) {
@@ -147,25 +143,29 @@ namespace Health {
     public class StepsGraphView : GraphView {
         public StepsGraphView (StepsGraphModel model, double stepgoal) {
             base (model.to_points (), _ ("Stepgoal"), stepgoal);
+
+            this.hover_func = (point) => {
+                /* TRANSLATORS: This is shown on-hover of points where %u is the steps and %s is the already localised date (e.g. 2020-09-11) */
+                return _ ("%u steps on %s").printf ((uint) point.value, datetime_from_date (point.date).format ("%x"));
+            };
             this.x_lines_interval = 500;
         }
-
     }
 
 
     /**
      * An implementation of {@link View} visualizes streak counts and daily step records.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/step_view.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/step_view.ui")]
     public class StepView : View {
-        [GtkChild]
-        private Gtk.Box main_box;
         [GtkChild]
         private Gtk.Label streak_label;
         [GtkChild]
         private Gtk.Label title_label;
-        private Gtk.Label no_data_label;
+        [GtkChild]
         private Gtk.ScrolledWindow scrolled_window;
+        [GtkChild]
+        private Gtk.Stack stack;
         private Settings settings;
         private StepsGraphView? steps_graph_view;
         private StepsGraphModel steps_graph_model;
@@ -173,37 +173,22 @@ namespace Health {
         public StepView (StepsGraphModel model, Settings settings, TrackerDatabase db) {
             this.name = "Steps";
             this.title = _ ("Steps");
-            this.icon_name = "dev.Cogitri.Health-steps-symbolic";
+            this.icon_name = "steps-symbolic";
             this.settings = settings;
             this.steps_graph_model = model;
 
-            if (this.steps_graph_model.is_empty) {
-                this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new step count."));
-                this.no_data_label.wrap = true;
-                this.no_data_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
-                this.no_data_label.margin_start = this.no_data_label.margin_end = 6;
-                this.main_box.append (this.no_data_label);
-            } else {
-                this.scrolled_window = new Gtk.ScrolledWindow ();
-                this.scrolled_window.vscrollbar_policy = Gtk.PolicyType.NEVER;
-                this.scrolled_window.child = this.steps_graph_view = new StepsGraphView (model, this.settings.user_stepgoal);
-                this.main_box.append (this.scrolled_window);
+            if (!this.steps_graph_model.is_empty) {
+                this.scrolled_window.child = this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
+                this.stack.visible_child_name = "data_page";
             }
 
             this.settings.changed[Settings.USER_STEPGOAL_KEY].connect (() => {
                 this.update ();
             });
-            db.steps_updated.connect (() => {
+            db.activities_updated.connect (() => {
                 this.update ();
             });
             this.update ();
-        }
-
-        ~StepView () {
-            unowned Gtk.Widget child;
-            while ((child = get_first_child ()) != null) {
-                child.unparent ();
-            }
         }
 
         /**
@@ -233,13 +218,8 @@ namespace Health {
                     this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
 
                     if (this.steps_graph_view == null && !this.steps_graph_model.is_empty) {
-                        this.scrolled_window = new Gtk.ScrolledWindow ();
-                        this.scrolled_window.vscrollbar_policy = Gtk.PolicyType.NEVER;
                         this.scrolled_window.child = this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
-                        this.main_box.remove (this.no_data_label);
-                        this.main_box.append (this.scrolled_window);
-                        this.no_data_label = null;
-                        ((!) this.steps_graph_view).visible = true;
+                        this.stack.visible_child_name = "data_page";
                     } else if (this.steps_graph_view != null) {
                         ((!) this.steps_graph_view).points = this.steps_graph_model.to_points ();
                         ((!) this.steps_graph_view).limit = this.settings.user_stepgoal;

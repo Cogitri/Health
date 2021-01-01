@@ -10,7 +10,12 @@ namespace Health {
 
         private const GLib.ActionEntry APP_ENTRIES[] = {
             { "about", on_about },
+            { "fullscreen", on_fullscreen },
+            { "hamburger-menu", on_hamburger_menu },
+            { "help", on_help },
             { "preferences", on_preferences },
+            { "quit", on_quit },
+            { "shortcuts", on_shortcuts }
         };
 
         public override void activate () {
@@ -31,8 +36,11 @@ namespace Health {
                 setup_window.show ();
             }
 
+            this.set_accels_for_action ("app.fullscreen", { "F11" });
+            this.set_accels_for_action ("app.hamburger-menu", { "F10" });
+            this.set_accels_for_action ("app.help", { "F1" });
             this.set_accels_for_action ("app.quit", { "<Primary>q" });
-
+            this.set_accels_for_action ("app.shortcuts", { "<Primary>question" });
         }
 
         public override void startup () {
@@ -65,6 +73,25 @@ namespace Health {
                 );
         }
 
+        private void on_fullscreen (GLib.SimpleAction action, GLib.Variant? parameter) {
+            if (this.window != null) {
+                if (this.window.is_fullscreen ()) {
+                    this.window.unfullscreen ();
+                } else {
+                    this.window.fullscreen ();
+                }
+            }
+        }
+
+        private void on_hamburger_menu (GLib.SimpleAction action, GLib.Variant? parameter) {
+            if (this.window != null) {
+                this.window.open_hamburger_menu ();
+            }
+        }
+
+        private void on_help (GLib.SimpleAction action, GLib.Variant? parameter) {
+        }
+
         private void on_preferences (GLib.SimpleAction action, GLib.Variant? parameter) {
             var pref_window = new PreferencesWindow (this.settings, this.window);
             pref_window.import_done.connect (() => {
@@ -74,5 +101,16 @@ namespace Health {
             });
         }
 
+        private void on_quit (GLib.SimpleAction action, GLib.Variant? parameter) {
+            if (this.window != null) {
+                this.window.destroy ();
+            }
+        }
+
+        private void on_shortcuts (GLib.SimpleAction action, GLib.Variant? parameter) {
+            var builder = new Gtk.Builder.from_resource ("/dev/Cogitri/Health/ui/shortcuts_window.ui");
+            var shortcuts_window = (Gtk.ShortcutsWindow) builder.get_object ("shortcuts_window");
+            shortcuts_window.show ();
+        }
     }
 }

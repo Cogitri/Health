@@ -26,6 +26,10 @@
         <attribute name="action">app.preferences</attribute>
         <attribute name="label" translatable="yes">_Preferences</attribute>
       </item>
+      <item>
+        <attribute name="action">app.shortcuts</attribute>
+        <attribute name="label" translatable="yes">_Keyboard Shortcuts</attribute>
+      </item>
     </section>
     <section>
       <item>
@@ -54,6 +58,9 @@
             <property name="can-focus">False</property>
             <property name="show-title-buttons">True</property>
             <property name="centering-policy">strict</property>
+            <style>
+              <class name="titlebar"/>
+            </style>
             <child>
               <object class="GtkButton" id="add_data_button">
                 <property name="can-focus">0</property>

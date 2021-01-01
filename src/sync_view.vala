@@ -20,7 +20,7 @@ namespace Health {
     /**
      * The {@link SyncView} is a view where users can initialise synching with a third-party provider.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/sync_view.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/sync_view.ui")]
     public class SyncView : Gtk.Widget {
         [GtkChild]
         private Gtk.Image google_fit_selected_image;

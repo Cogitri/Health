@@ -20,8 +20,10 @@ namespace Health {
     /**
      * The {@link SetupWindow} is shown to the user on the first start of the applcation to fill in some data.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/setup_window.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/setup_window.ui")]
     public class SetupWindow : Hdy.ApplicationWindow {
+        [GtkChild]
+        private BMILevelBar bmi_levelbar;
         [GtkChild]
         private SyncView sync_view;
         [GtkChild]
@@ -41,8 +43,6 @@ namespace Health {
         [GtkChild]
         private Gtk.Button setup_previous_page_button;
         [GtkChild]
-        private Gtk.ToggleButton unit_metric_togglebutton;
-        [GtkChild]
         private Gtk.Stack setup_right_stack;
         [GtkChild]
         private Gtk.Stack setup_left_stack;
@@ -54,6 +54,8 @@ namespace Health {
         private Gtk.SpinButton stepgoal_spinner;
         [GtkChild]
         private Gtk.SpinButton weightgoal_spinner;
+        [GtkChild]
+        private Gtk.ToggleButton unit_metric_togglebutton;
         [GtkChild]
         private Hdy.ActionRow height_actionrow;
         [GtkChild]
@@ -71,6 +73,12 @@ namespace Health {
             this.settings = settings;
             this.sync_view.settings = settings;
             this.stepgoal_spinner.value = 10000;
+
+            var provider = new Gtk.CssProvider ();
+            provider.load_from_resource ("/dev/Cogitri/Health/custom.css");
+            Gtk.StyleContext.add_provider_for_display (this.get_display (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+
         }
 
         private void try_enable_next_button () {
@@ -82,7 +90,7 @@ namespace Health {
         }
 
         private void set_optimal_weightgoal () {
-            const uint OPTIMAL_BMI = 20;
+            const double OPTIMAL_BMI = 22.5;
             var height_in_cm = double.parse (this.height_spinner.text);
             if (!this.unit_metric_togglebutton.active) {
                 height_in_cm = inch_to_cm (height_in_cm);
@@ -98,8 +106,10 @@ namespace Health {
         private void unit_metric_togglebutton_toggled (Gtk.ToggleButton btn) {
             if (btn.active) {
                 this.height_actionrow.title = _ ("Height in centimeters");
+                this.bmi_levelbar.unitsystem = Unitsystem.METRIC;
             } else {
                 this.height_actionrow.title = _ ("Height in inch");
+                this.bmi_levelbar.unitsystem = Unitsystem.IMPERIAL;
             }
             this.set_optimal_weightgoal ();
         }
@@ -108,11 +118,17 @@ namespace Health {
         private void height_spinner_changed (Gtk.Editable editable) {
             this.set_optimal_weightgoal ();
             this.try_enable_next_button ();
+            this.bmi_levelbar.height = double.parse (this.height_spinner.text);
         }
 
         [GtkCallback]
         private void age_spinner_changed (Gtk.Editable editable) {
             this.try_enable_next_button ();
+        }
+
+        [GtkCallback]
+        private void weightgoal_spinner_changed (Gtk.Editable editable) {
+            this.bmi_levelbar.weight = double.parse (editable.text);
         }
 
         [GtkCallback]

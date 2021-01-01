@@ -17,7 +17,7 @@
  */
 
 namespace Health {
-    [GtkTemplate (ui = "/dev/Cogitri/Health/date_editor.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/date_editor.ui")]
     class DateSelector : Gtk.Entry {
         [GtkChild]
         private Gtk.Calendar date_chooser;
@@ -58,7 +58,7 @@ namespace Health {
         public override void size_allocate (int width, int height, int baseline) {
             base.size_allocate (width, height, baseline);
 
-            this.date_selector_popover.check_resize ();
+            this.date_selector_popover.present ();
         }
 
         private void parse_date () {

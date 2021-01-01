@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/dev/Cogitri/Health">
+    <file preprocess="xml-stripblanks">ui/activity_add_dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/activity_row.ui</file>
+    <file preprocess="xml-stripblanks">ui/activity_view.ui</file>
+    <file preprocess="xml-stripblanks">ui/bmi_level_bar.ui</file>
+    <file preprocess="xml-stripblanks">ui/date_editor.ui</file>
+    <file preprocess="xml-stripblanks">ui/preferences_window.ui</file>
+    <file preprocess="xml-stripblanks">ui/setup_window.ui</file>
+    <file preprocess="xml-stripblanks">ui/shortcuts_window.ui</file>
+    <file preprocess="xml-stripblanks">ui/step_view.ui</file>
+    <file preprocess="xml-stripblanks">ui/sync_view.ui</file>
+    <file preprocess="xml-stripblanks">ui/weight_add_dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/weight_view.ui</file>
+    <file preprocess="xml-stripblanks">ui/window.ui</file>
+
+    <file>custom.css</file>
+
+    <file preprocess="xml-stripblanks">icons/scalable/actions/steps-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/walking-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/weight-scale-symbolic.svg</file>
+  </gresource>
+</gresources>

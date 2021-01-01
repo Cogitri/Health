@@ -1,7 +1,10 @@
 health_sources = files(
   'activity.vala',
-  'add_dialog.vala',
+  'activity_row.vala',
+  'activity_view.vala',
+  'activity_add_dialog.vala',
   'application.vala',
+  'bmi_level_bar.vala',
   'database.vala',
   'date_editor.vala',
   'graph_view.vala',
@@ -15,6 +18,7 @@ health_sources = files(
   'util.vala',
   'views.vala',
   'weight.vala',
+  'weight_add_dialog.vala',
   'window.vala',
 )
 
@@ -22,10 +26,9 @@ cc = meson.get_compiler('c')
 
 health_deps = [
   dependency('gio-2.0', version: '>= 2.50'),
-  dependency('gtk4'),
+  dependency('gtk4', version: '>=3.99.6'),
   dependency('libhandy-4'),
   dependency('gee-0.8'),
-  dependency('sqlite3', version: '>=3.24'),
   dependency('libsoup-2.4'),
   dependency('rest-0.7'),
   dependency('libsecret-1'),
@@ -46,21 +49,19 @@ add_project_arguments(
 
 # Configuration
 conf = configuration_data()
-conf.set_quoted('APPLICATION_ID', 'dev.Cogitri.Health')
-conf.set_quoted('VERSION', meson.project_version())
-conf.set_quoted('DATADIR', get_option('prefix') / get_option('datadir') / 'health')
+conf.set_quoted('APPLICATION_ID', application_id)
+conf.set_quoted('VERSION', health_version)
+conf.set_quoted('DATADIR', health_data_dir)
 
-configure_file(output: 'config.h', configuration: conf)
+configure_file(
+  output: 'config.h',
+  configuration: conf,
+)
+
 # Include config.h
 add_project_arguments(
   '-I@0@'.format(meson.current_build_dir()),
   language: 'c'
-)
-
-
-health_generated_sources = gnome.compile_resources('health-resources',
-  'dev.Cogitri.Health.gresource.xml',
-  c_name: 'health'
 )
 
 c_args = [
@@ -72,7 +73,7 @@ c_args = [
 
 
 lib = static_library(
-  'dev.Cogitri.Health',
+  application_id,
   [health_sources, health_generated_sources],
   vala_args: '--target-glib=2.50',
   dependencies: health_deps,
@@ -85,7 +86,8 @@ lib_dep = declare_dependency(
 )
 
 
-executable('dev.Cogitri.Health',
+executable(
+  application_id,
   ['main.vala', health_generated_sources],
   vala_args: '--target-glib=2.50',
   dependencies: lib_dep,

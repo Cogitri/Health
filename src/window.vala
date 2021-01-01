@@ -20,15 +20,18 @@ namespace Health {
     public enum ViewModes {
         STEPS,
         WEIGHT,
+        ACTIVITIES,
     }
 
     /**
      * The toplevel application window that holds all other widgets.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/window.ui")]
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/window.ui")]
     public class Window : Hdy.ApplicationWindow {
         [GtkChild]
         private Gtk.Stack stack;
+        [GtkChild]
+        private Gtk.Popover primary_menu_popover;
 
         private int current_height;
         private int current_width;
@@ -40,29 +43,56 @@ namespace Health {
 
         public Window (Gtk.Application app, Settings settings) {
             Object (application: app);
-            this.current_view = ViewModes.STEPS;
+
             this.settings = settings;
 
+            if (Config.APPLICATION_ID.has_suffix ("Devel")) {
+                this.get_style_context ().add_class ("devel");
+
+                Gtk.IconTheme.get_for_display (this.get_display ()).add_resource_path ("/dev/Cogitri/Health/icons");
+            }
+
+            var provider = new Gtk.CssProvider ();
+            provider.load_from_resource ("/dev/Cogitri/Health/custom.css");
+            Gtk.StyleContext.add_provider_for_display (this.get_display (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
+
             try {
-            this.db = TrackerDatabase.get_instance ();
+                this.db = TrackerDatabase.get_instance ();
             } catch (DatabaseError e) {
                 error (e.message);
             }
 
             var weight_model = new WeightGraphModel (this.settings, this.db);
             var steps_model = new StepsGraphModel (this.db);
-            this.views = new View[] { new StepView (steps_model, this.settings, this.db), new WeightView (weight_model, settings, this.db), };
+            var activity_model = new ActivityModel (this.settings, this.db);
+            this.views = new View[] { new StepView (steps_model, this.settings, this.db), new WeightView (weight_model, settings, this.db), new ActivityView (activity_model, this.settings, this.db)};
 
             foreach (var view in views) {
                 var page = this.stack.add_titled (view, view.name, view.title);
                 page.icon_name = view.icon_name;
             }
-            this.stack.set_visible_child (this.views[0]);
+
+            switch (settings.current_view_id) {
+                case 0:
+                    this.current_view = ViewModes.STEPS;
+                    break;
+                case 1:
+                    this.current_view = ViewModes.WEIGHT;
+                    break;
+                case 2:
+                    this.current_view = ViewModes.ACTIVITIES;
+                    break;
+                default:
+                    this.current_view = ViewModes.STEPS;
+                    break;
+            }
+
+            this.stack.set_visible_child (this.views[this.current_view]);
 
             this.current_height = this.settings.window_height;
             this.current_width = this.settings.window_width;
             if (this.current_width != -1 && this.current_height != -1) {
-                this.resize (this.current_width, this.current_height);
+                this.set_default_size (this.current_width, this.current_height);
             }
             if (this.settings.window_is_maximized) {
                 this.maximize ();
@@ -77,6 +107,8 @@ namespace Health {
                     return GLib.Source.CONTINUE;
                 });
             }
+
+            this.update ();
         }
 
         public void update () {
@@ -87,9 +119,13 @@ namespace Health {
 
         public override void size_allocate (int width, int height, int baseline) {
             base.size_allocate (width, height, baseline);
-            if (!this.is_maximized) {
-                this.get_size (out this.current_width, out this.current_height);
+            if (!this.maximized) {
+                this.get_default_size (out this.current_width, out this.current_height);
             }
+        }
+
+        public void open_hamburger_menu () {
+            this.primary_menu_popover.popup ();
         }
 
         private static void sync_data (Gtk.Window? parent, Settings settings, View[] views, uint source_id) {
@@ -122,9 +158,10 @@ namespace Health {
 
         [GtkCallback]
         private bool on_close_request (Gtk.Window window) {
-            this.settings.window_is_maximized = this.is_maximized;
+            this.settings.window_is_maximized = this.maximized;
             this.settings.window_height = this.current_height;
             this.settings.window_width = this.current_width;
+            this.settings.current_view_id = this.current_view;
 
             if (this.sync_source_id > 0) {
                 GLib.Source.remove (this.sync_source_id);
@@ -139,6 +176,8 @@ namespace Health {
                 this.current_view = ViewModes.STEPS;
             } else if (stack.visible_child_name == views[ViewModes.WEIGHT].name) {
                 this.current_view = ViewModes.WEIGHT;
+            } else if (stack.visible_child_name == views[ViewModes.ACTIVITIES].name) {
+                this.current_view = ViewModes.ACTIVITIES;
             }
         }
 
@@ -146,8 +185,9 @@ namespace Health {
         private void add_data_button_clicked (Gtk.Button btn) {
             Gtk.Dialog dialog;
             switch (this.current_view) {
+            case ACTIVITIES:
             case STEPS:
-                dialog = new ActivityAddDialog (this, this.db);
+                dialog = new ActivityAddDialog (this, this.db, this.settings);
                 break;
             case WEIGHT:
                 dialog = new WeightAddDialog (this, this.settings, this.db);
