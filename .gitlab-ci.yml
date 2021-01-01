@@ -19,10 +19,8 @@ stages:
   - deploy
 
 lint:
-  image: alpine:edge
+  image: valalang/lint
   stage: qa
-  before_script:
-    - apk add --no-cache vala-lint
   script:
     - io.elementary.vala-lint --config .vala-lint.conf
 
