@@ -110,13 +110,13 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/weight_view.ui")]
     public class WeightView : View {
         [GtkChild]
-        private Gtk.Box main_box;
-        [GtkChild]
         private Gtk.Label title_label;
         [GtkChild]
         private Gtk.Label weightgoal_label;
-        private Gtk.Label no_data_label;
+        [GtkChild]
         private Gtk.ScrolledWindow scrolled_window;
+        [GtkChild]
+        private Gtk.Stack stack;
         private Settings settings;
         private WeightGraphView? weight_graph_view;
         private WeightGraphModel weight_graph_model;
@@ -130,17 +130,9 @@ namespace Health {
 
             this.update_weightgoal_label ();
 
-            if (this.weight_graph_model.is_empty) {
-                this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new weight measurement."));
-                this.no_data_label.wrap = true;
-                this.no_data_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
-                this.no_data_label.margin_start = this.no_data_label.margin_end = 6;
-                this.main_box.append (this.no_data_label);
-            } else {
-                this.scrolled_window = new Gtk.ScrolledWindow ();
-                this.scrolled_window.vscrollbar_policy = Gtk.PolicyType.NEVER;
+            if (!this.weight_graph_model.is_empty) {
                 this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value, this.settings);
-                this.main_box.append (this.scrolled_window);
+                this.stack.visible_child_name = "data_page";
             }
 
             this.update ();
@@ -213,13 +205,8 @@ namespace Health {
                     this.update_weightgoal_label ();
 
                     if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
-                        this.scrolled_window = new Gtk.ScrolledWindow ();
-                        this.scrolled_window.vscrollbar_policy = Gtk.PolicyType.NEVER;
+                        this.stack.visible_child_name = "data_page";
                         this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value, this.settings);
-                        this.main_box.remove (this.no_data_label);
-                        this.main_box.append (this.scrolled_window);
-                        this.no_data_label = null;
-                        ((!) this.weight_graph_view).visible = true;
                     } else if (this.weight_graph_view != null) {
                         ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();
                         ((!) this.weight_graph_view).limit = this.settings.user_weightgoal.value;

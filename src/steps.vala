@@ -159,13 +159,13 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/step_view.ui")]
     public class StepView : View {
         [GtkChild]
-        private Gtk.Box main_box;
-        [GtkChild]
         private Gtk.Label streak_label;
         [GtkChild]
         private Gtk.Label title_label;
-        private Gtk.Label no_data_label;
+        [GtkChild]
         private Gtk.ScrolledWindow scrolled_window;
+        [GtkChild]
+        private Gtk.Stack stack;
         private Settings settings;
         private StepsGraphView? steps_graph_view;
         private StepsGraphModel steps_graph_model;
@@ -177,17 +177,9 @@ namespace Health {
             this.settings = settings;
             this.steps_graph_model = model;
 
-            if (this.steps_graph_model.is_empty) {
-                this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new step count."));
-                this.no_data_label.wrap = true;
-                this.no_data_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
-                this.no_data_label.margin_start = this.no_data_label.margin_end = 6;
-                this.main_box.append (this.no_data_label);
-            } else {
-                this.scrolled_window = new Gtk.ScrolledWindow ();
-                this.scrolled_window.vscrollbar_policy = Gtk.PolicyType.NEVER;
-                this.scrolled_window.child = this.steps_graph_view = new StepsGraphView (model, this.settings.user_stepgoal);
-                this.main_box.append (this.scrolled_window);
+            if (!this.steps_graph_model.is_empty) {
+                this.scrolled_window.child = this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
+                this.stack.visible_child_name = "data_page";
             }
 
             this.settings.changed[Settings.USER_STEPGOAL_KEY].connect (() => {
@@ -226,13 +218,8 @@ namespace Health {
                     this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
 
                     if (this.steps_graph_view == null && !this.steps_graph_model.is_empty) {
-                        this.scrolled_window = new Gtk.ScrolledWindow ();
-                        this.scrolled_window.vscrollbar_policy = Gtk.PolicyType.NEVER;
                         this.scrolled_window.child = this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
-                        this.main_box.remove (this.no_data_label);
-                        this.main_box.append (this.scrolled_window);
-                        this.no_data_label = null;
-                        ((!) this.steps_graph_view).visible = true;
+                        this.stack.visible_child_name = "data_page";
                     } else if (this.steps_graph_view != null) {
                         ((!) this.steps_graph_view).points = this.steps_graph_model.to_points ();
                         ((!) this.steps_graph_view).limit = this.settings.user_stepgoal;

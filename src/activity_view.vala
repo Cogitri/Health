@@ -74,12 +74,9 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_view.ui")]
     public class ActivityView : View {
         [GtkChild]
-        private Gtk.Box main_box;
-        [GtkChild]
         private Gtk.ListBox activities_list_box;
         [GtkChild]
-        private Gtk.ScrolledWindow scrolled_window;
-        private Gtk.Label no_data_label;
+        private Gtk.Stack stack;
         private Settings settings;
         private ActivityModel activity_model;
         TrackerDatabase db;
@@ -92,14 +89,8 @@ namespace Health {
             this.activity_model = model;
             this.db = db;
 
-            if (this.activity_model.is_empty) {
-                this.no_data_label = new Gtk.Label (_ ("No data has been added yet. Click + to add a new activity record."));
-                this.no_data_label.wrap = true;
-                this.no_data_label.wrap_mode = Pango.WrapMode.WORD_CHAR;
-                this.no_data_label.margin_start = this.no_data_label.margin_end = 6;
-                this.main_box.append (this.no_data_label);
-            } else {
-                this.main_box.append (this.scrolled_window);
+            if (!this.activity_model.is_empty) {
+                this.stack.visible_child_name = "data_page";
             }
 
            this.activities_list_box.bind_model (this.activity_model, (o) => {
@@ -125,10 +116,8 @@ namespace Health {
         public override void update () {
             this.activity_model.reload.begin ((obj, res) => {
                 if (this.activity_model.reload.end (res)) {
-                    if (!this.activity_model.is_empty && this.main_box.get_last_child () == this.no_data_label) {
-                        this.main_box.remove (this.no_data_label);
-                        this.main_box.append (this.scrolled_window);
-                        this.no_data_label = null;
+                    if (!this.activity_model.is_empty) {
+                        this.stack.visible_child_name = "data_page";
                     }
                 }
             });

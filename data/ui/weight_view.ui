@@ -18,32 +18,87 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <interface domain="dev.Cogitri.Health">
-  <requires lib="gtk+" version="3.24"/>
+  <requires lib="gtk+" version="4.0"/>
   <template class="HealthWeightView" parent="HealthView">
-    <property name="visible">True</property>
     <child>
-      <object class="GtkBox" id="main_box">
-        <property name="orientation">vertical</property>
+      <object class="GtkStack" id="stack">
         <child>
-          <object class="GtkLabel" id="title_label">
-            <property name="margin_top">25</property>
-            <attributes>
-              <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
-              <attribute name="font-desc" value="14.0"></attribute>
-            </attributes>
+          <object class="GtkStackPage">
+            <property name="name">empty_page</property>
+            <property name="child">
+              <object class="GtkBox">
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="pixel_size">96</property>
+                    <property name="icon_name">weight-scale-symbolic</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">Weight Measurements</property>
+                    <style>
+                      <class name="dim-label"/>
+                      <class name="title-1"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="label" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new weight measurement.</property>
+                    <property name="wrap">1</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="use_markup">1</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                  </object>
+                </child>
+              </object>
+            </property>
           </object>
         </child>
         <child>
-          <object class="GtkLabel" id="weightgoal_label">
-            <property name="margin_top">6</property>
-            <property name="margin_bottom">15</property>
-            <property name="margin_start">6</property>
-            <property name="margin_end">6</property>
-            <property name="wrap">1</property>
-            <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
-            <attributes>
-              <attribute name="font-desc" value="10.0"></attribute>
-            </attributes>
+          <object class="GtkStackPage">
+            <property name="name">data_page</property>
+            <property name="child">
+              <object class="GtkBox" id="main_box">
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel" id="title_label">
+                    <property name="margin_top">25</property>
+                    <attributes>
+                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
+                      <attribute name="font-desc" value="14.0"></attribute>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="weightgoal_label">
+                    <property name="margin_top">6</property>
+                    <property name="margin_bottom">15</property>
+                    <property name="margin_start">6</property>
+                    <property name="margin_end">6</property>
+                    <property name="wrap">1</property>
+                    <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                    <attributes>
+                      <attribute name="font-desc" value="10.0"></attribute>
+                    </attributes>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkScrolledWindow" id="scrolled_window">
+                    <property name="vscrollbar-policy">GTK_POLICY_NEVER</property>
+                  </object>
+                </child>
+              </object>
+            </property>
           </object>
         </child>
       </object>
