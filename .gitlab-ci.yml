@@ -52,15 +52,19 @@ nightly:
   needs: ["flatpak"]
 
 pages:
-  image: "$FLATPAK_IMAGE"
+  image: alpine:edge
   stage: deploy
-  tags:
-    - flatpak
+  before_script:
+    - apk add --no-cache vala gtk4.0-dev libgee-dev tracker-dev meson build-base git gobject-introspection-dev libsoup-dev rest-dev json-glib-dev libsecret-dev curl
+    - git clone https://gitlab.gnome.org/exalm/libhandy -b gtk4
+    - cd libhandy
+    - meson build
+    - meson install -C build
+    - curl https://gitlab.gnome.org/GNOME/vala/-/raw/master/vapi/gtk4.vapi -o /usr/share/vala-0.50/vapi/gtk4.vapi
+    - cd ..
   script:
-    - flatpak-builder --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} --force-clean app ${MANIFEST_PATH}
-    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} meson -Ddocs=true _build
-    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} ninja -C _build
-
+    - meson -Ddocs=true build
+    - meson compile -C build
     - rm -rf public
     - mv build/docs/ public
   artifacts:
@@ -68,4 +72,3 @@ pages:
       - public
   only:
     - master
-  <<: *flatpak_cache
