@@ -64,6 +64,87 @@ namespace Health {
                 steps: steps
             );
         }
+
+
+        public uint32? get_estimated_minutes (bool steps_changed) {
+            if (this.steps != 0 && steps_changed) {
+                switch (this.activity_type) {
+                    case Activities.Enum.WALKING:
+                    case Activities.Enum.HIKING:
+                        return this.steps / 100;
+                    case Activities.Enum.RUNNING:
+                        return this.steps / 150;
+                }
+            }
+
+            if (this.calories_burned != 0 && !steps_changed) {
+                return this.calories_burned / Activities.get_values ()[this.activity_type].average_calories_burned_per_minute;
+            }
+
+            return null;
+        }
+
+        public uint32? get_estimated_calories_burned (bool steps_changed) {
+            if (steps_changed) {
+                if (this.steps != 0) {
+                    switch (this.activity_type) {
+                    case Activities.Enum.WALKING:
+                        return this.steps / 100;
+                    case Activities.Enum.HIKING:
+                        return this.steps / 120;
+                    case Activities.Enum.RUNNING:
+                        return this.steps / 150;
+                    }
+                }
+            } else {
+                if (this.minutes == 0) {
+                    return null;
+                }
+
+                return Activities.get_values ()[this.activity_type].average_calories_burned_per_minute * this.minutes;
+            }
+
+            return null;
+        }
+
+        public uint32? get_estimated_distance () {
+            if (this.steps == 0) {
+                return null;
+            }
+
+            switch (this.activity_type) {
+                case Activities.Enum.WALKING:
+                case Activities.Enum.HIKING:
+                case Activities.Enum.RUNNING:
+                    return (uint32) (this.steps / 1.4);
+                default:
+                    return null;
+            }
+        }
+
+        public uint32? get_estimated_steps (bool distance_changed) {
+            if (this.distance != 0 && distance_changed) {
+                switch (this.activity_type) {
+                    case Activities.Enum.WALKING:
+                    case Activities.Enum.HIKING:
+                    case Activities.Enum.RUNNING:
+                        return (uint32) (this.distance * 1.4);
+                }
+            }
+
+            if (this.minutes != 0 && !distance_changed) {
+                switch (this.activity_type) {
+                    case Activities.Enum.WALKING:
+                    case Activities.Enum.HIKING:
+                        return this.minutes * 100;
+                    case Activities.Enum.RUNNING:
+                        return this.minutes * 150;
+                }
+            }
+
+            return null;
+        }
+
     }
 
     public class Activities : GLib.Object {

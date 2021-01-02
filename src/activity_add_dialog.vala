@@ -61,6 +61,12 @@ namespace Health {
         [GtkChild]
         private Hdy.ComboRow activity_type_comborow;
 
+        private bool calories_burned_spinner_user_changed;
+        private bool distance_spinner_user_changed;
+        private bool duration_spinner_user_changed;
+        private bool steps_spinner_user_changed;
+
+        private Activity activity;
         private Activities.ActivityInfo? selected_activity;
         private Gtk.Filter? filter;
         private Settings settings;
@@ -71,6 +77,7 @@ namespace Health {
             this.set_transient_for (parent);
             this.db = db;
             this.settings = settings;
+            this.activity = (Activity) Object.new (typeof (Activity));
 
             // FIXME: Somehow the activity_type_model doesn't live long enough because it's
             // unrefed too often (off by one)
@@ -82,16 +89,16 @@ namespace Health {
 
             var model = new GLib.ListStore (typeof (Gtk.Widget));
             model.splice (0, 0, {
-                    this.date_selector_actionrow,
-                    this.activity_type_comborow,
-                    this.calories_burned_action_row,
-                    this.distance_action_row,
-                    this.duration_action_row,
-                    this.heart_rate_average_action_row,
-                    this.heart_rate_min_action_row,
-                    this.heart_rate_max_action_row,
-                    this.stepcount_action_row,
-                });
+                this.date_selector_actionrow,
+                this.activity_type_comborow,
+                this.calories_burned_action_row,
+                this.distance_action_row,
+                this.duration_action_row,
+                this.heart_rate_average_action_row,
+                this.heart_rate_min_action_row,
+                this.heart_rate_max_action_row,
+                this.stepcount_action_row,
+            });
             this.filter = new Gtk.CustomFilter (filter_activity_entries);
             var filter_model = new Gtk.FilterListModel (model, filter);
             this.activities_list_box.bind_model (filter_model, (o) => {
@@ -102,6 +109,27 @@ namespace Health {
             if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
                 this.distance_action_row.title = _ ("Distance in Yards");
             }
+
+            this.calories_burned_spinner.input.connect ((out o) => {
+                this.calories_burned_spinner_user_changed = true;
+                o = 0;
+                return 0;
+            });
+            this.distance_spinner.input.connect ((out o) => {
+                this.distance_spinner_user_changed = true;
+                o = 0;
+                return 0;
+            });
+            this.duration_spinner.input.connect ((out o) => {
+                this.duration_spinner_user_changed = true;
+                o = 0;
+                return 0;
+            });
+            this.steps_spinner.input.connect ((out o) => {
+                this.steps_spinner_user_changed = true;
+                o = 0;
+                return 0;
+            });
         }
 
         /**
@@ -178,9 +206,64 @@ namespace Health {
         [GtkCallback]
         private void on_activity_type_comborow_selected (GLib.Object o, GLib.ParamSpec p) {
             this.selected_activity = this.get_selected_activity ();
+            this.activity.activity_type = this.selected_activity.type;
 
             if (this.filter != null) {
                 ((!) this.filter).changed (Gtk.FilterChange.DIFFERENT);
+            }
+        }
+
+        [GtkCallback]
+        private void on_calories_burned_spinner_changed (Gtk.Editable e) {
+            if (e.text != "" && e.text != "0") {
+                this.activity.calories_burned = uint.parse (e.text);
+                var estimated_minutes = this.activity.get_estimated_minutes (false);
+                if (estimated_minutes != null && uint.parse (this.duration_spinner.text) != (!) estimated_minutes && !this.duration_spinner_user_changed) {
+                    this.duration_spinner.value = (!) estimated_minutes;
+                }
+            }
+        }
+
+        [GtkCallback]
+        private void on_distance_spinner_changed (Gtk.Editable e) {
+            if (e.text != "" && e.text != "0") {
+                this.activity.distance = uint.parse (e.text);
+                var estimated_steps = this.activity.get_estimated_steps (true);
+                if (estimated_steps != null && uint.parse (this.steps_spinner.text) != (!) estimated_steps && !this.steps_spinner_user_changed) {
+                    this.steps_spinner.value = (!) estimated_steps;
+                }
+            }
+        }
+
+        [GtkCallback]
+        private void on_duration_spinner_changed (Gtk.Editable e) {
+            if (e.text != "" && e.text != "0") {
+                this.activity.minutes = uint.parse (e.text);
+                var estimated_calories_burned = this.activity.get_estimated_calories_burned (false);
+                if (estimated_calories_burned != null && uint.parse (this.calories_burned_spinner.text) != (!) estimated_calories_burned && !this.calories_burned_spinner_user_changed) {
+                    this.calories_burned_spinner.value = (!) estimated_calories_burned;
+                }
+
+                var estimated_steps = this.activity.get_estimated_steps (false);
+                if (estimated_steps != null && uint.parse (this.steps_spinner.text) != (!) estimated_steps && !this.steps_spinner_user_changed) {
+                    this.steps_spinner.value = (!) estimated_steps;
+                }
+            }
+        }
+
+        [GtkCallback]
+        private void on_steps_spinner_changed (Gtk.Editable e) {
+            if (e.text != "" && e.text != "0") {
+                this.activity.steps = uint.parse (e.text);
+                var estimated_minutes = this.activity.get_estimated_minutes (true);
+                if (estimated_minutes != null && uint.parse (this.duration_spinner.text) != (!) estimated_minutes && !this.duration_spinner_user_changed) {
+                    this.duration_spinner.value = (!) estimated_minutes;
+                }
+
+                var estimated_distance = this.activity.get_estimated_distance ();
+                if (estimated_distance != null && uint.parse (this.distance_spinner.text) != (!) estimated_distance && !this.distance_spinner_user_changed) {
+                    this.distance_spinner.value = (!) estimated_distance;
+                }
             }
         }
     }
