@@ -32,7 +32,14 @@ namespace Health {
 
     public class Activity : GLib.Object {
 
-        public Activities.Enum activity_type { get; set; }
+        public Activities.Enum activity_type {
+            get {
+                return this.activity_info.type;
+            }
+            set {
+                this.activity_info = Activities.get_values ()[value];
+            }
+        }
         public GLib.Date date { get; set; }
         public uint32 calories_burned { get; set; }
         public uint32 distance { get; set; }
@@ -42,6 +49,7 @@ namespace Health {
         public uint32 minutes { get; set; }
         public uint32 steps { get; set; }
 
+        private Activities.ActivityInfo activity_info;
         private const uint BICYCLING_METERS_PER_MINUTE = 300;
         private const uint HORSE_RIDING_METERS_PER_MINUTE = 260;
         private const uint ROLLER_BLADING_METERS_PER_MINUTE = 240;
@@ -74,121 +82,115 @@ namespace Health {
         }
 
 
-        public uint32? get_estimated_minutes (bool steps_changed, bool distance_changed) {
-            if (this.steps != 0 && steps_changed) {
-                switch (this.activity_type) {
-                    case Activities.Enum.WALKING:
-                    case Activities.Enum.HIKING:
-                        return this.steps / 100;
-                    case Activities.Enum.RUNNING:
-                        return this.steps / 150;
-                }
-            }
+        public void autofill_from_calories () {
+            if (this.calories_burned != 0 && ActivityDataPoints.CALORIES_BURNED in this.activity_info.available_data_points) {
+                this.minutes = this.calories_burned / Activities.get_values ()[this.activity_type].average_calories_burned_per_minute;
 
-            if (this.calories_burned != 0 && !steps_changed && !distance_changed) {
-                return this.calories_burned / Activities.get_values ()[this.activity_type].average_calories_burned_per_minute;
+                this.autofill_from_minutes ();
             }
+        }
 
-            if (distance != 0 && distance_changed) {
+        public void autofill_from_minutes () {
+            if (this.minutes != 0 && ActivityDataPoints.DURATION in this.activity_info.available_data_points) {
+                this.calories_burned = this.activity_info.average_calories_burned_per_minute * this.minutes;
+
                 switch (this.activity_type) {
                     case Activities.Enum.BICYCLING:
-                        return this.distance / BICYCLING_METERS_PER_MINUTE;
+                        this.distance = BICYCLING_METERS_PER_MINUTE * this.minutes;
+                        break;
                     case Activities.Enum.HORSE_RIDING:
-                        return this.distance / HORSE_RIDING_METERS_PER_MINUTE;
+                        this.distance = HORSE_RIDING_METERS_PER_MINUTE * this.minutes;
+                        break;
                     case Activities.Enum.HIKING:
                     case Activities.Enum.WALKING:
-                        return this.distance / WALKING_METERS_PER_MINUTE;
+                        this.distance = WALKING_METERS_PER_MINUTE * this.minutes;
+                        break;
                     case Activities.Enum.ROLLERBLADING:
-                        return this.distance / ROLLER_BLADING_METERS_PER_MINUTE;
+                        this.distance = ROLLER_BLADING_METERS_PER_MINUTE * this.minutes;
+                        break;
                     case Activities.Enum.RUNNING:
                     case Activities.Enum.TRACK_AND_FIELD:
-                        return this.distance / RUNNING_METERS_PER_MINUTE;
+                        this.distance = RUNNING_METERS_PER_MINUTE * this.minutes;
+                        break;
                     case Activities.Enum.SKIING:
-                        return this.distance / SKIING_METERS_PER_MINUTE;
+                        this.distance = SKIING_METERS_PER_MINUTE * this.minutes;
+                        break;
                     case Activities.Enum.SWIMMING:
-                        return this.distance / SWIMMING_METERS_PER_MINUTE;
-                }
-            }
-
-            return null;
-        }
-
-        public uint32? get_estimated_calories_burned (bool steps_changed) {
-            if (steps_changed) {
-                if (this.steps != 0) {
-                    switch (this.activity_type) {
-                    case Activities.Enum.WALKING:
-                        return this.steps / 100;
-                    case Activities.Enum.HIKING:
-                        return this.steps / 120;
-                    case Activities.Enum.RUNNING:
-                        return this.steps / 150;
-                    }
-                }
-            } else {
-                if (this.minutes == 0) {
-                    return null;
+                        this.distance = SWIMMING_METERS_PER_MINUTE * this.minutes;
+                        break;
                 }
 
-                return Activities.get_values ()[this.activity_type].average_calories_burned_per_minute * this.minutes;
-            }
-
-            return null;
-        }
-
-        public uint32? get_estimated_distance (bool steps_changed) {
-            if (this.steps != 0 && steps_changed) {
                 switch (this.activity_type) {
                     case Activities.Enum.WALKING:
                     case Activities.Enum.HIKING:
+                        this.steps = this.minutes * 100;
+                        break;
                     case Activities.Enum.RUNNING:
-                        return (uint32) (this.steps / 1.4);
+                        this.steps = this.minutes * 150;
+                        break;
                 }
-            } else if (this.minutes != 0 && !steps_changed) {
+            }
+        }
+
+        public void autofill_from_distance () {
+            if (distance != 0 && ActivityDataPoints.DISTANCE in this.activity_info.available_data_points) {
                 switch (this.activity_type) {
                     case Activities.Enum.BICYCLING:
-                        return BICYCLING_METERS_PER_MINUTE * this.minutes;
+                        this.minutes = this.distance / BICYCLING_METERS_PER_MINUTE;
+                        break;
                     case Activities.Enum.HORSE_RIDING:
-                        return HORSE_RIDING_METERS_PER_MINUTE * this.minutes;
+                        this.minutes = this.distance / HORSE_RIDING_METERS_PER_MINUTE;
+                        break;
                     case Activities.Enum.HIKING:
                     case Activities.Enum.WALKING:
-                        return WALKING_METERS_PER_MINUTE * this.minutes;
+                        this.minutes = this.distance / WALKING_METERS_PER_MINUTE;
+                        break;
                     case Activities.Enum.ROLLERBLADING:
-                        return ROLLER_BLADING_METERS_PER_MINUTE * this.minutes;
+                        this.minutes = this.distance / ROLLER_BLADING_METERS_PER_MINUTE;
+                        break;
                     case Activities.Enum.RUNNING:
                     case Activities.Enum.TRACK_AND_FIELD:
-                        return RUNNING_METERS_PER_MINUTE * this.minutes;
+                        this.minutes = this.distance / RUNNING_METERS_PER_MINUTE;
+                        break;
                     case Activities.Enum.SKIING:
-                        return SKIING_METERS_PER_MINUTE * this.minutes;
+                        this.minutes = this.distance / SKIING_METERS_PER_MINUTE;
+                        break;
                     case Activities.Enum.SWIMMING:
-                        return SWIMMING_METERS_PER_MINUTE * this.minutes;
+                        this.minutes = this.distance / SWIMMING_METERS_PER_MINUTE;
+                        break;
+                }
+
+                this.calories_burned = this.minutes * this.activity_info.average_calories_burned_per_minute;
+
+                switch (this.activity_type) {
+                    case Activities.Enum.WALKING:
+                    case Activities.Enum.HIKING:
+                    case Activities.Enum.RUNNING:
+                        this.steps = (uint32) (this.distance * 1.4);
+                        break;
                 }
             }
-
-            return null;
         }
 
-        public uint32? get_estimated_steps (bool distance_changed) {
-            if (this.distance != 0 && distance_changed) {
+        public void autofill_from_steps () {
+            if (this.steps != 0 && ActivityDataPoints.STEP_COUNT in this.activity_info.available_data_points) {
                 switch (this.activity_type) {
-                    case Activities.Enum.WALKING:
-                    case Activities.Enum.HIKING:
-                    case Activities.Enum.RUNNING:
-                        return (uint32) (this.distance * 1.4);
+                case Activities.Enum.WALKING:
+                    this.calories_burned = this.steps / 100;
+                    this.minutes = this.steps / 100;
+                    break;
+                case Activities.Enum.HIKING:
+                    this.calories_burned = this.steps / 120;
+                    this.minutes = this.steps / 80;
+                    break;
+                case Activities.Enum.RUNNING:
+                    this.calories_burned = this.steps / 150;
+                    this.minutes = this.steps / 150;
+                    break;
                 }
-            }
 
-            if (this.minutes != 0 && !distance_changed) {
-                switch (this.activity_type) {
-                    case Activities.Enum.WALKING:
-                    case Activities.Enum.HIKING:
-                        return this.minutes * 100;
-                    case Activities.Enum.RUNNING:
-                        return this.minutes * 150;
-                }
+                this.distance = (uint32) (this.steps / 1.4);
             }
-
-            return null;
         }
 
     }

@@ -65,6 +65,7 @@ namespace Health {
         private bool distance_spin_button_user_changed;
         private bool duration_spin_button_user_changed;
         private bool steps_spin_button_user_changed;
+        private uint set_counter;
 
         private Activity activity;
         private Activities.ActivityInfo? selected_activity;
@@ -213,68 +214,71 @@ namespace Health {
             }
         }
 
+        private void set_spin_buttons_from_activity (Gtk.SpinButton emitter) {
+            if (this.activity.calories_burned != 0 && this.calories_burned_spin_button != emitter && !this.calories_burned_spin_button_user_changed) {
+                this.set_counter++;
+                this.calories_burned_spin_button.value = this.activity.calories_burned;
+            }
+            if (this.activity.distance != 0 && this.distance_spin_button != emitter && !this.distance_spin_button_user_changed) {
+                this.set_counter++;
+                this.distance_spin_button.value = this.activity.distance;
+            }
+            if (this.activity.minutes != 0 && this.duration_spin_button != emitter && !this.duration_spin_button_user_changed) {
+                this.set_counter++;
+                this.duration_spin_button.value = this.activity.minutes;
+            }
+            if (this.activity.steps != 0 && this.steps_spin_button != emitter && !this.steps_spin_button_user_changed) {
+                this.set_counter++;
+                this.steps_spin_button.value = this.activity.steps;
+            }
+        }
+
         [GtkCallback]
         private void on_calories_burned_spin_button_changed (Gtk.SpinButton e) {
-            if (e.value != 0) {
-                this.activity.calories_burned = (uint32) e.value;
-                var estimated_minutes = this.activity.get_estimated_minutes (false, false);
-                if (estimated_minutes != null && this.duration_spin_button.value != (!) estimated_minutes && !this.duration_spin_button_user_changed) {
-                    this.duration_spin_button.value = (!) estimated_minutes;
-                }
+            if (this.set_counter != 0) {
+                this.set_counter--;
+                return;
             }
+
+            this.activity.calories_burned = (uint32) e.value;
+            this.activity.autofill_from_calories ();
+            this.set_spin_buttons_from_activity (e);
         }
 
         [GtkCallback]
         private void on_distance_spin_button_changed (Gtk.SpinButton e) {
-            if (e.value != 0) {
-                this.activity.distance = (uint32) e.value;
-                var estimated_steps = this.activity.get_estimated_steps (true);
-                if (estimated_steps != null && this.steps_spin_button.value != (!) estimated_steps && !this.steps_spin_button_user_changed) {
-                    this.steps_spin_button.value = (!) estimated_steps;
-                }
-
-                var estimated_minutes = this.activity.get_estimated_minutes (false, true);
-                if (estimated_minutes != null && this.duration_spin_button.value != (!) estimated_minutes && !this.duration_spin_button_user_changed) {
-                    this.duration_spin_button.value = (!) estimated_minutes;
-                }
+            if (this.set_counter != 0) {
+                this.set_counter--;
+                return;
             }
+
+            this.activity.distance = (uint32) e.value;
+            this.activity.autofill_from_distance ();
+            this.set_spin_buttons_from_activity (e);
         }
 
         [GtkCallback]
         private void on_duration_spin_button_changed (Gtk.SpinButton e) {
-            if (e.value != 0) {
-                this.activity.minutes = (uint32) e.value;
-                var estimated_calories_burned = this.activity.get_estimated_calories_burned (false);
-                if (estimated_calories_burned != null && uint.parse (this.calories_burned_spin_button.text) != (!) estimated_calories_burned && !this.calories_burned_spin_button_user_changed) {
-                    this.calories_burned_spin_button.value = (!) estimated_calories_burned;
-                }
-
-                var estimated_steps = this.activity.get_estimated_steps (false);
-                if (estimated_steps != null && this.steps_spin_button.value != (!) estimated_steps && !this.steps_spin_button_user_changed) {
-                    this.steps_spin_button.value = (!) estimated_steps;
-                }
-
-                var estimated_distance = this.activity.get_estimated_distance (false);
-                if (estimated_distance != null && this.distance_spin_button.value != (!) estimated_distance && !this.distance_spin_button_user_changed) {
-                    this.distance_spin_button.value = (!) estimated_distance;
-                }
+            if (this.set_counter != 0) {
+                this.set_counter--;
+                return;
             }
+
+            this.activity.minutes = (uint32) e.value;
+            this.activity.autofill_from_minutes ();
+            this.set_spin_buttons_from_activity (e);
         }
 
         [GtkCallback]
         private void on_steps_spin_button_changed (Gtk.SpinButton e) {
-            if (e.value != 0) {
-                this.activity.steps = (uint32) e.value;
-                var estimated_minutes = this.activity.get_estimated_minutes (true, false);
-                if (estimated_minutes != null && this.duration_spin_button.value != (!) estimated_minutes && !this.duration_spin_button_user_changed) {
-                    this.duration_spin_button.value = (!) estimated_minutes;
-                }
-
-                var estimated_distance = this.activity.get_estimated_distance (true);
-                if (estimated_distance != null && this.distance_spin_button.value != (!) estimated_distance && !this.distance_spin_button_user_changed) {
-                    this.distance_spin_button.value = (!) estimated_distance;
-                }
+            if (this.set_counter != 0) {
+                this.set_counter--;
+                return;
             }
+
+            this.activity.steps = (uint32) e.value;
+            this.activity.autofill_from_steps ();
+            this.set_spin_buttons_from_activity (e);
         }
     }
 }
