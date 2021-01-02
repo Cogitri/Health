@@ -69,7 +69,7 @@ namespace Health {
 
         private Activity activity;
         private Activities.ActivityInfo? selected_activity;
-        private Gtk.Filter? filter;
+        private Gtk.FilterListModel? filter_model;
         private Settings settings;
         private TrackerDatabase db;
 
@@ -100,9 +100,9 @@ namespace Health {
                 this.heart_rate_max_action_row,
                 this.stepcount_action_row,
             });
-            this.filter = new Gtk.CustomFilter (filter_activity_entries);
-            var filter_model = new Gtk.FilterListModel (model, filter);
-            this.activities_list_box.bind_model (filter_model, (o) => {
+            var filter = new Gtk.CustomFilter (filter_activity_entries);
+            this.filter_model = new Gtk.FilterListModel (model, filter);
+            this.activities_list_box.bind_model (this.filter_model, (o) => {
                 return (Gtk.Widget) o;
             });
 
@@ -200,6 +200,8 @@ namespace Health {
                     });
                     break;
             }
+            this.activities_list_box.bind_model (null, null);
+            this.filter_model.dispose ();
             this.destroy ();
         }
 
@@ -209,8 +211,8 @@ namespace Health {
             this.selected_activity = this.get_selected_activity ();
             this.activity.activity_type = this.selected_activity.type;
 
-            if (this.filter != null) {
-                ((!) this.filter).changed (Gtk.FilterChange.DIFFERENT);
+            if (this.filter_model != null) {
+                ((!) this.filter_model).filter.changed (Gtk.FilterChange.DIFFERENT);
             }
         }
 
