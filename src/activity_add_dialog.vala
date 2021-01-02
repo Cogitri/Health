@@ -27,19 +27,19 @@ namespace Health {
         [GtkChild]
         private Gtk.ListBox activities_list_box;
         [GtkChild]
-        private Gtk.SpinButton calories_burned_spinner;
+        private Gtk.SpinButton calories_burned_spin_button;
         [GtkChild]
-        private Gtk.SpinButton distance_spinner;
+        private Gtk.SpinButton distance_spin_button;
         [GtkChild]
-        private Gtk.SpinButton duration_spinner;
+        private Gtk.SpinButton duration_spin_button;
         [GtkChild]
-        private Gtk.SpinButton heart_rate_average_spinner;
+        private Gtk.SpinButton heart_rate_average_spin_button;
         [GtkChild]
-        private Gtk.SpinButton heart_rate_max_spinner;
+        private Gtk.SpinButton heart_rate_max_spin_button;
         [GtkChild]
-        private Gtk.SpinButton heart_rate_min_spinner;
+        private Gtk.SpinButton heart_rate_min_spin_button;
         [GtkChild]
-        private Gtk.SpinButton steps_spinner;
+        private Gtk.SpinButton steps_spin_button;
         [GtkChild]
         private Gtk.StringList activity_type_model;
         [GtkChild]
@@ -61,10 +61,10 @@ namespace Health {
         [GtkChild]
         private Hdy.ComboRow activity_type_comborow;
 
-        private bool calories_burned_spinner_user_changed;
-        private bool distance_spinner_user_changed;
-        private bool duration_spinner_user_changed;
-        private bool steps_spinner_user_changed;
+        private bool calories_burned_spin_button_user_changed;
+        private bool distance_spin_button_user_changed;
+        private bool duration_spin_button_user_changed;
+        private bool steps_spin_button_user_changed;
 
         private Activity activity;
         private Activities.ActivityInfo? selected_activity;
@@ -110,23 +110,23 @@ namespace Health {
                 this.distance_action_row.title = _ ("Distance in Yards");
             }
 
-            this.calories_burned_spinner.input.connect ((out o) => {
-                this.calories_burned_spinner_user_changed = true;
+            this.calories_burned_spin_button.input.connect ((out o) => {
+                this.calories_burned_spin_button_user_changed = true;
                 o = 0;
                 return 0;
             });
-            this.distance_spinner.input.connect ((out o) => {
-                this.distance_spinner_user_changed = true;
+            this.distance_spin_button.input.connect ((out o) => {
+                this.distance_spin_button_user_changed = true;
                 o = 0;
                 return 0;
             });
-            this.duration_spinner.input.connect ((out o) => {
-                this.duration_spinner_user_changed = true;
+            this.duration_spin_button.input.connect ((out o) => {
+                this.duration_spin_button_user_changed = true;
                 o = 0;
                 return 0;
             });
-            this.steps_spinner.input.connect ((out o) => {
-                this.steps_spinner_user_changed = true;
+            this.steps_spin_button.input.connect ((out o) => {
+                this.steps_spin_button_user_changed = true;
                 o = 0;
                 return 0;
             });
@@ -138,7 +138,7 @@ namespace Health {
         public async void save () throws GLib.Error {
             var db = TrackerDatabase.get_instance ();
             var selected_activity = this.get_selected_activity ();
-            var distance = this.get_spinner_value_if_datapoint (this.distance_spinner, selected_activity, ActivityDataPoints.DISTANCE);
+            var distance = this.get_spin_button_value_if_datapoint (this.distance_spin_button, selected_activity, ActivityDataPoints.DISTANCE);
 
             if (distance != 0 && settings.unitsystem == Unitsystem.IMPERIAL) {
                 // FIXME: Allow inputting in things other than yards
@@ -149,18 +149,18 @@ namespace Health {
                 new Activity (
                     this.get_selected_activity ().type,
                     date_from_datetime (this.date_selector.selected_date),
-                    this.get_spinner_value_if_datapoint (this.calories_burned_spinner, selected_activity, ActivityDataPoints.CALORIES_BURNED),
+                    this.get_spin_button_value_if_datapoint (this.calories_burned_spin_button, selected_activity, ActivityDataPoints.CALORIES_BURNED),
                     distance,
-                    this.get_spinner_value_if_datapoint (this.heart_rate_average_spinner, selected_activity, ActivityDataPoints.HEART_RATE),
-                    this.get_spinner_value_if_datapoint (this.heart_rate_max_spinner, selected_activity, ActivityDataPoints.HEART_RATE),
-                    this.get_spinner_value_if_datapoint (this.heart_rate_min_spinner, selected_activity, ActivityDataPoints.HEART_RATE),
-                    this.get_spinner_value_if_datapoint (this.duration_spinner, selected_activity, ActivityDataPoints.DURATION),
-                    this.get_spinner_value_if_datapoint (this.steps_spinner, selected_activity, ActivityDataPoints.STEP_COUNT)
+                    this.get_spin_button_value_if_datapoint (this.heart_rate_average_spin_button, selected_activity, ActivityDataPoints.HEART_RATE),
+                    this.get_spin_button_value_if_datapoint (this.heart_rate_max_spin_button, selected_activity, ActivityDataPoints.HEART_RATE),
+                    this.get_spin_button_value_if_datapoint (this.heart_rate_min_spin_button, selected_activity, ActivityDataPoints.HEART_RATE),
+                    this.get_spin_button_value_if_datapoint (this.duration_spin_button, selected_activity, ActivityDataPoints.DURATION),
+                    this.get_spin_button_value_if_datapoint (this.steps_spin_button, selected_activity, ActivityDataPoints.STEP_COUNT)
                 )
             );
         }
 
-        private uint32 get_spinner_value_if_datapoint (Gtk.SpinButton? b, Activities.ActivityInfo a, ActivityDataPoints d) {
+        private uint32 get_spin_button_value_if_datapoint (Gtk.SpinButton? b, Activities.ActivityInfo a, ActivityDataPoints d) {
             if (d in a.available_data_points && b.get_text () != "") {
                 return (uint32) ((!) b).value;
             } else {
@@ -214,65 +214,65 @@ namespace Health {
         }
 
         [GtkCallback]
-        private void on_calories_burned_spinner_changed (Gtk.SpinButton e) {
+        private void on_calories_burned_spin_button_changed (Gtk.SpinButton e) {
             if (e.value != 0) {
                 this.activity.calories_burned = (uint32) e.value;
                 var estimated_minutes = this.activity.get_estimated_minutes (false, false);
-                if (estimated_minutes != null && this.duration_spinner.value != (!) estimated_minutes && !this.duration_spinner_user_changed) {
-                    this.duration_spinner.value = (!) estimated_minutes;
+                if (estimated_minutes != null && this.duration_spin_button.value != (!) estimated_minutes && !this.duration_spin_button_user_changed) {
+                    this.duration_spin_button.value = (!) estimated_minutes;
                 }
             }
         }
 
         [GtkCallback]
-        private void on_distance_spinner_changed (Gtk.SpinButton e) {
+        private void on_distance_spin_button_changed (Gtk.SpinButton e) {
             if (e.value != 0) {
                 this.activity.distance = (uint32) e.value;
                 var estimated_steps = this.activity.get_estimated_steps (true);
-                if (estimated_steps != null && this.steps_spinner.value != (!) estimated_steps && !this.steps_spinner_user_changed) {
-                    this.steps_spinner.value = (!) estimated_steps;
+                if (estimated_steps != null && this.steps_spin_button.value != (!) estimated_steps && !this.steps_spin_button_user_changed) {
+                    this.steps_spin_button.value = (!) estimated_steps;
                 }
 
                 var estimated_minutes = this.activity.get_estimated_minutes (false, true);
-                if (estimated_minutes != null && this.duration_spinner.value != (!) estimated_minutes && !this.duration_spinner_user_changed) {
-                    this.duration_spinner.value = (!) estimated_minutes;
+                if (estimated_minutes != null && this.duration_spin_button.value != (!) estimated_minutes && !this.duration_spin_button_user_changed) {
+                    this.duration_spin_button.value = (!) estimated_minutes;
                 }
             }
         }
 
         [GtkCallback]
-        private void on_duration_spinner_changed (Gtk.SpinButton e) {
+        private void on_duration_spin_button_changed (Gtk.SpinButton e) {
             if (e.value != 0) {
                 this.activity.minutes = (uint32) e.value;
                 var estimated_calories_burned = this.activity.get_estimated_calories_burned (false);
-                if (estimated_calories_burned != null && uint.parse (this.calories_burned_spinner.text) != (!) estimated_calories_burned && !this.calories_burned_spinner_user_changed) {
-                    this.calories_burned_spinner.value = (!) estimated_calories_burned;
+                if (estimated_calories_burned != null && uint.parse (this.calories_burned_spin_button.text) != (!) estimated_calories_burned && !this.calories_burned_spin_button_user_changed) {
+                    this.calories_burned_spin_button.value = (!) estimated_calories_burned;
                 }
 
                 var estimated_steps = this.activity.get_estimated_steps (false);
-                if (estimated_steps != null && this.steps_spinner.value != (!) estimated_steps && !this.steps_spinner_user_changed) {
-                    this.steps_spinner.value = (!) estimated_steps;
+                if (estimated_steps != null && this.steps_spin_button.value != (!) estimated_steps && !this.steps_spin_button_user_changed) {
+                    this.steps_spin_button.value = (!) estimated_steps;
                 }
 
                 var estimated_distance = this.activity.get_estimated_distance (false);
-                if (estimated_distance != null && this.distance_spinner.value != (!) estimated_distance && !this.distance_spinner_user_changed) {
-                    this.distance_spinner.value = (!) estimated_distance;
+                if (estimated_distance != null && this.distance_spin_button.value != (!) estimated_distance && !this.distance_spin_button_user_changed) {
+                    this.distance_spin_button.value = (!) estimated_distance;
                 }
             }
         }
 
         [GtkCallback]
-        private void on_steps_spinner_changed (Gtk.SpinButton e) {
+        private void on_steps_spin_button_changed (Gtk.SpinButton e) {
             if (e.value != 0) {
                 this.activity.steps = (uint32) e.value;
                 var estimated_minutes = this.activity.get_estimated_minutes (true, false);
-                if (estimated_minutes != null && this.duration_spinner.value != (!) estimated_minutes && !this.duration_spinner_user_changed) {
-                    this.duration_spinner.value = (!) estimated_minutes;
+                if (estimated_minutes != null && this.duration_spin_button.value != (!) estimated_minutes && !this.duration_spin_button_user_changed) {
+                    this.duration_spin_button.value = (!) estimated_minutes;
                 }
 
                 var estimated_distance = this.activity.get_estimated_distance (true);
-                if (estimated_distance != null && this.distance_spinner.value != (!) estimated_distance && !this.distance_spinner_user_changed) {
-                    this.distance_spinner.value = (!) estimated_distance;
+                if (estimated_distance != null && this.distance_spin_button.value != (!) estimated_distance && !this.distance_spin_button_user_changed) {
+                    this.distance_spin_button.value = (!) estimated_distance;
                 }
             }
         }

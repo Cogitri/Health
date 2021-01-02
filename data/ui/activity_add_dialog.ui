@@ -126,7 +126,7 @@
   <object class="HdyActionRow" id="calories_burned_action_row">
     <property name="title" translatable="yes">Calories Burned</property>
     <child>
-      <object class="GtkSpinButton" id="calories_burned_spinner">
+      <object class="GtkSpinButton" id="calories_burned_spin_button">
         <property name="width-chars">5</property>
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">calories_burned_adjustment</property>
@@ -135,14 +135,14 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="value_changed" handler="on_calories_burned_spinner_changed" swapped="no"/>
+        <signal name="value_changed" handler="on_calories_burned_spin_button_changed" swapped="no"/>
       </object>
     </child>
   </object>
   <object class="HdyActionRow" id="distance_action_row">
     <property name="title" translatable="yes">Distance in Meters</property>
     <child>
-      <object class="GtkSpinButton" id="distance_spinner">
+      <object class="GtkSpinButton" id="distance_spin_button">
         <property name="width-chars">5</property>
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">distance_adjustment</property>
@@ -151,14 +151,14 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="value_changed" handler="on_distance_spinner_changed" swapped="no"/>
+        <signal name="value_changed" handler="on_distance_spin_button_changed" swapped="no"/>
       </object>
     </child>
   </object>
   <object class="HdyActionRow" id="duration_action_row">
     <property name="title" translatable="yes">Active Minutes</property>
     <child>
-      <object class="GtkSpinButton" id="duration_spinner">
+      <object class="GtkSpinButton" id="duration_spin_button">
         <property name="width-chars">5</property>
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">activity_duration_adjustment</property>
@@ -167,14 +167,14 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="value_changed" handler="on_duration_spinner_changed" swapped="no"/>
+        <signal name="value_changed" handler="on_duration_spin_button_changed" swapped="no"/>
       </object>
     </child>
   </object>
   <object class="HdyActionRow" id="heart_rate_average_action_row">
     <property name="title" translatable="yes">Average Heart Rate</property>
     <child>
-      <object class="GtkSpinButton" id="heart_rate_average_spinner">
+      <object class="GtkSpinButton" id="heart_rate_average_spin_button">
         <property name="width-chars">5</property>
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">heart_rate_average_adjustment</property>
@@ -189,7 +189,7 @@
   <object class="HdyActionRow" id="heart_rate_min_action_row">
     <property name="title" translatable="yes">Minimum Heart Rate</property>
     <child>
-      <object class="GtkSpinButton" id="heart_rate_min_spinner">
+      <object class="GtkSpinButton" id="heart_rate_min_spin_button">
         <property name="width-chars">5</property>
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">heart_rate_min_adjustment</property>
@@ -204,7 +204,7 @@
   <object class="HdyActionRow" id="heart_rate_max_action_row">
     <property name="title" translatable="yes">Maximum Heart Rate</property>
     <child>
-      <object class="GtkSpinButton" id="heart_rate_max_spinner">
+      <object class="GtkSpinButton" id="heart_rate_max_spin_button">
         <property name="width-chars">5</property>
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">heart_rate_max_adjustment</property>
@@ -219,7 +219,7 @@
   <object class="HdyActionRow" id="stepcount_action_row">
     <property name="title" translatable="yes">Stepcount</property>
     <child>
-      <object class="GtkSpinButton" id="steps_spinner">
+      <object class="GtkSpinButton" id="steps_spin_button">
         <property name="width-chars">5</property>
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">steps_adjustment</property>
@@ -228,7 +228,7 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="value_changed" handler="on_steps_spinner_changed" swapped="no"/>
+        <signal name="value_changed" handler="on_steps_spin_button_changed" swapped="no"/>
       </object>
     </child>
   </object>
