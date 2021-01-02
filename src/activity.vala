@@ -176,20 +176,20 @@ namespace Health {
             if (this.steps != 0 && ActivityDataPoints.STEP_COUNT in this.activity_info.available_data_points) {
                 switch (this.activity_type) {
                 case Activities.Enum.WALKING:
-                    this.calories_burned = this.steps / 100;
                     this.minutes = this.steps / 100;
+                    this.distance = this.minutes * WALKING_METERS_PER_MINUTE;
                     break;
                 case Activities.Enum.HIKING:
-                    this.calories_burned = this.steps / 120;
                     this.minutes = this.steps / 80;
+                    this.distance = this.minutes * WALKING_METERS_PER_MINUTE;
                     break;
                 case Activities.Enum.RUNNING:
-                    this.calories_burned = this.steps / 150;
                     this.minutes = this.steps / 150;
+                    this.distance = this.minutes * RUNNING_METERS_PER_MINUTE;
                     break;
                 }
 
-                this.distance = (uint32) (this.steps / 1.4);
+                this.calories_burned = this.activity_info.average_calories_burned_per_minute * this.minutes;
             }
         }
 
