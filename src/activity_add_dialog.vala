@@ -214,64 +214,64 @@ namespace Health {
         }
 
         [GtkCallback]
-        private void on_calories_burned_spinner_changed (Gtk.Editable e) {
-            if (e.text != "" && e.text != "0") {
-                this.activity.calories_burned = uint.parse (e.text);
+        private void on_calories_burned_spinner_changed (Gtk.SpinButton e) {
+            if (e.value != 0) {
+                this.activity.calories_burned = (uint32) e.value;
                 var estimated_minutes = this.activity.get_estimated_minutes (false, false);
-                if (estimated_minutes != null && uint.parse (this.duration_spinner.text) != (!) estimated_minutes && !this.duration_spinner_user_changed) {
+                if (estimated_minutes != null && this.duration_spinner.value != (!) estimated_minutes && !this.duration_spinner_user_changed) {
                     this.duration_spinner.value = (!) estimated_minutes;
                 }
             }
         }
 
         [GtkCallback]
-        private void on_distance_spinner_changed (Gtk.Editable e) {
-            if (e.text != "" && e.text != "0") {
-                this.activity.distance = uint.parse (e.text);
+        private void on_distance_spinner_changed (Gtk.SpinButton e) {
+            if (e.value != 0) {
+                this.activity.distance = (uint32) e.value;
                 var estimated_steps = this.activity.get_estimated_steps (true);
-                if (estimated_steps != null && uint.parse (this.steps_spinner.text) != (!) estimated_steps && !this.steps_spinner_user_changed) {
+                if (estimated_steps != null && this.steps_spinner.value != (!) estimated_steps && !this.steps_spinner_user_changed) {
                     this.steps_spinner.value = (!) estimated_steps;
                 }
 
                 var estimated_minutes = this.activity.get_estimated_minutes (false, true);
-                if (estimated_minutes != null && uint.parse (this.duration_spinner.text) != (!) estimated_minutes && !this.duration_spinner_user_changed) {
+                if (estimated_minutes != null && this.duration_spinner.value != (!) estimated_minutes && !this.duration_spinner_user_changed) {
                     this.duration_spinner.value = (!) estimated_minutes;
                 }
             }
         }
 
         [GtkCallback]
-        private void on_duration_spinner_changed (Gtk.Editable e) {
-            if (e.text != "" && e.text != "0") {
-                this.activity.minutes = uint.parse (e.text);
+        private void on_duration_spinner_changed (Gtk.SpinButton e) {
+            if (e.value != 0) {
+                this.activity.minutes = (uint32) e.value;
                 var estimated_calories_burned = this.activity.get_estimated_calories_burned (false);
                 if (estimated_calories_burned != null && uint.parse (this.calories_burned_spinner.text) != (!) estimated_calories_burned && !this.calories_burned_spinner_user_changed) {
                     this.calories_burned_spinner.value = (!) estimated_calories_burned;
                 }
 
                 var estimated_steps = this.activity.get_estimated_steps (false);
-                if (estimated_steps != null && uint.parse (this.steps_spinner.text) != (!) estimated_steps && !this.steps_spinner_user_changed) {
+                if (estimated_steps != null && this.steps_spinner.value != (!) estimated_steps && !this.steps_spinner_user_changed) {
                     this.steps_spinner.value = (!) estimated_steps;
                 }
 
                 var estimated_distance = this.activity.get_estimated_distance (false);
-                if (estimated_distance != null && uint.parse (this.distance_spinner.text) != (!) estimated_distance && !this.distance_spinner_user_changed) {
+                if (estimated_distance != null && this.distance_spinner.value != (!) estimated_distance && !this.distance_spinner_user_changed) {
                     this.distance_spinner.value = (!) estimated_distance;
                 }
             }
         }
 
         [GtkCallback]
-        private void on_steps_spinner_changed (Gtk.Editable e) {
-            if (e.text != "" && e.text != "0") {
-                this.activity.steps = uint.parse (e.text);
+        private void on_steps_spinner_changed (Gtk.SpinButton e) {
+            if (e.value != 0) {
+                this.activity.steps = (uint32) e.value;
                 var estimated_minutes = this.activity.get_estimated_minutes (true, false);
-                if (estimated_minutes != null && uint.parse (this.duration_spinner.text) != (!) estimated_minutes && !this.duration_spinner_user_changed) {
+                if (estimated_minutes != null && this.duration_spinner.value != (!) estimated_minutes && !this.duration_spinner_user_changed) {
                     this.duration_spinner.value = (!) estimated_minutes;
                 }
 
                 var estimated_distance = this.activity.get_estimated_distance (true);
-                if (estimated_distance != null && uint.parse (this.distance_spinner.text) != (!) estimated_distance && !this.distance_spinner_user_changed) {
+                if (estimated_distance != null && this.distance_spinner.value != (!) estimated_distance && !this.distance_spinner_user_changed) {
                     this.distance_spinner.value = (!) estimated_distance;
                 }
             }

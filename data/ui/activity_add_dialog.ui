@@ -135,7 +135,7 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="changed" handler="on_calories_burned_spinner_changed" swapped="no"/>
+        <signal name="value_changed" handler="on_calories_burned_spinner_changed" swapped="no"/>
       </object>
     </child>
   </object>
@@ -151,7 +151,7 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="changed" handler="on_distance_spinner_changed" swapped="no"/>
+        <signal name="value_changed" handler="on_distance_spinner_changed" swapped="no"/>
       </object>
     </child>
   </object>
@@ -167,7 +167,7 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="changed" handler="on_duration_spinner_changed" swapped="no"/>
+        <signal name="value_changed" handler="on_duration_spinner_changed" swapped="no"/>
       </object>
     </child>
   </object>
@@ -228,7 +228,7 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="changed" handler="on_steps_spinner_changed" swapped="no"/>
+        <signal name="value_changed" handler="on_steps_spinner_changed" swapped="no"/>
       </object>
     </child>
   </object>
