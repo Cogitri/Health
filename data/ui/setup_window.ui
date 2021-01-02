@@ -221,7 +221,7 @@
                           <object class="HdyActionRow" id="age_actionrow">
                             <property name="title" translatable="yes">Age</property>
                             <child>
-                              <object class="GtkSpinButton" id="age_spinner">
+                              <object class="GtkSpinButton" id="age_spin_button">
                                 <property name="width-chars">5</property>
                                 <property name="text" translatable="yes">0</property>
                                 <property name="adjustment">age_adjustment</property>
@@ -230,7 +230,7 @@
                                 <property name="margin-end">6</property>
                                 <property name="margin-top">6</property>
                                 <property name="margin-bottom">6</property>
-                                <signal name="changed" handler="age_spinner_changed" swapped="no"/>
+                                <signal name="changed" handler="age_spin_button_changed" swapped="no"/>
                               </object>
                             </child>
                           </object>
@@ -239,7 +239,7 @@
                           <object class="HdyActionRow" id="height_actionrow">
                             <property name="title" translatable="yes">Height in centimeters</property>
                             <child>
-                              <object class="GtkSpinButton" id="height_spinner">
+                              <object class="GtkSpinButton" id="height_spin_button">
                                 <property name="width-chars">5</property>
                                 <property name="text" translatable="yes">0</property>
                                 <property name="adjustment">height_adjustment</property>
@@ -248,7 +248,7 @@
                                 <property name="margin-end">6</property>
                                 <property name="margin-top">6</property>
                                 <property name="margin-bottom">6</property>
-                                <signal name="changed" handler="height_spinner_changed" swapped="no"/>
+                                <signal name="changed" handler="height_spin_button_changed" swapped="no"/>
                               </object>
                             </child>
                           </object>
@@ -310,7 +310,7 @@
                           <object class="HdyActionRow" id="stepgoal_actionrow">
                             <property name="title" translatable="yes">Stepgoal</property>
                             <child>
-                              <object class="GtkSpinButton" id="stepgoal_spinner">
+                              <object class="GtkSpinButton" id="stepgoal_spin_button">
                                 <property name="width-chars">5</property>
                                 <property name="adjustment">stepgoal_adjustment</property>
                                 <property name="numeric">1</property>
@@ -383,7 +383,7 @@
                               <object class="HdyActionRow" id="weightgoal_actionrow">
                                 <property name="title" translatable="yes">Weightgoal</property>
                                 <child>
-                                  <object class="GtkSpinButton" id="weightgoal_spinner">
+                                  <object class="GtkSpinButton" id="weightgoal_spin_button">
                                     <property name="digits">2</property>
                                     <property name="width-chars">5</property>
                                     <property name="adjustment">weightgoal_adjustment</property>
@@ -391,7 +391,7 @@
                                     <property name="margin-end">6</property>
                                     <property name="margin-top">6</property>
                                     <property name="margin-bottom">6</property>
-                                    <signal name="changed" handler="weightgoal_spinner_changed" swapped="no"/>
+                                    <signal name="changed" handler="weightgoal_spin_button_changed" swapped="no"/>
                                   </object>
                                 </child>
                               </object>

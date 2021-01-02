@@ -88,7 +88,7 @@
                 <property name="visible">True</property>
                 <property name="title" translatable="yes">Age</property>
                 <child>
-                  <object class="GtkSpinButton" id="age_spinner">
+                  <object class="GtkSpinButton" id="age_spin_button">
                     <property name="width-chars">3</property>
                     <property name="text" translatable="yes">0</property>
                     <property name="adjustment">age_adjustment</property>
@@ -97,7 +97,7 @@
                     <property name="margin-end">6</property>
                     <property name="margin-top">6</property>
                     <property name="margin-bottom">6</property>
-                    <signal name="changed" handler="age_spinner_changed" swapped="no"/>
+                    <signal name="changed" handler="age_spin_button_changed" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -106,7 +106,7 @@
               <object class="HdyActionRow" id="height_actionrow">
                 <property name="visible">True</property>
                 <child>
-                  <object class="GtkSpinButton" id="height_spinner">
+                  <object class="GtkSpinButton" id="height_spin_button">
                     <property name="width-chars">3</property>
                     <property name="text" translatable="yes">0</property>
                     <property name="adjustment">height_adjustment</property>
@@ -115,7 +115,7 @@
                     <property name="margin-end">6</property>
                     <property name="margin-top">6</property>
                     <property name="margin-bottom">6</property>
-                    <signal name="changed" handler="height_spinner_changed" swapped="no"/>
+                    <signal name="changed" handler="height_spin_button_changed" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -133,7 +133,7 @@
                 <property name="title" translatable="yes">Stepgoal</property>
                 <property name="subtitle" translatable="yes">The WHO recommends 10.000 steps per day.</property>
                 <child>
-                  <object class="GtkSpinButton" id="stepgoal_spinner">
+                  <object class="GtkSpinButton" id="stepgoal_spin_button">
                     <property name="width-chars">5</property>
                     <property name="text" translatable="yes">10000</property>
                     <property name="adjustment">stepgoal_adjustment</property>
@@ -142,7 +142,7 @@
                     <property name="margin-end">6</property>
                     <property name="margin-top">6</property>
                     <property name="margin-bottom">6</property>
-                    <signal name="changed" handler="stepgoal_spinner_changed" swapped="no"/>
+                    <signal name="changed" handler="stepgoal_spin_button_changed" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -170,7 +170,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkSpinButton" id="weightgoal_spinner">
+                      <object class="GtkSpinButton" id="weightgoal_spin_button">
                         <property name="digits">2</property>
                         <property name="width-chars">5</property>
                         <property name="adjustment">weightgoal_adjustment</property>
@@ -178,7 +178,7 @@
                         <property name="margin-end">6</property>
                         <property name="margin-top">6</property>
                         <property name="margin-bottom">6</property>
-                        <signal name="changed" handler="weightgoal_spinner_changed" swapped="no"/>
+                        <signal name="changed" handler="weightgoal_spin_button_changed" swapped="no"/>
                       </object>
                     </child>
                   </object>

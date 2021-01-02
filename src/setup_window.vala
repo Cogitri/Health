@@ -47,13 +47,13 @@ namespace Health {
         [GtkChild]
         private Gtk.Stack setup_left_stack;
         [GtkChild]
-        private Gtk.SpinButton age_spinner;
+        private Gtk.SpinButton age_spin_button;
         [GtkChild]
-        private Gtk.SpinButton height_spinner;
+        private Gtk.SpinButton height_spin_button;
         [GtkChild]
-        private Gtk.SpinButton stepgoal_spinner;
+        private Gtk.SpinButton stepgoal_spin_button;
         [GtkChild]
-        private Gtk.SpinButton weightgoal_spinner;
+        private Gtk.SpinButton weightgoal_spin_button;
         [GtkChild]
         private Gtk.ToggleButton unit_metric_togglebutton;
         [GtkChild]
@@ -72,7 +72,7 @@ namespace Health {
             Object (application: application);
             this.settings = settings;
             this.sync_view.settings = settings;
-            this.stepgoal_spinner.value = 10000;
+            this.stepgoal_spin_button.value = 10000;
 
             var provider = new Gtk.CssProvider ();
             provider.load_from_resource ("/dev/Cogitri/Health/custom.css");
@@ -82,8 +82,8 @@ namespace Health {
         }
 
         private void try_enable_next_button () {
-            unowned var age_text = this.age_spinner.text;
-            unowned var height_text = this.height_spinner.text;
+            unowned var age_text = this.age_spin_button.text;
+            unowned var height_text = this.height_spin_button.text;
             var filled_in_data = age_text != "0" && age_text != "" && height_text != "0" && height_text != "";
             this.setup_next_page_button.sensitive = filled_in_data;
             this.setup_carousel.interactive = filled_in_data;
@@ -91,7 +91,7 @@ namespace Health {
 
         private void set_optimal_weightgoal () {
             const double OPTIMAL_BMI = 22.5;
-            var height_in_cm = double.parse (this.height_spinner.text);
+            var height_in_cm = double.parse (this.height_spin_button.text);
             if (!this.unit_metric_togglebutton.active) {
                 height_in_cm = inch_to_cm (height_in_cm);
             }
@@ -99,7 +99,7 @@ namespace Health {
             if (!this.unit_metric_togglebutton.active) {
                 optimal_value = kg_to_pb (optimal_value);
             }
-            this.weightgoal_spinner.value = optimal_value;
+            this.weightgoal_spin_button.value = optimal_value;
         }
 
         [GtkCallback]
@@ -115,25 +115,25 @@ namespace Health {
         }
 
         [GtkCallback]
-        private void height_spinner_changed (Gtk.Editable editable) {
+        private void height_spin_button_changed (Gtk.Editable editable) {
             this.set_optimal_weightgoal ();
             this.try_enable_next_button ();
-            this.bmi_levelbar.height = double.parse (this.height_spinner.text);
+            this.bmi_levelbar.height = double.parse (this.height_spin_button.text);
         }
 
         [GtkCallback]
-        private void age_spinner_changed (Gtk.Editable editable) {
+        private void age_spin_button_changed (Gtk.Editable editable) {
             this.try_enable_next_button ();
         }
 
         [GtkCallback]
-        private void weightgoal_spinner_changed (Gtk.Editable editable) {
+        private void weightgoal_spin_button_changed (Gtk.Editable editable) {
             this.bmi_levelbar.weight = double.parse (editable.text);
         }
 
         [GtkCallback]
         private void setup_done_button_clicked (Gtk.Button btn) {
-            var height_in_cm = uint.parse (this.height_spinner.text);
+            var height_in_cm = uint.parse (this.height_spin_button.text);
             if (this.unit_metric_togglebutton.active) {
                 this.settings.unitsystem = Unitsystem.METRIC;
             } else {
@@ -141,10 +141,10 @@ namespace Health {
                 height_in_cm = (uint) GLib.Math.round (inch_to_cm (height_in_cm));
             }
 
-            this.settings.user_age = uint.parse (this.age_spinner.text);
+            this.settings.user_age = uint.parse (this.age_spin_button.text);
             this.settings.user_height = height_in_cm;
-            this.settings.user_stepgoal = uint.parse (this.stepgoal_spinner.text);
-            this.settings.user_weightgoal = new WeightUnitContainer.from_user_value (this.weightgoal_spinner.value, settings);
+            this.settings.user_stepgoal = uint.parse (this.stepgoal_spin_button.text);
+            this.settings.user_weightgoal = new WeightUnitContainer.from_user_value (this.weightgoal_spin_button.value, settings);
             this.setup_done ();
             this.destroy ();
         }

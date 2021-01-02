@@ -36,6 +36,7 @@
             <property name="margin-bottom">6</property>
             <property name="valign">center</property>
             <property name="vexpand">1</property>
+            <property name="homogeneous">1</property>
             <child>
               <object class="GtkLabel" id="activity_type_label">
                 <property name="halign">start</property>

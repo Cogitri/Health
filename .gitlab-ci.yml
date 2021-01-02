@@ -22,7 +22,7 @@ lint:
   image: valalang/lint
   stage: qa
   script:
-    - io.elementary.vala-lint --config .vala-lint.conf
+    - io.elementary.vala-lint --config .vala-lint.conf src
 
 flatpak:
   extends: ".flatpak"

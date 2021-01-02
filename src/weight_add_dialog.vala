@@ -26,7 +26,7 @@ namespace Health {
         [GtkChild]
         DateSelector date_selector;
         [GtkChild]
-        Gtk.SpinButton weight_spinner;
+        Gtk.SpinButton weight_spin_button;
         private Settings settings;
         private TrackerDatabase db;
 
@@ -49,7 +49,7 @@ namespace Health {
         public async void save () throws GLib.Error {
             var db = TrackerDatabase.get_instance ();
 
-            yield db.save_weight (new Weight (date_from_datetime (this.date_selector.selected_date), new WeightUnitContainer.from_user_value (this.weight_spinner.value, this.settings)), null);
+            yield db.save_weight (new Weight (date_from_datetime (this.date_selector.selected_date), new WeightUnitContainer.from_user_value (this.weight_spin_button.value, this.settings)), null);
         }
 
         private void update_title () {
@@ -86,7 +86,7 @@ namespace Health {
         }
 
         [GtkCallback]
-        private void on_weight_spinner_changed (Gtk.Editable e) {
+        private void on_weight_spin_button_changed (Gtk.Editable e) {
             this.set_response_sensitive (Gtk.ResponseType.OK, e.get_text () != "0");
         }
     }
