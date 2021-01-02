@@ -17,7 +17,13 @@
 	<launchable type="desktop-id">@APPLICATION_ID@.desktop</launchable>
 	<screenshots>
 		<screenshot type="default">
-			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot.png</image>
+			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot_steps.png</image>
+		</screenshot>
+		<screenshot>
+			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot_weight_empty.png</image>
+		</screenshot>
+		<screenshot>
+			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot_activities.png</image>
 		</screenshot>
 	</screenshots>
 	<developer_name>Rasmus “Cogitri” Thomsen</developer_name>
