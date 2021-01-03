@@ -118,6 +118,9 @@ namespace Health {
                     case Activities.Enum.SWIMMING:
                         this.distance = SWIMMING_METERS_PER_MINUTE * this.minutes;
                         break;
+                    // Other activities don't have ActivityDataPoints.DISTANCE
+                    default:
+                        break;
                 }
 
                 switch (this.activity_type) {
@@ -127,6 +130,9 @@ namespace Health {
                         break;
                     case Activities.Enum.RUNNING:
                         this.steps = this.minutes * 150;
+                        break;
+                    // Other activities don't have ActivityDataPoints.STEPS
+                    default:
                         break;
                 }
             }
@@ -158,6 +164,9 @@ namespace Health {
                     case Activities.Enum.SWIMMING:
                         this.minutes = this.distance / SWIMMING_METERS_PER_MINUTE;
                         break;
+                    // Other activities don't have ActivityDataPoints.DISTANCE
+                    default:
+                        break;
                 }
 
                 this.calories_burned = this.minutes * this.activity_info.average_calories_burned_per_minute;
@@ -167,6 +176,9 @@ namespace Health {
                     case Activities.Enum.HIKING:
                     case Activities.Enum.RUNNING:
                         this.steps = (uint32) (this.distance * 1.4);
+                        break;
+                    // Other activities don't have ActivityDataPoints.STEPS
+                    default:
                         break;
                 }
             }
@@ -186,6 +198,9 @@ namespace Health {
                 case Activities.Enum.RUNNING:
                     this.minutes = this.steps / 150;
                     this.distance = this.minutes * RUNNING_METERS_PER_MINUTE;
+                    break;
+                // Other activities don't have ActivityDataPoints.STEPS
+                default:
                     break;
                 }
 
