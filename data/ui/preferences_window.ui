@@ -163,10 +163,7 @@
                   <object class="GtkBox">
                     <child>
                       <object class="HealthBMILevelBar" id="bmi_levelbar">
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-bottom">6</property>
+                        <property name="valign">center</property>
                       </object>
                     </child>
                     <child>
