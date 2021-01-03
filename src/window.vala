@@ -117,13 +117,6 @@ namespace Health {
             }
         }
 
-        public override void size_allocate (int width, int height, int baseline) {
-            base.size_allocate (width, height, baseline);
-            if (!this.maximized) {
-                this.get_default_size (out this.current_width, out this.current_height);
-            }
-        }
-
         public void open_hamburger_menu () {
             this.primary_menu_popover.popup ();
         }
@@ -154,6 +147,16 @@ namespace Health {
                     }
                 }
             });
+        }
+
+        [GtkCallback]
+        private void on_window_default_height_changed (GLib.Object o, GLib.ParamSpec p) {
+            this.current_height = this.default_height;
+        }
+
+        [GtkCallback]
+        private void on_window_default_width_changed (GLib.Object o, GLib.ParamSpec p) {
+            this.current_width = this.default_width;
         }
 
         [GtkCallback]
