@@ -129,7 +129,7 @@ namespace Health {
             if (!allow_touch) {
                 // Don't handle touch events, we do that via Gtk.GestureClick.
                 var device = this.motion_controller.get_current_event_device ();
-                if (device != null && device.source == Gdk.InputSource.TOUCHSCREEN) {
+                if (device != null && ((!) device).source == Gdk.InputSource.TOUCHSCREEN) {
                     return;
                 }
             }

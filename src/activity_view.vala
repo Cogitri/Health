@@ -116,13 +116,6 @@ namespace Health {
             this.update ();
         }
 
-        ~ActivityView () {
-            unowned Gtk.Widget child;
-            while ((child = get_first_child ()) != null) {
-                child.unparent ();
-            }
-        }
-
         /**
          * Reload the {@link ActivityModel}'s data and refresh the list of activities
          */

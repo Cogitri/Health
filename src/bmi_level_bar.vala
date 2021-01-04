@@ -23,7 +23,7 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/bmi_level_bar.ui")]
     class BMILevelBar : Gtk.Widget {
         [GtkChild]
-        private Gtk.Label? bmi_label;
+        private Gtk.Label bmi_label;
         [GtkChild]
         private Gtk.LevelBar level_bar;
         private double _height;
@@ -84,9 +84,9 @@ namespace Health {
         }
 
         ~BMILevelBar () {
-            unowned Gtk.Widget child;
+            unowned Gtk.Widget? child;
             while ((child = get_first_child ()) != null) {
-                child.unparent ();
+                ((!) child).unparent ();
             }
         }
 

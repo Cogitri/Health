@@ -178,7 +178,8 @@ namespace Health {
             this.steps_graph_model = model;
 
             if (!this.steps_graph_model.is_empty) {
-                this.scrolled_window.child = this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
+                this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
+                this.scrolled_window.child = (!) this.steps_graph_view;
                 this.stack.visible_child_name = "data_page";
             }
 
@@ -218,7 +219,8 @@ namespace Health {
                     this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));
 
                     if (this.steps_graph_view == null && !this.steps_graph_model.is_empty) {
-                        this.scrolled_window.child = this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
+                        this.steps_graph_view = new StepsGraphView (this.steps_graph_model, this.settings.user_stepgoal);
+                        this.scrolled_window.child = (!) this.steps_graph_view;
                         this.stack.visible_child_name = "data_page";
                     } else if (this.steps_graph_view != null) {
                         ((!) this.steps_graph_view).points = this.steps_graph_model.to_points ();

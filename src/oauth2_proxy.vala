@@ -50,13 +50,12 @@ namespace Health {
         public string? get_parameter_from_query (string url, string parameter) {
             string? token = null;
             var uri = new Soup.URI (url);
-            if (uri.query != null) {
-                var params = Soup.Form.decode (uri.query);
-                if (params != null) {
-                    var encoded_token = params.lookup (parameter);
-                    if (encoded_token != null) {
-                        token = Soup.URI.decode (encoded_token);
-                    }
+            string? query = uri.query;
+            if (query != null) {
+                var params = Soup.Form.decode ((!) query);
+                string? encoded_token = params.lookup (parameter);
+                if (encoded_token != null) {
+                    token = Soup.URI.decode ((!) encoded_token);
                 }
             }
             return token;
@@ -120,12 +119,12 @@ namespace Health {
         }
 
         private Gee.HashMap<string, double?> process_weights_json (string json_string) throws GLib.Error {
-            var json = Json.from_string (json_string).get_object ();
+            var json = (!) ((!) Json.from_string (json_string)).get_object ();
             var ret = new Gee.HashMap<string, double?> ();
-            foreach (var point in json.get_array_member ("point").get_elements ()) {
-                var point_obj = point.get_object ();
+            foreach (var point in ((!) json.get_array_member ("point")).get_elements ()) {
+                var point_obj = (!) point.get_object ();
                 var datetime = new GLib.DateTime.from_unix_utc (int64.parse (point_obj.get_string_member ("modifiedTimeMillis")) / 1000);
-                var weight_value = point_obj.get_array_member ("value").get_elements ().last ().data.get_object ().get_double_member_with_default ("fpVal", 0.0);
+                var weight_value = ((!) point_obj.get_array_member ("value").get_elements ().last ().data.get_object ()).get_double_member_with_default ("fpVal", 0.0);
                 if (weight_value == 0) {
                     continue;
                 }
@@ -141,16 +140,16 @@ namespace Health {
         }
 
         private Gee.HashMap<string, uint32> process_steps_json (string json_string) throws GLib.Error {
-            var json = Json.from_string (json_string).get_object ();
+            var json = (!) ((!) Json.from_string (json_string)).get_object ();
 
             var ret = new Gee.HashMap<string, uint32> ();
             foreach (var point in json.get_array_member ("point").get_elements ()) {
-                var point_obj = point.get_object ();
+                var point_obj = (!) point.get_object ();
                 var modified_time = int64.parse (point_obj.get_string_member ("modifiedTimeMillis"));
                 var datetime = new GLib.DateTime.from_unix_utc (modified_time / 1000);
                 uint32 step_count = 0;
                 foreach (var value in point_obj.get_array_member ("value").get_elements ()) {
-                    step_count += (uint32) value.get_object ().get_int_member_with_default ("intVal", 0);
+                    step_count += (uint32) ((!) value.get_object ()).get_int_member_with_default ("intVal", 0);
                 }
                 var date = Util.date_to_iso_8601 (Util.date_from_datetime (datetime));
                 if (ret.has_key (date)) {
@@ -190,9 +189,9 @@ namespace Health {
                 "redirect_uri", this.get_redirect_url ()
             );
             yield call.invoke_async (null);
-            var json = Json.from_string (call.get_payload ()).get_object ();
-            yield this.store_refresh_stoken (json.get_string_member ("refresh_token"), "GoogleFit");
-            this.set_access_token (json.get_string_member ("access_token"));
+            var json = (!) ((!) Json.from_string (call.get_payload ())).get_object ();
+            yield this.store_refresh_stoken ((!) json.get_string_member ("refresh_token"), "GoogleFit");
+            this.set_access_token ((!) json.get_string_member ("access_token"));
         }
 
         private async bool set_access_token_from_libsecret () throws GLib.Error {
@@ -210,9 +209,9 @@ namespace Health {
                 "refresh_token", refresh_token
             );
             yield call.invoke_async (null);
-            var json = Json.from_string (call.get_payload ()).get_object ();
+            var json = (!) ((!) Json.from_string (call.get_payload ())).get_object ();
             // FIXME: Handle the refresh token being revoked
-            this.set_access_token (json.get_string_member ("access_token"));
+            this.set_access_token ((!) json.get_string_member ("access_token"));
 
             return true;
         }
