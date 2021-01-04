@@ -29,9 +29,9 @@ namespace Health {
         }
 
         ~View () {
-            unowned Gtk.Widget child;
+            unowned Gtk.Widget? child;
             while ((child = get_first_child ()) != null) {
-                child.unparent ();
+                ((!) child).unparent ();
             }
         }
 

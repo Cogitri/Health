@@ -47,7 +47,7 @@ namespace Health {
             base.startup ();
             Hdy.init ();
 
-            if (Gtk.Settings.get_default ().gtk_theme_name.contains ("-dark")) {
+            if (((!) Gtk.Settings.get_default ()).gtk_theme_name.contains ("-dark")) {
                 warning ("Using -dark themes (such as Adwaita-dark) is unsupported. Please use your theme in dark-mode instead (e.g. Adwaita:dark instead of Adwaita-dark)");
             }
 
@@ -75,17 +75,18 @@ namespace Health {
 
         private void on_fullscreen (GLib.SimpleAction action, GLib.Variant? parameter) {
             if (this.window != null) {
-                if (this.window.is_fullscreen ()) {
-                    this.window.unfullscreen ();
+                unowned var window = (!) this.window;
+                if (window.is_fullscreen ()) {
+                    window.unfullscreen ();
                 } else {
-                    this.window.fullscreen ();
+                    window.fullscreen ();
                 }
             }
         }
 
         private void on_hamburger_menu (GLib.SimpleAction action, GLib.Variant? parameter) {
             if (this.window != null) {
-                this.window.open_hamburger_menu ();
+                ((!) this.window).open_hamburger_menu ();
             }
         }
 
@@ -96,14 +97,14 @@ namespace Health {
             var pref_window = new PreferencesWindow (this.settings, this.window);
             pref_window.import_done.connect (() => {
                 if (this.window != null) {
-                    this.window.update ();
+                    ((!) this.window).update ();
                 }
             });
         }
 
         private void on_quit (GLib.SimpleAction action, GLib.Variant? parameter) {
             if (this.window != null) {
-                this.window.destroy ();
+                ((!) this.window).destroy ();
             }
         }
 

@@ -38,7 +38,7 @@ namespace Health {
             }
             set {
                 this._settings = value;
-                if (this._settings.sync_provider_setup_google_fit) {
+                if (((!) this._settings).sync_provider_setup_google_fit) {
                     this.google_fit_selected_image.visible = true;
                     this.google_fit_selected_image.icon_name = "object-select-symbolic";
                     this.google_fit_stack.visible_child = this.google_fit_selected_image;

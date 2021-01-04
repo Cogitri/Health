@@ -161,7 +161,7 @@ namespace Health {
             );
         }
 
-        private uint32 get_spin_button_value_if_datapoint (Gtk.SpinButton? b, Activities.ActivityInfo a, ActivityDataPoints d) {
+        private uint32 get_spin_button_value_if_datapoint (Gtk.SpinButton b, Activities.ActivityInfo a, ActivityDataPoints d) {
             if (d in a.available_data_points && b.get_text () != "") {
                 return (uint32) ((!) b).value;
             } else {
@@ -174,12 +174,19 @@ namespace Health {
         }
 
         private bool filter_activity_entries (Object row) {
+            if (this.selected_activity == null) {
+                return false;
+            }
+
+            var selected_activity = (!) this.selected_activity;
+
+
             if ((row == this.activity_type_comborow || row == this.date_selector_actionrow)
-                || (row == this.calories_burned_action_row && ActivityDataPoints.CALORIES_BURNED in this.selected_activity.available_data_points)
-                || (row == this.distance_action_row && ActivityDataPoints.DISTANCE in this.selected_activity.available_data_points)
-                || (row == this.duration_action_row && ActivityDataPoints.DURATION in this.selected_activity.available_data_points)
-                || (row == this.stepcount_action_row && ActivityDataPoints.STEP_COUNT in this.selected_activity.available_data_points)
-                || ((row == this.heart_rate_average_action_row || row == this.heart_rate_max_action_row || row == this.heart_rate_min_action_row) && ActivityDataPoints.HEART_RATE in this.selected_activity.available_data_points)
+                || (row == this.calories_burned_action_row && ActivityDataPoints.CALORIES_BURNED in selected_activity.available_data_points)
+                || (row == this.distance_action_row && ActivityDataPoints.DISTANCE in selected_activity.available_data_points)
+                || (row == this.duration_action_row && ActivityDataPoints.DURATION in selected_activity.available_data_points)
+                || (row == this.stepcount_action_row && ActivityDataPoints.STEP_COUNT in selected_activity.available_data_points)
+                || ((row == this.heart_rate_average_action_row || row == this.heart_rate_max_action_row || row == this.heart_rate_min_action_row) && ActivityDataPoints.HEART_RATE in selected_activity.available_data_points)
             ) {
                 return true;
             }
@@ -201,7 +208,10 @@ namespace Health {
                     break;
             }
             this.activities_list_box.bind_model (null, null);
-            this.filter_model.dispose ();
+            if (this.filter_model != null) {
+                ((!) this.filter_model).dispose ();
+                this.filter_model = null;
+            }
             this.destroy ();
         }
 
@@ -209,7 +219,7 @@ namespace Health {
         [GtkCallback]
         private void on_activity_type_comborow_selected (GLib.Object o, GLib.ParamSpec p) {
             this.selected_activity = this.get_selected_activity ();
-            this.activity.activity_type = this.selected_activity.type;
+            this.activity.activity_type = ((!) this.selected_activity).type;
 
             if (this.filter_model != null) {
                 ((!) this.filter_model).filter.changed (Gtk.FilterChange.DIFFERENT);

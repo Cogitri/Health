@@ -131,7 +131,8 @@ namespace Health {
             this.update_weightgoal_label ();
 
             if (!this.weight_graph_model.is_empty) {
-                this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value, this.settings);
+                this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value, this.settings);
+                this.scrolled_window.child = (!) this.weight_graph_view;
                 this.stack.visible_child_name = "data_page";
             }
 
@@ -205,8 +206,9 @@ namespace Health {
                     this.update_weightgoal_label ();
 
                     if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
+                        this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value, this.settings);
+                        this.scrolled_window.child = (!) this.weight_graph_view;
                         this.stack.visible_child_name = "data_page";
-                        this.scrolled_window.child = this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value, this.settings);
                     } else if (this.weight_graph_view != null) {
                         ((!) this.weight_graph_view).points = this.weight_graph_model.to_points ();
                         ((!) this.weight_graph_view).limit = this.settings.user_weightgoal.value;

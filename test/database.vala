@@ -244,12 +244,12 @@ namespace Health {
             try {
                 tmp_file = GLib.File.new_tmp (null, out iostream);
                 // delete file so new db is created
-                tmp_file.delete ();
+                ((!) tmp_file).delete ();
             } catch (GLib.Error e) {
                 assert_no_error (e);
             }
             try {
-                var db = TrackerDatabase.get_instance ((!) tmp_file.get_path ());
+                var db = TrackerDatabase.get_instance ((!) ((!) tmp_file).get_path ());
                 db.reset.begin (this.async_completion);
                 db.reset.end (this.async_result ());
                 return db;

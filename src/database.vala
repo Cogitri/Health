@@ -81,7 +81,7 @@ namespace Health {
                 instance = new TrackerDatabase (store_path);
             }
 
-            return instance;
+            return (!) instance;
         }
 
         /**
@@ -102,12 +102,12 @@ namespace Health {
                 var activity = (Activity) GLib.Object.new (typeof (Activity));
 
                 for (var i = 0; i < cursor.n_columns; i++) {
-                    switch (cursor.get_variable_name (i)) {
+                    switch ((!) cursor.get_variable_name (i)) {
                         case "id":
                             activity.activity_type = Activities.get_values ()[cursor.get_integer (i)].type;
                             break;
                         case "date":
-                            activity.date = Util.iso_8601_to_date (cursor.get_string (i));
+                            activity.date = Util.iso_8601_to_date ((!) cursor.get_string (i));
                             break;
                         case "calories_burned":
                             activity.calories_burned = (uint32) cursor.get_integer (i);
@@ -131,7 +131,7 @@ namespace Health {
                             activity.steps = (uint32) cursor.get_integer (i);
                             break;
                         default:
-                            error ("Unknown variable %s", cursor.get_variable_name (i));
+                            error ("Unknown variable %s", (!) cursor.get_variable_name (i));
                     }
                 }
 
@@ -157,7 +157,7 @@ namespace Health {
             var ret = new Gee.ArrayList<Steps> ();
 
             while (yield cursor.next_async (cancellable)) {
-                var date_string = cursor.get_string (0);
+                var date_string = (!) cursor.get_string (0);
                 if (hashmap.has_key (date_string)) {
                     hashmap.set (date_string, hashmap.get (date_string) + (uint32) cursor.get_integer (1));
                 } else {
@@ -209,7 +209,7 @@ namespace Health {
 
             var ret = new Gee.ArrayList<Weight> ();
             while (yield cursor.next_async (cancellable)) {
-                ret.add (new Weight (Util.iso_8601_to_date (cursor.get_string (0)), new WeightUnitContainer.from_database_value ((uint32) cursor.get_double (1), settings)));
+                ret.add (new Weight (Util.iso_8601_to_date ((!) cursor.get_string (0)), new WeightUnitContainer.from_database_value ((uint32) cursor.get_double (1), settings)));
             }
 
             return ret;
@@ -260,7 +260,7 @@ namespace Health {
                 var resource = new Tracker.Resource (null);
                 resource.set_uri ("rdf:type", "health:WeightMeasurement");
                 resource.set_string ("health:weight_date", w.key);
-                resource.set_double ("health:weight", w.value);
+                resource.set_double ("health:weight", (!) w.value);
 
                 ops += resource.print_sparql_update (this.manager, null);
             }
@@ -344,7 +344,7 @@ namespace Health {
         const string QUERY_WEIGHT_ON_DAY = "SELECT ?weight WHERE { ?datapoint a health:WeightMeasurement; health:weight_date ?date ; health:weight ?weight . FILTER(?date = '%s'^^xsd:date) }";
 
 
-        private static TrackerDatabase instance;
+        private static TrackerDatabase? instance;
         private Tracker.NamespaceManager manager;
         private Tracker.Sparql.Connection db;
     }
