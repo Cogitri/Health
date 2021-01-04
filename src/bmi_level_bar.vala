@@ -98,8 +98,8 @@ namespace Health {
 
             if (height != 0 && weight != 0) {
                 if (this.unitsystem == Unitsystem.IMPERIAL) {
-                    height = inch_to_cm (height);
-                    weight = pb_to_kg (weight);
+                    height = Util.inch_to_cm (height);
+                    weight = Util.pb_to_kg (weight);
                 }
                 current_bmi = weight / GLib.Math.pow (height / 100, 2);
                 // The BMI should be in the range of 18.5 to 24.9 and we want 5 as margin on both sides, so LEVEL_BAR_MIN is 0% and LEVEL_BAR_MAX 100%

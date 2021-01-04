@@ -49,11 +49,11 @@ namespace Health {
         public async void save () throws GLib.Error {
             var db = TrackerDatabase.get_instance ();
 
-            yield db.save_weight (new Weight (date_from_datetime (this.date_selector.selected_date), new WeightUnitContainer.from_user_value (this.weight_spin_button.value, this.settings)), null);
+            yield db.save_weight (new Weight (Util.date_from_datetime (this.date_selector.selected_date), new WeightUnitContainer.from_user_value (this.weight_spin_button.value, this.settings)), null);
         }
 
         private void update_title () {
-            db.check_weight_exist_on_date.begin (date_from_datetime (this.date_selector.selected_date), null, (obj, res) => {
+            db.check_weight_exist_on_date.begin (Util.date_from_datetime (this.date_selector.selected_date), null, (obj, res) => {
                 var update = false;
                 try {
                     update = db.check_weight_exist_on_date.end (res);

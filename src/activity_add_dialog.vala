@@ -143,13 +143,13 @@ namespace Health {
 
             if (distance != 0 && settings.unitsystem == Unitsystem.IMPERIAL) {
                 // FIXME: Allow inputting in things other than yards
-                distance = (uint32) yard_to_meters (distance);
+                distance = (uint32) Util.yard_to_meters (distance);
             }
 
             yield db.save_activity (
                 new Activity (
                     this.get_selected_activity ().type,
-                    date_from_datetime (this.date_selector.selected_date),
+                    Util.date_from_datetime (this.date_selector.selected_date),
                     this.get_spin_button_value_if_datapoint (this.calories_burned_spin_button, selected_activity, ActivityDataPoints.CALORIES_BURNED),
                     distance,
                     this.get_spin_button_value_if_datapoint (this.heart_rate_average_spin_button, selected_activity, ActivityDataPoints.HEART_RATE),

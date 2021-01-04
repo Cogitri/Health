@@ -28,13 +28,13 @@ namespace Health {
         public double value {
             get {
                 if (settings.unitsystem == Unitsystem.IMPERIAL) {
-                    return kg_to_pb (this._value);
+                    return Util.kg_to_pb (this._value);
                 }
                 return this._value;
             }
             set {
                 if (settings.unitsystem == Unitsystem.IMPERIAL) {
-                    this._value = pb_to_kg (value);
+                    this._value = Util.pb_to_kg (value);
                 } else {
                     this._value = value;
                 }

@@ -51,7 +51,7 @@ namespace Health {
          */
         public async override bool reload () {
             try {
-                this.arr = yield db.get_steps_after (get_date_in_n_days (-30), null);
+                this.arr = yield db.get_steps_after (Util.get_date_in_n_days (-30), null);
                 return true;
             } catch (GLib.Error e) {
                 warning ("Failed to load steps from database due to error %s", e.message);
@@ -66,7 +66,7 @@ namespace Health {
             var ret = new Gee.ArrayList<Point> ();
 
             var first_date = this.arr.get (0).date;
-            var last_date = get_today_date ();
+            var last_date = Util.get_today_date ();
             var date_delta = first_date.days_between (last_date);
             var target_date = GLib.Date ();
             for (int i = 0; i <= date_delta; i++) {
@@ -84,7 +84,7 @@ namespace Health {
         }
 
         public uint32 get_today_step_count () {
-            var today = get_today_date ();
+            var today = Util.get_today_date ();
             Steps? steps;
             steps = this.arr.first_match ((s) => {
                 return s.date.get_julian () == today.get_julian ();
@@ -119,7 +119,7 @@ namespace Health {
          * If no steps have been recorded today, then this will return 0.
          */
         public uint32 get_streak_count_today (uint step_goal) {
-            return this.get_streak_count_on_day (step_goal, get_today_date ());
+            return this.get_streak_count_on_day (step_goal, Util.get_today_date ());
         }
 
 
@@ -130,7 +130,7 @@ namespace Health {
          * if the user had a streak yesterday.
          */
         public uint32 get_streak_count_yesterday (uint step_goal) {
-            var date = get_today_date ();
+            var date = Util.get_today_date ();
             date.subtract_days (1);
             return this.get_streak_count_on_day (step_goal, date);
         }
@@ -146,7 +146,7 @@ namespace Health {
 
             this.hover_func = (point) => {
                 /* TRANSLATORS: This is shown on-hover of points where %u is the steps and %s is the already localised date (e.g. 2020-09-11) */
-                return _ ("%u steps on %s").printf ((uint) point.value, datetime_from_date (point.date).format ("%x"));
+                return _ ("%u steps on %s").printf ((uint) point.value, Util.datetime_from_date (point.date).format ("%x"));
             };
             this.x_lines_interval = 500;
         }

@@ -129,7 +129,7 @@ namespace Health {
                 if (weight_value == 0) {
                     continue;
                 }
-                var date = date_to_iso_8601 (date_from_datetime (datetime));
+                var date = Util.date_to_iso_8601 (Util.date_from_datetime (datetime));
                 if (ret.has_key (date)) {
                     ret.set (date, ret.get (date) + weight_value);
                 } else {
@@ -152,7 +152,7 @@ namespace Health {
                 foreach (var value in point_obj.get_array_member ("value").get_elements ()) {
                     step_count += (uint32) value.get_object ().get_int_member_with_default ("intVal", 0);
                 }
-                var date = date_to_iso_8601 (date_from_datetime (datetime));
+                var date = Util.date_to_iso_8601 (Util.date_from_datetime (datetime));
                 if (ret.has_key (date)) {
                     ret.set (date, ret.get (date) + step_count);
                 } else {

@@ -52,7 +52,7 @@ namespace Health {
          * @return True if there's already a record, false otherwise.
          */
         public async bool check_steps_exist_on_date (Date d, GLib.Cancellable? cancellable = null) throws GLib.Error {
-            var cursor = yield this.db.query_async (QUERY_DATE_HAS_STEPS.printf (date_to_iso_8601 (d)), cancellable);
+            var cursor = yield this.db.query_async (QUERY_DATE_HAS_STEPS.printf (Util.date_to_iso_8601 (d)), cancellable);
 
             assert (yield cursor.next_async (cancellable));
 
@@ -66,7 +66,7 @@ namespace Health {
          * @return True if there's already a measurement, false otherwise.
          */
         public async bool check_weight_exist_on_date (Date d, GLib.Cancellable? cancellable = null) throws GLib.Error {
-            var cursor = yield this.db.query_async (QUERY_DATE_HAS_WEIGHT.printf (date_to_iso_8601 (d)), cancellable);
+            var cursor = yield this.db.query_async (QUERY_DATE_HAS_WEIGHT.printf (Util.date_to_iso_8601 (d)), cancellable);
 
             assert (yield cursor.next_async (cancellable));
 
@@ -95,7 +95,7 @@ namespace Health {
          * @return A {@link Gee.ArrayList} of {@link Activity}s that have been done in the timeframe of link until today.
          */
          public async Gee.ArrayList<Activity> get_activities_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
-            var cursor = yield this.db.query_async (QUERY_ACTIVITIES_AFTER.printf (date_to_iso_8601 (date)), cancellable);
+            var cursor = yield this.db.query_async (QUERY_ACTIVITIES_AFTER.printf (Util.date_to_iso_8601 (date)), cancellable);
             var ret = new Gee.ArrayList<Activity> ();
 
             while (yield cursor.next_async (cancellable)) {
@@ -107,7 +107,7 @@ namespace Health {
                             activity.activity_type = Activities.get_values ()[cursor.get_integer (i)].type;
                             break;
                         case "date":
-                            activity.date = iso_8601_to_date (cursor.get_string (i));
+                            activity.date = Util.iso_8601_to_date (cursor.get_string (i));
                             break;
                         case "calories_burned":
                             activity.calories_burned = (uint32) cursor.get_integer (i);
@@ -152,7 +152,7 @@ namespace Health {
          * @return A {@link Gee.ArrayList} of {@link Steps} that have been done in the timeframe of link until today.
          */
         public async Gee.ArrayList<Steps> get_steps_after (GLib.Date date, GLib.Cancellable? cancellable = null) throws GLib.Error {
-            var cursor = yield this.db.query_async (QUERY_STEPS_AFTER.printf (date_to_iso_8601 (date)), cancellable);
+            var cursor = yield this.db.query_async (QUERY_STEPS_AFTER.printf (Util.date_to_iso_8601 (date)), cancellable);
             var hashmap = new Gee.HashMap<string, uint32> ();
             var ret = new Gee.ArrayList<Steps> ();
 
@@ -166,7 +166,7 @@ namespace Health {
             }
 
             foreach (var kv in hashmap) {
-                ret.add (new Steps (iso_8601_to_date (kv.key), kv.value));
+                ret.add (new Steps (Util.iso_8601_to_date (kv.key), kv.value));
             }
 
             ret.sort ((a, b) => { return a.date.compare (b.date); });
@@ -181,7 +181,7 @@ namespace Health {
          * @return The amount of steps done on that date, or NULL if no steps have been done on that date.
          */
         public async uint32? get_steps_on_date (GLib.Date d, GLib.Cancellable? cancellable = null) throws GLib.Error {
-            var cursor = yield this.db.query_async (QUERY_STEPS_ON_DAY.printf (date_to_iso_8601 (d)), cancellable);
+            var cursor = yield this.db.query_async (QUERY_STEPS_ON_DAY.printf (Util.date_to_iso_8601 (d)), cancellable);
 
             uint32? steps = null;
 
@@ -205,11 +205,11 @@ namespace Health {
          * @return A {@link Gee.ArrayList} of {@link Weight} measurements that have been done in the timeframe of link until today,
          */
         public async Gee.ArrayList<Weight> get_weights_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
-            var cursor = yield this.db.query_async (QUERY_WEIGHT_AFTER.printf (date_to_iso_8601 (date)), cancellable);
+            var cursor = yield this.db.query_async (QUERY_WEIGHT_AFTER.printf (Util.date_to_iso_8601 (date)), cancellable);
 
             var ret = new Gee.ArrayList<Weight> ();
             while (yield cursor.next_async (cancellable)) {
-                ret.add (new Weight (iso_8601_to_date (cursor.get_string (0)), new WeightUnitContainer.from_database_value ((uint32) cursor.get_double (1), settings)));
+                ret.add (new Weight (Util.iso_8601_to_date (cursor.get_string (0)), new WeightUnitContainer.from_database_value ((uint32) cursor.get_double (1), settings)));
             }
 
             return ret;
@@ -222,7 +222,7 @@ namespace Health {
          * @return The weight measurement of that date, or NULL if no steps have been done on that date.
          */
         public async double? get_weight_on_date (GLib.Date d, GLib.Cancellable? cancellable) throws GLib.Error {
-            var cursor = yield this.db.query_async (QUERY_WEIGHT_ON_DAY.printf (date_to_iso_8601 (d)), cancellable);
+            var cursor = yield this.db.query_async (QUERY_WEIGHT_ON_DAY.printf (Util.date_to_iso_8601 (d)), cancellable);
 
             if (yield cursor.next_async (cancellable)) {
                 return cursor.get_double (0);
@@ -287,7 +287,7 @@ namespace Health {
          public async void save_activity (Activity a, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var resource = new Tracker.Resource (null);
             resource.set_uri ("rdf:type", "health:Activity");
-            resource.set_string ("health:activity_date", date_to_iso_8601 (a.date));
+            resource.set_string ("health:activity_date", Util.date_to_iso_8601 (a.date));
             resource.set_int64 ("health:activity_id", a.activity_type);
 
             if (a.calories_burned != 0) {
@@ -325,10 +325,10 @@ namespace Health {
         public async void save_weight (Weight w, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var resource = new Tracker.Resource (null);
             resource.set_uri ("rdf:type", "health:WeightMeasurement");
-            resource.set_string ("health:weight_date", date_to_iso_8601 (w.date));
+            resource.set_string ("health:weight_date", Util.date_to_iso_8601 (w.date));
             resource.set_double ("health:weight", w.weight.get_in_kg ());
 
-            yield this.db.update_async ("DELETE WHERE { ?u health:weight_date '%s' }; %s".printf (date_to_iso_8601 (w.date), resource.print_sparql_update (this.manager, null)));
+            yield this.db.update_async ("DELETE WHERE { ?u health:weight_date '%s' }; %s".printf (Util.date_to_iso_8601 (w.date), resource.print_sparql_update (this.manager, null)));
             this.weight_updated ();
         }
 

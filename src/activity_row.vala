@@ -92,7 +92,7 @@ namespace Health {
                     var distance = this._activity.distance;
                     var settings = new Settings ();
                     if (settings.unitsystem == Unitsystem.IMPERIAL) {
-                        distance = (uint) meters_to_yard (distance);
+                        distance = (uint) Util.meters_to_yard (distance);
                         this.distance_row.title = _ ("Distance in Yards");
                     }
 

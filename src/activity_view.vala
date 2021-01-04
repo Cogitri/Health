@@ -71,7 +71,7 @@ namespace Health {
         public async bool reload () {
             try {
                 var previous_size = this.activities.size;
-                this.activities = yield this.db.get_activities_after (get_date_in_n_days (-30), this.settings);
+                this.activities = yield this.db.get_activities_after (Util.get_date_in_n_days (-30), this.settings);
                 this.items_changed (0, previous_size, this.activities.size);
                 return true;
             } catch (GLib.Error e) {

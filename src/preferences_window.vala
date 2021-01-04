@@ -57,7 +57,7 @@
                 this.height_spin_button.value = settings.user_height;
             } else {
                 this.height_actionrow.title = _ ("Height in inch");
-                this.height_spin_button.value = cm_to_inch (settings.user_height);
+                this.height_spin_button.value = Util.cm_to_inch (settings.user_height);
             }
 
             this.parent_window = parent;
@@ -97,7 +97,7 @@
                 if (this.settings.unitsystem == Unitsystem.METRIC) {
                     this.settings.user_height = value;
                 } else {
-                    this.settings.user_height = (uint) inch_to_cm (value);
+                    this.settings.user_height = (uint) Util.inch_to_cm (value);
                 }
                 this.bmi_levelbar.height = value;
             }

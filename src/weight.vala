@@ -53,7 +53,7 @@ namespace Health {
          */
         public async override bool reload () {
             try {
-                this.arr = yield db.get_weights_after (get_date_in_n_days (-30), this.settings, null);
+                this.arr = yield db.get_weights_after (Util.get_date_in_n_days (-30), this.settings, null);
                 return true;
             } catch (GLib.Error e) {
                 warning (_ ("Failed to load weights from database due to error %s"), e.message);
@@ -99,7 +99,7 @@ namespace Health {
                 }
 
                 /* TRANSLATORS: This is shown on-hover of points where %u is the weight, the first %s is the unit and the second %s is the already localised date (e.g. 2020-09-11) */
-                return _ ("%u %s on %s").printf ((uint) point.value, unit, datetime_from_date (point.date).format ("%x"));
+                return _ ("%u %s on %s").printf ((uint) point.value, unit, Util.datetime_from_date (point.date).format ("%x"));
             };
         }
     }

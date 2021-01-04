@@ -93,11 +93,11 @@ namespace Health {
             const double OPTIMAL_BMI = 22.5;
             var height_in_cm = double.parse (this.height_spin_button.text);
             if (!this.unit_metric_togglebutton.active) {
-                height_in_cm = inch_to_cm (height_in_cm);
+                height_in_cm = Util.inch_to_cm (height_in_cm);
             }
             var optimal_value = OPTIMAL_BMI * GLib.Math.pow (height_in_cm / 100, 2);
             if (!this.unit_metric_togglebutton.active) {
-                optimal_value = kg_to_pb (optimal_value);
+                optimal_value = Util.kg_to_pb (optimal_value);
             }
             this.weightgoal_spin_button.value = optimal_value;
         }
@@ -138,7 +138,7 @@ namespace Health {
                 this.settings.unitsystem = Unitsystem.METRIC;
             } else {
                 this.settings.unitsystem = Unitsystem.IMPERIAL;
-                height_in_cm = (uint) GLib.Math.round (inch_to_cm (height_in_cm));
+                height_in_cm = (uint) GLib.Math.round (Util.inch_to_cm (height_in_cm));
             }
 
             this.settings.user_age = uint.parse (this.age_spin_button.text);
