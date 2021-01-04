@@ -2,7 +2,7 @@ include: "https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_
 
 variables:
   BUNDLE: "dev.Cogitri.Health.Devel.flatpak"
-  MANIFEST_PATH: "dev.Cogitri.Health.json"
+  MANIFEST_PATH: "dev.Cogitri.Health.Devel.json"
   FLATPAK_MODULE: "health"
   FLATPAK_IMAGE: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master"
   TARBALL: "dev.Cogitri.Health-${CI_COMMIT_TAG}.tar.xz"
