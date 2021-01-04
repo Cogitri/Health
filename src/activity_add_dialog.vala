@@ -174,13 +174,11 @@ namespace Health {
         }
 
         private bool filter_activity_entries (Object row) {
-            if (this.selected_activity == null) {
+            if (this.selected_activity == null && !(row == this.activity_type_comborow || row == this.date_selector_actionrow)) {
                 return false;
             }
 
             var selected_activity = (!) this.selected_activity;
-
-
             if ((row == this.activity_type_comborow || row == this.date_selector_actionrow)
                 || (row == this.calories_burned_action_row && ActivityDataPoints.CALORIES_BURNED in selected_activity.available_data_points)
                 || (row == this.distance_action_row && ActivityDataPoints.DISTANCE in selected_activity.available_data_points)
