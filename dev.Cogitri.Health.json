@@ -53,9 +53,9 @@
             ],
             "sources": [
                 {
-                    "type": "git",
-                    "url": "https://gitlab.gnome.org/exalm/libhandy",
-                    "branch": "gtk4"
+                    "type": "archive",
+                    "url": "https://gitlab.gnome.org/Cogitri/libhandy/-/archive/gtk-2021-01-04/libhandy-gtk-2021-01-04.tar.gz",
+                    "sha256": "edc9c1326b8dc8cc7aeb3d99fc9e8241c6e6e30a340ffe5e0b2b2a5f596b7cab"
                 },
                 {
                     "type": "patch",
