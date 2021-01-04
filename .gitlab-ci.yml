@@ -21,6 +21,7 @@ stages:
   - deploy
   - release-tarball
   - release-upload
+  - release-fix-url
   - release-publish
 
 lint:
@@ -107,6 +108,25 @@ upload-dist-tarball:
     - |
       curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file build/meson-dist/${TARBALL} ${PACKAGE_REGISTRY_URL}/${TARBALL}
 
+# https://gitlab.com/gitlab-org/gitlab/-/issues/271534 The default URL needs authentication right now, which is less than optimal...
+# Get the package_files ID instead and use that as download URL in the "release" step.
+no-auth-url-job:
+  stage: release-fix-url
+  image: alpine:latest
+  rules:
+    - if: $CI_COMMIT_TAG
+  script:
+    - apk add curl jq
+    -  |
+      export PACKAGE_ID=$(curl --header "PRIVATE-TOKEN: ${GITLAB_SECRET_API_KEY}" "https://gitlab.gnome.org/api/v4/projects/${CI_PROJECT_ID}/packages?sort=desc" | jq -c .[0].id)
+    -  |
+      export PACKAGE_DOWNLOAD_ID=$(curl --header "PRIVATE-TOKEN: ${GITLAB_SECRET_API_KEY}" "https://gitlab.gnome.org/api/v4/projects/${CI_PROJECT_ID}/packages/${PACKAGE_ID}/package_files" | jq -c .[0].id)
+    - echo "https://gitlab.gnome.org/Cogitri/gnome-health/-/package_files/$PACKAGE_DOWNLOAD_ID/download" > download_url
+  artifacts:
+    paths:
+      - download_url
+    expire_in: 5 mins
+
 release:
   stage: release-publish
   image: registry.gitlab.com/gitlab-org/release-cli:latest
@@ -114,6 +134,7 @@ release:
     - if: $CI_COMMIT_TAG
   script:
     - |
-      release-cli create --name "Release $CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
+      export PACKAGE_DOWNLOAD_URL=$(cat download_url) \
+      && release-cli create --name "Release $CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
         --description "Please use the attached tarball \"${TARBALL}\", which includes the required vala-unit submodule folder and can be used to build Health without an internet connection." \
-        --assets-link "{\"name\":\"${TARBALL}\",\"url\":\"${PACKAGE_REGISTRY_URL}/${TARBALL}\"}"
+        --assets-link "{\"name\":\"${TARBALL}\",\"url\":\"${PACKAGE_DOWNLOAD_URL}\"}"
