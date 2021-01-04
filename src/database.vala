@@ -22,6 +22,9 @@ namespace Health {
         SETUP_FAILED,
     }
 
+    /**
+     * Helper class to add and retrieve data to and from the Tracker Database.
+     */
     public class TrackerDatabase : GLib.Object {
 
         private TrackerDatabase (string store_path = GLib.Path.build_filename (GLib.Environment.get_user_data_dir (), "health")) throws DatabaseError {
@@ -70,6 +73,9 @@ namespace Health {
             return cursor.get_boolean (0);
         }
 
+        /**
+         * Get an instance of the TrackerDatabase or create a new one if it doesn't exist yet.
+         */
         public static TrackerDatabase get_instance (string store_path = GLib.Path.build_filename (GLib.Environment.get_user_data_dir (), "health")) throws DatabaseError {
             if (instance == null) {
                 instance = new TrackerDatabase (store_path);
@@ -86,6 +92,7 @@ namespace Health {
          *
          * @param date The earliest date that steps should be retrieved from.
          * @throws DatabaseError If querying the DB fails.
+         * @return A {@link Gee.ArrayList} of {@link Activity}s that have been done in the timeframe of link until today.
          */
          public async Gee.ArrayList<Activity> get_activities_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_ACTIVITIES_AFTER.printf (date_to_iso_8601 (date)), cancellable);
@@ -142,6 +149,7 @@ namespace Health {
          *
          * @param date The earliest date that steps should be retrieved from.
          * @throws DatabaseError If querying the DB fails.
+         * @return A {@link Gee.ArrayList} of {@link Steps} that have been done in the timeframe of link until today.
          */
         public async Gee.ArrayList<Steps> get_steps_after (GLib.Date date, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_STEPS_AFTER.printf (date_to_iso_8601 (date)), cancellable);
@@ -166,6 +174,12 @@ namespace Health {
             return ret;
         }
 
+        /**
+         * Get the step record of a certain date.
+         *
+         * @param d The date to search steps on
+         * @return The amount of steps done on that date, or NULL if no steps have been done on that date.
+         */
         public async uint32? get_steps_on_date (GLib.Date d, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_STEPS_ON_DAY.printf (date_to_iso_8601 (d)), cancellable);
 
@@ -188,6 +202,7 @@ namespace Health {
          * @param date The earliest date that steps should be retrieved from.
          * @param settings The Health.Settings object that is used for determining whether to use imperial or metric units.
          * @throws DatabaseError If querying the DB fails.
+         * @return A {@link Gee.ArrayList} of {@link Weight} measurements that have been done in the timeframe of link until today,
          */
         public async Gee.ArrayList<Weight> get_weights_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_WEIGHT_AFTER.printf (date_to_iso_8601 (date)), cancellable);
@@ -200,6 +215,12 @@ namespace Health {
             return ret;
         }
 
+        /**
+         * Get the weight record of a certain date.
+         *
+         * @param d The date to search weight measurements on.
+         * @return The weight measurement of that date, or NULL if no steps have been done on that date.
+         */
         public async double? get_weight_on_date (GLib.Date d, GLib.Cancellable? cancellable) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_WEIGHT_ON_DAY.printf (date_to_iso_8601 (d)), cancellable);
 
@@ -210,6 +231,12 @@ namespace Health {
             }
         }
 
+        /**
+         * Import data from a sync provider
+         * 
+         * @param steps A {@link Gee.HashMap} that contains key-value pairs of date-stepAmount
+         * @param weight A {@link Gee.HashMap} that contains key-value pairs of date-weightMeasurement
+         */
         public async void import_data (Gee.HashMap<string, uint32> steps, Gee.HashMap<string, double?> weight, GLib.Cancellable? cancellable = null) throws GLib.Error {
             string[] ops = {};
 
@@ -243,15 +270,18 @@ namespace Health {
             this.weight_updated ();
         }
 
+        /**
+         * Delete all data from the tracker database.
+         */
         public async void reset () throws GLib.Error {
             yield this.db.update_async ("DELETE WHERE { ?datapoint a health:WeightMeasurement }");
             yield this.db.update_async ("DELETE WHERE { ?datapoint a health:Activity }");
         }
 
         /**
-         * Saves an `Activity` to the DB. Updates the steps if there's already one for the steps's date.
+         * Saves an `Activity` to the DB.
          *
-         * @param s The `Steps` that should be saved.
+         * @param a The `Activity` that should be saved.
          * @throws DatabaseError If saving to the DB fails.
          */
          public async void save_activity (Activity a, GLib.Cancellable? cancellable = null) throws GLib.Error {

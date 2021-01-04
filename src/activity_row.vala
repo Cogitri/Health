@@ -18,7 +18,7 @@
 
 namespace Health {
    /**
-    * An implementation of {@link GtkListBox} that displays infos about an {@link Activity}.
+    * An implementation of {@link Gtk.ListBox} that displays infos about an {@link Activity}.
     */
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_row.ui")]
     public class ActivityRow : Gtk.ListBoxRow {

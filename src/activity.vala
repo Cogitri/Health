@@ -30,6 +30,9 @@ namespace Health {
         STEP_COUNT,
     }
 
+    /**
+     * A single Activity the user did. 
+     */
     public class Activity : GLib.Object {
 
         public Activities.Enum activity_type {
@@ -81,7 +84,10 @@ namespace Health {
             );
         }
 
-
+        /**
+         * If {@link calories_burned} is set, try to autofill the other fields like
+         * minutes, steps & distance of the Activity by estimating their values. 
+         */
         public void autofill_from_calories () {
             if (this.calories_burned != 0 && ActivityDataPoints.CALORIES_BURNED in this.activity_info.available_data_points) {
                 this.minutes = this.calories_burned / Activities.get_values ()[this.activity_type].average_calories_burned_per_minute;
@@ -90,6 +96,10 @@ namespace Health {
             }
         }
 
+        /**
+         * If {@link minutes} is set, try to autofill the other fields like
+         * calories_burned, steps & distance of the Activity by estimating their values. 
+         */
         public void autofill_from_minutes () {
             if (this.minutes != 0 && ActivityDataPoints.DURATION in this.activity_info.available_data_points) {
                 this.calories_burned = this.activity_info.average_calories_burned_per_minute * this.minutes;
@@ -138,6 +148,10 @@ namespace Health {
             }
         }
 
+        /**
+         * If {@link distance} is set, try to autofill the other fields like
+         * calories, steps & minutes of the Activity by estimating their values. 
+         */
         public void autofill_from_distance () {
             if (distance != 0 && ActivityDataPoints.DISTANCE in this.activity_info.available_data_points) {
                 switch (this.activity_type) {
@@ -184,6 +198,10 @@ namespace Health {
             }
         }
 
+        /**
+         * If {@link steps} is set, try to autofill the other fields like
+         * minutes, calories_burned & distance of the Activity by estimating their values. 
+         */
         public void autofill_from_steps () {
             if (this.steps != 0 && ActivityDataPoints.STEP_COUNT in this.activity_info.available_data_points) {
                 switch (this.activity_type) {
@@ -210,6 +228,9 @@ namespace Health {
 
     }
 
+    /**
+     * A class containing information about different activities. The contained Enum contains all supported activities.
+     */
     public class Activities : GLib.Object {
         public enum Enum {
             BASKETBALL,

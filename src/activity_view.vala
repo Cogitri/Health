@@ -17,6 +17,10 @@
  */
 
 namespace Health {
+    /**
+     * An implementation of {@link GLib.ListModel} that stores {@link Activities}. Can be used with
+     * {@link ActivityView} to display past activities.
+     */
     public class ActivityModel : GLib.Object, GLib.ListModel {
         private Gee.ArrayList<Activity> activities;
         private Settings settings;
@@ -33,6 +37,9 @@ namespace Health {
             this.activities = new Gee.ArrayList<Activity> ();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public GLib.Object? get_item (uint position) {
                 if (this.activities.size > position) {
                 return this.activities.get ((int) position);
@@ -41,10 +48,16 @@ namespace Health {
             }
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public GLib.Type get_item_type () {
             return typeof (Activity);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         public uint get_n_items () {
             return this.activities.size;
         }
