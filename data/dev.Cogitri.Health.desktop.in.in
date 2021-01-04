@@ -4,5 +4,5 @@ Exec=@APPLICATION_ID@
 Icon=@APPLICATION_ID@
 Terminal=false
 Type=Application
-Categories=GTK;
+Categories=GNOME;GTK;Utility;MedicalSoftware;
 StartupNotify=true
