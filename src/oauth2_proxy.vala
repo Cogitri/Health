@@ -119,7 +119,7 @@ namespace Health {
         }
 
         private Gee.HashMap<string, double?> process_weights_json (string json_string) throws GLib.Error {
-            var json = (!) Json.from_string (json_string).get_object ();
+            var json = (!) ((!) Json.from_string (json_string)).get_object ();
             var ret = new Gee.HashMap<string, double?> ();
             foreach (var point in ((!) json.get_array_member ("point")).get_elements ()) {
                 var point_obj = (!) point.get_object ();
@@ -140,7 +140,7 @@ namespace Health {
         }
 
         private Gee.HashMap<string, uint32> process_steps_json (string json_string) throws GLib.Error {
-            var json = (!) Json.from_string (json_string).get_object ();
+            var json = (!) ((!) Json.from_string (json_string)).get_object ();
 
             var ret = new Gee.HashMap<string, uint32> ();
             foreach (var point in json.get_array_member ("point").get_elements ()) {
@@ -189,7 +189,7 @@ namespace Health {
                 "redirect_uri", this.get_redirect_url ()
             );
             yield call.invoke_async (null);
-            var json = (!) Json.from_string (call.get_payload ()).get_object ();
+            var json = (!) ((!) Json.from_string (call.get_payload ())).get_object ();
             yield this.store_refresh_stoken ((!) json.get_string_member ("refresh_token"), "GoogleFit");
             this.set_access_token ((!) json.get_string_member ("access_token"));
         }
@@ -209,7 +209,7 @@ namespace Health {
                 "refresh_token", refresh_token
             );
             yield call.invoke_async (null);
-            var json = (!) Json.from_string (call.get_payload ()).get_object ();
+            var json = (!) ((!) Json.from_string (call.get_payload ())).get_object ();
             // FIXME: Handle the refresh token being revoked
             this.set_access_token ((!) json.get_string_member ("access_token"));
 
