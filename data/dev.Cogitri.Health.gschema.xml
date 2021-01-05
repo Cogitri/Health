@@ -16,6 +16,11 @@
       <summary>First time setup done</summary>
       <description>Whether the user has completed the setup wizard</description>
     </key>
+    <key name="recent-activity-types" type="as">
+      <default>[]</default>
+      <summary>List of recent activity types</summary>
+      <description>Activity types the user used recently, to be shown first in the activity types selector's list</description>
+    </key>
     <key name="sync-provider-setup-google-fit" type="b">
       <default>false</default>
       <summary>Google Fit Sync-Provider setup</summary>

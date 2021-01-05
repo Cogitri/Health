@@ -23,9 +23,13 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_add_dialog.ui")]
     public class ActivityAddDialog : Gtk.Dialog {
         [GtkChild]
-        DateSelector date_selector;
+        private ActivityTypeSelector activity_type_selector;
+        [GtkChild]
+        private DateSelector date_selector;
         [GtkChild]
         private Gtk.ListBox activities_list_box;
+        [GtkChild]
+        private Gtk.MenuButton activity_type_menu_button;
         [GtkChild]
         private Gtk.SpinButton calories_burned_spin_button;
         [GtkChild]
@@ -41,7 +45,7 @@ namespace Health {
         [GtkChild]
         private Gtk.SpinButton steps_spin_button;
         [GtkChild]
-        private Gtk.StringList activity_type_model;
+        private Hdy.ActionRow activity_type_actionrow;
         [GtkChild]
         private Hdy.ActionRow calories_burned_action_row;
         [GtkChild]
@@ -58,8 +62,17 @@ namespace Health {
         private Hdy.ActionRow heart_rate_min_action_row;
         [GtkChild]
         private Hdy.ActionRow stepcount_action_row;
-        [GtkChild]
-        private Hdy.ComboRow activity_type_comborow;
+
+        private Activities.ActivityInfo? _selected_activity;
+        public Activities.ActivityInfo? selected_activity {
+            get {
+                return this._selected_activity;
+            }
+            set {
+                this._selected_activity = value;
+                this.activity_type_menu_button.label = this._selected_activity.name;
+            }
+        }
 
         private bool calories_burned_spin_button_user_changed;
         private bool distance_spin_button_user_changed;
@@ -68,7 +81,6 @@ namespace Health {
         private uint set_counter;
 
         private Activity activity;
-        private Activities.ActivityInfo? selected_activity;
         private Gtk.FilterListModel? filter_model;
         private Settings settings;
         private TrackerDatabase db;
@@ -79,19 +91,12 @@ namespace Health {
             this.db = db;
             this.settings = settings;
             this.activity = (Activity) Object.new (typeof (Activity));
-
-            // FIXME: Somehow the activity_type_model doesn't live long enough because it's
-            // unrefed too often (off by one)
-            this.activity_type_model.ref ();
-            foreach (var x in Activities.get_values ()) {
-                    this.activity_type_model.append (x.name);
-            }
-            this.activity_type_comborow.selected = Activities.Enum.WALKING;
+            this.selected_activity = Activities.get_values ()[Activities.Enum.WALKING];
 
             var model = new GLib.ListStore (typeof (Gtk.Widget));
             model.splice (0, 0, {
                 this.date_selector_actionrow,
-                this.activity_type_comborow,
+                this.activity_type_actionrow,
                 this.calories_burned_action_row,
                 this.distance_action_row,
                 this.duration_action_row,
@@ -100,12 +105,14 @@ namespace Health {
                 this.heart_rate_max_action_row,
                 this.stepcount_action_row,
             });
+
             var filter = new Gtk.CustomFilter (filter_activity_entries);
-            this.filter_model = new Gtk.FilterListModel (model, filter);
-            this.activities_list_box.bind_model (this.filter_model, (o) => {
+            var filter_model = new Gtk.FilterListModel (model, filter);
+            this.activities_list_box.bind_model (filter_model, (o) => {
                 return (Gtk.Widget) o;
             });
 
+            this.filter_model = filter_model;
             // FIXME: Also allow entering distance in KM/Miles
             if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
                 this.distance_action_row.title = _ ("Distance in Yards");
@@ -138,7 +145,7 @@ namespace Health {
          */
         public async void save () throws GLib.Error {
             var db = TrackerDatabase.get_instance ();
-            var selected_activity = this.get_selected_activity ();
+            var selected_activity = this.activity_type_selector.selected_activity;
             var distance = this.get_spin_button_value_if_datapoint (this.distance_spin_button, selected_activity, ActivityDataPoints.DISTANCE);
 
             if (distance != 0 && settings.unitsystem == Unitsystem.IMPERIAL) {
@@ -148,7 +155,7 @@ namespace Health {
 
             yield db.save_activity (
                 new Activity (
-                    this.get_selected_activity ().type,
+                    this.activity_type_selector.selected_activity.type,
                     Util.date_from_datetime (this.date_selector.selected_date),
                     this.get_spin_button_value_if_datapoint (this.calories_burned_spin_button, selected_activity, ActivityDataPoints.CALORIES_BURNED),
                     distance,
@@ -169,17 +176,13 @@ namespace Health {
             }
         }
 
-        private Activities.ActivityInfo get_selected_activity () {
-            return Activities.get_values ()[this.activity_type_comborow.selected];
-        }
-
         private bool filter_activity_entries (Object row) {
-            if (this.selected_activity == null && !(row == this.activity_type_comborow || row == this.date_selector_actionrow)) {
+            if (this.selected_activity == null && !(row == this.activity_type_actionrow || row == this.date_selector_actionrow)) {
                 return false;
             }
 
             var selected_activity = (!) this.selected_activity;
-            if ((row == this.activity_type_comborow || row == this.date_selector_actionrow)
+            if ((row == this.activity_type_actionrow || row == this.date_selector_actionrow)
                 || (row == this.calories_burned_action_row && ActivityDataPoints.CALORIES_BURNED in selected_activity.available_data_points)
                 || (row == this.distance_action_row && ActivityDataPoints.DISTANCE in selected_activity.available_data_points)
                 || (row == this.duration_action_row && ActivityDataPoints.DURATION in selected_activity.available_data_points)
@@ -192,6 +195,27 @@ namespace Health {
             return false;
         }
 
+        private void save_recent_activity () {
+            var recent_activities = this.settings.recent_activity_types;
+            var already_recent = false;
+            foreach (var activity in recent_activities) {
+                if (this.selected_activity.name == activity) {
+                    already_recent = true;
+                    break;
+                }
+            }
+
+            if (!already_recent) {
+                recent_activities += this.selected_activity.name;
+                if (recent_activities.length > 4) {
+                    this.settings.recent_activity_types = recent_activities[1:recent_activities.length - 1];
+                } else {
+                    this.settings.recent_activity_types = recent_activities;
+                }
+            }
+        }
+
+
         [GtkCallback]
         private void on_response (int response_id) {
             switch (response_id) {
@@ -203,6 +227,8 @@ namespace Health {
                             warning (_ ("Failed to save new data due to error %s"), e.message);
                         }
                     });
+                    this.save_recent_activity ();
+
                     break;
             }
             this.activities_list_box.bind_model (null, null);
@@ -215,8 +241,8 @@ namespace Health {
 
 
         [GtkCallback]
-        private void on_activity_type_comborow_selected (GLib.Object o, GLib.ParamSpec p) {
-            this.selected_activity = this.get_selected_activity ();
+        private void on_activity_type_selector_selected_activity (GLib.Object o, GLib.ParamSpec p) {
+            this.selected_activity = this.activity_type_selector.selected_activity;
             this.activity.activity_type = ((!) this.selected_activity).type;
 
             if (this.filter_model != null) {

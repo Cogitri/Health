@@ -28,6 +28,7 @@
     public class Settings : GLib.Settings {
         public const string CURRENT_VIEW_ID_KEY = "current-view-id";
         public const string DID_INITIAL_SETUP_KEY = "did-initial-setup";
+        public const string RECENT_ACTIVITY_TYPES_KEY ="recent-activity-types";
         public const string SYNC_PROVIDER_SETUP_GOOGLE_FIT = "sync-provider-setup-google-fit";
         public const string TIMESTAMP_LAST_SYNC_GOOGLE_FIT_KEY = "timestamp-last-sync-google-fit";
         public const string UNITSYSTEM_KEY = "unitsystem";
@@ -54,6 +55,15 @@
             }
             set {
                 this.set_boolean (DID_INITIAL_SETUP_KEY, value);
+            }
+        }
+
+        public string[] recent_activity_types {
+            owned get {
+                return this.get_strv (RECENT_ACTIVITY_TYPES_KEY);
+            }
+            set {
+                this.set_strv (RECENT_ACTIVITY_TYPES_KEY, value);
             }
         }
 

@@ -55,7 +55,6 @@
     <property name="step-increment">5</property>
     <property name="page-increment">20</property>
   </object>
-  <object class="GtkStringList" id="activity_type_model"/>
   <template class="HealthActivityAddDialog" parent="GtkDialog">
     <property name="use-header-bar">1</property>
     <property name="modal">1</property>
@@ -118,10 +117,20 @@
       </object>
     </child>
   </object>
-  <object class="HdyComboRow" id="activity_type_comborow">
+  <object class="HealthActivityTypeSelector" id="activity_type_selector">
+    <signal name="notify::selected_activity" handler="on_activity_type_selector_selected_activity" swapped="no"/>
+  </object>
+  <object class="HdyActionRow" id="activity_type_actionrow">
     <property name="title" translatable="yes">Activity Type</property>
-    <property name="model">activity_type_model</property>
-    <signal name="notify::selected" handler="on_activity_type_comborow_selected" swapped="no"/>
+    <child>
+      <object class="GtkMenuButton" id="activity_type_menu_button">
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+        <property name="popover">activity_type_selector</property>
+      </object>
+    </child>
   </object>
   <object class="HdyActionRow" id="calories_burned_action_row">
     <property name="title" translatable="yes">Calories Burned</property>
