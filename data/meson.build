@@ -24,17 +24,17 @@ if desktop_utils.found()
 endif
 
 configured_appstream_file = configure_file(
-  input: 'dev.Cogitri.Health.appdata.xml.in.in',
-  output: 'dev.Cogitri.Health.appdata.xml.in',
+  input: 'dev.Cogitri.Health.metainfo.xml.in.in',
+  output: 'dev.Cogitri.Health.metainfo.xml.in',
   configuration: conf,
 )
 
 appstream_file = i18n.merge_file(
   input: configured_appstream_file,
-  output: '@0@.appdata.xml'.format(application_id),
+  output: '@0@.metainfo.xml'.format(application_id),
   po_dir: '../po',
   install: true,
-  install_dir: join_paths(get_option('datadir'), 'appdata')
+  install_dir: join_paths(get_option('datadir'), 'metainfo')
 )
 
 appstream_util = find_program('appstream-util', required: false)
