@@ -81,7 +81,9 @@ namespace Health {
                     warning ("Unknown activity %s, falling back to walking", recent_activity_types[recent_activity_types.length - 1]);
                     this.selected_activity = Activities.get_values ()[Activities.Enum.WALKING];
                 } else {
-                    this.selected_activity = activity;
+                    // FIXME: https://gitlab.gnome.org/GNOME/vala/-/issues/1126
+                    var temp = (!) activity;
+                    this.selected_activity = temp;
                 }
             } else {
                 this.selected_activity = Activities.get_values ()[Activities.Enum.WALKING];
@@ -126,7 +128,9 @@ namespace Health {
             var activity = Activities.get_info_by_name (row.label);
 
             if (activity != null) {
-                this.selected_activity = activity;
+                // FIXME: https://gitlab.gnome.org/GNOME/vala/-/issues/1126
+                var temp = (!) activity;
+                this.selected_activity = temp;
                 this.refresh_selected_rows (this.activity_types_list_box);
                 this.refresh_selected_rows (this.recent_activity_types_list_box);
                 this.popdown ();

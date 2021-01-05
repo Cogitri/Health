@@ -70,7 +70,11 @@ namespace Health {
             }
             set {
                 this._selected_activity = value;
-                this.activity_type_menu_button.label = this._selected_activity.name;
+                if (this._selected_activity == null) {
+                    this.activity_type_menu_button.label = _ ("No activity selected");
+                } else {
+                    this.activity_type_menu_button.label = ((!) this._selected_activity).name;
+                }
             }
         }
 
@@ -196,17 +200,21 @@ namespace Health {
         }
 
         private void save_recent_activity () {
+            if (this.selected_activity == null) {
+                return;
+            }
+
             var recent_activities = this.settings.recent_activity_types;
             var already_recent = false;
             foreach (var activity in recent_activities) {
-                if (this.selected_activity.name == activity) {
+                if (((!) this.selected_activity).name == activity) {
                     already_recent = true;
                     break;
                 }
             }
 
             if (!already_recent) {
-                recent_activities += this.selected_activity.name;
+                recent_activities += ((!) this.selected_activity).name;
                 if (recent_activities.length > 4) {
                     this.settings.recent_activity_types = recent_activities[1:recent_activities.length - 1];
                 } else {
