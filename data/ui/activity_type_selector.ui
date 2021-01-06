@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  add_dialog_activity.ui
+
+  Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<interface domain="dev.Cogitri.Health">
+  <requires lib="gtk+" version="4.0"/>
+  <object class="GtkStringList" id="recent_activity_types_model"/>
+  <object class="GtkStringList" id="activity_types_model"/>
+  <template class="HealthActivityTypeSelector" parent="GtkPopover">
+    <property name="position">bottom</property>
+    <property name="autohide">1</property>
+    <property name="height-request">250</property>
+    <property name="width-request">200</property>
+    <child>
+      <object class="GtkScrolledWindow">
+        <property name="hscrollbar-policy">GTK_POLICY_NEVER</property>
+        <property name="vexpand">1</property>
+        <property name="has-frame">0</property>
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkBox" id="recents_box">
+                <property name="orientation">vertical</property>
+                <property name="visible">0</property>
+                <property name="vexpand">1</property>
+                <property name="spacing">6</property>
+                <child>
+                  <object class="GtkListBox" id="recent_activity_types_list_box">
+                    <property name="selection-mode">none</property>
+                    <signal name="row-activated" handler="on_activity_type_row_activated" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkSeparator">
+                    <property name="orientation">horizontal</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkListBox" id="activity_types_list_box">
+                <property name="selection-mode">none</property>
+                <signal name="row-activated" handler="on_activity_type_row_activated" swapped="no"/>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>
