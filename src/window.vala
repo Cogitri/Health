@@ -131,7 +131,7 @@ namespace Health {
                         view.update ();
                     }
                 } catch (OAuth2Error.NO_LIBSECRET_PASSWORD e) {
-                    warning (e.message);
+                    info (e.message);
                     if (source_id > 0) {
                         GLib.Source.remove (source_id);
                     }
