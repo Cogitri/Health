@@ -58,6 +58,7 @@ namespace Health {
                 this.google_fit_stack.visible = true;
                 this.google_fit_spinner.visible = true;
                 this.google_fit_spinner.spinning = true;
+                this.google_fit_start_sync_row.activatable = false;
                 this.google_fit_stack.visible_child = this.google_fit_spinner;
                 var proxy = new GoogleFitOAuth2Proxy ();
                 proxy.open_authentication_url.begin (settings ?? new Health.Settings (), (obj, res) => {
@@ -68,10 +69,10 @@ namespace Health {
                                 proxy.import_data.end (res);
                                 this.google_fit_selected_image.visible = true;
                                 this.google_fit_stack.visible_child = this.google_fit_selected_image;
-                                this.google_fit_start_sync_row.activatable = false;
                             } catch (GLib.Error e) {
                                 this.open_sync_error (e.message);
                                 this.google_fit_selected_image.visible = true;
+                                this.google_fit_start_sync_row.activatable = true;
                                 this.google_fit_selected_image.icon_name = "network-error-symbolic";
                                 this.google_fit_stack.visible_child = this.google_fit_selected_image;
                             }
@@ -87,6 +88,8 @@ namespace Health {
         }
 
         private void open_sync_error (string errmsg) {
+            warning ("Sync failed: %s", errmsg);
+
             var dialog = new Gtk.MessageDialog (this.parent_window, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, errmsg);
             unowned var dialog_u = dialog;
             dialog.response.connect ((obj) => {
