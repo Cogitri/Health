@@ -250,19 +250,19 @@ namespace Health {
         }
 
         private void set_spin_buttons_from_activity (Gtk.Widget emitter) {
-            if (this.activity.calories_burned != 0 && this.calories_burned_spin_button != emitter && !this.calories_burned_spin_button_user_changed) {
+            if (this.activity.calories_burned != 0 && this.activity.calories_burned != this.calories_burned_spin_button.value && this.calories_burned_spin_button != emitter && !this.calories_burned_spin_button_user_changed) {
                 this.set_counter++;
                 this.calories_burned_spin_button.value = this.activity.calories_burned;
             }
-            if (this.activity.distance != 0 && this.distance_action_row != emitter && !this.distance_spin_button_user_changed) {
+            if (this.activity.distance != 0 && this.activity.distance != this.distance_action_row.value && this.distance_action_row != emitter && !this.distance_spin_button_user_changed) {
                 this.set_counter++;
                 this.distance_action_row.value = this.activity.distance;
             }
-            if (this.activity.minutes != 0 && this.duration_spin_button != emitter && !this.duration_spin_button_user_changed) {
+            if (this.activity.minutes != 0 && this.activity.minutes != this.duration_spin_button.value && this.duration_spin_button != emitter && !this.duration_spin_button_user_changed) {
                 this.set_counter++;
                 this.duration_spin_button.value = this.activity.minutes;
             }
-            if (this.activity.steps != 0 && this.steps_spin_button != emitter && !this.steps_spin_button_user_changed) {
+            if (this.activity.steps != 0 && this.activity.steps != this.steps_spin_button.value && this.steps_spin_button != emitter && !this.steps_spin_button_user_changed) {
                 this.set_counter++;
                 this.steps_spin_button.value = this.activity.steps;
             }
