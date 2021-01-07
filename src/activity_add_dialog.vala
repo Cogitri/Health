@@ -144,7 +144,7 @@ namespace Health {
             var db = TrackerDatabase.get_instance ();
             var selected_activity = this.activity_type_selector.selected_activity;
             var distance = 0.0;
-            
+
             if (ActivityDataPoints.DISTANCE in selected_activity.available_data_points) {
                 distance = distance_action_row.value;
             }

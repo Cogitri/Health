@@ -28,28 +28,26 @@
             }
             set {
                 if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
-                    if (this.big_unit_togglebutton.active) {
+                    if (this.small_unit_togglebutton.active) {
+                        this.distance_spin_button.value = Util.meters_to_yard (value);
+                     } else {
                         var miles = Util.meters_to_miles (value);
                         if (miles > 1) {
                             this.distance_spin_button.value = miles;
                         } else {
-                            this.small_unit_togglebutton.active = true;
                             this.distance_spin_button.value = Util.meters_to_yard (value);
                         }
-                    } else {
-                       this.distance_spin_button.value = Util.meters_to_yard (value);
                     }
                 } else {
-                    if (this.big_unit_togglebutton.active) {
+                    if (this.small_unit_togglebutton.active) {
+                        this.distance_spin_button.value = value;
+                    } else {
                         var km = Util.meters_to_km (value);
                         if (km > 1) {
                             this.distance_spin_button.value = km;
                         } else {
-                            this.small_unit_togglebutton.active = true;
                             this.distance_spin_button.value = value;
                         }
-                    } else {
-                        this.distance_spin_button.value = value;
                     }
                 }
             }
@@ -68,7 +66,7 @@
         private Settings settings;
 
         construct {
-            this.settings = new Settings();
+            this.settings = new Settings ();
             this.set_togglebutton_text ();
 
             this.settings.changed[Settings.UNITSYSTEM_KEY].connect (() => {
@@ -92,22 +90,12 @@
             if (btn.active) {
                 this.distance_adjustment.step_increment = 100;
                 this.distance_adjustment.page_increment = 1000;
-
-                if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
-                    this.value = Util.miles_to_yards (this.value);
-                } else {
-                    this.value = this.value;
-                }
             } else {
                 this.distance_adjustment.step_increment = 1;
                 this.distance_adjustment.page_increment = 5;
-
-                if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
-                    this.value = Util.yards_to_miles (this.value);
-                } else {
-                    this.value = Util.meters_to_km (this.value);
-                }
             }
+
+            this.value = this.value;
         }
 
         [GtkCallback]
@@ -115,13 +103,13 @@
             var value = sb.value;
 
             if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
-                if (this.big_unit_togglebutton.active) {
-                    value = Util.miles_to_meters (value);
+                if (small_unit_togglebutton.active) {
+                    value = Util.yard_to_meters (value);
                 } else {
-                   value = Util.yard_to_meters (value);
+                    value = Util.miles_to_meters (value);
                 }
             } else {
-                if (this.big_unit_togglebutton.active) {
+                if (!small_unit_togglebutton.active) {
                     value = Util.km_to_meters (value);
                 }
             }

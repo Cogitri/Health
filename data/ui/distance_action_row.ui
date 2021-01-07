@@ -39,12 +39,13 @@
               <class name="linked"/>
             </style>
             <child>
-              <object class="GtkToggleButton" id="big_unit_togglebutton"/>
+              <object class="GtkToggleButton" id="big_unit_togglebutton">
+                <property name="group">small_unit_togglebutton</property>
+              </object>
             </child>
             <child>
               <object class="GtkToggleButton" id="small_unit_togglebutton">
                 <property name="active">1</property>
-                <property name="group">big_unit_togglebutton</property>
                 <signal name="toggled" handler="on_small_unit_togglebutton_toggled" swapped="no"/>
               </object>
             </child>
