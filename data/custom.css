@@ -28,3 +28,8 @@ levelbar block.obese-bmi {
     border-bottom-right-radius: 3px;
     border-top-right-radius: 3px;
 }
+
+.small-button {
+	padding-left: 6px;
+	padding-right: 6px;
+}

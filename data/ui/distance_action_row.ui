@@ -34,19 +34,24 @@
             <property name="margin-top">6</property>
             <property name="margin-bottom">6</property>
             <property name="margin-start">6</property>
-            <property name="margin-end">6</property>
             <style>
               <class name="linked"/>
             </style>
             <child>
               <object class="GtkToggleButton" id="big_unit_togglebutton">
                 <property name="group">small_unit_togglebutton</property>
+                <style>
+                  <class name="small-button"/>
+                </style>
               </object>
             </child>
             <child>
               <object class="GtkToggleButton" id="small_unit_togglebutton">
                 <property name="active">1</property>
                 <signal name="toggled" handler="on_small_unit_togglebutton_toggled" swapped="no"/>
+                <style>
+                  <class name="small-button"/>
+                </style>
               </object>
             </child>
           </object>
