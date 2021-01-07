@@ -50,6 +50,13 @@
     <property name="step-increment">5</property>
     <property name="page-increment">20</property>
   </object>
+  <object class="GtkSizeGroup">
+    <property name="mode">horizontal</property>
+    <widgets>
+      <widget name="activity_type_menu_button"/>
+      <widget name="calories_burned_spin_button"/>
+    </widgets>
+  </object>
   <template class="HealthActivityAddDialog" parent="GtkDialog">
     <property name="use-header-bar">1</property>
     <property name="modal">1</property>
