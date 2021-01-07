@@ -63,8 +63,8 @@ namespace Health {
         [GtkChild]
         private Hdy.ActionRow stepcount_action_row;
 
-        private Activities.ActivityInfo? _selected_activity;
-        public Activities.ActivityInfo? selected_activity {
+        private ActivityInfo? _selected_activity;
+        public ActivityInfo? selected_activity {
             get {
                 return this._selected_activity;
             }
@@ -95,7 +95,7 @@ namespace Health {
             this.db = db;
             this.settings = settings;
             this.activity = (Activity) Object.new (typeof (Activity));
-            this.selected_activity = Activities.get_values ()[Activities.Enum.WALKING];
+            this.selected_activity = ActivityType.get_values ()[ActivityType.WALKING];
 
             var model = new GLib.ListStore (typeof (Gtk.Widget));
             model.splice (0, 0, {
@@ -172,7 +172,7 @@ namespace Health {
             );
         }
 
-        private uint32 get_spin_button_value_if_datapoint (Gtk.SpinButton b, Activities.ActivityInfo a, ActivityDataPoints d) {
+        private uint32 get_spin_button_value_if_datapoint (Gtk.SpinButton b, ActivityInfo a, ActivityDataPoints d) {
             if (d in a.available_data_points && b.get_text () != "") {
                 return (uint32) ((!) b).value;
             } else {

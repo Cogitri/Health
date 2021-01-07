@@ -104,7 +104,7 @@ namespace Health {
                 for (var i = 0; i < cursor.n_columns; i++) {
                     switch ((!) cursor.get_variable_name (i)) {
                         case "id":
-                            activity.activity_type = Activities.get_values ()[cursor.get_integer (i)].type;
+                            activity.activity_type = ActivityType.get_values ()[cursor.get_integer (i)].type;
                             break;
                         case "date":
                             activity.date = Util.iso_8601_to_date ((!) cursor.get_string (i));
@@ -248,7 +248,7 @@ namespace Health {
                 resource.set_uri ("rdf:type", "health:Activity");
                 resource.set_string ("health:activity_date", s.key);
                 resource.set_int64 ("health:steps", s.value);
-                resource.set_int64 ("health:activity_id", Activities.Enum.WALKING);
+                resource.set_int64 ("health:activity_id", ActivityType.WALKING);
                 // FIXME: Set correct minutes here
                 resource.set_int64 ("health:minutes", 0);
 

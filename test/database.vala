@@ -33,7 +33,7 @@ namespace Health {
         public void check_exists_steps () throws ValaUnit.TestError {
             var db = this.open_db ();
             var date = Util.get_today_date ();
-            var activity = new Activity (Activities.Enum.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
+            var activity = new Activity (ActivityType.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
             try {
                 db.save_activity.begin (activity, null, this.async_completion);
                 db.save_activity.end (this.async_result ());
@@ -80,7 +80,7 @@ namespace Health {
         public void get_after_steps () throws ValaUnit.TestError {
             var db = this.open_db ();
             var date = Util.get_today_date ();
-            var activity = new Activity (Activities.Enum.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
+            var activity = new Activity (ActivityType.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
             try {
                 db.save_activity.begin (activity, null, this.async_completion);
                 db.save_activity.end (this.async_result ());
@@ -127,7 +127,7 @@ namespace Health {
         public void save_activity () throws ValaUnit.TestError {
             var db = this.open_db ();
             var date = Util.get_today_date ();
-            var activity = new Activity (Activities.Enum.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
+            var activity = new Activity (ActivityType.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
             Gee.ArrayList<Steps>? retrieved_steps = null;
             try {
                 db.save_activity.begin (activity, null, this.async_completion);
@@ -151,7 +151,7 @@ namespace Health {
             var db = this.open_db ();
             var settings = new Settings ();
             var date = Util.get_today_date ();
-            var activity = new Activity (Activities.Enum.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
+            var activity = new Activity (ActivityType.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
             var weight = new Weight (date, new WeightUnitContainer.from_database_value (100, settings));
             Gee.ArrayList<Steps>? retrieved_steps = null;
             Gee.ArrayList<Weight>? retrieved_weights = null;
@@ -208,7 +208,7 @@ namespace Health {
             var db = this.open_db ();
             var settings = new Settings ();
             var date = Util.get_today_date ();
-            var activity = new Activity (Activities.Enum.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
+            var activity = new Activity (ActivityType.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
             var weight = new Weight (date, new WeightUnitContainer.from_database_value (100, settings));
             Gee.ArrayList<Steps>? retrieved_steps = null;
             Gee.ArrayList<Weight>? retrieved_weights = null;

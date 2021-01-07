@@ -35,12 +35,12 @@ namespace Health {
      */
     public class Activity : GLib.Object {
 
-        public Activities.Enum activity_type {
+        public ActivityType activity_type {
             get {
                 return this.activity_info.type;
             }
             set {
-                this.activity_info = Activities.get_values ()[value];
+                this.activity_info = ActivityType.get_values ()[value];
             }
         }
         public GLib.Date date { get; set; }
@@ -52,7 +52,7 @@ namespace Health {
         public uint32 minutes { get; set; }
         public uint32 steps { get; set; }
 
-        private Activities.ActivityInfo activity_info;
+        private ActivityInfo activity_info;
         private const uint BICYCLING_METERS_PER_MINUTE = 300;
         private const uint HORSE_RIDING_METERS_PER_MINUTE = 260;
         private const uint ROLLER_BLADING_METERS_PER_MINUTE = 240;
@@ -62,7 +62,7 @@ namespace Health {
         private const uint WALKING_METERS_PER_MINUTE = 90;
 
         public Activity (
-            Activities.Enum activity_type,
+            ActivityType activity_type,
             GLib.Date date,
             uint32 calories_burned,
             uint32 distance,
@@ -90,7 +90,7 @@ namespace Health {
          */
         public void autofill_from_calories () {
             if (this.calories_burned != 0 && ActivityDataPoints.CALORIES_BURNED in this.activity_info.available_data_points) {
-                this.minutes = this.calories_burned / Activities.get_values ()[this.activity_type].average_calories_burned_per_minute;
+                this.minutes = this.calories_burned / ActivityType.get_values ()[this.activity_type].average_calories_burned_per_minute;
 
                 this.autofill_from_minutes ();
             }
@@ -105,27 +105,27 @@ namespace Health {
                 this.calories_burned = this.activity_info.average_calories_burned_per_minute * this.minutes;
 
                 switch (this.activity_type) {
-                    case Activities.Enum.BICYCLING:
+                    case ActivityType.BICYCLING:
                         this.distance = BICYCLING_METERS_PER_MINUTE * this.minutes;
                         break;
-                    case Activities.Enum.HORSE_RIDING:
+                    case ActivityType.HORSE_RIDING:
                         this.distance = HORSE_RIDING_METERS_PER_MINUTE * this.minutes;
                         break;
-                    case Activities.Enum.HIKING:
-                    case Activities.Enum.WALKING:
+                    case ActivityType.HIKING:
+                    case ActivityType.WALKING:
                         this.distance = WALKING_METERS_PER_MINUTE * this.minutes;
                         break;
-                    case Activities.Enum.ROLLERBLADING:
+                    case ActivityType.ROLLERBLADING:
                         this.distance = ROLLER_BLADING_METERS_PER_MINUTE * this.minutes;
                         break;
-                    case Activities.Enum.RUNNING:
-                    case Activities.Enum.TRACK_AND_FIELD:
+                    case ActivityType.RUNNING:
+                    case ActivityType.TRACK_AND_FIELD:
                         this.distance = RUNNING_METERS_PER_MINUTE * this.minutes;
                         break;
-                    case Activities.Enum.SKIING:
+                    case ActivityType.SKIING:
                         this.distance = SKIING_METERS_PER_MINUTE * this.minutes;
                         break;
-                    case Activities.Enum.SWIMMING:
+                    case ActivityType.SWIMMING:
                         this.distance = SWIMMING_METERS_PER_MINUTE * this.minutes;
                         break;
                     // Other activities don't have ActivityDataPoints.DISTANCE
@@ -134,11 +134,11 @@ namespace Health {
                 }
 
                 switch (this.activity_type) {
-                    case Activities.Enum.WALKING:
-                    case Activities.Enum.HIKING:
+                    case ActivityType.WALKING:
+                    case ActivityType.HIKING:
                         this.steps = this.minutes * 100;
                         break;
-                    case Activities.Enum.RUNNING:
+                    case ActivityType.RUNNING:
                         this.steps = this.minutes * 150;
                         break;
                     // Other activities don't have ActivityDataPoints.STEPS
@@ -155,27 +155,27 @@ namespace Health {
         public void autofill_from_distance () {
             if (distance != 0 && ActivityDataPoints.DISTANCE in this.activity_info.available_data_points) {
                 switch (this.activity_type) {
-                    case Activities.Enum.BICYCLING:
+                    case ActivityType.BICYCLING:
                         this.minutes = this.distance / BICYCLING_METERS_PER_MINUTE;
                         break;
-                    case Activities.Enum.HORSE_RIDING:
+                    case ActivityType.HORSE_RIDING:
                         this.minutes = this.distance / HORSE_RIDING_METERS_PER_MINUTE;
                         break;
-                    case Activities.Enum.HIKING:
-                    case Activities.Enum.WALKING:
+                    case ActivityType.HIKING:
+                    case ActivityType.WALKING:
                         this.minutes = this.distance / WALKING_METERS_PER_MINUTE;
                         break;
-                    case Activities.Enum.ROLLERBLADING:
+                    case ActivityType.ROLLERBLADING:
                         this.minutes = this.distance / ROLLER_BLADING_METERS_PER_MINUTE;
                         break;
-                    case Activities.Enum.RUNNING:
-                    case Activities.Enum.TRACK_AND_FIELD:
+                    case ActivityType.RUNNING:
+                    case ActivityType.TRACK_AND_FIELD:
                         this.minutes = this.distance / RUNNING_METERS_PER_MINUTE;
                         break;
-                    case Activities.Enum.SKIING:
+                    case ActivityType.SKIING:
                         this.minutes = this.distance / SKIING_METERS_PER_MINUTE;
                         break;
-                    case Activities.Enum.SWIMMING:
+                    case ActivityType.SWIMMING:
                         this.minutes = this.distance / SWIMMING_METERS_PER_MINUTE;
                         break;
                     // Other activities don't have ActivityDataPoints.DISTANCE
@@ -186,9 +186,9 @@ namespace Health {
                 this.calories_burned = this.minutes * this.activity_info.average_calories_burned_per_minute;
 
                 switch (this.activity_type) {
-                    case Activities.Enum.WALKING:
-                    case Activities.Enum.HIKING:
-                    case Activities.Enum.RUNNING:
+                    case ActivityType.WALKING:
+                    case ActivityType.HIKING:
+                    case ActivityType.RUNNING:
                         this.steps = (uint32) (this.distance * 1.4);
                         break;
                     // Other activities don't have ActivityDataPoints.STEPS
@@ -205,15 +205,15 @@ namespace Health {
         public void autofill_from_steps () {
             if (this.steps != 0 && ActivityDataPoints.STEP_COUNT in this.activity_info.available_data_points) {
                 switch (this.activity_type) {
-                case Activities.Enum.WALKING:
+                case ActivityType.WALKING:
                     this.minutes = this.steps / 100;
                     this.distance = this.minutes * WALKING_METERS_PER_MINUTE;
                     break;
-                case Activities.Enum.HIKING:
+                case ActivityType.HIKING:
                     this.minutes = this.steps / 80;
                     this.distance = this.minutes * WALKING_METERS_PER_MINUTE;
                     break;
-                case Activities.Enum.RUNNING:
+                case ActivityType.RUNNING:
                     this.minutes = this.steps / 150;
                     this.distance = this.minutes * RUNNING_METERS_PER_MINUTE;
                     break;
@@ -229,44 +229,45 @@ namespace Health {
     }
 
     /**
-     * A class containing information about different activities. The contained Enum contains all supported activities.
+     * A struct containing information about a certain activity
      */
-    public class Activities : GLib.Object {
-        public enum Enum {
-            BASKETBALL,
-            BICYCLING,
-            BOXING,
-            DANCING,
-            FOOTBALL,
-            GOLF,
-            HIKING,
-            HOCKEY,
-            HORSE_RIDING,
-            OTHER_SPORTS,
-            ROLLERBLADING,
-            RUNNING,
-            SKIING,
-            SOCCER,
-            SOFTBALL,
-            SWIMMING,
-            TENNIS,
-            TRACK_AND_FIELD,
-            VOLLEYBAL,
-            WALKING,
-        }
+    public struct ActivityInfo {
+        ActivityType type;
+        string name;
+        ActivityDataPoints available_data_points;
+        // As per https://keisan.casio.com/menu/system/000000000140
+        uint32 average_calories_burned_per_minute;
+        // As per https://www.arhs-nc.org/live-healthy/data/StepConversionChart.pdf
+        // uint32 steps_per_minute;
+    }
 
-        public struct ActivityInfo {
-            Activities.Enum type;
-            string name;
-            ActivityDataPoints available_data_points;
-            // As per https://keisan.casio.com/menu/system/000000000140
-            uint32 average_calories_burned_per_minute;
-            // As per https://www.arhs-nc.org/live-healthy/data/StepConversionChart.pdf
-            // uint32 steps_per_minute;
-        }
+    /**
+     * A class containing information about different activity types. Contains all supported activity types.
+     */
+    public enum ActivityType {
+        BASKETBALL,
+        BICYCLING,
+        BOXING,
+        DANCING,
+        FOOTBALL,
+        GOLF,
+        HIKING,
+        HOCKEY,
+        HORSE_RIDING,
+        OTHER_SPORTS,
+        ROLLERBLADING,
+        RUNNING,
+        SKIING,
+        SOCCER,
+        SOFTBALL,
+        SWIMMING,
+        TENNIS,
+        TRACK_AND_FIELD,
+        VOLLEYBAL,
+        WALKING;
 
         public static ActivityInfo? get_info_by_name (string name) {
-            foreach (var x in Activities.get_values ()) {
+            foreach (var x in ActivityType.get_values ()) {
                 if (x.name == name) {
                     return x;
                 }
@@ -277,26 +278,26 @@ namespace Health {
 
         public static ActivityInfo[] get_values () {
             return {
-                {Enum.BASKETBALL, _ ("Basketball"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 6},
-                {Enum.BICYCLING, _ ("Bicycling"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 10},
-                {Enum.BOXING, _ ("Boxing"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 7},
-                {Enum.DANCING, _ ("Dancing"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 8},
-                {Enum.FOOTBALL, _ ("Football"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 3},
-                {Enum.GOLF, _ ("Golf"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION, 4},
-                {Enum.HIKING, _ ("Hiking"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.STEP_COUNT | ActivityDataPoints.DISTANCE | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DURATION, 8},
-                {Enum.HOCKEY, _ ("Hockey"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 10},
-                {Enum.HORSE_RIDING, _ ("Horse Riding"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 5},
-                {Enum.OTHER_SPORTS, _ ("Other Sports"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 9},
-                {Enum.ROLLERBLADING, _ ("Rollerblading"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 10},
-                {Enum.RUNNING, _ ("Running"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.STEP_COUNT | ActivityDataPoints.DISTANCE | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DURATION, 15},
-                {Enum.SKIING, _ ("Skiing"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 12},
-                {Enum.SOCCER, _ ("Soccer"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 8},
-                {Enum.SOFTBALL, _ ("Softball"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 5},
-                {Enum.SWIMMING, _ ("Swimming"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 12},
-                {Enum.TENNIS, _ ("Tennis"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 6},
-                {Enum.TRACK_AND_FIELD, _ ("Track And Field"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE | ActivityDataPoints.STEP_COUNT, 5},
-                {Enum.VOLLEYBAL, _ ("Volleyball"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 4},
-                {Enum.WALKING, _ ("Walking"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.STEP_COUNT | ActivityDataPoints.DISTANCE | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DURATION, 5},
+                {BASKETBALL, _ ("Basketball"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 6},
+                {BICYCLING, _ ("Bicycling"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 10},
+                {BOXING, _ ("Boxing"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 7},
+                {DANCING, _ ("Dancing"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 8},
+                {FOOTBALL, _ ("Football"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 3},
+                {GOLF, _ ("Golf"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION, 4},
+                {HIKING, _ ("Hiking"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.STEP_COUNT | ActivityDataPoints.DISTANCE | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DURATION, 8},
+                {HOCKEY, _ ("Hockey"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 10},
+                {HORSE_RIDING, _ ("Horse Riding"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 5},
+                {OTHER_SPORTS, _ ("Other Sports"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 9},
+                {ROLLERBLADING, _ ("Rollerblading"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 10},
+                {RUNNING, _ ("Running"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.STEP_COUNT | ActivityDataPoints.DISTANCE | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DURATION, 15},
+                {SKIING, _ ("Skiing"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 12},
+                {SOCCER, _ ("Soccer"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 8},
+                {SOFTBALL, _ ("Softball"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 5},
+                {SWIMMING, _ ("Swimming"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE, 12},
+                {TENNIS, _ ("Tennis"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 6},
+                {TRACK_AND_FIELD, _ ("Track And Field"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DISTANCE | ActivityDataPoints.STEP_COUNT, 5},
+                {VOLLEYBAL, _ ("Volleyball"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.DURATION | ActivityDataPoints.HEART_RATE, 4},
+                {WALKING, _ ("Walking"), ActivityDataPoints.CALORIES_BURNED | ActivityDataPoints.STEP_COUNT | ActivityDataPoints.DISTANCE | ActivityDataPoints.HEART_RATE | ActivityDataPoints.DURATION, 5},
             };
         }
     }
