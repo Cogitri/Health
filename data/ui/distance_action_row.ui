@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  distance_row.ui
+
+  Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<interface domain="dev.Cogitri.Health">
+  <requires lib="gtk+" version="4.0"/>
+  <requires lib="libhandy" version="1.0"/>
+  <object class="GtkAdjustment" id="distance_adjustment">
+    <property name="upper">100000</property>
+    <property name="step-increment">100</property>
+    <property name="page-increment">1000</property>
+  </object>
+  <template class="HealthDistanceActionRow" parent="HdyActionRow">
+    <property name="title" translatable="yes">Distance</property>
+    <child>
+      <object class="GtkBox">
+        <child>
+          <object class="GtkBox" id="unit_box">
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <style>
+              <class name="linked"/>
+            </style>
+            <child>
+              <object class="GtkToggleButton" id="big_unit_togglebutton"/>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="small_unit_togglebutton">
+                <property name="active">1</property>
+                <property name="group">big_unit_togglebutton</property>
+                <signal name="toggled" handler="on_small_unit_togglebutton_toggled" swapped="no"/>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkSpinButton" id="distance_spin_button">
+            <property name="width-chars">5</property>
+            <property name="text">0</property>
+            <property name="adjustment">distance_adjustment</property>
+            <property name="numeric">1</property>
+            <property name="margin-start">6</property>
+            <property name="margin-end">6</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+            <signal name="value_changed" handler="on_distance_spin_button_changed" swapped="no"/>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

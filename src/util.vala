@@ -53,7 +53,6 @@ namespace Health {
             return new GLib.DateTime.local (date.get_year (), date.get_month (), date.get_day (), 0, 0, 0);
         }
 
-
         public string date_to_iso_8601 (GLib.Date d) {
             char[] buf = new char[20];
             assert (d.strftime (buf, "%Y-%m-%d") != 0);
@@ -66,12 +65,36 @@ namespace Health {
             return d;
         }
 
-        public double yard_to_meters (uint32 yard) {
+        public double yard_to_meters (double yard) {
             return yard * 0.9144;
         }
 
-        public double meters_to_yard (uint32 meters) {
+        public double meters_to_yard (double meters) {
             return meters * 1.09361;
+        }
+
+        public double miles_to_meters (double miles) {
+            return miles * 1609.34;
+        }
+
+        public double meters_to_miles (double meters) {
+            return meters / 1609.34;
+        }
+
+        public double meters_to_km (double meters) {
+            return meters / 1000;
+        }
+
+        public double km_to_meters (double km) {
+            return km * 1000;
+        }
+
+        public double miles_to_yards (double miles) {
+            return miles * 1760;
+        }
+
+        public double yards_to_miles (double yards) {
+            return yards / 1760;
         }
     }
 }

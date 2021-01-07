@@ -35,11 +35,6 @@
     <property name="step-increment">10</property>
     <property name="page-increment">100</property>
   </object>
-  <object class="GtkAdjustment" id="distance_adjustment">
-    <property name="upper">100000</property>
-    <property name="step-increment">100</property>
-    <property name="page-increment">1000</property>
-  </object>
   <object class="GtkAdjustment" id="heart_rate_average_adjustment">
     <property name="upper">300</property>
     <property name="step-increment">5</property>
@@ -148,21 +143,8 @@
       </object>
     </child>
   </object>
-  <object class="HdyActionRow" id="distance_action_row">
-    <property name="title" translatable="yes">Distance in Meters</property>
-    <child>
-      <object class="GtkSpinButton" id="distance_spin_button">
-        <property name="width-chars">5</property>
-        <property name="text" translatable="yes">0</property>
-        <property name="adjustment">distance_adjustment</property>
-        <property name="numeric">1</property>
-        <property name="margin-start">6</property>
-        <property name="margin-end">6</property>
-        <property name="margin-top">6</property>
-        <property name="margin-bottom">6</property>
-        <signal name="value_changed" handler="on_distance_spin_button_changed" swapped="no"/>
-      </object>
-    </child>
+  <object class="HealthDistanceActionRow" id="distance_action_row">
+    <signal name="notify::value" handler="on_distance_action_row_changed" swapped="no"/>
   </object>
   <object class="HdyActionRow" id="duration_action_row">
     <property name="title" translatable="yes">Active Minutes</property>
