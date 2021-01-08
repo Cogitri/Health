@@ -185,6 +185,7 @@ namespace Health {
             yield this.retrieve_access_token ();
             var db = TrackerDatabase.get_instance ();
             yield db.import_data (yield this.get_all_steps (), yield this.get_all_weights (), null);
+            new Settings ().timestamp_last_sync_google_fit = new GLib.DateTime.now ();
         }
 
         public async override void open_authentication_url (Settings settings) throws GLib.Error {
