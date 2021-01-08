@@ -142,6 +142,7 @@ namespace Health {
                         var window = (Gtk.Window) weak_ref;
                         var dialog = new Gtk.MessageDialog (window, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, _("Synching data from Google Fit failed due to error %s"), e.message);
                         unowned var dialog_u = dialog;
+                        dialog.show ();
                         dialog.response.connect (() => {
                             dialog_u.destroy ();
                         });
