@@ -65,7 +65,7 @@ namespace Health {
         [GtkChild]
         private Gtk.StringList activity_types_model;
 
-        public Activities.ActivityInfo selected_activity { get; set; }
+        public ActivityInfo selected_activity { get; set; }
 
         construct {
             var recent_activity_types = new Settings ().recent_activity_types;
@@ -76,20 +76,20 @@ namespace Health {
                     this.recent_activity_types_model.append (recent_activity_types[i]);
                 }
 
-                var activity = Activities.get_info_by_name (recent_activity_types[recent_activity_types.length - 1]);
+                var activity = ActivityType.get_info_by_name (recent_activity_types[recent_activity_types.length - 1]);
                 if (activity == null) {
                     warning ("Unknown activity %s, falling back to walking", recent_activity_types[recent_activity_types.length - 1]);
-                    this.selected_activity = Activities.get_values ()[Activities.Enum.WALKING];
+                    this.selected_activity = ActivityType.get_values ()[ActivityType.WALKING];
                 } else {
                     // FIXME: https://gitlab.gnome.org/GNOME/vala/-/issues/1126
                     var temp = (!) activity;
                     this.selected_activity = temp;
                 }
             } else {
-                this.selected_activity = Activities.get_values ()[Activities.Enum.WALKING];
+                this.selected_activity = ActivityType.get_values ()[ActivityType.WALKING];
             }
 
-            foreach (var x in Activities.get_values ()) {
+            foreach (var x in ActivityType.get_values ()) {
                 var recent_activity = false;
                 foreach (var activity in recent_activity_types) {
                     if (x.name == activity) {
@@ -125,7 +125,7 @@ namespace Health {
         [GtkCallback]
         private void on_activity_type_row_activated (Gtk.ListBoxRow r) {
             var row = (ActivityTypeRow) r;
-            var activity = Activities.get_info_by_name (row.label);
+            var activity = ActivityType.get_info_by_name (row.label);
 
             if (activity != null) {
                 // FIXME: https://gitlab.gnome.org/GNOME/vala/-/issues/1126

@@ -8,6 +8,7 @@ health_sources = files(
   'bmi_level_bar.vala',
   'database.vala',
   'date_editor.vala',
+  'distance_action_row.vala',
   'graph_view.vala',
   'oauth2_proxy.vala',
   'preferences_window.vala',
