@@ -30,11 +30,11 @@ namespace Health {
         private Settings settings;
         private TrackerDatabase db;
 
-        public WeightAddDialog (Gtk.Window? parent, Settings settings, TrackerDatabase db) {
+        public WeightAddDialog (Gtk.Window? parent, TrackerDatabase db) {
             Object (use_header_bar: 1);
             this.set_transient_for (parent);
             this.db = db;
-            this.settings = settings;
+            this.settings = Settings.get_instance ();
 
             this.update_title ();
             this.date_selector.notify["selected_date"].connect (() => {
@@ -49,7 +49,7 @@ namespace Health {
         public async void save () throws GLib.Error {
             var db = TrackerDatabase.get_instance ();
 
-            yield db.save_weight (new Weight (Util.date_from_datetime (this.date_selector.selected_date), new WeightUnitContainer.from_user_value (this.weight_spin_button.value, this.settings)), null);
+            yield db.save_weight (new Weight (Util.date_from_datetime (this.date_selector.selected_date), new WeightUnitContainer.from_user_value (this.weight_spin_button.value)), null);
         }
 
         private void update_title () {

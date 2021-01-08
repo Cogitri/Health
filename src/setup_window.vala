@@ -25,8 +25,6 @@ namespace Health {
         [GtkChild]
         private BMILevelBar bmi_levelbar;
         [GtkChild]
-        private SyncView sync_view;
-        [GtkChild]
         private Gtk.Box setup_first_page;
         [GtkChild]
         private Gtk.Box setup_second_page;
@@ -68,10 +66,9 @@ namespace Health {
          */
         public signal void setup_done ();
 
-        public SetupWindow (Gtk.Application application, Settings settings) {
+        public SetupWindow (Gtk.Application application) {
             Object (application: application);
-            this.settings = settings;
-            this.sync_view.settings = settings;
+            this.settings = Settings.get_instance ();
             this.stepgoal_spin_button.value = 10000;
 
             var provider = new Gtk.CssProvider ();
@@ -144,7 +141,7 @@ namespace Health {
             this.settings.user_age = uint.parse (this.age_spin_button.text);
             this.settings.user_height = height_in_cm;
             this.settings.user_stepgoal = uint.parse (this.stepgoal_spin_button.text);
-            this.settings.user_weightgoal = new WeightUnitContainer.from_user_value (this.weightgoal_spin_button.value, settings);
+            this.settings.user_weightgoal = new WeightUnitContainer.from_user_value (this.weightgoal_spin_button.value);
             this.setup_done ();
             this.destroy ();
         }

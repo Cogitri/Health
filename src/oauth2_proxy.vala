@@ -63,9 +63,9 @@ namespace Health {
 
         public async abstract void import_data () throws GLib.Error;
 
-        public async abstract void open_authentication_url (Settings settings) throws GLib.Error;
+        public async abstract void open_authentication_url () throws GLib.Error;
 
-        public async abstract void sync_data (Settings settings) throws GLib.Error;
+        public async abstract void sync_data () throws GLib.Error;
 
         protected abstract string get_provider_name ();
 
@@ -143,8 +143,12 @@ namespace Health {
             "https://www.googleapis.com/auth/fitness.body.write",
         };
 
+        private Settings settings;
+
         public GoogleFitOAuth2Proxy () {
             Object (client_id: GOOGLE_CLIENT_ID, auth_endpoint: GOOGLE_AUTH_ENDPOINT_URL, url_format: GOOGLE_API_ENDPOINT);
+
+            this.settings = Settings.get_instance ();
         }
 
         public async Gee.HashMap<string, uint32> get_all_steps () throws GLib.Error {
@@ -185,10 +189,10 @@ namespace Health {
             yield this.retrieve_access_token ();
             var db = TrackerDatabase.get_instance ();
             yield db.import_data (yield this.get_all_steps (), yield this.get_all_weights (), null);
-            new Settings ().timestamp_last_sync_google_fit = new GLib.DateTime.now ();
+            this.settings.timestamp_last_sync_google_fit = new GLib.DateTime.now ();
         }
 
-        public async override void open_authentication_url (Settings settings) throws GLib.Error {
+        public async override void open_authentication_url () throws GLib.Error {
             string scopes = "";
             foreach (var scope in GOOGLE_API_SCOPES) {
                 scopes += Soup.URI.encode (scope, null);
@@ -224,20 +228,20 @@ namespace Health {
                 var json = (!) ((!) Json.from_string (call.get_payload ())).get_object ();
                 this.access_token = json.get_string_member ("access_token");
                 yield this.set_refresh_token (json.get_string_member ("refresh_token"));
-                settings.sync_provider_setup_google_fit = true;
+                this.settings.sync_provider_setup_google_fit = true;
             }
         }
 
-        public override async void sync_data (Settings settings) throws GLib.Error {
+        public override async void sync_data () throws GLib.Error {
             if ((yield this.get_refresh_token ()) == null) {
                 throw new OAuth2Error.NO_LIBSECRET_PASSWORD ("Google Fit Refresh token not set up, won't sync.");
             }
 
             yield this.retrieve_access_token ();
             var db = TrackerDatabase.get_instance ();
-            var since = settings.timestamp_last_sync_google_fit;
+            var since = this.settings.timestamp_last_sync_google_fit;
             yield db.import_data (yield this.get_steps_since (since), yield this.get_weights_since (since), null);
-            settings.timestamp_last_sync_google_fit = new GLib.DateTime.now ();
+            this.settings.timestamp_last_sync_google_fit = new GLib.DateTime.now ();
         }
 
         protected override async void retrieve_access_token () throws GLib.Error {

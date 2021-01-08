@@ -43,14 +43,13 @@
 
         public signal void import_done ();
 
-        public PreferencesWindow (Settings settings, Gtk.Window? parent) {
-            this.settings = settings;
+        public PreferencesWindow (Gtk.Window? parent) {
+            this.settings = Settings.get_instance ();
 
             this.stepgoal_spin_button.value = this.settings.user_stepgoal;
             this.weightgoal_spin_button.value = this.settings.user_weightgoal.value;
             this.age_spin_button.value = this.settings.user_age;
             this.sync_view.parent_window = parent;
-            this.sync_view.settings = settings;
 
             if (this.settings.unitsystem == Unitsystem.METRIC) {
                 this.height_actionrow.title = _ ("Height in centimeters");
@@ -85,7 +84,7 @@
         private void weightgoal_spin_button_changed (Gtk.Editable editable) {
             var value = double.parse (editable.text);
             if (value != 0) {
-                this.settings.user_weightgoal = new WeightUnitContainer.from_user_value (value, settings);
+                this.settings.user_weightgoal = new WeightUnitContainer.from_user_value (value);
                 this.bmi_levelbar.weight = value;
             }
         }

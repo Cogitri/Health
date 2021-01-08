@@ -31,25 +31,19 @@ namespace Health {
         [GtkChild]
         private Gtk.Spinner google_fit_spinner;
 
-        private Settings? _settings;
-        public Settings? settings {
-            get {
-                return this._settings;
-            }
-            set {
-                this._settings = value;
-                if (((!) this._settings).sync_provider_setup_google_fit) {
-                    this.google_fit_selected_image.visible = true;
-                    this.google_fit_selected_image.icon_name = "object-select-symbolic";
-                    this.google_fit_stack.visible_child = this.google_fit_selected_image;
-                    this.google_fit_start_sync_row.activatable = false;
-                }
-            }
-        }
         public weak Gtk.Window? parent_window { get; set; }
 
         static construct {
             set_layout_manager_type (typeof (Gtk.BinLayout));
+        }
+
+        construct {
+            if (Settings.get_instance ().sync_provider_setup_google_fit) {
+                this.google_fit_selected_image.visible = true;
+                this.google_fit_selected_image.icon_name = "object-select-symbolic";
+                this.google_fit_stack.visible_child = this.google_fit_selected_image;
+                this.google_fit_start_sync_row.activatable = false;
+            }
         }
 
         [GtkCallback]
@@ -61,7 +55,7 @@ namespace Health {
                 this.google_fit_start_sync_row.activatable = false;
                 this.google_fit_stack.visible_child = this.google_fit_spinner;
                 var proxy = new GoogleFitOAuth2Proxy ();
-                proxy.open_authentication_url.begin (settings ?? new Health.Settings (), (obj, res) => {
+                proxy.open_authentication_url.begin ((obj, res) => {
                     try {
                         proxy.open_authentication_url.end (res);
                         proxy.import_data.begin ((obj, res) => {

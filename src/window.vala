@@ -41,10 +41,10 @@ namespace Health {
         private View[] views;
         private uint sync_source_id;
 
-        public Window (Gtk.Application app, Settings settings) {
+        public Window (Gtk.Application app) {
             Object (application: app);
 
-            this.settings = settings;
+            this.settings = Settings.get_instance ();
 
             if (Config.APPLICATION_ID.has_suffix ("Devel")) {
                 this.get_style_context ().add_class ("devel");
@@ -62,10 +62,10 @@ namespace Health {
                 error (e.message);
             }
 
-            var weight_model = new WeightGraphModel (this.settings, this.db);
+            var weight_model = new WeightGraphModel (this.db);
             var steps_model = new StepsGraphModel (this.db);
-            var activity_model = new ActivityModel (this.settings, this.db);
-            this.views = new View[] { new StepView (steps_model, this.settings, this.db), new WeightView (weight_model, settings, this.db), new ActivityView (activity_model, this.settings, this.db)};
+            var activity_model = new ActivityModel (this.db);
+            this.views = new View[] { new StepView (steps_model, this.db), new WeightView (weight_model, this.db), new ActivityView (activity_model, this.db)};
 
             foreach (var view in views) {
                 var page = this.stack.add_titled (view, view.name, view.title);
@@ -99,11 +99,11 @@ namespace Health {
             }
             if (this.settings.sync_provider_setup_google_fit) {
                 GLib.Idle.add (() => {
-                    sync_data (this, this.settings, this.views, 0);
+                    Window.sync_data (this, this.views, 0);
                     return GLib.Source.REMOVE;
                 });
                 this.sync_source_id = GLib.Timeout.add_seconds (900, () => {
-                    sync_data (this, this.settings, this.views, this.sync_source_id);
+                    Window.sync_data (this, this.views, this.sync_source_id);
                     return GLib.Source.CONTINUE;
                 });
             }
@@ -121,10 +121,10 @@ namespace Health {
             this.primary_menu_popover.popup ();
         }
 
-        private static void sync_data (Gtk.Window? parent, Settings settings, View[] views, uint source_id) {
+        private static void sync_data (Gtk.Window? parent, View[] views, uint source_id) {
             var proxy = new GoogleFitOAuth2Proxy ();
             var parent_ref = GLib.WeakRef (parent);
-            proxy.sync_data.begin (settings, (obj, res) => {
+            proxy.sync_data.begin ((obj, res) => {
                 try {
                     proxy.sync_data.end (res);
                     foreach (var view in views) {
@@ -192,10 +192,10 @@ namespace Health {
             switch (this.current_view) {
             case ACTIVITIES:
             case STEPS:
-                dialog = new ActivityAddDialog (this, this.db, this.settings);
+                dialog = new ActivityAddDialog (this, this.db);
                 break;
             case WEIGHT:
-                dialog = new WeightAddDialog (this, this.settings, this.db);
+                dialog = new WeightAddDialog (this, this.db);
                 break;
             default:
                 error ("Can't create add dialog for unknown view type %d", this.current_view);

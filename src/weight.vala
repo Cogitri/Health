@@ -35,11 +35,9 @@ namespace Health {
      * An implementation of {@link GraphModel} that interacts with the user's weight measurements.
      */
     public class WeightGraphModel : GraphModel<Weight> {
-        private Settings settings;
         private TrackerDatabase db;
 
-        public WeightGraphModel (Settings settings, TrackerDatabase db) {
-            this.settings = settings;
+        public WeightGraphModel (TrackerDatabase db) {
             this.db = db;
 
             this.init ();
@@ -53,7 +51,7 @@ namespace Health {
          */
         public async override bool reload () {
             try {
-                this.arr = yield db.get_weights_after (Util.get_date_in_n_days (-30), this.settings, null);
+                this.arr = yield db.get_weights_after (Util.get_date_in_n_days (-30), null);
                 return true;
             } catch (GLib.Error e) {
                 warning (_ ("Failed to load weights from database due to error %s"), e.message);
@@ -88,13 +86,13 @@ namespace Health {
      * An implementation of {@link GraphView} that visualizes the user's weight measurements over time.
      */
     public class WeightGraphView : GraphView {
-        public WeightGraphView (WeightGraphModel model, double weightgoal, Settings settings) {
+        public WeightGraphView (WeightGraphModel model, double weightgoal) {
             base (model.to_points (), _ ("Weightgoal"), weightgoal);
             this.x_lines_interval = 10;
             this.hover_func = (point) => {
                 string unit = "KG";
 
-                if (settings.unitsystem == Unitsystem.IMPERIAL) {
+                if (Settings.get_instance ().unitsystem == Unitsystem.IMPERIAL) {
                     unit = "PB";
                 }
 
@@ -121,9 +119,9 @@ namespace Health {
         private WeightGraphView? weight_graph_view;
         private WeightGraphModel weight_graph_model;
 
-        public WeightView (WeightGraphModel model, Settings settings, TrackerDatabase db) {
+        public WeightView (WeightGraphModel model, TrackerDatabase db) {
             this.name = "Weight";
-            this.settings = settings;
+            this.settings = Settings.get_instance ();
             this.title = _ ("Weight");
             this.icon_name = "weight-scale-symbolic";
             this.weight_graph_model = model;
@@ -131,7 +129,7 @@ namespace Health {
             this.update_weightgoal_label ();
 
             if (!this.weight_graph_model.is_empty) {
-                this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value, this.settings);
+                this.weight_graph_view = new WeightGraphView (model, this.settings.user_weightgoal.value);
                 this.scrolled_window.child = (!) this.weight_graph_view;
                 this.stack.visible_child_name = "data_page";
             }
@@ -206,7 +204,7 @@ namespace Health {
                     this.update_weightgoal_label ();
 
                     if (this.weight_graph_view == null && !this.weight_graph_model.is_empty) {
-                        this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value, this.settings);
+                        this.weight_graph_view = new WeightGraphView (this.weight_graph_model, this.settings.user_weightgoal.value);
                         this.scrolled_window.child = (!) this.weight_graph_view;
                         this.stack.visible_child_name = "data_page";
                     } else if (this.weight_graph_view != null) {

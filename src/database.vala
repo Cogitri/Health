@@ -94,7 +94,7 @@ namespace Health {
          * @throws DatabaseError If querying the DB fails.
          * @return A {@link Gee.ArrayList} of {@link Activity}s that have been done in the timeframe of link until today.
          */
-         public async Gee.ArrayList<Activity> get_activities_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
+         public async Gee.ArrayList<Activity> get_activities_after (GLib.Date date, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_ACTIVITIES_AFTER.printf (Util.date_to_iso_8601 (date)), cancellable);
             var ret = new Gee.ArrayList<Activity> ();
 
@@ -204,12 +204,12 @@ namespace Health {
          * @throws DatabaseError If querying the DB fails.
          * @return A {@link Gee.ArrayList} of {@link Weight} measurements that have been done in the timeframe of link until today,
          */
-        public async Gee.ArrayList<Weight> get_weights_after (GLib.Date date, Settings settings, GLib.Cancellable? cancellable = null) throws GLib.Error {
+        public async Gee.ArrayList<Weight> get_weights_after (GLib.Date date, GLib.Cancellable? cancellable = null) throws GLib.Error {
             var cursor = yield this.db.query_async (QUERY_WEIGHT_AFTER.printf (Util.date_to_iso_8601 (date)), cancellable);
 
             var ret = new Gee.ArrayList<Weight> ();
             while (yield cursor.next_async (cancellable)) {
-                ret.add (new Weight (Util.iso_8601_to_date ((!) cursor.get_string (0)), new WeightUnitContainer.from_database_value ((uint32) cursor.get_double (1), settings)));
+                ret.add (new Weight (Util.iso_8601_to_date ((!) cursor.get_string (0)), new WeightUnitContainer.from_database_value ((uint32) cursor.get_double (1))));
             }
 
             return ret;

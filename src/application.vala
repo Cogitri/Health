@@ -5,7 +5,7 @@ namespace Health {
 
         public Application () {
             Object (application_id: Config.APPLICATION_ID, flags : ApplicationFlags.FLAGS_NONE);
-            this.settings = new Settings ();
+            this.settings = Settings.get_instance ();
         }
 
         private const GLib.ActionEntry APP_ENTRIES[] = {
@@ -22,14 +22,14 @@ namespace Health {
             if (this.window != null) {
                 return;
             } else if (this.settings.did_initial_setup) {
-                var window = new Window (this, settings);
+                var window = new Window (this);
                 window.show ();
                 this.window = window;
             } else {
-                var setup_window = new SetupWindow (this, this.settings);
+                var setup_window = new SetupWindow (this);
                 setup_window.setup_done.connect (() => {
                     this.settings.did_initial_setup = true;
-                    var window = new Window (this, settings);
+                    var window = new Window (this);
                     window.show ();
                     this.window = window;
                 });
@@ -94,7 +94,7 @@ namespace Health {
         }
 
         private void on_preferences (GLib.SimpleAction action, GLib.Variant? parameter) {
-            var pref_window = new PreferencesWindow (this.settings, this.window);
+            var pref_window = new PreferencesWindow (this.window);
             pref_window.import_done.connect (() => {
                 if (this.window != null) {
                     ((!) this.window).update ();

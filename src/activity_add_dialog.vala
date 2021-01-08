@@ -87,11 +87,11 @@ namespace Health {
         private Settings settings;
         private TrackerDatabase db;
 
-        public ActivityAddDialog (Gtk.Window? parent, TrackerDatabase db, Settings settings) {
+        public ActivityAddDialog (Gtk.Window? parent, TrackerDatabase db) {
             Object (use_header_bar: 1);
             this.set_transient_for (parent);
             this.db = db;
-            this.settings = settings;
+            this.settings = Settings.get_instance ();
             this.activity = (Activity) Object.new (typeof (Activity));
             this.selected_activity = ActivityType.get_values ()[ActivityType.WALKING];
 

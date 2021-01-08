@@ -66,7 +66,7 @@
         private Settings settings;
 
         construct {
-            this.settings = new Settings ();
+            this.settings = Settings.get_instance ();
             this.set_togglebutton_text ();
 
             this.settings.changed[Settings.UNITSYSTEM_KEY].connect (() => {
