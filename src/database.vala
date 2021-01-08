@@ -242,6 +242,9 @@ namespace Health {
 
             info ("Importing %u step counts and %u weight measurements", steps.size, weight.size);
 
+            if (steps.size == 0 && weight.size == 0) {
+                return;
+            }
 
             foreach (var s in steps) {
                 var resource = new Tracker.Resource (null);
