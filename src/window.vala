@@ -136,6 +136,7 @@ namespace Health {
                         GLib.Source.remove (source_id);
                     }
                 } catch (GLib.Error e) {
+                    warning ("Google Fit sync failed: %s", e.message);
                     var weak_ref = parent_ref.get ();
                     if (weak_ref != null) {
                         var window = (Gtk.Window) weak_ref;
