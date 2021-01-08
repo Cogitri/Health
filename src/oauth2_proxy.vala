@@ -149,14 +149,14 @@ namespace Health {
 
         public async Gee.HashMap<string, uint32> get_all_steps () throws GLib.Error {
             var call = this.new_call ();
-            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/0-%lld".printf (GLib.get_real_time () * 1000));
+            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/0-%lld".printf (Util.datetime_to_ns (new GLib.DateTime.now ())));
             yield call.invoke_async (null);
             return this.process_steps_json (call.get_payload ());
         }
 
         public async Gee.HashMap<string, double?> get_all_weights () throws GLib.Error {
             var call = this.new_call ();
-            call.set_function ("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/0-%lld".printf (GLib.get_real_time () * 1000));
+            call.set_function ("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/0-%lld".printf (Util.datetime_to_ns (new GLib.DateTime.now ())));
             yield call.invoke_async (null);
             return this.process_weights_json (call.get_payload ());
         }
@@ -167,14 +167,14 @@ namespace Health {
 
         public async Gee.HashMap<string, uint32> get_steps_since (GLib.DateTime since) throws GLib.Error {
             var call = this.new_call ();
-            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/%lld-%lld".printf (since.to_unix () * 1000, GLib.get_real_time () * 1000));
+            call.set_function ("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/%lld-%lld".printf (Util.datetime_to_ns (since), Util.datetime_to_ns (new GLib.DateTime.now ())));
             yield call.invoke_async (null);
             return this.process_steps_json (call.get_payload ());
         }
 
         public async Gee.HashMap<string, double?> get_weights_since (GLib.DateTime since) throws GLib.Error {
             var call = this.new_call ();
-            call.set_function ("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/%lld-%lld".printf (since.to_unix () * 1000, GLib.get_real_time () * 1000));
+            call.set_function ("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/%lld-%lld".printf (Util.datetime_to_ns (since), Util.datetime_to_ns (new GLib.DateTime.now ())));
             yield call.invoke_async (null);
             return this.process_weights_json (call.get_payload ());
         }

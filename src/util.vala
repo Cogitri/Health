@@ -65,6 +65,10 @@ namespace Health {
             return d;
         }
 
+        public uint64 datetime_to_ns (GLib.DateTime date) {
+            return date.to_unix () * 1000000000;
+        }
+
         public double yard_to_meters (double yard) {
             return yard * 0.9144;
         }
