@@ -18,7 +18,7 @@
 
 namespace Health {
     /**
-     * An implementation of {@link GLib.ListModel} that stores {@link Activities}. Can be used with
+     * An implementation of {@link GLib.ListModel} that stores {@link Activity}s. Can be used with
      * {@link ActivityView} to display past activities.
      */
     public class ActivityModel : GLib.Object, GLib.ListModel {
@@ -31,8 +31,8 @@ namespace Health {
             }
         }
 
-        public ActivityModel (Settings settings, TrackerDatabase db) {
-            this.settings = settings;
+        public ActivityModel (TrackerDatabase db) {
+            this.settings = Settings.get_instance ();
             this.db = db;
             this.activities = new Gee.ArrayList<Activity> ();
         }
@@ -71,7 +71,7 @@ namespace Health {
         public async bool reload () {
             try {
                 var previous_size = this.activities.size;
-                this.activities = yield this.db.get_activities_after (Util.get_date_in_n_days (-30), this.settings);
+                this.activities = yield this.db.get_activities_after (Util.get_date_in_n_days (-30));
                 this.items_changed (0, previous_size, this.activities.size);
                 return true;
             } catch (GLib.Error e) {
@@ -94,11 +94,11 @@ namespace Health {
         private ActivityModel activity_model;
         TrackerDatabase db;
 
-        public ActivityView (ActivityModel model, Settings settings, TrackerDatabase db) {
+        public ActivityView (ActivityModel model, TrackerDatabase db) {
             this.name = "Activities";
             this.title = _ ("Activities");
             this.icon_name = "walking-symbolic";
-            this.settings = settings;
+            this.settings = Settings.get_instance ();
             this.activity_model = model;
             this.db = db;
 

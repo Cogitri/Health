@@ -87,11 +87,11 @@ namespace Health {
         private Settings settings;
         private TrackerDatabase db;
 
-        public ActivityAddDialog (Gtk.Window? parent, TrackerDatabase db, Settings settings) {
+        public ActivityAddDialog (Gtk.Window? parent, TrackerDatabase db) {
             Object (use_header_bar: 1);
             this.set_transient_for (parent);
             this.db = db;
-            this.settings = settings;
+            this.settings = Settings.get_instance ();
             this.activity = (Activity) Object.new (typeof (Activity));
             this.selected_activity = ActivityType.get_values ()[ActivityType.WALKING];
 
@@ -115,26 +115,6 @@ namespace Health {
             });
 
             this.filter_model = filter_model;
-            // FIXME: Also allow entering distance in KM/Miles
-            if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
-                this.distance_action_row.title = _ ("Distance in Yards");
-            }
-
-            this.calories_burned_spin_button.input.connect ((out o) => {
-                this.calories_burned_spin_button_user_changed = true;
-                o = 0;
-                return 0;
-            });
-            this.duration_spin_button.input.connect ((out o) => {
-                this.duration_spin_button_user_changed = true;
-                o = 0;
-                return 0;
-            });
-            this.steps_spin_button.input.connect ((out o) => {
-                this.steps_spin_button_user_changed = true;
-                o = 0;
-                return 0;
-            });
         }
 
         /**
@@ -282,8 +262,6 @@ namespace Health {
 
         [GtkCallback]
         private void on_distance_action_row_changed (GLib.Object o, GLib.ParamSpec p) {
-            this.distance_spin_button_user_changed = true;
-
             if (this.set_counter != 0) {
                 this.set_counter--;
                 return;
@@ -316,6 +294,25 @@ namespace Health {
             this.activity.steps = (uint32) e.value;
             this.activity.autofill_from_steps ();
             this.set_spin_buttons_from_activity (e);
+        }
+
+        [GtkCallback]
+        private int on_user_input (Gtk.Widget w, out double new_value) {
+            new_value = 0;
+
+            if (w == this.calories_burned_spin_button) {
+                this.calories_burned_spin_button_user_changed = true;
+            } else if (w == this.distance_action_row) {
+                this.distance_spin_button_user_changed = true;
+            } else if (w == this.duration_spin_button) {
+                this.duration_spin_button_user_changed = true;
+            } else if (w == this.steps_spin_button) {
+                this.steps_spin_button_user_changed = true;
+            } else {
+                assert_not_reached ();
+            }
+
+            return 0;
         }
     }
 }

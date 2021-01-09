@@ -56,8 +56,7 @@ namespace Health {
         public void check_exists_weight () throws ValaUnit.TestError {
             var db = this.open_db ();
             var date = Util.get_today_date ();
-            var settings = new Settings ();
-            var weight = new Weight (date, new WeightUnitContainer.from_database_value (100, settings));
+            var weight = new Weight (date, new WeightUnitContainer.from_database_value (100));
             try {
                 db.save_weight.begin (weight, null, this.async_completion);
                 db.save_weight.end (this.async_result ());
@@ -103,15 +102,14 @@ namespace Health {
         public void get_after_weight () throws ValaUnit.TestError {
             var db = this.open_db ();
             var date = Util.get_today_date ();
-            var settings = new Settings ();
-            var weight = new Weight (date, new WeightUnitContainer.from_database_value (100, settings));
+            var weight = new Weight (date, new WeightUnitContainer.from_database_value (100));
             try {
                 db.save_weight.begin (weight, null, this.async_completion);
                 db.save_weight.end (this.async_result ());
-                db.get_weights_after.begin (date, settings, null, this.async_completion);
+                db.get_weights_after.begin (date, null, this.async_completion);
                 assert_equal<uint?> (db.get_weights_after.end (this.async_result ()).size, 1);
                 date.subtract_days (1);
-                db.get_weights_after.begin (date, settings, null, this.async_completion);
+                db.get_weights_after.begin (date, null, this.async_completion);
                 assert (!db.get_weights_after.end (this.async_result ()).is_empty);
             } catch (GLib.Error e) {
                 try {
@@ -149,10 +147,9 @@ namespace Health {
 
         public void save_activity_and_weight () throws ValaUnit.TestError {
             var db = this.open_db ();
-            var settings = new Settings ();
             var date = Util.get_today_date ();
             var activity = new Activity (ActivityType.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
-            var weight = new Weight (date, new WeightUnitContainer.from_database_value (100, settings));
+            var weight = new Weight (date, new WeightUnitContainer.from_database_value (100));
             Gee.ArrayList<Steps>? retrieved_steps = null;
             Gee.ArrayList<Weight>? retrieved_weights = null;
             try {
@@ -162,7 +159,7 @@ namespace Health {
                 db.save_weight.end (this.async_result ());
                 db.get_steps_after.begin (Util.get_today_date (), null, this.async_completion);
                 retrieved_steps = db.get_steps_after.end (this.async_result ());
-                db.get_weights_after.begin (Util.get_today_date (), settings, null, this.async_completion);
+                db.get_weights_after.begin (Util.get_today_date (), null, this.async_completion);
                 retrieved_weights = db.get_weights_after.end (this.async_result ());
             } catch (GLib.Error e) {
                 try {
@@ -182,13 +179,12 @@ namespace Health {
 
         public void save_weight () throws ValaUnit.TestError {
             var db = this.open_db ();
-            var settings = new Settings ();
-            var weight = new Weight (Util.get_today_date (), new WeightUnitContainer.from_database_value (100, settings));
+            var weight = new Weight (Util.get_today_date (), new WeightUnitContainer.from_database_value (100));
             Gee.ArrayList<Weight>? retrieved_weight = null;
             try {
                 db.save_weight.begin (weight, null, this.async_completion);
                 db.save_weight.end (this.async_result ());
-                db.get_weights_after.begin (Util.get_today_date (), settings, null, this.async_completion);
+                db.get_weights_after.begin (Util.get_today_date (), null, this.async_completion);
 
                 retrieved_weight = db.get_weights_after.end (this.async_result ());
             } catch (GLib.Error e) {
@@ -206,10 +202,9 @@ namespace Health {
 
         public void save_weight_and_steps () throws ValaUnit.TestError {
             var db = this.open_db ();
-            var settings = new Settings ();
             var date = Util.get_today_date ();
             var activity = new Activity (ActivityType.WALKING, date, 0, 0, 0, 0, 0, 0, 10000);
-            var weight = new Weight (date, new WeightUnitContainer.from_database_value (100, settings));
+            var weight = new Weight (date, new WeightUnitContainer.from_database_value (100));
             Gee.ArrayList<Steps>? retrieved_steps = null;
             Gee.ArrayList<Weight>? retrieved_weights = null;
             try {
@@ -219,7 +214,7 @@ namespace Health {
                 db.save_activity.end (this.async_result ());
                 db.get_steps_after.begin (Util.get_today_date (), null, this.async_completion);
                 retrieved_steps = db.get_steps_after.end (this.async_result ());
-                db.get_weights_after.begin (Util.get_today_date (), settings, null, this.async_completion);
+                db.get_weights_after.begin (Util.get_today_date (), null, this.async_completion);
                 retrieved_weights = db.get_weights_after.end (this.async_result ());
             } catch (GLib.Error e) {
                 try {

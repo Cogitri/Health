@@ -68,7 +68,7 @@ namespace Health {
         public ActivityInfo selected_activity { get; set; }
 
         construct {
-            var recent_activity_types = new Settings ().recent_activity_types;
+            var recent_activity_types = Settings.get_instance ().recent_activity_types;
             if (recent_activity_types.length != 0) {
                 this.recents_box.visible = true;
                 // The array is sorted in least-recent to most-recent, so add the most recent first by reversing the for-loop

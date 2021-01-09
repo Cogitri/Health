@@ -170,11 +170,11 @@ namespace Health {
         private StepsGraphView? steps_graph_view;
         private StepsGraphModel steps_graph_model;
 
-        public StepView (StepsGraphModel model, Settings settings, TrackerDatabase db) {
+        public StepView (StepsGraphModel model, TrackerDatabase db) {
             this.name = "Steps";
             this.title = _ ("Steps");
             this.icon_name = "steps-symbolic";
-            this.settings = settings;
+            this.settings = Settings.get_instance ();
             this.steps_graph_model = model;
 
             if (!this.steps_graph_model.is_empty) {

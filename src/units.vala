@@ -44,8 +44,8 @@ namespace Health {
         /**
         * Construct from a database value (in KG!)
         */
-        public WeightUnitContainer.from_database_value (double weight_in_kg, Settings settings) {
-            this.settings = settings;
+        public WeightUnitContainer.from_database_value (double weight_in_kg) {
+            this.settings = Settings.get_instance ();
             this._value = weight_in_kg;
         }
 
@@ -55,8 +55,8 @@ namespace Health {
          * If the unitsystem property of Settings is set to Imperial, we'll convert to KG here,
          * if not it is assumed that the weight parameter is in KG.
          */
-        public WeightUnitContainer.from_user_value (double weight, Settings settings) {
-            this.settings = settings;
+        public WeightUnitContainer.from_user_value (double weight) {
+            this.settings = Settings.get_instance ();
             this.value = weight;
         }
 

@@ -23,7 +23,7 @@
     }
 
     /**
-     * Settings utilizes GSettings to save the user's preferences.
+     * Settings utilizes {@link GLib.Settings} to save the user's preferences. Use {@link get_instance} to get an instance of the {@link Settings} Singleton.
      */
     public class Settings : GLib.Settings {
         public const string CURRENT_VIEW_ID_KEY = "current-view-id";
@@ -123,7 +123,7 @@
 
         public WeightUnitContainer user_weightgoal {
             owned get {
-                return new WeightUnitContainer.from_database_value (this.get_double (USER_WEIGHTGOAL_KEY), this);
+                return new WeightUnitContainer.from_database_value (this.get_double (USER_WEIGHTGOAL_KEY));
             }
             set {
                 this.set_double (USER_WEIGHTGOAL_KEY, value.get_in_kg ());
@@ -157,7 +157,19 @@
             }
         }
 
-        public Settings () {
+        private static Settings? instance;
+
+        /**
+         * Get an instance of the Settings object. If it doesn't exist yet, create it.
+         */
+        public static Settings get_instance () {
+            if (Settings.instance == null) {
+                Settings.instance = new Settings ();
+            }
+            return (!) Settings.instance;
+        }
+
+        private Settings () {
             Object (schema_id: "dev.Cogitri.Health");
         }
     }

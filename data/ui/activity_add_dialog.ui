@@ -147,11 +147,13 @@
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
         <signal name="value_changed" handler="on_calories_burned_spin_button_changed" swapped="no"/>
+        <signal name="input" handler="on_user_input" swapped="no"/>
       </object>
     </child>
   </object>
   <object class="HealthDistanceActionRow" id="distance_action_row">
     <signal name="notify::value" handler="on_distance_action_row_changed" swapped="no"/>
+    <signal name="input" handler="on_user_input" swapped="no"/>
   </object>
   <object class="HdyActionRow" id="duration_action_row">
     <property name="title" translatable="yes">Active Minutes</property>
@@ -166,6 +168,7 @@
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
         <signal name="value_changed" handler="on_duration_spin_button_changed" swapped="no"/>
+        <signal name="input" handler="on_user_input" swapped="no"/>
       </object>
     </child>
   </object>
@@ -227,6 +230,7 @@
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
         <signal name="value_changed" handler="on_steps_spin_button_changed" swapped="no"/>
+        <signal name="input" handler="on_user_input" swapped="no"/>
       </object>
     </child>
   </object>

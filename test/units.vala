@@ -25,17 +25,17 @@ namespace Health {
         }
 
         public void convert () throws ValaUnit.TestError {
-            var settings = new Settings ();
+            var settings = Settings.get_instance ();
             settings.unitsystem = Unitsystem.IMPERIAL;
-            var val = new WeightUnitContainer.from_user_value (100, settings);
+            var val = new WeightUnitContainer.from_user_value (100);
             assert_equal<double?> (val.value, 100);
             assert_equal<double?> (val.get_in_kg (), 45.359237);
         }
 
         public void from_database_value () throws ValaUnit.TestError {
-            var settings = new Settings ();
+            var settings = Settings.get_instance ();
             settings.unitsystem = Unitsystem.IMPERIAL;
-            var val = new WeightUnitContainer.from_database_value (100, settings);
+            var val = new WeightUnitContainer.from_database_value (100);
             assert_equal<double?> (val.value, 220.46226218487757);
             assert_equal<double?> (val.get_in_kg (), 100);
         }
