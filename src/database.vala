@@ -200,7 +200,6 @@ namespace Health {
          * added on the 30th of September or later will be returned.
          *
          * @param date The earliest date that steps should be retrieved from.
-         * @param settings The Health.Settings object that is used for determining whether to use imperial or metric units.
          * @throws DatabaseError If querying the DB fails.
          * @return A {@link Gee.ArrayList} of {@link Weight} measurements that have been done in the timeframe of link until today,
          */

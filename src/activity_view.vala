@@ -18,7 +18,7 @@
 
 namespace Health {
     /**
-     * An implementation of {@link GLib.ListModel} that stores {@link Activities}. Can be used with
+     * An implementation of {@link GLib.ListModel} that stores {@link Activity}s. Can be used with
      * {@link ActivityView} to display past activities.
      */
     public class ActivityModel : GLib.Object, GLib.ListModel {
