@@ -37,12 +37,14 @@ namespace Health {
             }
         }
 
+        public abstract string provider_name { get; }
+
         public async string? get_refresh_token () {
             var schema = new Secret.Schema (Config.APPLICATION_ID, Secret.SchemaFlags.NONE, "oauth2-provider", Secret.SchemaAttributeType.STRING);
 
             string? token = null;
             try {
-                token = yield Secret.password_lookup (schema, null, "oauth2-provider", this.get_provider_name ());
+                token = yield Secret.password_lookup (schema, null, "oauth2-provider", this.provider_name);
             } catch (GLib.Error e) {
                 warning ("Failed to retrieve OAuth2 Refresh-Token from libsecret due to error %s. Falling back to regular authentication.", e.message);
                 return null;
@@ -55,7 +57,7 @@ namespace Health {
             var schema = new Secret.Schema (Config.APPLICATION_ID, Secret.SchemaFlags.NONE, "oauth2-provider", Secret.SchemaAttributeType.STRING);
 
             try {
-                yield Secret.password_store (schema, Secret.COLLECTION_DEFAULT, "Health %s OAuth2-Refresh-Token".printf (this.get_provider_name ()), refresh_token, null, "oauth2-provider", this.get_provider_name ());
+                yield Secret.password_store (schema, Secret.COLLECTION_DEFAULT, "Health %s OAuth2-Refresh-Token".printf (this.provider_name), refresh_token, null, "oauth2-provider", this.provider_name);
             } catch (GLib.Error e) {
                 warning ("Failed to store OAuth2 refresh-token via libsecret due to error %s", e.message);
             }
@@ -66,8 +68,6 @@ namespace Health {
         public async abstract void open_authentication_url () throws GLib.Error;
 
         public async abstract void sync_data () throws GLib.Error;
-
-        protected abstract string get_provider_name ();
 
         protected string? lookup_token (GLib.HashTable<weak string, weak string> query_params, string parameter) {
             string? encoded_value = query_params.lookup (parameter);
@@ -142,6 +142,11 @@ namespace Health {
             "https://www.googleapis.com/auth/fitness.activity.write",
             "https://www.googleapis.com/auth/fitness.body.write",
         };
+        public override string provider_name {
+            get {
+                return "GoogleFit";
+            }
+        }
 
         private Settings settings;
 
@@ -163,10 +168,6 @@ namespace Health {
             call.set_function ("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/0-%lld".printf (Util.datetime_to_ns (new GLib.DateTime.now ())));
             yield call.invoke_async (null);
             return this.process_weights_json (call.get_payload ());
-        }
-
-        protected override string get_provider_name () {
-            return "GoogleFit";
         }
 
         public async Gee.HashMap<string, uint32> get_steps_since (GLib.DateTime since) throws GLib.Error {
