@@ -115,10 +115,6 @@ namespace Health {
             });
 
             this.filter_model = filter_model;
-            // FIXME: Also allow entering distance in KM/Miles
-            if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
-                this.distance_action_row.title = _ ("Distance in Yards");
-            }
 
             this.calories_burned_spin_button.input.connect ((out o) => {
                 this.calories_burned_spin_button_user_changed = true;
