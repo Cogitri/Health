@@ -20,6 +20,11 @@
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/distance_action_row.ui")]
     public class DistanceActionRow : Hdy.ActionRow {
         /**
+         * Forwards the {@link Gtk.SpinButton}'s {@link Gtk.SpinButton.input} Signal
+         */
+        public signal int input (out double new_value);
+
+        /**
          * The current value of the spinner in meters
          */
         public double value {
@@ -116,6 +121,11 @@
 
             this._value = value;
             this.notify_property ("value");
+        }
+
+        [GtkCallback]
+        private int on_distance_spin_button_input (Gtk.SpinButton sb, out double new_value) {
+            return this.input (out new_value);
         }
     }
 

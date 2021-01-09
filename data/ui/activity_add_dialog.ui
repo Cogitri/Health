@@ -152,6 +152,7 @@
   </object>
   <object class="HealthDistanceActionRow" id="distance_action_row">
     <signal name="notify::value" handler="on_distance_action_row_changed" swapped="no"/>
+    <signal name="input" handler="on_user_input" swapped="no"/>
   </object>
   <object class="HdyActionRow" id="duration_action_row">
     <property name="title" translatable="yes">Active Minutes</property>

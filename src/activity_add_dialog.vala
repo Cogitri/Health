@@ -278,8 +278,6 @@ namespace Health {
 
         [GtkCallback]
         private void on_distance_action_row_changed (GLib.Object o, GLib.ParamSpec p) {
-            this.distance_spin_button_user_changed = true;
-
             if (this.set_counter != 0) {
                 this.set_counter--;
                 return;
@@ -312,6 +310,17 @@ namespace Health {
             this.activity.steps = (uint32) e.value;
             this.activity.autofill_from_steps ();
             this.set_spin_buttons_from_activity (e);
+        }
+
+        [GtkCallback]
+        private int on_user_input (Gtk.Widget w, out double new_value) {
+            new_value = 0;
+
+            if (w == this.distance_action_row) {
+                this.distance_spin_button_user_changed = true;
+            }
+
+            return 0;
         }
     }
 }
