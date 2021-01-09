@@ -115,22 +115,6 @@ namespace Health {
             });
 
             this.filter_model = filter_model;
-
-            this.calories_burned_spin_button.input.connect ((out o) => {
-                this.calories_burned_spin_button_user_changed = true;
-                o = 0;
-                return 0;
-            });
-            this.duration_spin_button.input.connect ((out o) => {
-                this.duration_spin_button_user_changed = true;
-                o = 0;
-                return 0;
-            });
-            this.steps_spin_button.input.connect ((out o) => {
-                this.steps_spin_button_user_changed = true;
-                o = 0;
-                return 0;
-            });
         }
 
         /**
@@ -316,8 +300,16 @@ namespace Health {
         private int on_user_input (Gtk.Widget w, out double new_value) {
             new_value = 0;
 
-            if (w == this.distance_action_row) {
+            if (w == this.calories_burned_spin_button) {
+                this.calories_burned_spin_button_user_changed = true;
+            } else if (w == this.distance_action_row) {
                 this.distance_spin_button_user_changed = true;
+            } else if (w == this.duration_spin_button) {
+                this.duration_spin_button_user_changed = true;
+            } else if (w == this.steps_spin_button) {
+                this.steps_spin_button_user_changed = true;
+            } else {
+                assert_not_reached ();
             }
 
             return 0;
