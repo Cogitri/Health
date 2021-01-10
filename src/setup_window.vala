@@ -74,8 +74,6 @@ namespace Health {
             var provider = new Gtk.CssProvider ();
             provider.load_from_resource ("/dev/Cogitri/Health/custom.css");
             Gtk.StyleContext.add_provider_for_display (this.get_display (), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-
         }
 
         private void try_enable_next_button () {
@@ -141,7 +139,7 @@ namespace Health {
             this.settings.user_age = uint.parse (this.age_spin_button.text);
             this.settings.user_height = height_in_cm;
             this.settings.user_stepgoal = uint.parse (this.stepgoal_spin_button.text);
-            this.settings.user_weightgoal = new WeightUnitContainer.from_user_value (this.weightgoal_spin_button.value);
+            this.settings.user_weightgoal = new WeightUnitContainer.from_user_value (double.parse (this.weightgoal_spin_button.text));
             this.setup_done ();
             this.destroy ();
         }
