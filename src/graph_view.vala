@@ -222,7 +222,7 @@ namespace Health {
                 var point = this.points.get (i);
                 Pango.Rectangle extents;
                 /* TRANSLATORS: this is the date as displayed in the graph, e.g. 30/9 for September 30 */
-                var layout = this.create_pango_layout (_ ("%d/%d").printf (point.date.get_day (), point.date.get_month ()));
+                var layout = this.create_pango_layout (Util.datetime_from_date (point.date).format ("%x"));
                 layout.get_extents (null, out extents);
 
                 cr.move_to (i * scale_x + (this.x_padding - Pango.units_to_double (extents.width)) / 2, height + this.y_padding / 1.5 - Pango.units_to_double (extents.height) / 2);

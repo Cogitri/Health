@@ -65,8 +65,7 @@ namespace Health {
 
                 /* TRANSLATORS: this is how many minutes the user was active in the activity view. */
                 this.active_minutes_label.label = _ ("%u Minutes").printf (this._activity.minutes);
-                /* TRANSLATORS: this is the date as displayed in the activity view, e.g. 30/9 for September 30 */
-                this.activity_date_label.label = _ ("%d/%d/%d").printf (this._activity.date.get_day (), this._activity.date.get_month (), this._activity.date.get_year ());
+                this.activity_date_label.label = Util.datetime_from_date (this._activity.date).format ("%x");
                 this.activity_type_label.label = ActivityType.get_values ()[this._activity.activity_type].name;
 
                 if (this._activity.calories_burned != 0) {
