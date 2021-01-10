@@ -68,7 +68,13 @@ namespace Health {
         construct {
             this._height = 1;
             this._weight = 1;
-            this._unitsystem = Unitsystem.METRIC;
+
+            var settings = Settings.get_instance ();
+            settings.changed[Settings.UNITSYSTEM_KEY].connect (() => {
+                this.unitsystem = settings.unitsystem;
+            });
+
+            this._unitsystem = settings.unitsystem;
 
             ((Gtk.Orientable) this.get_layout_manager ()).set_orientation (Gtk.Orientation.VERTICAL);
 

@@ -77,9 +77,8 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkToggleButton">
+                      <object class="GtkToggleButton" id="unit_metric_togglebutton">
                         <property name="label" translatable="yes">Metric</property>
-                        <property name="active">1</property>
                         <property name="group">unit_imperial_togglebutton</property>
                         <signal name="toggled" handler="unit_metric_togglebutton_toggled" swapped="no"/>
                       </object>
@@ -162,7 +161,6 @@
             <child>
               <object class="HdyActionRow" id="weightgoal_actionrow">
                 <property name="visible">True</property>
-                <property name="title" translatable="yes">Weightgoal</property>
                 <property name="subtitle" translatable="yes">The WHO recommends a BMI of 18.5-24.9.</property>
                 <child>
                   <object class="GtkBox">
