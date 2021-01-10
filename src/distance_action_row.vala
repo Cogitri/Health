@@ -72,11 +72,10 @@
 
         construct {
             this.settings = Settings.get_instance ();
-            this.set_togglebutton_text ();
-
             this.settings.changed[Settings.UNITSYSTEM_KEY].connect (() => {
                 this.set_togglebutton_text ();
             });
+            this.set_togglebutton_text ();
         }
 
         private void set_togglebutton_text () {

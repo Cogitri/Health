@@ -134,7 +134,6 @@ namespace Health {
                 this.stack.visible_child_name = "data_page";
             }
 
-            this.update ();
             this.settings.changed[Settings.USER_HEIGHT_KEY].connect (() => {
                 this.update ();
             });
@@ -147,6 +146,7 @@ namespace Health {
             db.weight_updated.connect (() => {
                 this.update ();
             });
+            this.update ();
         }
 
         private double get_bmi () {
