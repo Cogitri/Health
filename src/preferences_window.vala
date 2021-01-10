@@ -26,6 +26,8 @@
         [GtkChild]
         private Hdy.ActionRow height_actionrow;
         [GtkChild]
+        private Hdy.ActionRow weightgoal_actionrow;
+        [GtkChild]
         private Gtk.SpinButton age_spin_button;
         [GtkChild]
         private Gtk.SpinButton height_spin_button;
@@ -33,6 +35,10 @@
         private Gtk.SpinButton stepgoal_spin_button;
         [GtkChild]
         private Gtk.SpinButton weightgoal_spin_button;
+        [GtkChild]
+        private Gtk.ToggleButton unit_imperial_togglebutton;
+        [GtkChild]
+        private Gtk.ToggleButton unit_metric_togglebutton;
         [GtkChild]
         private BMILevelBar bmi_levelbar;
         [GtkChild]
@@ -46,18 +52,22 @@
         public PreferencesWindow (Gtk.Window? parent) {
             this.settings = Settings.get_instance ();
 
+            if (this.settings.unitsystem == Unitsystem.METRIC) {
+                this.unit_metric_togglebutton.active = true;
+                this.height_actionrow.title = _ ("Height in centimeters");
+                this.weightgoal_actionrow.title = _ ("Weightgoal in KG");
+                this.height_spin_button.value = settings.user_height;
+            } else {
+                this.unit_imperial_togglebutton.active = true;
+                this.height_actionrow.title = _ ("Height in inch");
+                this.weightgoal_actionrow.title = _ ("Weightgoal in pounds");
+                this.height_spin_button.value = Util.cm_to_inch (settings.user_height);
+            }
+
             this.stepgoal_spin_button.value = this.settings.user_stepgoal;
             this.weightgoal_spin_button.value = this.settings.user_weightgoal.value;
             this.age_spin_button.value = this.settings.user_age;
             this.sync_view.parent_window = parent;
-
-            if (this.settings.unitsystem == Unitsystem.METRIC) {
-                this.height_actionrow.title = _ ("Height in centimeters");
-                this.height_spin_button.value = settings.user_height;
-            } else {
-                this.height_actionrow.title = _ ("Height in inch");
-                this.height_spin_button.value = Util.cm_to_inch (settings.user_height);
-            }
 
             this.parent_window = parent;
             this.set_transient_for (parent);
@@ -107,9 +117,15 @@
             if (btn.active) {
                 this.settings.unitsystem = this.bmi_levelbar.unitsystem = Unitsystem.METRIC;
                 this.height_actionrow.title = _ ("Height in centimeters");
+                this.weightgoal_actionrow.title = _ ("Weightgoal in KG");
+                this.height_spin_button.value = Util.inch_to_cm (this.height_spin_button.value);
+                this.weightgoal_spin_button.value = Util.pb_to_kg (this.weightgoal_spin_button.value);
             } else {
                 this.settings.unitsystem = this.bmi_levelbar.unitsystem = Unitsystem.IMPERIAL;
                 this.height_actionrow.title = _ ("Height in inch");
+                this.weightgoal_actionrow.title = _ ("Weightgoal in pounds");
+                this.height_spin_button.value = Util.cm_to_inch (this.height_spin_button.value);
+                this.weightgoal_spin_button.value = Util.kg_to_pb (this.weightgoal_spin_button.value);
             }
         }
     }

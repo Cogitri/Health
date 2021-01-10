@@ -72,11 +72,10 @@
 
         construct {
             this.settings = Settings.get_instance ();
-            this.set_togglebutton_text ();
-
             this.settings.changed[Settings.UNITSYSTEM_KEY].connect (() => {
                 this.set_togglebutton_text ();
             });
+            this.set_togglebutton_text ();
         }
 
         private void set_togglebutton_text () {
@@ -104,8 +103,8 @@
         }
 
         [GtkCallback]
-        private void on_distance_spin_button_changed (Gtk.SpinButton sb) {
-            var value = sb.value;
+        private void on_distance_spin_button_changed (Gtk.Editable e) {
+            var value = double.parse (e.text);
 
             if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
                 if (small_unit_togglebutton.active) {
