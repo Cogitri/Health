@@ -44,6 +44,11 @@
     <property name="can-focus">False</property>
     <property name="title" translatable="yes">Health Preferences</property>
     <property name="destroy-with-parent">1</property>
+    <!--
+      FIXME: Known bug in libhandy-4/gtk4 where typing in child widgets (e.g. our SpinButtons) always enables the search.
+      See https://gitlab.gnome.org/Cogitri/gnome-health/-/issues/48
+    -->
+    <property name="search-enabled">0</property>
     <child>
       <object class="HdyPreferencesPage">
         <property name="visible">True</property>
