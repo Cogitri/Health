@@ -146,7 +146,7 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="value_changed" handler="on_calories_burned_spin_button_changed" swapped="no"/>
+        <signal name="changed" handler="on_calories_burned_spin_button_changed" swapped="no"/>
         <signal name="input" handler="on_user_input" swapped="no"/>
       </object>
     </child>
@@ -167,7 +167,7 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="value_changed" handler="on_duration_spin_button_changed" swapped="no"/>
+        <signal name="changed" handler="on_duration_spin_button_changed" swapped="no"/>
         <signal name="input" handler="on_user_input" swapped="no"/>
       </object>
     </child>
@@ -229,7 +229,7 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="value_changed" handler="on_steps_spin_button_changed" swapped="no"/>
+        <signal name="changed" handler="on_steps_spin_button_changed" swapped="no"/>
         <signal name="input" handler="on_user_input" swapped="no"/>
       </object>
     </child>

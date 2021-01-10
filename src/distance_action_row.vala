@@ -104,8 +104,8 @@
         }
 
         [GtkCallback]
-        private void on_distance_spin_button_changed (Gtk.SpinButton sb) {
-            var value = sb.value;
+        private void on_distance_spin_button_changed (Gtk.Editable e) {
+            var value = double.parse (e.text);
 
             if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
                 if (small_unit_togglebutton.active) {
