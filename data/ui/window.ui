@@ -58,7 +58,8 @@
           <object class="HdyHeaderBar" id="header_bar">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="show-title-buttons">True</property>
+            <property name="show-end-title-buttons">True</property>
+            <property name="show-start-title-buttons">True</property>
             <property name="centering-policy">strict</property>
             <style>
               <class name="titlebar"/>
