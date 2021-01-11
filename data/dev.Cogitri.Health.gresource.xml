@@ -23,5 +23,6 @@
     <file preprocess="xml-stripblanks">icons/scalable/actions/steps-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/walking-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/scalable/actions/weight-scale-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/emblem-synchronizing-symbolic.svg</file>
   </gresource>
 </gresources>
