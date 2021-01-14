@@ -33,3 +33,34 @@ levelbar block.obese-bmi {
 	padding-left: 6px;
 	padding-right: 6px;
 }
+
+calendar grid {
+	border-bottom-width: 1px;
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-right-style: solid;
+	border-bottom-color: @borders;
+	border-left-color: @borders;
+	border-right-color: @borders;
+}
+
+calendar button {
+	border-bottom-width: 0px;
+	border-top-color: @borders;
+	border-left-color: @borders;
+	border-right-color: @borders;
+}
+
+calendar label.year {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: @borders;
+}
+
+calendar stack.month {
+	border-top-width: 1px;
+	border-top-style: solid;
+	border-top-color: @borders;
+}
