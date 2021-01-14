@@ -87,20 +87,20 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_view.ui")]
     public class ActivityView : View {
         [GtkChild]
-        private Gtk.ListBox activities_list_box;
+        private Adw.Clamp clamp;
         [GtkChild]
-        private Gtk.Stack stack;
-        private Settings settings;
+        private Gtk.ListBox activities_list_box;
+
         private ActivityModel activity_model;
-        TrackerDatabase db;
+        private Settings settings;
+        private TrackerDatabase db;
 
         public ActivityView (ActivityModel model, TrackerDatabase db) {
-            this.name = "Activities";
-            this.title = _ ("Activities");
-            this.icon_name = "walking-symbolic";
             this.settings = Settings.get_instance ();
             this.activity_model = model;
             this.db = db;
+            this.scrolled_window.child = this.clamp;
+            this.scrolled_window.vscrollbar_policy = Gtk.PolicyType.AUTOMATIC;
 
             if (!this.activity_model.is_empty) {
                 this.stack.visible_child_name = "data_page";

@@ -20,9 +20,48 @@ namespace Health {
     /**
      * View is a toplevel container, used for e.g. the {@link StepView} and {@link WeightView}.
      */
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/view.ui")]
     public abstract class View : Gtk.Widget {
-        public string title;
-        public string icon_name;
+        public string empty_subtitle {
+            get {
+                return this.subtitle_empty_view_label.label;
+            }
+            set {
+                this.subtitle_empty_view_label.label = value;
+            }
+        }
+        public string icon_name {
+            owned get {
+                return this.empty_icon.icon_name;
+            }
+            set {
+                this.empty_icon.icon_name = value;
+            }
+        }
+        public string title {
+            get {
+                return this.title_label.label;
+            }
+            set {
+                this.title_label.label = value;
+            }
+        }
+        public string view_title { get; set; }
+
+        [GtkChild]
+        protected Gtk.Image empty_icon;
+        [GtkChild]
+        protected Gtk.Label goal_label;
+        [GtkChild]
+        protected Gtk.Label subtitle_empty_view_label;
+        [GtkChild]
+        protected Gtk.Label title_label;
+        [GtkChild]
+        protected Gtk.Label title_empty_view_label;
+        [GtkChild]
+        protected Gtk.ScrolledWindow scrolled_window;
+        [GtkChild]
+        protected Gtk.Stack stack;
 
         static construct {
             set_layout_manager_type (typeof (Gtk.BinLayout));
@@ -41,7 +80,6 @@ namespace Health {
          * This can query a DB and then refresh the view.
          */
         public abstract void update ();
-
     }
 
     /**

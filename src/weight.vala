@@ -107,23 +107,12 @@ namespace Health {
      */
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/weight_view.ui")]
     public class WeightView : View {
-        [GtkChild]
-        private Gtk.Label title_label;
-        [GtkChild]
-        private Gtk.Label weightgoal_label;
-        [GtkChild]
-        private Gtk.ScrolledWindow scrolled_window;
-        [GtkChild]
-        private Gtk.Stack stack;
         private Settings settings;
         private WeightGraphView? weight_graph_view;
         private WeightGraphModel weight_graph_model;
 
         public WeightView (WeightGraphModel model, TrackerDatabase db) {
-            this.name = "Weight";
             this.settings = Settings.get_instance ();
-            this.title = _ ("Weight");
-            this.icon_name = "weight-scale-symbolic";
             this.weight_graph_model = model;
 
             this.update_weightgoal_label ();
@@ -168,7 +157,7 @@ namespace Health {
                 }
 
                 /* TRANSLATORS: the %s format strings are the weight unit, e.g. kilogram */
-                this.weightgoal_label.set_text (_ ("Your weightgoal is %.2lf %s. Add a first weight measurement to see how close you are to reaching it."). printf (this.settings.user_weightgoal.value, unitsystem));
+                this.goal_label.set_text (_ ("Your weightgoal is %.2lf %s. Add a first weight measurement to see how close you are to reaching it."). printf (this.settings.user_weightgoal.value, unitsystem));
             } else if (weight_goal.get_in_kg () > 0.01 && !this.weight_graph_model.is_empty) {
                 var goal_diff = ((!) ((!) this.weight_graph_model).get_last_weight ()).value - weight_goal.value;
 
@@ -177,7 +166,7 @@ namespace Health {
                 }
 
                 if (goal_diff == 0) {
-                    this.weightgoal_label.set_text (_ ("You've reached your weightgoal. Great job!"));
+                    this.goal_label.set_text (_ ("You've reached your weightgoal. Great job!"));
                 } else {
                     string unitsystem;
                     if (this.settings.unitsystem == Unitsystem.IMPERIAL) {
@@ -186,10 +175,10 @@ namespace Health {
                         unitsystem = _ ("kilogram");
                     }
                     /* TRANSLATORS: the two %s format strings are the weight unit, e.g. kilogram */
-                    this.weightgoal_label.set_text (_ ("%.2lf %s left to reach your weightgoal of %.2lf %s").printf (goal_diff, unitsystem, weight_goal.value, unitsystem));
+                    this.goal_label.set_text (_ ("%.2lf %s left to reach your weightgoal of %.2lf %s").printf (goal_diff, unitsystem, weight_goal.value, unitsystem));
                 }
             } else {
-                this.weightgoal_label.set_text (_ ("No weightgoal set yet. You can set it in Health's preferences."));
+                this.goal_label.set_text (_ ("No weightgoal set yet. You can set it in Health's preferences."));
             }
         }
 

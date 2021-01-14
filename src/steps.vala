@@ -156,24 +156,13 @@ namespace Health {
     /**
      * An implementation of {@link View} visualizes streak counts and daily step records.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/step_view.ui")]
+     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/step_view.ui")]
     public class StepView : View {
-        [GtkChild]
-        private Gtk.Label streak_label;
-        [GtkChild]
-        private Gtk.Label title_label;
-        [GtkChild]
-        private Gtk.ScrolledWindow scrolled_window;
-        [GtkChild]
-        private Gtk.Stack stack;
         private Settings settings;
         private StepsGraphView? steps_graph_view;
         private StepsGraphModel steps_graph_model;
 
         public StepView (StepsGraphModel model, TrackerDatabase db) {
-            this.name = "Steps";
-            this.title = _ ("Steps");
-            this.icon_name = "steps-symbolic";
             this.settings = Settings.get_instance ();
             this.steps_graph_model = model;
 
@@ -204,16 +193,16 @@ namespace Health {
                         case 0:
                             var previous_streak = this.steps_graph_model.get_streak_count_yesterday (this.settings.user_stepgoal);
                             if (previous_streak == 0) {
-                                this.streak_label.set_text (_ ("No streak yet. Reach your stepgoal for multiple days to start a streak!"));
+                                this.goal_label.set_text (_ ("No streak yet. Reach your stepgoal for multiple days to start a streak!"));
                             } else {
-                                this.streak_label.set_text (_ ("You're on a streak for %u days. Reach your stepgoal today to continue it!").printf (previous_streak));
+                                this.goal_label.set_text (_ ("You're on a streak for %u days. Reach your stepgoal today to continue it!").printf (previous_streak));
                             }
                             break;
                         case 1:
-                            this.streak_label.set_text (_ ("You've reached your stepgoal today. Keep going to start a streak!"));
+                            this.goal_label.set_text (_ ("You've reached your stepgoal today. Keep going to start a streak!"));
                             break;
                         default:
-                            this.streak_label.set_text (_ ("You're on a streak for %u days. Good job!").printf (streak_count));
+                            this.goal_label.set_text (_ ("You're on a streak for %u days. Good job!").printf (streak_count));
                             break;
                     }
                     this.title_label.set_text (_ ("Today's steps: %u").printf (this.steps_graph_model.get_today_step_count ()));

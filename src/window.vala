@@ -68,7 +68,7 @@ namespace Health {
             this.views = new View[] { new StepView (steps_model, this.db), new WeightView (weight_model, this.db), new ActivityView (activity_model, this.db)};
 
             foreach (var view in views) {
-                var page = this.stack.add_titled (view, view.name, view.title);
+                var page = this.stack.add_titled (view, view.name, view.view_title);
                 page.icon_name = view.icon_name;
             }
 

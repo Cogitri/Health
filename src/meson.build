@@ -18,7 +18,7 @@ health_sources = files(
   'sync_view.vala',
   'units.vala',
   'util.vala',
-  'views.vala',
+  'view.vala',
   'weight.vala',
   'weight_add_dialog.vala',
   'window.vala',
