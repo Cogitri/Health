@@ -40,7 +40,7 @@
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
   </object>
-  <template class="HealthPreferencesWindow" parent="HdyPreferencesWindow">
+  <template class="HealthPreferencesWindow" parent="AdwPreferencesWindow">
     <property name="can-focus">False</property>
     <property name="title" translatable="yes">Health Preferences</property>
     <property name="destroy-with-parent">1</property>
@@ -50,16 +50,16 @@
     -->
     <property name="search-enabled">0</property>
     <child>
-      <object class="HdyPreferencesPage">
+      <object class="AdwPreferencesPage">
         <property name="visible">True</property>
         <property name="icon_name">emblem-system-symbolic</property>
         <property name="title" translatable="yes">General</property>
         <child>
-          <object class="HdyPreferencesGroup">
+          <object class="AdwPreferencesGroup">
             <property name="visible">True</property>
             <property name="title" translatable="yes">User</property>
             <child>
-              <object class="HdyActionRow">
+              <object class="AdwActionRow">
                 <property name="title" translatable="yes">Unitsystem</property>
                 <child>
                   <object class="GtkBox">
@@ -88,7 +88,7 @@
               </object>
             </child>
             <child>
-              <object class="HdyActionRow" id="age_actionrow">
+              <object class="AdwActionRow" id="age_actionrow">
                 <property name="visible">True</property>
                 <property name="title" translatable="yes">Age</property>
                 <child>
@@ -107,7 +107,7 @@
               </object>
             </child>
             <child>
-              <object class="HdyActionRow" id="height_actionrow">
+              <object class="AdwActionRow" id="height_actionrow">
                 <property name="visible">True</property>
                 <child>
                   <object class="GtkSpinButton" id="height_spin_button">
@@ -127,12 +127,12 @@
           </object>
         </child>
         <child>
-          <object class="HdyPreferencesGroup">
+          <object class="AdwPreferencesGroup">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="title">Steps</property>
             <child>
-              <object class="HdyActionRow" id="stepgoal_actionrow">
+              <object class="AdwActionRow" id="stepgoal_actionrow">
                 <property name="visible">True</property>
                 <property name="title" translatable="yes">Stepgoal</property>
                 <property name="subtitle" translatable="yes">The WHO recommends 10.000 steps per day.</property>
@@ -154,12 +154,12 @@
           </object>
         </child>
         <child>
-          <object class="HdyPreferencesGroup">
+          <object class="AdwPreferencesGroup">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="title">Weight</property>
             <child>
-              <object class="HdyActionRow" id="weightgoal_actionrow">
+              <object class="AdwActionRow" id="weightgoal_actionrow">
                 <property name="visible">True</property>
                 <property name="subtitle" translatable="yes">The WHO recommends a BMI of 18.5-24.9.</property>
                 <child>
@@ -190,13 +190,13 @@
       </object>
     </child>
     <child>
-      <object class="HdyPreferencesPage">
+      <object class="AdwPreferencesPage">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="title" translatable="yes">Sync</property>
         <property name="icon-name">emblem-synchronizing-symbolic</property>
         <child>
-          <object class="HdyPreferencesGroup">
+          <object class="AdwPreferencesGroup">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
             <property name="title">Start sync with third-party providers.</property>

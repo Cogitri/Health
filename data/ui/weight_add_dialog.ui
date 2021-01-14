@@ -50,7 +50,7 @@
       <object class="GtkScrolledWindow">
         <property name="propagate-natural-height">1</property>
         <child>
-          <object class="HdyClamp">
+          <object class="AdwClamp">
             <property name="maximum-size">400</property>
             <property name="tightening-threshold">200</property>
             <property name="valign">center</property>
@@ -61,9 +61,9 @@
             <property name="margin-top">6</property>
             <property name="margin-bottom">6</property>
             <child>
-              <object class="HdyPreferencesGroup">
+              <object class="AdwPreferencesGroup">
                 <child>
-                  <object class="HdyActionRow">
+                  <object class="AdwActionRow">
                     <property name="title" translatable="yes">Date</property>
                     <child>
                       <object class="HealthDateSelector" id="date_selector">
@@ -76,7 +76,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="HdyActionRow">
+                  <object class="AdwActionRow">
                     <property name="title" translatable="yes">Weight</property>
                     <child>
                       <object class="GtkSpinButton" id="weight_spin_button">

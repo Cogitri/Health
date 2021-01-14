@@ -43,17 +43,17 @@ namespace Health {
         [GtkChild]
         private Gtk.Revealer details_revealer;
         [GtkChild]
-        Hdy.ActionRow calories_burned_row;
+        Adw.ActionRow calories_burned_row;
         [GtkChild]
-        Hdy.ActionRow distance_row;
+        Adw.ActionRow distance_row;
         [GtkChild]
-        Hdy.ActionRow steps_row;
+        Adw.ActionRow steps_row;
         [GtkChild]
-        Hdy.ActionRow average_heart_rate_row;
+        Adw.ActionRow average_heart_rate_row;
         [GtkChild]
-        Hdy.ActionRow minimum_heart_rate_row;
+        Adw.ActionRow minimum_heart_rate_row;
         [GtkChild]
-        Hdy.ActionRow maximum_heart_rate_row;
+        Adw.ActionRow maximum_heart_rate_row;
 
         private Activity _activity;
         public Activity activity {

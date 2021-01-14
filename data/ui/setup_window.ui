@@ -54,7 +54,7 @@
       <widget name="setup_previous_page_button"/>
     </widgets>
   </object>
-  <template class="HealthSetupWindow" parent="HdyApplicationWindow">
+  <template class="HealthSetupWindow" parent="AdwApplicationWindow">
     <property name="can-focus">0</property>
     <property name="default-width">750</property>
     <property name="default-height">500</property>
@@ -63,7 +63,7 @@
       <object class="GtkBox">
         <property name="orientation">vertical</property>
         <child>
-          <object class="HdyHeaderBar" id="header_bar">
+          <object class="AdwHeaderBar" id="header_bar">
             <property name="show-end-title-buttons">0</property>
             <property name="show-start-title-buttons">0</property>
             <property name="can-focus">0</property>
@@ -140,7 +140,7 @@
           </object>
         </child>
         <child>
-          <object class="HdyCarousel" id="setup_carousel">
+          <object class="AdwCarousel" id="setup_carousel">
             <property name="vexpand">True</property>
             <property name="hexpand">True</property>
             <property name="interactive">0</property>
@@ -175,7 +175,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="HdyClamp">
+                  <object class="AdwClamp">
                     <property name="maximum-size">400</property>
                     <property name="tightening-threshold">200</property>
                     <property name="valign">center</property>
@@ -189,7 +189,7 @@
                           <class name="content"/>
                         </style>
                         <child>
-                          <object class="HdyActionRow" id="unit_actionrow">
+                          <object class="AdwActionRow" id="unit_actionrow">
                             <property name="title" translatable="yes">Unitsystem</property>
                             <child>
                               <object class="GtkBox" id="unit_box">
@@ -219,7 +219,7 @@
                           </object>
                         </child>
                         <child>
-                          <object class="HdyActionRow" id="age_actionrow">
+                          <object class="AdwActionRow" id="age_actionrow">
                             <property name="title" translatable="yes">Age</property>
                             <child>
                               <object class="GtkSpinButton" id="age_spin_button">
@@ -237,7 +237,7 @@
                           </object>
                         </child>
                         <child>
-                          <object class="HdyActionRow" id="height_actionrow">
+                          <object class="AdwActionRow" id="height_actionrow">
                             <property name="title" translatable="yes">Height in centimeters</property>
                             <child>
                               <object class="GtkSpinButton" id="height_spin_button">
@@ -294,7 +294,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="HdyClamp">
+                  <object class="AdwClamp">
                     <property name="maximum-size">400</property>
                     <property name="tightening-threshold">200</property>
                     <property name="valign">center</property>
@@ -308,7 +308,7 @@
                           <class name="content"/>
                         </style>
                         <child>
-                          <object class="HdyActionRow" id="stepgoal_actionrow">
+                          <object class="AdwActionRow" id="stepgoal_actionrow">
                             <property name="title" translatable="yes">Stepgoal</property>
                             <child>
                               <object class="GtkSpinButton" id="stepgoal_spin_button">
@@ -364,7 +364,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="HdyClamp">
+                  <object class="AdwClamp">
                     <property name="maximum-size">400</property>
                     <property name="tightening-threshold">200</property>
                     <property name="valign">center</property>
@@ -381,7 +381,7 @@
                           <object class="GtkBox">
                             <property name="orientation">vertical</property>
                             <child>
-                              <object class="HdyActionRow" id="weightgoal_actionrow">
+                              <object class="AdwActionRow" id="weightgoal_actionrow">
                                 <property name="title" translatable="yes">Weightgoal</property>
                                 <child>
                                   <object class="GtkSpinButton" id="weightgoal_spin_button">
@@ -449,7 +449,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="HdyClamp">
+                  <object class="AdwClamp">
                     <property name="maximum-size">400</property>
                     <property name="tightening-threshold">200</property>
                     <property name="valign">center</property>
@@ -471,7 +471,7 @@
           </object>
         </child>
         <child>
-          <object class="HdyCarouselIndicatorDots">
+          <object class="AdwCarouselIndicatorDots">
             <property name="carousel">setup_carousel</property>
           </object>
         </child>

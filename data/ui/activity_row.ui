@@ -71,7 +71,7 @@
               <object class="GtkBox">
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="HdyActionRow" id="calories_burned_row">
+                  <object class="AdwActionRow" id="calories_burned_row">
                     <property name="title" translatable="yes">Calories Burned</property>
                     <property name="visible">0</property>
                     <child>
@@ -80,7 +80,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="HdyActionRow" id="distance_row">
+                  <object class="AdwActionRow" id="distance_row">
                     <property name="title" translatable="yes">Distance in Meters</property>
                     <property name="visible">0</property>
                     <child>
@@ -89,7 +89,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="HdyActionRow" id="steps_row">
+                  <object class="AdwActionRow" id="steps_row">
                     <property name="title" translatable="yes">Steps</property>
                     <property name="visible">0</property>
                     <child>
@@ -98,7 +98,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="HdyActionRow" id="average_heart_rate_row">
+                  <object class="AdwActionRow" id="average_heart_rate_row">
                     <property name="title" translatable="yes">Average Heart Rate</property>
                     <property name="visible">0</property>
                     <child>
@@ -107,7 +107,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="HdyActionRow" id="minimum_heart_rate_row">
+                  <object class="AdwActionRow" id="minimum_heart_rate_row">
                     <property name="title" translatable="yes">Minimum Heart Rate</property>
                     <property name="visible">0</property>
                     <child>
@@ -116,7 +116,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="HdyActionRow" id="maximum_heart_rate_row">
+                  <object class="AdwActionRow" id="maximum_heart_rate_row">
                     <property name="title" translatable="yes">Maximum Heart Rate</property>
                     <property name="visible">0</property>
                     <child>

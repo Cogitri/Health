@@ -1,9 +1,9 @@
 The -dark variants of Themes don't support GTK4 yet. As such, strip the -dark
 suffix from themes. Instead use theme_name:dark if you do want to use a dark mode.
-diff --git a/src/hdy-main.c b/src/hdy-main.c
+diff --git a/src/adw-main.c b/src/adw-main.c
 index 24f83b9..39cdc72 100644
---- a/src/hdy-main.c
-+++ b/src/hdy-main.c
+--- a/src/adw-main.c
++++ b/src/adw-main.c
 @@ -52,6 +52,12 @@ hdy_themes_get_theme_name (gboolean *prefer_dark_theme)
                    "gtk-application-prefer-dark-theme", prefer_dark_theme,
                    NULL);

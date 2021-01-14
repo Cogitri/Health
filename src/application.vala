@@ -45,7 +45,7 @@ namespace Health {
 
         public override void startup () {
             base.startup ();
-            Hdy.init ();
+            Adw.init ();
 
             if (((!) Gtk.Settings.get_default ()).gtk_theme_name.contains ("-dark")) {
                 warning ("Using -dark themes (such as Adwaita-dark) is unsupported. Please use your theme in dark-mode instead (e.g. Adwaita:dark instead of Adwaita-dark)");

@@ -21,7 +21,7 @@ namespace Health {
      * The {@link SetupWindow} is shown to the user on the first start of the applcation to fill in some data.
      */
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/setup_window.ui")]
-    public class SetupWindow : Hdy.ApplicationWindow {
+    public class SetupWindow : Adw.ApplicationWindow {
         [GtkChild]
         private BMILevelBar bmi_levelbar;
         [GtkChild]
@@ -55,9 +55,9 @@ namespace Health {
         [GtkChild]
         private Gtk.ToggleButton unit_metric_togglebutton;
         [GtkChild]
-        private Hdy.ActionRow height_actionrow;
+        private Adw.ActionRow height_actionrow;
         [GtkChild]
-        private Hdy.Carousel setup_carousel;
+        private Adw.Carousel setup_carousel;
 
         private Settings settings;
 

@@ -84,7 +84,7 @@
       <object class="GtkScrolledWindow">
         <property name="propagate-natural-height">1</property>
         <child>
-          <object class="HdyClamp">
+          <object class="AdwClamp">
             <property name="maximum-size">400</property>
             <property name="tightening-threshold">200</property>
             <property name="valign">center</property>
@@ -108,7 +108,7 @@
       </object>
     </child>
   </template>
-  <object class="HdyActionRow" id="date_selector_actionrow">
+  <object class="AdwActionRow" id="date_selector_actionrow">
     <property name="title" translatable="yes">Date</property>
     <child>
       <object class="HealthDateSelector" id="date_selector">
@@ -122,7 +122,7 @@
   <object class="HealthActivityTypeSelector" id="activity_type_selector">
     <signal name="notify::selected_activity" handler="on_activity_type_selector_selected_activity" swapped="no"/>
   </object>
-  <object class="HdyActionRow" id="activity_type_actionrow">
+  <object class="AdwActionRow" id="activity_type_actionrow">
     <property name="title" translatable="yes">Activity Type</property>
     <child>
       <object class="GtkMenuButton" id="activity_type_menu_button">
@@ -134,7 +134,7 @@
       </object>
     </child>
   </object>
-  <object class="HdyActionRow" id="calories_burned_action_row">
+  <object class="AdwActionRow" id="calories_burned_action_row">
     <property name="title" translatable="yes">Calories Burned</property>
     <child>
       <object class="GtkSpinButton" id="calories_burned_spin_button">
@@ -155,7 +155,7 @@
     <signal name="notify::value" handler="on_distance_action_row_changed" swapped="no"/>
     <signal name="input" handler="on_user_input" swapped="no"/>
   </object>
-  <object class="HdyActionRow" id="duration_action_row">
+  <object class="AdwActionRow" id="duration_action_row">
     <property name="title" translatable="yes">Active Minutes</property>
     <child>
       <object class="GtkSpinButton" id="duration_spin_button">
@@ -172,7 +172,7 @@
       </object>
     </child>
   </object>
-  <object class="HdyActionRow" id="heart_rate_average_action_row">
+  <object class="AdwActionRow" id="heart_rate_average_action_row">
     <property name="title" translatable="yes">Average Heart Rate</property>
     <child>
       <object class="GtkSpinButton" id="heart_rate_average_spin_button">
@@ -187,7 +187,7 @@
       </object>
     </child>
   </object>
-  <object class="HdyActionRow" id="heart_rate_min_action_row">
+  <object class="AdwActionRow" id="heart_rate_min_action_row">
     <property name="title" translatable="yes">Minimum Heart Rate</property>
     <child>
       <object class="GtkSpinButton" id="heart_rate_min_spin_button">
@@ -202,7 +202,7 @@
       </object>
     </child>
   </object>
-  <object class="HdyActionRow" id="heart_rate_max_action_row">
+  <object class="AdwActionRow" id="heart_rate_max_action_row">
     <property name="title" translatable="yes">Maximum Heart Rate</property>
     <child>
       <object class="GtkSpinButton" id="heart_rate_max_spin_button">
@@ -217,7 +217,7 @@
       </object>
     </child>
   </object>
-  <object class="HdyActionRow" id="stepcount_action_row">
+  <object class="AdwActionRow" id="stepcount_action_row">
     <property name="title" translatable="yes">Stepcount</property>
     <child>
       <object class="GtkSpinButton" id="steps_spin_button">

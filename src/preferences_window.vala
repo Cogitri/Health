@@ -22,11 +22,11 @@
      * in the applcation.
      */
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/preferences_window.ui")]
-    public class PreferencesWindow : Hdy.PreferencesWindow {
+    public class PreferencesWindow : Adw.PreferencesWindow {
         [GtkChild]
-        private Hdy.ActionRow height_actionrow;
+        private Adw.ActionRow height_actionrow;
         [GtkChild]
-        private Hdy.ActionRow weightgoal_actionrow;
+        private Adw.ActionRow weightgoal_actionrow;
         [GtkChild]
         private Gtk.SpinButton age_spin_button;
         [GtkChild]

@@ -27,7 +27,7 @@ namespace Health {
      * The toplevel application window that holds all other widgets.
      */
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/window.ui")]
-    public class Window : Hdy.ApplicationWindow {
+    public class Window : Adw.ApplicationWindow {
         [GtkChild]
         private Gtk.Stack stack;
         [GtkChild]

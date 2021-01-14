@@ -18,7 +18,7 @@
  namespace Health {
 
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/distance_action_row.ui")]
-    public class DistanceActionRow : Hdy.ActionRow {
+    public class DistanceActionRow : Adw.ActionRow {
         /**
          * Forwards the {@link Gtk.SpinButton}'s {@link Gtk.SpinButton.input} Signal
          */
