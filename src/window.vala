@@ -29,9 +29,13 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/window.ui")]
     public class Window : Adw.ApplicationWindow {
         [GtkChild]
-        private Gtk.Stack stack;
+        private Gtk.InfoBar error_infobar;
+        [GtkChild]
+        private Gtk.Label error_label;
         [GtkChild]
         private Gtk.Popover primary_menu_popover;
+        [GtkChild]
+        private Gtk.Stack stack;
 
         private int current_height;
         private int current_width;
@@ -139,16 +143,26 @@ namespace Health {
                     warning ("Google Fit sync failed: %s", e.message);
                     var weak_ref = parent_ref.get ();
                     if (weak_ref != null) {
-                        var window = (Gtk.Window) weak_ref;
-                        var dialog = new Gtk.MessageDialog (window, Gtk.DialogFlags.DESTROY_WITH_PARENT | Gtk.DialogFlags.MODAL, Gtk.MessageType.ERROR, Gtk.ButtonsType.CLOSE, _("Synching data from Google Fit failed due to error %s"), e.message);
-                        unowned var dialog_u = dialog;
-                        dialog.show ();
-                        dialog.response.connect (() => {
-                            dialog_u.destroy ();
-                        });
+                        ((Window) weak_ref).show_error (_ ("Google Fit sync failed due to error %s").printf (e.message));
                     }
                 }
             });
+        }
+
+        /**
+         * Display an error in a non-intrusive way.
+         */
+         public void show_error (string err_msg) {
+            warning (err_msg);
+            this.error_label.label = err_msg;
+            this.error_infobar.revealed = true;
+        }
+
+        [GtkCallback]
+        private void on_error_infobar_response (Gtk.InfoBar bar, int response_id) {
+            if (response_id == Gtk.ResponseType.CLOSE) {
+                bar.revealed = false;
+            }
         }
 
         [GtkCallback]

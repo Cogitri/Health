@@ -2,7 +2,7 @@
 <!--
   window.ui
 
-  Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
+  Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -89,6 +89,22 @@
                 <property name="can-focus">0</property>
                 <property name="icon-name">open-menu-symbolic</property>
                 <property name="popover">primary_menu_popover</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkInfoBar" id="error_infobar">
+            <property name="revealed">0</property>
+            <property name="show-close-button">1</property>
+            <property name="message-type">GTK_MESSAGE_ERROR</property>
+            <signal name="response" handler="on_error_infobar_response" swapped="no"/>
+            <child>
+              <object class="GtkLabel" id="error_label">
+                <property name="margin-start">6</property>
+                <property name="margin-end">6</property>
+                <property name="halign">center</property>
+                <property name="hexpand">1</property>
               </object>
             </child>
           </object>
