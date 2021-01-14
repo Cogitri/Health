@@ -97,7 +97,7 @@
                 <child>
                   <object class="GtkScrolledWindow">
                     <child>
-                      <object class="HdyClamp">
+                      <object class="AdwClamp">
                         <property name="maximum-size">800</property>
                         <property name="tightening-threshold">600</property>
                         <property name="valign">center</property>

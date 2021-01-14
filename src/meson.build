@@ -29,7 +29,7 @@ cc = meson.get_compiler('c')
 health_deps = [
   dependency('gio-2.0', version: '>= 2.50'),
   dependency('gtk4', version: '>=3.99.6'),
-  dependency('libhandy-4'),
+  dependency('libadwaita-1'),
   dependency('gee-0.8'),
   dependency('libsoup-2.4'),
   dependency('rest-0.7'),

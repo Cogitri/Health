@@ -52,13 +52,13 @@
             ],
             "sources": [
                 {
-                    "type": "archive",
-                    "url": "https://gitlab.gnome.org/Cogitri/libhandy/-/archive/gtk-2021-01-06/libhandy-gtk-2021-01-06.tar.gz",
-                    "sha256": "57de5a44344ce6aa557323a2193736c91fc26d140fbb439b55bdf5724347901f"
+                    "type": "git",
+                    "url": "https://gitlab.gnome.org/exalm/libadwaita",
+                    "commit": "fca6c26b4faa5e2d860128736595cb1232d4739a"
                 },
                 {
                     "type": "patch",
-                    "path": "build-aux/libhandy-dark-theme.patch"
+                    "path": "build-aux/libadwaita-dark-theme.patch"
                 }
             ]
         },

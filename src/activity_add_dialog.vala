@@ -43,23 +43,23 @@ namespace Health {
         [GtkChild]
         private Gtk.SpinButton steps_spin_button;
         [GtkChild]
-        private Hdy.ActionRow activity_type_actionrow;
+        private Adw.ActionRow activity_type_actionrow;
         [GtkChild]
-        private Hdy.ActionRow calories_burned_action_row;
+        private Adw.ActionRow calories_burned_action_row;
         [GtkChild]
-        private Hdy.ActionRow date_selector_actionrow;
+        private Adw.ActionRow date_selector_actionrow;
         [GtkChild]
         private DistanceActionRow distance_action_row;
         [GtkChild]
-        private Hdy.ActionRow duration_action_row;
+        private Adw.ActionRow duration_action_row;
         [GtkChild]
-        private Hdy.ActionRow heart_rate_average_action_row;
+        private Adw.ActionRow heart_rate_average_action_row;
         [GtkChild]
-        private Hdy.ActionRow heart_rate_max_action_row;
+        private Adw.ActionRow heart_rate_max_action_row;
         [GtkChild]
-        private Hdy.ActionRow heart_rate_min_action_row;
+        private Adw.ActionRow heart_rate_min_action_row;
         [GtkChild]
-        private Hdy.ActionRow stepcount_action_row;
+        private Adw.ActionRow stepcount_action_row;
 
         private ActivityInfo? _selected_activity;
         public ActivityInfo? selected_activity {
