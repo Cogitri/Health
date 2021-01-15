@@ -19,7 +19,7 @@
 namespace Health {
 
     /**
-     * The {@link SyncListBox} is a {@Gtk.ListBox} where users can initialise synching with a third-party provider.
+     * The {@link SyncListBox} is a {@link Gtk.ListBox} where users can initialise synching with a third-party provider.
      */
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/sync_list_box.ui")]
     public class SyncListBox : Gtk.Widget {
