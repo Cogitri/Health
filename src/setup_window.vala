@@ -66,6 +66,10 @@ namespace Health {
          */
         public signal void setup_done ();
 
+        static construct {
+            typeof (SyncView).ensure ();
+        }
+
         public SetupWindow (Gtk.Application application) {
             Object (application: application);
             this.settings = Settings.get_instance ();

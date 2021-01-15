@@ -47,6 +47,10 @@
 
         public signal void import_done ();
 
+        static construct {
+            typeof (SyncView).ensure ();
+        }
+
         public PreferencesWindow (Gtk.Window? parent) {
             this.settings = Settings.get_instance ();
 
