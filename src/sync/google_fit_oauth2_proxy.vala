@@ -179,11 +179,7 @@ namespace Health {
                     continue;
                 }
                 var date = Util.date_to_iso_8601 (Util.date_from_datetime (datetime));
-                if (ret.has_key (date)) {
-                    ret.set (date, ret.get (date) + weight_value);
-                } else {
-                    ret.set (date, weight_value);
-                }
+                ret.set (date, weight_value);
             }
 
             return ret;
