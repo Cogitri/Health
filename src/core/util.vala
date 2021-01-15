@@ -17,7 +17,9 @@
  */
 
 namespace Health {
+
     namespace Util {
+
         public double kg_to_pb (double kg) {
             return kg / 0.45359237;
         }

@@ -1,6 +1,6 @@
-/* activity_view.vala
+/* activity_model.vala
  *
- * Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
+ * Copyright 2021 Rasmus Thomsen <oss@cogitri.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,16 @@
  */
 
 namespace Health {
+
     /**
      * An implementation of {@link GLib.ListModel} that stores {@link Activity}s. Can be used with
      * {@link ActivityView} to display past activities.
      */
-    public class ActivityModel : GLib.Object, GLib.ListModel {
+     public class ActivityModel : GLib.Object, GLib.ListModel {
         private Gee.ArrayList<Activity> activities;
         private Settings settings;
         private TrackerDatabase db;
+
         public bool is_empty {
             get {
                     return this.activities.is_empty;
@@ -79,55 +81,5 @@ namespace Health {
                 return false;
             }
         }
-    }
-
-   /**
-    * An implementation of {@link View} visualizes activities the user recently did.
-    */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_view.ui")]
-    public class ActivityView : View {
-        [GtkChild]
-        private Gtk.ListBox activities_list_box;
-        [GtkChild]
-        private Gtk.Stack stack;
-        private Settings settings;
-        private ActivityModel activity_model;
-        TrackerDatabase db;
-
-        public ActivityView (ActivityModel model, TrackerDatabase db) {
-            this.name = "Activities";
-            this.title = _ ("Activities");
-            this.icon_name = "walking-symbolic";
-            this.settings = Settings.get_instance ();
-            this.activity_model = model;
-            this.db = db;
-
-            if (!this.activity_model.is_empty) {
-                this.stack.visible_child_name = "data_page";
-            }
-
-           this.activities_list_box.bind_model (this.activity_model, (o) => {
-                return (Gtk.Widget) GLib.Object.new (typeof (ActivityRow), activity: o);
-            });
-
-            db.activities_updated.connect (() => {
-                this.update ();
-            });
-            this.update ();
-        }
-
-        /**
-         * Reload the {@link ActivityModel}'s data and refresh the list of activities
-         */
-        public override void update () {
-            this.activity_model.reload.begin ((obj, res) => {
-                if (this.activity_model.reload.end (res)) {
-                    if (!this.activity_model.is_empty) {
-                        this.stack.visible_child_name = "data_page";
-                    }
-                }
-            });
-        }
-
     }
 }

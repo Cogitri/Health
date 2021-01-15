@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 namespace Health {
+
     /**
      * A Point describes a single datapoint in a {@link GraphView}.
      */
@@ -43,9 +44,15 @@ namespace Health {
         private HoverPoint? hover_point;
         private Gtk.EventControllerMotion motion_controller;
         private int max_pointer_deviation;
-        protected double x_padding;
-        protected double y_padding;
+        private double x_padding;
+        private double y_padding;
         private double _limit;
+        private Gee.ArrayList<Point> _points;
+        private string _limitlabel;
+        private uint _x_lines_interval = 500;
+
+        protected HoverFunc? hover_func;
+
         public double limit {
             get {
                 return this._limit;
@@ -55,7 +62,6 @@ namespace Health {
                 this.queue_draw ();
             }
         }
-        private Gee.ArrayList<Point> _points;
         public Gee.ArrayList<Point> points {
             get {
                 return this._points;
@@ -65,7 +71,6 @@ namespace Health {
                 this.queue_draw ();
             }
         }
-        private string _limitlabel;
         public string limitlabel {
             get {
                 return this._limitlabel;
@@ -75,7 +80,6 @@ namespace Health {
                 this.queue_draw ();
             }
         }
-        private uint _x_lines_interval = 500;
         public uint x_lines_interval {
             get {
                 return this._x_lines_interval;
@@ -85,7 +89,6 @@ namespace Health {
                 this.queue_draw ();
             }
         }
-        protected HoverFunc? hover_func;
 
         public GraphView (Gee.ArrayList<Point> points, string limitlabel = "", double limit = -1) {
             this.points = points;
@@ -119,51 +122,6 @@ namespace Health {
             });
 
             this.set_size_request (size_request, -1);
-        }
-
-        private bool approx_matches (double num, double approx_range) {
-            return num > approx_range - max_pointer_deviation && num < approx_range + max_pointer_deviation;
-        }
-
-        private void on_motion_event (double x, double y, bool allow_touch) {
-            if (!allow_touch) {
-                // Don't handle touch events, we do that via Gtk.GestureClick.
-                var device = this.motion_controller.get_current_event_device ();
-                if (device != null && ((!) device).source == Gdk.InputSource.TOUCHSCREEN) {
-                    return;
-                }
-            }
-
-            double biggest_value = 0.000001;
-            foreach (var point in this.points) {
-                if (point.value > biggest_value) {
-                    biggest_value = point.value;
-                }
-            }
-            // Round up to 500, the graph looks a bit odd if we draw lines at biggest_value / 4 instead of
-            // using even numbers
-            biggest_value = biggest_value + this.x_lines_interval - biggest_value % this.x_lines_interval;
-            var height = this.get_height () - this.y_padding;
-            var width = this.get_width () - this.x_padding;
-            var scale_x = width / (this.points.size > 1 ? (this.points.size - 1) : 1);
-            var scale_y = height / biggest_value;
-
-            for (int i = 0; i < this.points.size; i++) {
-                var value = this.points[i].value;
-                var point_x = i * scale_x + this.x_padding / 2;
-                var point_y = height - value * scale_y + this.y_padding / 2;
-
-                if (this.approx_matches (x, point_x) && this.approx_matches (y, point_y)) {
-                    this.hover_point = HoverPoint () { x = point_x, y = point_y, point = this.points[i] };
-                    this.queue_draw ();
-                    return;
-                }
-            }
-
-            if (this.hover_point != null) {
-                this.hover_point = null;
-                this.queue_draw ();
-            }
         }
 
         protected override void snapshot (Gtk.Snapshot snapshot) {
@@ -337,6 +295,51 @@ namespace Health {
                 cr.set_source_rgba (1, 1, 1, 1);
                 Pango.cairo_show_layout (cr, layout);
                 cr.stroke ();
+            }
+        }
+
+        private bool approx_matches (double num, double approx_range) {
+            return num > approx_range - max_pointer_deviation && num < approx_range + max_pointer_deviation;
+        }
+
+        private void on_motion_event (double x, double y, bool allow_touch) {
+            if (!allow_touch) {
+                // Don't handle touch events, we do that via Gtk.GestureClick.
+                var device = this.motion_controller.get_current_event_device ();
+                if (device != null && ((!) device).source == Gdk.InputSource.TOUCHSCREEN) {
+                    return;
+                }
+            }
+
+            double biggest_value = 0.000001;
+            foreach (var point in this.points) {
+                if (point.value > biggest_value) {
+                    biggest_value = point.value;
+                }
+            }
+            // Round up to 500, the graph looks a bit odd if we draw lines at biggest_value / 4 instead of
+            // using even numbers
+            biggest_value = biggest_value + this.x_lines_interval - biggest_value % this.x_lines_interval;
+            var height = this.get_height () - this.y_padding;
+            var width = this.get_width () - this.x_padding;
+            var scale_x = width / (this.points.size > 1 ? (this.points.size - 1) : 1);
+            var scale_y = height / biggest_value;
+
+            for (int i = 0; i < this.points.size; i++) {
+                var value = this.points[i].value;
+                var point_x = i * scale_x + this.x_padding / 2;
+                var point_y = height - value * scale_y + this.y_padding / 2;
+
+                if (this.approx_matches (x, point_x) && this.approx_matches (y, point_y)) {
+                    this.hover_point = HoverPoint () { x = point_x, y = point_y, point = this.points[i] };
+                    this.queue_draw ();
+                    return;
+                }
+            }
+
+            if (this.hover_point != null) {
+                this.hover_point = null;
+                this.queue_draw ();
             }
         }
     }

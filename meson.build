@@ -35,3 +35,9 @@ meson.add_install_script('build-aux/meson/postinstall.py')
 if get_option('docs')
   subdir('docs')
 endif
+
+
+run_target(
+  'lint',
+  command: ['io.elementary.vala-lint', '--config', '.vala-lint.conf', 'src']
+)

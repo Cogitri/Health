@@ -34,7 +34,6 @@ namespace Health {
      * A single Activity the user did. 
      */
     public class Activity : GLib.Object {
-
         public ActivityType activity_type {
             get {
                 return this.activity_info.type;
@@ -43,6 +42,7 @@ namespace Health {
                 this.activity_info = ActivityType.get_values ()[value];
             }
         }
+
         public GLib.Date date { get; set; }
         public uint32 calories_burned { get; set; }
         public uint32 distance { get; set; }

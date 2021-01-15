@@ -17,6 +17,7 @@
  */
 
  namespace Health {
+
     /**
      * The PreferencesWindow is presented to the user to set certain settings
      * in the applcation.
@@ -41,13 +42,15 @@
         private Gtk.ToggleButton unit_metric_togglebutton;
         [GtkChild]
         private BMILevelBar bmi_levelbar;
-        [GtkChild]
-        private SyncView sync_view;
 
         private Settings settings;
         private Gtk.Window? parent_window;
 
         public signal void import_done ();
+
+        static construct {
+            typeof (SyncListBox).ensure ();
+        }
 
         public PreferencesWindow (Gtk.Window? parent) {
             this.settings = Settings.get_instance ();
@@ -67,7 +70,6 @@
             this.stepgoal_spin_button.value = this.settings.user_stepgoal;
             this.weightgoal_spin_button.value = this.settings.user_weightgoal.value;
             this.age_spin_button.value = this.settings.user_age;
-            this.sync_view.parent_window = parent;
 
             this.parent_window = parent;
             this.set_transient_for (parent);

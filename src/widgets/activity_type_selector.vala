@@ -18,7 +18,7 @@
 namespace Health {
 
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_type_row.ui")]
-    public class ActivityTypeRow : Gtk.ListBoxRow {
+    class ActivityTypeRow : Gtk.ListBoxRow {
         [GtkChild]
         Gtk.Image selected_image;
         [GtkChild]
@@ -42,7 +42,7 @@ namespace Health {
         }
     }
 
-    public class ActivityTypeRowData : GLib.Object {
+    class ActivityTypeRowData : GLib.Object {
         public bool selected;
         public string activity_type_name;
 

@@ -2,7 +2,7 @@
 <!--
   preferences_window.ui
 
-  Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
+  Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -201,7 +201,8 @@
             <property name="can-focus">False</property>
             <property name="title">Start sync with third-party providers.</property>
             <child>
-              <object class="HealthSyncView" id="sync_view">
+              <object class="HealthSyncListBox">
+                <property name="parent-window">HealthPreferencesWindow</property>
               </object>
             </child>
           </object>

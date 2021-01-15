@@ -19,10 +19,17 @@
 
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/distance_action_row.ui")]
     public class DistanceActionRow : Adw.ActionRow {
-        /**
-         * Forwards the {@link Gtk.SpinButton}'s {@link Gtk.SpinButton.input} Signal
-         */
-        public signal int input (out double new_value);
+        [GtkChild]
+        private Gtk.Adjustment distance_adjustment;
+        [GtkChild]
+        private Gtk.SpinButton distance_spin_button;
+        [GtkChild]
+        private Gtk.ToggleButton big_unit_togglebutton;
+        [GtkChild]
+        private Gtk.ToggleButton small_unit_togglebutton;
+
+        private double _value;
+        private Settings settings;
 
         /**
          * The current value of the spinner in meters
@@ -58,17 +65,10 @@
             }
         }
 
-        [GtkChild]
-        private Gtk.Adjustment distance_adjustment;
-        [GtkChild]
-        private Gtk.SpinButton distance_spin_button;
-        [GtkChild]
-        private Gtk.ToggleButton big_unit_togglebutton;
-        [GtkChild]
-        private Gtk.ToggleButton small_unit_togglebutton;
-
-        private double _value;
-        private Settings settings;
+        /**
+         * Forwards the {@link Gtk.SpinButton}'s {@link Gtk.SpinButton.input} Signal
+         */
+        public signal int input (out double new_value);
 
         construct {
             this.settings = Settings.get_instance ();
