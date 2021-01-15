@@ -145,7 +145,7 @@ namespace Health {
             this.set_access_token ((!) json.get_string_member ("access_token"));
         }
 
-        private Gee.HashMap<string, uint32> process_steps_json (string json_string) throws GLib.Error {
+        protected Gee.HashMap<string, uint32> process_steps_json (string json_string) throws GLib.Error {
             var json = (!) ((!) Json.from_string (json_string)).get_object ();
 
             var ret = new Gee.HashMap<string, uint32> ();
@@ -168,7 +168,7 @@ namespace Health {
             return ret;
         }
 
-        private Gee.HashMap<string, double?> process_weights_json (string json_string) throws GLib.Error {
+        protected Gee.HashMap<string, double?> process_weights_json (string json_string) throws GLib.Error {
             var json = (!) ((!) Json.from_string (json_string)).get_object ();
             var ret = new Gee.HashMap<string, double?> ();
             foreach (var point in ((!) json.get_array_member ("point")).get_elements ()) {
