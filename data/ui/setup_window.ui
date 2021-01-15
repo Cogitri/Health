@@ -456,7 +456,7 @@
                     <property name="vexpand">True</property>
                     <property name="hexpand">True</property>
                     <child>
-                      <object class="HealthSyncView" id="sync_view">
+                      <object class="HealthSyncListBox">
                         <property name="parent-window">HealthSetupWindow</property>
                       </object>
                     </child>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  sync_widget.ui
+  sync_list_box.ui
 
   Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
 
@@ -27,7 +27,7 @@
       <widget name="google_fit_selected_image"/>
     </widgets>
   </object>
-  <template class="HealthSyncView" parent="GtkWidget">
+  <template class="HealthSyncListBox" parent="GtkWidget">
     <child>
       <object class="GtkListBox" id="sync_list_box">
         <property name="can-focus">0</property>

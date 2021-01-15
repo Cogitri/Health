@@ -17,69 +17,6 @@
  */
 
 namespace Health {
-    /**
-     * An implementation of {@link GLib.ListModel} that stores {@link Activity}s. Can be used with
-     * {@link ActivityView} to display past activities.
-     */
-    public class ActivityModel : GLib.Object, GLib.ListModel {
-        private Gee.ArrayList<Activity> activities;
-        private Settings settings;
-        private TrackerDatabase db;
-        public bool is_empty {
-            get {
-                    return this.activities.is_empty;
-            }
-        }
-
-        public ActivityModel (TrackerDatabase db) {
-            this.settings = Settings.get_instance ();
-            this.db = db;
-            this.activities = new Gee.ArrayList<Activity> ();
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public GLib.Object? get_item (uint position) {
-                if (this.activities.size > position) {
-                return this.activities.get ((int) position);
-            } else {
-                return null;
-            }
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public GLib.Type get_item_type () {
-            return typeof (Activity);
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        public uint get_n_items () {
-            return this.activities.size;
-        }
-
-        /**
-         * Reload the data from the DB
-         *
-         * This can be used e.g. after the user added a new activity record.
-         * @return true if reloading suceeded.
-         */
-        public async bool reload () {
-            try {
-                var previous_size = this.activities.size;
-                this.activities = yield this.db.get_activities_after (Util.get_date_in_n_days (-30));
-                this.items_changed (0, previous_size, this.activities.size);
-                return true;
-            } catch (GLib.Error e) {
-                warning ("Failed to load activities from database due to error %s", e.message);
-                return false;
-            }
-        }
-    }
 
    /**
     * An implementation of {@link View} visualizes activities the user recently did.

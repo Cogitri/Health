@@ -17,6 +17,7 @@
  */
 
  namespace Health {
+
     public enum Unitsystem {
         IMPERIAL,
         METRIC,
@@ -26,6 +27,8 @@
      * Settings utilizes {@link GLib.Settings} to save the user's preferences. Use {@link get_instance} to get an instance of the {@link Settings} Singleton.
      */
     public class Settings : GLib.Settings {
+        private static Settings? instance;
+
         public const string CURRENT_VIEW_ID_KEY = "current-view-id";
         public const string DID_INITIAL_SETUP_KEY = "did-initial-setup";
         public const string RECENT_ACTIVITY_TYPES_KEY ="recent-activity-types";
@@ -39,6 +42,20 @@
         public const string WINDOW_HEIGHT_KEY = "window-height";
         public const string WINDOW_IS_MAXIMIZED_KEY = "window-is-maximized";
         public const string WINDOW_WIDTH_KEY = "window-width";
+
+        private Settings () {
+            Object (schema_id: "dev.Cogitri.Health");
+        }
+
+        /**
+         * Get an instance of the Settings object. If it doesn't exist yet, create it.
+         */
+         public static Settings get_instance () {
+            if (Settings.instance == null) {
+                Settings.instance = new Settings ();
+            }
+            return (!) Settings.instance;
+        }
 
         public uint current_view_id {
             get {
@@ -155,22 +172,6 @@
             set {
                 this.set_int (WINDOW_WIDTH_KEY, value);
             }
-        }
-
-        private static Settings? instance;
-
-        /**
-         * Get an instance of the Settings object. If it doesn't exist yet, create it.
-         */
-        public static Settings get_instance () {
-            if (Settings.instance == null) {
-                Settings.instance = new Settings ();
-            }
-            return (!) Settings.instance;
-        }
-
-        private Settings () {
-            Object (schema_id: "dev.Cogitri.Health");
         }
     }
  }

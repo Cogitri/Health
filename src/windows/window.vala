@@ -17,6 +17,7 @@
  */
 
 namespace Health {
+
     public enum ViewModes {
         STEPS,
         WEIGHT,

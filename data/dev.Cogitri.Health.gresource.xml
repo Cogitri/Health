@@ -13,7 +13,7 @@
     <file preprocess="xml-stripblanks">ui/setup_window.ui</file>
     <file preprocess="xml-stripblanks">ui/shortcuts_window.ui</file>
     <file preprocess="xml-stripblanks">ui/step_view.ui</file>
-    <file preprocess="xml-stripblanks">ui/sync_view.ui</file>
+    <file preprocess="xml-stripblanks">ui/sync_list_box.ui</file>
     <file preprocess="xml-stripblanks">ui/view.ui</file>
     <file preprocess="xml-stripblanks">ui/weight_add_dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/weight_view.ui</file>

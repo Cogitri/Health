@@ -17,6 +17,7 @@
  */
 
  namespace Health {
+
     /**
      * The PreferencesWindow is presented to the user to set certain settings
      * in the applcation.
@@ -48,7 +49,7 @@
         public signal void import_done ();
 
         static construct {
-            typeof (SyncView).ensure ();
+            typeof (SyncListBox).ensure ();
         }
 
         public PreferencesWindow (Gtk.Window? parent) {

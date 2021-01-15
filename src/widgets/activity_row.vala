@@ -17,6 +17,7 @@
  */
 
 namespace Health {
+
    /**
     * An implementation of {@link Gtk.ListBox} that displays infos about an {@link Activity}.
     */
@@ -43,17 +44,17 @@ namespace Health {
         [GtkChild]
         private Gtk.Revealer details_revealer;
         [GtkChild]
-        Adw.ActionRow calories_burned_row;
+        private Adw.ActionRow calories_burned_row;
         [GtkChild]
-        Adw.ActionRow distance_row;
+        private Adw.ActionRow distance_row;
         [GtkChild]
-        Adw.ActionRow steps_row;
+        private Adw.ActionRow steps_row;
         [GtkChild]
-        Adw.ActionRow average_heart_rate_row;
+        private Adw.ActionRow average_heart_rate_row;
         [GtkChild]
-        Adw.ActionRow minimum_heart_rate_row;
+        private Adw.ActionRow minimum_heart_rate_row;
         [GtkChild]
-        Adw.ActionRow maximum_heart_rate_row;
+        private Adw.ActionRow maximum_heart_rate_row;
 
         private Activity _activity;
         public Activity activity {

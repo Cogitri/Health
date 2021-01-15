@@ -62,6 +62,16 @@ namespace Health {
         private Adw.ActionRow stepcount_action_row;
 
         private ActivityInfo? _selected_activity;
+        private bool calories_burned_spin_button_user_changed;
+        private bool distance_spin_button_user_changed;
+        private bool duration_spin_button_user_changed;
+        private bool steps_spin_button_user_changed;
+        private bool stop_update;
+        private Activity activity;
+        private Gtk.FilterListModel? filter_model;
+        private Settings settings;
+        private TrackerDatabase db;
+
         public ActivityInfo? selected_activity {
             get {
                 return this._selected_activity;
@@ -75,17 +85,6 @@ namespace Health {
                 }
             }
         }
-
-        private bool calories_burned_spin_button_user_changed;
-        private bool distance_spin_button_user_changed;
-        private bool duration_spin_button_user_changed;
-        private bool steps_spin_button_user_changed;
-        private bool stop_update;
-
-        private Activity activity;
-        private Gtk.FilterListModel? filter_model;
-        private Settings settings;
-        private TrackerDatabase db;
 
         public ActivityAddDialog (Gtk.Window? parent, TrackerDatabase db) {
             Object (use_header_bar: 1);
@@ -195,6 +194,57 @@ namespace Health {
             }
         }
 
+        private void set_spin_buttons_from_activity (Gtk.Widget emitter) {
+            if (this.stop_update) {
+                return;
+            }
+
+            this.stop_update = true;
+            if (this.activity.calories_burned != 0 && this.activity.calories_burned != double.parse (this.calories_burned_spin_button.text) && this.calories_burned_spin_button != emitter && !this.calories_burned_spin_button_user_changed) {
+                this.calories_burned_spin_button.value = this.activity.calories_burned;
+            }
+            if (this.activity.distance != 0 && this.activity.distance != this.distance_action_row.value && this.distance_action_row != emitter && !this.distance_spin_button_user_changed) {
+                this.distance_action_row.value = this.activity.distance;
+            }
+            if (this.activity.minutes != 0 && this.activity.minutes != double.parse (this.duration_spin_button.text) && this.duration_spin_button != emitter && !this.duration_spin_button_user_changed) {
+                this.duration_spin_button.value = this.activity.minutes;
+            }
+            if (this.activity.steps != 0 && this.activity.steps != double.parse (this.steps_spin_button.text) && this.steps_spin_button != emitter && !this.steps_spin_button_user_changed) {
+                this.steps_spin_button.value = this.activity.steps;
+            }
+            this.stop_update = false;
+        }
+
+        [GtkCallback]
+        private void on_activity_type_selector_selected_activity (GLib.Object o, GLib.ParamSpec p) {
+            this.selected_activity = this.activity_type_selector.selected_activity;
+            this.activity.activity_type = ((!) this.selected_activity).type;
+
+            if (this.filter_model != null) {
+                ((!) this.filter_model).filter.changed (Gtk.FilterChange.DIFFERENT);
+            }
+        }
+
+        [GtkCallback]
+        private void on_calories_burned_spin_button_changed (Gtk.Editable e) {
+            this.activity.calories_burned = (uint32) double.parse (e.text);
+            this.activity.autofill_from_calories ();
+            this.set_spin_buttons_from_activity (e);
+        }
+
+        [GtkCallback]
+        private void on_distance_action_row_changed (GLib.Object o, GLib.ParamSpec p) {
+            this.activity.distance = (uint32) this.distance_action_row.value;
+            this.activity.autofill_from_distance ();
+            this.set_spin_buttons_from_activity (distance_action_row);
+        }
+
+        [GtkCallback]
+        private void on_duration_spin_button_changed (Gtk.Editable e) {
+            this.activity.minutes = (uint32) double.parse (e.text);
+            this.activity.autofill_from_minutes ();
+            this.set_spin_buttons_from_activity (e);
+        }
 
         [GtkCallback]
         private void on_response (int response_id) {
@@ -219,57 +269,6 @@ namespace Health {
             this.destroy ();
         }
 
-        [GtkCallback]
-        private void on_activity_type_selector_selected_activity (GLib.Object o, GLib.ParamSpec p) {
-            this.selected_activity = this.activity_type_selector.selected_activity;
-            this.activity.activity_type = ((!) this.selected_activity).type;
-
-            if (this.filter_model != null) {
-                ((!) this.filter_model).filter.changed (Gtk.FilterChange.DIFFERENT);
-            }
-        }
-
-        private void set_spin_buttons_from_activity (Gtk.Widget emitter) {
-            if (this.stop_update) {
-                return;
-            }
-
-            this.stop_update = true;
-            if (this.activity.calories_burned != 0 && this.activity.calories_burned != double.parse (this.calories_burned_spin_button.text) && this.calories_burned_spin_button != emitter && !this.calories_burned_spin_button_user_changed) {
-                this.calories_burned_spin_button.value = this.activity.calories_burned;
-            }
-            if (this.activity.distance != 0 && this.activity.distance != this.distance_action_row.value && this.distance_action_row != emitter && !this.distance_spin_button_user_changed) {
-                this.distance_action_row.value = this.activity.distance;
-            }
-            if (this.activity.minutes != 0 && this.activity.minutes != double.parse (this.duration_spin_button.text) && this.duration_spin_button != emitter && !this.duration_spin_button_user_changed) {
-                this.duration_spin_button.value = this.activity.minutes;
-            }
-            if (this.activity.steps != 0 && this.activity.steps != double.parse (this.steps_spin_button.text) && this.steps_spin_button != emitter && !this.steps_spin_button_user_changed) {
-                this.steps_spin_button.value = this.activity.steps;
-            }
-            this.stop_update = false;
-        }
-
-        [GtkCallback]
-        private void on_calories_burned_spin_button_changed (Gtk.Editable e) {
-            this.activity.calories_burned = (uint32) double.parse (e.text);
-            this.activity.autofill_from_calories ();
-            this.set_spin_buttons_from_activity (e);
-        }
-
-        [GtkCallback]
-        private void on_distance_action_row_changed (GLib.Object o, GLib.ParamSpec p) {
-            this.activity.distance = (uint32) this.distance_action_row.value;
-            this.activity.autofill_from_distance ();
-            this.set_spin_buttons_from_activity (distance_action_row);
-        }
-
-        [GtkCallback]
-        private void on_duration_spin_button_changed (Gtk.Editable e) {
-            this.activity.minutes = (uint32) double.parse (e.text);
-            this.activity.autofill_from_minutes ();
-            this.set_spin_buttons_from_activity (e);
-        }
 
         [GtkCallback]
         private void on_steps_spin_button_changed (Gtk.Editable e) {

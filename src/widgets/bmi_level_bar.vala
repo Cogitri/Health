@@ -26,6 +26,7 @@ namespace Health {
         private Gtk.Label bmi_label;
         [GtkChild]
         private Gtk.LevelBar level_bar;
+
         private double _height;
         private double _weight;
         private Unitsystem _unitsystem;

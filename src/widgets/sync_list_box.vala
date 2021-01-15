@@ -1,4 +1,4 @@
-/* sync_view.vala
+/* sync_list_box.vala
  *
  * Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
  *
@@ -17,11 +17,12 @@
  */
 
 namespace Health {
+
     /**
-     * The {@link SyncView} is a view where users can initialise synching with a third-party provider.
+     * The {@link SyncListBox} is a {@Gtk.ListBox} where users can initialise synching with a third-party provider.
      */
-    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/sync_view.ui")]
-    public class SyncView : Gtk.Widget {
+    [GtkTemplate (ui = "/dev/Cogitri/Health/ui/sync_list_box.ui")]
+    public class SyncListBox : Gtk.Widget {
         [GtkChild]
         private Gtk.Image google_fit_selected_image;
         [GtkChild]

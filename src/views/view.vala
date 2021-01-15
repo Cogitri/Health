@@ -17,6 +17,7 @@
  */
 
 namespace Health {
+
     /**
      * View is a toplevel container, used for e.g. the {@link StepView} and {@link WeightView}.
      */
@@ -80,39 +81,5 @@ namespace Health {
          * This can query a DB and then refresh the view.
          */
         public abstract void update ();
-    }
-
-    /**
-     * A {@link GraphModel} is the dataclass for a {@link GraphView}.
-     *
-     * It can retrieve data from a DB and provides it to
-     * a {@link GraphView} to display it to the user.
-     */
-    public abstract class GraphModel<T>: GLib.Object {
-        protected Gee.ArrayList<T> arr;
-
-        public bool is_empty {
-            get {
-                return this.arr.is_empty;
-            }
-        }
-
-        protected void init () {
-            this.arr = new Gee.ArrayList<T> ();
-            this.reload.begin ((obj, res) => {
-                this.reload.end (res);
-            });
-        }
-
-        /**
-         * Converts the {@link GraphModel}'s data to data points so it can be displayed in the {@link GraphView}.
-         */
-        public abstract Gee.ArrayList<Point> to_points ();
-
-        /**
-         * Reloads the {@link GraphModel}'s data, e.g. by loading it from the DB again.
-         */
-        public async abstract bool reload ();
-
     }
 }

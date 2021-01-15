@@ -17,6 +17,7 @@
  */
 
 namespace Health {
+
     /**
      * The {@link SetupWindow} is shown to the user on the first start of the applcation to fill in some data.
      */
@@ -69,7 +70,7 @@ namespace Health {
         public signal void setup_done ();
 
         static construct {
-            typeof (SyncView).ensure ();
+            typeof (SyncListBox).ensure ();
         }
 
         public SetupWindow (Gtk.Application application) {
