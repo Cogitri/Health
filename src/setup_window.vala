@@ -57,6 +57,8 @@ namespace Health {
         [GtkChild]
         private Adw.ActionRow height_actionrow;
         [GtkChild]
+        private Adw.ActionRow weightgoal_actionrow;
+        [GtkChild]
         private Adw.Carousel setup_carousel;
 
         private Settings settings;
@@ -105,10 +107,14 @@ namespace Health {
         private void unit_metric_togglebutton_toggled (Gtk.ToggleButton btn) {
             if (btn.active) {
                 this.height_actionrow.title = _ ("Height in centimeters");
+                this.weightgoal_actionrow.title = _ ("Weightgoal in KG");
                 this.bmi_levelbar.unitsystem = Unitsystem.METRIC;
+                this.height_spin_button.value = Util.inch_to_cm (this.height_spin_button.value);
             } else {
                 this.height_actionrow.title = _ ("Height in inch");
+                this.weightgoal_actionrow.title = _ ("Weightgoal in pounds");
                 this.bmi_levelbar.unitsystem = Unitsystem.IMPERIAL;
+                this.height_spin_button.value = Util.cm_to_inch (this.height_spin_button.value);
             }
             this.set_optimal_weightgoal ();
         }
