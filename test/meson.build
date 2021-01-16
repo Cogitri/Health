@@ -6,6 +6,7 @@ vala_unit_dep = vala_unit_proj.get_variable('vala_unit_dep')
 
 test_sources = [
   'database.vala',
+  'google_fit_oauth2_proxy.vala',
   'test_main.vala',
   'units.vala',
 ]
