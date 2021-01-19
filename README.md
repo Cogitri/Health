@@ -1,4 +1,8 @@
 # Health
+<p float="left">
+<a href="https://flathub.org/apps/details/dev.Cogitri.Health"><img height='80' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
+<a href="https://circle.gnome.org/"><img height='80' alt='Part of GNOME Circle' src='https://gitlab.gnome.org/Teams/Circle/-/raw/91de93edbb3e75eb0882d56bd466e58b525135d5/assets/button/circle-button-fullcolor.svg'/>
+</p>
 
 A health tracking app for the GNOME desktop.
 
