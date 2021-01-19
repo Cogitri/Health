@@ -1,0 +1,542 @@
+# Spanish translations for dev.Cogitri.Health package.
+# Copyright (C) 2021 THE dev.Cogitri.Health'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the dev.Cogitri.Health package.
+# Automatically generated, 2021.
+# Óscar Fernández Díaz <oscfdezdz@tuta.io>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: dev.Cogitri.Health\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-19 20:53+0100\n"
+"PO-Revision-Date: 2021-01-19 20:43+0100\n"
+"Last-Translator: Óscar Fernández Díaz <oscfdezdz@tuta.io>\n"
+"Language-Team: Spanish; Castilian <oscfdezdz@tuta.io>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"X-Generator: Gtranslator 3.38.0\n"
+
+#: data/ui/activity_add_dialog.ui:64
+msgid "Add New Activity"
+msgstr "Añadir nueva actividad"
+
+#: data/ui/activity_add_dialog.ui:69 data/ui/weight_add_dialog.ui:35
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: data/ui/activity_add_dialog.ui:75 data/ui/weight_add_dialog.ui:41
+msgid "_Save"
+msgstr "_Guardar"
+
+#: data/ui/activity_add_dialog.ui:112 data/ui/weight_add_dialog.ui:67
+msgid "Date"
+msgstr "Fecha"
+
+#: data/ui/activity_add_dialog.ui:126
+msgid "Activity Type"
+msgstr "Tipo de actividad"
+
+#: data/ui/activity_add_dialog.ui:138 data/ui/activity_row.ui:75
+msgid "Calories Burned"
+msgstr "Calorías quemadas"
+
+#: data/ui/activity_add_dialog.ui:142 data/ui/activity_add_dialog.ui:163
+#: data/ui/activity_add_dialog.ui:180 data/ui/activity_add_dialog.ui:195
+#: data/ui/activity_add_dialog.ui:210 data/ui/activity_add_dialog.ui:225
+#: data/ui/preferences_window.ui:97 data/ui/preferences_window.ui:115
+#: data/ui/setup_window.ui:227 data/ui/setup_window.ui:245
+#: data/ui/weight_add_dialog.ui:84
+msgid "0"
+msgstr "0"
+
+#: data/ui/activity_add_dialog.ui:159
+msgid "Active Minutes"
+msgstr "Minutos activos"
+
+#: data/ui/activity_add_dialog.ui:176 data/ui/activity_row.ui:102
+msgid "Average Heart Rate"
+msgstr "Ritmo cardíaco promedio"
+
+#: data/ui/activity_add_dialog.ui:191 data/ui/activity_row.ui:111
+msgid "Minimum Heart Rate"
+msgstr "Ritmo cardíaco mínimo"
+
+#: data/ui/activity_add_dialog.ui:206 data/ui/activity_row.ui:120
+msgid "Maximum Heart Rate"
+msgstr "Ritmo cardíaco máximo"
+
+#: data/ui/activity_add_dialog.ui:221
+msgid "Stepcount"
+msgstr "Número de pasos"
+
+#: data/ui/activity_row.ui:84
+msgid "Distance in Meters"
+msgstr "Distancia en metros"
+
+#: data/ui/activity_row.ui:93 data/ui/step_view.ui:26 data/ui/step_view.ui:27
+msgid "Steps"
+msgstr "Pasos"
+
+#: data/ui/activity_view.ui:24 data/ui/step_view.ui:23
+msgid "You can use the <b>+</b> button to add a new activity."
+msgstr "Puedes usar el botón <b>+</b> para añadir una nueva actividad."
+
+#: data/ui/activity_view.ui:27
+msgid "Recent Activities"
+msgstr "Actividades recientes"
+
+#: data/ui/activity_view.ui:28
+msgid "Activities"
+msgstr "Actividades"
+
+#: data/ui/distance_action_row.ui:29
+msgid "Distance"
+msgstr "Distancia"
+
+#: data/ui/preferences_window.ui:45
+msgid "Health Preferences"
+msgstr "Preferencias de Salud"
+
+#: data/ui/preferences_window.ui:56 data/ui/shortcuts_window.ui:30
+msgid "General"
+msgstr "General"
+
+#: data/ui/preferences_window.ui:60
+msgid "User"
+msgstr "Usuario"
+
+#: data/ui/preferences_window.ui:63 data/ui/setup_window.ui:193
+msgid "Unitsystem"
+msgstr "Sistema de unidades"
+
+#: data/ui/preferences_window.ui:76 data/ui/setup_window.ui:206
+msgid "Imperial"
+msgstr "Imperial"
+
+#: data/ui/preferences_window.ui:81 data/ui/setup_window.ui:211
+msgid "Metric"
+msgstr "Métrico"
+
+#: data/ui/preferences_window.ui:93 data/ui/setup_window.ui:223
+msgid "Age"
+msgstr "Edad"
+
+#: data/ui/preferences_window.ui:137 data/ui/setup_window.ui:312
+msgid "Stepgoal"
+msgstr "Objetivo de pasos"
+
+#: data/ui/preferences_window.ui:138
+msgid "The WHO recommends 10.000 steps per day."
+msgstr "La OMS recomienda 10.000 pasos al día."
+
+#: data/ui/preferences_window.ui:142
+msgid "10000"
+msgstr "10000"
+
+#: data/ui/preferences_window.ui:164 data/ui/setup_window.ui:357
+msgid "The WHO recommends a BMI of 18.5-24.9."
+msgstr "La OMS recomienda un IMC de 18,5-24,9."
+
+#: data/ui/preferences_window.ui:196
+msgid "Sync"
+msgstr "Sincronizar"
+
+#: data/ui/setup_window.ui:61
+msgid "Health Setup"
+msgstr "Configuración de Salud"
+
+#: data/ui/setup_window.ui:156
+msgid "Welcome to Health!"
+msgstr "¡Bienvenido/a a Salud!"
+
+#: data/ui/setup_window.ui:169
+msgid "Please enter some information to get setup."
+msgstr "Por favor, introduce alguna información para prepararte."
+
+#: data/ui/setup_window.ui:241 src/windows/preferences_window.vala:60
+#: src/windows/preferences_window.vala:121 src/windows/setup_window.vala:110
+msgid "Height in centimeters"
+msgstr "Altura en centímetros"
+
+#: data/ui/setup_window.ui:275
+msgid "Please enter your daily stepgoal."
+msgstr "Por favor, introduce tu objetivo diario de pasos."
+
+#: data/ui/setup_window.ui:288
+msgid "The WHO recommends about 10.000 steps per day."
+msgstr "La OMS recomienda 10.000 pasos al día."
+
+#: data/ui/setup_window.ui:344
+msgid "Please enter your weightgoal."
+msgstr "Por favor, introduce tu objetivo de peso."
+
+#: data/ui/setup_window.ui:385
+msgid "Weightgoal"
+msgstr "Objetivo de peso"
+
+#: data/ui/setup_window.ui:428
+msgid "Setup sync with third-party providers."
+msgstr "Configurar la sincronización con proveedores de terceros."
+
+#: data/ui/setup_window.ui:441
+msgid ""
+"You can sync steps and weight measurements from/to third-party providers."
+msgstr ""
+"Puedes sincronizar los pasos y las mediciones de peso desde/a proovedores de "
+"terceros."
+
+#: data/ui/shortcuts_window.ui:34
+msgid "Quit the application"
+msgstr "Salir de la aplicación"
+
+#: data/ui/shortcuts_window.ui:40
+msgid "Show this shortcuts window"
+msgstr "Mostrar esta ventana de atajos"
+
+#: data/ui/shortcuts_window.ui:46
+msgid "Show help"
+msgstr "Mostrar ayuda"
+
+#: data/ui/shortcuts_window.ui:52
+msgid "Show primary menu"
+msgstr "Mostrar menú principal"
+
+#: data/ui/shortcuts_window.ui:58
+msgid "Toggle fullscreen mode"
+msgstr "Cambiar al modo de pantalla completa"
+
+#: data/ui/weight_add_dialog.ui:80 data/ui/weight_view.ui:27
+msgid "Weight"
+msgstr "Peso"
+
+#: data/ui/weight_view.ui:23
+msgid "You can use the <b>+</b> button to add a new weight measurement."
+msgstr "Puedes usar el botón <b>+</b> para añadir una nueva medición de peso."
+
+#: data/ui/weight_view.ui:26
+msgid "Weight Measurements"
+msgstr "Mediciones de peso"
+
+#: data/ui/window.ui:27
+msgid "_Preferences"
+msgstr "_Preferencias"
+
+#: data/ui/window.ui:31
+msgid "_Keyboard Shortcuts"
+msgstr "_Atajos de teclado"
+
+#: data/ui/window.ui:37
+msgid "_About Health"
+msgstr "_Acerca de Salud"
+
+#: data/ui/window.ui:47 data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 src/core/application.vala:82
+msgid "Health"
+msgstr "Salud"
+
+#: data/dev.Cogitri.Health.gschema.xml:11
+msgid "Last opened view"
+msgstr "Última vista abierta"
+
+#: data/dev.Cogitri.Health.gschema.xml:12
+msgid "The last view the user had opened, for restoring it on start"
+msgstr "La última vista que ha abierto el usuario, para restaurarla al inicio"
+
+#: data/dev.Cogitri.Health.gschema.xml:16
+msgid "First time setup done"
+msgstr "Primera vez que se hizo la instalación"
+
+#: data/dev.Cogitri.Health.gschema.xml:17
+msgid "Whether the user has completed the setup wizard"
+msgstr "Si el usuario ha completado el asistente de configuración"
+
+#: data/dev.Cogitri.Health.gschema.xml:21
+msgid "List of recent activity types"
+msgstr "Lista de tipos de actividad recientes"
+
+#: data/dev.Cogitri.Health.gschema.xml:22
+msgid ""
+"Activity types the user used recently, to be shown first in the activity "
+"types selector's list"
+msgstr ""
+"Tipos de actividad que el usuario ha utilizado recientemente, se mostrarán "
+"primero en la lista del selector de tipos de actividad"
+
+#: data/dev.Cogitri.Health.gschema.xml:26
+msgid "Google Fit Sync-Provider setup"
+msgstr "Configuración del proveedor de sincronización de Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:27
+msgid "Whether Google Fit has been setup as sync provider"
+msgstr "Si Google Fit ha sido configurado como proveedor de sincronización"
+
+#: data/dev.Cogitri.Health.gschema.xml:31
+msgid "Last sync with Google Fit"
+msgstr "Última sincronización con Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:32
+msgid "The last time we synched steps, weight etc. with Google Fit"
+msgstr ""
+"La última vez que sincronizamos los pasos, el peso, etc. con Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:36
+msgid "Unitsystem used"
+msgstr "Sistema de unidades utilizado"
+
+#: data/dev.Cogitri.Health.gschema.xml:37
+msgid "The unitsystem the user chose, e.g. for cm vs inch for height"
+msgstr ""
+"El sistema de unidades que el usuario eligió, por ejemplo, para los cm vs "
+"pulgadas para la altura"
+
+#: data/dev.Cogitri.Health.gschema.xml:41
+msgid "User age"
+msgstr "Edad del usuario"
+
+#: data/dev.Cogitri.Health.gschema.xml:42
+msgid "The age of the user."
+msgstr "La edad del usuario."
+
+#: data/dev.Cogitri.Health.gschema.xml:46
+msgid "User height"
+msgstr "Altura del usuario"
+
+#: data/dev.Cogitri.Health.gschema.xml:47
+msgid "The height of the user."
+msgstr "La altura del usuario."
+
+#: data/dev.Cogitri.Health.gschema.xml:51
+msgid "User stepgoal"
+msgstr "Objetivo de pasos del usuario"
+
+#: data/dev.Cogitri.Health.gschema.xml:52
+msgid "The amount of steps the user wants to reach daily."
+msgstr "La cantidad de pasos que el usuario quiere lograr diariamente."
+
+#: data/dev.Cogitri.Health.gschema.xml:56
+msgid "User weightgoal"
+msgstr "Objetivo de peso del usuario"
+
+#: data/dev.Cogitri.Health.gschema.xml:57
+msgid "The weight the user wants to reach."
+msgstr "El peso que el usuario quiere lograr."
+
+#: data/dev.Cogitri.Health.gschema.xml:61
+msgid "Window height"
+msgstr "Altura de la ventana"
+
+#: data/dev.Cogitri.Health.gschema.xml:62
+msgid "The height of the window."
+msgstr "La altura de la ventana."
+
+#: data/dev.Cogitri.Health.gschema.xml:66
+msgid "Window maximized"
+msgstr "Ventana maximizada"
+
+#: data/dev.Cogitri.Health.gschema.xml:67
+msgid "Whether the window is maximized."
+msgstr "Si la ventana está maximizada."
+
+#: data/dev.Cogitri.Health.gschema.xml:71
+msgid "Window width"
+msgstr "Anchura de la ventana"
+
+#: data/dev.Cogitri.Health.gschema.xml:72
+msgid "The width of the window."
+msgstr "La anchura de la ventana."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.vala:83
+msgid "A health tracking app for the GNOME desktop."
+msgstr "Una aplicación de seguimiento de la salud para el escritorio GNOME."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+msgid ""
+"A health tracking app for the GNOME desktop. Health can visualize how many "
+"steps you've made daily, your weight development over time and your daily "
+"activities."
+msgstr ""
+"Una aplicación de seguimiento de la salud para el escritorio GNOME. Salud "
+"puede visualizar cuántos pasos has hecho diariamente, el desarollo de tu "
+"peso durante el tiempo y tus actividades diarias."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:31
+msgid "Rasmus “Cogitri” Thomsen"
+msgstr "Rasmus “Cogitri” Thomsen"
+
+#: src/core/application.vala:85
+msgid "translator-credits"
+msgstr "Óscar Fernández Díaz"
+
+#: src/core/application.vala:87
+msgid "Websites"
+msgstr "Páginas web"
+
+#: src/core/database.vala:54
+#, c-format
+msgid "Failed to setup Tracker database due to error %s!"
+msgstr ""
+"¡Falló la configuración de la base de datos de Tracker debido a un error de "
+"%s!"
+
+#: src/model/activity.vala:281
+msgid "Basketball"
+msgstr "Baloncesto"
+
+#: src/model/activity.vala:282
+msgid "Bicycling"
+msgstr "Ciclismo"
+
+#: src/model/activity.vala:283
+msgid "Boxing"
+msgstr "Boxeo"
+
+#: src/model/activity.vala:284
+msgid "Dancing"
+msgstr "Baile"
+
+#: src/model/activity.vala:285
+msgid "Football"
+msgstr "Fútbol americano"
+
+#: src/model/activity.vala:286
+msgid "Golf"
+msgstr "Golf"
+
+#: src/model/activity.vala:287
+msgid "Hiking"
+msgstr "Senderismo"
+
+#: src/model/activity.vala:288
+msgid "Hockey"
+msgstr "Hockey"
+
+#: src/model/activity.vala:289
+msgid "Horse Riding"
+msgstr "Equitación"
+
+#: src/model/activity.vala:290
+msgid "Other Sports"
+msgstr "Otros deportes"
+
+#: src/model/activity.vala:291
+msgid "Rollerblading"
+msgstr "Patinaje sobre ruedas"
+
+#: src/model/activity.vala:292
+msgid "Running"
+msgstr "Correr"
+
+#: src/model/activity.vala:293
+msgid "Skiing"
+msgstr "Esquí"
+
+#: src/model/activity.vala:294
+msgid "Soccer"
+msgstr "Fútbol"
+
+#: src/model/activity.vala:295
+msgid "Softball"
+msgstr "Softball"
+
+#: src/model/activity.vala:296
+msgid "Swimming"
+msgstr "Natación"
+
+#: src/model/activity.vala:297
+msgid "Tennis"
+msgstr "Tenis"
+
+#: src/model/activity.vala:298
+msgid "Track And Field"
+msgstr "Atletismo"
+
+#: src/model/activity.vala:299
+msgid "Volleyball"
+msgstr "Voleibol"
+
+#: src/model/activity.vala:300
+msgid "Walking"
+msgstr "Caminata"
+
+#: src/model/weight_graph_model.vala:58
+#, c-format
+msgid "Failed to load weights from database due to error %s"
+msgstr "No se cargaron los pesos de la base de datos debido a un error %s"
+
+#. TRANSLATORS: this is how many minutes the user was active in the activity view.
+#: src/widgets/activity_row.vala:68
+#, c-format
+msgid "%u Minutes"
+msgstr "%u Minutos"
+
+#. TRANSLATORS: this refers to how many calories the user has burned during an activity
+#: src/widgets/activity_row.vala:75
+#, c-format
+msgid "%u Calories"
+msgstr "%u Calorías"
+
+#: src/widgets/activity_row.vala:95
+msgid "Distance in Yards"
+msgstr "Distancia en yardas"
+
+#: src/widgets/bmi_level_bar.vala:122
+#, c-format
+msgid "<small>Current BMI: %.2lf</small>"
+msgstr "<small>IMC actual: %.2lf</small>"
+
+#: src/widgets/distance_action_row.vala:83
+msgid "Miles"
+msgstr "Millas"
+
+#: src/widgets/distance_action_row.vala:84
+msgid "Yards"
+msgstr "Yardas"
+
+#: src/widgets/distance_action_row.vala:86
+msgid "KM"
+msgstr "KM"
+
+#: src/widgets/distance_action_row.vala:87
+msgid "Meters"
+msgstr "Metros"
+
+#: src/windows/activity_add_dialog.vala:82
+msgid "No activity selected"
+msgstr "No hay actividad seleccionada"
+
+#: src/windows/activity_add_dialog.vala:257
+#: src/windows/weight_add_dialog.vala:80
+#, c-format
+msgid "Failed to save new data due to error %s"
+msgstr "No se guardaron los nuevos datos debido a un error %s"
+
+#: src/windows/preferences_window.vala:61
+#: src/windows/preferences_window.vala:122 src/windows/setup_window.vala:111
+msgid "Weightgoal in KG"
+msgstr "Objetivo de peso en KG"
+
+#: src/windows/preferences_window.vala:65
+#: src/windows/preferences_window.vala:127 src/windows/setup_window.vala:115
+msgid "Height in inch"
+msgstr "Altura en pulgadas"
+
+#: src/windows/preferences_window.vala:66
+#: src/windows/preferences_window.vala:128 src/windows/setup_window.vala:116
+msgid "Weightgoal in pounds"
+msgstr "Objetivo de peso en libras"
+
+#: src/windows/weight_add_dialog.vala:65
+msgid "Update Weight Record"
+msgstr "Actualizar el registro de peso"
+
+#: src/windows/weight_add_dialog.vala:67
+msgid "Add New weight Record"
+msgstr "Anadir nuevo registro de peso"
+
+#: src/windows/window.vala:147
+#, c-format
+msgid "Google Fit sync failed due to error %s"
+msgstr "La sincronización de Google Fit falló debido a un error %s"
