@@ -18,6 +18,7 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <interface domain="dev.Cogitri.Health">
+  <requires lib="gtk" version="4.0"/>
   <template class="HealthBMILevelBar" parent="GtkWidget">
     <child>
       <object class="GtkLabel" id="bmi_label">

@@ -18,7 +18,7 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <interface domain="dev.Cogitri.Health">
-  <requires lib="gtk+" version="4.0"/>
+  <requires lib="gtk" version="4.0"/>
   <object class="GtkStringList" id="recent_activity_types_model"/>
   <object class="GtkStringList" id="activity_types_model"/>
   <template class="HealthActivityTypeSelector" parent="GtkPopover">

@@ -18,7 +18,7 @@
   along with this program. If not, see <http://www.gnu.org/licenses/>.
 -->
 <interface domain="dev.Cogitri.Health">
-  <requires lib="gtk+" version="4.0"/>
+  <requires lib="gtk" version="4.0"/>
   <template class="HealthWeightView" parent="HealthView">
     <property name="empty-subtitle" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new weight measurement.</property>
     <property name="icon-name">weight-scale-symbolic</property>
