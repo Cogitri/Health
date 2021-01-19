@@ -24,37 +24,37 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_row.ui")]
     public class ActivityRow : Gtk.ListBoxRow {
         [GtkChild]
-        private Gtk.Label active_minutes_label;
+        private unowned Gtk.Label active_minutes_label;
         [GtkChild]
-        private Gtk.Label activity_date_label;
+        private unowned Gtk.Label activity_date_label;
         [GtkChild]
-        private Gtk.Label activity_type_label;
+        private unowned Gtk.Label activity_type_label;
         [GtkChild]
-        private Gtk.Label calories_burned_label;
+        private unowned Gtk.Label calories_burned_label;
         [GtkChild]
-        private Gtk.Label distance_label;
+        private unowned Gtk.Label distance_label;
         [GtkChild]
-        private Gtk.Label average_heart_rate_label;
+        private unowned Gtk.Label average_heart_rate_label;
         [GtkChild]
-        private Gtk.Label maximum_heart_rate_label;
+        private unowned Gtk.Label maximum_heart_rate_label;
         [GtkChild]
-        private Gtk.Label minimum_heart_rate_label;
+        private unowned Gtk.Label minimum_heart_rate_label;
         [GtkChild]
-        private Gtk.Label steps_label;
+        private unowned Gtk.Label steps_label;
         [GtkChild]
-        private Gtk.Revealer details_revealer;
+        private unowned Gtk.Revealer details_revealer;
         [GtkChild]
-        private Adw.ActionRow calories_burned_row;
+        private unowned Adw.ActionRow calories_burned_row;
         [GtkChild]
-        private Adw.ActionRow distance_row;
+        private unowned Adw.ActionRow distance_row;
         [GtkChild]
-        private Adw.ActionRow steps_row;
+        private unowned Adw.ActionRow steps_row;
         [GtkChild]
-        private Adw.ActionRow average_heart_rate_row;
+        private unowned Adw.ActionRow average_heart_rate_row;
         [GtkChild]
-        private Adw.ActionRow minimum_heart_rate_row;
+        private unowned Adw.ActionRow minimum_heart_rate_row;
         [GtkChild]
-        private Adw.ActionRow maximum_heart_rate_row;
+        private unowned Adw.ActionRow maximum_heart_rate_row;
 
         private Activity _activity;
         public Activity activity {

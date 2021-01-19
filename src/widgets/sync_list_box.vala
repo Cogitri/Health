@@ -24,13 +24,13 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/sync_list_box.ui")]
     public class SyncListBox : Gtk.Widget {
         [GtkChild]
-        private Gtk.Image google_fit_selected_image;
+        private unowned Gtk.Image google_fit_selected_image;
         [GtkChild]
-        private Gtk.ListBoxRow google_fit_start_sync_row;
+        private unowned Gtk.ListBoxRow google_fit_start_sync_row;
         [GtkChild]
-        private Gtk.Stack google_fit_stack;
+        private unowned Gtk.Stack google_fit_stack;
         [GtkChild]
-        private Gtk.Spinner google_fit_spinner;
+        private unowned Gtk.Spinner google_fit_spinner;
 
         public weak Gtk.Window? parent_window { get; set; }
 

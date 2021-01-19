@@ -20,13 +20,13 @@
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/distance_action_row.ui")]
     public class DistanceActionRow : Adw.ActionRow {
         [GtkChild]
-        private Gtk.Adjustment distance_adjustment;
+        private unowned Gtk.Adjustment distance_adjustment;
         [GtkChild]
-        private Gtk.SpinButton distance_spin_button;
+        private unowned Gtk.SpinButton distance_spin_button;
         [GtkChild]
-        private Gtk.ToggleButton big_unit_togglebutton;
+        private unowned Gtk.ToggleButton big_unit_togglebutton;
         [GtkChild]
-        private Gtk.ToggleButton small_unit_togglebutton;
+        private unowned Gtk.ToggleButton small_unit_togglebutton;
 
         private double _value;
         private Settings settings;

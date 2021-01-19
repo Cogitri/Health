@@ -30,13 +30,13 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/window.ui")]
     public class Window : Adw.ApplicationWindow {
         [GtkChild]
-        private Gtk.InfoBar error_infobar;
+        private unowned Gtk.InfoBar error_infobar;
         [GtkChild]
-        private Gtk.Label error_label;
+        private unowned Gtk.Label error_label;
         [GtkChild]
-        private Gtk.Popover primary_menu_popover;
+        private unowned Gtk.Popover primary_menu_popover;
         [GtkChild]
-        private Gtk.Stack stack;
+        private unowned Gtk.Stack stack;
 
         private int current_height;
         private int current_width;

@@ -25,23 +25,23 @@
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/preferences_window.ui")]
     public class PreferencesWindow : Adw.PreferencesWindow {
         [GtkChild]
-        private Adw.ActionRow height_actionrow;
+        private unowned Adw.ActionRow height_actionrow;
         [GtkChild]
-        private Adw.ActionRow weightgoal_actionrow;
+        private unowned Adw.ActionRow weightgoal_actionrow;
         [GtkChild]
-        private Gtk.SpinButton age_spin_button;
+        private unowned Gtk.SpinButton age_spin_button;
         [GtkChild]
-        private Gtk.SpinButton height_spin_button;
+        private unowned Gtk.SpinButton height_spin_button;
         [GtkChild]
-        private Gtk.SpinButton stepgoal_spin_button;
+        private unowned Gtk.SpinButton stepgoal_spin_button;
         [GtkChild]
-        private Gtk.SpinButton weightgoal_spin_button;
+        private unowned Gtk.SpinButton weightgoal_spin_button;
         [GtkChild]
-        private Gtk.ToggleButton unit_imperial_togglebutton;
+        private unowned Gtk.ToggleButton unit_imperial_togglebutton;
         [GtkChild]
-        private Gtk.ToggleButton unit_metric_togglebutton;
+        private unowned Gtk.ToggleButton unit_metric_togglebutton;
         [GtkChild]
-        private BMILevelBar bmi_levelbar;
+        private unowned BMILevelBar bmi_levelbar;
 
         private Settings settings;
         private Gtk.Window? parent_window;

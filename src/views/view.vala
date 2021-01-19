@@ -50,19 +50,19 @@ namespace Health {
         public string view_title { get; set; }
 
         [GtkChild]
-        protected Gtk.Image empty_icon;
+        protected unowned Gtk.Image empty_icon;
         [GtkChild]
-        protected Gtk.Label goal_label;
+        protected unowned Gtk.Label goal_label;
         [GtkChild]
-        protected Gtk.Label subtitle_empty_view_label;
+        protected unowned Gtk.Label subtitle_empty_view_label;
         [GtkChild]
-        protected Gtk.Label title_label;
+        protected unowned Gtk.Label title_label;
         [GtkChild]
-        protected Gtk.Label title_empty_view_label;
+        protected unowned Gtk.Label title_empty_view_label;
         [GtkChild]
-        protected Gtk.ScrolledWindow scrolled_window;
+        protected unowned Gtk.ScrolledWindow scrolled_window;
         [GtkChild]
-        protected Gtk.Stack stack;
+        protected unowned Gtk.Stack stack;
 
         static construct {
             set_layout_manager_type (typeof (Gtk.BinLayout));

@@ -20,9 +20,9 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_type_row.ui")]
     class ActivityTypeRow : Gtk.ListBoxRow {
         [GtkChild]
-        Gtk.Image selected_image;
+        private unowned Gtk.Image selected_image;
         [GtkChild]
-        private Gtk.Label activity_type_label;
+        private unowned Gtk.Label activity_type_label;
 
         public bool selected {
             get {
@@ -55,15 +55,15 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_type_selector.ui")]
     public class ActivityTypeSelector : Gtk.Popover {
         [GtkChild]
-        private Gtk.Box recents_box;
+        private unowned Gtk.Box recents_box;
         [GtkChild]
-        private Gtk.ListBox activity_types_list_box;
+        private unowned Gtk.ListBox activity_types_list_box;
         [GtkChild]
-        private Gtk.ListBox recent_activity_types_list_box;
+        private unowned Gtk.ListBox recent_activity_types_list_box;
         [GtkChild]
-        private Gtk.StringList recent_activity_types_model;
+        private unowned Gtk.StringList recent_activity_types_model;
         [GtkChild]
-        private Gtk.StringList activity_types_model;
+        private unowned Gtk.StringList activity_types_model;
 
         public ActivityInfo selected_activity { get; set; }
 

@@ -24,43 +24,43 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/setup_window.ui")]
     public class SetupWindow : Adw.ApplicationWindow {
         [GtkChild]
-        private BMILevelBar bmi_levelbar;
+        private unowned BMILevelBar bmi_levelbar;
         [GtkChild]
-        private Gtk.Box setup_first_page;
+        private unowned Gtk.Box setup_first_page;
         [GtkChild]
-        private Gtk.Box setup_second_page;
+        private unowned Gtk.Box setup_second_page;
         [GtkChild]
-        private Gtk.Box setup_third_page;
+        private unowned Gtk.Box setup_third_page;
         [GtkChild]
-        private Gtk.Box setup_fourth_page;
+        private unowned Gtk.Box setup_fourth_page;
         [GtkChild]
-        private Gtk.Button setup_done_button;
+        private unowned Gtk.Button setup_done_button;
         [GtkChild]
-        private Gtk.Button setup_quit_button;
+        private unowned Gtk.Button setup_quit_button;
         [GtkChild]
-        private Gtk.Button setup_next_page_button;
+        private unowned Gtk.Button setup_next_page_button;
         [GtkChild]
-        private Gtk.Button setup_previous_page_button;
+        private unowned Gtk.Button setup_previous_page_button;
         [GtkChild]
-        private Gtk.Stack setup_right_stack;
+        private unowned Gtk.Stack setup_right_stack;
         [GtkChild]
-        private Gtk.Stack setup_left_stack;
+        private unowned Gtk.Stack setup_left_stack;
         [GtkChild]
-        private Gtk.SpinButton age_spin_button;
+        private unowned Gtk.SpinButton age_spin_button;
         [GtkChild]
-        private Gtk.SpinButton height_spin_button;
+        private unowned Gtk.SpinButton height_spin_button;
         [GtkChild]
-        private Gtk.SpinButton stepgoal_spin_button;
+        private unowned Gtk.SpinButton stepgoal_spin_button;
         [GtkChild]
-        private Gtk.SpinButton weightgoal_spin_button;
+        private unowned Gtk.SpinButton weightgoal_spin_button;
         [GtkChild]
-        private Gtk.ToggleButton unit_metric_togglebutton;
+        private unowned Gtk.ToggleButton unit_metric_togglebutton;
         [GtkChild]
-        private Adw.ActionRow height_actionrow;
+        private unowned Adw.ActionRow height_actionrow;
         [GtkChild]
-        private Adw.ActionRow weightgoal_actionrow;
+        private unowned Adw.ActionRow weightgoal_actionrow;
         [GtkChild]
-        private Adw.Carousel setup_carousel;
+        private unowned Adw.Carousel setup_carousel;
 
         private Settings settings;
 

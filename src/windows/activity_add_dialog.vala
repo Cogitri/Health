@@ -23,43 +23,43 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_add_dialog.ui")]
     public class ActivityAddDialog : Gtk.Dialog {
         [GtkChild]
-        private ActivityTypeSelector activity_type_selector;
+        private unowned ActivityTypeSelector activity_type_selector;
         [GtkChild]
-        private DateSelector date_selector;
+        private unowned DateSelector date_selector;
         [GtkChild]
-        private Gtk.ListBox activities_list_box;
+        private unowned Gtk.ListBox activities_list_box;
         [GtkChild]
-        private Gtk.MenuButton activity_type_menu_button;
+        private unowned Gtk.MenuButton activity_type_menu_button;
         [GtkChild]
-        private Gtk.SpinButton calories_burned_spin_button;
+        private unowned Gtk.SpinButton calories_burned_spin_button;
         [GtkChild]
-        private Gtk.SpinButton duration_spin_button;
+        private unowned Gtk.SpinButton duration_spin_button;
         [GtkChild]
-        private Gtk.SpinButton heart_rate_average_spin_button;
+        private unowned Gtk.SpinButton heart_rate_average_spin_button;
         [GtkChild]
-        private Gtk.SpinButton heart_rate_max_spin_button;
+        private unowned Gtk.SpinButton heart_rate_max_spin_button;
         [GtkChild]
-        private Gtk.SpinButton heart_rate_min_spin_button;
+        private unowned Gtk.SpinButton heart_rate_min_spin_button;
         [GtkChild]
-        private Gtk.SpinButton steps_spin_button;
+        private unowned Gtk.SpinButton steps_spin_button;
         [GtkChild]
-        private Adw.ActionRow activity_type_actionrow;
+        private unowned Adw.ActionRow activity_type_actionrow;
         [GtkChild]
-        private Adw.ActionRow calories_burned_action_row;
+        private unowned Adw.ActionRow calories_burned_action_row;
         [GtkChild]
-        private Adw.ActionRow date_selector_actionrow;
+        private unowned Adw.ActionRow date_selector_actionrow;
         [GtkChild]
-        private DistanceActionRow distance_action_row;
+        private unowned DistanceActionRow distance_action_row;
         [GtkChild]
-        private Adw.ActionRow duration_action_row;
+        private unowned Adw.ActionRow duration_action_row;
         [GtkChild]
-        private Adw.ActionRow heart_rate_average_action_row;
+        private unowned Adw.ActionRow heart_rate_average_action_row;
         [GtkChild]
-        private Adw.ActionRow heart_rate_max_action_row;
+        private unowned Adw.ActionRow heart_rate_max_action_row;
         [GtkChild]
-        private Adw.ActionRow heart_rate_min_action_row;
+        private unowned Adw.ActionRow heart_rate_min_action_row;
         [GtkChild]
-        private Adw.ActionRow stepcount_action_row;
+        private unowned Adw.ActionRow stepcount_action_row;
 
         private ActivityInfo? _selected_activity;
         private bool calories_burned_spin_button_user_changed;

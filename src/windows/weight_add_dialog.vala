@@ -24,9 +24,9 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/weight_add_dialog.ui")]
     public class WeightAddDialog : Gtk.Dialog {
         [GtkChild]
-        DateSelector date_selector;
+        private unowned DateSelector date_selector;
         [GtkChild]
-        Gtk.SpinButton weight_spin_button;
+        private unowned Gtk.SpinButton weight_spin_button;
         private Settings settings;
         private TrackerDatabase db;
 

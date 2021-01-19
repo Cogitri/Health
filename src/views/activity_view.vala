@@ -24,9 +24,9 @@ namespace Health {
     [GtkTemplate (ui = "/dev/Cogitri/Health/ui/activity_view.ui")]
     public class ActivityView : View {
         [GtkChild]
-        private Adw.Clamp clamp;
+        private unowned Adw.Clamp clamp;
         [GtkChild]
-        private Gtk.ListBox activities_list_box;
+        private unowned Gtk.ListBox activities_list_box;
 
         private ActivityModel activity_model;
         private Settings settings;
