@@ -1,5 +1,5 @@
 project('dev.Cogitri.Health', ['c', 'vala'], 
-          version: '0.90.2',
+          version: '0.91.0',
     meson_version: '>= 0.54.0',
   default_options: [ 'warning_level=2',
                    ],
