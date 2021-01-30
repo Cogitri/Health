@@ -111,12 +111,19 @@ impl HealthGraphModelSteps {
                 .unwrap();
         }
 
-        for x in last_val..Local::now().signed_duration_since(first_date).num_days() as usize + 1 {
+        for x in last_val..Local::now().signed_duration_since(first_date).num_days() as usize {
             let date = first_date
                 .clone()
                 .checked_add_signed(Duration::days(x.try_into().unwrap()))
                 .unwrap();
             ret.push(Point { date, value: 0.0 });
+        }
+
+        if ret.last().unwrap().date.date() != Local::now().date() {
+            ret.push(Point {
+                date: Local::now().into(),
+                value: 0.0,
+            });
         }
 
         ret
