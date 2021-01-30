@@ -46,7 +46,7 @@
     <property name="destroy-with-parent">1</property>
     <!--
       FIXME: Known bug in libhandy-4/gtk4 where typing in child widgets (e.g. our SpinButtons) always enables the search.
-      See https://gitlab.gnome.org/Cogitri/gnome-health/-/issues/48
+      See https://gitlab.gnome.org/Cogitri/gnome-Health/-/issues/48
     -->
     <property name="search-enabled">0</property>
     <child>
@@ -80,7 +80,6 @@
                       <object class="GtkToggleButton" id="unit_metric_togglebutton">
                         <property name="label" translatable="yes">Metric</property>
                         <property name="group">unit_imperial_togglebutton</property>
-                        <signal name="toggled" handler="unit_metric_togglebutton_toggled" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -101,7 +100,6 @@
                     <property name="margin-end">6</property>
                     <property name="margin-top">6</property>
                     <property name="margin-bottom">6</property>
-                    <signal name="changed" handler="age_spin_button_changed" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -119,7 +117,6 @@
                     <property name="margin-end">6</property>
                     <property name="margin-top">6</property>
                     <property name="margin-bottom">6</property>
-                    <signal name="changed" handler="height_spin_button_changed" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -146,7 +143,6 @@
                     <property name="margin-end">6</property>
                     <property name="margin-top">6</property>
                     <property name="margin-bottom">6</property>
-                    <signal name="changed" handler="stepgoal_spin_button_changed" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -178,7 +174,6 @@
                         <property name="margin-end">6</property>
                         <property name="margin-top">6</property>
                         <property name="margin-bottom">6</property>
-                        <signal name="changed" handler="weightgoal_spin_button_changed" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -199,10 +194,71 @@
           <object class="AdwPreferencesGroup">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="title">Start sync with third-party providers.</property>
+            <property name="title" translatable="yes">Start sync with third-party providers.</property>
             <child>
-              <object class="HealthSyncListBox">
+              <object class="HealthSyncListBox" id="sync_list_box">
                 <property name="parent-window">HealthPreferencesWindow</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <property name="title" translatable="yes">Importing and exporting data</property>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Export activities as CSV</property>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Export</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Export weight measurements as CSV</property>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Export</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Import activities from CSV</property>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Import</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow">
+                <property name="title" translatable="yes">Import weight measurements from CSV</property>
+                <child>
+                  <object class="GtkButton">
+                    <property name="label" translatable="yes">Import</property>
+                    <property name="margin-start">6</property>
+                    <property name="margin-end">6</property>
+                    <property name="margin-top">6</property>
+                    <property name="margin-bottom">6</property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

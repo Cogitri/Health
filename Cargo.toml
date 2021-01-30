@@ -1,0 +1,68 @@
+[package]
+name = "health"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies.bitflags]
+version = "1.0"
+
+[dependencies.chrono]
+version = "0.4"
+
+[dependencies.adw]
+git = "https://gitlab.gnome.org/bilelmoussaoui/libadwaita-rs"
+package = "libadwaita"
+
+[dependencies.gettext-rs]
+version = "0.4.4"
+features = ["gettext-system"]
+
+[dependencies.gdk]
+git = "https://github.com/gtk-rs/gtk4-rs"
+package = "gdk4"
+
+[dependencies.gtk]
+git = "https://github.com/gtk-rs/gtk4-rs"
+package = "gtk4"
+
+[dependencies.gtk-macros]
+version = "0.2.0"
+
+[dependencies.gio]
+git = "https://github.com/gtk-rs/gtk-rs"
+features = ["v2_60"]
+
+[dependencies.glib]
+git = "https://github.com/gtk-rs/gtk-rs"
+features = ["v2_60"]
+
+[dependencies.num-derive]
+version = "0.3"
+
+[dependencies.num-traits]
+version = "0.2"
+
+[dependencies.once_cell]
+version = "1.5"
+
+[dependencies.pango]
+git = "https://github.com/gtk-rs/gtk-rs"
+
+[dependencies.pangocairo]
+git = "https://github.com/gtk-rs/gtk-rs"
+
+[dependencies.paste]
+version = "1.0"
+
+[dependencies.regex]
+version = "1.4.3"
+
+[dependencies.tracker]
+git = "https://gitlab.com/Cogitri/tracker-rs"
+branch = "impov"
+package="tracker-rs"
+
+[dependencies.uom]
+default-features = false
+version = "0.31"
+features = ["f32", "si"]

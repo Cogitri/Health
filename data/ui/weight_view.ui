@@ -19,7 +19,7 @@
 -->
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
-  <template class="HealthWeightView" parent="HealthView">
+  <template class="HealthViewWeight" parent="HealthView">
     <property name="empty-subtitle" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new weight measurement.</property>
     <property name="icon-name">weight-scale-symbolic</property>
     <property name="name">Weight</property>

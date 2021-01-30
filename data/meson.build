@@ -3,7 +3,7 @@ conf.set('APPLICATION_ID', application_id)
 
 configured_desktop_file = configure_file(
   input: 'dev.Cogitri.Health.desktop.in.in',
-  output: 'dev.Cogitri.Health.desktop.in',
+  output: '@BASENAME@',
   configuration: conf,
 )
 
@@ -25,7 +25,7 @@ endif
 
 configured_appstream_file = configure_file(
   input: 'dev.Cogitri.Health.metainfo.xml.in.in',
-  output: 'dev.Cogitri.Health.metainfo.xml.in',
+  output: '@BASENAME@',
   configuration: conf,
 )
 
@@ -62,10 +62,11 @@ gnome.compile_schemas(
   depend_files: 'dev.Cogitri.Health.gschema.xml',
 )
 
-health_generated_sources = gnome.compile_resources(
-  'health-resources',
+gnome.compile_resources('dev.Cogitri.Health',
   'dev.Cogitri.Health.gresource.xml',
-  c_name: 'health'
+  gresource_bundle: true,
+  install: true,
+  install_dir: health_data_dir,
 )
 
 subdir('icons')

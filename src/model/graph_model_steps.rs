@@ -1,0 +1,128 @@
+use crate::{core::HealthDatabase, views::Point};
+use chrono::{DateTime, Duration, FixedOffset, Local};
+use std::convert::TryInto;
+
+#[derive(Debug)]
+pub struct Steps {
+    pub date: DateTime<FixedOffset>,
+    pub steps: u32,
+}
+
+impl Steps {
+    pub fn new(date: DateTime<FixedOffset>, steps: u32) -> Self {
+        Self { date, steps }
+    }
+}
+
+#[derive(Debug)]
+pub struct HealthGraphModelSteps {
+    database: HealthDatabase,
+    vec: Vec<Steps>,
+}
+
+impl HealthGraphModelSteps {
+    pub fn new(database: HealthDatabase) -> Self {
+        Self {
+            database,
+            vec: Vec::new(),
+        }
+    }
+
+    pub fn get_today_step_count(&self) -> Option<u32> {
+        let today = chrono::Local::now().date();
+        self.vec
+            .iter()
+            .find(|s| today == s.date.date())
+            .map(|s| s.steps)
+    }
+
+    pub fn get_streak_count_today(&self, step_goal: u32) -> u32 {
+        let vec: Vec<&Steps> = self.vec.iter().collect();
+        HealthGraphModelSteps::get_streak_count(&vec, step_goal)
+    }
+
+    pub fn get_streak_count_yesterday(&self, step_goal: u32) -> u32 {
+        let today = chrono::Local::now().date();
+        let vec: Vec<&Steps> = self.vec.iter().filter(|s| s.date.date() != today).collect();
+
+        HealthGraphModelSteps::get_streak_count(&vec, step_goal)
+    }
+
+    fn get_streak_count(steps: &[&Steps], step_goal: u32) -> u32 {
+        if steps.is_empty() {
+            return 0;
+        }
+
+        let mut streak: u32 = 0;
+        let last_date = steps.get(0).unwrap().date;
+
+        for x in steps.iter() {
+            if last_date.signed_duration_since(x.date).num_days() as u32 == streak
+                && x.steps >= step_goal
+            {
+                streak += 1;
+            } else {
+                break;
+            }
+        }
+
+        return streak;
+    }
+
+    pub async fn reload(&mut self, duration: Duration) -> Result<(), glib::Error> {
+        self.vec = self
+            .database
+            .get_steps(
+                chrono::Local::now()
+                    .checked_sub_signed(duration)
+                    .unwrap()
+                    .into(),
+            )
+            .await?;
+        Ok(())
+    }
+
+    pub fn to_points(&self) -> Vec<crate::views::Point> {
+        if self.vec.is_empty() {
+            return Vec::new();
+        }
+
+        let first_date = self.vec.first().unwrap().date;
+        let mut last_val = 0;
+        let mut ret = Vec::with_capacity(self.vec.len());
+
+        for (i, point) in self.vec.iter().enumerate() {
+            for j in i..last_val {
+                let date = first_date
+                    .clone()
+                    .checked_add_signed(Duration::days((i + j).try_into().unwrap()))
+                    .unwrap();
+                ret.push(Point { date, value: 0.0 });
+            }
+            ret.push(Point {
+                date: point.date,
+                value: point.steps as f32,
+            });
+            last_val = point
+                .date
+                .signed_duration_since(first_date)
+                .num_days()
+                .try_into()
+                .unwrap();
+        }
+
+        for x in last_val..Local::now().signed_duration_since(first_date).num_days() as usize + 1 {
+            let date = first_date
+                .clone()
+                .checked_add_signed(Duration::days(x.try_into().unwrap()))
+                .unwrap();
+            ret.push(Point { date, value: 0.0 });
+        }
+
+        ret
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.vec.is_empty()
+    }
+}

@@ -1,0 +1,23 @@
+#[derive(Debug, num_derive::FromPrimitive, num_derive::ToPrimitive, Clone)]
+pub enum ActivityType {
+    Basketball,
+    Bicycling,
+    Boxing,
+    Dancing,
+    Football,
+    Golf,
+    Hiking,
+    Hockey,
+    HorseRiding,
+    OtherSports,
+    RollerBlading,
+    Running,
+    Skiing,
+    Soccer,
+    Softball,
+    Swimming,
+    Tennis,
+    TrackAndField,
+    VolleyBall,
+    Walking,
+}

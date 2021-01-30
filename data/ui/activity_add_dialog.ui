@@ -63,7 +63,6 @@
     <property name="destroy-with-parent">1</property>
     <property name="title" translatable="yes">Add New Activity</property>
     <property name="default-width">400</property>
-    <signal name="response" handler="on_response" swapped="no"/>
     <child type="action">
       <object class="GtkButton" id="button_cancel">
         <property name="label" translatable="yes">_Cancel</property>
@@ -119,9 +118,7 @@
       </object>
     </child>
   </object>
-  <object class="HealthActivityTypeSelector" id="activity_type_selector">
-    <signal name="notify::selected_activity" handler="on_activity_type_selector_selected_activity" swapped="no"/>
-  </object>
+  <object class="HealthActivityTypeSelector" id="activity_type_selector"/>
   <object class="AdwActionRow" id="activity_type_actionrow">
     <property name="title" translatable="yes">Activity Type</property>
     <child>
@@ -146,15 +143,10 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="changed" handler="on_calories_burned_spin_button_changed" swapped="no"/>
-        <signal name="input" handler="on_user_input" swapped="no"/>
       </object>
     </child>
   </object>
-  <object class="HealthDistanceActionRow" id="distance_action_row">
-    <signal name="notify::value" handler="on_distance_action_row_changed" swapped="no"/>
-    <signal name="input" handler="on_user_input" swapped="no"/>
-  </object>
+  <object class="HealthDistanceActionRow" id="distance_action_row"/>
   <object class="AdwActionRow" id="duration_action_row">
     <property name="title" translatable="yes">Active Minutes</property>
     <child>
@@ -167,8 +159,6 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="changed" handler="on_duration_spin_button_changed" swapped="no"/>
-        <signal name="input" handler="on_user_input" swapped="no"/>
       </object>
     </child>
   </object>
@@ -229,8 +219,6 @@
         <property name="margin-end">6</property>
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
-        <signal name="changed" handler="on_steps_spin_button_changed" swapped="no"/>
-        <signal name="input" handler="on_user_input" swapped="no"/>
       </object>
     </child>
   </object>

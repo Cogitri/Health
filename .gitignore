@@ -5,3 +5,5 @@ subprojects/vala-unit
 app
 .flatpak-builder
 .vscode
+src/config.rs
+target
