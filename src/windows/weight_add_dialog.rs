@@ -12,7 +12,7 @@ mod imp {
     };
     use glib::{clone, subclass};
     use gtk::subclass::prelude::*;
-    use std::cell::RefCell;
+    use once_cell::unsync::OnceCell;
     use uom::si::{
         f32::Mass,
         mass::{kilogram, pound},
@@ -21,7 +21,7 @@ mod imp {
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_add_dialog.ui")]
     pub struct HealthWeightAddDialog {
-        pub database: RefCell<Option<HealthDatabase>>,
+        pub database: OnceCell<HealthDatabase>,
         pub settings: HealthSettings,
 
         #[template_child]
@@ -42,7 +42,7 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                database: RefCell::new(None),
+                database: OnceCell::new(),
                 settings: HealthSettings::new(),
                 date_selector: TemplateChild::default(),
                 weight_spin_button: TemplateChild::default(),
@@ -74,7 +74,7 @@ mod imp {
 
     impl HealthWeightAddDialog {
         pub fn set_database(&self, database: HealthDatabase) {
-            self.database.replace(Some(database));
+            self.database.set(database).unwrap();
         }
 
         fn connect_handlers(&self, obj: &super::HealthWeightAddDialog) {
@@ -97,8 +97,7 @@ mod imp {
                             };
                             if let Err(e) = self_
                                 .database
-                                .borrow()
-                                .as_ref()
+                                .get()
                                 .unwrap()
                                 .save_weight(Weight::new(
                                     self_.date_selector.get_selected_date(),
@@ -130,8 +129,7 @@ mod imp {
                     let self_ = imp::HealthWeightAddDialog::from_instance(&obj);
                     let res = self_
                         .database
-                        .borrow()
-                        .as_ref()
+                        .get()
                         .unwrap()
                         .get_weight_exists_on_date(self_.date_selector.get_selected_date())
                         .await;

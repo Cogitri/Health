@@ -11,13 +11,13 @@ mod imp {
     use glib::{clone, g_warning, subclass};
     use gtk::{prelude::*, subclass::prelude::*};
     use gtk_macros::action;
-    use std::cell::RefCell;
+    use once_cell::unsync::OnceCell;
 
     #[derive(Debug)]
     pub struct HealthApplication {
         pub db: HealthDatabase,
         pub settings: HealthSettings,
-        pub window: RefCell<glib::WeakRef<HealthWindow>>,
+        pub window: OnceCell<glib::WeakRef<HealthWindow>>,
     }
 
     impl ObjectSubclass for HealthApplication {
@@ -34,7 +34,7 @@ mod imp {
             Self {
                 db: HealthDatabase::new().expect("Failed to connect to Tracker Database!"),
                 settings: HealthSettings::new(),
-                window: RefCell::new(glib::WeakRef::new()),
+                window: OnceCell::new(),
             }
         }
 
@@ -53,12 +53,14 @@ mod imp {
         fn activate(&self, application: &Self::Type) {
             self.parent_activate(application);
 
-            if self.window.borrow().upgrade().is_some() {
+            if self.window.get().and_then(|o| o.upgrade()).is_some() {
                 return;
             } else if self.settings.get_did_initial_setup() {
                 let window = HealthWindow::new(application, self.db.clone());
                 window.show();
-                self.window.replace(glib::ObjectExt::downgrade(&window));
+                self.window
+                    .set(glib::ObjectExt::downgrade(&window))
+                    .unwrap();
             } else {
                 let setup_window = HealthSetupWindow::new(application);
                 setup_window.show();
@@ -102,7 +104,7 @@ mod imp {
                 obj,
                 "fullscreen",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = imp::HealthApplication::from_instance(&obj).window.borrow().upgrade() {
+                    if let Some(window) = imp::HealthApplication::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
                         if window.is_fullscreen() {
                             window.unfullscreen();
                         } else {
@@ -116,7 +118,7 @@ mod imp {
                 obj,
                 "hamburger-menu",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = imp::HealthApplication::from_instance(&obj).window.borrow().upgrade() {
+                    if let Some(window) = imp::HealthApplication::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
                         window.open_hamburger_menu();
                     }
                 })
@@ -134,7 +136,7 @@ mod imp {
                 "preferences",
                 clone!(@weak obj => move |_, _| {
                     let self_ = imp::HealthApplication::from_instance(&obj);
-                    let preferences_window = HealthPreferencesWindow::new(self_.db.clone(), self_.window.borrow().upgrade().map(|w| w.upcast()));
+                    let preferences_window = HealthPreferencesWindow::new(self_.db.clone(), self_.window.get().and_then(|w| w.upgrade()).map(|w| w.upcast()));
                     preferences_window.show();
                 })
             );
@@ -143,7 +145,7 @@ mod imp {
                 obj,
                 "quit",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = imp::HealthApplication::from_instance(&obj).window.borrow().upgrade() {
+                    if let Some(window) = imp::HealthApplication::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
                         window.destroy();
                     }
                 })

@@ -9,14 +9,15 @@ mod imp {
     use chrono::Duration;
     use glib::{subclass, Cast};
     use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
+    use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/step_view.ui")]
     pub struct HealthViewSteps {
         settings: HealthSettings,
-        steps_graph_view: Option<HealthGraphView>,
-        steps_graph_model: RefCell<Option<HealthGraphModelSteps>>,
+        steps_graph_view: OnceCell<HealthGraphView>,
+        steps_graph_model: OnceCell<RefCell<HealthGraphModelSteps>>,
     }
 
     impl ObjectSubclass for HealthViewSteps {
@@ -34,8 +35,8 @@ mod imp {
 
             Self {
                 settings,
-                steps_graph_view: None,
-                steps_graph_model: RefCell::new(None),
+                steps_graph_view: OnceCell::new(),
+                steps_graph_model: OnceCell::new(),
             }
         }
 
@@ -61,12 +62,11 @@ mod imp {
 
     impl HealthViewSteps {
         pub fn set_steps_graph_model(&self, model: HealthGraphModelSteps) {
-            self.steps_graph_model.replace(Some(model));
+            self.steps_graph_model.set(RefCell::new(model)).unwrap();
         }
 
         pub async fn update(&self, obj: &super::HealthViewSteps) {
-            let mut steps_graph_model_ref = self.steps_graph_model.borrow_mut();
-            let steps_graph_model = steps_graph_model_ref.as_mut().unwrap();
+            let mut steps_graph_model = self.steps_graph_model.get().unwrap().borrow_mut();
             if let Err(e) = steps_graph_model.reload(Duration::days(30)).await {
                 glib::g_warning!(
                     crate::config::LOG_DOMAIN,
@@ -107,7 +107,7 @@ mod imp {
                 )),
             }
 
-            if let Some(view) = &self.steps_graph_view {
+            if let Some(view) = self.steps_graph_view.get() {
                 view.set_points(steps_graph_model.to_points());
             } else if !steps_graph_model.is_empty() {
                 let steps_graph_view = HealthGraphView::new();
@@ -125,6 +125,8 @@ mod imp {
                 view.get_scrolled_window()
                     .set_child(Some(&steps_graph_view));
                 view.get_stack().set_visible_child_name("data_page");
+
+                self.steps_graph_view.set(steps_graph_view).unwrap();
 
                 self.settings
                     .connect_user_stepgoal_changed(glib::clone!(@weak obj => move |_,_| {

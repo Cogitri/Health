@@ -13,13 +13,14 @@ mod imp {
         length::meter,
         mass::{kilogram, pound},
     };
+    use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_view.ui")]
     pub struct HealthViewWeight {
         settings: HealthSettings,
-        weight_graph_view: Option<HealthGraphView>,
-        weight_graph_model: RefCell<Option<HealthGraphModelWeight>>,
+        weight_graph_view: OnceCell<HealthGraphView>,
+        weight_graph_model: OnceCell<RefCell<HealthGraphModelWeight>>,
     }
 
     impl ObjectSubclass for HealthViewWeight {
@@ -35,8 +36,8 @@ mod imp {
         fn new() -> Self {
             Self {
                 settings: HealthSettings::new(),
-                weight_graph_view: None,
-                weight_graph_model: RefCell::new(None),
+                weight_graph_view: OnceCell::new(),
+                weight_graph_model: OnceCell::new(),
             }
         }
 
@@ -62,7 +63,7 @@ mod imp {
 
     impl HealthViewWeight {
         pub fn set_weight_graph_model(&self, graph_model: HealthGraphModelWeight) {
-            self.weight_graph_model.replace(Some(graph_model));
+            self.weight_graph_model.set(RefCell::new(graph_model)).unwrap();
         }
 
         fn update_weightgoal_label(
@@ -126,8 +127,7 @@ mod imp {
         }
 
         pub async fn update(&self, obj: &super::HealthViewWeight) {
-            let mut weight_graph_model_ref = self.weight_graph_model.borrow_mut();
-            let weight_graph_model = weight_graph_model_ref.as_mut().unwrap();
+            let mut weight_graph_model = self.weight_graph_model.get().unwrap().borrow_mut();
             if let Err(e) = weight_graph_model.reload(Duration::days(30)).await {
                 glib::g_warning!(
                     crate::config::LOG_DOMAIN,
@@ -143,7 +143,7 @@ mod imp {
             ));
             self.update_weightgoal_label(obj, &weight_graph_model);
 
-            if let Some(view) = &self.weight_graph_view {
+            if let Some(view) = self.weight_graph_view.get() {
                 view.set_points(weight_graph_model.to_points());
             } else if !weight_graph_model.is_empty() {
                 let weight_graph_view = HealthGraphView::new();
@@ -177,6 +177,8 @@ mod imp {
                 view.get_scrolled_window()
                     .set_child(Some(&weight_graph_view));
                 view.get_stack().set_visible_child_name("data_page");
+
+                self.weight_graph_view.set(weight_graph_view).unwrap();
 
                 self.settings.connect_user_weightgoal_changed(
                     glib::clone!(@weak obj => move |_,_| {

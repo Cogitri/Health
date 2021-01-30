@@ -7,13 +7,13 @@ mod imp {
     use chrono::Duration;
     use glib::{subclass, Cast};
     use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
-    use std::cell::RefCell;
+    use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_view.ui")]
     pub struct HealthViewActivity {
         settings: HealthSettings,
-        activity_model: RefCell<Option<HealthModelActivity>>,
+        activity_model: OnceCell<HealthModelActivity>,
         pub activities_list_box: gtk::ListBox,
         clamp: adw::Clamp,
     }
@@ -48,7 +48,7 @@ mod imp {
 
             Self {
                 settings: HealthSettings::new(),
-                activity_model: RefCell::new(None),
+                activity_model: OnceCell::new(),
                 activities_list_box,
                 clamp: clamp_builder.build(),
             }
@@ -80,10 +80,10 @@ mod imp {
 
     impl HealthViewActivity {
         pub fn set_activity_model(&self, model: HealthModelActivity) {
-            self.activity_model.replace(Some(model));
+            self.activity_model.set(model).unwrap();
 
             self.activities_list_box.bind_model(
-                Some(self.activity_model.borrow().as_ref().unwrap()),
+                Some(self.activity_model.get().unwrap()),
                 |o| {
                     let row = HealthActivityRow::new();
                     row.set_activity(o.clone().downcast::<Activity>().unwrap());
@@ -93,11 +93,9 @@ mod imp {
         }
 
         pub async fn update(&self, obj: &super::HealthViewActivity) {
-            if let Err(e) = self
-                .activity_model
-                .borrow()
-                .as_ref()
-                .unwrap()
+            let activity_model = self.activity_model.get().unwrap();
+
+            if let Err(e) = activity_model
                 .reload(Duration::days(30))
                 .await
             {
@@ -108,7 +106,7 @@ mod imp {
                 );
             }
 
-            if !self.activity_model.borrow().as_ref().unwrap().is_empty() {
+            if !activity_model.is_empty() {
                 obj.upcast_ref::<HealthView>()
                     .get_stack()
                     .set_visible_child_name("data_page");

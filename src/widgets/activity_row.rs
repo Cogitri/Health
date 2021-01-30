@@ -11,14 +11,14 @@ mod imp {
     };
     use glib::subclass;
     use gtk::subclass::prelude::*;
-    use std::cell::RefCell;
+    use once_cell::unsync::OnceCell;
     use uom::fmt::DisplayStyle::Abbreviation;
     use uom::si::length::{meter, yard};
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_row.ui")]
     pub struct HealthActivityRow {
-        pub activity: RefCell<Option<Activity>>,
+        pub activity: OnceCell<Activity>,
         pub settings: HealthSettings,
         #[template_child]
         pub active_minutes_label: TemplateChild<gtk::Label>,
@@ -66,7 +66,7 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                activity: RefCell::new(None),
+                activity: OnceCell::new(),
                 settings: HealthSettings::new(),
                 active_minutes_label: TemplateChild::default(),
                 activity_date_label: TemplateChild::default(),
@@ -174,6 +174,8 @@ mod imp {
                     };
                 }
             }
+
+            self.activity.set(activity).unwrap();
         }
     }
 }
