@@ -4,6 +4,7 @@ use gtk::prelude::ApplicationExtManual;
 mod config;
 mod core;
 mod model;
+mod sync;
 mod views;
 mod widgets;
 mod windows;

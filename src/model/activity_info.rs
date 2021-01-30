@@ -212,31 +212,12 @@ impl From<ActivityType> for ActivityInfo {
 }
 
 impl TryFrom<&str> for ActivityInfo {
-    type Error = ();
+    type Error = String;
 
     fn try_from(val: &str) -> Result<Self, Self::Error> {
-        match val.to_lowercase().as_str() {
-            "basketball" => Ok(ActivityInfo::from(ActivityType::Basketball)),
-            "bicycling" => Ok(ActivityInfo::from(ActivityType::Bicycling)),
-            "boxing" => Ok(ActivityInfo::from(ActivityType::Boxing)),
-            "dancing" => Ok(ActivityInfo::from(ActivityType::Dancing)),
-            "football" => Ok(ActivityInfo::from(ActivityType::Football)),
-            "golf" => Ok(ActivityInfo::from(ActivityType::Golf)),
-            "hiking" => Ok(ActivityInfo::from(ActivityType::Hiking)),
-            "hockey" => Ok(ActivityInfo::from(ActivityType::Hockey)),
-            "horse_riding" => Ok(ActivityInfo::from(ActivityType::HorseRiding)),
-            "other_sports" => Ok(ActivityInfo::from(ActivityType::OtherSports)),
-            "rollerblading" => Ok(ActivityInfo::from(ActivityType::RollerBlading)),
-            "running" => Ok(ActivityInfo::from(ActivityType::Running)),
-            "skiing" => Ok(ActivityInfo::from(ActivityType::Skiing)),
-            "soccer" => Ok(ActivityInfo::from(ActivityType::Soccer)),
-            "softball" => Ok(ActivityInfo::from(ActivityType::Softball)),
-            "swimming" => Ok(ActivityInfo::from(ActivityType::Swimming)),
-            "tennis" => Ok(ActivityInfo::from(ActivityType::Tennis)),
-            "track_and_field" => Ok(ActivityInfo::from(ActivityType::TrackAndField)),
-            "volleyball" => Ok(ActivityInfo::from(ActivityType::VolleyBall)),
-            "walking" => Ok(ActivityInfo::from(ActivityType::Walking)),
-            _ => Err(()),
+        match ActivityType::try_from(val) {
+            Ok(t) => Ok(ActivityInfo::from(t)),
+            Err(e) => Err(e),
         }
     }
 }

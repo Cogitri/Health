@@ -1,24 +1,13 @@
 use crate::{
     core::{settings::Unitsystem, HealthDatabase, HealthSettings},
+    model::weight::*,
     views::Point,
 };
-use chrono::{DateTime, Duration, FixedOffset};
+use chrono::Duration;
 use uom::si::{
     f32::Mass,
     mass::{kilogram, pound},
 };
-
-#[derive(Debug)]
-pub struct Weight {
-    pub date: DateTime<FixedOffset>,
-    pub weight: Mass,
-}
-
-impl Weight {
-    pub fn new(date: DateTime<FixedOffset>, weight: Mass) -> Self {
-        Self { date, weight }
-    }
-}
 
 #[derive(Debug)]
 pub struct HealthGraphModelWeight {
@@ -39,12 +28,12 @@ impl HealthGraphModelWeight {
     pub async fn reload(&mut self, duration: Duration) -> Result<(), glib::Error> {
         self.vec = self
             .database
-            .get_weights(
+            .get_weights(Some(
                 chrono::Local::now()
                     .checked_sub_signed(duration)
                     .unwrap()
                     .into(),
-            )
+            ))
             .await?;
         Ok(())
     }

@@ -4,7 +4,7 @@ use gtk::{gio, glib};
 mod imp {
     use super::*;
     use crate::{
-        core::i18n,
+        core::{i18n, HealthDatabase},
         windows::{HealthPreferencesWindow, HealthSetupWindow, HealthWindow},
     };
     use gio::ActionMapExt;
@@ -15,6 +15,7 @@ mod imp {
 
     #[derive(Debug)]
     pub struct HealthApplication {
+        pub db: HealthDatabase,
         pub settings: HealthSettings,
         pub window: RefCell<glib::WeakRef<HealthWindow>>,
     }
@@ -31,6 +32,7 @@ mod imp {
 
         fn new() -> Self {
             Self {
+                db: HealthDatabase::new().expect("Failed to connect to Tracker Database!"),
                 settings: HealthSettings::new(),
                 window: RefCell::new(glib::WeakRef::new()),
             }
@@ -54,7 +56,7 @@ mod imp {
             if self.window.borrow().upgrade().is_some() {
                 return;
             } else if self.settings.get_did_initial_setup() {
-                let window = HealthWindow::new(application);
+                let window = HealthWindow::new(application, self.db.clone());
                 window.show();
                 self.window.replace(glib::ObjectExt::downgrade(&window));
             } else {
@@ -131,8 +133,8 @@ mod imp {
                 obj,
                 "preferences",
                 clone!(@weak obj => move |_, _| {
-                    let preferences_window = HealthPreferencesWindow::new();
-                    preferences_window.set_parent_window(imp::HealthApplication::from_instance(&obj).window.borrow().upgrade().map(|w| w.upcast()));
+                    let self_ = imp::HealthApplication::from_instance(&obj);
+                    let preferences_window = HealthPreferencesWindow::new(self_.db.clone(), self_.window.borrow().upgrade().map(|w| w.upcast()));
                     preferences_window.show();
                 })
             );

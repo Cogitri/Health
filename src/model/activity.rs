@@ -1,6 +1,7 @@
 use crate::{imp_getter_setter, model::ActivityType};
 use chrono::{DateTime, Duration, FixedOffset, Utc};
 use gdk::subclass::prelude::ObjectSubclass;
+use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use uom::si::f32::Length;
 
 mod imp {
@@ -8,6 +9,7 @@ mod imp {
     use crate::{
         inner_refcell_getter_setter,
         model::{ActivityDataPoints, ActivityInfo},
+        sync::serialize,
     };
     use glib::subclass;
     use gtk::subclass::prelude::*;
@@ -22,21 +24,29 @@ mod imp {
     static SWIMMING_METERS_PER_MINUTE: u32 = 160;
     static WALKING_METERS_PER_MINUTE: u32 = 90;
 
-    #[derive(Debug)]
+    #[derive(Debug, Deserialize, Serialize)]
     pub struct ActivityMut {
+        #[serde(serialize_with = "serialize::serialize_activity_type")]
+        #[serde(deserialize_with = "serialize::deserialize_activity_type")]
         pub activity_type: ActivityType,
         pub calories_burned: Option<u32>,
+        #[serde(serialize_with = "serialize::serialize_date")]
+        #[serde(deserialize_with = "serialize::deserialize_date")]
         pub date: DateTime<FixedOffset>,
+        #[serde(serialize_with = "serialize::serialize_distance")]
+        #[serde(deserialize_with = "serialize::deserialize_distance")]
         pub distance: Option<Length>,
         pub heart_rate_avg: Option<u32>,
         pub heart_rate_max: Option<u32>,
         pub heart_rate_min: Option<u32>,
+        #[serde(serialize_with = "serialize::serialize_duration")]
+        #[serde(deserialize_with = "serialize::deserialize_duration")]
         pub duration: Duration,
         pub steps: Option<u32>,
     }
 
     pub struct Activity {
-        inner: RefCell<ActivityMut>,
+        pub inner: RefCell<ActivityMut>,
     }
 
     impl ObjectSubclass for Activity {
@@ -266,4 +276,26 @@ impl Activity {
     imp_getter_setter!(heart_rate_min, Option<u32>);
     imp_getter_setter!(duration, Duration);
     imp_getter_setter!(steps, Option<u32>);
+}
+
+impl Serialize for Activity {
+    fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
+    where
+        S: Serializer,
+    {
+        self.get_priv().inner.borrow().serialize(serializer)
+    }
+}
+
+impl<'de> Deserialize<'de> for Activity {
+    fn deserialize<D>(deserializer: D) -> Result<Activity, D::Error>
+    where
+        D: Deserializer<'de>,
+    {
+        let inner = imp::ActivityMut::deserialize(deserializer)?;
+
+        let a = Activity::new();
+        imp::Activity::from_instance(&a).inner.replace(inner);
+        Ok(a)
+    }
 }

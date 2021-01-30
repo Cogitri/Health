@@ -209,7 +209,7 @@
               <object class="AdwActionRow">
                 <property name="title" translatable="yes">Export activities as CSV</property>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="export_activity_csv_button">
                     <property name="label" translatable="yes">Export</property>
                     <property name="margin-start">6</property>
                     <property name="margin-end">6</property>
@@ -223,7 +223,7 @@
               <object class="AdwActionRow">
                 <property name="title" translatable="yes">Export weight measurements as CSV</property>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="export_weight_csv_button">
                     <property name="label" translatable="yes">Export</property>
                     <property name="margin-start">6</property>
                     <property name="margin-end">6</property>
@@ -237,7 +237,7 @@
               <object class="AdwActionRow">
                 <property name="title" translatable="yes">Import activities from CSV</property>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="import_activity_csv_button">
                     <property name="label" translatable="yes">Import</property>
                     <property name="margin-start">6</property>
                     <property name="margin-end">6</property>
@@ -251,7 +251,7 @@
               <object class="AdwActionRow">
                 <property name="title" translatable="yes">Import weight measurements from CSV</property>
                 <child>
-                  <object class="GtkButton">
+                  <object class="GtkButton" id="import_weight_csv_button">
                     <property name="label" translatable="yes">Import</property>
                     <property name="margin-start">6</property>
                     <property name="margin-end">6</property>

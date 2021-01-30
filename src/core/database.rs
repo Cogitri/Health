@@ -194,9 +194,13 @@ mod imp {
 
         pub async fn get_weights(
             &self,
-            date: DateTime<FixedOffset>,
+            date_opt: Option<DateTime<FixedOffset>>,
         ) -> Result<Vec<Weight>, glib::Error> {
-            let cursor = self.inner.borrow().as_ref().unwrap().connection.query_async_future(&format!("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+            let cursor = if let Some(date) = date_opt {
+                self.inner.borrow().as_ref().unwrap().connection.query_async_future(&format!("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
+            } else {
+                self.inner.borrow().as_ref().unwrap().connection.query_async_future("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . }} ORDER BY ?date").await?
+            };
             let mut ret = Vec::new();
 
             while let Ok(true) = cursor.next_async_future().await {
@@ -400,7 +404,7 @@ impl HealthDatabase {
 
     pub async fn get_weights(
         &self,
-        date: DateTime<FixedOffset>,
+        date: Option<DateTime<FixedOffset>>,
     ) -> Result<Vec<Weight>, glib::Error> {
         imp::HealthDatabase::from_instance(self)
             .get_weights(date)

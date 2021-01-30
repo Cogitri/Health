@@ -28,9 +28,27 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693"
 
 [[package]]
+name = "bstr"
+version = "0.2.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "473fc6b38233f9af7baa94fb5852dca389e3d95b8e21c8e3719301462c5d9faf"
+dependencies = [
+ "lazy_static",
+ "memchr",
+ "regex-automata",
+ "serde",
+]
+
+[[package]]
+name = "byteorder"
+version = "1.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ae44d1a3d5a19df61dd0c8beb138458ac2a53a7ac09eba97d55592540004306b"
+
+[[package]]
 name = "cairo-rs"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "bitflags",
  "cairo-sys-rs",
@@ -43,7 +61,7 @@ dependencies = [
 [[package]]
 name = "cairo-sys-rs"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "glib-sys",
  "libc",
@@ -76,6 +94,28 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "eb6210b637171dfba4cda12e579ac6dc73f5165ad56133e5d72ef3131f320855"
 dependencies = [
  "cc",
+]
+
+[[package]]
+name = "csv"
+version = "1.1.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f9d58633299b24b515ac72a3f869f8b91306a3cec616a602843a383acd6f9e97"
+dependencies = [
+ "bstr",
+ "csv-core",
+ "itoa",
+ "ryu",
+ "serde",
+]
+
+[[package]]
+name = "csv-core"
+version = "0.1.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2b2466559f260f48ad25fe6317b3c8dac77b5bdb5763ac7d9d6103530663bc90"
+dependencies = [
+ "memchr",
 ]
 
 [[package]]
@@ -172,7 +212,7 @@ dependencies = [
 [[package]]
 name = "gdk-pixbuf"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "gdk-pixbuf-sys",
  "gio",
@@ -183,7 +223,7 @@ dependencies = [
 [[package]]
 name = "gdk-pixbuf-sys"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "gio-sys",
  "glib-sys",
@@ -195,7 +235,7 @@ dependencies = [
 [[package]]
 name = "gdk4"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#e0cbea57b99e5a9b3b617589d5ff137806edd3b5"
+source = "git+https://github.com/gtk-rs/gtk4-rs#a76b285666b9e12757ac1d1cae687524d1a3461c"
 dependencies = [
  "bitflags",
  "cairo-rs",
@@ -210,7 +250,7 @@ dependencies = [
 [[package]]
 name = "gdk4-sys"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#e0cbea57b99e5a9b3b617589d5ff137806edd3b5"
+source = "git+https://github.com/gtk-rs/gtk4-rs#a76b285666b9e12757ac1d1cae687524d1a3461c"
 dependencies = [
  "cairo-sys-rs",
  "gdk-pixbuf-sys",
@@ -244,7 +284,7 @@ dependencies = [
 [[package]]
 name = "gio"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "bitflags",
  "futures-channel",
@@ -260,7 +300,7 @@ dependencies = [
 [[package]]
 name = "gio-sys"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "glib-sys",
  "gobject-sys",
@@ -272,7 +312,7 @@ dependencies = [
 [[package]]
 name = "glib"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "bitflags",
  "futures-channel",
@@ -290,7 +330,7 @@ dependencies = [
 [[package]]
 name = "glib-macros"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "anyhow",
  "heck",
@@ -305,7 +345,7 @@ dependencies = [
 [[package]]
 name = "glib-sys"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "libc",
  "system-deps",
@@ -314,7 +354,7 @@ dependencies = [
 [[package]]
 name = "gobject-sys"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "glib-sys",
  "libc",
@@ -324,7 +364,7 @@ dependencies = [
 [[package]]
 name = "graphene-rs"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "glib",
  "graphene-sys",
@@ -334,7 +374,7 @@ dependencies = [
 [[package]]
 name = "graphene-sys"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "glib-sys",
  "libc",
@@ -345,7 +385,7 @@ dependencies = [
 [[package]]
 name = "gsk4"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#e0cbea57b99e5a9b3b617589d5ff137806edd3b5"
+source = "git+https://github.com/gtk-rs/gtk4-rs#a76b285666b9e12757ac1d1cae687524d1a3461c"
 dependencies = [
  "bitflags",
  "cairo-rs",
@@ -360,7 +400,7 @@ dependencies = [
 [[package]]
 name = "gsk4-sys"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#e0cbea57b99e5a9b3b617589d5ff137806edd3b5"
+source = "git+https://github.com/gtk-rs/gtk4-rs#a76b285666b9e12757ac1d1cae687524d1a3461c"
 dependencies = [
  "cairo-sys-rs",
  "gdk4-sys",
@@ -381,7 +421,7 @@ checksum = "1874c48e670519ce192093ac906c08a6dde7cb2d18b28722ef237726a39c3a63"
 [[package]]
 name = "gtk4"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#e0cbea57b99e5a9b3b617589d5ff137806edd3b5"
+source = "git+https://github.com/gtk-rs/gtk4-rs#a76b285666b9e12757ac1d1cae687524d1a3461c"
 dependencies = [
  "bitflags",
  "cairo-rs",
@@ -403,7 +443,7 @@ dependencies = [
 [[package]]
 name = "gtk4-macros"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#e0cbea57b99e5a9b3b617589d5ff137806edd3b5"
+source = "git+https://github.com/gtk-rs/gtk4-rs#a76b285666b9e12757ac1d1cae687524d1a3461c"
 dependencies = [
  "anyhow",
  "heck",
@@ -418,7 +458,7 @@ dependencies = [
 [[package]]
 name = "gtk4-sys"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#e0cbea57b99e5a9b3b617589d5ff137806edd3b5"
+source = "git+https://github.com/gtk-rs/gtk4-rs#a76b285666b9e12757ac1d1cae687524d1a3461c"
 dependencies = [
  "cairo-sys-rs",
  "gdk-pixbuf-sys",
@@ -439,6 +479,7 @@ version = "0.1.0"
 dependencies = [
  "bitflags",
  "chrono",
+ "csv",
  "gdk4",
  "gettext-rs",
  "gio",
@@ -453,6 +494,7 @@ dependencies = [
  "pangocairo",
  "paste",
  "regex",
+ "serde",
  "tracker-rs",
  "uom",
 ]
@@ -483,6 +525,12 @@ checksum = "37d572918e350e82412fe766d24b15e6682fb2ed2bbe018280caa810397cb319"
 dependencies = [
  "either",
 ]
+
+[[package]]
+name = "itoa"
+version = "0.4.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dd25036021b0de88a0aff6b850051563c6516d0bf53f8638938edbb9de732736"
 
 [[package]]
 name = "lazy_static"
@@ -525,9 +573,9 @@ dependencies = [
 
 [[package]]
 name = "libc"
-version = "0.2.82"
+version = "0.2.83"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "89203f3fba0a3795506acaad8ebce3c80c0af93f994d5a1d7a0b1eeb23271929"
+checksum = "7eb0c4e9c72ee9d69b767adebc5f4788462a3b45624acd919475c92597bcaf4f"
 
 [[package]]
 name = "locale_config"
@@ -594,7 +642,7 @@ checksum = "13bd41f508810a131401606d54ac32a467c97172d74ba7662562ebba5ad07fa0"
 [[package]]
 name = "pango"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "bitflags",
  "glib",
@@ -606,7 +654,7 @@ dependencies = [
 [[package]]
 name = "pango-sys"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "glib-sys",
  "gobject-sys",
@@ -617,7 +665,7 @@ dependencies = [
 [[package]]
 name = "pangocairo"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "bitflags",
  "cairo-rs",
@@ -630,7 +678,7 @@ dependencies = [
 [[package]]
 name = "pangocairo-sys"
 version = "0.13.0"
-source = "git+https://github.com/gtk-rs/gtk-rs#c58fab4fec1254244f598c4eac7f9310184c5996"
+source = "git+https://github.com/gtk-rs/gtk-rs#81a4d6cde97a40a80adfe75749385b95f61ab848"
 dependencies = [
  "cairo-sys-rs",
  "glib-sys",
@@ -727,6 +775,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "regex-automata"
+version = "0.1.9"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ae1ded71d66a4a97f5e961fd0cb25a5f366a42a41570d16a763a69c092c26ae4"
+dependencies = [
+ "byteorder",
+]
+
+[[package]]
 name = "regex-syntax"
 version = "0.6.22"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -740,6 +797,12 @@ checksum = "138e3e0acb6c9fb258b19b67cb8abd63c00679d2851805ea151465464fe9030a"
 dependencies = [
  "semver",
 ]
+
+[[package]]
+name = "ryu"
+version = "1.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "71d301d4193d031abdd79ff7e3dd721168a9572ef3fe51a1517aba235bd8f86e"
 
 [[package]]
 name = "semver"
@@ -761,6 +824,20 @@ name = "serde"
 version = "1.0.123"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "92d5161132722baa40d802cc70b15262b98258453e85e5d1d365c757c73869ae"
+dependencies = [
+ "serde_derive",
+]
+
+[[package]]
+name = "serde_derive"
+version = "1.0.123"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9391c295d64fc0abb2c556bad848f33cb8296276b1ad2677d1ae1ace4f258f31"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
 
 [[package]]
 name = "slab"
