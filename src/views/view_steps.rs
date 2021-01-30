@@ -149,7 +149,13 @@ impl HealthViewSteps {
         let o = glib::Object::new(&[]).expect("Failed to create HealthViewSteps");
 
         imp::HealthViewSteps::from_instance(&o)
-            .set_steps_graph_model(HealthGraphModelSteps::new(database));
+            .set_steps_graph_model(HealthGraphModelSteps::new(database.clone()));
+
+        database.connect_activities_updated(glib::clone!(@weak o => move || {
+            gtk_macros::spawn!(async move {
+                o.update().await;
+            });
+        }));
 
         o
     }

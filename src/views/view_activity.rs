@@ -82,23 +82,18 @@ mod imp {
         pub fn set_activity_model(&self, model: HealthModelActivity) {
             self.activity_model.set(model).unwrap();
 
-            self.activities_list_box.bind_model(
-                Some(self.activity_model.get().unwrap()),
-                |o| {
+            self.activities_list_box
+                .bind_model(Some(self.activity_model.get().unwrap()), |o| {
                     let row = HealthActivityRow::new();
                     row.set_activity(o.clone().downcast::<Activity>().unwrap());
                     row.upcast()
-                },
-            );
+                });
         }
 
         pub async fn update(&self, obj: &super::HealthViewActivity) {
             let activity_model = self.activity_model.get().unwrap();
 
-            if let Err(e) = activity_model
-                .reload(Duration::days(30))
-                .await
-            {
+            if let Err(e) = activity_model.reload(Duration::days(30)).await {
                 glib::g_warning!(
                     crate::config::LOG_DOMAIN,
                     "Failed to reload activity data: {}",

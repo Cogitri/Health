@@ -8,12 +8,12 @@ mod imp {
     use chrono::Duration;
     use glib::{subclass, Cast};
     use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
+    use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
     use uom::si::{
         length::meter,
         mass::{kilogram, pound},
     };
-    use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_view.ui")]
@@ -63,7 +63,9 @@ mod imp {
 
     impl HealthViewWeight {
         pub fn set_weight_graph_model(&self, graph_model: HealthGraphModelWeight) {
-            self.weight_graph_model.set(RefCell::new(graph_model)).unwrap();
+            self.weight_graph_model
+                .set(RefCell::new(graph_model))
+                .unwrap();
         }
 
         fn update_weightgoal_label(
@@ -202,7 +204,13 @@ impl HealthViewWeight {
         let o = glib::Object::new(&[]).expect("Failed to create HealthViewWeight");
 
         imp::HealthViewWeight::from_instance(&o)
-            .set_weight_graph_model(HealthGraphModelWeight::new(database));
+            .set_weight_graph_model(HealthGraphModelWeight::new(database.clone()));
+
+        database.connect_activities_updated(glib::clone!(@weak o => move || {
+            gtk_macros::spawn!(async move {
+                o.update().await;
+            });
+        }));
 
         o
     }
