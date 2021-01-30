@@ -73,7 +73,7 @@ mod imp {
                 }
             });
 
-            set_togglebutton_text.clone()();
+            set_togglebutton_text();
             self.settings
                 .connect_unitsystem_changed(move |_, _| set_togglebutton_text());
 
@@ -148,14 +148,12 @@ mod imp {
                     self.distance_spin_button
                         .set_value(value.get::<kilometer>().into())
                 }
-            } else {
-                if self.small_unit_togglebutton.get_active() {
-                    self.distance_spin_button
-                        .set_value(value.get::<yard>().into())
-                } else if self.big_unit_togglebutton.get_active() {
-                    self.distance_spin_button
-                        .set_value(value.get::<mile>().into())
-                }
+            } else if self.small_unit_togglebutton.get_active() {
+                self.distance_spin_button
+                    .set_value(value.get::<yard>().into())
+            } else if self.big_unit_togglebutton.get_active() {
+                self.distance_spin_button
+                    .set_value(value.get::<mile>().into())
             }
 
             self.value.replace(value);

@@ -442,6 +442,7 @@ mod imp {
             {
                 self.calories_burned_spin_button.set_value(calories.into());
             }
+            #[allow(clippy::unnecessary_unwrap)]
             if distance.is_some()
                 && distance != Some(self.distance_action_row.get_value())
                 && self.distance_action_row.get().upcast_ref::<gtk::Widget>() != emitter

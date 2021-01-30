@@ -66,7 +66,7 @@ impl HealthGraphModelSteps {
             }
         }
 
-        return streak;
+        streak
     }
 
     pub async fn reload(&mut self, duration: Duration) -> Result<(), glib::Error> {

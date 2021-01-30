@@ -52,7 +52,7 @@ mod imp {
 
     impl HealthActivityTypeRow {
         pub fn get_id(&self) -> &'static str {
-            self.activity_type_id.borrow().clone()
+            *self.activity_type_id.borrow()
         }
 
         pub fn get_label(&self) -> String {

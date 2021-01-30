@@ -40,12 +40,10 @@ where
         } else {
             Ok(Some(Length::new::<meter>(val)))
         }
+    } else if val == 0.0 {
+        Ok(None)
     } else {
-        if val == 0.0 {
-            Ok(None)
-        } else {
-            Ok(Some(Length::new::<yard>(val)))
-        }
+        Ok(Some(Length::new::<yard>(val)))
     }
 }
 
@@ -94,12 +92,10 @@ where
         } else {
             s.serialize_f32(0.0)
         }
+    } else if let Some(length) = l {
+        s.serialize_f32(length.get::<yard>())
     } else {
-        if let Some(length) = l {
-            s.serialize_f32(length.get::<yard>())
-        } else {
-            s.serialize_f32(0.0)
-        }
+        s.serialize_f32(0.0)
     }
 }
 

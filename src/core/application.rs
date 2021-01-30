@@ -52,16 +52,15 @@ mod imp {
     impl ApplicationImpl for HealthApplication {
         fn activate(&self, application: &Self::Type) {
             self.parent_activate(application);
+            let has_window = self.window.get().and_then(|o| o.upgrade()).is_some();
 
-            if self.window.get().and_then(|o| o.upgrade()).is_some() {
-                return;
-            } else if self.settings.get_did_initial_setup() {
+            if !has_window && self.settings.get_did_initial_setup() {
                 let window = HealthWindow::new(application, self.db.clone());
                 window.show();
                 self.window
                     .set(glib::ObjectExt::downgrade(&window))
                     .unwrap();
-            } else {
+            } else if !has_window {
                 let setup_window = HealthSetupWindow::new(application);
                 setup_window.show();
             }

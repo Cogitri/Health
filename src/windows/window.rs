@@ -100,8 +100,9 @@ mod imp {
                 obj.get_style_context().add_class("devel");
 
                 // When in devel mode our application ID is different so we have to manually add the icon theme
-                gtk::IconTheme::get_for_display(&obj.get_display())
-                    .map(|i| i.add_resource_path("/dev/Cogitri/Health/icons"));
+                if let Some(icon_theme) = gtk::IconTheme::get_for_display(&obj.get_display()) {
+                    icon_theme.add_resource_path("/dev/Cogitri/Health/icons");
+                }
             }
 
             let provider = gtk::CssProvider::new();
@@ -191,10 +192,10 @@ mod imp {
                 HealthViewActivity::new(db.clone()).upcast(),
             );
             views.insert(ViewMode::WEIGHT, HealthViewWeight::new(db.clone()).upcast());
-            views.insert(ViewMode::STEPS, HealthViewSteps::new(db.clone()).upcast());
+            views.insert(ViewMode::STEPS, HealthViewSteps::new(db).upcast());
             self.views.set(views).unwrap();
 
-            for (_, view) in self.views.get().unwrap() {
+            for view in self.views.get().unwrap().values() {
                 let page = self.stack.add_titled(
                     view,
                     view.get_name().map(|s| s.to_string()).as_deref(),

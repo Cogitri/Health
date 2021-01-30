@@ -93,7 +93,7 @@ mod imp {
 
     impl HealthDateSelector {
         pub fn get_selected_date(&self) -> DateTime<FixedOffset> {
-            self.selected_date.borrow().clone()
+            *self.selected_date.borrow()
         }
 
         pub fn set_selected_date(

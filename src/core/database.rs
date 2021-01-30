@@ -363,7 +363,7 @@ impl HealthDatabase {
 
         imp::HealthDatabase::from_instance(&o).connect()?;
 
-        return Ok(o);
+        Ok(o)
     }
 
     pub fn connect_activities_updated<F: Fn() + 'static>(

@@ -1,3 +1,6 @@
+// We don't want default methods for all GObject types
+#![allow(clippy::new_without_default)]
+
 use gettextrs::*;
 use gtk::prelude::ApplicationExtManual;
 

@@ -394,8 +394,8 @@ mod imp {
             let hover_max_pointer_deviation = inner.hover_max_pointer_deviation;
 
             let approx_matches = |num: f64, approx_range: f32| {
-                return num > (approx_range - hover_max_pointer_deviation as f32).into()
-                    && num < (approx_range + hover_max_pointer_deviation as f32).into();
+                num > (approx_range - hover_max_pointer_deviation as f32).into()
+                    && num < (approx_range + hover_max_pointer_deviation as f32).into()
             };
 
             // Don't handle touch events, we do that via Gtk.GestureClick.

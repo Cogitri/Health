@@ -10,5 +10,5 @@ where
         .unwrap()
         .as_str()
         .parse::<T>()
-        .unwrap_or(T::default())
+        .unwrap_or_default()
 }

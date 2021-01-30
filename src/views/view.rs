@@ -129,7 +129,7 @@ mod imp {
                     .set_label(value.get().unwrap().unwrap_or("")),
                 "view-title" => {
                     self.view_title
-                        .replace(value.get().unwrap().unwrap_or("".to_string()));
+                        .replace(value.get().unwrap().unwrap_or_else(|| "".to_string()));
                 }
                 _ => unimplemented!(),
             }
