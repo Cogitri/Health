@@ -261,9 +261,7 @@ mod imp {
             resource.set_uri("rdf:type", "health:Activity");
             resource.set_string(
                 "health:activity_date",
-                &activity
-                    .get_date()
-                    .to_rfc3339_opts(chrono::SecondsFormat::Secs, true),
+                &format!("{}", activity.get_date().date().format("%Y-%m-%d")),
             );
             resource.set_int64(
                 "health:activity_id",
