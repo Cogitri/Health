@@ -432,7 +432,7 @@ mod imp {
             };
 
             if calories != 0
-                && calories != get_spinbutton_value(&self.calories_burned_spin_button)
+                && calories != get_spinbutton_value::<u32>(&self.calories_burned_spin_button)
                 && self
                     .calories_burned_action_row
                     .get()
@@ -458,7 +458,7 @@ mod imp {
                 self.duration_spin_button.set_value(minutes as f64);
             }
             if steps != 0
-                && steps != get_spinbutton_value(&self.steps_spin_button)
+                && steps != get_spinbutton_value::<u32>(&self.steps_spin_button)
                 && self.stepcount_action_row.get().upcast_ref::<gtk::Widget>() != emitter
                 && !steps_changed
             {
