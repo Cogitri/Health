@@ -62,6 +62,17 @@ mod imp {
                     .unwrap();
             } else if !has_window {
                 let setup_window = HealthSetupWindow::new(application);
+
+                setup_window.connect_setup_done(clone!(@weak application => move || {
+                    let self_ = imp::HealthApplication::from_instance(&application);
+                    self_.settings.set_did_initial_setup(true);
+                    let window = HealthWindow::new(&application, self_.db.clone());
+                    window.show();
+                    self_.window
+                        .set(glib::ObjectExt::downgrade(&window))
+                        .unwrap();
+                }));
+
                 setup_window.show();
             }
         }
