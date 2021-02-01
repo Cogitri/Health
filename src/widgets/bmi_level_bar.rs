@@ -155,7 +155,7 @@ mod imp {
                     self.level_bar.set_value(fraction.into());
                 }
 
-                self.bmi_label.set_text(&crate::core::i18n_f(
+                self.bmi_label.set_markup(&crate::core::i18n_f(
                     "<small>Current BMI: {}</small>",
                     &[&format!("{bmi:.2}", bmi = current_bmi)],
                 ));
