@@ -256,6 +256,7 @@ mod imp {
                         0 => self_.setup_carousel.scroll_to (&self_.setup_second_page.get()),
                         1 => self_.setup_carousel.scroll_to (&self_.setup_third_page.get()),
                         2 => self_.setup_carousel.scroll_to (&self_.setup_fourth_page.get()),
+                        3 => self_.setup_done_button.emit_clicked(),
                         _ => unimplemented!(),
                     }
                 }));
@@ -269,6 +270,24 @@ mod imp {
                         2 => self_.setup_carousel.scroll_to (&self_.setup_second_page.get()),
                         3 => self_.setup_carousel.scroll_to (&self_.setup_third_page.get()),
                         _ => unimplemented!(),
+                    }
+                }));
+
+            self.setup_carousel
+                .connect_page_changed(clone!(@weak obj => move|carousel, index| {
+                    let self_ = imp::HealthSetupWindow::from_instance(&obj);
+
+                    if carousel.get_n_pages() -1 == index {
+                        self_.setup_done_button.set_visible(true);
+                        self_.setup_right_stack.set_visible_child(&self_.setup_done_button.get());
+                    } else if (index == 0) {
+                        self_.setup_quit_button.set_visible (true);
+                        self_.setup_left_stack.set_visible_child(&self_.setup_quit_button.get());
+                    } else {
+                        self_.setup_next_page_button.set_visible(true);
+                        self_.setup_previous_page_button.set_visible(true);
+                        self_.setup_right_stack.set_visible_child(&self_.setup_next_page_button.get());
+                        self_.setup_left_stack.set_visible_child(&self_.setup_previous_page_button.get());
                     }
                 }));
         }
