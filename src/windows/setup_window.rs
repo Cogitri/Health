@@ -18,7 +18,7 @@ mod imp {
     use gtk::subclass::prelude::*;
     use uom::si::{
         f32::{Length, Mass},
-        length::{centimeter, inch},
+        length::{centimeter, inch, meter},
         mass::{kilogram, pound},
     };
 
@@ -155,9 +155,8 @@ mod imp {
             } else {
                 Length::new::<inch>(unitless_height)
             };
-            let optimal_value = Mass::new::<kilogram>(
-                OPTIMAL_BMI * height.get::<centimeter>() as f32 * height.get::<centimeter>() as f32,
-            );
+            let optimal_value =
+                Mass::new::<kilogram>(OPTIMAL_BMI * height.get::<meter>() * height.get::<meter>());
             if self.unit_metric_togglebutton.get_active() {
                 self.weightgoal_spin_button
                     .set_value(optimal_value.get::<kilogram>().into());
