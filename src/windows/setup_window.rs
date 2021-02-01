@@ -198,6 +198,19 @@ mod imp {
                     self_.bmi_levelbar.set_height(height);
                 }));
 
+            self.weightgoal_spin_button
+                .connect_changed(clone!(@weak obj => move |_| {
+                    let self_ = imp::HealthSetupWindow::from_instance(&obj);
+                    let unitless_weight = get_spinbutton_value(&self_.weightgoal_spin_button);
+                    let weight = if self_.unit_metric_togglebutton.get_active() {
+                        Mass::new::<kilogram>(unitless_weight)
+                    } else {
+                        Mass::new::<pound>(unitless_weight)
+                    };
+
+                    self_.bmi_levelbar.set_weight(weight);
+                }));
+
             self.age_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
                     imp::HealthSetupWindow::from_instance(&obj).try_enable_next_button();
