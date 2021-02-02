@@ -13,7 +13,7 @@ mod imp {
     };
     use glib::subclass;
     use gtk::subclass::prelude::*;
-    use std::cell::RefCell;
+    use std::{cell::RefCell, convert::TryFrom};
     use uom::si::length::meter;
 
     static BICYCLING_METERS_PER_MINUTE: u32 = 300;
@@ -103,7 +103,7 @@ mod imp {
         pub fn autofill_from_minutes(&self) {
             let mut inner = self.inner.borrow_mut();
             let info = ActivityInfo::from(inner.activity_type.clone());
-            let minutes = inner.duration.num_minutes() as u32;
+            let minutes = u32::try_from(inner.duration.num_minutes()).unwrap();
 
             if minutes != 0
                 && info
@@ -126,7 +126,7 @@ mod imp {
                     ActivityType::Swimming => Some(SWIMMING_METERS_PER_MINUTE * minutes),
                     _ => None,
                 }
-                .map(|v| Length::new::<meter>(v as f32))
+                .map(|v: u32| Length::new::<meter>(v as f32))
                 {
                     inner.distance = Some(distance);
                 }
@@ -173,7 +173,8 @@ mod imp {
                 }
 
                 inner.calories_burned = Some(
-                    inner.duration.num_minutes() as u32 * info.average_calories_burned_per_minute,
+                    u32::try_from(inner.duration.num_minutes()).unwrap()
+                        * info.average_calories_burned_per_minute,
                 );
 
                 match inner.activity_type {
@@ -189,6 +190,7 @@ mod imp {
             let mut inner = self.inner.borrow_mut();
             let info = ActivityInfo::from(inner.activity_type.clone());
             let steps = inner.steps.unwrap_or(0);
+            let num_minutes = u32::try_from(inner.duration.num_minutes()).unwrap();
 
             if steps != 0
                 && info
@@ -197,32 +199,27 @@ mod imp {
             {
                 match inner.activity_type {
                     ActivityType::Walking => {
-                        inner.duration = Duration::minutes((steps / 100) as i64);
+                        inner.duration = Duration::minutes((steps / 100).into());
                         inner.distance = Some(Length::new::<meter>(
-                            (inner.duration.num_minutes() as u32 * WALKING_METERS_PER_MINUTE)
-                                as f32,
+                            (num_minutes * WALKING_METERS_PER_MINUTE) as f32,
                         ));
                     }
                     ActivityType::Hiking => {
-                        inner.duration = Duration::minutes((steps / 80) as i64);
+                        inner.duration = Duration::minutes((steps / 80).into());
                         inner.distance = Some(Length::new::<meter>(
-                            (inner.duration.num_minutes() as u32 * WALKING_METERS_PER_MINUTE)
-                                as f32,
+                            (num_minutes * WALKING_METERS_PER_MINUTE) as f32,
                         ));
                     }
                     ActivityType::Running => {
-                        inner.duration = Duration::minutes((steps / 150) as i64);
+                        inner.duration = Duration::minutes((steps / 150).into());
                         inner.distance = Some(Length::new::<meter>(
-                            (inner.duration.num_minutes() as u32 * RUNNING_METERS_PER_MINUTE)
-                                as f32,
+                            (num_minutes * RUNNING_METERS_PER_MINUTE) as f32,
                         ));
                     }
                     _ => {}
                 }
 
-                inner.calories_burned = Some(
-                    info.average_calories_burned_per_minute * inner.duration.num_minutes() as u32,
-                );
+                inner.calories_burned = Some(info.average_calories_burned_per_minute * num_minutes);
             }
         }
 

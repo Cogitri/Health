@@ -10,7 +10,10 @@ mod imp {
     use gio::ListModelExt;
     use glib::{subclass, Cast, StaticType};
     use gtk::subclass::prelude::*;
-    use std::{cell::RefCell, convert::TryInto};
+    use std::{
+        cell::RefCell,
+        convert::{TryFrom, TryInto},
+    };
 
     #[derive(Debug)]
     pub struct ModelActivityMut {
@@ -59,7 +62,7 @@ mod imp {
             self.inner
                 .borrow()
                 .vec
-                .get(position as usize)
+                .get(usize::try_from(position).unwrap())
                 .map(|o| o.clone().upcast())
         }
     }

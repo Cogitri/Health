@@ -14,7 +14,10 @@ mod imp {
     use super::*;
     use glib::subclass::{self, Signal};
     use gtk::subclass::prelude::*;
-    use std::cell::RefCell;
+    use std::{
+        cell::RefCell,
+        convert::{TryFrom, TryInto},
+    };
     use uom::si::length::meter;
 
     #[derive(Debug)]
@@ -122,7 +125,9 @@ mod imp {
                             }
                         }
                         "calories_burned" => {
-                            activity.set_calories_burned(Some(cursor.get_integer(i) as u32));
+                            activity.set_calories_burned(Some(
+                                cursor.get_integer(i).try_into().unwrap(),
+                            ));
                         }
                         "distance" => {
                             activity.set_distance(Some(Length::new::<meter>(
@@ -130,19 +135,25 @@ mod imp {
                             )));
                         }
                         "heart_rate_avg" => {
-                            activity.set_heart_rate_avg(Some(cursor.get_integer(i) as u32));
+                            activity.set_heart_rate_avg(Some(
+                                cursor.get_integer(i).try_into().unwrap(),
+                            ));
                         }
                         "heart_rate_max" => {
-                            activity.set_heart_rate_max(Some(cursor.get_integer(i) as u32));
+                            activity.set_heart_rate_max(Some(
+                                cursor.get_integer(i).try_into().unwrap(),
+                            ));
                         }
                         "heart_rate_min" => {
-                            activity.set_heart_rate_min(Some(cursor.get_integer(i) as u32));
+                            activity.set_heart_rate_min(Some(
+                                cursor.get_integer(i).try_into().unwrap(),
+                            ));
                         }
                         "minutes" => {
                             activity.set_duration(Duration::minutes(cursor.get_integer(i)));
                         }
                         "steps" => {
-                            activity.set_steps(Some(cursor.get_integer(i) as u32));
+                            activity.set_steps(Some(cursor.get_integer(i).try_into().unwrap()));
                         }
                         _ => unimplemented!(),
                     }
@@ -178,7 +189,8 @@ mod imp {
                 };
                 hashmap.insert(
                     date,
-                    hashmap.get(&date).unwrap_or(&0) + cursor.get_integer(1) as u32,
+                    hashmap.get(&date).unwrap_or(&0)
+                        + u32::try_from(cursor.get_integer(1)).unwrap(),
                 );
             }
 

@@ -1,6 +1,7 @@
 use crate::core::Database;
 use gio::FileExt;
 use gtk::prelude::*;
+use std::convert::TryFrom;
 
 pub struct CSVHandler {
     db: Database,
@@ -102,7 +103,7 @@ impl CSVHandler {
         let mut written = 0;
         while written < data.len() {
             let w = stream.write(&data[written..data.len()], None::<&gio::Cancellable>)?;
-            written += w as usize;
+            written += usize::try_from(w).unwrap();
         }
 
         Ok(())

@@ -1,6 +1,6 @@
 use crate::{core::Database, model::Steps, views::Point};
 use chrono::{Duration, Local};
-use std::convert::TryInto;
+use std::convert::{TryFrom, TryInto};
 
 #[derive(Debug)]
 pub struct GraphModelSteps {
@@ -45,7 +45,7 @@ impl GraphModelSteps {
         let last_date = steps.get(0).unwrap().date;
 
         for x in steps.iter() {
-            if last_date.signed_duration_since(x.date).num_days() as u32 == streak
+            if u32::try_from(last_date.signed_duration_since(x.date).num_days()).unwrap() == streak
                 && x.steps >= step_goal
             {
                 streak += 1;
@@ -99,7 +99,9 @@ impl GraphModelSteps {
                 .unwrap();
         }
 
-        for x in last_val..Local::now().signed_duration_since(first_date).num_days() as usize {
+        for x in last_val
+            ..usize::try_from(Local::now().signed_duration_since(first_date).num_days()).unwrap()
+        {
             let date = first_date
                 .clone()
                 .checked_add_signed(Duration::days(x.try_into().unwrap()))

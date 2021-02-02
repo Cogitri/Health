@@ -53,7 +53,7 @@ where
 {
     let buf = u32::deserialize(deserializer)?;
 
-    Ok(Duration::minutes(buf as i64))
+    Ok(Duration::minutes(buf.into()))
 }
 
 pub fn deserialize_mass<'de, D>(deserializer: D) -> Result<Mass, D::Error>
@@ -119,7 +119,7 @@ pub fn serialize_duration<S>(d: &Duration, s: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
 {
-    s.serialize_u32(d.num_minutes() as u32)
+    s.serialize_u32(d.num_minutes().try_into().unwrap())
 }
 
 pub fn serialize_mass<S>(mass: &Mass, s: S) -> Result<S::Ok, S::Error>
