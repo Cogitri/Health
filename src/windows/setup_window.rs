@@ -12,13 +12,12 @@ mod imp {
         clone,
         subclass::{self, Signal},
     };
-    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use uom::si::{
         f32::{Length, Mass},
         length::{centimeter, inch, meter},
         mass::{kilogram, pound},
     };
-
 
     static OPTIMAL_BMI: f32 = 22.5;
 

@@ -4,7 +4,7 @@ use gtk::prelude::*;
 
 mod imp {
     use crate::{
-        core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Settings, Database},
+        core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Database, Settings},
         sync::csv::CSVHandler,
         widgets::{BMILevelBar, SyncListBox},
     };
@@ -13,7 +13,7 @@ mod imp {
         clone, g_warning,
         subclass::{self, Signal},
     };
-    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use gtk_macros::spawn;
     use once_cell::unsync::OnceCell;
     use uom::si::{
@@ -110,10 +110,12 @@ mod imp {
                     .set_title(Some(&i18n("Height in centimeters")));
                 self.weightgoal_actionrow
                     .set_title(Some(&i18n("Weightgoal in KG")));
-                self.height_spin_button
-                    .set_value(f64::from(self.settings.get_user_height().get::<centimeter>()));
-                self.weightgoal_spin_button
-                    .set_value(f64::from(self.settings.get_user_weightgoal().get::<kilogram>()));
+                self.height_spin_button.set_value(f64::from(
+                    self.settings.get_user_height().get::<centimeter>(),
+                ));
+                self.weightgoal_spin_button.set_value(f64::from(
+                    self.settings.get_user_weightgoal().get::<kilogram>(),
+                ));
             } else {
                 self.unit_metric_togglebutton.set_active(true);
                 self.height_actionrow
@@ -122,8 +124,9 @@ mod imp {
                     .set_title(Some(&i18n("Weightgoal in pounds")));
                 self.height_spin_button
                     .set_value(f64::from(self.settings.get_user_height().get::<inch>()));
-                self.weightgoal_spin_button
-                    .set_value(f64::from(self.settings.get_user_weightgoal().get::<pound>()));
+                self.weightgoal_spin_button.set_value(f64::from(
+                    self.settings.get_user_weightgoal().get::<pound>(),
+                ));
             }
 
             self.stepgoal_spin_button

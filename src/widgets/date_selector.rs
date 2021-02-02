@@ -2,9 +2,9 @@ use chrono::{DateTime, FixedOffset};
 use gdk::subclass::prelude::ObjectSubclass;
 
 mod imp {
-    use chrono::{Local, LocalResult, NaiveDate, TimeZone, DateTime, FixedOffset};
+    use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
     use glib::{clone, subclass};
-    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate)]

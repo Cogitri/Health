@@ -4,12 +4,12 @@ use gtk::prelude::*;
 
 mod imp {
     use crate::{
-        core::{i18n, settings::Unitsystem, Settings, Database},
+        core::{i18n, settings::Unitsystem, Database, Settings},
         model::Weight,
         widgets::DateSelector,
     };
     use glib::{clone, subclass};
-    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use uom::si::{
         f32::Mass,

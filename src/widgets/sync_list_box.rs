@@ -3,7 +3,7 @@ use gdk::subclass::prelude::ObjectSubclass;
 
 mod imp {
     use crate::{
-        core::{Settings, Database},
+        core::{Database, Settings},
         sync::{
             google_fit::GoogleFitSyncProvider,
             new_db_receiver,

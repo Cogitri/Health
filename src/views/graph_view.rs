@@ -219,7 +219,10 @@ mod imp {
             cr.set_source_rgba(0.0, 174.0, 174.0, 0.8);
             cr.move_to(
                 f64::from(HALF_X_PADDING),
-                f64::from(inner.height - inner.points.get(0).unwrap().value * inner.scale_y + HALF_Y_PADDING),
+                f64::from(
+                    inner.height - inner.points.get(0).unwrap().value * inner.scale_y
+                        + HALF_Y_PADDING,
+                ),
             );
 
             for (i, point) in inner.points.iter().enumerate() {
@@ -233,7 +236,9 @@ mod imp {
                 cr.curve_to(
                     f64::from((i as f32 + smoothness_factor) * inner.scale_x + HALF_X_PADDING),
                     f64::from(inner.height - point.value * inner.scale_y + HALF_Y_PADDING),
-                    f64::from(((i + 1) as f32 - smoothness_factor) * inner.scale_x + HALF_X_PADDING),
+                    f64::from(
+                        ((i + 1) as f32 - smoothness_factor) * inner.scale_x + HALF_X_PADDING,
+                    ),
                     f64::from(inner.height - next_value * inner.scale_y + HALF_Y_PADDING),
                     f64::from((i + 1) as f32 * inner.scale_x + HALF_X_PADDING),
                     f64::from(inner.height - next_value * inner.scale_y + HALF_Y_PADDING),
@@ -267,7 +272,7 @@ mod imp {
                         f64::from(hover_point.x + padding * 2.0 + x_delta)
                             + pango::units_to_double(extents.width)
                             - radius,
-                            f64::from(hover_point.y - padding / 2.0)
+                        f64::from(hover_point.y - padding / 2.0)
                             - pango::units_to_double(extents.height) / 2.0
                             + radius,
                         radius,
@@ -278,7 +283,7 @@ mod imp {
                         f64::from(hover_point.x + padding * 2.0 + x_delta)
                             + pango::units_to_double(extents.width)
                             - radius,
-                            f64::from(hover_point.y + padding / 2.0)
+                        f64::from(hover_point.y + padding / 2.0)
                             + pango::units_to_double(extents.height) / 2.0
                             - radius,
                         radius,
@@ -296,7 +301,7 @@ mod imp {
                     );
                     cr.arc(
                         f64::from(hover_point.x + padding + x_delta) + radius,
-                            f64::from(hover_point.y - padding / 2.0)
+                        f64::from(hover_point.y - padding / 2.0)
                             - pango::units_to_double(extents.height) / 2.0
                             + radius,
                         radius,

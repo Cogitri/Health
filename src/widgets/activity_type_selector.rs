@@ -1,18 +1,18 @@
-use gdk::subclass::prelude::ObjectSubclass;
 use crate::model::ActivityInfo;
+use gdk::subclass::prelude::ObjectSubclass;
 use gio::prelude::*;
 
 mod imp {
     use crate::{
         core::Settings,
-        model::{ActivityType, ActivityTypeRowData, ActivityInfo},
+        model::{ActivityInfo, ActivityType, ActivityTypeRowData},
         widgets::ActivityTypeRow,
     };
     use glib::{
         g_warning,
         subclass::{self, Signal},
     };
-    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use num_traits::cast::FromPrimitive;
     use std::{cell::RefCell, convert::TryFrom};
 
@@ -159,11 +159,7 @@ mod imp {
             self.selected_activity.borrow().clone()
         }
 
-        pub fn set_selected_activity(
-            &self,
-            obj: &super::ActivityTypeSelector,
-            val: ActivityInfo,
-        ) {
+        pub fn set_selected_activity(&self, obj: &super::ActivityTypeSelector, val: ActivityInfo) {
             self.selected_activity.replace(val);
             obj.emit("activity-selected", &[]).unwrap();
         }

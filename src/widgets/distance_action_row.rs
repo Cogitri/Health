@@ -9,9 +9,12 @@ mod imp {
         clone,
         subclass::{self, Signal},
     };
-    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
-    use uom::si::{length::{kilometer, meter, mile, yard}, f32::Length};
+    use uom::si::{
+        f32::Length,
+        length::{kilometer, meter, mile, yard},
+    };
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/distance_action_row.ui")]

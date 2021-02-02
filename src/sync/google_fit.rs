@@ -183,7 +183,8 @@ impl SyncProvider for GoogleFitSyncProvider {
                 .map_err(|e| {
                     SyncProviderError::RequestToken(i18n_f(
                         "Requesting OAuth2 token failed due to error {}",
-                        &[&e.cause().map_or(String::new(), std::string::ToString::to_string)],
+                        &[&e.cause()
+                            .map_or(String::new(), std::string::ToString::to_string)],
                     ))
                 })?,
         );

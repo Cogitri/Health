@@ -8,7 +8,7 @@ use gtk::prelude::*;
 
 mod imp {
     use crate::{
-        core::{Settings, Database},
+        core::{Database, Settings},
         sync::{
             google_fit::GoogleFitSyncProvider,
             new_db_receiver,
@@ -18,7 +18,7 @@ mod imp {
         windows::{ActivityAddDialog, WeightAddDialog},
     };
     use glib::{clone, signal::Inhibit, subclass, SourceId};
-    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
     use std::collections::BTreeMap;
@@ -158,16 +158,12 @@ mod imp {
                 }));
 
             obj.connect_property_default_height_notify(move |w| {
-                Window::from_instance(w)
-                    .inner
-                    .borrow_mut()
-                    .current_height = w.get_property_default_height();
+                Window::from_instance(w).inner.borrow_mut().current_height =
+                    w.get_property_default_height();
             });
             obj.connect_property_default_width_notify(move |w| {
-                Window::from_instance(w)
-                    .inner
-                    .borrow_mut()
-                    .current_width = w.get_property_default_width();
+                Window::from_instance(w).inner.borrow_mut().current_width =
+                    w.get_property_default_width();
             });
             obj.connect_close_request(|w| {
                 let self_ = Window::from_instance(w);

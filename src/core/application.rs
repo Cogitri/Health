@@ -5,7 +5,7 @@ mod imp {
     use crate::{
         config,
         core::{i18n, Database, Settings},
-        windows::{Window, PreferencesWindow, SetupWindow},
+        windows::{PreferencesWindow, SetupWindow, Window},
     };
     use gio::ActionMapExt;
     use glib::{clone, g_warning, subclass};

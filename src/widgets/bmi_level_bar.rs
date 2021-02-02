@@ -3,11 +3,15 @@ use gdk::subclass::prelude::ObjectSubclass;
 use uom::si::f32::{Length, Mass};
 
 mod imp {
-    use crate::core::{Settings, settings::Unitsystem};
+    use crate::core::{settings::Unitsystem, Settings};
     use glib::subclass;
-    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
-    use uom::si::{length::centimeter, mass::kilogram, f32::{Length, Mass}};
+    use uom::si::{
+        f32::{Length, Mass},
+        length::centimeter,
+        mass::kilogram,
+    };
 
     static LEVEL_BAR_MIN: f32 = 13.5;
     static LEVEL_BAR_MAX: f32 = 30.0;

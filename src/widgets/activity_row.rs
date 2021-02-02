@@ -4,10 +4,10 @@ use gdk::subclass::prelude::ObjectSubclass;
 mod imp {
     use crate::{
         core::{i18n_f, settings::Unitsystem, Settings},
-        model::{ActivityDataPoints, ActivityInfo, Activity},
+        model::{Activity, ActivityDataPoints, ActivityInfo},
     };
     use glib::subclass;
-    use gtk::{subclass::prelude::*, prelude::*, glib, CompositeTemplate};
+    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use uom::fmt::DisplayStyle::Abbreviation;
     use uom::si::length::{meter, yard};
