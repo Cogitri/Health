@@ -51,7 +51,10 @@ clippy:
   script:
     - meson build
     - cargo clippy
-
+  cache:
+    key: clippy
+    paths:
+      - target
 
 flatpak:
   extends: ".flatpak"
