@@ -131,7 +131,8 @@ mod imp {
         }
 
         pub async fn update(&self, obj: &super::ViewWeight) {
-            let mut weight_graph_model = self.weight_graph_model.get().unwrap().borrow_mut();
+            let mut weight_graph_model =
+                { self.weight_graph_model.get().unwrap().borrow().clone() };
             if let Err(e) = weight_graph_model.reload(Duration::days(30)).await {
                 glib::g_warning!(
                     crate::config::LOG_DOMAIN,
@@ -193,6 +194,11 @@ mod imp {
                     }),
                 );
             }
+
+            self.weight_graph_model
+                .get()
+                .unwrap()
+                .replace(weight_graph_model);
         }
     }
 }

@@ -67,7 +67,7 @@ mod imp {
         }
 
         pub async fn update(&self, obj: &super::ViewSteps) {
-            let mut steps_graph_model = self.steps_graph_model.get().unwrap().borrow_mut();
+            let mut steps_graph_model = { self.steps_graph_model.get().unwrap().borrow().clone() };
             if let Err(e) = steps_graph_model.reload(Duration::days(30)).await {
                 glib::g_warning!(
                     crate::config::LOG_DOMAIN,
@@ -136,6 +136,11 @@ mod imp {
                         })
                     }));
             }
+
+            self.steps_graph_model
+                .get()
+                .unwrap()
+                .replace(steps_graph_model);
         }
     }
 }

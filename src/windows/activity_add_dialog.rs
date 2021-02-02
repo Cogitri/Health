@@ -4,20 +4,20 @@ use gtk::prelude::*;
 
 mod imp {
     use crate::{
-        core::{utils::get_spinbutton_value, Settings, Database},
+        core::{utils::get_spinbutton_value, Database, Settings},
         model::{Activity, ActivityDataPoints, ActivityInfo, ActivityType},
-        widgets::{DateSelector, DistanceActionRow, ActivityTypeSelector},
+        widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
     };
     use chrono::Duration;
     use glib::{clone, subclass};
-    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
     #[derive(Debug)]
     pub struct ActivityAddDialogMut {
         activity: Activity,
         user_changed_datapoints: ActivityDataPoints,
-        database: Option<Database>,
         filter_model: Option<gtk::FilterListModel>,
         selected_activity: ActivityInfo,
         stop_update: bool,
@@ -27,6 +27,7 @@ mod imp {
     #[template(resource = "/dev/Cogitri/Health/ui/activity_add_dialog.ui")]
     pub struct ActivityAddDialog {
         inner: RefCell<ActivityAddDialogMut>,
+        pub database: OnceCell<Database>,
         pub settings: Settings,
 
         #[template_child]
@@ -95,12 +96,12 @@ mod imp {
             Self {
                 inner: RefCell::new(ActivityAddDialogMut {
                     activity: Activity::new(),
-                    database: None,
                     filter_model: None,
                     selected_activity: ActivityInfo::from(ActivityType::Walking),
                     stop_update: false,
                     user_changed_datapoints: ActivityDataPoints::empty(),
                 }),
+                database: OnceCell::new(),
                 settings: Settings::new(),
                 date_selector: TemplateChild::default(),
                 activities_list_box: TemplateChild::default(),
@@ -174,10 +175,6 @@ mod imp {
     impl DialogImpl for ActivityAddDialog {}
 
     impl ActivityAddDialog {
-        pub fn set_database(&self, database: Database) {
-            self.inner.borrow_mut().database = Some(database);
-        }
-
         fn connect_handlers(&self, obj: &super::ActivityAddDialog) {
             obj.connect_response(|obj, id| match id {
                 gtk::ResponseType::Ok => {
@@ -235,14 +232,8 @@ mod imp {
                                     .into(),
                                 ));
 
-                            if let Err(e) = self_
-                                .inner
-                                .borrow()
-                                .database
-                                .as_ref()
-                                .unwrap()
-                                .save_activity(activity)
-                                .await
+                            if let Err(e) =
+                                self_.database.get().unwrap().save_activity(activity).await
                             {
                                 glib::g_warning!(
                                     crate::config::LOG_DOMAIN,
@@ -414,13 +405,21 @@ mod imp {
 
                 (
                     inner.activity.get_calories_burned().unwrap_or(0),
-                    inner.user_changed_datapoints.contains(ActivityDataPoints::CALORIES_BURNED),
+                    inner
+                        .user_changed_datapoints
+                        .contains(ActivityDataPoints::CALORIES_BURNED),
                     inner.activity.get_distance(),
-                    inner.user_changed_datapoints.contains(ActivityDataPoints::DISTANCE),
+                    inner
+                        .user_changed_datapoints
+                        .contains(ActivityDataPoints::DISTANCE),
                     inner.activity.get_duration().num_minutes(),
-                    inner.user_changed_datapoints.contains(ActivityDataPoints::DURATION),
+                    inner
+                        .user_changed_datapoints
+                        .contains(ActivityDataPoints::DURATION),
                     inner.activity.get_steps().unwrap_or(0),
-                    inner.user_changed_datapoints.contains(ActivityDataPoints::STEP_COUNT),
+                    inner
+                        .user_changed_datapoints
+                        .contains(ActivityDataPoints::STEP_COUNT),
                 )
             };
 
@@ -473,7 +472,10 @@ impl ActivityAddDialog {
             .expect("Failed to create ActivityAddDialog");
 
         o.set_transient_for(Some(parent));
-        imp::ActivityAddDialog::from_instance(&o).set_database(database);
+        imp::ActivityAddDialog::from_instance(&o)
+            .database
+            .set(database)
+            .unwrap();
 
         o
     }
