@@ -1,16 +1,13 @@
 use crate::model::Activity;
 use gdk::subclass::prelude::ObjectSubclass;
-use gtk::prelude::*;
-use gtk::{glib, CompositeTemplate};
 
 mod imp {
-    use super::*;
     use crate::{
         core::{i18n_f, settings::Unitsystem, Settings},
-        model::{ActivityDataPoints, ActivityInfo},
+        model::{ActivityDataPoints, ActivityInfo, Activity},
     };
     use glib::subclass;
-    use gtk::subclass::prelude::*;
+    use gtk::{subclass::prelude::*, prelude::*, glib, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use uom::fmt::DisplayStyle::Abbreviation;
     use uom::si::length::{meter, yard};
@@ -102,7 +99,7 @@ mod imp {
 
             let gesture_controller = gtk::GestureClick::new();
             gesture_controller.connect_pressed(glib::clone!(@weak obj => move |_,_,_,_| {
-                let self_ = imp::ActivityRow::from_instance(&obj);
+                let self_ = ActivityRow::from_instance(&obj);
                 self_.details_revealer.set_reveal_child(!self_.details_revealer.get_reveal_child());
             }));
         }

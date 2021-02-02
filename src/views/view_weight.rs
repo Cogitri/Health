@@ -2,10 +2,10 @@ use crate::{core::Database, model::GraphModelWeight, views::View};
 use gdk::subclass::prelude::*;
 
 mod imp {
-    use super::*;
     use crate::{
         core::{i18n, i18n_f, settings::Unitsystem, Settings},
-        views::GraphView,
+        model::GraphModelWeight,
+        views::{GraphView, View},
     };
     use chrono::Duration;
     use glib::{subclass, Cast};

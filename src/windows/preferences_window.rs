@@ -1,12 +1,10 @@
 use crate::core::Database;
 use gdk::subclass::prelude::ObjectSubclass;
 use gtk::prelude::*;
-use gtk::{glib, CompositeTemplate};
 
 mod imp {
-    use super::*;
     use crate::{
-        core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Settings},
+        core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Settings, Database},
         sync::csv::CSVHandler,
         widgets::{BMILevelBar, SyncListBox},
     };
@@ -15,7 +13,7 @@ mod imp {
         clone, g_warning,
         subclass::{self, Signal},
     };
-    use gtk::subclass::prelude::*;
+    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
     use gtk_macros::spawn;
     use once_cell::unsync::OnceCell;
     use uom::si::{
@@ -113,9 +111,9 @@ mod imp {
                 self.weightgoal_actionrow
                     .set_title(Some(&i18n("Weightgoal in KG")));
                 self.height_spin_button
-                    .set_value(self.settings.get_user_height().get::<centimeter>() as f64);
+                    .set_value(f64::from(self.settings.get_user_height().get::<centimeter>()));
                 self.weightgoal_spin_button
-                    .set_value(self.settings.get_user_weightgoal().get::<kilogram>() as f64);
+                    .set_value(f64::from(self.settings.get_user_weightgoal().get::<kilogram>()));
             } else {
                 self.unit_metric_togglebutton.set_active(true);
                 self.height_actionrow
@@ -123,15 +121,15 @@ mod imp {
                 self.weightgoal_actionrow
                     .set_title(Some(&i18n("Weightgoal in pounds")));
                 self.height_spin_button
-                    .set_value(self.settings.get_user_height().get::<inch>() as f64);
+                    .set_value(f64::from(self.settings.get_user_height().get::<inch>()));
                 self.weightgoal_spin_button
-                    .set_value(self.settings.get_user_weightgoal().get::<pound>() as f64);
+                    .set_value(f64::from(self.settings.get_user_weightgoal().get::<pound>()));
             }
 
             self.stepgoal_spin_button
-                .set_value(self.settings.get_user_stepgoal() as f64);
+                .set_value(f64::from(self.settings.get_user_stepgoal()));
             self.age_spin_button
-                .set_value(self.settings.get_user_age() as f64);
+                .set_value(f64::from(self.settings.get_user_age()));
 
             self.connect_handlers(obj);
         }
@@ -154,7 +152,7 @@ mod imp {
         fn connect_handlers(&self, obj: &super::PreferencesWindow) {
             self.age_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = imp::PreferencesWindow::from_instance(&obj);
+                    let self_ = PreferencesWindow::from_instance(&obj);
                     let val = get_spinbutton_value::<u32>(&self_.age_spin_button);
                     if val != 0 {
                         self_.settings.set_user_age(val);
@@ -163,7 +161,7 @@ mod imp {
 
             self.stepgoal_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = imp::PreferencesWindow::from_instance(&obj);
+                    let self_ = PreferencesWindow::from_instance(&obj);
                     let val = get_spinbutton_value::<u32>(&self_.stepgoal_spin_button);
                     if val != 0 {
                         self_.settings.set_user_stepgoal(val);
@@ -172,7 +170,7 @@ mod imp {
 
             self.weightgoal_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = imp::PreferencesWindow::from_instance(&obj);
+                    let self_ = PreferencesWindow::from_instance(&obj);
                     let val = get_spinbutton_value::<f32>(&self_.weightgoal_spin_button);
                     if val != 0.0 {
                         let weight = if self_.unit_metric_togglebutton.get_active() {
@@ -187,7 +185,7 @@ mod imp {
 
             self.height_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = imp::PreferencesWindow::from_instance(&obj);
+                    let self_ = PreferencesWindow::from_instance(&obj);
                     let val = get_spinbutton_value::<u32>(&self_.height_spin_button) as f32;
                     if val != 0.0 {
                         let height = if self_.unit_metric_togglebutton.get_active() {
@@ -201,7 +199,7 @@ mod imp {
                 }));
 
             self.unit_metric_togglebutton.connect_toggled(clone!(@weak obj => move |btn| {
-                let self_ = imp::PreferencesWindow::from_instance(&obj);
+                let self_ = PreferencesWindow::from_instance(&obj);
                 if btn.get_active() {
                     self_.settings.set_unitsystem(Unitsystem::Metric);
                     self_.bmi_levelbar.set_unitsystem(Unitsystem::Metric);
@@ -242,7 +240,7 @@ mod imp {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {
-                                let self_ = imp::PreferencesWindow::from_instance(&obj);
+                                let self_ = PreferencesWindow::from_instance(&obj);
                                 let handler = CSVHandler::new(self_.db.get().unwrap().clone());
                                 if let Err(e) = handler.export_activities_csv(&file).await {
                                     g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
@@ -269,7 +267,7 @@ mod imp {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {
-                                let self_ = imp::PreferencesWindow::from_instance(&obj);
+                                let self_ = PreferencesWindow::from_instance(&obj);
                                 let handler = CSVHandler::new(self_.db.get().unwrap().clone());
                                 if let Err(e) = handler.export_weights_csv(&file).await {
                                     g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
@@ -295,7 +293,7 @@ mod imp {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {
-                                let self_ = imp::PreferencesWindow::from_instance(&obj);
+                                let self_ = PreferencesWindow::from_instance(&obj);
                                 let handler = CSVHandler::new(self_.db.get().unwrap().clone());
                                 if let Err(e) = handler.import_weights_csv(&file).await {
                                     g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
@@ -320,7 +318,7 @@ mod imp {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {
-                                let self_ = imp::PreferencesWindow::from_instance(&obj);
+                                let self_ = PreferencesWindow::from_instance(&obj);
                                 let handler = CSVHandler::new(self_.db.get().unwrap().clone());
                                 if let Err(e) = handler.import_activities_csv(&file).await {
                                     g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());

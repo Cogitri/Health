@@ -22,8 +22,15 @@ pub enum SyncProviderError {
     RefreshFailed(String),
     RequestToken(String),
     SecretService(#[from] SsError),
-    UReq(#[from] ureq::Error),
+    UReq(Box<ureq::Error>),
     UrlParse(#[from] oauth2::url::ParseError),
+}
+
+// Box ureq::Error since it's pretty huge (1008 Byte)
+impl From<ureq::Error> for SyncProviderError {
+    fn from(e: ureq::Error) -> Self {
+        Self::UReq(Box::new(e))
+    }
 }
 
 pub trait SyncProvider {
@@ -91,10 +98,10 @@ pub trait SyncProvider {
                 .request(super::ureq_http_client::http_client)
                 .map_err(|e| SyncProviderError::RefreshFailed(e.to_string())),
             Ok(None) => {
-                return Err(SyncProviderError::NoRefreshTokenSet(i18n("Can't retrieve OAuth2 token when no refesh token is set! Please re-authenticate with your sync provider.")));
+                Err(SyncProviderError::NoRefreshTokenSet(i18n("Can't retrieve OAuth2 token when no refesh token is set! Please re-authenticate with your sync provider.")))
             }
             Err(e) => {
-                return Err(e.into());
+                Err(e.into())
             }
         }
     }

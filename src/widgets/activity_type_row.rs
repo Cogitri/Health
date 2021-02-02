@@ -1,12 +1,9 @@
 use crate::model::ActivityTypeRowData;
 use gdk::subclass::prelude::ObjectSubclass;
-use gtk::prelude::*;
-use gtk::{glib, CompositeTemplate};
 
 mod imp {
-    use super::*;
     use glib::subclass;
-    use gtk::subclass::prelude::*;
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate)]

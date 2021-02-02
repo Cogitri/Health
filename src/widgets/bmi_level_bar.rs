@@ -1,16 +1,13 @@
 use crate::{core::settings::Unitsystem, imp_getter_setter};
 use gdk::subclass::prelude::ObjectSubclass;
-use gtk::prelude::*;
-use gtk::{glib, CompositeTemplate};
 use uom::si::f32::{Length, Mass};
 
 mod imp {
-    use super::*;
-    use crate::core::Settings;
+    use crate::core::{Settings, settings::Unitsystem};
     use glib::subclass;
-    use gtk::subclass::prelude::*;
+    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
     use std::cell::RefCell;
-    use uom::si::{length::centimeter, mass::kilogram};
+    use uom::si::{length::centimeter, mass::kilogram, f32::{Length, Mass}};
 
     static LEVEL_BAR_MIN: f32 = 13.5;
     static LEVEL_BAR_MAX: f32 = 30.0;

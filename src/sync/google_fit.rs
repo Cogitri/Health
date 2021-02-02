@@ -52,6 +52,8 @@ pub struct GoogleFitSyncProvider {
 }
 
 impl GoogleFitSyncProvider {
+    // False-Positive in contains_key, we can't use .entry().insert_or() since we need the else condition
+    #[allow(clippy::map_entry)]
     fn get_steps(
         &mut self,
         date_opt: Option<DateTime<FixedOffset>>,
@@ -181,7 +183,7 @@ impl SyncProvider for GoogleFitSyncProvider {
                 .map_err(|e| {
                     SyncProviderError::RequestToken(i18n_f(
                         "Requesting OAuth2 token failed due to error {}",
-                        &[&e.cause().map(|e| e.to_string()).unwrap_or("".to_string())],
+                        &[&e.cause().map_or(String::new(), std::string::ToString::to_string)],
                     ))
                 })?,
         );

@@ -30,7 +30,7 @@ impl Settings {
         self.settings
             .get_strv("recent-activity-types")
             .iter()
-            .map(|s| s.to_string())
+            .map(std::string::ToString::to_string)
             .collect()
     }
 
@@ -104,7 +104,7 @@ impl Settings {
 
     pub fn set_user_weightgoal(&self, value: Mass) {
         self.settings
-            .set_double("user-weightgoal", value.get::<kilogram>() as f64)
+            .set_double("user-weightgoal", f64::from(value.get::<kilogram>()))
             .unwrap();
     }
 

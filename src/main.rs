@@ -1,7 +1,16 @@
 // We don't want default methods for all GObject types
 #![allow(clippy::new_without_default)]
+#![warn(clippy::await_holding_refcell_ref)]
+#![warn(clippy::cast_lossless)]
+#![warn(clippy::comparison_to_empty)]
+#![warn(clippy::find_map)]
+#![warn(clippy::map_unwrap_or)]
+#![warn(clippy::redundant_closure_for_method_calls)]
+#![warn(clippy::struct_excessive_bools)]
+#![warn(clippy::unnecessary_unwrap)]
+#![warn(clippy::wildcard_imports)]
 
-use gettextrs::*;
+use gettextrs::{bindtextdomain, setlocale, textdomain, LocaleCategory};
 use gtk::prelude::ApplicationExtManual;
 
 mod config;

@@ -1,10 +1,6 @@
 use chrono::{DateTime, FixedOffset};
 use gio::subclass::prelude::ObjectSubclass;
 use gtk::glib;
-use gtk::prelude::*;
-
-static HALF_X_PADDING: f32 = 30.0;
-static HALF_Y_PADDING: f32 = 30.0;
 
 #[derive(Debug, Clone)]
 pub struct Point {
@@ -13,11 +9,15 @@ pub struct Point {
 }
 
 mod imp {
-    use super::*;
+    use super::Point;
     use chrono::Local;
     use glib::{clone, subclass};
+    use gtk::prelude::*;
     use gtk::subclass::prelude::*;
     use std::{cell::RefCell, convert::TryInto, f64::consts::PI};
+
+    static HALF_X_PADDING: f32 = 30.0;
+    static HALF_Y_PADDING: f32 = 30.0;
 
     #[derive(Debug)]
     struct HoverPoint {
@@ -157,9 +157,9 @@ mod imp {
                 let (_, extents) = layout.get_extents();
 
                 cr.move_to(
-                    (i as f32 * inner.scale_x + HALF_X_PADDING) as f64
+                    f64::from(i as f32 * inner.scale_x + HALF_X_PADDING)
                         - pango::units_to_double(extents.width) / 2.0,
-                    (inner.height + HALF_Y_PADDING * 1.5) as f64
+                    f64::from(inner.height + HALF_Y_PADDING * 1.5)
                         - pango::units_to_double(extents.height) / 2.0,
                 );
                 pangocairo::show_layout(&cr, &layout);
@@ -176,14 +176,14 @@ mod imp {
 
                 cr.set_dash(&[10.0, 5.0], 0.0);
                 cr.move_to(
-                    HALF_X_PADDING as f64,
-                    (inner.height - limit * inner.scale_y + HALF_Y_PADDING) as f64,
+                    f64::from(HALF_X_PADDING),
+                    f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING),
                 );
                 let layout = widget.create_pango_layout(inner.limit_label.as_deref());
                 pangocairo::show_layout(&cr, &layout);
                 cr.line_to(
-                    (inner.width + HALF_X_PADDING) as f64,
-                    (inner.height - limit * inner.scale_y + HALF_Y_PADDING) as f64,
+                    f64::from(inner.width + HALF_X_PADDING),
+                    f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING),
                 );
 
                 cr.stroke();
@@ -202,8 +202,8 @@ mod imp {
             cr.set_source_rgba(0.0, 174.0, 174.0, 1.0);
             cr.set_line_width(4.0);
             for (i, point) in inner.points.iter().enumerate() {
-                let x = (i as f32 * inner.scale_x + HALF_X_PADDING) as f64;
-                let y = (inner.height - point.value * inner.scale_y + HALF_Y_PADDING) as f64;
+                let x = f64::from(i as f32 * inner.scale_x + HALF_X_PADDING);
+                let y = f64::from(inner.height - point.value * inner.scale_y + HALF_Y_PADDING);
 
                 cr.move_to(x, y);
                 cr.arc(x, y, 2.0, 0.0, 2.0 * PI);
@@ -218,9 +218,8 @@ mod imp {
             cr.save();
             cr.set_source_rgba(0.0, 174.0, 174.0, 0.8);
             cr.move_to(
-                HALF_X_PADDING as f64,
-                (inner.height - inner.points.get(0).unwrap().value * inner.scale_y + HALF_Y_PADDING)
-                    as f64,
+                f64::from(HALF_X_PADDING),
+                f64::from(inner.height - inner.points.get(0).unwrap().value * inner.scale_y + HALF_Y_PADDING),
             );
 
             for (i, point) in inner.points.iter().enumerate() {
@@ -232,12 +231,12 @@ mod imp {
                 let smoothness_factor = 0.5;
 
                 cr.curve_to(
-                    ((i as f32 + smoothness_factor) * inner.scale_x + HALF_X_PADDING) as f64,
-                    (inner.height - point.value * inner.scale_y + HALF_Y_PADDING) as f64,
-                    (((i + 1) as f32 - smoothness_factor) * inner.scale_x + HALF_X_PADDING) as f64,
-                    (inner.height - next_value * inner.scale_y + HALF_Y_PADDING) as f64,
-                    ((i + 1) as f32 * inner.scale_x + HALF_X_PADDING) as f64,
-                    (inner.height - next_value * inner.scale_y + HALF_Y_PADDING) as f64,
+                    f64::from((i as f32 + smoothness_factor) * inner.scale_x + HALF_X_PADDING),
+                    f64::from(inner.height - point.value * inner.scale_y + HALF_Y_PADDING),
+                    f64::from(((i + 1) as f32 - smoothness_factor) * inner.scale_x + HALF_X_PADDING),
+                    f64::from(inner.height - next_value * inner.scale_y + HALF_Y_PADDING),
+                    f64::from((i + 1) as f32 * inner.scale_x + HALF_X_PADDING),
+                    f64::from(inner.height - next_value * inner.scale_y + HALF_Y_PADDING),
                 );
             }
 
@@ -265,10 +264,10 @@ mod imp {
 
                     cr.new_sub_path();
                     cr.arc(
-                        (hover_point.x + padding * 2.0 + x_delta) as f64
+                        f64::from(hover_point.x + padding * 2.0 + x_delta)
                             + pango::units_to_double(extents.width)
                             - radius,
-                        (hover_point.y - padding / 2.0) as f64
+                            f64::from(hover_point.y - padding / 2.0)
                             - pango::units_to_double(extents.height) / 2.0
                             + radius,
                         radius,
@@ -276,10 +275,10 @@ mod imp {
                         0.0,
                     );
                     cr.arc(
-                        (hover_point.x + padding * 2.0 + x_delta) as f64
+                        f64::from(hover_point.x + padding * 2.0 + x_delta)
                             + pango::units_to_double(extents.width)
                             - radius,
-                        (hover_point.y + padding / 2.0) as f64
+                            f64::from(hover_point.y + padding / 2.0)
                             + pango::units_to_double(extents.height) / 2.0
                             - radius,
                         radius,
@@ -287,8 +286,8 @@ mod imp {
                         90.0 * degrees,
                     );
                     cr.arc(
-                        (hover_point.x + padding + x_delta) as f64 + radius,
-                        (hover_point.y + padding / 2.0) as f64
+                        f64::from(hover_point.x + padding + x_delta) + radius,
+                        f64::from(hover_point.y + padding / 2.0)
                             + pango::units_to_double(extents.height) / 2.0
                             - radius,
                         radius,
@@ -296,8 +295,8 @@ mod imp {
                         180.0 * degrees,
                     );
                     cr.arc(
-                        (hover_point.x + padding + x_delta) as f64 + radius,
-                        (hover_point.y - padding / 2.0) as f64
+                        f64::from(hover_point.x + padding + x_delta) + radius,
+                            f64::from(hover_point.y - padding / 2.0)
                             - pango::units_to_double(extents.height) / 2.0
                             + radius,
                         radius,
@@ -309,8 +308,8 @@ mod imp {
                     cr.fill_preserve();
 
                     cr.move_to(
-                        (hover_point.x + padding * 1.5 + x_delta) as f64,
-                        hover_point.y as f64 - pango::units_to_double(extents.height) / 2.0,
+                        f64::from(hover_point.x + padding * 1.5 + x_delta),
+                        f64::from(hover_point.y) - pango::units_to_double(extents.height) / 2.0,
                     );
                     cr.set_source_rgba(1.0, 1.0, 1.0, 1.0);
                     pangocairo::show_layout(&cr, &layout);
@@ -328,12 +327,12 @@ mod imp {
             obj.set_vexpand(true);
             let gesture_controller = gtk::GestureClick::new();
             gesture_controller.set_touch_only(true);
-            gesture_controller.connect_pressed(clone!(@weak obj => move |c, _, x, y| imp::GraphView::from_instance(&obj).on_motion_event(&obj, x, y, true, c)));
+            gesture_controller.connect_pressed(clone!(@weak obj => move |c, _, x, y| GraphView::from_instance(&obj).on_motion_event(&obj, x, y, true, c)));
             obj.add_controller(&gesture_controller);
 
             let motion_controller = gtk::EventControllerMotion::new();
-            motion_controller.connect_enter(clone!(@weak obj => move|c, x, y| imp::GraphView::from_instance(&obj).on_motion_event(&obj, x, y, false, c)));
-            motion_controller.connect_motion(clone!(@weak obj => move|c, x, y| imp::GraphView::from_instance(&obj).on_motion_event(&obj, x, y, false, c)));
+            motion_controller.connect_enter(clone!(@weak obj => move|c, x, y| GraphView::from_instance(&obj).on_motion_event(&obj, x, y, false, c)));
+            motion_controller.connect_motion(clone!(@weak obj => move|c, x, y| GraphView::from_instance(&obj).on_motion_event(&obj, x, y, false, c)));
             obj.add_controller(&motion_controller);
 
             let mut inner = self.inner.borrow_mut();
@@ -369,7 +368,7 @@ mod imp {
         pub fn set_points(&self, obj: &super::GraphView, points: Vec<Point>) {
             let layout = obj.create_pango_layout(Some(&format!("{}", Local::now().format("%x"))));
             let (_, extents) = layout.get_extents();
-            let datapoint_width = pango::units_to_double(extents.width) + HALF_X_PADDING as f64;
+            let datapoint_width = pango::units_to_double(extents.width) + f64::from(HALF_X_PADDING);
 
             obj.set_size_request(
                 (datapoint_width as usize * points.len())

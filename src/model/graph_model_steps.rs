@@ -18,10 +18,13 @@ impl GraphModelSteps {
 
     pub fn get_today_step_count(&self) -> Option<u32> {
         let today = chrono::Local::now().date();
-        self.vec
-            .iter()
-            .find(|s| today == s.date.date())
-            .map(|s| s.steps)
+        self.vec.iter().find_map(|s| {
+            if today == s.date.date() {
+                Some(s.steps)
+            } else {
+                None
+            }
+        })
     }
 
     pub fn get_streak_count_today(&self, step_goal: u32) -> u32 {

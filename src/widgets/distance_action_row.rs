@@ -1,19 +1,17 @@
 use gdk::subclass::prelude::ObjectSubclass;
-use gtk::prelude::*;
-use gtk::{glib, CompositeTemplate};
+use gio::prelude::*;
 use uom::si::f32::Length;
 
 mod imp {
-    use super::*;
     use crate::core::{i18n, settings::Unitsystem, Settings};
     use adw::subclass::prelude::*;
     use glib::{
         clone,
         subclass::{self, Signal},
     };
-    use gtk::subclass::prelude::*;
+    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
     use std::cell::RefCell;
-    use uom::si::length::{kilometer, meter, mile, yard};
+    use uom::si::{length::{kilometer, meter, mile, yard}, f32::Length};
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/distance_action_row.ui")]

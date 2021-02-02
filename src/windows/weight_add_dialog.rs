@@ -1,17 +1,15 @@
 use crate::core::Database;
 use gdk::subclass::prelude::ObjectSubclass;
 use gtk::prelude::*;
-use gtk::{glib, CompositeTemplate};
 
 mod imp {
-    use super::*;
     use crate::{
-        core::{i18n, settings::Unitsystem, Settings},
+        core::{i18n, settings::Unitsystem, Settings, Database},
         model::Weight,
         widgets::DateSelector,
     };
     use glib::{clone, subclass};
-    use gtk::subclass::prelude::*;
+    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use uom::si::{
         f32::Mass,
@@ -89,7 +87,7 @@ mod imp {
                     let downgraded = obj.downgrade();
                     glib::MainContext::default().spawn_local(async move {
                         if let Some(obj) = downgraded.upgrade() {
-                            let self_ = imp::WeightAddDialog::from_instance(&obj);
+                            let self_ = WeightAddDialog::from_instance(&obj);
                             let value = if self_.settings.get_unitsystem() == Unitsystem::Metric {
                                 Mass::new::<kilogram>(self_.weight_spin_button.get_value() as f32)
                             } else {
@@ -126,7 +124,7 @@ mod imp {
             let downgraded = obj.downgrade();
             glib::MainContext::default().spawn_local(async move {
                 if let Some(obj) = downgraded.upgrade() {
-                    let self_ = imp::WeightAddDialog::from_instance(&obj);
+                    let self_ = WeightAddDialog::from_instance(&obj);
                     let res = self_
                         .database
                         .get()

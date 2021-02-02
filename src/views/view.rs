@@ -1,11 +1,10 @@
 use crate::properties_setter_getter;
 use gdk::subclass::prelude::*;
-use gtk::{glib, CompositeTemplate};
-use gtk::{prelude::*, subclass::prelude::*};
+use gtk::{glib::prelude::*, subclass::prelude::WidgetImpl};
 
 mod imp {
-    use super::*;
     use glib::subclass;
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate)]

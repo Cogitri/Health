@@ -1,11 +1,9 @@
 use crate::core::Database;
 use gdk::subclass::prelude::ObjectSubclass;
-use gtk::{glib, CompositeTemplate};
 
 mod imp {
-    use super::*;
     use crate::{
-        core::Settings,
+        core::{Settings, Database},
         sync::{
             google_fit::GoogleFitSyncProvider,
             new_db_receiver,
@@ -13,7 +11,7 @@ mod imp {
         },
     };
     use glib::{clone, g_warning, subclass};
-    use gtk::{prelude::*, subclass::prelude::*};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use gtk_macros::spawn;
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
@@ -131,7 +129,7 @@ mod imp {
         fn connect_handlers(&self, obj: &super::SyncListBox) {
             self.sync_list_box
                 .connect_row_activated(clone!(@weak obj => move |list_box, row| {
-                    let self_ = imp::SyncListBox::from_instance(&obj);
+                    let self_ = SyncListBox::from_instance(&obj);
                     if (row == &self_.google_fit_start_sync_row.get()) {
                         self_.google_fit_stack.set_visible(true);
                         self_.google_fit_spinner.set_visible(true);
@@ -146,13 +144,13 @@ mod imp {
                             if let Ok(provider) = sync_provider {
                                 spawn!(async move {
                                     // TODO: Start importing data
-                                    let self_ = imp::SyncListBox::from_instance(&obj);
+                                    let self_ = SyncListBox::from_instance(&obj);
                                     self_.google_fit_selected_image.set_visible(true);
                                     self_.google_fit_spinner.set_spinning(false);
                                     self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
                                 });
                             } else {
-                                let self_ = imp::SyncListBox::from_instance(&obj);
+                                let self_ = SyncListBox::from_instance(&obj);
 
                                 self_.google_fit_selected_image.set_property_icon_name(Some("network-error-symbolic"));
                                 self_.google_fit_selected_image.set_visible(true);

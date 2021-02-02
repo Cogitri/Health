@@ -1,12 +1,8 @@
 use crate::core::Database;
 use gdk::subclass::prelude::ObjectSubclass;
-use gtk::prelude::*;
-use gtk::{gio, glib, CompositeTemplate};
-
-static OPTIMAL_BMI: f32 = 22.5;
+use gio::prelude::*;
 
 mod imp {
-    use super::*;
     use crate::{
         core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Settings},
         widgets::{BMILevelBar, SyncListBox},
@@ -16,12 +12,15 @@ mod imp {
         clone,
         subclass::{self, Signal},
     };
-    use gtk::subclass::prelude::*;
+    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
     use uom::si::{
         f32::{Length, Mass},
         length::{centimeter, inch, meter},
         mass::{kilogram, pound},
     };
+
+
+    static OPTIMAL_BMI: f32 = 22.5;
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/setup_window.ui")]
@@ -144,7 +143,7 @@ mod imp {
         fn try_enable_next_button(&self) {
             let age = self.age_spin_button.get_text().unwrap().to_string();
             let height = self.height_spin_button.get_text().unwrap().to_string();
-            let sensitive = age != "0" && age != "" && height != "0" && height != "";
+            let sensitive = !age.is_empty() && age != "0" && !height.is_empty() && height != "0";
             self.setup_next_page_button.set_sensitive(sensitive);
             self.setup_carousel.set_interactive(sensitive);
         }
@@ -170,7 +169,7 @@ mod imp {
         fn connect_handlers(&self, obj: &super::SetupWindow) {
             self.unit_metric_togglebutton
                 .connect_toggled(clone!(@weak obj => move |btn| {
-                    let self_ = imp::SetupWindow::from_instance(&obj);
+                    let self_ = SetupWindow::from_instance(&obj);
                     if (btn.get_active()) {
                         self_.height_actionrow.set_title(Some(&i18n("Height in centimeters")));
                         self_.weightgoal_actionrow.set_title(Some(&i18n("Weightgoal in KG")));
@@ -186,7 +185,7 @@ mod imp {
 
             self.height_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = imp::SetupWindow::from_instance(&obj);
+                    let self_ = SetupWindow::from_instance(&obj);
                     self_.set_optimal_weightgoal();
                     self_.try_enable_next_button();
 
@@ -201,7 +200,7 @@ mod imp {
 
             self.weightgoal_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = imp::SetupWindow::from_instance(&obj);
+                    let self_ = SetupWindow::from_instance(&obj);
                     let unitless_weight = get_spinbutton_value(&self_.weightgoal_spin_button);
                     let weight = if self_.unit_metric_togglebutton.get_active() {
                         Mass::new::<kilogram>(unitless_weight)
@@ -214,12 +213,12 @@ mod imp {
 
             self.age_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    imp::SetupWindow::from_instance(&obj).try_enable_next_button();
+                    SetupWindow::from_instance(&obj).try_enable_next_button();
                 }));
 
             self.setup_done_button
                 .connect_clicked(clone!(@weak obj => move |_| {
-                    let self_ = imp::SetupWindow::from_instance(&obj);
+                    let self_ = SetupWindow::from_instance(&obj);
                     let unitless_height = get_spinbutton_value(&self_.height_spin_button);
                     let height = if self_.unit_metric_togglebutton.get_active() {
                         self_.settings.set_unitsystem(Unitsystem::Metric);
@@ -252,7 +251,7 @@ mod imp {
 
             self.setup_next_page_button
                 .connect_clicked(clone!(@weak obj => move |_| {
-                    let self_ = imp::SetupWindow::from_instance(&obj);
+                    let self_ = SetupWindow::from_instance(&obj);
                     match (self_.setup_carousel.get_position() as u32) {
                         0 => self_.setup_carousel.scroll_to (&self_.setup_second_page.get()),
                         1 => self_.setup_carousel.scroll_to (&self_.setup_third_page.get()),
@@ -264,7 +263,7 @@ mod imp {
 
             self.setup_previous_page_button
                 .connect_clicked(clone!(@weak obj => move |_| {
-                    let self_ = imp::SetupWindow::from_instance(&obj);
+                    let self_ = SetupWindow::from_instance(&obj);
                     match (self_.setup_carousel.get_position() as u32) {
                         0 => obj.destroy(),
                         1 => self_.setup_carousel.scroll_to (&self_.setup_first_page.get()),
@@ -276,7 +275,7 @@ mod imp {
 
             self.setup_carousel
                 .connect_page_changed(clone!(@weak obj => move|carousel, index| {
-                    let self_ = imp::SetupWindow::from_instance(&obj);
+                    let self_ = SetupWindow::from_instance(&obj);
 
                     if carousel.get_n_pages() -1 == index {
                         self_.setup_done_button.set_visible(true);

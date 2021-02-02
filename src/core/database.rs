@@ -1,24 +1,25 @@
-use std::path::Path;
-
-use crate::model::{Activity, ActivityType, Steps, Weight};
-use chrono::{DateTime, Duration, FixedOffset, NaiveDate, Utc};
+use crate::model::{Activity, Steps, Weight};
+use chrono::{DateTime, FixedOffset};
 use gdk::subclass::prelude::ObjectSubclass;
 use glib::ObjectExt;
-use num_traits::cast::{FromPrimitive, ToPrimitive};
-use uom::si::{
-    f32::{Length, Mass},
-    mass::kilogram,
-};
 
 mod imp {
-    use super::*;
+    use crate::model::{Activity, ActivityType, Steps, Weight};
+    use chrono::{DateTime, Duration, FixedOffset, NaiveDate, Utc};
     use glib::subclass::{self, Signal};
+    use glib::ObjectExt;
     use gtk::subclass::prelude::*;
+    use num_traits::cast::{FromPrimitive, ToPrimitive};
     use std::{
         cell::RefCell,
         convert::{TryFrom, TryInto},
+        path::Path,
     };
-    use uom::si::length::meter;
+    use uom::si::{
+        f32::{Length, Mass},
+        length::meter,
+        mass::kilogram,
+    };
 
     #[derive(Debug)]
     pub struct DatabaseMut {
@@ -91,9 +92,11 @@ mod imp {
             date_opt: Option<DateTime<FixedOffset>>,
         ) -> Result<Vec<Activity>, glib::Error> {
             let cursor = if let Some(date) = date_opt {
-                self.inner.borrow().as_ref().unwrap().connection.query_async_future(&format!("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY DESC(?date)", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
+                let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
+                connection.query_async_future(&format!("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY DESC(?date)", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
             } else {
-                self.inner.borrow().as_ref().unwrap().connection.query_async_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?
+                let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
+                connection.query_async_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?
             };
 
             let mut ret = Vec::new();
@@ -169,7 +172,8 @@ mod imp {
             &self,
             date: DateTime<FixedOffset>,
         ) -> Result<Vec<Steps>, glib::Error> {
-            let cursor = self.inner.borrow().as_ref().unwrap().connection.query_async_future(&format!("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_date ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+            let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
+            let cursor = connection.query_async_future(&format!("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_date ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
             let mut hashmap = std::collections::HashMap::new();
 
             while let Ok(true) = cursor.next_async_future().await {
@@ -209,9 +213,11 @@ mod imp {
             date_opt: Option<DateTime<FixedOffset>>,
         ) -> Result<Vec<Weight>, glib::Error> {
             let cursor = if let Some(date) = date_opt {
-                self.inner.borrow().as_ref().unwrap().connection.query_async_future(&format!("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
+                let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
+                connection.query_async_future(&format!("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
             } else {
-                self.inner.borrow().as_ref().unwrap().connection.query_async_future("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . }} ORDER BY ?date").await?
+                let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
+                connection.query_async_future("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . }} ORDER BY ?date").await?
             };
             let mut ret = Vec::new();
 
@@ -238,7 +244,8 @@ mod imp {
             &self,
             date: DateTime<FixedOffset>,
         ) -> Result<bool, glib::Error> {
-            let cursor = self.inner.borrow().as_ref().unwrap().connection.query_async_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_date '{}'^^xsd:date; health:weight ?weight . }}", date.date().format("%Y-%m-%d"))).await?;
+            let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
+            let cursor = connection.query_async_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_date '{}'^^xsd:date; health:weight ?weight . }}", date.date().format("%Y-%m-%d"))).await?;
 
             assert!(cursor.next_async_future().await?);
 
@@ -246,18 +253,11 @@ mod imp {
         }
 
         pub async fn reset(&self) -> Result<(), glib::Error> {
-            self.inner
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .connection
+            let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
+            connection
                 .update_async_future("DELETE WHERE { ?datapoint a health:WeightMeasurement }")
                 .await?;
-            self.inner
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .connection
+            connection
                 .update_async_future("DELETE WHERE { ?datapoint a health:Activity }")
                 .await?;
 
@@ -273,8 +273,11 @@ mod imp {
                 return Ok(());
             }
 
-            let inner_ref = self.inner.borrow();
-            let inner = inner_ref.as_ref().unwrap();
+            let (connection, manager) = {
+                let inner_ref = self.inner.borrow();
+                let inner = inner_ref.as_ref().unwrap();
+                (inner.connection.clone(), inner.manager.clone())
+            };
 
             for s in steps {
                 let resource = tracker::Resource::new(None);
@@ -291,11 +294,10 @@ mod imp {
                 // FIXME: Set correct minutes here
                 resource.set_int64("health:minutes", 0);
 
-                inner
-                    .connection
+                connection
                     .update_async_future(
                         resource
-                            .print_sparql_update(Some(&inner.manager), None)
+                            .print_sparql_update(Some(&manager), None)
                             .unwrap()
                             .as_str(),
                     )
@@ -315,8 +317,11 @@ mod imp {
                 return Ok(());
             }
 
-            let inner_ref = self.inner.borrow();
-            let inner = inner_ref.as_ref().unwrap();
+            let (connection, manager) = {
+                let inner_ref = self.inner.borrow();
+                let inner = inner_ref.as_ref().unwrap();
+                (inner.connection.clone(), inner.manager.clone())
+            };
 
             for w in weights {
                 let resource = tracker::Resource::new(None);
@@ -327,11 +332,10 @@ mod imp {
                 );
                 resource.set_double("health:weight", w.weight.get::<kilogram>().into());
 
-                inner
-                    .connection
+                connection
                     .update_async_future(
                         resource
-                            .print_sparql_update(Some(&inner.manager), None)
+                            .print_sparql_update(Some(&manager), None)
                             .unwrap()
                             .as_str(),
                     )
@@ -383,17 +387,16 @@ mod imp {
                 resource.set_int64("health:steps", s.into());
             }
 
-            self.inner
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .connection
+            let (connection, manager) = {
+                let inner_ref = self.inner.borrow();
+                let inner = inner_ref.as_ref().unwrap();
+                (inner.connection.clone(), inner.manager.clone())
+            };
+
+            connection
                 .update_async_future(
                     resource
-                        .print_sparql_update(
-                            Some(&self.inner.borrow().as_ref().unwrap().manager),
-                            None,
-                        )
+                        .print_sparql_update(Some(&manager), None)
                         .unwrap()
                         .as_str(),
                 )
@@ -419,19 +422,18 @@ mod imp {
                 weight.weight.get::<uom::si::mass::kilogram>().into(),
             );
 
-            self.inner
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .connection
+            let (connection, manager) = {
+                let inner_ref = self.inner.borrow();
+                let inner = inner_ref.as_ref().unwrap();
+                (inner.connection.clone(), inner.manager.clone())
+            };
+
+            connection
                 .update_async_future(&format!(
                     "DELETE WHERE {{ ?u health:weight_date '{}'^^xsd:date }}; {}",
                     &weight.date.date().format("%Y-%m-%d"),
                     resource
-                        .print_sparql_update(
-                            Some(&self.inner.borrow().as_ref().unwrap().manager),
-                            None
-                        )
+                        .print_sparql_update(Some(&manager), None)
                         .unwrap()
                         .as_str()
                 ))

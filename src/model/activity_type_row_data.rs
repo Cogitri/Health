@@ -2,7 +2,6 @@ use gdk::subclass::prelude::ObjectSubclass;
 use gtk::glib;
 
 mod imp {
-    use super::*;
     use glib::subclass;
     use gtk::subclass::prelude::*;
     use std::cell::RefCell;

@@ -28,7 +28,7 @@ fn freplace(input: String, args: &[&str]) -> String {
     let mut parts = input.split("{}");
     let mut output = parts.next().unwrap_or_default().to_string();
     for (p, a) in parts.zip(args.iter()) {
-        output += &(a.to_string() + &p.to_string());
+        output += &((*a).to_string() + &p.to_string());
     }
     output
 }
@@ -39,7 +39,7 @@ fn kreplace(input: String, kwargs: &[(&str, &str)]) -> String {
     for (k, v) in kwargs {
         if let Ok(re) = Regex::new(&format!("\\{{{}\\}}", k)) {
             s = re
-                .replace_all(&s, |_: &Captures<'_>| v.to_string())
+                .replace_all(&s, |_: &Captures<'_>| (*v).to_string())
                 .to_string();
         }
     }

@@ -1,20 +1,19 @@
 use crate::{imp_getter_setter, model::ActivityType};
-use chrono::{DateTime, Duration, FixedOffset, Utc};
+use chrono::{DateTime, Duration, FixedOffset};
 use gdk::subclass::prelude::ObjectSubclass;
-use serde::{Deserialize, Deserializer, Serialize, Serializer};
 use uom::si::f32::Length;
 
 mod imp {
-    use super::*;
     use crate::{
         inner_refcell_getter_setter,
-        model::{ActivityDataPoints, ActivityInfo},
+        model::{ActivityDataPoints, ActivityInfo, ActivityType},
         sync::serialize,
     };
+    use chrono::{DateTime, Duration, FixedOffset, Utc};
     use glib::subclass;
     use gtk::subclass::prelude::*;
     use std::{cell::RefCell, convert::TryFrom};
-    use uom::si::length::meter;
+    use uom::si::{f32::Length, length::meter};
 
     static BICYCLING_METERS_PER_MINUTE: u32 = 300;
     static HORSE_RIDING_METERS_PER_MINUTE: u32 = 260;
@@ -24,7 +23,7 @@ mod imp {
     static SWIMMING_METERS_PER_MINUTE: u32 = 160;
     static WALKING_METERS_PER_MINUTE: u32 = 90;
 
-    #[derive(Debug, Deserialize, Serialize)]
+    #[derive(Debug, serde::Deserialize, serde::Serialize)]
     pub struct ActivityMut {
         #[serde(serialize_with = "serialize::serialize_activity_type")]
         #[serde(deserialize_with = "serialize::deserialize_activity_type")]
@@ -144,7 +143,7 @@ mod imp {
         pub fn autofill_from_distance(&self) {
             let mut inner = self.inner.borrow_mut();
             let info = ActivityInfo::from(inner.activity_type.clone());
-            let distance = inner.distance.map(|l| l.get::<meter>()).unwrap_or(0.0) as u32;
+            let distance = inner.distance.map_or(0.0, |l| l.get::<meter>()) as u32;
 
             if distance != 0
                 && info
@@ -275,19 +274,22 @@ impl Activity {
     imp_getter_setter!(steps, Option<u32>);
 }
 
-impl Serialize for Activity {
-    fn serialize<S>(&self, serializer: S) -> Result<<S as Serializer>::Ok, <S as Serializer>::Error>
+impl serde::Serialize for Activity {
+    fn serialize<S>(
+        &self,
+        serializer: S,
+    ) -> Result<<S as serde::Serializer>::Ok, <S as serde::Serializer>::Error>
     where
-        S: Serializer,
+        S: serde::Serializer,
     {
         self.get_priv().inner.borrow().serialize(serializer)
     }
 }
 
-impl<'de> Deserialize<'de> for Activity {
+impl<'de> serde::Deserialize<'de> for Activity {
     fn deserialize<D>(deserializer: D) -> Result<Activity, D::Error>
     where
-        D: Deserializer<'de>,
+        D: serde::Deserializer<'de>,
     {
         let inner = imp::ActivityMut::deserialize(deserializer)?;
 

@@ -1,6 +1,6 @@
 use crate::{
     core::{settings::Unitsystem, Database, Settings},
-    model::weight::*,
+    model::weight::Weight,
     views::Point,
 };
 use chrono::Duration;

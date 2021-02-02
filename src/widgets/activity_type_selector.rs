@@ -1,20 +1,18 @@
-use crate::model::ActivityInfo;
 use gdk::subclass::prelude::ObjectSubclass;
-use gtk::prelude::*;
-use gtk::{glib, CompositeTemplate};
+use crate::model::ActivityInfo;
+use gio::prelude::*;
 
 mod imp {
-    use super::*;
     use crate::{
         core::Settings,
-        model::{ActivityType, ActivityTypeRowData},
+        model::{ActivityType, ActivityTypeRowData, ActivityInfo},
         widgets::ActivityTypeRow,
     };
     use glib::{
         g_warning,
         subclass::{self, Signal},
     };
-    use gtk::subclass::prelude::*;
+    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
     use num_traits::cast::FromPrimitive;
     use std::{cell::RefCell, convert::TryFrom};
 
@@ -102,7 +100,7 @@ mod imp {
 
             let create_list_box_row = glib::clone!(@weak obj => move |o: &glib::Object| {
                 let data = o.downcast_ref::<ActivityTypeRowData>().unwrap();
-                ActivityTypeRow::new(&data, data.get_label() == imp::ActivityTypeSelector::from_instance(&obj).selected_activity.borrow().name)
+                ActivityTypeRow::new(&data, data.get_label() == ActivityTypeSelector::from_instance(&obj).selected_activity.borrow().name)
                     .upcast::<gtk::Widget>()
 
             });
@@ -117,7 +115,7 @@ mod imp {
                 let row = r.downcast_ref::<ActivityTypeRow>().unwrap();
 
                 if let Ok(info) = ActivityInfo::try_from(row.get_id()) {
-                    let self_ = imp::ActivityTypeSelector::from_instance(&obj);
+                    let self_ = ActivityTypeSelector::from_instance(&obj);
                     self_.set_selected_activity(&obj, info);
                     let mut i = 0;
                     let selected_activity = self_.selected_activity.borrow();

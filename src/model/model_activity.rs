@@ -1,12 +1,13 @@
-use crate::{
-    core::{Database, Settings},
-    model::Activity,
-};
+use crate::core::Database;
 use chrono::Duration;
 use gdk::subclass::prelude::ObjectSubclass;
 
 mod imp {
-    use super::*;
+    use crate::{
+        core::{Database, Settings},
+        model::Activity,
+    };
+    use chrono::Duration;
     use gio::ListModelExt;
     use glib::{subclass, Cast, StaticType};
     use gtk::subclass::prelude::*;
@@ -73,11 +74,11 @@ mod imp {
             obj: &super::ModelActivity,
             duration: Duration,
         ) -> Result<(), glib::Error> {
-            let previous_size = self.inner.borrow().vec.len();
-            let new_vec = self
-                .inner
-                .borrow()
-                .database
+            let (database, previous_size) = {
+                let inner = self.inner.borrow();
+                (inner.database.clone(), inner.vec.len())
+            };
+            let new_vec = database
                 .as_ref()
                 .unwrap()
                 .get_activities(Some(
@@ -87,7 +88,9 @@ mod imp {
                         .into(),
                 ))
                 .await?;
-            self.inner.borrow_mut().vec = new_vec;
+            {
+                self.inner.borrow_mut().vec = new_vec;
+            }
             obj.items_changed(
                 0,
                 previous_size.try_into().unwrap(),

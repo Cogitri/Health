@@ -2,11 +2,15 @@ use crate::{core::Database, model::ModelActivity, views::View};
 use gdk::subclass::prelude::*;
 
 mod imp {
-    use super::*;
-    use crate::{core::Settings, model::Activity, widgets::ActivityRow};
+    use crate::{
+        core::Settings,
+        model::{Activity, ModelActivity},
+        views::View,
+        widgets::ActivityRow,
+    };
     use chrono::Duration;
     use glib::{subclass, Cast};
-    use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate)]

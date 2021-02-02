@@ -3,23 +3,22 @@ use crate::{
     views::{ViewActivity, ViewSteps, ViewWeight},
 };
 use gdk::subclass::prelude::ObjectSubclass;
+use glib::Cast;
 use gtk::prelude::*;
-use gtk::{gio, glib, CompositeTemplate};
 
 mod imp {
-    use super::*;
     use crate::{
-        core::Settings,
+        core::{Settings, Database},
         sync::{
             google_fit::GoogleFitSyncProvider,
             new_db_receiver,
             sync_provider::{SyncProvider, SyncProviderError},
         },
-        views::View,
+        views::{View, ViewActivity, ViewSteps, ViewWeight},
         windows::{ActivityAddDialog, WeightAddDialog},
     };
     use glib::{clone, signal::Inhibit, subclass, SourceId};
-    use gtk::subclass::prelude::*;
+    use gtk::{subclass::prelude::*, prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
     use std::collections::BTreeMap;
@@ -213,7 +212,7 @@ mod imp {
             glib::timeout_add_seconds_local(
                 60 * 5,
                 clone!(@weak obj => move || {
-                    let self_ = imp::Window::from_instance(&obj);
+                    let self_ = Window::from_instance(&obj);
                     self_.sync_data(&obj);
 
                     glib::Continue(true)
@@ -230,7 +229,7 @@ mod imp {
                     None,
                     clone!(@weak obj => move |v: Option<SyncProviderError>| {
                         if let Some(e) = v {
-                            imp::Window::from_instance(&obj).show_error(&e.to_string());
+                            Window::from_instance(&obj).show_error(&e.to_string());
                         }
 
                         glib::Continue(false)

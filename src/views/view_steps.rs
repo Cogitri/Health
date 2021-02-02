@@ -2,15 +2,14 @@ use crate::{core::Database, model::GraphModelSteps, views::View};
 use gdk::subclass::prelude::*;
 
 mod imp {
-    use super::*;
     use crate::{
         core::{i18n, i18n_f, Settings},
         model::GraphModelSteps,
-        views::GraphView,
+        views::{GraphView, View},
     };
     use chrono::Duration;
     use glib::{subclass, Cast};
-    use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
@@ -148,16 +147,15 @@ glib::wrapper! {
 
 impl ViewSteps {
     pub fn new(database: Database) -> Self {
-        let o = glib::Object::new(&[]).expect("Failed to create ViewSteps");
-
-        imp::ViewSteps::from_instance(&o)
-            .set_steps_graph_model(GraphModelSteps::new(database.clone()));
+        let o: Self = glib::Object::new(&[]).expect("Failed to create ViewSteps");
 
         database.connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
                 o.update().await;
             });
         }));
+
+        imp::ViewSteps::from_instance(&o).set_steps_graph_model(GraphModelSteps::new(database));
 
         o
     }
