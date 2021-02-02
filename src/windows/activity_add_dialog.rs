@@ -1,4 +1,4 @@
-use crate::core::HealthDatabase;
+use crate::core::Database;
 use gdk::subclass::prelude::ObjectSubclass;
 use gtk::prelude::*;
 use gtk::{glib, CompositeTemplate};
@@ -6,9 +6,9 @@ use gtk::{glib, CompositeTemplate};
 mod imp {
     use super::*;
     use crate::{
-        core::{utils::get_spinbutton_value, HealthSettings},
+        core::{utils::get_spinbutton_value, Settings},
         model::{Activity, ActivityDataPoints, ActivityInfo, ActivityType},
-        widgets::{HealthActivityTypeSelector, HealthDateSelector, HealthDistanceActionRow},
+        widgets::{DateSelector, DistanceActionRow, ActivityTypeSelector},
     };
     use chrono::Duration;
     use glib::{clone, subclass};
@@ -16,10 +16,10 @@ mod imp {
     use std::cell::RefCell;
 
     #[derive(Debug)]
-    pub struct HealthActivityAddDialogMut {
+    pub struct ActivityAddDialogMut {
         activity: Activity,
         calories_burned_spin_button_user_changed: bool,
-        database: Option<HealthDatabase>,
+        database: Option<Database>,
         distance_spin_button_user_changed: bool,
         duration_spin_button_user_changed: bool,
         filter_model: Option<gtk::FilterListModel>,
@@ -30,14 +30,14 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_add_dialog.ui")]
-    pub struct HealthActivityAddDialog {
-        inner: RefCell<HealthActivityAddDialogMut>,
-        pub settings: HealthSettings,
+    pub struct ActivityAddDialog {
+        inner: RefCell<ActivityAddDialogMut>,
+        pub settings: Settings,
 
         #[template_child]
-        pub activity_type_selector: TemplateChild<HealthActivityTypeSelector>,
+        pub activity_type_selector: TemplateChild<ActivityTypeSelector>,
         #[template_child]
-        pub date_selector: TemplateChild<HealthDateSelector>,
+        pub date_selector: TemplateChild<DateSelector>,
         #[template_child]
         pub activities_list_box: TemplateChild<gtk::ListBox>,
         #[template_child]
@@ -61,7 +61,7 @@ mod imp {
         #[template_child]
         pub date_selector_actionrow: TemplateChild<adw::ActionRow>,
         #[template_child]
-        pub distance_action_row: TemplateChild<HealthDistanceActionRow>,
+        pub distance_action_row: TemplateChild<DistanceActionRow>,
         #[template_child]
         pub duration_action_row: TemplateChild<adw::ActionRow>,
         #[template_child]
@@ -86,19 +86,19 @@ mod imp {
         }
     }
 
-    impl ObjectSubclass for HealthActivityAddDialog {
+    impl ObjectSubclass for ActivityAddDialog {
         const NAME: &'static str = "HealthActivityAddDialog";
         type ParentType = gtk::Dialog;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthActivityAddDialog;
+        type Type = super::ActivityAddDialog;
         type Interfaces = ();
 
         glib::object_subclass!();
 
         fn new() -> Self {
             Self {
-                inner: RefCell::new(HealthActivityAddDialogMut {
+                inner: RefCell::new(ActivityAddDialogMut {
                     activity: Activity::new(),
                     calories_burned_spin_button_user_changed: false,
                     database: None,
@@ -109,7 +109,7 @@ mod imp {
                     steps_spin_button_user_changed: false,
                     stop_update: false,
                 }),
-                settings: HealthSettings::new(),
+                settings: Settings::new(),
                 date_selector: TemplateChild::default(),
                 activities_list_box: TemplateChild::default(),
                 activity_type_actionrow: TemplateChild::default(),
@@ -141,7 +141,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthActivityAddDialog {
+    impl ObjectImpl for ActivityAddDialog {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
@@ -163,7 +163,7 @@ mod imp {
             );
 
             let filter = gtk::CustomFilter::new(clone!(@weak obj => move |o| {
-                imp::HealthActivityAddDialog::from_instance(&obj).filter_activity_entry(o)
+                imp::ActivityAddDialog::from_instance(&obj).filter_activity_entry(o)
             }));
             let filter_model = gtk::FilterListModel::new(Some(&model), Some(&filter));
             self.activities_list_box
@@ -177,22 +177,22 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for HealthActivityAddDialog {}
-    impl WindowImpl for HealthActivityAddDialog {}
-    impl DialogImpl for HealthActivityAddDialog {}
+    impl WidgetImpl for ActivityAddDialog {}
+    impl WindowImpl for ActivityAddDialog {}
+    impl DialogImpl for ActivityAddDialog {}
 
-    impl HealthActivityAddDialog {
-        pub fn set_database(&self, database: HealthDatabase) {
+    impl ActivityAddDialog {
+        pub fn set_database(&self, database: Database) {
             self.inner.borrow_mut().database = Some(database);
         }
 
-        fn connect_handlers(&self, obj: &super::HealthActivityAddDialog) {
+        fn connect_handlers(&self, obj: &super::ActivityAddDialog) {
             obj.connect_response(|obj, id| match id {
                 gtk::ResponseType::Ok => {
                     let downgraded = obj.downgrade();
                     glib::MainContext::default().spawn_local(async move {
                         if let Some(obj) = downgraded.upgrade() {
-                            let self_ = imp::HealthActivityAddDialog::from_instance(&obj);
+                            let self_ = imp::ActivityAddDialog::from_instance(&obj);
                             let selected_activity =
                                 self_.activity_type_selector.get_selected_activity();
                             let distance = if selected_activity
@@ -270,7 +270,7 @@ mod imp {
             });
 
             self.calories_burned_spin_button.connect_changed(clone!(@weak obj => move |_| {
-                let self_ = imp::HealthActivityAddDialog::from_instance(&obj);
+                let self_ = imp::ActivityAddDialog::from_instance(&obj);
                 {
                     let activity = &self_.inner.borrow_mut().activity;
                     activity.set_calories_burned(Some(get_spinbutton_value(&self_.calories_burned_spin_button)));
@@ -280,7 +280,7 @@ mod imp {
             }));
             self.distance_action_row
                 .connect_changed(clone!(@weak obj => move || {
-                    let self_ = imp::HealthActivityAddDialog::from_instance(&obj);
+                    let self_ = imp::ActivityAddDialog::from_instance(&obj);
                     {
                         let activity = &self_.inner.borrow_mut().activity;
                         activity.set_distance(Some(self_.distance_action_row.get_value()));
@@ -289,7 +289,7 @@ mod imp {
                     self_.set_spin_buttons_from_activity(self_.distance_action_row.upcast_ref());
                 }));
             self.duration_spin_button.connect_changed(clone!(@weak obj => move |_| {
-                let self_ = imp::HealthActivityAddDialog::from_instance(&obj);
+                let self_ = imp::ActivityAddDialog::from_instance(&obj);
                 {
                     let activity = &self_.inner.borrow_mut().activity;
                     activity.set_duration(Duration::minutes(get_spinbutton_value(&self_.duration_spin_button)));
@@ -299,7 +299,7 @@ mod imp {
             }));
             self.steps_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = imp::HealthActivityAddDialog::from_instance(&obj);
+                    let self_ = imp::ActivityAddDialog::from_instance(&obj);
                     {
                         let activity = &self_.inner.borrow_mut().activity;
                         activity.set_steps(Some(get_spinbutton_value(&self_.steps_spin_button)));
@@ -310,7 +310,7 @@ mod imp {
 
             self.activity_type_selector
                 .connect_activity_selected(clone!(@weak obj => move || {
-                    let self_ = imp::HealthActivityAddDialog::from_instance(&obj);
+                    let self_ = imp::ActivityAddDialog::from_instance(&obj);
                     self_.set_selected_activity(self_.activity_type_selector.get_selected_activity());
                     let inner = self_.inner.borrow_mut();
                     inner.activity.set_activity_type(inner.selected_activity.activity_type.clone());
@@ -322,20 +322,20 @@ mod imp {
 
             self.calories_burned_spin_button
                 .connect_input(clone!(@weak obj => move |_| {
-                    imp::HealthActivityAddDialog::from_instance(&obj).inner.borrow_mut().calories_burned_spin_button_user_changed = true;
+                    imp::ActivityAddDialog::from_instance(&obj).inner.borrow_mut().calories_burned_spin_button_user_changed = true;
                     None
                 }));
             self.distance_action_row.connect_input(clone!(@weak obj => move || {
-                imp::HealthActivityAddDialog::from_instance(&obj).inner.borrow_mut().distance_spin_button_user_changed = true;
+                imp::ActivityAddDialog::from_instance(&obj).inner.borrow_mut().distance_spin_button_user_changed = true;
             }));
             self.duration_spin_button
                 .connect_input(clone!(@weak obj => move |_| {
-                    imp::HealthActivityAddDialog::from_instance(&obj).inner.borrow_mut().duration_spin_button_user_changed = true;
+                    imp::ActivityAddDialog::from_instance(&obj).inner.borrow_mut().duration_spin_button_user_changed = true;
                     None
                 }));
             self.steps_spin_button
                 .connect_input(clone!(@weak obj => move |_| {
-                    imp::HealthActivityAddDialog::from_instance(&obj).inner.borrow_mut().steps_spin_button_user_changed = true;
+                    imp::ActivityAddDialog::from_instance(&obj).inner.borrow_mut().steps_spin_button_user_changed = true;
                     None
                 }));
         }
@@ -471,17 +471,17 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthActivityAddDialog(ObjectSubclass<imp::HealthActivityAddDialog>)
+    pub struct ActivityAddDialog(ObjectSubclass<imp::ActivityAddDialog>)
         @extends gtk::Widget, gtk::Window, gtk::Dialog;
 }
 
-impl HealthActivityAddDialog {
-    pub fn new(database: HealthDatabase, parent: &gtk::Window) -> Self {
-        let o: HealthActivityAddDialog = glib::Object::new(&[("use-header-bar", &1)])
-            .expect("Failed to create HealthActivityAddDialog");
+impl ActivityAddDialog {
+    pub fn new(database: Database, parent: &gtk::Window) -> Self {
+        let o: ActivityAddDialog = glib::Object::new(&[("use-header-bar", &1)])
+            .expect("Failed to create ActivityAddDialog");
 
         o.set_transient_for(Some(parent));
-        imp::HealthActivityAddDialog::from_instance(&o).set_database(database);
+        imp::ActivityAddDialog::from_instance(&o).set_database(database);
 
         o
     }

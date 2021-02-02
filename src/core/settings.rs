@@ -1,7 +1,6 @@
 use crate::settings_getter_setter;
 use chrono::{DateTime, FixedOffset};
 use gio::prelude::*;
-use gio::Settings;
 use num_traits::{FromPrimitive, ToPrimitive};
 use uom::si::{
     f32::{Length, Mass},
@@ -16,14 +15,14 @@ pub enum Unitsystem {
 }
 
 #[derive(Debug, Clone)]
-pub struct HealthSettings {
-    settings: Settings,
+pub struct Settings {
+    settings: gio::Settings,
 }
 
-impl HealthSettings {
+impl Settings {
     pub fn new() -> Self {
         Self {
-            settings: Settings::new("dev.Cogitri.Health"),
+            settings: gio::Settings::new("dev.Cogitri.Health"),
         }
     }
 
@@ -57,7 +56,7 @@ impl HealthSettings {
             .unwrap();
     }
 
-    pub fn connect_unitsystem_changed<F: Fn(&Settings, &str) + 'static>(
+    pub fn connect_unitsystem_changed<F: Fn(&gio::Settings, &str) + 'static>(
         &self,
         f: F,
     ) -> glib::SignalHandlerId {
@@ -88,7 +87,7 @@ impl HealthSettings {
             .unwrap();
     }
 
-    pub fn connect_user_weightgoal_changed<F: Fn(&Settings, &str) + 'static>(
+    pub fn connect_user_weightgoal_changed<F: Fn(&gio::Settings, &str) + 'static>(
         &self,
         f: F,
     ) -> glib::SignalHandlerId {

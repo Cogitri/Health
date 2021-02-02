@@ -1,15 +1,15 @@
-use crate::{core::HealthDatabase, model::Steps, views::Point};
+use crate::{core::Database, model::Steps, views::Point};
 use chrono::{Duration, Local};
 use std::convert::TryInto;
 
 #[derive(Debug)]
-pub struct HealthGraphModelSteps {
-    database: HealthDatabase,
+pub struct GraphModelSteps {
+    database: Database,
     vec: Vec<Steps>,
 }
 
-impl HealthGraphModelSteps {
-    pub fn new(database: HealthDatabase) -> Self {
+impl GraphModelSteps {
+    pub fn new(database: Database) -> Self {
         Self {
             database,
             vec: Vec::new(),
@@ -26,14 +26,14 @@ impl HealthGraphModelSteps {
 
     pub fn get_streak_count_today(&self, step_goal: u32) -> u32 {
         let vec: Vec<&Steps> = self.vec.iter().collect();
-        HealthGraphModelSteps::get_streak_count(&vec, step_goal)
+        GraphModelSteps::get_streak_count(&vec, step_goal)
     }
 
     pub fn get_streak_count_yesterday(&self, step_goal: u32) -> u32 {
         let today = chrono::Local::now().date();
         let vec: Vec<&Steps> = self.vec.iter().filter(|s| s.date.date() != today).collect();
 
-        HealthGraphModelSteps::get_streak_count(&vec, step_goal)
+        GraphModelSteps::get_streak_count(&vec, step_goal)
     }
 
     fn get_streak_count(steps: &[&Steps], step_goal: u32) -> u32 {

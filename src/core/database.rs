@@ -18,22 +18,22 @@ mod imp {
     use uom::si::length::meter;
 
     #[derive(Debug)]
-    pub struct HealthDatabaseMut {
+    pub struct DatabaseMut {
         connection: tracker::SparqlConnection,
         manager: tracker::NamespaceManager,
     }
 
     #[derive(Debug)]
-    pub struct HealthDatabase {
-        inner: RefCell<Option<HealthDatabaseMut>>,
+    pub struct Database {
+        inner: RefCell<Option<DatabaseMut>>,
     }
 
-    impl ObjectSubclass for HealthDatabase {
-        const NAME: &'static str = "HealthHealthDatabase";
+    impl ObjectSubclass for Database {
+        const NAME: &'static str = "HealthDatabase";
         type ParentType = glib::Object;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthDatabase;
+        type Type = super::Database;
         type Interfaces = ();
 
         glib::object_subclass!();
@@ -45,7 +45,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthDatabase {
+    impl ObjectImpl for Database {
         fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
@@ -59,7 +59,7 @@ mod imp {
         }
     }
 
-    impl HealthDatabase {
+    impl Database {
         pub fn connect(&self) -> Result<(), glib::Error> {
             let mut store_path = glib::get_user_data_dir();
             store_path.push("health");
@@ -70,7 +70,7 @@ mod imp {
             let manager = tracker::NamespaceManager::new();
             manager.add_prefix("health", "https://gitlab.gnome.org/World/health#");
 
-            self.inner.replace(Some(HealthDatabaseMut {
+            self.inner.replace(Some(DatabaseMut {
                 connection: tracker::SparqlConnection::new(
                     tracker::SparqlConnectionFlags::NONE,
                     Some(&gio::File::new_for_path(store_path)),
@@ -254,7 +254,7 @@ mod imp {
 
         pub async fn import_steps(
             &self,
-            obj: &super::HealthDatabase,
+            obj: &super::Database,
             steps: &[Steps],
         ) -> Result<(), glib::Error> {
             if steps.is_empty() {
@@ -296,7 +296,7 @@ mod imp {
 
         pub async fn import_weights(
             &self,
-            obj: &super::HealthDatabase,
+            obj: &super::Database,
             weights: &[Weight],
         ) -> Result<(), glib::Error> {
             if weights.is_empty() {
@@ -332,7 +332,7 @@ mod imp {
 
         pub async fn save_activity(
             &self,
-            obj: &super::HealthDatabase,
+            obj: &super::Database,
             activity: Activity,
         ) -> Result<(), glib::Error> {
             let resource = tracker::Resource::new(None);
@@ -393,7 +393,7 @@ mod imp {
 
         pub async fn save_weight(
             &self,
-            obj: &super::HealthDatabase,
+            obj: &super::Database,
             weight: Weight,
         ) -> Result<(), glib::Error> {
             let resource = tracker::Resource::new(None);
@@ -432,14 +432,14 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthDatabase(ObjectSubclass<imp::HealthDatabase>);
+    pub struct Database(ObjectSubclass<imp::Database>);
 }
 
-impl HealthDatabase {
+impl Database {
     pub fn new() -> Result<Self, glib::Error> {
-        let o = glib::Object::new(&[]).expect("Failed to create HealthDatabase");
+        let o = glib::Object::new(&[]).expect("Failed to create Database");
 
-        imp::HealthDatabase::from_instance(&o).connect()?;
+        imp::Database::from_instance(&o).connect()?;
 
         Ok(o)
     }
@@ -467,55 +467,51 @@ impl HealthDatabase {
         &self,
         date_opt: Option<DateTime<FixedOffset>>,
     ) -> Result<Vec<Activity>, glib::Error> {
-        imp::HealthDatabase::from_instance(self)
+        imp::Database::from_instance(self)
             .get_activities(date_opt)
             .await
     }
 
     pub async fn get_steps(&self, date: DateTime<FixedOffset>) -> Result<Vec<Steps>, glib::Error> {
-        imp::HealthDatabase::from_instance(self)
-            .get_steps(date)
-            .await
+        imp::Database::from_instance(self).get_steps(date).await
     }
 
     pub async fn get_weights(
         &self,
         date: Option<DateTime<FixedOffset>>,
     ) -> Result<Vec<Weight>, glib::Error> {
-        imp::HealthDatabase::from_instance(self)
-            .get_weights(date)
-            .await
+        imp::Database::from_instance(self).get_weights(date).await
     }
 
     pub async fn get_weight_exists_on_date(
         &self,
         date: DateTime<FixedOffset>,
     ) -> Result<bool, glib::Error> {
-        imp::HealthDatabase::from_instance(self)
+        imp::Database::from_instance(self)
             .get_weight_exists_on_date(date)
             .await
     }
 
     pub async fn import_steps(&self, steps: &[Steps]) -> Result<(), glib::Error> {
-        imp::HealthDatabase::from_instance(self)
+        imp::Database::from_instance(self)
             .import_steps(self, steps)
             .await
     }
 
     pub async fn import_weights(&self, weight: &[Weight]) -> Result<(), glib::Error> {
-        imp::HealthDatabase::from_instance(self)
+        imp::Database::from_instance(self)
             .import_weights(self, weight)
             .await
     }
 
     pub async fn save_activity(&self, activity: Activity) -> Result<(), glib::Error> {
-        imp::HealthDatabase::from_instance(self)
+        imp::Database::from_instance(self)
             .save_activity(self, activity)
             .await
     }
 
     pub async fn save_weight(&self, weight: Weight) -> Result<(), glib::Error> {
-        imp::HealthDatabase::from_instance(self)
+        imp::Database::from_instance(self)
             .save_weight(self, weight)
             .await
     }

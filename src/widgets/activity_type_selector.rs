@@ -6,9 +6,9 @@ use gtk::{glib, CompositeTemplate};
 mod imp {
     use super::*;
     use crate::{
-        core::HealthSettings,
-        model::{ActivityType, HealthActivityTypeRowData},
-        widgets::HealthActivityTypeRow,
+        core::Settings,
+        model::{ActivityType, ActivityTypeRowData},
+        widgets::ActivityTypeRow,
     };
     use glib::{
         g_warning,
@@ -20,7 +20,7 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_type_selector.ui")]
-    pub struct HealthActivityTypeSelector {
+    pub struct ActivityTypeSelector {
         pub activity_types_model: gio::ListStore,
         pub recent_activity_types_model: gio::ListStore,
         pub selected_activity: RefCell<ActivityInfo>,
@@ -32,22 +32,20 @@ mod imp {
         pub recents_box: TemplateChild<gtk::Box>,
     }
 
-    impl ObjectSubclass for HealthActivityTypeSelector {
+    impl ObjectSubclass for ActivityTypeSelector {
         const NAME: &'static str = "HealthActivityTypeSelector";
         type ParentType = gtk::Popover;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthActivityTypeSelector;
+        type Type = super::ActivityTypeSelector;
         type Interfaces = ();
 
         glib::object_subclass!();
 
         fn new() -> Self {
             Self {
-                activity_types_model: gio::ListStore::new(HealthActivityTypeRowData::static_type()),
-                recent_activity_types_model: gio::ListStore::new(
-                    HealthActivityTypeRowData::static_type(),
-                ),
+                activity_types_model: gio::ListStore::new(ActivityTypeRowData::static_type()),
+                recent_activity_types_model: gio::ListStore::new(ActivityTypeRowData::static_type()),
                 selected_activity: RefCell::new(ActivityInfo::from(ActivityType::Walking)),
                 activity_types_list_box: TemplateChild::default(),
                 recent_activity_types_list_box: TemplateChild::default(),
@@ -64,9 +62,9 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthActivityTypeSelector {
+    impl ObjectImpl for ActivityTypeSelector {
         fn constructed(&self, obj: &Self::Type) {
-            let recent_activity_types = HealthSettings::new().get_recent_activity_types();
+            let recent_activity_types = Settings::new().get_recent_activity_types();
 
             if !recent_activity_types.is_empty() {
                 self.recents_box.set_visible(true);
@@ -74,7 +72,7 @@ mod imp {
                 for activity in recent_activity_types.iter().rev() {
                     if let Ok(info) = ActivityInfo::try_from(activity.as_str()) {
                         self.recent_activity_types_model
-                            .append(&HealthActivityTypeRowData::new(info.id, &info.name));
+                            .append(&ActivityTypeRowData::new(info.id, &info.name));
                     } else {
                         g_warning!(crate::config::LOG_DOMAIN, "Unknown activity {}!", activity);
                     }
@@ -96,15 +94,15 @@ mod imp {
                 let info = ActivityInfo::from(a);
                 if !recent_activity_types.contains(&info.id.to_string()) {
                     self.activity_types_model
-                        .append(&HealthActivityTypeRowData::new(info.id, &info.name));
+                        .append(&ActivityTypeRowData::new(info.id, &info.name));
                 }
 
                 i += 1;
             }
 
             let create_list_box_row = glib::clone!(@weak obj => move |o: &glib::Object| {
-                let data = o.downcast_ref::<HealthActivityTypeRowData>().unwrap();
-                HealthActivityTypeRow::new(&data, data.get_label() == imp::HealthActivityTypeSelector::from_instance(&obj).selected_activity.borrow().name)
+                let data = o.downcast_ref::<ActivityTypeRowData>().unwrap();
+                ActivityTypeRow::new(&data, data.get_label() == imp::ActivityTypeSelector::from_instance(&obj).selected_activity.borrow().name)
                     .upcast::<gtk::Widget>()
 
             });
@@ -116,16 +114,16 @@ mod imp {
                 .bind_model(Some(&self.activity_types_model), create_list_box_row);
 
             let activated_list_box_row = glib::clone!(@weak obj => move |b: &gtk::ListBox, r: &gtk::ListBoxRow| {
-                let row = r.downcast_ref::<HealthActivityTypeRow>().unwrap();
+                let row = r.downcast_ref::<ActivityTypeRow>().unwrap();
 
                 if let Ok(info) = ActivityInfo::try_from(row.get_id()) {
-                    let self_ = imp::HealthActivityTypeSelector::from_instance(&obj);
+                    let self_ = imp::ActivityTypeSelector::from_instance(&obj);
                     self_.set_selected_activity(&obj, info);
                     let mut i = 0;
                     let selected_activity = self_.selected_activity.borrow();
 
                     while let Some(row) = b.get_row_at_index(i) {
-                        let cast = row.downcast::<HealthActivityTypeRow>().unwrap();
+                        let cast = row.downcast::<ActivityTypeRow>().unwrap();
                         cast.set_selected (cast.get_label() == selected_activity.name);
                         i += 1;
                     }
@@ -155,17 +153,17 @@ mod imp {
             SIGNALS.as_ref()
         }
     }
-    impl WidgetImpl for HealthActivityTypeSelector {}
-    impl PopoverImpl for HealthActivityTypeSelector {}
+    impl WidgetImpl for ActivityTypeSelector {}
+    impl PopoverImpl for ActivityTypeSelector {}
 
-    impl HealthActivityTypeSelector {
+    impl ActivityTypeSelector {
         pub fn get_selected_activity(&self) -> ActivityInfo {
             self.selected_activity.borrow().clone()
         }
 
         pub fn set_selected_activity(
             &self,
-            obj: &super::HealthActivityTypeSelector,
+            obj: &super::ActivityTypeSelector,
             val: ActivityInfo,
         ) {
             self.selected_activity.replace(val);
@@ -175,17 +173,17 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthActivityTypeSelector(ObjectSubclass<imp::HealthActivityTypeSelector>)
+    pub struct ActivityTypeSelector(ObjectSubclass<imp::ActivityTypeSelector>)
         @extends gtk::Widget, gtk::Popover;
 }
 
-impl HealthActivityTypeSelector {
+impl ActivityTypeSelector {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create HealthActivityTypeSelector")
+        glib::Object::new(&[]).expect("Failed to create ActivityTypeSelector")
     }
 
     pub fn get_selected_activity(&self) -> ActivityInfo {
-        imp::HealthActivityTypeSelector::from_instance(self).get_selected_activity()
+        imp::ActivityTypeSelector::from_instance(self).get_selected_activity()
     }
 
     pub fn connect_activity_selected<F: Fn() + 'static>(

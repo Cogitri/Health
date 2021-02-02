@@ -1,5 +1,5 @@
 use crate::{
-    core::{i18n_f, HealthDatabase},
+    core::{i18n_f, Database},
     model::{Steps, Weight},
 };
 use gtk_macros::spawn;
@@ -9,7 +9,7 @@ pub enum DatabaseValue {
     Weights(Vec<Weight>),
 }
 
-pub fn new_db_receiver(db: HealthDatabase) -> glib::Sender<DatabaseValue> {
+pub fn new_db_receiver(db: Database) -> glib::Sender<DatabaseValue> {
     let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
 
     receiver.attach(None, move |value| {

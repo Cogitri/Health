@@ -1,5 +1,5 @@
 use crate::{
-    core::{settings::Unitsystem, HealthDatabase, HealthSettings},
+    core::{settings::Unitsystem, Database, Settings},
     model::weight::*,
     views::Point,
 };
@@ -10,17 +10,17 @@ use uom::si::{
 };
 
 #[derive(Debug)]
-pub struct HealthGraphModelWeight {
-    database: HealthDatabase,
-    settings: HealthSettings,
+pub struct GraphModelWeight {
+    database: Database,
+    settings: Settings,
     vec: Vec<Weight>,
 }
 
-impl HealthGraphModelWeight {
-    pub fn new(database: HealthDatabase) -> Self {
+impl GraphModelWeight {
+    pub fn new(database: Database) -> Self {
         Self {
             database,
-            settings: HealthSettings::new(),
+            settings: Settings::new(),
             vec: Vec::new(),
         }
     }

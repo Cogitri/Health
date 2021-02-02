@@ -1,9 +1,9 @@
-use crate::{core::HealthDatabase, model::HealthModelActivity, views::HealthView};
+use crate::{core::Database, model::ModelActivity, views::View};
 use gdk::subclass::prelude::*;
 
 mod imp {
     use super::*;
-    use crate::{core::HealthSettings, model::Activity, widgets::HealthActivityRow};
+    use crate::{core::Settings, model::Activity, widgets::ActivityRow};
     use chrono::Duration;
     use glib::{subclass, Cast};
     use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
@@ -11,19 +11,19 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_view.ui")]
-    pub struct HealthViewActivity {
-        settings: HealthSettings,
-        activity_model: OnceCell<HealthModelActivity>,
+    pub struct ViewActivity {
+        settings: Settings,
+        activity_model: OnceCell<ModelActivity>,
         pub activities_list_box: gtk::ListBox,
         clamp: adw::Clamp,
     }
 
-    impl ObjectSubclass for HealthViewActivity {
+    impl ObjectSubclass for ViewActivity {
         const NAME: &'static str = "HealthViewActivity";
-        type ParentType = HealthView;
+        type ParentType = View;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthViewActivity;
+        type Type = super::ViewActivity;
         type Interfaces = ();
 
         glib::object_subclass!();
@@ -47,7 +47,7 @@ mod imp {
                 .child(&activities_list_box);
 
             Self {
-                settings: HealthSettings::new(),
+                settings: Settings::new(),
                 activity_model: OnceCell::new(),
                 activities_list_box,
                 clamp: clamp_builder.build(),
@@ -61,36 +61,36 @@ mod imp {
         fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
             unsafe {
                 // FIXME: This really shouldn't be necessary.
-                obj.as_ref().upcast_ref::<HealthView>().init_template();
+                obj.as_ref().upcast_ref::<View>().init_template();
             }
         }
     }
 
-    impl WidgetImpl for HealthViewActivity {}
+    impl WidgetImpl for ViewActivity {}
 
-    impl ObjectImpl for HealthViewActivity {
+    impl ObjectImpl for ViewActivity {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            let scrolled_window = obj.upcast_ref::<HealthView>().get_scrolled_window();
+            let scrolled_window = obj.upcast_ref::<View>().get_scrolled_window();
             scrolled_window.set_child(Some(&self.clamp));
             scrolled_window.set_property_vscrollbar_policy(gtk::PolicyType::Automatic);
         }
     }
 
-    impl HealthViewActivity {
-        pub fn set_activity_model(&self, model: HealthModelActivity) {
+    impl ViewActivity {
+        pub fn set_activity_model(&self, model: ModelActivity) {
             self.activity_model.set(model).unwrap();
 
             self.activities_list_box
                 .bind_model(Some(self.activity_model.get().unwrap()), |o| {
-                    let row = HealthActivityRow::new();
+                    let row = ActivityRow::new();
                     row.set_activity(o.clone().downcast::<Activity>().unwrap());
                     row.upcast()
                 });
         }
 
-        pub async fn update(&self, obj: &super::HealthViewActivity) {
+        pub async fn update(&self, obj: &super::ViewActivity) {
             let activity_model = self.activity_model.get().unwrap();
 
             if let Err(e) = activity_model.reload(Duration::days(30)).await {
@@ -102,7 +102,7 @@ mod imp {
             }
 
             if !activity_model.is_empty() {
-                obj.upcast_ref::<HealthView>()
+                obj.upcast_ref::<View>()
                     .get_stack()
                     .set_visible_child_name("data_page");
             }
@@ -111,23 +111,20 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthViewActivity(ObjectSubclass<imp::HealthViewActivity>)
-        @extends HealthView;
+    pub struct ViewActivity(ObjectSubclass<imp::ViewActivity>)
+        @extends View;
 }
 
-impl HealthViewActivity {
-    pub fn new(database: HealthDatabase) -> Self {
-        let o = glib::Object::new(&[]).expect("Failed to create HealthViewActivity");
+impl ViewActivity {
+    pub fn new(database: Database) -> Self {
+        let o = glib::Object::new(&[]).expect("Failed to create ViewActivity");
 
-        imp::HealthViewActivity::from_instance(&o)
-            .set_activity_model(HealthModelActivity::new(database));
+        imp::ViewActivity::from_instance(&o).set_activity_model(ModelActivity::new(database));
 
         o
     }
 
     pub async fn update(&self) {
-        imp::HealthViewActivity::from_instance(self)
-            .update(self)
-            .await;
+        imp::ViewActivity::from_instance(self).update(self).await;
     }
 }

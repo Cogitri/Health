@@ -1,5 +1,5 @@
 use crate::{
-    core::{HealthDatabase, HealthSettings},
+    core::{Database, Settings},
     model::Activity,
 };
 use chrono::Duration;
@@ -13,40 +13,40 @@ mod imp {
     use std::{cell::RefCell, convert::TryInto};
 
     #[derive(Debug)]
-    pub struct HealthModelActivityMut {
-        database: Option<HealthDatabase>,
+    pub struct ModelActivityMut {
+        database: Option<Database>,
         vec: Vec<Activity>,
     }
 
     #[derive(Debug)]
-    pub struct HealthModelActivity {
-        inner: RefCell<HealthModelActivityMut>,
-        settings: HealthSettings,
+    pub struct ModelActivity {
+        inner: RefCell<ModelActivityMut>,
+        settings: Settings,
     }
 
-    impl ObjectSubclass for HealthModelActivity {
+    impl ObjectSubclass for ModelActivity {
         const NAME: &'static str = "HealthModelActivity";
         type ParentType = glib::Object;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthModelActivity;
+        type Type = super::ModelActivity;
         type Interfaces = (gio::ListModel,);
 
         glib::object_subclass!();
 
         fn new() -> Self {
             Self {
-                inner: RefCell::new(HealthModelActivityMut {
+                inner: RefCell::new(ModelActivityMut {
                     database: None,
                     vec: Vec::new(),
                 }),
-                settings: HealthSettings::new(),
+                settings: Settings::new(),
             }
         }
     }
 
-    impl ObjectImpl for HealthModelActivity {}
-    impl ListModelImpl for HealthModelActivity {
+    impl ObjectImpl for ModelActivity {}
+    impl ListModelImpl for ModelActivity {
         fn get_item_type(&self, _list_model: &Self::Type) -> glib::Type {
             Activity::static_type()
         }
@@ -64,10 +64,10 @@ mod imp {
         }
     }
 
-    impl HealthModelActivity {
+    impl ModelActivity {
         pub async fn reload(
             &self,
-            obj: &super::HealthModelActivity,
+            obj: &super::ModelActivity,
             duration: Duration,
         ) -> Result<(), glib::Error> {
             let previous_size = self.inner.borrow().vec.len();
@@ -97,31 +97,31 @@ mod imp {
             self.inner.borrow().vec.is_empty()
         }
 
-        pub fn set_database(&self, database: HealthDatabase) {
+        pub fn set_database(&self, database: Database) {
             self.inner.borrow_mut().database = Some(database);
         }
     }
 }
 
 glib::wrapper! {
-    pub struct HealthModelActivity(ObjectSubclass<imp::HealthModelActivity>) @implements gio::ListModel;
+    pub struct ModelActivity(ObjectSubclass<imp::ModelActivity>) @implements gio::ListModel;
 }
 
-impl HealthModelActivity {
-    pub fn new(database: HealthDatabase) -> Self {
-        let o = glib::Object::new(&[]).expect("Failed to create HealthModelActivity");
+impl ModelActivity {
+    pub fn new(database: Database) -> Self {
+        let o = glib::Object::new(&[]).expect("Failed to create ModelActivity");
 
-        imp::HealthModelActivity::from_instance(&o).set_database(database);
+        imp::ModelActivity::from_instance(&o).set_database(database);
 
         o
     }
 
     pub fn is_empty(&self) -> bool {
-        imp::HealthModelActivity::from_instance(self).is_empty()
+        imp::ModelActivity::from_instance(self).is_empty()
     }
 
     pub async fn reload(&self, duration: Duration) -> Result<(), glib::Error> {
-        imp::HealthModelActivity::from_instance(self)
+        imp::ModelActivity::from_instance(self)
             .reload(self, duration)
             .await
     }

@@ -6,7 +6,7 @@ use uom::si::f32::{Length, Mass};
 
 mod imp {
     use super::*;
-    use crate::core::HealthSettings;
+    use crate::core::Settings;
     use glib::subclass;
     use gtk::subclass::prelude::*;
     use std::cell::RefCell;
@@ -16,7 +16,7 @@ mod imp {
     static LEVEL_BAR_MAX: f32 = 30.0;
 
     #[derive(Debug)]
-    pub struct HealthBMILevelBarMut {
+    pub struct BMILevelBarMut {
         height: Length,
         weight: Mass,
         unitsystem: Unitsystem,
@@ -24,27 +24,27 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/bmi_level_bar.ui")]
-    pub struct HealthBMILevelBar {
-        pub inner: RefCell<HealthBMILevelBarMut>,
+    pub struct BMILevelBar {
+        pub inner: RefCell<BMILevelBarMut>,
         #[template_child]
         pub bmi_label: TemplateChild<gtk::Label>,
         #[template_child]
         pub level_bar: TemplateChild<gtk::LevelBar>,
     }
 
-    impl ObjectSubclass for HealthBMILevelBar {
-        const NAME: &'static str = "HealthBMILevelBar";
+    impl ObjectSubclass for BMILevelBar {
+        const NAME: &'static str = "BMILevelBar";
         type ParentType = gtk::Widget;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthBMILevelBar;
+        type Type = super::BMILevelBar;
         type Interfaces = ();
 
         glib::object_subclass!();
 
         fn new() -> Self {
             Self {
-                inner: RefCell::new(HealthBMILevelBarMut {
+                inner: RefCell::new(BMILevelBarMut {
                     height: Length::new::<centimeter>(0.0),
                     weight: Mass::new::<kilogram>(0.0),
                     unitsystem: Unitsystem::Metric,
@@ -65,12 +65,12 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthBMILevelBar {
+    impl ObjectImpl for BMILevelBar {
         fn constructed(&self, obj: &Self::Type) {
-            let settings = HealthSettings::new();
+            let settings = Settings::new();
             self.inner.borrow_mut().unitsystem = settings.get_unitsystem();
             settings.connect_unitsystem_changed(glib::clone!(@weak obj, @strong settings => move |_, _| {
-                HealthBMILevelBar::from_instance(&obj).inner.borrow_mut().unitsystem = settings.get_unitsystem();
+                BMILevelBar::from_instance(&obj).inner.borrow_mut().unitsystem = settings.get_unitsystem();
             }));
 
             obj.get_layout_manager()
@@ -111,9 +111,9 @@ mod imp {
             }
         }
     }
-    impl WidgetImpl for HealthBMILevelBar {}
+    impl WidgetImpl for BMILevelBar {}
 
-    impl HealthBMILevelBar {
+    impl BMILevelBar {
         pub fn get_height(&self) -> Length {
             self.inner.borrow().height
         }
@@ -165,17 +165,17 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthBMILevelBar(ObjectSubclass<imp::HealthBMILevelBar>)
+    pub struct BMILevelBar(ObjectSubclass<imp::BMILevelBar>)
         @extends gtk::Widget;
 }
 
-impl HealthBMILevelBar {
+impl BMILevelBar {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create HealthBMILevelBar")
+        glib::Object::new(&[]).expect("Failed to create BMILevelBar")
     }
 
-    fn get_priv(&self) -> &imp::HealthBMILevelBar {
-        imp::HealthBMILevelBar::from_instance(self)
+    fn get_priv(&self) -> &imp::BMILevelBar {
+        imp::BMILevelBar::from_instance(self)
     }
 
     imp_getter_setter!(height, Length);

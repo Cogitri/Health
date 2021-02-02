@@ -5,8 +5,8 @@ pub mod macros;
 pub mod settings;
 pub mod utils;
 
-pub use application::HealthApplication;
-pub use database::HealthDatabase;
+pub use application::Application;
+pub use database::Database;
 pub use i18n::*;
 pub use macros::*;
-pub use settings::HealthSettings;
+pub use settings::Settings;

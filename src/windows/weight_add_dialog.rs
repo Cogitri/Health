@@ -1,4 +1,4 @@
-use crate::core::HealthDatabase;
+use crate::core::Database;
 use gdk::subclass::prelude::ObjectSubclass;
 use gtk::prelude::*;
 use gtk::{glib, CompositeTemplate};
@@ -6,9 +6,9 @@ use gtk::{glib, CompositeTemplate};
 mod imp {
     use super::*;
     use crate::{
-        core::{i18n, settings::Unitsystem, HealthSettings},
+        core::{i18n, settings::Unitsystem, Settings},
         model::Weight,
-        widgets::HealthDateSelector,
+        widgets::DateSelector,
     };
     use glib::{clone, subclass};
     use gtk::subclass::prelude::*;
@@ -20,22 +20,22 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_add_dialog.ui")]
-    pub struct HealthWeightAddDialog {
-        pub database: OnceCell<HealthDatabase>,
-        pub settings: HealthSettings,
+    pub struct WeightAddDialog {
+        pub database: OnceCell<Database>,
+        pub settings: Settings,
 
         #[template_child]
-        pub date_selector: TemplateChild<HealthDateSelector>,
+        pub date_selector: TemplateChild<DateSelector>,
         #[template_child]
         pub weight_spin_button: TemplateChild<gtk::SpinButton>,
     }
 
-    impl ObjectSubclass for HealthWeightAddDialog {
+    impl ObjectSubclass for WeightAddDialog {
         const NAME: &'static str = "HealthWeightAddDialog";
         type ParentType = gtk::Dialog;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthWeightAddDialog;
+        type Type = super::WeightAddDialog;
         type Interfaces = ();
 
         glib::object_subclass!();
@@ -43,7 +43,7 @@ mod imp {
         fn new() -> Self {
             Self {
                 database: OnceCell::new(),
-                settings: HealthSettings::new(),
+                settings: Settings::new(),
                 date_selector: TemplateChild::default(),
                 weight_spin_button: TemplateChild::default(),
             }
@@ -58,7 +58,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthWeightAddDialog {
+    impl ObjectImpl for WeightAddDialog {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
@@ -68,16 +68,16 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for HealthWeightAddDialog {}
-    impl WindowImpl for HealthWeightAddDialog {}
-    impl DialogImpl for HealthWeightAddDialog {}
+    impl WidgetImpl for WeightAddDialog {}
+    impl WindowImpl for WeightAddDialog {}
+    impl DialogImpl for WeightAddDialog {}
 
-    impl HealthWeightAddDialog {
-        pub fn set_database(&self, database: HealthDatabase) {
+    impl WeightAddDialog {
+        pub fn set_database(&self, database: Database) {
             self.database.set(database).unwrap();
         }
 
-        fn connect_handlers(&self, obj: &super::HealthWeightAddDialog) {
+        fn connect_handlers(&self, obj: &super::WeightAddDialog) {
             self.weight_spin_button
                 .connect_changed(clone!(@weak obj => move |e| {
                     let text = e.get_text ().unwrap().to_string();
@@ -89,7 +89,7 @@ mod imp {
                     let downgraded = obj.downgrade();
                     glib::MainContext::default().spawn_local(async move {
                         if let Some(obj) = downgraded.upgrade() {
-                            let self_ = imp::HealthWeightAddDialog::from_instance(&obj);
+                            let self_ = imp::WeightAddDialog::from_instance(&obj);
                             let value = if self_.settings.get_unitsystem() == Unitsystem::Metric {
                                 Mass::new::<kilogram>(self_.weight_spin_button.get_value() as f32)
                             } else {
@@ -122,11 +122,11 @@ mod imp {
             });
         }
 
-        fn update_title(&self, obj: &super::HealthWeightAddDialog) {
+        fn update_title(&self, obj: &super::WeightAddDialog) {
             let downgraded = obj.downgrade();
             glib::MainContext::default().spawn_local(async move {
                 if let Some(obj) = downgraded.upgrade() {
-                    let self_ = imp::HealthWeightAddDialog::from_instance(&obj);
+                    let self_ = imp::WeightAddDialog::from_instance(&obj);
                     let res = self_
                         .database
                         .get()
@@ -148,17 +148,17 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthWeightAddDialog(ObjectSubclass<imp::HealthWeightAddDialog>)
+    pub struct WeightAddDialog(ObjectSubclass<imp::WeightAddDialog>)
         @extends gtk::Widget, gtk::Window, gtk::Dialog;
 }
 
-impl HealthWeightAddDialog {
-    pub fn new(database: HealthDatabase, parent: &gtk::Window) -> Self {
-        let o: HealthWeightAddDialog = glib::Object::new(&[("use-header-bar", &1)])
-            .expect("Failed to create HealthWeightAddDialog");
+impl WeightAddDialog {
+    pub fn new(database: Database, parent: &gtk::Window) -> Self {
+        let o: WeightAddDialog =
+            glib::Object::new(&[("use-header-bar", &1)]).expect("Failed to create WeightAddDialog");
 
         o.set_transient_for(Some(parent));
-        imp::HealthWeightAddDialog::from_instance(&o).set_database(database);
+        imp::WeightAddDialog::from_instance(&o).set_database(database);
 
         o
     }

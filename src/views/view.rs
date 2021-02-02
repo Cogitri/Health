@@ -10,7 +10,7 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/view.ui")]
-    pub struct HealthView {
+    pub struct View {
         #[template_child]
         pub empty_icon: TemplateChild<gtk::Image>,
         #[template_child]
@@ -28,12 +28,12 @@ mod imp {
         pub view_title: RefCell<String>,
     }
 
-    impl ObjectSubclass for HealthView {
+    impl ObjectSubclass for View {
         const NAME: &'static str = "HealthView";
         type ParentType = gtk::Widget;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthView;
+        type Type = super::View;
         type Interfaces = ();
 
         glib::object_subclass!();
@@ -61,9 +61,9 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for HealthView {}
+    impl WidgetImpl for View {}
 
-    impl ObjectImpl for HealthView {
+    impl ObjectImpl for View {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
         }
@@ -153,25 +153,25 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthView(ObjectSubclass<imp::HealthView>)
+    pub struct View(ObjectSubclass<imp::View>)
         @extends gtk::Widget;
 }
 
-impl HealthView {
+impl View {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create HealthView")
+        glib::Object::new(&[]).expect("Failed to create View")
     }
 
     pub fn get_goal_label(&self) -> gtk::Label {
-        imp::HealthView::from_instance(self).goal_label.get()
+        imp::View::from_instance(self).goal_label.get()
     }
 
     pub fn get_stack(&self) -> gtk::Stack {
-        imp::HealthView::from_instance(self).stack.get()
+        imp::View::from_instance(self).stack.get()
     }
 
     pub fn get_scrolled_window(&self) -> gtk::ScrolledWindow {
-        imp::HealthView::from_instance(self).scrolled_window.get()
+        imp::View::from_instance(self).scrolled_window.get()
     }
 
     properties_setter_getter!("empty-title", String);
@@ -180,7 +180,7 @@ impl HealthView {
     properties_setter_getter!("view-title", String);
 }
 
-unsafe impl<T: WidgetImpl> IsSubclassable<T> for HealthView {
+unsafe impl<T: WidgetImpl> IsSubclassable<T> for View {
     fn override_vfuncs(class: &mut glib::Class<Self>) {
         <gtk::Widget as IsSubclassable<T>>::override_vfuncs(class);
     }

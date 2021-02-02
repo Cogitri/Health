@@ -12,8 +12,6 @@ mod views;
 mod widgets;
 mod windows;
 
-use crate::core::application::HealthApplication;
-
 fn main() {
     gtk::init().expect("Failed to initialize GTK.");
     adw::init();
@@ -26,7 +24,7 @@ fn main() {
         .expect("Could not load resources");
     gio::resources_register(&res);
 
-    let app = HealthApplication::new();
+    let app = crate::core::Application::new();
 
     let ret = app.run(&std::env::args().collect::<Vec<_>>());
     std::process::exit(ret);

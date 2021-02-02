@@ -27,7 +27,7 @@ mod imp {
         pub y: f32,
     }
 
-    struct HealthGraphViewMut {
+    struct GraphViewMut {
         pub biggest_value: f32,
         pub height: f32,
         pub hover_func: Option<Box<dyn Fn(&Point) -> String>>,
@@ -41,23 +41,23 @@ mod imp {
         pub width: f32,
     }
 
-    pub struct HealthGraphView {
-        inner: RefCell<HealthGraphViewMut>,
+    pub struct GraphView {
+        inner: RefCell<GraphViewMut>,
     }
 
-    impl ObjectSubclass for HealthGraphView {
+    impl ObjectSubclass for GraphView {
         const NAME: &'static str = "HealthGraphView";
         type ParentType = gtk::Widget;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthGraphView;
+        type Type = super::GraphView;
         type Interfaces = ();
 
         glib::object_subclass!();
 
         fn new() -> Self {
             Self {
-                inner: RefCell::new(HealthGraphViewMut {
+                inner: RefCell::new(GraphViewMut {
                     biggest_value: 0.1,
                     height: 0.0,
                     hover_func: None,
@@ -78,7 +78,7 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for HealthGraphView {
+    impl WidgetImpl for GraphView {
         fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
             let mut inner = self.inner.borrow_mut();
 
@@ -319,7 +319,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthGraphView {
+    impl ObjectImpl for GraphView {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
@@ -327,12 +327,12 @@ mod imp {
             obj.set_vexpand(true);
             let gesture_controller = gtk::GestureClick::new();
             gesture_controller.set_touch_only(true);
-            gesture_controller.connect_pressed(clone!(@weak obj => move |c, _, x, y| imp::HealthGraphView::from_instance(&obj).on_motion_event(&obj, x, y, true, c)));
+            gesture_controller.connect_pressed(clone!(@weak obj => move |c, _, x, y| imp::GraphView::from_instance(&obj).on_motion_event(&obj, x, y, true, c)));
             obj.add_controller(&gesture_controller);
 
             let motion_controller = gtk::EventControllerMotion::new();
-            motion_controller.connect_enter(clone!(@weak obj => move|c, x, y| imp::HealthGraphView::from_instance(&obj).on_motion_event(&obj, x, y, false, c)));
-            motion_controller.connect_motion(clone!(@weak obj => move|c, x, y| imp::HealthGraphView::from_instance(&obj).on_motion_event(&obj, x, y, false, c)));
+            motion_controller.connect_enter(clone!(@weak obj => move|c, x, y| imp::GraphView::from_instance(&obj).on_motion_event(&obj, x, y, false, c)));
+            motion_controller.connect_motion(clone!(@weak obj => move|c, x, y| imp::GraphView::from_instance(&obj).on_motion_event(&obj, x, y, false, c)));
             obj.add_controller(&motion_controller);
 
             let mut inner = self.inner.borrow_mut();
@@ -340,27 +340,27 @@ mod imp {
         }
     }
 
-    impl HealthGraphView {
+    impl GraphView {
         pub fn set_hover_func(
             &self,
-            obj: &crate::views::HealthGraphView,
+            obj: &crate::views::GraphView,
             hover_func: Option<Box<dyn Fn(&Point) -> String>>,
         ) {
             self.inner.borrow_mut().hover_func = hover_func;
             obj.queue_draw();
         }
 
-        pub fn set_limit(&self, obj: &crate::views::HealthGraphView, limit: Option<f32>) {
+        pub fn set_limit(&self, obj: &crate::views::GraphView, limit: Option<f32>) {
             self.inner.borrow_mut().limit = limit;
             obj.queue_draw();
         }
 
-        pub fn set_limit_label(&self, obj: &crate::views::HealthGraphView, label: Option<String>) {
+        pub fn set_limit_label(&self, obj: &crate::views::GraphView, label: Option<String>) {
             self.inner.borrow_mut().limit_label = label;
             obj.queue_draw();
         }
 
-        pub fn set_points(&self, obj: &crate::views::HealthGraphView, points: Vec<Point>) {
+        pub fn set_points(&self, obj: &crate::views::GraphView, points: Vec<Point>) {
             let layout = obj.create_pango_layout(Some(&format!("{}", Local::now().format("%x"))));
             let (_, extents) = layout.get_extents();
             let datapoint_width = pango::units_to_double(extents.width) + HALF_X_PADDING as f64;
@@ -384,7 +384,7 @@ mod imp {
 
         fn on_motion_event(
             &self,
-            obj: &super::HealthGraphView,
+            obj: &super::GraphView,
             x: f64,
             y: f64,
             allow_touch: bool,
@@ -433,28 +433,28 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthGraphView(ObjectSubclass<imp::HealthGraphView>)
+    pub struct GraphView(ObjectSubclass<imp::GraphView>)
         @extends gtk::Widget;
 }
 
-impl HealthGraphView {
+impl GraphView {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create HealthGraphView")
+        glib::Object::new(&[]).expect("Failed to create GraphView")
     }
 
     pub fn set_hover_func(&self, hover_func: Option<Box<dyn Fn(&Point) -> String>>) {
-        imp::HealthGraphView::from_instance(self).set_hover_func(self, hover_func);
+        imp::GraphView::from_instance(self).set_hover_func(self, hover_func);
     }
 
     pub fn set_limit(&self, limit: Option<f32>) {
-        imp::HealthGraphView::from_instance(self).set_limit(self, limit);
+        imp::GraphView::from_instance(self).set_limit(self, limit);
     }
 
     pub fn set_limit_label(&self, label: Option<String>) {
-        imp::HealthGraphView::from_instance(self).set_limit_label(self, label);
+        imp::GraphView::from_instance(self).set_limit_label(self, label);
     }
 
     pub fn set_points(&self, points: Vec<Point>) {
-        imp::HealthGraphView::from_instance(self).set_points(self, points);
+        imp::GraphView::from_instance(self).set_points(self, points);
     }
 }

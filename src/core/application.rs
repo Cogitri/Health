@@ -1,11 +1,11 @@
-use crate::{config, core::settings::HealthSettings};
+use crate::{config, core::settings::Settings};
 use gtk::{gio, glib};
 
 mod imp {
     use super::*;
     use crate::{
-        core::{i18n, HealthDatabase},
-        windows::{HealthPreferencesWindow, HealthSetupWindow, HealthWindow},
+        core::{i18n, Database},
+        windows::{Window, PreferencesWindow, SetupWindow},
     };
     use gio::ActionMapExt;
     use glib::{clone, g_warning, subclass};
@@ -14,26 +14,26 @@ mod imp {
     use once_cell::unsync::OnceCell;
 
     #[derive(Debug)]
-    pub struct HealthApplication {
-        pub db: HealthDatabase,
-        pub settings: HealthSettings,
-        pub window: OnceCell<glib::WeakRef<HealthWindow>>,
+    pub struct Application {
+        pub db: Database,
+        pub settings: Settings,
+        pub window: OnceCell<glib::WeakRef<Window>>,
     }
 
-    impl ObjectSubclass for HealthApplication {
+    impl ObjectSubclass for Application {
         const NAME: &'static str = "HealthApplication";
         type ParentType = gtk::Application;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthApplication;
+        type Type = super::Application;
         type Interfaces = ();
 
         glib::object_subclass!();
 
         fn new() -> Self {
             Self {
-                db: HealthDatabase::new().expect("Failed to connect to Tracker Database!"),
-                settings: HealthSettings::new(),
+                db: Database::new().expect("Failed to connect to Tracker Database!"),
+                settings: Settings::new(),
                 window: OnceCell::new(),
             }
         }
@@ -43,30 +43,30 @@ mod imp {
         fn instance_init(_obj: &glib::subclass::InitializingObject<Self::Type>) {}
     }
 
-    impl ObjectImpl for HealthApplication {
+    impl ObjectImpl for Application {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
         }
     }
 
-    impl ApplicationImpl for HealthApplication {
+    impl ApplicationImpl for Application {
         fn activate(&self, application: &Self::Type) {
             self.parent_activate(application);
             let has_window = self.window.get().and_then(|o| o.upgrade()).is_some();
 
             if !has_window && self.settings.get_did_initial_setup() {
-                let window = HealthWindow::new(application, self.db.clone());
+                let window = Window::new(application, self.db.clone());
                 window.show();
                 self.window
                     .set(glib::ObjectExt::downgrade(&window))
                     .unwrap();
             } else if !has_window {
-                let setup_window = HealthSetupWindow::new(application, self.db.clone());
+                let setup_window = SetupWindow::new(application, self.db.clone());
 
                 setup_window.connect_setup_done(clone!(@weak application => move || {
-                    let self_ = imp::HealthApplication::from_instance(&application);
+                    let self_ = imp::Application::from_instance(&application);
                     self_.settings.set_did_initial_setup(true);
-                    let window = HealthWindow::new(&application, self_.db.clone());
+                    let window = Window::new(&application, self_.db.clone());
                     window.show();
                     self_.window
                         .set(glib::ObjectExt::downgrade(&window))
@@ -92,10 +92,10 @@ mod imp {
             self.setup_accels(application);
         }
     }
-    impl GtkApplicationImpl for HealthApplication {}
+    impl GtkApplicationImpl for Application {}
 
-    impl HealthApplication {
-        fn setup_actions(&self, obj: &super::HealthApplication) {
+    impl Application {
+        fn setup_actions(&self, obj: &super::Application) {
             action!(obj, "about", move |_, _| {
                 gtk::AboutDialogBuilder::new()
                     .logo_icon_name(crate::config::APPLICATION_ID)
@@ -114,7 +114,7 @@ mod imp {
                 obj,
                 "fullscreen",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = imp::HealthApplication::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
+                    if let Some(window) = imp::Application::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
                         if window.is_fullscreen() {
                             window.unfullscreen();
                         } else {
@@ -128,7 +128,7 @@ mod imp {
                 obj,
                 "hamburger-menu",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = imp::HealthApplication::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
+                    if let Some(window) = imp::Application::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
                         window.open_hamburger_menu();
                     }
                 })
@@ -145,8 +145,8 @@ mod imp {
                 obj,
                 "preferences",
                 clone!(@weak obj => move |_, _| {
-                    let self_ = imp::HealthApplication::from_instance(&obj);
-                    let preferences_window = HealthPreferencesWindow::new(self_.db.clone(), self_.window.get().and_then(|w| w.upgrade()).map(|w| w.upcast()));
+                    let self_ = imp::Application::from_instance(&obj);
+                    let preferences_window = PreferencesWindow::new(self_.db.clone(), self_.window.get().and_then(|w| w.upgrade()).map(|w| w.upcast()));
                     preferences_window.show();
                 })
             );
@@ -155,7 +155,7 @@ mod imp {
                 obj,
                 "quit",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = imp::HealthApplication::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
+                    if let Some(window) = imp::Application::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
                         window.destroy();
                     }
                 })
@@ -169,7 +169,7 @@ mod imp {
             });
         }
 
-        fn setup_accels(&self, obj: &super::HealthApplication) {
+        fn setup_accels(&self, obj: &super::Application) {
             obj.set_accels_for_action("app.fullscreen", &["F11"]);
             obj.set_accels_for_action("app.hamburger-menu", &["F10"]);
             obj.set_accels_for_action("app.help", &["F1"]);
@@ -180,16 +180,16 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthApplication(ObjectSubclass<imp::HealthApplication>)
+    pub struct Application(ObjectSubclass<imp::Application>)
         @extends gio::Application, gtk::Application, @implements gio::ActionMap, gio::ActionGroup;
 }
 
-impl HealthApplication {
+impl Application {
     pub fn new() -> Self {
         glib::Object::new(&[
             ("application-id", &config::APPLICATION_ID.to_string()),
             ("flags", &gio::ApplicationFlags::FLAGS_NONE),
         ])
-        .expect("Failed to create HealthApplication")
+        .expect("Failed to create Application")
     }
 }

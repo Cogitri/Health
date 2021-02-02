@@ -1,13 +1,13 @@
-use crate::core::HealthDatabase;
+use crate::core::Database;
 use gio::FileExt;
 use gtk::prelude::*;
 
 pub struct CSVHandler {
-    db: HealthDatabase,
+    db: Database,
 }
 
 impl CSVHandler {
-    pub fn new(db: HealthDatabase) -> Self {
+    pub fn new(db: Database) -> Self {
         Self { db }
     }
 

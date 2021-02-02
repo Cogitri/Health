@@ -1,10 +1,12 @@
-use crate::{core::HealthDatabase, model::HealthGraphModelWeight, views::HealthView};
+use crate::{core::Database, model::GraphModelWeight, views::View};
 use gdk::subclass::prelude::*;
 
 mod imp {
     use super::*;
-    use crate::core::{i18n, i18n_f, settings::Unitsystem, HealthSettings};
-    use crate::views::HealthGraphView;
+    use crate::{
+        core::{i18n, i18n_f, settings::Unitsystem, Settings},
+        views::GraphView,
+    };
     use chrono::Duration;
     use glib::{subclass, Cast};
     use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
@@ -17,25 +19,25 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_view.ui")]
-    pub struct HealthViewWeight {
-        settings: HealthSettings,
-        weight_graph_view: OnceCell<HealthGraphView>,
-        weight_graph_model: OnceCell<RefCell<HealthGraphModelWeight>>,
+    pub struct ViewWeight {
+        settings: Settings,
+        weight_graph_view: OnceCell<GraphView>,
+        weight_graph_model: OnceCell<RefCell<GraphModelWeight>>,
     }
 
-    impl ObjectSubclass for HealthViewWeight {
+    impl ObjectSubclass for ViewWeight {
         const NAME: &'static str = "HealthViewWeight";
-        type ParentType = HealthView;
+        type ParentType = View;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthViewWeight;
+        type Type = super::ViewWeight;
         type Interfaces = ();
 
         glib::object_subclass!();
 
         fn new() -> Self {
             Self {
-                settings: HealthSettings::new(),
+                settings: Settings::new(),
                 weight_graph_view: OnceCell::new(),
                 weight_graph_model: OnceCell::new(),
             }
@@ -48,21 +50,21 @@ mod imp {
         fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
             unsafe {
                 // FIXME: This really shouldn't be necessary.
-                obj.as_ref().upcast_ref::<HealthView>().init_template();
+                obj.as_ref().upcast_ref::<View>().init_template();
             }
         }
     }
 
-    impl WidgetImpl for HealthViewWeight {}
+    impl WidgetImpl for ViewWeight {}
 
-    impl ObjectImpl for HealthViewWeight {
+    impl ObjectImpl for ViewWeight {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
         }
     }
 
-    impl HealthViewWeight {
-        pub fn set_weight_graph_model(&self, graph_model: HealthGraphModelWeight) {
+    impl ViewWeight {
+        pub fn set_weight_graph_model(&self, graph_model: GraphModelWeight) {
             self.weight_graph_model
                 .set(RefCell::new(graph_model))
                 .unwrap();
@@ -70,8 +72,8 @@ mod imp {
 
         fn update_weightgoal_label(
             &self,
-            obj: &crate::views::HealthViewWeight,
-            model: &HealthGraphModelWeight,
+            obj: &crate::views::ViewWeight,
+            model: &GraphModelWeight,
         ) {
             let weightgoal = self.settings.get_user_weightgoal();
             let unitsystem = self.settings.get_unitsystem();
@@ -80,7 +82,7 @@ mod imp {
             } else {
                 (weightgoal.get::<kilogram>(), i18n("kilogram"))
             };
-            let goal_label = obj.upcast_ref::<HealthView>().get_goal_label();
+            let goal_label = obj.upcast_ref::<View>().get_goal_label();
 
             if weight_value > 0.1 && model.is_empty() {
                 /* TRANSLATORS: the second {} format strings is the weight unit, e.g. kilogram */
@@ -118,7 +120,7 @@ mod imp {
             }
         }
 
-        fn get_bmi(&self, model: &HealthGraphModelWeight) -> String {
+        fn get_bmi(&self, model: &GraphModelWeight) -> String {
             if let Some(last_weight) = model.get_last_weight() {
                 let height = self.settings.get_user_height().get::<meter>() as f32;
                 let bmi = last_weight.get::<kilogram>() as f32 / (height * height);
@@ -128,7 +130,7 @@ mod imp {
             }
         }
 
-        pub async fn update(&self, obj: &super::HealthViewWeight) {
+        pub async fn update(&self, obj: &super::ViewWeight) {
             let mut weight_graph_model = self.weight_graph_model.get().unwrap().borrow_mut();
             if let Err(e) = weight_graph_model.reload(Duration::days(30)).await {
                 glib::g_warning!(
@@ -138,7 +140,7 @@ mod imp {
                 );
             }
 
-            let view = obj.upcast_ref::<HealthView>();
+            let view = obj.upcast_ref::<View>();
             view.set_title(i18n_f(
                 "Current BMI: {}",
                 &[&self.get_bmi(&weight_graph_model)],
@@ -148,7 +150,7 @@ mod imp {
             if let Some(view) = self.weight_graph_view.get() {
                 view.set_points(weight_graph_model.to_points());
             } else if !weight_graph_model.is_empty() {
-                let weight_graph_view = HealthGraphView::new();
+                let weight_graph_view = GraphView::new();
                 weight_graph_view.set_points(weight_graph_model.to_points());
                 let settings = self.settings.clone();
                 weight_graph_view.set_hover_func(Some(Box::new(move |p| {
@@ -185,7 +187,7 @@ mod imp {
                 self.settings.connect_user_weightgoal_changed(
                     glib::clone!(@weak obj => move |_,_| {
                         glib::MainContext::default().spawn_local(async move {
-                            HealthViewWeight::from_instance(&obj).update(&obj).await
+                            ViewWeight::from_instance(&obj).update(&obj).await
                         })
                     }),
                 );
@@ -195,16 +197,16 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthViewWeight(ObjectSubclass<imp::HealthViewWeight>)
-        @extends HealthView;
+    pub struct ViewWeight(ObjectSubclass<imp::ViewWeight>)
+        @extends View;
 }
 
-impl HealthViewWeight {
-    pub fn new(database: HealthDatabase) -> Self {
-        let o = glib::Object::new(&[]).expect("Failed to create HealthViewWeight");
+impl ViewWeight {
+    pub fn new(database: Database) -> Self {
+        let o = glib::Object::new(&[]).expect("Failed to create ViewWeight");
 
-        imp::HealthViewWeight::from_instance(&o)
-            .set_weight_graph_model(HealthGraphModelWeight::new(database.clone()));
+        imp::ViewWeight::from_instance(&o)
+            .set_weight_graph_model(GraphModelWeight::new(database.clone()));
 
         database.connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
@@ -216,8 +218,6 @@ impl HealthViewWeight {
     }
 
     pub async fn update(&self) {
-        imp::HealthViewWeight::from_instance(self)
-            .update(self)
-            .await;
+        imp::ViewWeight::from_instance(self).update(self).await;
     }
 }

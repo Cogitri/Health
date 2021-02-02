@@ -1,11 +1,13 @@
-use crate::{core::HealthDatabase, model::HealthGraphModelSteps, views::HealthView};
+use crate::{core::Database, model::GraphModelSteps, views::View};
 use gdk::subclass::prelude::*;
 
 mod imp {
     use super::*;
-    use crate::core::{i18n, i18n_f, HealthSettings};
-    use crate::model::HealthGraphModelSteps;
-    use crate::views::HealthGraphView;
+    use crate::{
+        core::{i18n, i18n_f, Settings},
+        model::GraphModelSteps,
+        views::GraphView,
+    };
     use chrono::Duration;
     use glib::{subclass, Cast};
     use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
@@ -14,24 +16,24 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/step_view.ui")]
-    pub struct HealthViewSteps {
-        settings: HealthSettings,
-        steps_graph_view: OnceCell<HealthGraphView>,
-        steps_graph_model: OnceCell<RefCell<HealthGraphModelSteps>>,
+    pub struct ViewSteps {
+        settings: Settings,
+        steps_graph_view: OnceCell<GraphView>,
+        steps_graph_model: OnceCell<RefCell<GraphModelSteps>>,
     }
 
-    impl ObjectSubclass for HealthViewSteps {
+    impl ObjectSubclass for ViewSteps {
         const NAME: &'static str = "HealthViewSteps";
-        type ParentType = HealthView;
+        type ParentType = View;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthViewSteps;
+        type Type = super::ViewSteps;
         type Interfaces = ();
 
         glib::object_subclass!();
 
         fn new() -> Self {
-            let settings = HealthSettings::new();
+            let settings = Settings::new();
 
             Self {
                 settings,
@@ -47,25 +49,25 @@ mod imp {
         fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
             unsafe {
                 // FIXME: This really shouldn't be necessary.
-                obj.as_ref().upcast_ref::<HealthView>().init_template();
+                obj.as_ref().upcast_ref::<View>().init_template();
             }
         }
     }
 
-    impl WidgetImpl for HealthViewSteps {}
+    impl WidgetImpl for ViewSteps {}
 
-    impl ObjectImpl for HealthViewSteps {
+    impl ObjectImpl for ViewSteps {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
         }
     }
 
-    impl HealthViewSteps {
-        pub fn set_steps_graph_model(&self, model: HealthGraphModelSteps) {
+    impl ViewSteps {
+        pub fn set_steps_graph_model(&self, model: GraphModelSteps) {
             self.steps_graph_model.set(RefCell::new(model)).unwrap();
         }
 
-        pub async fn update(&self, obj: &super::HealthViewSteps) {
+        pub async fn update(&self, obj: &super::ViewSteps) {
             let mut steps_graph_model = self.steps_graph_model.get().unwrap().borrow_mut();
             if let Err(e) = steps_graph_model.reload(Duration::days(30)).await {
                 glib::g_warning!(
@@ -75,7 +77,7 @@ mod imp {
                 );
             }
 
-            let view = obj.upcast_ref::<HealthView>();
+            let view = obj.upcast_ref::<View>();
             view.set_title(i18n_f(
                 "Today's steps: {}",
                 &[&steps_graph_model
@@ -110,7 +112,7 @@ mod imp {
             if let Some(view) = self.steps_graph_view.get() {
                 view.set_points(steps_graph_model.to_points());
             } else if !steps_graph_model.is_empty() {
-                let steps_graph_view = HealthGraphView::new();
+                let steps_graph_view = GraphView::new();
                 steps_graph_view.set_points(steps_graph_model.to_points());
 
                 steps_graph_view.set_hover_func(Some(Box::new(|p| {
@@ -131,7 +133,7 @@ mod imp {
                 self.settings
                     .connect_user_stepgoal_changed(glib::clone!(@weak obj => move |_,_| {
                         glib::MainContext::default().spawn_local(async move {
-                            HealthViewSteps::from_instance(&obj).update(&obj).await
+                            ViewSteps::from_instance(&obj).update(&obj).await
                         })
                     }));
             }
@@ -140,16 +142,16 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthViewSteps(ObjectSubclass<imp::HealthViewSteps>)
-        @extends HealthView;
+    pub struct ViewSteps(ObjectSubclass<imp::ViewSteps>)
+        @extends View;
 }
 
-impl HealthViewSteps {
-    pub fn new(database: HealthDatabase) -> Self {
-        let o = glib::Object::new(&[]).expect("Failed to create HealthViewSteps");
+impl ViewSteps {
+    pub fn new(database: Database) -> Self {
+        let o = glib::Object::new(&[]).expect("Failed to create ViewSteps");
 
-        imp::HealthViewSteps::from_instance(&o)
-            .set_steps_graph_model(HealthGraphModelSteps::new(database.clone()));
+        imp::ViewSteps::from_instance(&o)
+            .set_steps_graph_model(GraphModelSteps::new(database.clone()));
 
         database.connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
@@ -161,6 +163,6 @@ impl HealthViewSteps {
     }
 
     pub async fn update(&self) {
-        imp::HealthViewSteps::from_instance(self).update(self).await;
+        imp::ViewSteps::from_instance(self).update(self).await;
     }
 }

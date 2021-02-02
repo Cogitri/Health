@@ -28,7 +28,7 @@ macro_rules! settings_getter_setter {
             }
         }
         paste::item! {
-            pub fn [< connect_ $name _changed >]<F: Fn(&Settings, &str) + 'static>(&self, f: F) -> glib::SignalHandlerId {
+            pub fn [< connect_ $name _changed >]<F: Fn(&gio::Settings, &str) + 'static>(&self, f: F) -> glib::SignalHandlerId {
                 self.settings.connect_changed(move |s, name| {
                     if name == stringify!($name) {
                         f(s, name);

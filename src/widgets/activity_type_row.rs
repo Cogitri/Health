@@ -1,4 +1,4 @@
-use crate::model::HealthActivityTypeRowData;
+use crate::model::ActivityTypeRowData;
 use gdk::subclass::prelude::ObjectSubclass;
 use gtk::prelude::*;
 use gtk::{glib, CompositeTemplate};
@@ -11,7 +11,7 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_type_row.ui")]
-    pub struct HealthActivityTypeRow {
+    pub struct ActivityTypeRow {
         pub activity_type_id: RefCell<&'static str>,
         #[template_child]
         pub activity_type_label: TemplateChild<gtk::Label>,
@@ -19,12 +19,12 @@ mod imp {
         pub selected_image: TemplateChild<gtk::Image>,
     }
 
-    impl ObjectSubclass for HealthActivityTypeRow {
+    impl ObjectSubclass for ActivityTypeRow {
         const NAME: &'static str = "HealthActivityTypeRow";
         type ParentType = gtk::ListBoxRow;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthActivityTypeRow;
+        type Type = super::ActivityTypeRow;
         type Interfaces = ();
 
         glib::object_subclass!();
@@ -46,11 +46,11 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthActivityTypeRow {}
-    impl WidgetImpl for HealthActivityTypeRow {}
-    impl ListBoxRowImpl for HealthActivityTypeRow {}
+    impl ObjectImpl for ActivityTypeRow {}
+    impl WidgetImpl for ActivityTypeRow {}
+    impl ListBoxRowImpl for ActivityTypeRow {}
 
-    impl HealthActivityTypeRow {
+    impl ActivityTypeRow {
         pub fn get_id(&self) -> &'static str {
             *self.activity_type_id.borrow()
         }
@@ -78,15 +78,15 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthActivityTypeRow(ObjectSubclass<imp::HealthActivityTypeRow>)
+    pub struct ActivityTypeRow(ObjectSubclass<imp::ActivityTypeRow>)
         @extends gtk::Widget, gtk::ListBoxRow;
 }
 
-impl HealthActivityTypeRow {
-    pub fn new(data: &HealthActivityTypeRowData, selected: bool) -> Self {
-        let s = glib::Object::new(&[]).expect("Failed to create HealthActivityTypeRow");
+impl ActivityTypeRow {
+    pub fn new(data: &ActivityTypeRowData, selected: bool) -> Self {
+        let s = glib::Object::new(&[]).expect("Failed to create ActivityTypeRow");
 
-        let self_ = imp::HealthActivityTypeRow::from_instance(&s);
+        let self_ = imp::ActivityTypeRow::from_instance(&s);
         self_.set_id(data.get_id());
         self_.set_label(&data.get_label());
         self_.set_selected(selected);
@@ -95,26 +95,26 @@ impl HealthActivityTypeRow {
     }
 
     pub fn get_id(&self) -> &'static str {
-        imp::HealthActivityTypeRow::from_instance(self).get_id()
+        imp::ActivityTypeRow::from_instance(self).get_id()
     }
 
     pub fn get_label(&self) -> String {
-        imp::HealthActivityTypeRow::from_instance(self).get_label()
+        imp::ActivityTypeRow::from_instance(self).get_label()
     }
 
     pub fn get_selected(&self) -> bool {
-        imp::HealthActivityTypeRow::from_instance(self).get_selected()
+        imp::ActivityTypeRow::from_instance(self).get_selected()
     }
 
     pub fn set_id(&self, value: &'static str) {
-        imp::HealthActivityTypeRow::from_instance(self).set_id(value)
+        imp::ActivityTypeRow::from_instance(self).set_id(value)
     }
 
     pub fn set_label(&self, value: &str) {
-        imp::HealthActivityTypeRow::from_instance(self).set_label(value)
+        imp::ActivityTypeRow::from_instance(self).set_label(value)
     }
 
     pub fn set_selected(&self, value: bool) {
-        imp::HealthActivityTypeRow::from_instance(self).set_selected(value)
+        imp::ActivityTypeRow::from_instance(self).set_selected(value)
     }
 }

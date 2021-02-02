@@ -1,11 +1,11 @@
-use crate::core::HealthDatabase;
+use crate::core::Database;
 use gdk::subclass::prelude::ObjectSubclass;
 use gtk::{glib, CompositeTemplate};
 
 mod imp {
     use super::*;
     use crate::{
-        core::HealthSettings,
+        core::Settings,
         sync::{
             google_fit::GoogleFitSyncProvider,
             new_db_receiver,
@@ -20,8 +20,8 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/sync_list_box.ui")]
-    pub struct HealthSyncListBox {
-        pub database: OnceCell<HealthDatabase>,
+    pub struct SyncListBox {
+        pub database: OnceCell<Database>,
         pub parent_window: RefCell<Option<gtk::Window>>,
 
         #[template_child]
@@ -36,12 +36,12 @@ mod imp {
         pub sync_list_box: TemplateChild<gtk::ListBox>,
     }
 
-    impl ObjectSubclass for HealthSyncListBox {
+    impl ObjectSubclass for SyncListBox {
         const NAME: &'static str = "HealthSyncListBox";
         type ParentType = gtk::Widget;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthSyncListBox;
+        type Type = super::SyncListBox;
         type Interfaces = ();
 
         glib::object_subclass!();
@@ -68,9 +68,9 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthSyncListBox {
+    impl ObjectImpl for SyncListBox {
         fn constructed(&self, obj: &Self::Type) {
-            if HealthSettings::new().get_sync_provider_setup_google_fit() {
+            if Settings::new().get_sync_provider_setup_google_fit() {
                 self.google_fit_selected_image.set_visible(true);
                 self.google_fit_selected_image
                     .set_property_icon_name(Some("object-select-symbolic"));
@@ -124,14 +124,14 @@ mod imp {
             }
         }
     }
-    impl WidgetImpl for HealthSyncListBox {}
-    impl ListBoxRowImpl for HealthSyncListBox {}
+    impl WidgetImpl for SyncListBox {}
+    impl ListBoxRowImpl for SyncListBox {}
 
-    impl HealthSyncListBox {
-        fn connect_handlers(&self, obj: &super::HealthSyncListBox) {
+    impl SyncListBox {
+        fn connect_handlers(&self, obj: &super::SyncListBox) {
             self.sync_list_box
                 .connect_row_activated(clone!(@weak obj => move |list_box, row| {
-                    let self_ = imp::HealthSyncListBox::from_instance(&obj);
+                    let self_ = imp::SyncListBox::from_instance(&obj);
                     if (row == &self_.google_fit_start_sync_row.get()) {
                         self_.google_fit_stack.set_visible(true);
                         self_.google_fit_spinner.set_visible(true);
@@ -146,13 +146,13 @@ mod imp {
                             if let Ok(provider) = sync_provider {
                                 spawn!(async move {
                                     // TODO: Start importing data
-                                    let self_ = imp::HealthSyncListBox::from_instance(&obj);
+                                    let self_ = imp::SyncListBox::from_instance(&obj);
                                     self_.google_fit_selected_image.set_visible(true);
                                     self_.google_fit_spinner.set_spinning(false);
                                     self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
                                 });
                             } else {
-                                let self_ = imp::HealthSyncListBox::from_instance(&obj);
+                                let self_ = imp::SyncListBox::from_instance(&obj);
 
                                 self_.google_fit_selected_image.set_property_icon_name(Some("network-error-symbolic"));
                                 self_.google_fit_selected_image.set_visible(true);
@@ -200,22 +200,22 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthSyncListBox(ObjectSubclass<imp::HealthSyncListBox>) @extends gtk::Widget, gtk::ListBoxRow;
+    pub struct SyncListBox(ObjectSubclass<imp::SyncListBox>) @extends gtk::Widget, gtk::ListBoxRow;
 }
 
-impl HealthSyncListBox {
+impl SyncListBox {
     pub fn new(parent_window: Option<gtk::Window>) -> Self {
-        let s = glib::Object::new(&[]).expect("Failed to create HealthSyncListBox");
+        let s = glib::Object::new(&[]).expect("Failed to create SyncListBox");
 
-        imp::HealthSyncListBox::from_instance(&s)
+        imp::SyncListBox::from_instance(&s)
             .parent_window
             .replace(parent_window);
 
         s
     }
 
-    pub fn set_database(&self, database: HealthDatabase) {
-        imp::HealthSyncListBox::from_instance(self)
+    pub fn set_database(&self, database: Database) {
+        imp::SyncListBox::from_instance(self)
             .database
             .set(database)
             .unwrap()

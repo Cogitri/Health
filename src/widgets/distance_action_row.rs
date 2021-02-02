@@ -5,7 +5,7 @@ use uom::si::f32::Length;
 
 mod imp {
     use super::*;
-    use crate::core::{i18n, settings::Unitsystem, HealthSettings};
+    use crate::core::{i18n, settings::Unitsystem, Settings};
     use adw::subclass::prelude::*;
     use glib::{
         clone,
@@ -17,8 +17,8 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/distance_action_row.ui")]
-    pub struct HealthDistanceActionRow {
-        pub settings: HealthSettings,
+    pub struct DistanceActionRow {
+        pub settings: Settings,
         pub value: RefCell<Length>,
         #[template_child]
         pub distance_adjustment: TemplateChild<gtk::Adjustment>,
@@ -30,19 +30,19 @@ mod imp {
         pub small_unit_togglebutton: TemplateChild<gtk::ToggleButton>,
     }
 
-    impl ObjectSubclass for HealthDistanceActionRow {
+    impl ObjectSubclass for DistanceActionRow {
         const NAME: &'static str = "HealthDistanceActionRow";
         type ParentType = adw::ActionRow;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthDistanceActionRow;
+        type Type = super::DistanceActionRow;
         type Interfaces = ();
 
         glib::object_subclass!();
 
         fn new() -> Self {
             Self {
-                settings: HealthSettings::new(),
+                settings: Settings::new(),
                 value: RefCell::new(Length::new::<meter>(0.0)),
                 distance_adjustment: TemplateChild::default(),
                 distance_spin_button: TemplateChild::default(),
@@ -60,10 +60,10 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthDistanceActionRow {
+    impl ObjectImpl for DistanceActionRow {
         fn constructed(&self, obj: &Self::Type) {
             let set_togglebutton_text = clone!(@weak obj => move || {
-                let self_ = HealthDistanceActionRow::from_instance(&obj);
+                let self_ = DistanceActionRow::from_instance(&obj);
                 if (self_.settings.get_unitsystem() == Unitsystem::Metric) {
                     self_.big_unit_togglebutton.set_label (&i18n("KM"));
                     self_.small_unit_togglebutton.set_label (&i18n("Meters"));
@@ -77,20 +77,21 @@ mod imp {
             self.settings
                 .connect_unitsystem_changed(move |_, _| set_togglebutton_text());
 
-            self.small_unit_togglebutton.connect_toggled(clone!(@weak obj => move |btn| {
-                let adjustment = &HealthDistanceActionRow::from_instance(&obj).distance_adjustment;
-                if (btn.get_active()) {
-                    adjustment.set_step_increment(100.0);
-                    adjustment.set_page_increment(1000.0);
-                } else {
-                    adjustment.set_step_increment(1.0);
-                    adjustment.set_page_increment(5.0);
-                }
-            }));
+            self.small_unit_togglebutton
+                .connect_toggled(clone!(@weak obj => move |btn| {
+                    let adjustment = &DistanceActionRow::from_instance(&obj).distance_adjustment;
+                    if (btn.get_active()) {
+                        adjustment.set_step_increment(100.0);
+                        adjustment.set_page_increment(1000.0);
+                    } else {
+                        adjustment.set_step_increment(1.0);
+                        adjustment.set_page_increment(5.0);
+                    }
+                }));
 
             self.distance_spin_button
                 .connect_changed(clone!(@weak obj => move |e| {
-                    let self_ = HealthDistanceActionRow::from_instance(&obj);
+                    let self_ = DistanceActionRow::from_instance(&obj);
                     let mut value = e.get_text().unwrap().as_str().parse::<u32>().unwrap_or(0) as f32;
 
                     if (self_.settings.get_unitsystem() == Unitsystem::Metric) {
@@ -128,11 +129,11 @@ mod imp {
             SIGNALS.as_ref()
         }
     }
-    impl WidgetImpl for HealthDistanceActionRow {}
-    impl ListBoxRowImpl for HealthDistanceActionRow {}
-    impl ActionRowImpl for HealthDistanceActionRow {}
+    impl WidgetImpl for DistanceActionRow {}
+    impl ListBoxRowImpl for DistanceActionRow {}
+    impl ActionRowImpl for DistanceActionRow {}
 
-    impl HealthDistanceActionRow {
+    impl DistanceActionRow {
         pub fn get_value(&self) -> Length {
             *self.value.borrow()
         }
@@ -162,21 +163,21 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthDistanceActionRow(ObjectSubclass<imp::HealthDistanceActionRow>)
+    pub struct DistanceActionRow(ObjectSubclass<imp::DistanceActionRow>)
         @extends gtk::Widget, gtk::ListBoxRow, adw::ActionRow;
 }
 
-impl HealthDistanceActionRow {
+impl DistanceActionRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create HealthDistanceActionRow")
+        glib::Object::new(&[]).expect("Failed to create DistanceActionRow")
     }
 
     pub fn get_value(&self) -> Length {
-        imp::HealthDistanceActionRow::from_instance(self).get_value()
+        imp::DistanceActionRow::from_instance(self).get_value()
     }
 
     pub fn set_value(&self, value: Length) {
-        imp::HealthDistanceActionRow::from_instance(self).set_value(value)
+        imp::DistanceActionRow::from_instance(self).set_value(value)
     }
 
     pub fn connect_changed<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {

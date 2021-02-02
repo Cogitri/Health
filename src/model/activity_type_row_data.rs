@@ -8,22 +8,22 @@ mod imp {
     use std::cell::RefCell;
 
     #[derive(Debug)]
-    pub struct HealthActivityTypeRowDataMut {
+    pub struct ActivityTypeRowDataMut {
         pub id: &'static str,
         pub label: String,
     }
 
     #[derive(Debug)]
-    pub struct HealthActivityTypeRowData {
-        inner: RefCell<Option<HealthActivityTypeRowDataMut>>,
+    pub struct ActivityTypeRowData {
+        inner: RefCell<Option<ActivityTypeRowDataMut>>,
     }
 
-    impl ObjectSubclass for HealthActivityTypeRowData {
+    impl ObjectSubclass for ActivityTypeRowData {
         const NAME: &'static str = "HealthActivityTypeRowData";
         type ParentType = glib::Object;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthActivityTypeRowData;
+        type Type = super::ActivityTypeRowData;
         type Interfaces = ();
 
         glib::object_subclass!();
@@ -35,10 +35,10 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthActivityTypeRowData {}
+    impl ObjectImpl for ActivityTypeRowData {}
 
-    impl HealthActivityTypeRowData {
-        pub fn set_inner(&self, inner: Option<HealthActivityTypeRowDataMut>) {
+    impl ActivityTypeRowData {
+        pub fn set_inner(&self, inner: Option<ActivityTypeRowDataMut>) {
             self.inner.replace(inner);
         }
 
@@ -53,28 +53,26 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthActivityTypeRowData(ObjectSubclass<imp::HealthActivityTypeRowData>);
+    pub struct ActivityTypeRowData(ObjectSubclass<imp::ActivityTypeRowData>);
 }
 
-impl HealthActivityTypeRowData {
+impl ActivityTypeRowData {
     pub fn new(id: &'static str, label: &str) -> Self {
-        let s = glib::Object::new(&[]).expect("Failed to create HealthActivityTypeRowData");
+        let s = glib::Object::new(&[]).expect("Failed to create ActivityTypeRowData");
 
-        imp::HealthActivityTypeRowData::from_instance(&s).set_inner(Some(
-            imp::HealthActivityTypeRowDataMut {
-                id,
-                label: label.to_string(),
-            },
-        ));
+        imp::ActivityTypeRowData::from_instance(&s).set_inner(Some(imp::ActivityTypeRowDataMut {
+            id,
+            label: label.to_string(),
+        }));
 
         s
     }
 
     pub fn get_id(&self) -> &'static str {
-        imp::HealthActivityTypeRowData::from_instance(self).get_id()
+        imp::ActivityTypeRowData::from_instance(self).get_id()
     }
 
     pub fn get_label(&self) -> String {
-        imp::HealthActivityTypeRowData::from_instance(self).get_label()
+        imp::ActivityTypeRowData::from_instance(self).get_label()
     }
 }

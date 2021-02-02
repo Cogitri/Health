@@ -3,7 +3,7 @@ use super::{
     DatabaseValue,
 };
 use crate::{
-    core::{i18n_f, HealthSettings},
+    core::{i18n_f, Settings},
     model::{Steps, Weight},
 };
 use chrono::{DateTime, FixedOffset, Utc};
@@ -188,7 +188,7 @@ impl SyncProvider for GoogleFitSyncProvider {
 
         if let Some(refresh_token) = self.token.as_ref().unwrap().refresh_token() {
             self.set_token(refresh_token.clone())?;
-            let settings = HealthSettings::new();
+            let settings = Settings::new();
             settings.set_sync_provider_setup_google_fit(true);
             settings.set_timestamp_last_sync_google_fit(chrono::Local::now().into());
         }
@@ -207,7 +207,7 @@ impl SyncProvider for GoogleFitSyncProvider {
     }
 
     fn sync_data(&mut self) -> Result<(), SyncProviderError> {
-        let settings = HealthSettings::new();
+        let settings = Settings::new();
         let last_sync_date = settings.get_timestamp_last_sync_google_fit();
         settings.set_timestamp_last_sync_google_fit(chrono::Local::now().into());
 

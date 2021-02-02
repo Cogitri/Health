@@ -1,5 +1,5 @@
 use crate::{
-    core::{settings::Unitsystem, HealthSettings},
+    core::{settings::Unitsystem, Settings},
     model::ActivityType,
 };
 use chrono::{DateTime, Duration, FixedOffset, TimeZone};
@@ -34,7 +34,7 @@ where
     D: Deserializer<'de>,
 {
     let val = f32::deserialize(deserializer)?;
-    if HealthSettings::new().get_unitsystem() == Unitsystem::Metric {
+    if Settings::new().get_unitsystem() == Unitsystem::Metric {
         if val == 0.0 {
             Ok(None)
         } else {
@@ -61,7 +61,7 @@ where
     D: Deserializer<'de>,
 {
     let val = f32::deserialize(deserializer)?;
-    if HealthSettings::new().get_unitsystem() == Unitsystem::Metric {
+    if Settings::new().get_unitsystem() == Unitsystem::Metric {
         Ok(Mass::new::<kilogram>(val))
     } else {
         Ok(Mass::new::<pound>(val))
@@ -102,7 +102,7 @@ pub fn serialize_distance<S>(l: &Option<Length>, s: S) -> Result<S::Ok, S::Error
 where
     S: Serializer,
 {
-    if HealthSettings::new().get_unitsystem() == Unitsystem::Metric {
+    if Settings::new().get_unitsystem() == Unitsystem::Metric {
         if let Some(length) = l {
             s.serialize_f32(length.get::<meter>())
         } else {
@@ -126,7 +126,7 @@ pub fn serialize_mass<S>(mass: &Mass, s: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
 {
-    if HealthSettings::new().get_unitsystem() == Unitsystem::Metric {
+    if Settings::new().get_unitsystem() == Unitsystem::Metric {
         s.serialize_f32(mass.get::<kilogram>())
     } else {
         s.serialize_f32(mass.get::<pound>())

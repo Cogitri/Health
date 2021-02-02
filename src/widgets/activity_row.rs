@@ -6,7 +6,7 @@ use gtk::{glib, CompositeTemplate};
 mod imp {
     use super::*;
     use crate::{
-        core::{i18n_f, settings::Unitsystem, HealthSettings},
+        core::{i18n_f, settings::Unitsystem, Settings},
         model::{ActivityDataPoints, ActivityInfo},
     };
     use glib::subclass;
@@ -17,9 +17,9 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_row.ui")]
-    pub struct HealthActivityRow {
+    pub struct ActivityRow {
         pub activity: OnceCell<Activity>,
-        pub settings: HealthSettings,
+        pub settings: Settings,
         #[template_child]
         pub active_minutes_label: TemplateChild<gtk::Label>,
         #[template_child]
@@ -54,12 +54,12 @@ mod imp {
         pub steps_row: TemplateChild<adw::ActionRow>,
     }
 
-    impl ObjectSubclass for HealthActivityRow {
+    impl ObjectSubclass for ActivityRow {
         const NAME: &'static str = "HealthActivityRow";
         type ParentType = gtk::ListBoxRow;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthActivityRow;
+        type Type = super::ActivityRow;
         type Interfaces = ();
 
         glib::object_subclass!();
@@ -67,7 +67,7 @@ mod imp {
         fn new() -> Self {
             Self {
                 activity: OnceCell::new(),
-                settings: HealthSettings::new(),
+                settings: Settings::new(),
                 active_minutes_label: TemplateChild::default(),
                 activity_date_label: TemplateChild::default(),
                 activity_type_label: TemplateChild::default(),
@@ -96,22 +96,22 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthActivityRow {
+    impl ObjectImpl for ActivityRow {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
             let gesture_controller = gtk::GestureClick::new();
             gesture_controller.connect_pressed(glib::clone!(@weak obj => move |_,_,_,_| {
-                let self_ = imp::HealthActivityRow::from_instance(&obj);
+                let self_ = imp::ActivityRow::from_instance(&obj);
                 self_.details_revealer.set_reveal_child(!self_.details_revealer.get_reveal_child());
             }));
         }
     }
 
-    impl WidgetImpl for HealthActivityRow {}
-    impl ListBoxRowImpl for HealthActivityRow {}
+    impl WidgetImpl for ActivityRow {}
+    impl ListBoxRowImpl for ActivityRow {}
 
-    impl HealthActivityRow {
+    impl ActivityRow {
         pub fn set_activity(&self, activity: Activity) {
             let activity_info = ActivityInfo::from(activity.get_activity_type());
 
@@ -181,16 +181,16 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthActivityRow(ObjectSubclass<imp::HealthActivityRow>)
+    pub struct ActivityRow(ObjectSubclass<imp::ActivityRow>)
         @extends gtk::Widget, gtk::ListBoxRow;
 }
 
-impl HealthActivityRow {
+impl ActivityRow {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create HealthActivityRow")
+        glib::Object::new(&[]).expect("Failed to create ActivityRow")
     }
 
     pub fn set_activity(&self, activity: Activity) {
-        imp::HealthActivityRow::from_instance(&self).set_activity(activity);
+        imp::ActivityRow::from_instance(&self).set_activity(activity);
     }
 }

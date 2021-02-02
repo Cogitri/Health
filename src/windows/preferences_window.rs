@@ -1,4 +1,4 @@
-use crate::core::HealthDatabase;
+use crate::core::Database;
 use gdk::subclass::prelude::ObjectSubclass;
 use gtk::prelude::*;
 use gtk::{glib, CompositeTemplate};
@@ -6,9 +6,9 @@ use gtk::{glib, CompositeTemplate};
 mod imp {
     use super::*;
     use crate::{
-        core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, HealthSettings},
+        core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Settings},
         sync::csv::CSVHandler,
-        widgets::{HealthBMILevelBar, HealthSyncListBox},
+        widgets::{BMILevelBar, SyncListBox},
     };
     use adw::PreferencesRowExt;
     use glib::{
@@ -26,10 +26,10 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/preferences_window.ui")]
-    pub struct HealthPreferencesWindow {
-        pub db: OnceCell<HealthDatabase>,
+    pub struct PreferencesWindow {
+        pub db: OnceCell<Database>,
         pub parent_window: OnceCell<Option<gtk::Window>>,
-        pub settings: HealthSettings,
+        pub settings: Settings,
 
         #[template_child]
         pub height_actionrow: TemplateChild<adw::ActionRow>,
@@ -48,9 +48,9 @@ mod imp {
         #[template_child]
         pub unit_metric_togglebutton: TemplateChild<gtk::ToggleButton>,
         #[template_child]
-        pub bmi_levelbar: TemplateChild<HealthBMILevelBar>,
+        pub bmi_levelbar: TemplateChild<BMILevelBar>,
         #[template_child]
-        pub sync_list_box: TemplateChild<HealthSyncListBox>,
+        pub sync_list_box: TemplateChild<SyncListBox>,
         #[template_child]
         pub export_activity_csv_button: TemplateChild<gtk::Button>,
         #[template_child]
@@ -61,19 +61,19 @@ mod imp {
         pub import_weight_csv_button: TemplateChild<gtk::Button>,
     }
 
-    impl ObjectSubclass for HealthPreferencesWindow {
+    impl ObjectSubclass for PreferencesWindow {
         const NAME: &'static str = "HealthPreferencesWindow";
         type ParentType = adw::PreferencesWindow;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthPreferencesWindow;
+        type Type = super::PreferencesWindow;
         type Interfaces = ();
 
         glib::object_subclass!();
 
         fn new() -> Self {
             Self {
-                settings: HealthSettings::new(),
+                settings: Settings::new(),
                 height_actionrow: TemplateChild::default(),
                 weightgoal_actionrow: TemplateChild::default(),
                 age_spin_button: TemplateChild::default(),
@@ -102,7 +102,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthPreferencesWindow {
+    impl ObjectImpl for PreferencesWindow {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
@@ -145,16 +145,16 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for HealthPreferencesWindow {}
-    impl WindowImpl for HealthPreferencesWindow {}
-    impl adw::subclass::window::AdwWindowImpl for HealthPreferencesWindow {}
-    impl adw::subclass::preferences_window::PreferencesWindowImpl for HealthPreferencesWindow {}
+    impl WidgetImpl for PreferencesWindow {}
+    impl WindowImpl for PreferencesWindow {}
+    impl adw::subclass::window::AdwWindowImpl for PreferencesWindow {}
+    impl adw::subclass::preferences_window::PreferencesWindowImpl for PreferencesWindow {}
 
-    impl HealthPreferencesWindow {
-        fn connect_handlers(&self, obj: &super::HealthPreferencesWindow) {
+    impl PreferencesWindow {
+        fn connect_handlers(&self, obj: &super::PreferencesWindow) {
             self.age_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = imp::HealthPreferencesWindow::from_instance(&obj);
+                    let self_ = imp::PreferencesWindow::from_instance(&obj);
                     let val = get_spinbutton_value::<u32>(&self_.age_spin_button);
                     if val != 0 {
                         self_.settings.set_user_age(val);
@@ -163,7 +163,7 @@ mod imp {
 
             self.stepgoal_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = imp::HealthPreferencesWindow::from_instance(&obj);
+                    let self_ = imp::PreferencesWindow::from_instance(&obj);
                     let val = get_spinbutton_value::<u32>(&self_.stepgoal_spin_button);
                     if val != 0 {
                         self_.settings.set_user_stepgoal(val);
@@ -172,7 +172,7 @@ mod imp {
 
             self.weightgoal_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = imp::HealthPreferencesWindow::from_instance(&obj);
+                    let self_ = imp::PreferencesWindow::from_instance(&obj);
                     let val = get_spinbutton_value::<f32>(&self_.weightgoal_spin_button);
                     if val != 0.0 {
                         let weight = if self_.unit_metric_togglebutton.get_active() {
@@ -187,7 +187,7 @@ mod imp {
 
             self.height_spin_button
                 .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = imp::HealthPreferencesWindow::from_instance(&obj);
+                    let self_ = imp::PreferencesWindow::from_instance(&obj);
                     let val = get_spinbutton_value::<u32>(&self_.height_spin_button) as f32;
                     if val != 0.0 {
                         let height = if self_.unit_metric_togglebutton.get_active() {
@@ -201,7 +201,7 @@ mod imp {
                 }));
 
             self.unit_metric_togglebutton.connect_toggled(clone!(@weak obj => move |btn| {
-                let self_ = imp::HealthPreferencesWindow::from_instance(&obj);
+                let self_ = imp::PreferencesWindow::from_instance(&obj);
                 if btn.get_active() {
                     self_.settings.set_unitsystem(Unitsystem::Metric);
                     self_.bmi_levelbar.set_unitsystem(Unitsystem::Metric);
@@ -242,7 +242,7 @@ mod imp {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {
-                                let self_ = imp::HealthPreferencesWindow::from_instance(&obj);
+                                let self_ = imp::PreferencesWindow::from_instance(&obj);
                                 let handler = CSVHandler::new(self_.db.get().unwrap().clone());
                                 if let Err(e) = handler.export_activities_csv(&file).await {
                                     g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
@@ -269,7 +269,7 @@ mod imp {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {
-                                let self_ = imp::HealthPreferencesWindow::from_instance(&obj);
+                                let self_ = imp::PreferencesWindow::from_instance(&obj);
                                 let handler = CSVHandler::new(self_.db.get().unwrap().clone());
                                 if let Err(e) = handler.export_weights_csv(&file).await {
                                     g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
@@ -295,7 +295,7 @@ mod imp {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {
-                                let self_ = imp::HealthPreferencesWindow::from_instance(&obj);
+                                let self_ = imp::PreferencesWindow::from_instance(&obj);
                                 let handler = CSVHandler::new(self_.db.get().unwrap().clone());
                                 if let Err(e) = handler.import_weights_csv(&file).await {
                                     g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
@@ -320,7 +320,7 @@ mod imp {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {
-                                let self_ = imp::HealthPreferencesWindow::from_instance(&obj);
+                                let self_ = imp::PreferencesWindow::from_instance(&obj);
                                 let handler = CSVHandler::new(self_.db.get().unwrap().clone());
                                 if let Err(e) = handler.import_activities_csv(&file).await {
                                     g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
@@ -335,18 +335,18 @@ mod imp {
 }
 
 glib::wrapper! {
-    pub struct HealthPreferencesWindow(ObjectSubclass<imp::HealthPreferencesWindow>)
+    pub struct PreferencesWindow(ObjectSubclass<imp::PreferencesWindow>)
         @extends gtk::Widget, gtk::Window, adw::PreferencesWindow;
 }
 
-impl HealthPreferencesWindow {
-    pub fn new(db: HealthDatabase, parent_window: Option<gtk::Window>) -> Self {
-        let o: HealthPreferencesWindow =
-            glib::Object::new(&[]).expect("Failed to create HealthPreferencesWindow");
+impl PreferencesWindow {
+    pub fn new(db: Database, parent_window: Option<gtk::Window>) -> Self {
+        let o: PreferencesWindow =
+            glib::Object::new(&[]).expect("Failed to create PreferencesWindow");
 
         o.set_transient_for(parent_window.as_ref());
 
-        let self_ = imp::HealthPreferencesWindow::from_instance(&o);
+        let self_ = imp::PreferencesWindow::from_instance(&o);
         self_.db.set(db.clone()).unwrap();
         self_.sync_list_box.set_database(db);
         self_.parent_window.set(parent_window).unwrap();

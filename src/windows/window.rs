@@ -1,6 +1,6 @@
 use crate::{
-    core::HealthDatabase,
-    views::{HealthViewActivity, HealthViewSteps, HealthViewWeight},
+    core::Database,
+    views::{ViewActivity, ViewSteps, ViewWeight},
 };
 use gdk::subclass::prelude::ObjectSubclass;
 use gtk::prelude::*;
@@ -9,14 +9,14 @@ use gtk::{gio, glib, CompositeTemplate};
 mod imp {
     use super::*;
     use crate::{
-        core::HealthSettings,
+        core::Settings,
         sync::{
             google_fit::GoogleFitSyncProvider,
             new_db_receiver,
             sync_provider::{SyncProvider, SyncProviderError},
         },
-        views::HealthView,
-        windows::{HealthActivityAddDialog, HealthWeightAddDialog},
+        views::View,
+        windows::{ActivityAddDialog, WeightAddDialog},
     };
     use glib::{clone, signal::Inhibit, subclass, SourceId};
     use gtk::subclass::prelude::*;
@@ -32,7 +32,7 @@ mod imp {
     }
 
     #[derive(Debug)]
-    pub struct HealthWindowMut {
+    pub struct WindowMut {
         current_height: i32,
         current_width: i32,
         current_view: ViewMode,
@@ -41,11 +41,11 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/window.ui")]
-    pub struct HealthWindow {
-        pub db: OnceCell<HealthDatabase>,
-        pub inner: RefCell<HealthWindowMut>,
-        pub settings: HealthSettings,
-        pub views: OnceCell<BTreeMap<ViewMode, HealthView>>,
+    pub struct Window {
+        pub db: OnceCell<Database>,
+        pub inner: RefCell<WindowMut>,
+        pub settings: Settings,
+        pub views: OnceCell<BTreeMap<ViewMode, View>>,
 
         #[template_child]
         pub add_data_button: TemplateChild<gtk::Button>,
@@ -59,12 +59,12 @@ mod imp {
         pub stack: TemplateChild<gtk::Stack>,
     }
 
-    impl ObjectSubclass for HealthWindow {
+    impl ObjectSubclass for Window {
         const NAME: &'static str = "HealthWindow";
         type ParentType = adw::ApplicationWindow;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;
-        type Type = super::HealthWindow;
+        type Type = super::Window;
         type Interfaces = ();
 
         glib::object_subclass!();
@@ -72,13 +72,13 @@ mod imp {
         fn new() -> Self {
             Self {
                 db: OnceCell::new(),
-                inner: RefCell::new(HealthWindowMut {
+                inner: RefCell::new(WindowMut {
                     current_height: 0,
                     current_width: 0,
                     current_view: ViewMode::STEPS,
                     sync_source_id: None,
                 }),
-                settings: HealthSettings::new(),
+                settings: Settings::new(),
                 views: OnceCell::new(),
                 add_data_button: TemplateChild::default(),
                 error_infobar: TemplateChild::default(),
@@ -97,7 +97,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for HealthWindow {
+    impl ObjectImpl for Window {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
@@ -122,14 +122,14 @@ mod imp {
         }
     }
 
-    impl HealthWindow {
+    impl Window {
         pub fn show_error(&self, err_msg: &str) {
             glib::g_warning!(crate::config::LOG_DOMAIN, "{}", err_msg);
             self.error_label.set_text(err_msg);
             self.error_infobar.set_revealed(true);
         }
 
-        fn connect_handlers(&self, obj: &super::HealthWindow) {
+        fn connect_handlers(&self, obj: &super::Window) {
             self.error_infobar.connect_response(|bar, response| {
                 if response == gtk::ResponseType::Close {
                     bar.set_revealed(false);
@@ -138,7 +138,7 @@ mod imp {
             self.stack
                 .connect_property_visible_child_notify(clone!(@weak obj => move |s| {
                     let child_name = s.get_visible_child_name().map(|s| s.to_string());
-                    let self_ = HealthWindow::from_instance(&obj);
+                    let self_ = Window::from_instance(&obj);
 
                     if child_name == self_.views.get().unwrap().get(&ViewMode::STEPS).and_then(|s| s.get_name()).map(|s| s.to_string()) {
                         self_.inner.borrow_mut().current_view = ViewMode::STEPS;
@@ -148,30 +148,30 @@ mod imp {
                 }));
             self.add_data_button
                 .connect_clicked(clone!(@weak obj => move |_| {
-                    let self_ = HealthWindow::from_instance(&obj);
+                    let self_ = Window::from_instance(&obj);
                     let db = self_.db.get().unwrap().clone();
 
                     let dialog = match self_.inner.borrow().current_view {
-                        ViewMode::ACTIVITIES | ViewMode::STEPS => HealthActivityAddDialog::new(db, obj.upcast_ref()).upcast::<gtk::Dialog>(),
-                        ViewMode::WEIGHT => HealthWeightAddDialog::new(db, obj.upcast_ref()).upcast::<gtk::Dialog>(),
+                        ViewMode::ACTIVITIES | ViewMode::STEPS => ActivityAddDialog::new(db, obj.upcast_ref()).upcast::<gtk::Dialog>(),
+                        ViewMode::WEIGHT => WeightAddDialog::new(db, obj.upcast_ref()).upcast::<gtk::Dialog>(),
                     };
                     dialog.present();
                 }));
 
             obj.connect_property_default_height_notify(move |w| {
-                HealthWindow::from_instance(w)
+                Window::from_instance(w)
                     .inner
                     .borrow_mut()
                     .current_height = w.get_property_default_height();
             });
             obj.connect_property_default_width_notify(move |w| {
-                HealthWindow::from_instance(w)
+                Window::from_instance(w)
                     .inner
                     .borrow_mut()
                     .current_width = w.get_property_default_width();
             });
             obj.connect_close_request(|w| {
-                let self_ = HealthWindow::from_instance(w);
+                let self_ = Window::from_instance(w);
                 let mut inner = self_.inner.borrow_mut();
 
                 self_
@@ -188,16 +188,13 @@ mod imp {
             });
         }
 
-        pub fn set_db(&self, obj: &super::HealthWindow, db: HealthDatabase) {
+        pub fn set_db(&self, obj: &super::Window, db: Database) {
             self.db.set(db.clone()).unwrap();
 
             let mut views = BTreeMap::new();
-            views.insert(
-                ViewMode::ACTIVITIES,
-                HealthViewActivity::new(db.clone()).upcast(),
-            );
-            views.insert(ViewMode::WEIGHT, HealthViewWeight::new(db.clone()).upcast());
-            views.insert(ViewMode::STEPS, HealthViewSteps::new(db).upcast());
+            views.insert(ViewMode::ACTIVITIES, ViewActivity::new(db.clone()).upcast());
+            views.insert(ViewMode::WEIGHT, ViewWeight::new(db.clone()).upcast());
+            views.insert(ViewMode::STEPS, ViewSteps::new(db).upcast());
             self.views.set(views).unwrap();
 
             for view in self.views.get().unwrap().values() {
@@ -216,7 +213,7 @@ mod imp {
             glib::timeout_add_seconds_local(
                 60 * 5,
                 clone!(@weak obj => move || {
-                    let self_ = imp::HealthWindow::from_instance(&obj);
+                    let self_ = imp::Window::from_instance(&obj);
                     self_.sync_data(&obj);
 
                     glib::Continue(true)
@@ -224,7 +221,7 @@ mod imp {
             );
         }
 
-        fn sync_data(&self, obj: &super::HealthWindow) {
+        fn sync_data(&self, obj: &super::Window) {
             if self.settings.get_sync_provider_setup_google_fit() {
                 let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
                 let db_sender = new_db_receiver(self.db.get().unwrap().clone());
@@ -233,7 +230,7 @@ mod imp {
                     None,
                     clone!(@weak obj => move |v: Option<SyncProviderError>| {
                         if let Some(e) = v {
-                            imp::HealthWindow::from_instance(&obj).show_error(&e.to_string());
+                            imp::Window::from_instance(&obj).show_error(&e.to_string());
                         }
 
                         glib::Continue(false)
@@ -252,43 +249,43 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for HealthWindow {}
-    impl WindowImpl for HealthWindow {}
-    impl ApplicationWindowImpl for HealthWindow {}
-    impl adw::subclass::application_window::AdwApplicationWindowImpl for HealthWindow {}
+    impl WidgetImpl for Window {}
+    impl WindowImpl for Window {}
+    impl ApplicationWindowImpl for Window {}
+    impl adw::subclass::application_window::AdwApplicationWindowImpl for Window {}
 }
 
 glib::wrapper! {
-    pub struct HealthWindow(ObjectSubclass<imp::HealthWindow>)
+    pub struct Window(ObjectSubclass<imp::Window>)
         @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow, adw::ApplicationWindow, @implements gio::ActionMap, gio::ActionGroup;
 }
 
-impl HealthWindow {
-    pub fn new<P: glib::IsA<gtk::Application>>(app: &P, db: HealthDatabase) -> Self {
-        let o = glib::Object::new(&[("application", app)]).expect("Failed to create HealthWindow");
+impl Window {
+    pub fn new<P: glib::IsA<gtk::Application>>(app: &P, db: Database) -> Self {
+        let o = glib::Object::new(&[("application", app)]).expect("Failed to create Window");
 
-        imp::HealthWindow::from_instance(&o).set_db(&o, db);
+        imp::Window::from_instance(&o).set_db(&o, db);
 
         o
     }
 
     pub fn update(&self) {
-        for (mode, view) in imp::HealthWindow::from_instance(self).views.get().unwrap() {
+        for (mode, view) in imp::Window::from_instance(self).views.get().unwrap() {
             match mode {
                 imp::ViewMode::STEPS => {
-                    let v = view.clone().downcast::<HealthViewSteps>().unwrap();
+                    let v = view.clone().downcast::<ViewSteps>().unwrap();
                     glib::MainContext::default().spawn_local(async move {
                         v.update().await;
                     });
                 }
                 imp::ViewMode::WEIGHT => {
-                    let v = view.clone().downcast::<HealthViewWeight>().unwrap();
+                    let v = view.clone().downcast::<ViewWeight>().unwrap();
                     glib::MainContext::default().spawn_local(async move {
                         v.update().await;
                     });
                 }
                 imp::ViewMode::ACTIVITIES => {
-                    let v = view.clone().downcast::<HealthViewActivity>().unwrap();
+                    let v = view.clone().downcast::<ViewActivity>().unwrap();
                     glib::MainContext::default().spawn_local(async move {
                         v.update().await;
                     });
@@ -298,7 +295,7 @@ impl HealthWindow {
     }
 
     pub fn open_hamburger_menu(&self) {
-        imp::HealthWindow::from_instance(self)
+        imp::Window::from_instance(self)
             .primary_menu_popover
             .popup();
     }
