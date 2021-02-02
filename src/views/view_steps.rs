@@ -114,7 +114,7 @@ mod imp {
             } else if !steps_graph_model.is_empty() {
                 let steps_graph_view = GraphView::new();
                 steps_graph_view.set_points(steps_graph_model.to_points());
-
+                steps_graph_view.set_x_lines_interval(500.0);
                 steps_graph_view.set_hover_func(Some(Box::new(|p| {
                     return i18n_f(
                         "{} steps on {}",

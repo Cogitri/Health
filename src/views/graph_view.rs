@@ -3,7 +3,6 @@ use gio::subclass::prelude::ObjectSubclass;
 use gtk::glib;
 use gtk::prelude::*;
 
-static X_LINES_INTERVAL: f32 = 500.0;
 static HALF_X_PADDING: f32 = 30.0;
 static HALF_Y_PADDING: f32 = 30.0;
 
@@ -39,6 +38,7 @@ mod imp {
         pub scale_x: f32,
         pub scale_y: f32,
         pub width: f32,
+        pub x_lines_interval: f32,
     }
 
     pub struct GraphView {
@@ -69,6 +69,7 @@ mod imp {
                     scale_x: 0.0,
                     scale_y: 0.0,
                     width: 0.0,
+                    x_lines_interval: 500.0,
                 }),
             }
         }
@@ -92,8 +93,8 @@ mod imp {
             } else {
                 //Round up to 500, the graph looks a bit odd if we draw lines at biggest_value / 4 instead of
                 // using even numbers
-                let biggest_value =
-                    inner.biggest_value + X_LINES_INTERVAL - inner.biggest_value % X_LINES_INTERVAL;
+                let biggest_value = inner.biggest_value + inner.x_lines_interval
+                    - inner.biggest_value % inner.x_lines_interval;
 
                 inner.scale_x = inner.width / inner.points.len() as f32;
                 inner.scale_y = inner.height / biggest_value;
@@ -343,24 +344,29 @@ mod imp {
     impl GraphView {
         pub fn set_hover_func(
             &self,
-            obj: &crate::views::GraphView,
+            obj: &super::GraphView,
             hover_func: Option<Box<dyn Fn(&Point) -> String>>,
         ) {
             self.inner.borrow_mut().hover_func = hover_func;
             obj.queue_draw();
         }
 
-        pub fn set_limit(&self, obj: &crate::views::GraphView, limit: Option<f32>) {
+        pub fn set_limit(&self, obj: &super::GraphView, limit: Option<f32>) {
             self.inner.borrow_mut().limit = limit;
             obj.queue_draw();
         }
 
-        pub fn set_limit_label(&self, obj: &crate::views::GraphView, label: Option<String>) {
+        pub fn set_limit_label(&self, obj: &super::GraphView, label: Option<String>) {
             self.inner.borrow_mut().limit_label = label;
             obj.queue_draw();
         }
 
-        pub fn set_points(&self, obj: &crate::views::GraphView, points: Vec<Point>) {
+        pub fn set_x_lines_interval(&self, obj: &super::GraphView, interval: f32) {
+            self.inner.borrow_mut().x_lines_interval = interval;
+            obj.queue_draw();
+        }
+
+        pub fn set_points(&self, obj: &super::GraphView, points: Vec<Point>) {
             let layout = obj.create_pango_layout(Some(&format!("{}", Local::now().format("%x"))));
             let (_, extents) = layout.get_extents();
             let datapoint_width = pango::units_to_double(extents.width) + HALF_X_PADDING as f64;
@@ -456,5 +462,9 @@ impl GraphView {
 
     pub fn set_points(&self, points: Vec<Point>) {
         imp::GraphView::from_instance(self).set_points(self, points);
+    }
+
+    pub fn set_x_lines_interval(&self, interval: f32) {
+        imp::GraphView::from_instance(self).set_x_lines_interval(self, interval);
     }
 }

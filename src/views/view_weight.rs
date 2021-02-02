@@ -152,6 +152,7 @@ mod imp {
             } else if !weight_graph_model.is_empty() {
                 let weight_graph_view = GraphView::new();
                 weight_graph_view.set_points(weight_graph_model.to_points());
+                weight_graph_view.set_x_lines_interval(10.0);
                 let settings = self.settings.clone();
                 weight_graph_view.set_hover_func(Some(Box::new(move |p| {
                     let unit = if settings.get_unitsystem() == Unitsystem::Imperial {
