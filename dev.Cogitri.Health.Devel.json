@@ -3,6 +3,9 @@
     "runtime": "org.gnome.Platform",
     "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
+    "sdk-extensions" : [
+        "org.freedesktop.Sdk.Extension.rust-stable"
+    ],
     "command": "dev.Cogitri.Health.Devel",
     "finish-args": [
         "--share=network",
@@ -31,10 +34,16 @@
         "/lib/girepository-1.0",
         "/share/gir-1.0"
     ],
-    "build-options": {
-        "build-args": [
+    "build-options" : {
+        "append-path" : "/usr/lib/sdk/rust-stable/bin",
+        "build-args" : [
             "--share=network"
-        ]
+        ],
+        "env" : {
+            "CARGO_HOME" : "/run/build/Fractal/cargo",
+            "RUST_BACKTRACE" : "1",
+            "RUSTFLAGS" : ""
+        }
     },
     "modules": [
         {
@@ -59,16 +68,6 @@
                 {
                     "type": "patch",
                     "path": "build-aux/libadwaita-dark-theme.patch"
-                }
-            ]
-        },
-        {
-            "name": "rest",
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://download.gnome.org/sources/rest/0.8/rest-0.8.1.tar.xz",
-                    "sha256": "0513aad38e5d3cedd4ae3c551634e3be1b9baaa79775e53b2dba9456f15b01c9"
                 }
             ]
         },

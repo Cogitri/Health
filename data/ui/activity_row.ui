@@ -98,29 +98,29 @@
                   </object>
                 </child>
                 <child>
-                  <object class="AdwActionRow" id="average_heart_rate_row">
+                  <object class="AdwActionRow" id="heart_rate_average_row">
                     <property name="title" translatable="yes">Average Heart Rate</property>
                     <property name="visible">0</property>
                     <child>
-                      <object class="GtkLabel" id="average_heart_rate_label"/>
+                      <object class="GtkLabel" id="heart_rate_average_label"/>
                     </child>
                   </object>
                 </child>
                 <child>
-                  <object class="AdwActionRow" id="minimum_heart_rate_row">
+                  <object class="AdwActionRow" id="heart_rate_minimum_row">
                     <property name="title" translatable="yes">Minimum Heart Rate</property>
                     <property name="visible">0</property>
                     <child>
-                      <object class="GtkLabel" id="minimum_heart_rate_label"/>
+                      <object class="GtkLabel" id="heart_rate_minimum_label"/>
                     </child>
                   </object>
                 </child>
                 <child>
-                  <object class="AdwActionRow" id="maximum_heart_rate_row">
+                  <object class="AdwActionRow" id="heart_rate_maximum_row">
                     <property name="title" translatable="yes">Maximum Heart Rate</property>
                     <property name="visible">0</property>
                     <child>
-                      <object class="GtkLabel" id="maximum_heart_rate_label"/>
+                      <object class="GtkLabel" id="heart_rate_maximum_label"/>
                     </child>
                   </object>
                 </child>

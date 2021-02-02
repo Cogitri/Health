@@ -4,7 +4,7 @@ variables:
   BUNDLE: "dev.Cogitri.Health.Devel.flatpak"
   MANIFEST_PATH: "dev.Cogitri.Health.Devel.json"
   FLATPAK_MODULE: "health"
-  FLATPAK_IMAGE: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master"
+  FLATPAK_IMAGE: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master"
   TARBALL: "dev.Cogitri.Health-${CI_COMMIT_TAG}.tar.xz"
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/release-tarballs/${CI_COMMIT_TAG}"
 
@@ -24,11 +24,34 @@ stages:
   - release-fix-url
   - release-publish
 
-lint:
-  image: valalang/lint
+fmt:
+  image: "registry.gitlab.com/alatiera/rustfmt-oci-image/rustfmt:stable"
   stage: qa
   script:
-    - io.elementary.vala-lint --config .vala-lint.conf src
+    # Create blank versions of our configured files
+    # so rustfmt does not yell about non-existent files or completely empty files
+    - echo -e "" >> src/config.rs
+    - rustc -Vv && cargo -Vv
+    - cargo --version
+    - cargo fmt --all -- --check
+
+clippy:
+  image: alpine:edge
+  stage: qa
+  before_script:
+    - apk add --no-cache gtk4.0-dev libgee-dev tracker-dev meson build-base git gobject-introspection-dev rustup
+    - git clone https://gitlab.gnome.org/exalm/libadwaita
+    - cd libadwaita
+    - meson -Dexamples=false -Dvapi=false build
+    - meson install -C build
+    - cd ..
+    - rustup-init -y
+    - source $HOME/.cargo/env
+    - rustup component add clippy
+  script:
+    - meson build
+    - cargo clippy
+
 
 flatpak:
   extends: ".flatpak"
@@ -38,43 +61,11 @@ flatpak:
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
     APP_ID: "dev.Cogitri.Health.Devel"
 
-flatpak-non-null:
-  image: "$FLATPAK_IMAGE"
-  stage: build
-  tags:
-    - flatpak
-  script:
-    - flatpak-builder --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} --force-clean app ${MANIFEST_PATH}
-    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} env VALAFLAGS="--enable-experimental-non-null" meson _build
-    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} ninja -C _build
-    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} env LANG="en_GB.UTF-8" meson test -v -C _build
-
 nightly:
   stage: deploy
   extends: ".publish_nightly"
   dependencies: ["flatpak"]
   needs: ["flatpak"]
-
-pages:
-  image: alpine:edge
-  stage: deploy
-  before_script:
-    - apk add --no-cache vala gtk4.0-dev libgee-dev tracker-dev meson build-base git gobject-introspection-dev libsoup-dev rest-dev json-glib-dev libsecret-dev
-    - git clone https://gitlab.gnome.org/exalm/libadwaita
-    - cd libadwaita
-    - meson build
-    - meson install -C build
-    - cd ..
-  script:
-    - meson -Ddocs=true build
-    - meson compile -C build
-    - rm -rf public
-    - mv build/docs/ public
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
 
 create-dist-tarball:
   stage: release-tarball

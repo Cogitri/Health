@@ -47,9 +47,6 @@
     <property name="title" translatable="yes">Health</property>
     <property name="default-width">600</property>
     <property name="default-height">300</property>
-    <signal name="close_request" handler="on_close_request" swapped="no"/>
-    <signal name="notify::default-height" handler="on_window_default_height_changed" swapped="no"/>
-    <signal name="notify::default-width" handler="on_window_default_width_changed" swapped="no"/>
     <child>
       <object class="GtkBox">
         <property name="can-focus">0</property>
@@ -67,7 +64,6 @@
             <child>
               <object class="GtkButton" id="add_data_button">
                 <property name="can-focus">0</property>
-                <signal name="clicked" handler="add_data_button_clicked" swapped="no"/>
                 <child>
                   <object class="GtkImage">
                     <property name="can-focus">0</property>
@@ -98,7 +94,6 @@
             <property name="revealed">0</property>
             <property name="show-close-button">1</property>
             <property name="message-type">GTK_MESSAGE_ERROR</property>
-            <signal name="response" handler="on_error_infobar_response" swapped="no"/>
             <child>
               <object class="GtkLabel" id="error_label">
                 <property name="margin-start">6</property>
@@ -115,7 +110,6 @@
             <property name="height-request">200</property>
             <property name="can-focus">0</property>
             <property name="vexpand">1</property>
-            <signal name="notify::visible-child" handler="on_visible_child_changed" swapped="no"/>
             <child>
               <placeholder/>
             </child>

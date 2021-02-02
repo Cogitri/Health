@@ -29,7 +29,6 @@
     <property name="use-header-bar">1</property>
     <property name="modal">1</property>
     <property name="destroy-with-parent">1</property>
-    <signal name="response" handler="on_response" swapped="no"/>
     <child type="action">
       <object class="GtkButton" id="button_cancel">
         <property name="label" translatable="yes">_Cancel</property>
@@ -88,7 +87,6 @@
                         <property name="margin-end">6</property>
                         <property name="margin-top">6</property>
                         <property name="margin-bottom">6</property>
-                        <signal name="changed" handler="on_weight_spin_button_changed" swapped="no"/>
                       </object>
                     </child>
                   </object>

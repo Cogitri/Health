@@ -21,9 +21,7 @@
   <requires lib="gtk" version="4.0"/>
   <template class="HealthBMILevelBar" parent="GtkWidget">
     <child>
-      <object class="GtkLabel" id="bmi_label">
-        <property name="use-markup">1</property>
-      </object>
+      <object class="GtkLabel" id="bmi_label"/>
     </child>
     <child>
       <object class="GtkLevelBar" id="level_bar"/>

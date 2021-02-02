@@ -19,7 +19,7 @@
 -->
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
-  <template class="HealthStepView" parent="HealthView">
+  <template class="HealthViewSteps" parent="HealthView">
     <property name="empty-subtitle" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new activity.</property>
     <property name="icon-name">steps-symbolic</property>
     <property name="name">Steps</property>

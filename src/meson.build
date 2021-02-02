@@ -1,103 +1,87 @@
-health_sources = files(
-  'core/application.vala',
-  'core/database.vala',
-  'core/settings.vala',
-  'core/units.vala',
-  'core/util.vala',
-  'model/activity.vala',
-  'model/activity_model.vala',
-  'model/graph_model.vala',
-  'model/steps_graph_model.vala',
-  'model/weight_graph_model.vala',
-  'sync/google_fit_oauth2_proxy.vala',
-  'sync/oauth2_proxy.vala',
-  'views/activity_view.vala',
-  'views/graph_view.vala',
-  'views/steps_view.vala',
-  'views/view.vala',
-  'views/weight_view.vala',
-  'widgets/activity_row.vala',
-  'widgets/activity_type_selector.vala',
-  'widgets/bmi_level_bar.vala',
-  'widgets/date_editor.vala',
-  'widgets/distance_action_row.vala',
-  'widgets/sync_list_box.vala',
-  'windows/activity_add_dialog.vala',
-  'windows/preferences_window.vala',
-  'windows/setup_window.vala',
-  'windows/weight_add_dialog.vala',
-  'windows/window.vala',
-)
-
-cc = meson.get_compiler('c')
-
-health_deps = [
-  dependency('gio-2.0', version: '>= 2.50'),
-  dependency('gtk4', version: '>=3.99.6'),
-  dependency('libadwaita-1'),
-  dependency('gee-0.8'),
-  dependency('libsoup-2.4'),
-  dependency('rest-0.7'),
-  dependency('libsecret-1'),
-  dependency('json-glib-1.0'),
-  dependency('pangocairo'),
-  dependency('tracker-sparql-3.0'),
-  cc.find_library('m', required: false),
-]
-
-# Add our config VAPI
-add_project_arguments(
-  [
-    '--vapidir', meson.current_source_dir() / 'core',
-    '--pkg', 'config',
-  ],
-  language: 'vala'
-)
-
-# Configuration
 conf = configuration_data()
-conf.set_quoted('APPLICATION_ID', application_id)
-conf.set_quoted('VERSION', health_version)
-conf.set_quoted('DATADIR', health_data_dir)
+conf.set_quoted('VERSION', meson.project_version())
+conf.set_quoted('localedir', join_paths(get_option('prefix'), get_option('localedir')))
+conf.set_quoted('pkgdatadir', health_data_dir)
+conf.set_quoted('application_id', application_id)
+conf.set_quoted('log_domain', application_id)
 
 configure_file(
-  output: 'config.h',
-  configuration: conf,
+    input: 'config.rs.in',
+    output: 'config.rs',
+    configuration: conf
 )
 
-# Include config.h
-add_project_arguments(
-  '-I@0@'.format(meson.current_build_dir()),
-  language: 'c'
+# Copy the config.rs output to the source directory.
+run_command(
+  'cp',
+  join_paths(meson.build_root(), 'src', 'config.rs'),
+  join_paths(meson.source_root(), 'src', 'config.rs'),
+  check: true
 )
 
-c_args = [
-  '-DVERSION="@0@"'.format(meson.project_version()),
-  '-DGETTEXT_PACKAGE="@0@"'.format(meson.project_name()),
-  '-DGNOMELOCALEDIR="@0@"'.format(join_paths(get_option('prefix'), get_option('localedir'))),
-  '-DG_LOG_DOMAIN="Health"',
-]
-
-
-lib = static_library(
-  application_id,
-  [health_sources, health_generated_sources],
-  vala_args: '--target-glib=2.50',
-  dependencies: health_deps,
-  c_args: c_args,
+sources = files(
+  'config.rs',
+  'core/application.rs',
+  'core/database.rs',
+  'core/i18n.rs',
+  'core/macros.rs',
+  'core/mod.rs',
+  'core/settings.rs',
+  'core/utils.rs',
+  'main.rs',
+  'model/activity.rs',
+  'model/activity_data_points.rs',
+  'model/activity_info.rs',
+  'model/activity_type.rs',
+  'model/activity_type_row_data.rs',
+  'model/graph_model_steps.rs',
+  'model/graph_model_weight.rs',
+  'model/mod.rs',
+  'model/model_activity.rs',
+  'model/weight.rs',
+  'sync/csv.rs',
+  'sync/google_fit.rs',
+  'sync/mod.rs',
+  'sync/serialize.rs',
+  'sync/sync_provider.rs',
+  'sync/ureq_http_client.rs',
+  'views/graph_view.rs',
+  'views/mod.rs',
+  'views/view.rs',
+  'views/view_activity.rs',
+  'views/view_steps.rs',
+  'views/view_weight.rs',
+  'widgets/activity_row.rs',
+  'widgets/activity_type_row.rs',
+  'widgets/activity_type_selector.rs',
+  'widgets/bmi_level_bar.rs',
+  'widgets/date_selector.rs',
+  'widgets/distance_action_row.rs',
+  'widgets/mod.rs',
+  'widgets/sync_list_box.rs',
+  'windows/activity_add_dialog.rs',
+  'windows/mod.rs',
+  'windows/preferences_window.rs',
+  'windows/setup_window.rs',
+  'windows/weight_add_dialog.rs',
+  'windows/window.rs',
 )
 
-lib_dep = declare_dependency(
-  dependencies: health_deps,
-  link_with: lib,
-)
-
-
-executable(
-  application_id,
-  ['core/main.vala', health_generated_sources],
-  vala_args: '--target-glib=2.50',
-  dependencies: lib_dep,
-  c_args: c_args,
+cargo_script = find_program(join_paths(meson.source_root(), 'build-aux/cargo.sh'))
+cargo_release = custom_target(
+  'cargo-build',
+  build_by_default: true,
+  input: sources,
+  output: application_id,
+  console: true,
   install: true,
+  install_dir: get_option('bindir'),
+  command: [
+    cargo_script,
+    meson.build_root(),
+    meson.source_root(),
+    '@OUTPUT@',
+    get_option('buildtype'),
+    'health',
+  ]
 )

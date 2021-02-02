@@ -19,8 +19,6 @@
 -->
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
-  <object class="GtkStringList" id="recent_activity_types_model"/>
-  <object class="GtkStringList" id="activity_types_model"/>
   <template class="HealthActivityTypeSelector" parent="GtkPopover">
     <property name="position">bottom</property>
     <property name="autohide">1</property>
@@ -43,7 +41,6 @@
                 <child>
                   <object class="GtkListBox" id="recent_activity_types_list_box">
                     <property name="selection-mode">none</property>
-                    <signal name="row-activated" handler="on_activity_type_row_activated" swapped="no"/>
                   </object>
                 </child>
                 <child>
@@ -56,7 +53,6 @@
             <child>
               <object class="GtkListBox" id="activity_types_list_box">
                 <property name="selection-mode">none</property>
-                <signal name="row-activated" handler="on_activity_type_row_activated" swapped="no"/>
               </object>
             </child>
           </object>
