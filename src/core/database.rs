@@ -252,6 +252,84 @@ mod imp {
             Ok(())
         }
 
+        pub async fn import_steps(
+            &self,
+            obj: &super::HealthDatabase,
+            steps: &[Steps],
+        ) -> Result<(), glib::Error> {
+            if steps.is_empty() {
+                return Ok(());
+            }
+
+            let inner_ref = self.inner.borrow();
+            let inner = inner_ref.as_ref().unwrap();
+
+            for s in steps {
+                let resource = tracker::Resource::new(None);
+                resource.set_uri("rdf:type", "health:Activity");
+                resource.set_string(
+                    "health:activity_date",
+                    &format!("{}", s.date.date().format("%Y-%m-%d")),
+                );
+                resource.set_int64("health:steps", s.steps.into());
+                resource.set_int64(
+                    "health:activity_id",
+                    ActivityType::Walking.to_i64().unwrap(),
+                );
+                // FIXME: Set correct minutes here
+                resource.set_int64("health:minutes", 0);
+
+                inner
+                    .connection
+                    .update_async_future(
+                        resource
+                            .print_sparql_update(Some(&inner.manager), None)
+                            .unwrap()
+                            .as_str(),
+                    )
+                    .await?;
+            }
+
+            obj.emit("activities-updated", &[]).unwrap();
+            Ok(())
+        }
+
+        pub async fn import_weights(
+            &self,
+            obj: &super::HealthDatabase,
+            weights: &[Weight],
+        ) -> Result<(), glib::Error> {
+            if weights.is_empty() {
+                return Ok(());
+            }
+
+            let inner_ref = self.inner.borrow();
+            let inner = inner_ref.as_ref().unwrap();
+
+            for w in weights {
+                let resource = tracker::Resource::new(None);
+                resource.set_uri("rdf:type", "health:WeightMeasurement");
+                resource.set_string(
+                    "health:weight_date",
+                    &format!("{}", w.date.date().format("%Y-%m-%d")),
+                );
+                resource.set_double("health:weight", w.weight.get::<kilogram>().into());
+
+                inner
+                    .connection
+                    .update_async_future(
+                        resource
+                            .print_sparql_update(Some(&inner.manager), None)
+                            .unwrap()
+                            .as_str(),
+                    )
+                    .await?;
+            }
+
+            obj.emit("weights-updated", &[]).unwrap();
+            Ok(())
+        }
+
         pub async fn save_activity(
             &self,
             obj: &super::HealthDatabase,
@@ -415,6 +493,18 @@ impl HealthDatabase {
     ) -> Result<bool, glib::Error> {
         imp::HealthDatabase::from_instance(self)
             .get_weight_exists_on_date(date)
+            .await
+    }
+
+    pub async fn import_steps(&self, steps: &[Steps]) -> Result<(), glib::Error> {
+        imp::HealthDatabase::from_instance(self)
+            .import_steps(self, steps)
+            .await
+    }
+
+    pub async fn import_weights(&self, weight: &[Weight]) -> Result<(), glib::Error> {
+        imp::HealthDatabase::from_instance(self)
+            .import_weights(self, weight)
             .await
     }
 

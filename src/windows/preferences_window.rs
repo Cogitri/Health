@@ -347,7 +347,8 @@ impl HealthPreferencesWindow {
         o.set_transient_for(parent_window.as_ref());
 
         let self_ = imp::HealthPreferencesWindow::from_instance(&o);
-        self_.db.set(db).unwrap();
+        self_.db.set(db.clone()).unwrap();
+        self_.sync_list_box.set_database(db);
         self_.parent_window.set(parent_window).unwrap();
 
         o

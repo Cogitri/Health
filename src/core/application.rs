@@ -61,7 +61,7 @@ mod imp {
                     .set(glib::ObjectExt::downgrade(&window))
                     .unwrap();
             } else if !has_window {
-                let setup_window = HealthSetupWindow::new(application);
+                let setup_window = HealthSetupWindow::new(application, self.db.clone());
 
                 setup_window.connect_setup_done(clone!(@weak application => move || {
                     let self_ = imp::HealthApplication::from_instance(&application);

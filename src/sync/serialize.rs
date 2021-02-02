@@ -2,9 +2,9 @@ use crate::{
     core::{settings::Unitsystem, HealthSettings},
     model::ActivityType,
 };
-use chrono::{DateTime, Duration, FixedOffset};
+use chrono::{DateTime, Duration, FixedOffset, TimeZone};
 use serde::{Deserialize, Deserializer, Serializer};
-use std::convert::TryFrom;
+use std::convert::{TryFrom, TryInto};
 use uom::si::{
     f32::{Length, Mass},
     length::{meter, yard},
@@ -66,6 +66,22 @@ where
     } else {
         Ok(Mass::new::<pound>(val))
     }
+}
+
+pub fn deserialize_modified_time_millis<'de, D>(
+    deserializer: D,
+) -> Result<DateTime<FixedOffset>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let val = String::deserialize(deserializer)?.parse::<u64>().unwrap() / 1000;
+    let date_time = FixedOffset::east(0)
+        .ymd(1970, 1, 1)
+        .and_hms(0, 0, 0)
+        .checked_add_signed(Duration::milliseconds(val.try_into().unwrap()))
+        .unwrap();
+
+    Ok(date_time)
 }
 
 pub fn serialize_activity_type<S>(val: &ActivityType, s: S) -> Result<S::Ok, S::Error>

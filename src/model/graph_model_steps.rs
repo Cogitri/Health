@@ -1,18 +1,6 @@
-use crate::{core::HealthDatabase, views::Point};
-use chrono::{DateTime, Duration, FixedOffset, Local};
+use crate::{core::HealthDatabase, model::Steps, views::Point};
+use chrono::{Duration, Local};
 use std::convert::TryInto;
-
-#[derive(Debug)]
-pub struct Steps {
-    pub date: DateTime<FixedOffset>,
-    pub steps: u32,
-}
-
-impl Steps {
-    pub fn new(date: DateTime<FixedOffset>, steps: u32) -> Self {
-        Self { date, steps }
-    }
-}
 
 #[derive(Debug)]
 pub struct HealthGraphModelSteps {

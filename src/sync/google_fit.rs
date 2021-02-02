@@ -1,28 +1,139 @@
-use super::sync_provider::{SyncProvider, SyncProviderError};
-use crate::core::i18n_f;
+use super::{
+    sync_provider::{SyncProvider, SyncProviderError},
+    DatabaseValue,
+};
+use crate::{
+    core::{i18n_f, HealthSettings},
+    model::{Steps, Weight},
+};
+use chrono::{DateTime, FixedOffset, Utc};
 use failure::Fail;
 use oauth2::{
     basic::{BasicClient, BasicTokenType},
     AuthUrl, ClientId, ClientSecret, CsrfToken, EmptyExtraTokenFields, PkceCodeChallenge,
     RedirectUrl, Scope, StandardTokenResponse, TokenResponse, TokenUrl,
 };
+use std::collections::HashMap;
+use uom::si::{f32::Mass, mass::kilogram};
 
-static GOOGLE_API_ENDPOINT: &str = "https://www.googleapis.com/fitness/v1/";
-static GOOGLE_API_KEY: &str = "AIzaSyAefLTWEhVRHI4zwtLQ1w8szeP-V3wz8jg";
+static GOOGLE_PROVIDER_NAME: &str = "google-fit";
+static GOOGLE_API_ENDPOINT: &str = "https://www.googleapis.com/fitness/v1";
 static GOOGLE_AUTH_ENDPOINT_URL: &str = "https://accounts.google.com/o/oauth2/v2/auth";
 static GOOGLE_TOKEN_ENDPOINT_URL: &str = "https://www.googleapis.com/oauth2/v3/token";
 static GOOGLE_CLIENT_SECRET: &str = "QXYmZ982XWCdwKTW8mI3BbPp";
 static GOOGLE_CLIENT_ID: &str =
     "652904425115-cdqjiporv9klugv9m7m0tpu44jt6cacb.apps.googleusercontent.com";
 
+#[derive(serde::Deserialize)]
+struct Value {
+    #[serde(rename = "intVal")]
+    pub int_val: Option<u32>,
+    #[serde(rename = "fpVal")]
+    pub fp_val: Option<f32>,
+}
+
+#[derive(serde::Deserialize)]
+struct Point {
+    #[serde(deserialize_with = "super::serialize::deserialize_modified_time_millis")]
+    #[serde(rename = "modifiedTimeMillis")]
+    pub date: DateTime<FixedOffset>,
+    pub value: Vec<Value>,
+}
+
+#[derive(serde::Deserialize)]
+struct Points {
+    pub point: Vec<Point>,
+}
+
 #[derive(Debug, Clone)]
 pub struct GoogleFitSyncProvider {
+    sender: glib::Sender<DatabaseValue>,
     token: Option<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>>,
+}
+
+impl GoogleFitSyncProvider {
+    fn get_steps(
+        &mut self,
+        date_opt: Option<DateTime<FixedOffset>>,
+    ) -> Result<Vec<Steps>, SyncProviderError> {
+        let points = if let Some(date) = date_opt {
+            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/{}-{}", date.timestamp_nanos(), Utc::now().timestamp_nanos()))
+        } else {
+            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/0-{}", Utc::now().timestamp_nanos()))
+        }?;
+
+        let mut steps_map = HashMap::<DateTime<FixedOffset>, u32>::new();
+        for s in points.point {
+            if steps_map.contains_key(&s.date) {
+                steps_map.insert(
+                    s.date,
+                    steps_map.get(&s.date).unwrap()
+                        + s.value.iter().map(|s| s.int_val.unwrap()).sum::<u32>(),
+                );
+            } else {
+                steps_map.insert(s.date, s.value.iter().map(|s| s.int_val.unwrap()).sum());
+            }
+        }
+
+        Ok(steps_map
+            .into_iter()
+            .map(|(date, value)| Steps::new(date, value))
+            .collect())
+    }
+
+    fn get_weights(
+        &mut self,
+        date_opt: Option<DateTime<FixedOffset>>,
+    ) -> Result<Vec<Weight>, SyncProviderError> {
+        let points = if let Some(date) = date_opt {
+            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/{}-{}", date.timestamp_nanos(), Utc::now().timestamp_nanos()))
+        } else {
+            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/0-{}", Utc::now().timestamp_nanos()))
+        }?;
+
+        Ok(points
+            .point
+            .into_iter()
+            .map(|p| {
+                Weight::new(
+                    p.date,
+                    Mass::new::<kilogram>(p.value.last().unwrap().fp_val.unwrap_or(0.0)),
+                )
+            })
+            .collect())
+    }
 }
 
 impl SyncProvider for GoogleFitSyncProvider {
     fn get_provider_name(&self) -> &'static str {
-        "google-fit"
+        GOOGLE_PROVIDER_NAME
+    }
+
+    fn get_api_url(&self) -> &'static str {
+        GOOGLE_API_ENDPOINT
+    }
+
+    fn get_oauth2_token(
+        &mut self,
+    ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>, SyncProviderError>
+    {
+        if let Some(token) = &self.token {
+            Ok(token.clone())
+        } else {
+            self.reauthenticate()?;
+            Ok(self.token.clone().unwrap())
+        }
+    }
+
+    fn reauthenticate(&mut self) -> Result<(), SyncProviderError> {
+        let client = BasicClient::new(
+            ClientId::new(GOOGLE_CLIENT_ID.to_string()),
+            Some(ClientSecret::new(GOOGLE_CLIENT_SECRET.to_string())),
+            AuthUrl::new(GOOGLE_AUTH_ENDPOINT_URL.to_string()).unwrap(),
+            Some(TokenUrl::new(GOOGLE_TOKEN_ENDPOINT_URL.to_string()).unwrap()),
+        );
+        self.token = Some(self.exchange_refresh_token(&client)?);
+        Ok(())
     }
 
     fn initial_authenticate(&mut self) -> Result<(), SyncProviderError> {
@@ -36,9 +147,14 @@ impl SyncProvider for GoogleFitSyncProvider {
         let (pkce_code_challenge, pkce_code_verifier) = PkceCodeChallenge::new_random_sha256();
         let (authorize_url, csrf_state) = client
             .authorize_url(CsrfToken::new_random)
-            // This example is requesting access to the "calendar" features and the user's profile.
+            .add_scope(Scope::new(
+                "https://www.googleapis.com/auth/fitness.activity.read".to_string(),
+            ))
             .add_scope(Scope::new(
                 "https://www.googleapis.com/auth/fitness.activity.write".to_string(),
+            ))
+            .add_scope(Scope::new(
+                "https://www.googleapis.com/auth/fitness.body.read".to_string(),
             ))
             .add_scope(Scope::new(
                 "https://www.googleapis.com/auth/fitness.body.write".to_string(),
@@ -72,14 +188,44 @@ impl SyncProvider for GoogleFitSyncProvider {
 
         if let Some(refresh_token) = self.token.as_ref().unwrap().refresh_token() {
             self.set_token(refresh_token.clone())?;
+            let settings = HealthSettings::new();
+            settings.set_sync_provider_setup_google_fit(true);
+            settings.set_timestamp_last_sync_google_fit(chrono::Local::now().into());
         }
+
+        Ok(())
+    }
+
+    fn initial_import(&mut self) -> Result<(), SyncProviderError> {
+        let steps = self.get_steps(None)?;
+        self.sender.send(DatabaseValue::Steps(steps)).unwrap();
+
+        let weights = self.get_weights(None)?;
+        self.sender.send(DatabaseValue::Weights(weights)).unwrap();
+
+        Ok(())
+    }
+
+    fn sync_data(&mut self) -> Result<(), SyncProviderError> {
+        let settings = HealthSettings::new();
+        let last_sync_date = settings.get_timestamp_last_sync_google_fit();
+        settings.set_timestamp_last_sync_google_fit(chrono::Local::now().into());
+
+        let steps = self.get_steps(Some(last_sync_date))?;
+        self.sender.send(DatabaseValue::Steps(steps)).unwrap();
+
+        let weights = self.get_weights(Some(last_sync_date))?;
+        self.sender.send(DatabaseValue::Weights(weights)).unwrap();
 
         Ok(())
     }
 }
 
 impl GoogleFitSyncProvider {
-    pub fn new() -> Self {
-        Self { token: None }
+    pub fn new(sender: glib::Sender<DatabaseValue>) -> Self {
+        Self {
+            sender,
+            token: None,
+        }
     }
 }

@@ -10,6 +10,11 @@ mod imp {
     use super::*;
     use crate::{
         core::HealthSettings,
+        sync::{
+            google_fit::GoogleFitSyncProvider,
+            new_db_receiver,
+            sync_provider::{SyncProvider, SyncProviderError},
+        },
         views::HealthView,
         windows::{HealthActivityAddDialog, HealthWeightAddDialog},
     };
@@ -205,6 +210,45 @@ mod imp {
             }
 
             obj.update();
+            self.sync_data(obj);
+
+            // FIXME: Allow setting custom sync interval
+            glib::timeout_add_seconds_local(
+                60 * 5,
+                clone!(@weak obj => move || {
+                    let self_ = imp::HealthWindow::from_instance(&obj);
+                    self_.sync_data(&obj);
+
+                    glib::Continue(true)
+                }),
+            );
+        }
+
+        fn sync_data(&self, obj: &super::HealthWindow) {
+            if self.settings.get_sync_provider_setup_google_fit() {
+                let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+                let db_sender = new_db_receiver(self.db.get().unwrap().clone());
+
+                receiver.attach(
+                    None,
+                    clone!(@weak obj => move |v: Option<SyncProviderError>| {
+                        if let Some(e) = v {
+                            imp::HealthWindow::from_instance(&obj).show_error(&e.to_string());
+                        }
+
+                        glib::Continue(false)
+                    }),
+                );
+
+                std::thread::spawn(move || {
+                    let mut sync_proxy = GoogleFitSyncProvider::new(db_sender);
+                    if let Err(e) = sync_proxy.sync_data() {
+                        sender.send(Some(e)).unwrap();
+                    } else {
+                        sender.send(None).unwrap();
+                    }
+                });
+            }
         }
     }
 

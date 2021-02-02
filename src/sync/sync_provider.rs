@@ -3,7 +3,7 @@ use oauth2::{
     basic::{BasicErrorResponseType, BasicTokenType},
     url::Url,
     AuthorizationCode, Client, CsrfToken, EmptyExtraTokenFields, RefreshToken,
-    StandardErrorResponse, StandardTokenResponse,
+    StandardErrorResponse, StandardTokenResponse, TokenResponse,
 };
 use secret_service::{Collection, EncryptionType, Error as SsError, SecretService};
 use std::{
@@ -17,6 +17,7 @@ pub enum SyncProviderError {
     CrsfMismatch(String),
     GLib(#[from] glib::Error),
     IO(#[from] std::io::Error),
+    NoRefreshTokenSet(String),
     NoRequestReceived(String),
     RefreshFailed(String),
     RequestToken(String),
@@ -26,9 +27,54 @@ pub enum SyncProviderError {
 }
 
 pub trait SyncProvider {
+    fn get_api_url(&self) -> &'static str;
+
     fn get_provider_name(&self) -> &'static str;
 
+    fn get_oauth2_token(
+        &mut self,
+    ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>, SyncProviderError>;
+
     fn initial_authenticate(&mut self) -> Result<(), SyncProviderError>;
+
+    fn initial_import(&mut self) -> Result<(), SyncProviderError>;
+
+    fn reauthenticate(&mut self) -> Result<(), SyncProviderError>;
+
+    fn sync_data(&mut self) -> Result<(), SyncProviderError>;
+
+    fn get<T: serde::de::DeserializeOwned>(
+        &mut self,
+        method: &str,
+    ) -> Result<T, SyncProviderError> {
+        Ok(ureq::get(&format!("{}/{}", self.get_api_url(), method))
+            .set(
+                "Authorization",
+                &format!(
+                    "Bearer {}",
+                    self.get_oauth2_token()?.access_token().secret()
+                ),
+            )
+            .call()?
+            .into_json()?)
+    }
+
+    fn post<T: serde::de::DeserializeOwned>(
+        &mut self,
+        method: &str,
+        data: ureq::SerdeValue,
+    ) -> Result<T, SyncProviderError> {
+        Ok(ureq::post(&format!("{}/{}", self.get_api_url(), method))
+            .set(
+                "Authorization",
+                &format!(
+                    "Bearer {}",
+                    self.get_oauth2_token()?.access_token().secret()
+                ),
+            )
+            .send_json(data)?
+            .into_json()?)
+    }
 
     fn exchange_refresh_token(
         &self,
@@ -39,13 +85,21 @@ pub trait SyncProvider {
         >,
     ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>, SyncProviderError>
     {
-        client
-            .exchange_refresh_token(&self.get_token()?)
-            .request(super::ureq_http_client::http_client)
-            .map_err(|e| SyncProviderError::RefreshFailed(e.to_string()))
+        match self.get_token() {
+            Ok(Some(token)) => client
+                .exchange_refresh_token(&token)
+                .request(super::ureq_http_client::http_client)
+                .map_err(|e| SyncProviderError::RefreshFailed(e.to_string())),
+            Ok(None) => {
+                return Err(SyncProviderError::NoRefreshTokenSet(i18n("Can't retrieve OAuth2 token when no refesh token is set! Please re-authenticate with your sync provider.")));
+            }
+            Err(e) => {
+                return Err(e.into());
+            }
+        }
     }
 
-    fn get_token(&self) -> Result<RefreshToken, SsError> {
+    fn get_token(&self) -> Result<Option<RefreshToken>, SsError> {
         let ss = SecretService::new(EncryptionType::Dh)?;
         let collection = get_default_collection_unlocked(&ss)?;
 
@@ -56,11 +110,11 @@ pub trait SyncProvider {
         {
             password.unlock()?;
 
-            Ok(RefreshToken::new(
+            Ok(Some(RefreshToken::new(
                 String::from_utf8(password.get_secret()?).map_err(|_| SsError::NoResult)?,
-            ))
+            )))
         } else {
-            Err(SsError::NoResult)
+            Ok(None)
         }
     }
 

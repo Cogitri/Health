@@ -1,3 +1,4 @@
+use crate::core::HealthDatabase;
 use gdk::subclass::prelude::ObjectSubclass;
 use gtk::prelude::*;
 use gtk::{gio, glib, CompositeTemplate};
@@ -305,8 +306,15 @@ glib::wrapper! {
 }
 
 impl HealthSetupWindow {
-    pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
-        glib::Object::new(&[("application", app)]).expect("Failed to create HealthSetupWindow")
+    pub fn new<P: glib::IsA<gtk::Application>>(app: &P, db: HealthDatabase) -> Self {
+        let o =
+            glib::Object::new(&[("application", app)]).expect("Failed to create HealthSetupWindow");
+
+        imp::HealthSetupWindow::from_instance(&o)
+            .sync_list_box
+            .set_database(db);
+
+        o
     }
 
     pub fn connect_setup_done<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {

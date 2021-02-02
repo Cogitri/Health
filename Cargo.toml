@@ -17,6 +17,9 @@ version = "0.4"
 [dependencies.csv]
 version = "1.1"
 
+[dependencies.failure]
+version = "0.1"
+
 [dependencies.gettext-rs]
 version = "0.4.4"
 features = ["gettext-system"]
@@ -72,6 +75,9 @@ version = "1.4.3"
 version = "1"
 features = ["serde_derive"]
 
+[dependencies.serde_json]
+version = "1"
+
 [dependencies.tracker]
 git = "https://gitlab.com/Cogitri/tracker-rs"
 branch = "impov"
@@ -87,6 +93,7 @@ features = ["f32", "si"]
 
 [dependencies.ureq]
 version = "2"
+features = ["json"]
 
 [dependencies.secret-service]
 version = "2"

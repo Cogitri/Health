@@ -1,23 +1,27 @@
+use crate::core::HealthDatabase;
 use gdk::subclass::prelude::ObjectSubclass;
 use gtk::{glib, CompositeTemplate};
 
 mod imp {
     use super::*;
     use crate::{
-        core::{HealthSettings},
+        core::HealthSettings,
         sync::{
             google_fit::GoogleFitSyncProvider,
+            new_db_receiver,
             sync_provider::{SyncProvider, SyncProviderError},
         },
     };
     use glib::{clone, g_warning, subclass};
     use gtk::{prelude::*, subclass::prelude::*};
     use gtk_macros::spawn;
+    use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/sync_list_box.ui")]
     pub struct HealthSyncListBox {
+        pub database: OnceCell<HealthDatabase>,
         pub parent_window: RefCell<Option<gtk::Window>>,
 
         #[template_child]
@@ -44,6 +48,7 @@ mod imp {
 
         fn new() -> Self {
             Self {
+                database: OnceCell::new(),
                 parent_window: RefCell::new(None),
                 google_fit_selected_image: TemplateChild::default(),
                 google_fit_start_sync_row: TemplateChild::default(),
@@ -135,6 +140,7 @@ mod imp {
                         self_.google_fit_stack.set_visible_child(&self_.google_fit_spinner.get());
 
                         let (sender, receiver) = glib::MainContext::channel::<Result<GoogleFitSyncProvider, SyncProviderError>>(glib::PRIORITY_DEFAULT);
+                        let db_sender = new_db_receiver(self_.database.get().unwrap().clone());
 
                         receiver.attach(None, clone!(@weak obj => move |sync_provider| {
                             if let Ok(provider) = sync_provider {
@@ -147,7 +153,7 @@ mod imp {
                                 });
                             } else {
                                 let self_ = imp::HealthSyncListBox::from_instance(&obj);
-                                
+
                                 self_.google_fit_selected_image.set_property_icon_name(Some("network-error-symbolic"));
                                 self_.google_fit_selected_image.set_visible(true);
                                 self_.google_fit_spinner.set_spinning(false);
@@ -160,10 +166,14 @@ mod imp {
                         }));
 
                         std::thread::spawn(move || {
-                            let mut sync_provider = GoogleFitSyncProvider::new();
+                            let mut sync_provider = GoogleFitSyncProvider::new(db_sender);
                             if let Err(e) = sync_provider.initial_authenticate() {
                                 sender.send(Err(e)).unwrap();
                             } else {
+                                if let Err(e) = sync_provider.initial_import() {
+                                    sender.send(Err(e)).unwrap();
+                                }
+
                                 sender.send(Ok(sync_provider)).unwrap();
                             }
                         });
@@ -202,5 +212,12 @@ impl HealthSyncListBox {
             .replace(parent_window);
 
         s
+    }
+
+    pub fn set_database(&self, database: HealthDatabase) {
+        imp::HealthSyncListBox::from_instance(self)
+            .database
+            .set(database)
+            .unwrap()
     }
 }
