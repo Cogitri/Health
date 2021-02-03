@@ -64,11 +64,16 @@ mod imp {
     }
 
     impl Database {
-        pub fn connect(&self) -> Result<(), glib::Error> {
-            let mut store_path = glib::get_user_data_dir();
+        pub fn connect(
+            &self,
+            ontology_path: Option<std::path::PathBuf>,
+            store_path: Option<std::path::PathBuf>,
+        ) -> Result<(), glib::Error> {
+            let mut store_path = store_path.unwrap_or_else(glib::get_user_data_dir);
             store_path.push("health");
 
-            let mut ontology_path = Path::new(crate::config::PKGDATADIR).to_path_buf();
+            let mut ontology_path =
+                ontology_path.unwrap_or_else(|| Path::new(crate::config::PKGDATADIR).to_path_buf());
             ontology_path.push("ontology");
 
             let manager = tracker::NamespaceManager::new();
@@ -453,7 +458,20 @@ impl Database {
     pub fn new() -> Result<Self, glib::Error> {
         let o = glib::Object::new(&[]).expect("Failed to create Database");
 
-        imp::Database::from_instance(&o).connect()?;
+        imp::Database::from_instance(&o).connect(None, None)?;
+
+        Ok(o)
+    }
+
+    #[cfg(test)]
+    pub fn new_with_store_path(store_path: std::path::PathBuf) -> Result<Self, glib::Error> {
+        let o = glib::Object::new(&[]).expect("Failed to create Database");
+
+        let mut path = std::path::PathBuf::new();
+        path.push(env!("CARGO_MANIFEST_DIR"));
+        path.push("data/tracker");
+
+        imp::Database::from_instance(&o).connect(Some(path), Some(store_path))?;
 
         Ok(o)
     }
@@ -528,5 +546,114 @@ impl Database {
         imp::Database::from_instance(self)
             .save_weight(self, weight)
             .await
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use crate::{core::utils::run_async_test_fn, model::ActivityType};
+    use chrono::{Duration, Local};
+    use tempfile::tempdir;
+    use uom::si::{f32::Mass, mass::kilogram};
+
+    #[test]
+    fn construct() {
+        let data_dir = tempdir().unwrap();
+        Database::new_with_store_path(data_dir.path().into()).unwrap();
+    }
+
+    #[test]
+    fn check_doesnt_exist_activity() {
+        let expected_activity = Activity::new();
+        let data_dir = tempdir().unwrap();
+        let date = Local::now();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+
+        expected_activity
+            .set_activity_type(ActivityType::Walking)
+            .set_date(date.into());
+
+        let retrieved_activities = run_async_test_fn(async move {
+            db.save_activity(expected_activity).await.unwrap();
+
+            db.get_activities(Some(
+                date.checked_add_signed(Duration::days(1)).unwrap().into(),
+            ))
+            .await
+            .unwrap()
+        });
+        assert!(retrieved_activities.is_empty());
+    }
+
+    #[test]
+    fn check_doesnt_exists_weight() {
+        let data_dir = tempdir().unwrap();
+        let date = Local::now();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        let expected_weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
+        let w = expected_weight.clone();
+
+        let retrieved_weights = run_async_test_fn(async move {
+            db.save_weight(w).await.unwrap();
+
+            db.get_weights(Some(
+                date.checked_add_signed(Duration::days(1)).unwrap().into(),
+            ))
+            .await
+            .unwrap()
+        });
+        assert!(retrieved_weights.is_empty());
+    }
+
+    #[test]
+    fn check_exists_activity() {
+        let expected_activity = Activity::new();
+        let data_dir = tempdir().unwrap();
+        let date = Local::now();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+
+        expected_activity
+            .set_activity_type(ActivityType::Walking)
+            .set_date(date.into())
+            .set_steps(Some(50));
+        let a = expected_activity.clone();
+
+        let retrieved_activities = run_async_test_fn(async move {
+            db.save_activity(a).await.unwrap();
+
+            db.get_activities(Some(
+                date.checked_sub_signed(Duration::days(1)).unwrap().into(),
+            ))
+            .await
+            .unwrap()
+        });
+        let activity = retrieved_activities.get(0).unwrap();
+        assert_eq!(
+            expected_activity.get_activity_type(),
+            activity.get_activity_type()
+        );
+        assert_eq!(expected_activity.get_steps(), activity.get_steps());
+    }
+
+    #[test]
+    fn check_exists_weight() {
+        let data_dir = tempdir().unwrap();
+        let date = Local::now();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        let expected_weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
+        let w = expected_weight.clone();
+
+        let retrieved_weights = run_async_test_fn(async move {
+            db.save_weight(w).await.unwrap();
+
+            db.get_weights(Some(
+                date.checked_sub_signed(Duration::days(1)).unwrap().into(),
+            ))
+            .await
+            .unwrap()
+        });
+        let weight = retrieved_weights.get(0).unwrap();
+        assert_eq!(expected_weight.weight, weight.weight);
     }
 }

@@ -1,0 +1,19 @@
+#!/bin/sh
+
+export MESON_BUILD_ROOT="$1"
+export MESON_SOURCE_ROOT="$2"
+export CARGO_TARGET_DIR="$MESON_BUILD_ROOT"/target
+export CARGO_HOME="$CARGO_TARGET_DIR"/cargo-home
+export BUILDTYPE="$3"
+
+if [ $BUILDTYPE = "release" ]
+then
+    echo "RELEASE MODE"
+    cargo test --manifest-path \
+        "$MESON_SOURCE_ROOT"/Cargo.toml --release -- --test-threads=1
+else
+    echo "DEBUG MODE"
+    cargo test --manifest-path \
+        "$MESON_SOURCE_ROOT"/Cargo.toml --verbose -- --test-threads=1
+fi
+

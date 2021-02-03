@@ -1,6 +1,6 @@
 [package]
 name = "health"
-version = "0.1.0"
+version = "0.91.0"
 edition = "2018"
 license = "GPL-3.0-or-later"
 
@@ -97,3 +97,6 @@ features = ["json"]
 
 [dependencies.secret-service]
 version = "2"
+
+[dev-dependencies.tempfile]
+version = "3"

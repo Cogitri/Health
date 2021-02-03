@@ -2,7 +2,7 @@ use crate::sync::serialize;
 use chrono::{DateTime, FixedOffset};
 use uom::si::f32::Mass;
 
-#[derive(Debug, serde::Deserialize, serde::Serialize)]
+#[derive(Debug, serde::Deserialize, serde::Serialize, Clone)]
 pub struct Weight {
     #[serde(serialize_with = "serialize::serialize_date")]
     #[serde(deserialize_with = "serialize::deserialize_date")]

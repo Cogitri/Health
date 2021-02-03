@@ -42,7 +42,7 @@ clippy:
     - source $HOME/.cargo/env
   script:
     - meson build
-    - cargo clippy
+    - cargo clippy -- -D warnings
   cache:
     key: clippy
     paths:

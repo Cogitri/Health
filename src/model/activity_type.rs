@@ -1,7 +1,7 @@
 use crate::core::i18n_f;
 use std::convert::TryFrom;
 
-#[derive(Debug, num_derive::FromPrimitive, num_derive::ToPrimitive, Clone)]
+#[derive(Debug, num_derive::FromPrimitive, num_derive::ToPrimitive, Clone, PartialEq)]
 pub enum ActivityType {
     Basketball,
     Bicycling,
