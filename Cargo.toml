@@ -97,3 +97,6 @@ features = ["json"]
 
 [dependencies.secret-service]
 version = "2"
+
+[dev-dependencies.tempfile]
+version = "3"
