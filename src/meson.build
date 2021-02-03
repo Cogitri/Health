@@ -67,7 +67,6 @@ sources = files(
   'windows/window.rs',
 )
 
-cargo_script = find_program(join_paths(meson.source_root(), 'build-aux/cargo.sh'))
 cargo_release = custom_target(
   'cargo-build',
   build_by_default: true,
@@ -77,11 +76,21 @@ cargo_release = custom_target(
   install: true,
   install_dir: get_option('bindir'),
   command: [
-    cargo_script,
+    find_program(meson.source_root() / 'build-aux' / 'cargo.sh'),
     meson.build_root(),
     meson.source_root(),
     '@OUTPUT@',
     get_option('buildtype'),
     'health',
+  ]
+)
+
+test(
+  'cargo-tests',
+  find_program(meson.source_root() / 'build-aux' / 'cargo-test.sh'),
+  args: [
+    meson.build_root(),
+    meson.source_root(),
+    get_option('buildtype'),
   ]
 )
