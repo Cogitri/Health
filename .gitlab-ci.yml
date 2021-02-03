@@ -36,18 +36,10 @@ fmt:
     - cargo fmt --all -- --check
 
 clippy:
-  image: alpine:edge
+  image: cogitri/health-ci-docker
   stage: qa
   before_script:
-    - apk add --no-cache gtk4.0-dev libgee-dev tracker-dev meson build-base git gobject-introspection-dev rustup
-    - git clone https://gitlab.gnome.org/exalm/libadwaita
-    - cd libadwaita
-    - meson -Dexamples=false -Dvapi=false build
-    - meson install -C build
-    - cd ..
-    - rustup-init -y
     - source $HOME/.cargo/env
-    - rustup component add clippy
   script:
     - meson build
     - cargo clippy
