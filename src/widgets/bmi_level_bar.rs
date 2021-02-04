@@ -34,7 +34,7 @@ mod imp {
     }
 
     impl ObjectSubclass for BMILevelBar {
-        const NAME: &'static str = "BMILevelBar";
+        const NAME: &'static str = "HealthBMILevelBar";
         type ParentType = gtk::Widget;
         type Instance = subclass::simple::InstanceStruct<Self>;
         type Class = subclass::simple::ClassStruct<Self>;

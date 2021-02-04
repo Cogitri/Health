@@ -92,5 +92,6 @@ test(
     meson.build_root(),
     meson.source_root(),
     get_option('buildtype'),
-  ]
+  ],
+  timeout: 3000, # might take a bit longer due to cargo...
 )

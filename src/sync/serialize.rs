@@ -78,7 +78,7 @@ where
     let date_time = FixedOffset::east(0)
         .ymd(1970, 1, 1)
         .and_hms(0, 0, 0)
-        .checked_add_signed(Duration::milliseconds(val.try_into().unwrap()))
+        .checked_add_signed(Duration::seconds(val.try_into().unwrap()))
         .unwrap();
 
     Ok(date_time)
