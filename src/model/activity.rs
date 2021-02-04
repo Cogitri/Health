@@ -1,6 +1,6 @@
 use crate::{imp_getter_setter, model::ActivityType};
 use chrono::{DateTime, Duration, FixedOffset};
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 use uom::si::f32::Length;
 
 mod imp {

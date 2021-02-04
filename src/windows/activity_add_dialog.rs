@@ -1,5 +1,5 @@
 use crate::core::Database;
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 use gtk::prelude::*;
 
 mod imp {

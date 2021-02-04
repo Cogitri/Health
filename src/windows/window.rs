@@ -2,7 +2,7 @@ use crate::{
     core::Database,
     views::{ViewActivity, ViewSteps, ViewWeight},
 };
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 use glib::Cast;
 use gtk::prelude::*;
 

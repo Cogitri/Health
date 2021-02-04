@@ -1,7 +1,6 @@
 use crate::model::{Activity, Steps, Weight};
 use chrono::{DateTime, FixedOffset};
-use gdk::subclass::prelude::ObjectSubclass;
-use glib::ObjectExt;
+use glib::{subclass::types::ObjectSubclass, ObjectExt};
 
 mod imp {
     use crate::model::{Activity, ActivityType, Steps, Weight};

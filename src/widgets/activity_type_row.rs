@@ -1,5 +1,5 @@
 use crate::model::ActivityTypeRowData;
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use glib::subclass;

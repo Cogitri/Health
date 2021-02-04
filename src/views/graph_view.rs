@@ -1,6 +1,5 @@
 use chrono::{DateTime, FixedOffset};
 use gio::subclass::prelude::ObjectSubclass;
-use gtk::glib;
 
 #[derive(Debug, Clone)]
 pub struct Point {

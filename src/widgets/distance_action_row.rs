@@ -1,5 +1,5 @@
-use gdk::subclass::prelude::ObjectSubclass;
 use gio::prelude::*;
+use glib::subclass::types::ObjectSubclass;
 use uom::si::f32::Length;
 
 mod imp {

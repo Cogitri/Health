@@ -1,5 +1,5 @@
 use crate::model::Activity;
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use crate::{
@@ -7,7 +7,7 @@ mod imp {
         model::{Activity, ActivityDataPoints, ActivityInfo},
     };
     use glib::subclass;
-    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use uom::fmt::DisplayStyle::Abbreviation;
     use uom::si::length::{meter, yard};

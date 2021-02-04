@@ -1,5 +1,4 @@
-use gdk::subclass::prelude::ObjectSubclass;
-use gtk::glib;
+use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use glib::subclass;

@@ -1,5 +1,5 @@
 use chrono::{DateTime, FixedOffset};
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};

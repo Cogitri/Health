@@ -1,5 +1,5 @@
 use crate::{core::Database, model::GraphModelSteps, views::View};
-use gdk::subclass::prelude::*;
+use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use crate::{

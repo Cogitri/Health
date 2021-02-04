@@ -1,6 +1,6 @@
 use crate::properties_setter_getter;
-use gdk::subclass::prelude::*;
-use gtk::{glib::prelude::*, subclass::prelude::WidgetImpl};
+use glib::prelude::*;
+use gtk::subclass::prelude::*;
 
 mod imp {
     use glib::subclass;

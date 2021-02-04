@@ -1,5 +1,5 @@
 use crate::{core::settings::Unitsystem, imp_getter_setter};
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 use uom::si::f32::{Length, Mass};
 
 mod imp {

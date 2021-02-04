@@ -1,6 +1,6 @@
 use crate::core::Database;
-use gdk::subclass::prelude::ObjectSubclass;
 use gio::prelude::*;
+use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use crate::{
