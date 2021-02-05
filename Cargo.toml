@@ -99,3 +99,11 @@ version = "2"
 
 [dev-dependencies.tempfile]
 version = "3"
+
+[profile.release]
+lto = true
+panic = "abort"
+debug = true
+
+[profile.dev]
+debug = true
