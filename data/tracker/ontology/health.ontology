@@ -20,8 +20,7 @@ health:activity_date a rdf:Property ;
 
 health:activity_datetime a rdf:Property ;
     rdfs:domain health:Activity ;
-    rdfs:range xsd:dateTime ;
-    nrl:maxCardinality 1 .
+    rdfs:range xsd:dateTime .
 
 health:activity_id a rdf:Property ;
     rdfs:domain health:Activity ;
@@ -75,8 +74,7 @@ health:weight_date a rdf:Property, nrl:InverseFunctionalProperty;
 
 health:weight_datetime a rdf:Property, nrl:InverseFunctionalProperty;
     rdfs:domain health:WeightMeasurement ;
-    rdfs:range xsd:dateTime ;
-    nrl:maxCardinality 1 .
+    rdfs:range xsd:dateTime .
 
 health:weight a rdf:Property ;
     rdfs:domain health:WeightMeasurement ;
