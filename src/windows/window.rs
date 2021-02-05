@@ -257,9 +257,20 @@ glib::wrapper! {
 
 impl Window {
     pub fn new<P: glib::IsA<gtk::Application>>(app: &P, db: Database) -> Self {
-        let o = glib::Object::new(&[("application", app)]).expect("Failed to create Window");
+        let o: Window =
+            glib::Object::new(&[("application", app)]).expect("Failed to create Window");
 
-        imp::Window::from_instance(&o).set_db(&o, db);
+        let obj = o.clone();
+        gtk_macros::spawn!(async move {
+            let self_ = imp::Window::from_instance(&obj);
+            if let Err(e) = db.migrate().await {
+                self_.show_error(&crate::core::i18n_f(
+                    "Failed to migrate database to new version due to error {}",
+                    &[&e.to_string()],
+                ))
+            }
+            self_.set_db(&obj, db)
+        });
 
         o
     }
