@@ -215,7 +215,7 @@ impl ViewWeight {
         imp::ViewWeight::from_instance(&o)
             .set_weight_graph_model(GraphModelWeight::new(database.clone()));
 
-        database.connect_activities_updated(glib::clone!(@weak o => move || {
+        database.connect_weights_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
                 o.update().await;
             });
