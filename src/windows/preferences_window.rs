@@ -211,9 +211,9 @@ mod imp {
                     self_.weightgoal_actionrow
                         .set_title(Some(&i18n("Weightgoal in KG")));
                     self_.height_spin_button
-                        .set_value(Length::new::<inch>(get_spinbutton_value(&self_.height_spin_button)).get::<centimeter>() as f64);
+                        .set_value(f64::from(Length::new::<inch>(get_spinbutton_value(&self_.height_spin_button)).get::<centimeter>()));
                     self_.weightgoal_spin_button
-                        .set_value(Mass::new::<pound>(get_spinbutton_value(&self_.height_spin_button)).get::<kilogram>() as f64);
+                        .set_value(f64::from(Mass::new::<pound>(get_spinbutton_value(&self_.height_spin_button)).get::<kilogram>()));
                 } else {
                     self_.settings.set_unitsystem(Unitsystem::Imperial);
                     self_.bmi_levelbar.set_unitsystem(Unitsystem::Imperial);
@@ -222,9 +222,9 @@ mod imp {
                     self_.weightgoal_actionrow
                         .set_title(Some(&i18n("Weightgoal in pounds")));
                     self_.height_spin_button
-                        .set_value(Length::new::<centimeter>(get_spinbutton_value(&self_.height_spin_button)).get::<inch>() as f64);
+                        .set_value(f64::from(Length::new::<centimeter>(get_spinbutton_value(&self_.height_spin_button)).get::<inch>()));
                     self_.weightgoal_spin_button
-                        .set_value(Mass::new::<kilogram>(get_spinbutton_value(&self_.height_spin_button)).get::<pound>() as f64);
+                        .set_value(f64::from(Mass::new::<kilogram>(get_spinbutton_value(&self_.height_spin_button)).get::<pound>()));
                 }
             }));
 

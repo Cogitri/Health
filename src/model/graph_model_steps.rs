@@ -133,7 +133,7 @@ impl GraphModelSteps {
 
         if ret.last().unwrap().date != Local::now().date() {
             ret.push(Point {
-                date: DateTime::<FixedOffset>::from(Local::now()).date().into(),
+                date: DateTime::<FixedOffset>::from(Local::now()).date(),
                 value: 0.0,
             });
         }

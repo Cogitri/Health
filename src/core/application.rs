@@ -111,7 +111,7 @@ mod imp {
                 obj,
                 "fullscreen",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
+                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(glib::WeakRef::upgrade) {
                         if window.is_fullscreen() {
                             window.unfullscreen();
                         } else {
@@ -125,7 +125,7 @@ mod imp {
                 obj,
                 "hamburger-menu",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
+                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(glib::WeakRef::upgrade) {
                         window.open_hamburger_menu();
                     }
                 })
@@ -143,7 +143,7 @@ mod imp {
                 "preferences",
                 clone!(@weak obj => move |_, _| {
                     let self_ = Application::from_instance(&obj);
-                    let preferences_window = PreferencesWindow::new(self_.db.clone(), self_.window.get().and_then(|w| w.upgrade()).map(|w| w.upcast()));
+                    let preferences_window = PreferencesWindow::new(self_.db.clone(), self_.window.get().and_then(glib::WeakRef::upgrade).map(glib::Cast::upcast));
                     preferences_window.show();
                 })
             );
@@ -152,7 +152,7 @@ mod imp {
                 obj,
                 "quit",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
+                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(glib::WeakRef::upgrade) {
                         window.destroy();
                     }
                 })

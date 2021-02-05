@@ -101,12 +101,10 @@ mod imp {
                         } else {
                             self_.value.replace(Length::new::<kilometer>(value));
                         }
+                    } else if self_.small_unit_togglebutton.get_active() {
+                        self_.value.replace(Length::new::<yard>(value));
                     } else {
-                        if self_.small_unit_togglebutton.get_active() {
-                                self_.value.replace(Length::new::<yard>(value));
-                        } else {
-                            self_.value.replace(Length::new::<mile>(value));
-                        }
+                        self_.value.replace(Length::new::<mile>(value));
                     }
                     obj.emit("changed", &[]).unwrap();
                 }));

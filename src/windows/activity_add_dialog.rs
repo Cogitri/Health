@@ -299,8 +299,10 @@ mod imp {
                     let inner = self_.inner.borrow_mut();
                     inner.activity.set_activity_type(inner.selected_activity.activity_type.clone());
 
-                    if let Some(model ) = &inner.filter_model {
-                        model.get_filter().map(|f| f.changed(gtk::FilterChange::Different));
+                    if let Some(model) = &inner.filter_model {
+                        if let Some(filter) = model.get_filter() {
+                            filter.changed(gtk::FilterChange::Different);
+                        }
                     }
                 }));
 
