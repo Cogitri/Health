@@ -16,9 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use http::header::{HeaderMap, HeaderValue, CONTENT_TYPE};
-use http::method::Method;
-use http::status::StatusCode;
+use http::{
+    header::{HeaderMap, HeaderValue, CONTENT_TYPE},
+    method::Method,
+    status::StatusCode,
+};
 use oauth2::{HttpRequest, HttpResponse};
 
 pub fn http_client(request: HttpRequest) -> Result<HttpResponse, ureq::Error> {

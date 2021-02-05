@@ -27,8 +27,10 @@ mod imp {
     use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
-    use uom::fmt::DisplayStyle::Abbreviation;
-    use uom::si::length::{meter, yard};
+    use uom::{
+        fmt::DisplayStyle::Abbreviation,
+        si::length::{meter, yard},
+    };
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_row.ui")]

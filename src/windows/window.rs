@@ -38,8 +38,7 @@ mod imp {
     use glib::{clone, signal::Inhibit, subclass, SourceId};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
-    use std::cell::RefCell;
-    use std::collections::BTreeMap;
+    use std::{cell::RefCell, collections::BTreeMap};
 
     #[derive(Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
     pub enum ViewMode {
