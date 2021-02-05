@@ -79,8 +79,7 @@ features = ["serde_derive"]
 version = "1"
 
 [dependencies.tracker]
-git = "https://gitlab.com/Cogitri/tracker-rs"
-branch = "impov"
+git = "https://gitlab.com/dleggo/tracker-rs"
 package = "tracker-rs"
 
 [dependencies.thiserror]

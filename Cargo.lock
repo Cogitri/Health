@@ -1890,7 +1890,7 @@ dependencies = [
 [[package]]
 name = "tracker-rs"
 version = "0.1.0"
-source = "git+https://gitlab.com/Cogitri/tracker-rs?branch=impov#846e8933902fd33c05e74042c9886d67c2fdb002"
+source = "git+https://gitlab.com/dleggo/tracker-rs#d0b9f3ad12a629775078e9b61718fd1aec88acad"
 dependencies = [
  "bitflags",
  "gio",
@@ -1903,7 +1903,7 @@ dependencies = [
 [[package]]
 name = "tracker-sys"
 version = "0.0.1"
-source = "git+https://gitlab.com/Cogitri/tracker-rs?branch=impov#846e8933902fd33c05e74042c9886d67c2fdb002"
+source = "git+https://gitlab.com/dleggo/tracker-rs#d0b9f3ad12a629775078e9b61718fd1aec88acad"
 dependencies = [
  "gio-sys",
  "glib-sys",
