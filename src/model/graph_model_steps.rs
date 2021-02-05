@@ -1,5 +1,5 @@
 use crate::{core::Database, model::Steps, views::Point};
-use chrono::{Duration, Local};
+use chrono::{DateTime, Duration, FixedOffset, Local};
 use std::convert::{TryFrom, TryInto};
 
 #[derive(Debug)]
@@ -89,7 +89,7 @@ impl GraphModelSteps {
             return Vec::new();
         }
 
-        let first_date = self.vec.first().unwrap().date;
+        let first_date = self.vec.first().unwrap().date.date();
         let mut last_val = 0;
         let mut ret = Vec::with_capacity(self.vec.len());
 
@@ -102,11 +102,13 @@ impl GraphModelSteps {
                 ret.push(Point { date, value: 0.0 });
             }
             ret.push(Point {
-                date: point.date,
+                date: point.date.date(),
                 value: point.steps as f32,
             });
+
             last_val = point
                 .date
+                .date()
                 .signed_duration_since(first_date)
                 .num_days()
                 .try_into()
@@ -114,7 +116,13 @@ impl GraphModelSteps {
         }
 
         for x in last_val
-            ..usize::try_from(Local::now().signed_duration_since(first_date).num_days()).unwrap()
+            ..usize::try_from(
+                Local::now()
+                    .date()
+                    .signed_duration_since(first_date)
+                    .num_days(),
+            )
+            .unwrap()
         {
             let date = first_date
                 .clone()
@@ -123,9 +131,9 @@ impl GraphModelSteps {
             ret.push(Point { date, value: 0.0 });
         }
 
-        if ret.last().unwrap().date.date() != Local::now().date() {
+        if ret.last().unwrap().date != Local::now().date() {
             ret.push(Point {
-                date: Local::now().into(),
+                date: DateTime::<FixedOffset>::from(Local::now()).date().into(),
                 value: 0.0,
             });
         }

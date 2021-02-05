@@ -61,7 +61,7 @@ impl GraphModelWeight {
                 };
 
                 Point {
-                    date: w.date,
+                    date: w.date.date(),
                     value: val,
                 }
             })

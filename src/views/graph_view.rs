@@ -1,9 +1,9 @@
-use chrono::{DateTime, FixedOffset};
+use chrono::{Date, FixedOffset};
 use gio::subclass::prelude::ObjectSubclass;
 
 #[derive(Debug, Clone)]
 pub struct Point {
-    pub date: DateTime<FixedOffset>,
+    pub date: Date<FixedOffset>,
     pub value: f32,
 }
 
