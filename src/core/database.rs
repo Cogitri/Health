@@ -208,7 +208,7 @@ mod imp {
                 connection.query_async_future(&format!("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
             } else {
                 let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
-                connection.query_async_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_date ?datetime  ; health:weight ?weight . } ORDER BY ?date").await?
+                connection.query_async_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . } ORDER BY ?date").await?
             };
             let mut ret = Vec::new();
 
@@ -254,8 +254,8 @@ mod imp {
                 let resource = tracker::Resource::new(None);
                 resource.set_uri("rdf:type", "health:Activity");
                 resource.set_string(
-                    "health:activity_date",
-                    &format!("{}", s.date.date().format("%Y-%m-%d")),
+                    "health:activity_datetime",
+                    &s.date.to_rfc3339_opts(SecondsFormat::Secs, true),
                 );
                 resource.set_int64("health:steps", s.steps.into());
                 resource.set_int64(
@@ -299,7 +299,7 @@ mod imp {
                 resource.set_uri("rdf:type", "health:WeightMeasurement");
                 resource.set_string(
                     "health:weight_date",
-                    &format!("{}", w.date.date().format("%Y-%m-%d")),
+                    &w.date.to_rfc3339_opts(SecondsFormat::Secs, true),
                 );
                 resource.set_double("health:weight", w.weight.get::<kilogram>().into());
 
