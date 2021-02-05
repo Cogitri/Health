@@ -212,7 +212,7 @@
     <child>
       <object class="GtkSpinButton" id="steps_spin_button">
         <property name="width-chars">5</property>
-        <property name="text" translatable="yes">0</property>
+        <property name="text">0</property>
         <property name="adjustment">steps_adjustment</property>
         <property name="numeric">1</property>
         <property name="margin-start">6</property>
