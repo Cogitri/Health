@@ -195,6 +195,7 @@ mod imp {
 
                             let activity = Activity::new();
                             activity
+                                .set_date(self_.date_selector.get_selected_date())
                                 .set_activity_type(selected_activity.activity_type.clone())
                                 .set_calories_burned(get_spin_button_value_if_datapoint(
                                     &self_.calories_burned_spin_button,
