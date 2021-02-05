@@ -78,7 +78,7 @@ mod imp {
         fn connect_handlers(&self, obj: &super::WeightAddDialog) {
             self.weight_spin_button
                 .connect_changed(clone!(@weak obj => move |e| {
-                    let text = e.get_text ().unwrap().to_string();
+                    let text = e.get_text ().to_string();
                     obj.set_response_sensitive(gtk::ResponseType::Ok, text != "0" && text != "");
                 }));
 

@@ -239,7 +239,7 @@ mod imp {
                         .action(gtk::FileChooserAction::Save)
                         .build();
                     file_chooser.set_current_name(&i18n("Activities.csv"));
-                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |f, r| {
+                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |_, r| {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {
@@ -317,7 +317,7 @@ mod imp {
                         .transient_for(&obj)
                         .action(gtk::FileChooserAction::Open)
                         .build();
-                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |f, r| {
+                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |_, r| {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {

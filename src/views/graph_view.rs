@@ -120,7 +120,7 @@ mod imp {
             /*
                 Draw outlines
             */
-            cr.save();
+            cr.save().unwrap();
 
             for i in 0..5 {
                 let mul = inner.height / 4.0;
@@ -142,13 +142,13 @@ mod imp {
             }
 
             cr.stroke();
-            cr.restore();
+            cr.restore().unwrap();
 
             /*
                 Draw X Ticks (dates)
             */
 
-            cr.save();
+            cr.save().unwrap();
 
             for (i, point) in inner.points.iter().enumerate() {
                 let layout =
@@ -165,13 +165,13 @@ mod imp {
             }
 
             cr.stroke();
-            cr.restore();
+            cr.restore().unwrap();
 
             /*
                 Draw limit/goal (if any)
             */
             if let Some(limit) = inner.limit {
-                cr.save();
+                cr.save().unwrap();
 
                 cr.set_dash(&[10.0, 5.0], 0.0);
                 cr.move_to(
@@ -186,7 +186,7 @@ mod imp {
                 );
 
                 cr.stroke();
-                cr.restore();
+                cr.restore().unwrap();
             }
 
             if inner.points.is_empty() {
@@ -196,7 +196,7 @@ mod imp {
             /*
                 Draw a point for each datapoint
             */
-            cr.save();
+            cr.save().unwrap();
 
             cr.set_source_rgba(0.0, 174.0, 174.0, 1.0);
             cr.set_line_width(4.0);
@@ -209,12 +209,12 @@ mod imp {
             }
 
             cr.stroke();
-            cr.restore();
+            cr.restore().unwrap();
 
             /*
                 Draw the graph itself
             */
-            cr.save();
+            cr.save().unwrap();
             cr.set_source_rgba(0.0, 174.0, 174.0, 0.8);
             cr.move_to(
                 f64::from(HALF_X_PADDING),
@@ -245,7 +245,7 @@ mod imp {
             }
 
             cr.stroke();
-            cr.restore();
+            cr.restore().unwrap();
 
             if let Some(hover_func) = &inner.hover_func {
                 if let Some(hover_point) = &inner.hover_point {

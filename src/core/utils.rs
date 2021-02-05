@@ -9,7 +9,6 @@ where
 {
     spin_button
         .get_text()
-        .unwrap()
         .as_str()
         .parse::<T>()
         .unwrap_or_default()

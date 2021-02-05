@@ -139,9 +139,9 @@ mod imp {
                     let child_name = s.get_visible_child_name().map(|s| s.to_string());
                     let self_ = Window::from_instance(&obj);
 
-                    if child_name == self_.views.get().unwrap().get(&ViewMode::STEPS).and_then(|s| s.get_name()).map(|s| s.to_string()) {
+                    if child_name == self_.views.get().unwrap().get(&ViewMode::STEPS).map(|s| s.get_widget_name().to_string()) {
                         self_.inner.borrow_mut().current_view = ViewMode::STEPS;
-                    } else if child_name == self_.views.get().unwrap().get(&ViewMode::WEIGHT).and_then(|s| s.get_name()).map(|s| s.to_string()) {
+                    } else if child_name == self_.views.get().unwrap().get(&ViewMode::WEIGHT).map(|s| s.get_widget_name().to_string()) {
                         self_.inner.borrow_mut().current_view = ViewMode::WEIGHT;
                     }
                 }));
@@ -195,7 +195,7 @@ mod imp {
             for view in self.views.get().unwrap().values() {
                 let page = self.stack.add_titled(
                     view,
-                    view.get_name().map(|s| s.to_string()).as_deref(),
+                    Some(view.get_widget_name().as_str()),
                     &view.get_view_title().unwrap(),
                 );
                 page.set_icon_name(&view.get_icon_name().unwrap());

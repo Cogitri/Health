@@ -100,7 +100,8 @@ mod imp {
 
             let create_list_box_row = glib::clone!(@weak obj => move |o: &glib::Object| {
                 let data = o.downcast_ref::<ActivityTypeRowData>().unwrap();
-                ActivityTypeRow::new(&data, data.get_label() == ActivityTypeSelector::from_instance(&obj).selected_activity.borrow().name)
+                let selected_activity = ActivityTypeSelector::from_instance(&obj).selected_activity.borrow();
+                ActivityTypeRow::new(&data, data.get_label() == selected_activity.name)
                     .upcast::<gtk::Widget>()
 
             });

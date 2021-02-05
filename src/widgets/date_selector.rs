@@ -50,7 +50,7 @@ mod imp {
             obj.add_controller(&controller);
 
             let parse_date = clone!(@weak obj => move || {
-                if let Ok(date) = NaiveDate::parse_from_str(obj.get_text().unwrap().as_str(), "%x") {
+                if let Ok(date) = NaiveDate::parse_from_str(obj.get_text().as_str(), "%x") {
                         match Local.from_local_datetime(&date.and_hms(12, 0, 0)) {
                             LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
                                 DateSelector::from_instance(&obj).set_selected_date (&obj, d.into());

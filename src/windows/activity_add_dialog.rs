@@ -75,7 +75,7 @@ mod imp {
         a: &ActivityInfo,
         d: ActivityDataPoints,
     ) -> Option<u32> {
-        if a.available_data_points.contains(d) && b.get_text().unwrap().as_str() != "" {
+        if a.available_data_points.contains(d) && b.get_text().as_str() != "" {
             Some(get_spinbutton_value(b))
         } else {
             None

@@ -140,8 +140,8 @@ mod imp {
 
     impl SetupWindow {
         fn try_enable_next_button(&self) {
-            let age = self.age_spin_button.get_text().unwrap().to_string();
-            let height = self.height_spin_button.get_text().unwrap().to_string();
+            let age = self.age_spin_button.get_text().to_string();
+            let height = self.height_spin_button.get_text().to_string();
             let sensitive = !age.is_empty() && age != "0" && !height.is_empty() && height != "0";
             self.setup_next_page_button.set_sensitive(sensitive);
             self.setup_carousel.set_interactive(sensitive);
@@ -169,7 +169,7 @@ mod imp {
             self.unit_metric_togglebutton
                 .connect_toggled(clone!(@weak obj => move |btn| {
                     let self_ = SetupWindow::from_instance(&obj);
-                    if (btn.get_active()) {
+                    if btn.get_active() {
                         self_.height_actionrow.set_title(Some(&i18n("Height in centimeters")));
                         self_.weightgoal_actionrow.set_title(Some(&i18n("Weightgoal in KG")));
                         self_.bmi_levelbar.set_unitsystem(Unitsystem::Metric);
@@ -251,7 +251,7 @@ mod imp {
             self.setup_next_page_button
                 .connect_clicked(clone!(@weak obj => move |_| {
                     let self_ = SetupWindow::from_instance(&obj);
-                    match (self_.setup_carousel.get_position() as u32) {
+                    match self_.setup_carousel.get_position() as u32 {
                         0 => self_.setup_carousel.scroll_to (&self_.setup_second_page.get()),
                         1 => self_.setup_carousel.scroll_to (&self_.setup_third_page.get()),
                         2 => self_.setup_carousel.scroll_to (&self_.setup_fourth_page.get()),
@@ -263,7 +263,7 @@ mod imp {
             self.setup_previous_page_button
                 .connect_clicked(clone!(@weak obj => move |_| {
                     let self_ = SetupWindow::from_instance(&obj);
-                    match (self_.setup_carousel.get_position() as u32) {
+                    match self_.setup_carousel.get_position() as u32 {
                         0 => obj.destroy(),
                         1 => self_.setup_carousel.scroll_to (&self_.setup_first_page.get()),
                         2 => self_.setup_carousel.scroll_to (&self_.setup_second_page.get()),
@@ -279,7 +279,7 @@ mod imp {
                     if carousel.get_n_pages() -1 == index {
                         self_.setup_done_button.set_visible(true);
                         self_.setup_right_stack.set_visible_child(&self_.setup_done_button.get());
-                    } else if (index == 0) {
+                    } else if index == 0 {
                         self_.setup_quit_button.set_visible (true);
                         self_.setup_left_stack.set_visible_child(&self_.setup_quit_button.get());
                     } else {

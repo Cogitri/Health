@@ -3,7 +3,7 @@ use glib::subclass::types::ObjectSubclass;
 use uom::si::f32::Length;
 
 mod imp {
-    use crate::core::{i18n, settings::Unitsystem, Settings};
+    use crate::core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Settings};
     use adw::subclass::prelude::*;
     use glib::{
         clone,
@@ -65,7 +65,7 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             let set_togglebutton_text = clone!(@weak obj => move || {
                 let self_ = DistanceActionRow::from_instance(&obj);
-                if (self_.settings.get_unitsystem() == Unitsystem::Metric) {
+                if self_.settings.get_unitsystem() == Unitsystem::Metric {
                     self_.big_unit_togglebutton.set_label (&i18n("KM"));
                     self_.small_unit_togglebutton.set_label (&i18n("Meters"));
                 } else {
@@ -81,7 +81,7 @@ mod imp {
             self.small_unit_togglebutton
                 .connect_toggled(clone!(@weak obj => move |btn| {
                     let adjustment = &DistanceActionRow::from_instance(&obj).distance_adjustment;
-                    if (btn.get_active()) {
+                    if btn.get_active() {
                         adjustment.set_step_increment(100.0);
                         adjustment.set_page_increment(1000.0);
                     } else {
@@ -93,17 +93,17 @@ mod imp {
             self.distance_spin_button
                 .connect_changed(clone!(@weak obj => move |e| {
                     let self_ = DistanceActionRow::from_instance(&obj);
-                    let mut value = e.get_text().unwrap().as_str().parse::<u32>().unwrap_or(0) as f32;
+                    let value = get_spinbutton_value::<f32>(e);
 
-                    if (self_.settings.get_unitsystem() == Unitsystem::Metric) {
-                        if (self_.small_unit_togglebutton.get_active()) {
+                    if self_.settings.get_unitsystem() == Unitsystem::Metric {
+                        if self_.small_unit_togglebutton.get_active() {
                             self_.value.replace(Length::new::<meter>(value));
                         } else {
                             self_.value.replace(Length::new::<kilometer>(value));
                         }
                     } else {
-                        if (self_.small_unit_togglebutton.get_active()) {
-                            self_.value.replace(Length::new::<yard>(value));
+                        if self_.small_unit_togglebutton.get_active() {
+                                self_.value.replace(Length::new::<yard>(value));
                         } else {
                             self_.value.replace(Length::new::<mile>(value));
                         }
