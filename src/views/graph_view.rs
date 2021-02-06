@@ -28,6 +28,7 @@ pub struct Point {
 mod imp {
     use super::Point;
     use chrono::Local;
+    use gdk::prelude::GdkCairoContextExt;
     use glib::{clone, subclass};
     use gtk::prelude::*;
     use gtk::subclass::prelude::*;
@@ -128,13 +129,9 @@ mod imp {
                 ))
                 .unwrap();
             let style_context = widget.get_style_context();
-            let outline_color = style_context.get_color();
-            cr.set_source_rgba(
-                outline_color.red.into(),
-                outline_color.green.into(),
-                outline_color.blue.into(),
-                0.5,
-            );
+            let background_color = style_context.lookup_color("insensitive_fg_color").unwrap();
+
+            GdkCairoContextExt::set_source_rgba(&cr, &background_color);
             /*
                 Draw outlines
             */
@@ -191,6 +188,7 @@ mod imp {
             if let Some(limit) = inner.limit {
                 cr.save().unwrap();
 
+                cr.set_line_width(0.5);
                 cr.set_dash(&[10.0, 5.0], 0.0);
                 cr.move_to(
                     f64::from(HALF_X_PADDING),
@@ -216,7 +214,10 @@ mod imp {
             */
             cr.save().unwrap();
 
-            cr.set_source_rgba(0.0, 174.0, 174.0, 1.0);
+            let graph_color = style_context
+                .lookup_color("theme_selected_bg_color")
+                .unwrap();
+            GdkCairoContextExt::set_source_rgba(&cr, &graph_color);
             cr.set_line_width(4.0);
             for (i, point) in inner.points.iter().enumerate() {
                 let x = f64::from(i as f32 * inner.scale_x + HALF_X_PADDING);
@@ -233,7 +234,8 @@ mod imp {
                 Draw the graph itself
             */
             cr.save().unwrap();
-            cr.set_source_rgba(0.0, 174.0, 174.0, 0.8);
+
+            GdkCairoContextExt::set_source_rgba(&cr, &graph_color);
             cr.move_to(
                 f64::from(HALF_X_PADDING),
                 f64::from(
