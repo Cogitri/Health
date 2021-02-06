@@ -21,7 +21,7 @@ use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use crate::{
-        core::{i18n, i18n_f, settings::Unitsystem, Settings},
+        core::{i18n, i18n_f, settings::Unitsystem, utils::round_decimal_places, Settings},
         model::GraphModelWeight,
         views::{GraphView, View},
     };
@@ -125,9 +125,9 @@ mod imp {
                 goal_label.set_text(&i18n_f(
                     "{} {} left to reach your weightgoal of {} {}",
                     &[
-                        &format!("{diff:.2}", diff = diff),
+                        &format!("{diff:.1}", diff = round_decimal_places(diff, 1)),
                         &translation,
-                        &format!("{weight_value:.2}", weight_value = weight_value),
+                        &format!("{weight_value:.1}", weight_value = weight_value),
                         &translation,
                     ],
                 ));
@@ -141,8 +141,11 @@ mod imp {
         fn get_bmi(&self, model: &GraphModelWeight) -> String {
             if let Some(last_weight) = model.get_last_weight() {
                 let height = self.settings.get_user_height().get::<meter>() as f32;
-                let bmi = last_weight.get::<kilogram>() as f32 / (height * height);
-                format!("{bmi:.2}", bmi = bmi)
+                let bmi = round_decimal_places(
+                    last_weight.get::<kilogram>() as f32 / (height * height),
+                    1,
+                );
+                format!("{bmi:.1}", bmi = bmi)
             } else {
                 i18n("Unknown BMI")
             }
