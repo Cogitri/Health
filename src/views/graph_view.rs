@@ -33,7 +33,7 @@ mod imp {
     use gtk::subclass::prelude::*;
     use std::{cell::RefCell, convert::TryInto, f64::consts::PI};
 
-    static HALF_X_PADDING: f32 = 30.0;
+    static HALF_X_PADDING: f32 = 40.0;
     static HALF_Y_PADDING: f32 = 30.0;
 
     #[derive(Debug)]
