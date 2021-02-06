@@ -22,7 +22,12 @@ use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use crate::{
-        core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Settings},
+        core::{
+            i18n,
+            settings::Unitsystem,
+            utils::{get_spinbutton_value, round_decimal_places},
+            Settings,
+        },
         widgets::{BMILevelBar, SyncListBox},
     };
     use adw::PreferencesRowExt;
@@ -172,8 +177,10 @@ mod imp {
             } else {
                 Length::new::<inch>(unitless_height)
             };
-            let optimal_value =
-                Mass::new::<kilogram>(OPTIMAL_BMI * height.get::<meter>() * height.get::<meter>());
+            let optimal_value = Mass::new::<kilogram>(round_decimal_places(
+                OPTIMAL_BMI * height.get::<meter>() * height.get::<meter>(),
+                1,
+            ));
             if self.unit_metric_togglebutton.get_active() {
                 self.weightgoal_spin_button
                     .set_value(optimal_value.get::<kilogram>().into());

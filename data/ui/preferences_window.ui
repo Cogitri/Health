@@ -167,7 +167,7 @@
                     </child>
                     <child>
                       <object class="GtkSpinButton" id="weightgoal_spin_button">
-                        <property name="digits">2</property>
+                        <property name="digits">1</property>
                         <property name="width-chars">5</property>
                         <property name="adjustment">weightgoal_adjustment</property>
                         <property name="margin-start">6</property>

@@ -32,6 +32,11 @@ where
         .unwrap_or_default()
 }
 
+pub fn round_decimal_places(val: f32, decimal_places: u32) -> f32 {
+    let round_factor = (10_u32).pow(decimal_places) as f32;
+    (val * round_factor).round() / round_factor
+}
+
 #[cfg(test)]
 pub fn run_async_test_fn<T: 'static, F: 'static>(future: F) -> T
 where
