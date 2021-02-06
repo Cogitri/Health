@@ -1,5 +1,23 @@
+/* date_selector.rs
+ *
+ * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 use chrono::{DateTime, FixedOffset};
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
@@ -50,7 +68,7 @@ mod imp {
             obj.add_controller(&controller);
 
             let parse_date = clone!(@weak obj => move || {
-                if let Ok(date) = NaiveDate::parse_from_str(obj.get_text().unwrap().as_str(), "%x") {
+                if let Ok(date) = NaiveDate::parse_from_str(obj.get_text().as_str(), "%x") {
                         match Local.from_local_datetime(&date.and_hms(12, 0, 0)) {
                             LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
                                 DateSelector::from_instance(&obj).set_selected_date (&obj, d.into());

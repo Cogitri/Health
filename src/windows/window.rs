@@ -1,8 +1,26 @@
+/* window.rs
+ *
+ * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 use crate::{
     core::Database,
     views::{ViewActivity, ViewSteps, ViewWeight},
 };
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 use glib::Cast;
 use gtk::prelude::*;
 
@@ -20,8 +38,7 @@ mod imp {
     use glib::{clone, signal::Inhibit, subclass, SourceId};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
-    use std::cell::RefCell;
-    use std::collections::BTreeMap;
+    use std::{cell::RefCell, collections::BTreeMap};
 
     #[derive(Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
     pub enum ViewMode {
@@ -139,9 +156,9 @@ mod imp {
                     let child_name = s.get_visible_child_name().map(|s| s.to_string());
                     let self_ = Window::from_instance(&obj);
 
-                    if child_name == self_.views.get().unwrap().get(&ViewMode::STEPS).and_then(|s| s.get_name()).map(|s| s.to_string()) {
+                    if child_name == self_.views.get().unwrap().get(&ViewMode::STEPS).map(|s| s.get_widget_name().to_string()) {
                         self_.inner.borrow_mut().current_view = ViewMode::STEPS;
-                    } else if child_name == self_.views.get().unwrap().get(&ViewMode::WEIGHT).and_then(|s| s.get_name()).map(|s| s.to_string()) {
+                    } else if child_name == self_.views.get().unwrap().get(&ViewMode::WEIGHT).map(|s| s.get_widget_name().to_string()) {
                         self_.inner.borrow_mut().current_view = ViewMode::WEIGHT;
                     }
                 }));
@@ -195,7 +212,7 @@ mod imp {
             for view in self.views.get().unwrap().values() {
                 let page = self.stack.add_titled(
                     view,
-                    view.get_name().map(|s| s.to_string()).as_deref(),
+                    Some(view.get_widget_name().as_str()),
                     &view.get_view_title().unwrap(),
                 );
                 page.set_icon_name(&view.get_icon_name().unwrap());
@@ -257,9 +274,20 @@ glib::wrapper! {
 
 impl Window {
     pub fn new<P: glib::IsA<gtk::Application>>(app: &P, db: Database) -> Self {
-        let o = glib::Object::new(&[("application", app)]).expect("Failed to create Window");
+        let o: Window =
+            glib::Object::new(&[("application", app)]).expect("Failed to create Window");
 
-        imp::Window::from_instance(&o).set_db(&o, db);
+        let obj = o.clone();
+        gtk_macros::spawn!(async move {
+            let self_ = imp::Window::from_instance(&obj);
+            if let Err(e) = db.migrate().await {
+                self_.show_error(&crate::core::i18n_f(
+                    "Failed to migrate database to new version due to error {}",
+                    &[&e.to_string()],
+                ))
+            }
+            self_.set_db(&obj, db)
+        });
 
         o
     }

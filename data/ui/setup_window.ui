@@ -74,7 +74,7 @@
                   <object class="GtkStackPage">
                     <property name="child">
                       <object class="GtkButton" id="setup_quit_button">
-                        <property name="label">_Quit</property>
+                        <property name="label" translatable="yes">_Quit</property>
                         <property name="can-focus">0</property>
                         <property name="action-name">app.quit</property>
                         <property name="use-underline">1</property>
@@ -87,7 +87,7 @@
                   <object class="GtkStackPage">
                     <property name="child">
                       <object class="GtkButton" id="setup_previous_page_button">
-                        <property name="label">_Previous</property>
+                        <property name="label" translatable="yes">_Previous</property>
                         <property name="can-focus">0</property>
                         <property name="use-underline">1</property>
                         <property name="visible">0</property>
@@ -105,7 +105,7 @@
                   <object class="GtkStackPage">
                     <property name="child">
                       <object class="GtkButton" id="setup_next_page_button">
-                        <property name="label">_Next</property>
+                        <property name="label" translatable="yes">_Next</property>
                         <property name="can-focus">0</property>
                         <property name="use-underline">1</property>
                         <property name="sensitive">0</property>
@@ -120,7 +120,7 @@
                   <object class="GtkStackPage">
                     <property name="child">
                       <object class="GtkButton" id="setup_done_button">
-                        <property name="label">_Done</property>
+                        <property name="label" translatable="yes">_Done</property>
                         <property name="can-focus">0</property>
                         <property name="use-underline">1</property>
                         <property name="visible">0</property>
@@ -218,7 +218,7 @@
                             <child>
                               <object class="GtkSpinButton" id="age_spin_button">
                                 <property name="width-chars">5</property>
-                                <property name="text" translatable="yes">0</property>
+                                <property name="text">0</property>
                                 <property name="adjustment">age_adjustment</property>
                                 <property name="numeric">1</property>
                                 <property name="margin-start">6</property>
@@ -235,7 +235,7 @@
                             <child>
                               <object class="GtkSpinButton" id="height_spin_button">
                                 <property name="width-chars">5</property>
-                                <property name="text" translatable="yes">0</property>
+                                <property name="text">0</property>
                                 <property name="adjustment">height_adjustment</property>
                                 <property name="numeric">1</property>
                                 <property name="margin-start">6</property>

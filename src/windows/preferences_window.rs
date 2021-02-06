@@ -1,5 +1,23 @@
+/* preferences_window.rs
+ *
+ * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 use crate::core::Database;
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 use gtk::prelude::*;
 
 mod imp {
@@ -211,9 +229,9 @@ mod imp {
                     self_.weightgoal_actionrow
                         .set_title(Some(&i18n("Weightgoal in KG")));
                     self_.height_spin_button
-                        .set_value(Length::new::<inch>(get_spinbutton_value(&self_.height_spin_button)).get::<centimeter>() as f64);
+                        .set_value(f64::from(Length::new::<inch>(get_spinbutton_value(&self_.height_spin_button)).get::<centimeter>()));
                     self_.weightgoal_spin_button
-                        .set_value(Mass::new::<pound>(get_spinbutton_value(&self_.height_spin_button)).get::<kilogram>() as f64);
+                        .set_value(f64::from(Mass::new::<pound>(get_spinbutton_value(&self_.height_spin_button)).get::<kilogram>()));
                 } else {
                     self_.settings.set_unitsystem(Unitsystem::Imperial);
                     self_.bmi_levelbar.set_unitsystem(Unitsystem::Imperial);
@@ -222,9 +240,9 @@ mod imp {
                     self_.weightgoal_actionrow
                         .set_title(Some(&i18n("Weightgoal in pounds")));
                     self_.height_spin_button
-                        .set_value(Length::new::<centimeter>(get_spinbutton_value(&self_.height_spin_button)).get::<inch>() as f64);
+                        .set_value(f64::from(Length::new::<centimeter>(get_spinbutton_value(&self_.height_spin_button)).get::<inch>()));
                     self_.weightgoal_spin_button
-                        .set_value(Mass::new::<kilogram>(get_spinbutton_value(&self_.height_spin_button)).get::<pound>() as f64);
+                        .set_value(f64::from(Mass::new::<kilogram>(get_spinbutton_value(&self_.height_spin_button)).get::<pound>()));
                 }
             }));
 
@@ -239,7 +257,7 @@ mod imp {
                         .action(gtk::FileChooserAction::Save)
                         .build();
                     file_chooser.set_current_name(&i18n("Activities.csv"));
-                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |f, r| {
+                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |_, r| {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {
@@ -317,7 +335,7 @@ mod imp {
                         .transient_for(&obj)
                         .action(gtk::FileChooserAction::Open)
                         .build();
-                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |f, r| {
+                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |_, r| {
                         if r == gtk::ResponseType::Accept {
                             let file = file_chooser.get_file().unwrap();
                             spawn!(async move {

@@ -1,10 +1,27 @@
-use chrono::{DateTime, FixedOffset};
+/* graph_view.rs
+ *
+ * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+use chrono::{Date, FixedOffset};
 use gio::subclass::prelude::ObjectSubclass;
-use gtk::glib;
 
 #[derive(Debug, Clone)]
 pub struct Point {
-    pub date: DateTime<FixedOffset>,
+    pub date: Date<FixedOffset>,
     pub value: f32,
 }
 
@@ -121,7 +138,7 @@ mod imp {
             /*
                 Draw outlines
             */
-            cr.save();
+            cr.save().unwrap();
 
             for i in 0..5 {
                 let mul = inner.height / 4.0;
@@ -143,13 +160,13 @@ mod imp {
             }
 
             cr.stroke();
-            cr.restore();
+            cr.restore().unwrap();
 
             /*
                 Draw X Ticks (dates)
             */
 
-            cr.save();
+            cr.save().unwrap();
 
             for (i, point) in inner.points.iter().enumerate() {
                 let layout =
@@ -166,13 +183,13 @@ mod imp {
             }
 
             cr.stroke();
-            cr.restore();
+            cr.restore().unwrap();
 
             /*
                 Draw limit/goal (if any)
             */
             if let Some(limit) = inner.limit {
-                cr.save();
+                cr.save().unwrap();
 
                 cr.set_dash(&[10.0, 5.0], 0.0);
                 cr.move_to(
@@ -187,7 +204,7 @@ mod imp {
                 );
 
                 cr.stroke();
-                cr.restore();
+                cr.restore().unwrap();
             }
 
             if inner.points.is_empty() {
@@ -197,7 +214,7 @@ mod imp {
             /*
                 Draw a point for each datapoint
             */
-            cr.save();
+            cr.save().unwrap();
 
             cr.set_source_rgba(0.0, 174.0, 174.0, 1.0);
             cr.set_line_width(4.0);
@@ -210,12 +227,12 @@ mod imp {
             }
 
             cr.stroke();
-            cr.restore();
+            cr.restore().unwrap();
 
             /*
                 Draw the graph itself
             */
-            cr.save();
+            cr.save().unwrap();
             cr.set_source_rgba(0.0, 174.0, 174.0, 0.8);
             cr.move_to(
                 f64::from(HALF_X_PADDING),
@@ -246,7 +263,7 @@ mod imp {
             }
 
             cr.stroke();
-            cr.restore();
+            cr.restore().unwrap();
 
             if let Some(hover_func) = &inner.hover_func {
                 if let Some(hover_point) = &inner.hover_point {

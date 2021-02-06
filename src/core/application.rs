@@ -1,5 +1,20 @@
-use crate::config;
-use gtk::{gio, glib};
+/* application.rs
+ *
+ * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 mod imp {
     use crate::{
@@ -114,7 +129,7 @@ mod imp {
                 obj,
                 "fullscreen",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
+                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(glib::WeakRef::upgrade) {
                         if window.is_fullscreen() {
                             window.unfullscreen();
                         } else {
@@ -128,7 +143,7 @@ mod imp {
                 obj,
                 "hamburger-menu",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
+                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(glib::WeakRef::upgrade) {
                         window.open_hamburger_menu();
                     }
                 })
@@ -146,7 +161,7 @@ mod imp {
                 "preferences",
                 clone!(@weak obj => move |_, _| {
                     let self_ = Application::from_instance(&obj);
-                    let preferences_window = PreferencesWindow::new(self_.db.clone(), self_.window.get().and_then(|w| w.upgrade()).map(|w| w.upcast()));
+                    let preferences_window = PreferencesWindow::new(self_.db.clone(), self_.window.get().and_then(glib::WeakRef::upgrade).map(glib::Cast::upcast));
                     preferences_window.show();
                 })
             );
@@ -155,7 +170,7 @@ mod imp {
                 obj,
                 "quit",
                 clone!(@weak obj => move |_, _| {
-                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(|w| w.upgrade()) {
+                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(glib::WeakRef::upgrade) {
                         window.destroy();
                     }
                 })
@@ -187,7 +202,7 @@ glib::wrapper! {
 impl Application {
     pub fn new() -> Self {
         glib::Object::new(&[
-            ("application-id", &config::APPLICATION_ID.to_string()),
+            ("application-id", &crate::config::APPLICATION_ID.to_string()),
             ("flags", &gio::ApplicationFlags::FLAGS_NONE),
         ])
         .expect("Failed to create Application")

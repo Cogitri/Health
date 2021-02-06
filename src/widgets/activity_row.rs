@@ -1,5 +1,23 @@
+/* activity_row.rs
+ *
+ * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 use crate::model::Activity;
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use crate::{
@@ -7,10 +25,12 @@ mod imp {
         model::{Activity, ActivityDataPoints, ActivityInfo},
     };
     use glib::subclass;
-    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
-    use uom::fmt::DisplayStyle::Abbreviation;
-    use uom::si::length::{meter, yard};
+    use uom::{
+        fmt::DisplayStyle::Abbreviation,
+        si::length::{meter, yard},
+    };
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_row.ui")]

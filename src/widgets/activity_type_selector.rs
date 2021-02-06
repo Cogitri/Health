@@ -1,6 +1,24 @@
+/* activity_type_selector.rs
+ *
+ * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 use crate::model::ActivityInfo;
-use gdk::subclass::prelude::ObjectSubclass;
 use gio::prelude::*;
+use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use crate::{
@@ -100,7 +118,8 @@ mod imp {
 
             let create_list_box_row = glib::clone!(@weak obj => move |o: &glib::Object| {
                 let data = o.downcast_ref::<ActivityTypeRowData>().unwrap();
-                ActivityTypeRow::new(&data, data.get_label() == ActivityTypeSelector::from_instance(&obj).selected_activity.borrow().name)
+                let selected_activity = ActivityTypeSelector::from_instance(&obj).selected_activity.borrow();
+                ActivityTypeRow::new(&data, data.get_label() == selected_activity.name)
                     .upcast::<gtk::Widget>()
 
             });

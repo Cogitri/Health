@@ -1,5 +1,23 @@
+/* view_weight.rs
+ *
+ * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 use crate::{core::Database, model::GraphModelWeight, views::View};
-use gdk::subclass::prelude::*;
+use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use crate::{
@@ -215,7 +233,7 @@ impl ViewWeight {
         imp::ViewWeight::from_instance(&o)
             .set_weight_graph_model(GraphModelWeight::new(database.clone()));
 
-        database.connect_activities_updated(glib::clone!(@weak o => move || {
+        database.connect_weights_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
                 o.update().await;
             });

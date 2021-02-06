@@ -1,5 +1,23 @@
+/* sync_list_box.rs
+ *
+ * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 use crate::core::Database;
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 
 mod imp {
     use crate::{
@@ -128,28 +146,20 @@ mod imp {
     impl SyncListBox {
         fn connect_handlers(&self, obj: &super::SyncListBox) {
             self.sync_list_box
-                .connect_row_activated(clone!(@weak obj => move |list_box, row| {
+                .connect_row_activated(clone!(@weak obj => move |_, row| {
                     let self_ = SyncListBox::from_instance(&obj);
-                    if (row == &self_.google_fit_start_sync_row.get()) {
+                    if row == &self_.google_fit_start_sync_row.get() {
                         self_.google_fit_stack.set_visible(true);
                         self_.google_fit_spinner.set_visible(true);
                         self_.google_fit_spinner.set_spinning(true);
                         self_.google_fit_start_sync_row.set_activatable(false);
                         self_.google_fit_stack.set_visible_child(&self_.google_fit_spinner.get());
 
-                        let (sender, receiver) = glib::MainContext::channel::<Result<GoogleFitSyncProvider, SyncProviderError>>(glib::PRIORITY_DEFAULT);
+                        let (sender, receiver) = glib::MainContext::channel::<Result<(), SyncProviderError>>(glib::PRIORITY_DEFAULT);
                         let db_sender = new_db_receiver(self_.database.get().unwrap().clone());
 
-                        receiver.attach(None, clone!(@weak obj => move |sync_provider| {
-                            if let Ok(provider) = sync_provider {
-                                spawn!(async move {
-                                    // TODO: Start importing data
-                                    let self_ = SyncListBox::from_instance(&obj);
-                                    self_.google_fit_selected_image.set_visible(true);
-                                    self_.google_fit_spinner.set_spinning(false);
-                                    self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
-                                });
-                            } else {
+                        receiver.attach(None, clone!(@weak obj => move |res| {
+                            if let Err(e) = res {
                                 let self_ = SyncListBox::from_instance(&obj);
 
                                 self_.google_fit_selected_image.set_property_icon_name(Some("network-error-symbolic"));
@@ -157,7 +167,15 @@ mod imp {
                                 self_.google_fit_spinner.set_spinning(false);
                                 self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
 
-                                self_.open_sync_error(&sync_provider.err().unwrap().to_string());
+                                self_.open_sync_error(&e.to_string());
+                            } else {
+                                spawn!(async move {
+                                    // TODO: Start importing data
+                                    let self_ = SyncListBox::from_instance(&obj);
+                                    self_.google_fit_selected_image.set_visible(true);
+                                    self_.google_fit_spinner.set_spinning(false);
+                                    self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
+                                });
                             }
 
                             glib::Continue(false)
@@ -172,7 +190,7 @@ mod imp {
                                     sender.send(Err(e)).unwrap();
                                 }
 
-                                sender.send(Ok(sync_provider)).unwrap();
+                                sender.send(Ok(())).unwrap();
                             }
                         });
                     }

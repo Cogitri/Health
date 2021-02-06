@@ -1,5 +1,23 @@
+/* activity_add_dialog.rs
+ *
+ * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 use crate::core::Database;
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 use gtk::prelude::*;
 
 mod imp {
@@ -75,7 +93,7 @@ mod imp {
         a: &ActivityInfo,
         d: ActivityDataPoints,
     ) -> Option<u32> {
-        if a.available_data_points.contains(d) && b.get_text().unwrap().as_str() != "" {
+        if a.available_data_points.contains(d) && b.get_text().as_str() != "" {
             Some(get_spinbutton_value(b))
         } else {
             None
@@ -195,6 +213,7 @@ mod imp {
 
                             let activity = Activity::new();
                             activity
+                                .set_date(self_.date_selector.get_selected_date())
                                 .set_activity_type(selected_activity.activity_type.clone())
                                 .set_calories_burned(get_spin_button_value_if_datapoint(
                                     &self_.calories_burned_spin_button,
@@ -298,8 +317,10 @@ mod imp {
                     let inner = self_.inner.borrow_mut();
                     inner.activity.set_activity_type(inner.selected_activity.activity_type.clone());
 
-                    if let Some(model ) = &inner.filter_model {
-                        model.get_filter().map(|f| f.changed(gtk::FilterChange::Different));
+                    if let Some(model) = &inner.filter_model {
+                        if let Some(filter) = model.get_filter() {
+                            filter.changed(gtk::FilterChange::Different);
+                        }
                     }
                 }));
 

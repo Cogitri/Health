@@ -1,5 +1,23 @@
+/* weight_add_dialog.rs
+ *
+ * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
 use crate::core::Database;
-use gdk::subclass::prelude::ObjectSubclass;
+use glib::subclass::types::ObjectSubclass;
 use gtk::prelude::*;
 
 mod imp {
@@ -78,8 +96,8 @@ mod imp {
         fn connect_handlers(&self, obj: &super::WeightAddDialog) {
             self.weight_spin_button
                 .connect_changed(clone!(@weak obj => move |e| {
-                    let text = e.get_text ().unwrap().to_string();
-                    obj.set_response_sensitive(gtk::ResponseType::Ok, text != "0" && text != "");
+                    let text = e.get_text ().to_string();
+                    obj.set_response_sensitive(gtk::ResponseType::Ok, text != "0" && !text.is_empty());
                 }));
 
             obj.connect_response(|obj, id| match id {

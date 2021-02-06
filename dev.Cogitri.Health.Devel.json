@@ -76,9 +76,6 @@
             "name": "health",
             "builddir": true,
             "buildsystem": "meson",
-            "config-opts": [
-                "-Dprofile=development"
-            ],
             "cleanup": [
                 "/usr/"
             ],

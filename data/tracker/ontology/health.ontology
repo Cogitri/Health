@@ -6,7 +6,7 @@
 
 health: a nrl:Namespace, nrl:Ontology ;
     nrl:prefix "health" ;
-    nrl:lastModified "2020-12-11T10:00:00Z" .
+    nrl:lastModified "2021-02-04T08:19:00Z" .
 
 health:Activity a rdfs:Class ;
     rdfs:comment "Represents a single activity entry" ;
@@ -17,6 +17,10 @@ health:activity_date a rdf:Property ;
     rdfs:domain health:Activity ;
     rdfs:range xsd:date ;
     nrl:maxCardinality 1 .
+
+health:activity_datetime a rdf:Property ;
+    rdfs:domain health:Activity ;
+    rdfs:range xsd:dateTime .
 
 health:activity_id a rdf:Property ;
     rdfs:domain health:Activity ;
@@ -67,6 +71,10 @@ health:weight_date a rdf:Property, nrl:InverseFunctionalProperty;
     rdfs:domain health:WeightMeasurement ;
     rdfs:range xsd:date ;
     nrl:maxCardinality 1 .
+
+health:weight_datetime a rdf:Property, nrl:InverseFunctionalProperty;
+    rdfs:domain health:WeightMeasurement ;
+    rdfs:range xsd:dateTime .
 
 health:weight a rdf:Property ;
     rdfs:domain health:WeightMeasurement ;
