@@ -264,7 +264,34 @@ mod imp {
                 );
             }
 
-            cr.stroke();
+            cr.line_to(
+                f64::from(inner.width),
+                f64::from(
+                    inner.height - inner.points.last().unwrap().value * inner.scale_y
+                        + HALF_Y_PADDING,
+                ),
+            );
+            cr.stroke_preserve();
+
+            cr.set_line_width(0.0);
+            cr.line_to(
+                f64::from(inner.width),
+                f64::from(inner.height + HALF_Y_PADDING),
+            );
+            cr.line_to(
+                f64::from(HALF_X_PADDING),
+                f64::from(inner.height + HALF_Y_PADDING),
+            );
+            cr.close_path();
+
+            cr.set_source_rgba(
+                f64::from(graph_color.red),
+                f64::from(graph_color.green),
+                f64::from(graph_color.blue),
+                0.65,
+            );
+            cr.stroke_preserve();
+            cr.fill();
             cr.restore().unwrap();
 
             if let Some(hover_func) = &inner.hover_func {
