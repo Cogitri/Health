@@ -152,6 +152,11 @@ mod imp {
             self.age_spin_button
                 .set_value(f64::from(self.settings.get_user_age()));
 
+            self.bmi_levelbar
+                .set_height(self.settings.get_user_height());
+
+            self.bmi_levelbar
+                .set_weight(self.settings.get_user_weightgoal());
             self.connect_handlers(obj);
         }
 
@@ -201,6 +206,7 @@ mod imp {
                         };
 
                         self_.settings.set_user_weightgoal(weight);
+                        self_.bmi_levelbar.set_weight(weight);
                     }
                 }));
 
@@ -216,6 +222,7 @@ mod imp {
                         };
 
                         self_.settings.set_user_height(height);
+                        self_.bmi_levelbar.set_height(height);
                     }
                 }));
 
