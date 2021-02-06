@@ -25,5 +25,10 @@
     <property name="name">Weight</property>
     <property name="title" translatable="yes">Weight Measurements</property>
     <property name="view-title" translatable="yes">Weight</property>
+    <property name="content-widget">
+      <object class="GtkScrolledWindow" id="scrolled_window">
+        <property name="vscrollbar-policy">GTK_POLICY_NEVER</property>
+      </object>
+    </property>
   </template>
 </interface>

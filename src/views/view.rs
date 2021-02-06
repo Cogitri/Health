@@ -33,7 +33,7 @@ mod imp {
         #[template_child]
         pub goal_label: TemplateChild<gtk::Label>,
         #[template_child]
-        pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
+        pub main_box: TemplateChild<gtk::Box>,
         #[template_child]
         pub subtitle_empty_view_label: TemplateChild<gtk::Label>,
         #[template_child]
@@ -59,7 +59,7 @@ mod imp {
             Self {
                 empty_icon: TemplateChild::default(),
                 goal_label: TemplateChild::default(),
-                scrolled_window: TemplateChild::default(),
+                main_box: TemplateChild::default(),
                 subtitle_empty_view_label: TemplateChild::default(),
                 stack: TemplateChild::default(),
                 title_empty_view_label: TemplateChild::default(),
@@ -95,6 +95,13 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
+                    glib::ParamSpec::object(
+                        "content-widget",
+                        "content-widget",
+                        "content-widget",
+                        gtk::Widget::static_type(),
+                        glib::ParamFlags::WRITABLE,
+                    ),
                     glib::ParamSpec::string(
                         "empty-subtitle",
                         "empty-subtitle",
@@ -137,6 +144,9 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.get_name() {
+                "content-widget" => self
+                    .main_box
+                    .append(&value.get::<gtk::Widget>().unwrap().unwrap()),
                 "empty-subtitle" => self
                     .subtitle_empty_view_label
                     .set_label(value.get().unwrap().unwrap_or("")),
@@ -185,10 +195,6 @@ impl View {
 
     pub fn get_stack(&self) -> gtk::Stack {
         imp::View::from_instance(self).stack.get()
-    }
-
-    pub fn get_scrolled_window(&self) -> gtk::ScrolledWindow {
-        imp::View::from_instance(self).scrolled_window.get()
     }
 
     properties_setter_getter!("empty-title", String);

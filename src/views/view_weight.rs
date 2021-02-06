@@ -38,6 +38,8 @@ mod imp {
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_view.ui")]
     pub struct ViewWeight {
+        #[template_child]
+        scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         settings: Settings,
         weight_graph_view: OnceCell<GraphView>,
         weight_graph_model: OnceCell<RefCell<GraphModelWeight>>,
@@ -55,6 +57,7 @@ mod imp {
 
         fn new() -> Self {
             Self {
+                scrolled_window: TemplateChild::default(),
                 settings: Settings::new(),
                 weight_graph_view: OnceCell::new(),
                 weight_graph_model: OnceCell::new(),
@@ -201,8 +204,7 @@ mod imp {
                 weight_graph_view.set_limit(Some(weightgoal));
                 weight_graph_view.set_limit_label(Some(i18n("Weightgoal")));
 
-                view.get_scrolled_window()
-                    .set_child(Some(&weight_graph_view));
+                self.scrolled_window.set_child(Some(&weight_graph_view));
                 view.get_stack().set_visible_child_name("data_page");
 
                 self.weight_graph_view.set(weight_graph_view).unwrap();

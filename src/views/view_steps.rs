@@ -34,6 +34,8 @@ mod imp {
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/step_view.ui")]
     pub struct ViewSteps {
+        #[template_child]
+        scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         settings: Settings,
         steps_graph_view: OnceCell<GraphView>,
         steps_graph_model: OnceCell<RefCell<GraphModelSteps>>,
@@ -53,6 +55,7 @@ mod imp {
             let settings = Settings::new();
 
             Self {
+                scrolled_window: TemplateChild::default(),
                 settings,
                 steps_graph_view: OnceCell::new(),
                 steps_graph_model: OnceCell::new(),
@@ -141,8 +144,7 @@ mod imp {
                 steps_graph_view.set_limit(Some(self.settings.get_user_stepgoal() as f32));
                 steps_graph_view.set_limit_label(Some(i18n("Stepgoal")));
 
-                view.get_scrolled_window()
-                    .set_child(Some(&steps_graph_view));
+                self.scrolled_window.set_child(Some(&steps_graph_view));
                 view.get_stack().set_visible_child_name("data_page");
 
                 self.steps_graph_view.set(steps_graph_view).unwrap();

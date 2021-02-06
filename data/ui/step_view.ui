@@ -25,5 +25,10 @@
     <property name="name">Steps</property>
     <property name="title" translatable="yes">Steps</property>
     <property name="view-title" translatable="yes">Steps</property>
+    <property name="content-widget">
+      <object class="GtkScrolledWindow" id="scrolled_window">
+        <property name="vscrollbar-policy">GTK_POLICY_NEVER</property>
+      </object>
+    </property>
   </template>
 </interface>
