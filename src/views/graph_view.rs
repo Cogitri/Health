@@ -114,7 +114,7 @@ mod imp {
                 let biggest_value = inner.biggest_value + inner.x_lines_interval
                     - inner.biggest_value % inner.x_lines_interval;
 
-                inner.scale_x = inner.width / inner.points.len() as f32;
+                inner.scale_x = inner.width / (inner.points.len() - 1) as f32;
                 inner.scale_y = inner.height / biggest_value;
 
                 biggest_value
@@ -277,7 +277,7 @@ mod imp {
             }
 
             cr.line_to(
-                f64::from(inner.width),
+                f64::from(inner.width + HALF_X_PADDING),
                 f64::from(
                     inner.height - inner.points.last().unwrap().value * inner.scale_y
                         + HALF_Y_PADDING,
@@ -287,7 +287,7 @@ mod imp {
 
             cr.set_line_width(0.0);
             cr.line_to(
-                f64::from(inner.width),
+                f64::from(inner.width + HALF_X_PADDING),
                 f64::from(inner.height + HALF_Y_PADDING),
             );
             cr.line_to(
