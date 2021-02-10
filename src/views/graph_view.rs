@@ -142,12 +142,12 @@ mod imp {
             for i in 0..4 {
                 let mul = inner.height / 4.0;
                 cr.move_to(
-                    (inner.width + HALF_Y_PADDING).into(),
-                    (mul * i as f32 + HALF_Y_PADDING).into(),
+                    f64::from(inner.width + HALF_Y_PADDING),
+                    f64::from(mul * i as f32 + HALF_Y_PADDING),
                 );
                 cr.line_to(
-                    HALF_X_PADDING.into(),
-                    (mul * i as f32 + HALF_Y_PADDING).into(),
+                    f64::from(HALF_X_PADDING),
+                    f64::from(mul * i as f32 + HALF_Y_PADDING),
                 );
                 let layout = widget.create_pango_layout(Some(
                     &((biggest_value / 4.0 * (4 - i) as f32) as u32).to_string(),
@@ -196,15 +196,22 @@ mod imp {
                 cr.set_line_width(0.5);
                 cr.set_dash(&[10.0, 5.0], 0.0);
                 cr.move_to(
-                    f64::from(HALF_X_PADDING),
-                    f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING),
-                );
-                let layout = widget.create_pango_layout(inner.limit_label.as_deref());
-                pangocairo::show_layout(&cr, &layout);
-                cr.line_to(
                     f64::from(inner.width + HALF_X_PADDING),
                     f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING),
                 );
+                cr.line_to(
+                    f64::from(HALF_X_PADDING),
+                    f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING),
+                );
+
+                let layout = widget.create_pango_layout(inner.limit_label.as_deref());
+                let (_, extents) = layout.get_extents();
+                cr.move_to(
+                    f64::from(inner.width + HALF_X_PADDING) - pango::units_to_double(extents.width),
+                    f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING)
+                        - pango::units_to_double(extents.height),
+                );
+                pangocairo::show_layout(&cr, &layout);
 
                 cr.stroke();
                 cr.restore().unwrap();
