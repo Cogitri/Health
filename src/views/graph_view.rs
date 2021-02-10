@@ -190,6 +190,9 @@ mod imp {
             if let Some(limit) = inner.limit {
                 cr.save().unwrap();
 
+                let graph_color = style_context.lookup_color("success_color").unwrap();
+                GdkCairoContextExt::set_source_rgba(&cr, &graph_color);
+
                 cr.set_line_width(0.5);
                 cr.set_dash(&[10.0, 5.0], 0.0);
                 cr.move_to(
