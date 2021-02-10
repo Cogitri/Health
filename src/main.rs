@@ -22,12 +22,15 @@ mod widgets;
 mod windows;
 
 fn main() {
-    gtk::init().expect("Failed to initialize GTK.");
-    adw::init();
-
     setlocale(LocaleCategory::LcAll, "");
     bindtextdomain("dev.Cogitri.Health", config::LOCALEDIR);
     textdomain("dev.Cogitri.Health");
+
+    glib::set_application_name(&core::i18n("Health"));
+    glib::set_prgname(Some("dev.Cogitri.Health"));
+
+    gtk::init().expect("Failed to initialize GTK.");
+    adw::init();
 
     let res = gio::Resource::load(config::PKGDATADIR.to_owned() + "/dev.Cogitri.Health.gresource")
         .expect("Could not load resources");
