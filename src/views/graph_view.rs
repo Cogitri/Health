@@ -404,7 +404,13 @@ mod imp {
         }
 
         pub fn set_limit(&self, obj: &super::GraphView, limit: Option<f32>) {
-            self.inner.borrow_mut().limit = limit;
+            let mut inner = self.inner.borrow_mut();
+            inner.limit = limit;
+
+            if inner.biggest_value < inner.limit.unwrap_or(0.0) {
+                inner.biggest_value = inner.limit.unwrap();
+            }
+
             obj.queue_draw();
         }
 
@@ -436,6 +442,11 @@ mod imp {
                 .max_by(|x, y| (x.value as u32).cmp(&(y.value as u32)))
                 .map(|b| b.value)
                 .unwrap();
+
+            if inner.biggest_value < inner.limit.unwrap_or(0.0) {
+                inner.biggest_value = inner.limit.unwrap();
+            }
+
             inner.points = points;
             obj.queue_draw();
         }
