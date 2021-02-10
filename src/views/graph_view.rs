@@ -258,7 +258,7 @@ mod imp {
 
             for (i, point) in inner.points.iter().enumerate() {
                 let next_value = if (i + 1) >= inner.points.len() {
-                    inner.points.get(i).unwrap().value
+                    break;
                 } else {
                     inner.points.get(i + 1).unwrap().value
                 };
