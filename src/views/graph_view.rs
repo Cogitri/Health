@@ -136,6 +136,8 @@ mod imp {
                 Draw outlines
             */
             cr.save().unwrap();
+            cr.set_line_width(0.5);
+            cr.set_dash(&[10.0, 5.0], 0.0);
 
             for i in 0..5 {
                 let mul = inner.height / 4.0;
