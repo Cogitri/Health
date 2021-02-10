@@ -4,6 +4,7 @@ conf.set_quoted('localedir', join_paths(get_option('prefix'), get_option('locale
 conf.set_quoted('pkgdatadir', health_data_dir)
 conf.set_quoted('application_id', application_id)
 conf.set_quoted('log_domain', application_id)
+conf.set_quoted('gettext_package', gettext_package)
 
 configure_file(
     input: 'config.rs.in',

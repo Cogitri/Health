@@ -15,7 +15,7 @@
 		</p>
 	</description>
 	<content_rating type="oars-1.1" />
-	<translation type="gettext">dev.Cogitri.Health</translation>
+	<translation type="gettext">@GETTEXT_PACKAGE@</translation>
 	<launchable type="desktop-id">@APPLICATION_ID@.desktop</launchable>
 	<screenshots>
 		<screenshot type="default">
@@ -46,14 +46,14 @@
 				This releases makes error reporting of sync errors less intrusive and makes it possible to enter distances in KM/Miles and Meters/Yards. It also ships lots of bugfixes:
 			</p>
 			<ul>
-			    <li>Fix syncing weight measurements when multiple weight measurements have been recorded on the same day</li>
-			    <li>Fix BMI measurements when "imperial" is set as unit system</li>
-			    <li>Use localized date formats</li>
-			    <li>Add border around date picker for better legibility</li>
-			    <li>Vendor emblem-synchronizing-icon to make it consistent across icon themes</li>
-			    <li>Fix entering data in the spin buttons in Health's preferences</li>
-			    <li>Fix Google Fit syncing after initial sync</li>
-			    <li>Fix entering data in activity add dialog</li>
+				<li>Fix syncing weight measurements when multiple weight measurements have been recorded on the same day</li>
+				<li>Fix BMI measurements when "imperial" is set as unit system</li>
+				<li>Use localized date formats</li>
+				<li>Add border around date picker for better legibility</li>
+				<li>Vendor emblem-synchronizing-icon to make it consistent across icon themes</li>
+				<li>Fix entering data in the spin buttons in Health's preferences</li>
+				<li>Fix Google Fit syncing after initial sync</li>
+				<li>Fix entering data in activity add dialog</li>
 			</ul>
 		</release>
 		<release version="0.90.2" date="2021-01-04">

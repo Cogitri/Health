@@ -1,5 +1,6 @@
 conf = configuration_data ()
 conf.set('APPLICATION_ID', application_id)
+conf.set('GETTEXT_PACKAGE', gettext_package)
 
 configured_desktop_file = configure_file(
   input: 'dev.Cogitri.Health.desktop.in.in',

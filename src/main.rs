@@ -23,8 +23,8 @@ mod windows;
 
 fn main() {
     setlocale(LocaleCategory::LcAll, "");
-    bindtextdomain("dev.Cogitri.Health", config::LOCALEDIR);
-    textdomain("dev.Cogitri.Health");
+    bindtextdomain(config::GETTEXT_PACKAGE, config::LOCALEDIR);
+    textdomain(config::GETTEXT_PACKAGE);
 
     glib::set_application_name(&core::i18n("Health"));
     glib::set_prgname(Some("dev.Cogitri.Health"));
