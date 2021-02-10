@@ -139,7 +139,7 @@ mod imp {
             cr.set_line_width(0.5);
             cr.set_dash(&[10.0, 5.0], 0.0);
 
-            for i in 0..5 {
+            for i in 0..4 {
                 let mul = inner.height / 4.0;
                 cr.move_to(
                     (inner.width + HALF_Y_PADDING).into(),
