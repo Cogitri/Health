@@ -28,12 +28,13 @@ pub struct Point {
 mod imp {
     use super::Point;
     use chrono::Local;
+    use gdk::prelude::GdkCairoContextExt;
     use glib::{clone, subclass};
     use gtk::prelude::*;
     use gtk::subclass::prelude::*;
     use std::{cell::RefCell, convert::TryInto, f64::consts::PI};
 
-    static HALF_X_PADDING: f32 = 30.0;
+    static HALF_X_PADDING: f32 = 40.0;
     static HALF_Y_PADDING: f32 = 30.0;
 
     #[derive(Debug)]
@@ -113,7 +114,7 @@ mod imp {
                 let biggest_value = inner.biggest_value + inner.x_lines_interval
                     - inner.biggest_value % inner.x_lines_interval;
 
-                inner.scale_x = inner.width / inner.points.len() as f32;
+                inner.scale_x = inner.width / (inner.points.len() - 1) as f32;
                 inner.scale_y = inner.height / biggest_value;
 
                 biggest_value
@@ -128,27 +129,25 @@ mod imp {
                 ))
                 .unwrap();
             let style_context = widget.get_style_context();
-            let outline_color = style_context.get_color();
-            cr.set_source_rgba(
-                outline_color.red.into(),
-                outline_color.green.into(),
-                outline_color.blue.into(),
-                0.5,
-            );
+            let background_color = style_context.lookup_color("insensitive_fg_color").unwrap();
+
+            GdkCairoContextExt::set_source_rgba(&cr, &background_color);
             /*
                 Draw outlines
             */
             cr.save().unwrap();
+            cr.set_line_width(0.5);
+            cr.set_dash(&[10.0, 5.0], 0.0);
 
-            for i in 0..5 {
+            for i in 0..4 {
                 let mul = inner.height / 4.0;
                 cr.move_to(
-                    (inner.width + HALF_Y_PADDING).into(),
-                    (mul * i as f32 + HALF_Y_PADDING).into(),
+                    f64::from(inner.width + HALF_Y_PADDING),
+                    f64::from(mul * i as f32 + HALF_Y_PADDING),
                 );
                 cr.line_to(
-                    HALF_X_PADDING.into(),
-                    (mul * i as f32 + HALF_Y_PADDING).into(),
+                    f64::from(HALF_X_PADDING),
+                    f64::from(mul * i as f32 + HALF_Y_PADDING),
                 );
                 let layout = widget.create_pango_layout(Some(
                     &((biggest_value / 4.0 * (4 - i) as f32) as u32).to_string(),
@@ -191,17 +190,28 @@ mod imp {
             if let Some(limit) = inner.limit {
                 cr.save().unwrap();
 
+                let graph_color = style_context.lookup_color("success_color").unwrap();
+                GdkCairoContextExt::set_source_rgba(&cr, &graph_color);
+
+                cr.set_line_width(0.5);
                 cr.set_dash(&[10.0, 5.0], 0.0);
                 cr.move_to(
-                    f64::from(HALF_X_PADDING),
-                    f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING),
-                );
-                let layout = widget.create_pango_layout(inner.limit_label.as_deref());
-                pangocairo::show_layout(&cr, &layout);
-                cr.line_to(
                     f64::from(inner.width + HALF_X_PADDING),
                     f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING),
                 );
+                cr.line_to(
+                    f64::from(HALF_X_PADDING),
+                    f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING),
+                );
+
+                let layout = widget.create_pango_layout(inner.limit_label.as_deref());
+                let (_, extents) = layout.get_extents();
+                cr.move_to(
+                    f64::from(inner.width + HALF_X_PADDING) - pango::units_to_double(extents.width),
+                    f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING)
+                        - pango::units_to_double(extents.height),
+                );
+                pangocairo::show_layout(&cr, &layout);
 
                 cr.stroke();
                 cr.restore().unwrap();
@@ -216,7 +226,10 @@ mod imp {
             */
             cr.save().unwrap();
 
-            cr.set_source_rgba(0.0, 174.0, 174.0, 1.0);
+            let graph_color = style_context
+                .lookup_color("theme_selected_bg_color")
+                .unwrap();
+            GdkCairoContextExt::set_source_rgba(&cr, &graph_color);
             cr.set_line_width(4.0);
             for (i, point) in inner.points.iter().enumerate() {
                 let x = f64::from(i as f32 * inner.scale_x + HALF_X_PADDING);
@@ -233,7 +246,8 @@ mod imp {
                 Draw the graph itself
             */
             cr.save().unwrap();
-            cr.set_source_rgba(0.0, 174.0, 174.0, 0.8);
+
+            GdkCairoContextExt::set_source_rgba(&cr, &graph_color);
             cr.move_to(
                 f64::from(HALF_X_PADDING),
                 f64::from(
@@ -244,7 +258,7 @@ mod imp {
 
             for (i, point) in inner.points.iter().enumerate() {
                 let next_value = if (i + 1) >= inner.points.len() {
-                    inner.points.get(i).unwrap().value
+                    break;
                 } else {
                     inner.points.get(i + 1).unwrap().value
                 };
@@ -262,7 +276,34 @@ mod imp {
                 );
             }
 
-            cr.stroke();
+            cr.line_to(
+                f64::from(inner.width + HALF_X_PADDING),
+                f64::from(
+                    inner.height - inner.points.last().unwrap().value * inner.scale_y
+                        + HALF_Y_PADDING,
+                ),
+            );
+            cr.stroke_preserve();
+
+            cr.set_line_width(0.0);
+            cr.line_to(
+                f64::from(inner.width + HALF_X_PADDING),
+                f64::from(inner.height + HALF_Y_PADDING),
+            );
+            cr.line_to(
+                f64::from(HALF_X_PADDING),
+                f64::from(inner.height + HALF_Y_PADDING),
+            );
+            cr.close_path();
+
+            cr.set_source_rgba(
+                f64::from(graph_color.red),
+                f64::from(graph_color.green),
+                f64::from(graph_color.blue),
+                0.65,
+            );
+            cr.stroke_preserve();
+            cr.fill();
             cr.restore().unwrap();
 
             if let Some(hover_func) = &inner.hover_func {
@@ -373,7 +414,13 @@ mod imp {
         }
 
         pub fn set_limit(&self, obj: &super::GraphView, limit: Option<f32>) {
-            self.inner.borrow_mut().limit = limit;
+            let mut inner = self.inner.borrow_mut();
+            inner.limit = limit;
+
+            if inner.biggest_value < inner.limit.unwrap_or(0.0) {
+                inner.biggest_value = inner.limit.unwrap();
+            }
+
             obj.queue_draw();
         }
 
@@ -405,6 +452,11 @@ mod imp {
                 .max_by(|x, y| (x.value as u32).cmp(&(y.value as u32)))
                 .map(|b| b.value)
                 .unwrap();
+
+            if inner.biggest_value < inner.limit.unwrap_or(0.0) {
+                inner.biggest_value = inner.limit.unwrap();
+            }
+
             inner.points = points;
             obj.queue_draw();
         }

@@ -36,8 +36,8 @@ mod imp {
     pub struct ViewActivity {
         settings: Settings,
         activity_model: OnceCell<ModelActivity>,
-        pub activities_list_box: gtk::ListBox,
-        clamp: adw::Clamp,
+        #[template_child]
+        pub activities_list_box: TemplateChild<gtk::ListBox>,
     }
 
     impl ObjectSubclass for ViewActivity {
@@ -51,28 +51,10 @@ mod imp {
         glib::object_subclass!();
 
         fn new() -> Self {
-            let activities_list_box = gtk::ListBoxBuilder::new()
-                .can_focus(false)
-                .selection_mode(gtk::SelectionMode::None)
-                .build();
-            activities_list_box.add_css_class("content");
-            let clamp_builder = adw::ClampBuilder::new()
-                .maximum_size(800)
-                .tightening_threshold(600)
-                .valign(gtk::Align::Center)
-                .vexpand(true)
-                .hexpand(true)
-                .margin_end(6)
-                .margin_bottom(6)
-                .margin_start(6)
-                .margin_top(6)
-                .child(&activities_list_box);
-
             Self {
                 settings: Settings::new(),
                 activity_model: OnceCell::new(),
-                activities_list_box,
-                clamp: clamp_builder.build(),
+                activities_list_box: TemplateChild::default(),
             }
         }
 
@@ -90,15 +72,7 @@ mod imp {
 
     impl WidgetImpl for ViewActivity {}
 
-    impl ObjectImpl for ViewActivity {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-
-            let scrolled_window = obj.upcast_ref::<View>().get_scrolled_window();
-            scrolled_window.set_child(Some(&self.clamp));
-            scrolled_window.set_property_vscrollbar_policy(gtk::PolicyType::Automatic);
-        }
-    }
+    impl ObjectImpl for ViewActivity {}
 
     impl ViewActivity {
         pub fn set_activity_model(&self, model: ModelActivity) {

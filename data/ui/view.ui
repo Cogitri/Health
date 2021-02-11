@@ -90,11 +90,6 @@
                     </attributes>
                   </object>
                 </child>
-                <child>
-                  <object class="GtkScrolledWindow" id="scrolled_window">
-                    <property name="vscrollbar-policy">GTK_POLICY_NEVER</property>
-                  </object>
-                </child>
               </object>
             </property>
           </object>
