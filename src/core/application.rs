@@ -16,7 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::i18n, windows::PreferencesWindow};
+use crate::{
+    core::i18n,
+    windows::{PreferencesWindow, Window},
+};
 use gio::prelude::*;
 use glib::{clone, subclass::prelude::*};
 use gtk::prelude::*;
@@ -69,27 +72,21 @@ mod imp {
     }
 
     impl ApplicationImpl for Application {
-        fn activate(&self, application: &Self::Type) {
-            self.parent_activate(application);
+        fn activate(&self, obj: &Self::Type) {
+            self.parent_activate(obj);
             let has_window = self.window.get().and_then(glib::WeakRef::upgrade).is_some();
 
             if !has_window && self.settings.get_did_initial_setup() {
-                let window = Window::new(application, self.db.clone());
+                let window = Window::new(obj, self.db.clone());
                 window.show();
                 self.window
                     .set(glib::ObjectExt::downgrade(&window))
                     .unwrap();
             } else if !has_window {
-                let setup_window = SetupWindow::new(application, self.db.clone());
+                let setup_window = SetupWindow::new(obj, self.db.clone());
 
-                setup_window.connect_setup_done(clone!(@weak application => move || {
-                    let self_ = Application::from_instance(&application);
-                    self_.settings.set_did_initial_setup(true);
-                    let window = Window::new(&application, self_.db.clone());
-                    window.show();
-                    self_.window
-                        .set(glib::ObjectExt::downgrade(&window))
-                        .unwrap();
+                setup_window.connect_setup_done(clone!(@weak obj => move || {
+                    obj.handle_setup_window_setup_done();
                 }));
 
                 setup_window.show();
@@ -130,6 +127,17 @@ impl Application {
 
     fn get_priv(&self) -> &imp::Application {
         imp::Application::from_instance(self)
+    }
+
+    fn handle_setup_window_setup_done(&self) {
+        let self_ = self.get_priv();
+        self_.settings.set_did_initial_setup(true);
+        let window = Window::new(self, self_.db.clone());
+        window.show();
+        self_
+            .window
+            .set(glib::ObjectExt::downgrade(&window))
+            .unwrap();
     }
 
     fn setup_accels(&self) {

@@ -176,56 +176,102 @@ impl Window {
     fn connect_handlers(&self) {
         let self_ = self.get_priv();
 
-        self_.error_infobar.connect_response(|bar, response| {
-            if response == gtk::ResponseType::Close {
-                bar.set_revealed(false);
-            }
-        });
-        self_.stack
-            .connect_property_visible_child_notify(clone!(@weak self as obj => move |s| {
-                let child_name = s.get_visible_child_name().map(|s| s.to_string());
-                let self_ = obj.get_priv();
-
-                if child_name == self_.views.get().unwrap().get(&ViewMode::STEPS).map(|s| s.get_widget_name().to_string()) {
-                    self_.inner.borrow_mut().current_view = ViewMode::STEPS;
-                } else if child_name == self_.views.get().unwrap().get(&ViewMode::WEIGHT).map(|s| s.get_widget_name().to_string()) {
-                    self_.inner.borrow_mut().current_view = ViewMode::WEIGHT;
-                }
-            }));
-        self_.add_data_button
+        self_
+            .add_data_button
             .connect_clicked(clone!(@weak self as obj => move |_| {
-                let self_ = obj.get_priv();
-                let db = self_.db.get().unwrap().clone();
-
-                let dialog = match self_.inner.borrow().current_view {
-                    ViewMode::ACTIVITIES | ViewMode::STEPS => ActivityAddDialog::new(db, obj.upcast_ref()).upcast::<gtk::Dialog>(),
-                    ViewMode::WEIGHT => WeightAddDialog::new(db, obj.upcast_ref()).upcast::<gtk::Dialog>(),
-                };
-                dialog.present();
+                obj.handle_add_data_button_clicked();
             }));
 
-        self.connect_property_default_height_notify(clone!(@weak self as obj => move |w| {
-            obj.get_priv().inner.borrow_mut().current_height = w.get_property_default_height();
-        }));
-        self.connect_property_default_width_notify(clone!(@weak self as obj => move |w| {
-            obj.get_priv().inner.borrow_mut().current_width = w.get_property_default_width();
-        }));
-        self.connect_close_request(clone!(@weak self as obj => move |w| {
-            let self_ = obj.get_priv();
-            let mut inner = self_.inner.borrow_mut();
+        self_
+            .error_infobar
+            .connect_response(Self::handle_error_infobar_response);
 
-            self_
-                .settings
-                .set_window_is_maximized(w.get_property_maximized());
-            self_.settings.set_window_height(inner.current_height);
-            self_.settings.set_window_width(inner.current_width);
+        self_
+            .stack
+            .connect_property_visible_child_notify(clone!(@weak self as obj => move |_| {
+                obj.handle_stack_property_visible_child_notify();
+            }));
 
-            if let Some(source_id) = inner.sync_source_id.take() {
-                glib::source_remove(source_id);
+        self.connect_close_request(clone!(@weak self as obj => move |_| {
+            obj.handle_close_request()
+        }));
+
+        self.connect_property_default_height_notify(clone!(@weak self as obj => move |_| {
+            obj.handle_property_default_height_notify();
+        }));
+
+        self.connect_property_default_width_notify(clone!(@weak self as obj => move |_| {
+            obj.handle_property_default_width_notify();
+        }));
+    }
+
+    fn handle_add_data_button_clicked(&self) {
+        let self_ = self.get_priv();
+        let db = self_.db.get().unwrap().clone();
+
+        let dialog = match self_.inner.borrow().current_view {
+            ViewMode::ACTIVITIES | ViewMode::STEPS => {
+                ActivityAddDialog::new(db, self.upcast_ref()).upcast::<gtk::Dialog>()
             }
+            ViewMode::WEIGHT => WeightAddDialog::new(db, self.upcast_ref()).upcast::<gtk::Dialog>(),
+        };
+        dialog.present();
+    }
 
-            Inhibit(false)
-        }));
+    fn handle_close_request(&self) -> Inhibit {
+        let self_ = self.get_priv();
+        let mut inner = self_.inner.borrow_mut();
+
+        self_
+            .settings
+            .set_window_is_maximized(self.get_property_maximized());
+        self_.settings.set_window_height(inner.current_height);
+        self_.settings.set_window_width(inner.current_width);
+
+        if let Some(source_id) = inner.sync_source_id.take() {
+            glib::source_remove(source_id);
+        }
+
+        Inhibit(false)
+    }
+
+    fn handle_error_infobar_response(bar: &gtk::InfoBar, response: gtk::ResponseType) {
+        if response == gtk::ResponseType::Close {
+            bar.set_revealed(false);
+        }
+    }
+
+    fn handle_property_default_height_notify(&self) {
+        self.get_priv().inner.borrow_mut().current_height = self.get_property_default_height();
+    }
+
+    fn handle_property_default_width_notify(&self) {
+        self.get_priv().inner.borrow_mut().current_height = self.get_property_default_height();
+    }
+
+    fn handle_stack_property_visible_child_notify(&self) {
+        let self_ = self.get_priv();
+        let child_name = self_.stack.get_visible_child_name().map(|s| s.to_string());
+
+        if child_name
+            == self_
+                .views
+                .get()
+                .unwrap()
+                .get(&ViewMode::STEPS)
+                .map(|s| s.get_widget_name().to_string())
+        {
+            self_.inner.borrow_mut().current_view = ViewMode::STEPS;
+        } else if child_name
+            == self_
+                .views
+                .get()
+                .unwrap()
+                .get(&ViewMode::WEIGHT)
+                .map(|s| s.get_widget_name().to_string())
+        {
+            self_.inner.borrow_mut().current_view = ViewMode::WEIGHT;
+        }
     }
 
     fn set_db(&self, db: Database) {

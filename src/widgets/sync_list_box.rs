@@ -163,60 +163,68 @@ impl SyncListBox {
     }
 
     fn connect_handlers(&self) {
-        self.get_priv().sync_list_box
-            .connect_row_activated(glib::clone!(@weak self as obj => move |_, row| {
-                let self_ = obj.get_priv();
-                if row == &self_.google_fit_start_sync_row.get() {
-                    self_.google_fit_stack.set_visible(true);
-                    self_.google_fit_spinner.set_visible(true);
-                    self_.google_fit_spinner.set_spinning(true);
-                    self_.google_fit_start_sync_row.set_activatable(false);
-                    self_.google_fit_stack.set_visible_child(&self_.google_fit_spinner.get());
-
-                    let (sender, receiver) = glib::MainContext::channel::<Result<(), SyncProviderError>>(glib::PRIORITY_DEFAULT);
-                    let db_sender = new_db_receiver(self_.database.get().unwrap().clone());
-
-                    receiver.attach(None, clone!(@weak obj => move |res| {
-                        if let Err(e) = res {
-                            let self_ = obj.get_priv();
-
-                            self_.google_fit_selected_image.set_property_icon_name(Some("network-error-symbolic"));
-                            self_.google_fit_selected_image.set_visible(true);
-                            self_.google_fit_spinner.set_spinning(false);
-                            self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
-
-                            obj.open_sync_error(&e.to_string());
-                        } else {
-                            spawn!(async move {
-                                // TODO: Start importing data
-                                let self_ = obj.get_priv();
-                                self_.google_fit_selected_image.set_visible(true);
-                                self_.google_fit_spinner.set_spinning(false);
-                                self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
-                            });
-                        }
-
-                        glib::Continue(false)
-                    }));
-
-                    std::thread::spawn(move || {
-                        let mut sync_provider = GoogleFitSyncProvider::new(db_sender);
-                        if let Err(e) = sync_provider.initial_authenticate() {
-                            sender.send(Err(e)).unwrap();
-                        } else {
-                            if let Err(e) = sync_provider.initial_import() {
-                                sender.send(Err(e)).unwrap();
-                            }
-
-                            sender.send(Ok(())).unwrap();
-                        }
-                    });
-                }
-            }));
+        self.get_priv().sync_list_box.connect_row_activated(
+            glib::clone!(@weak self as obj => move |_, row| {
+                obj.handle_row_activated(row);
+            }),
+        );
     }
 
     fn get_priv(&self) -> &imp::SyncListBox {
         imp::SyncListBox::from_instance(self)
+    }
+
+    fn handle_row_activated(self, row: &gtk::ListBoxRow) {
+        let self_ = self.get_priv();
+        if row == &self_.google_fit_start_sync_row.get() {
+            self_.google_fit_stack.set_visible(true);
+            self_.google_fit_spinner.set_visible(true);
+            self_.google_fit_spinner.set_spinning(true);
+            self_.google_fit_start_sync_row.set_activatable(false);
+            self_
+                .google_fit_stack
+                .set_visible_child(&self_.google_fit_spinner.get());
+
+            let (sender, receiver) =
+                glib::MainContext::channel::<Result<(), SyncProviderError>>(glib::PRIORITY_DEFAULT);
+            let db_sender = new_db_receiver(self_.database.get().unwrap().clone());
+
+            receiver.attach(None, clone!(@weak self as obj => move |res| {
+                if let Err(e) = res {
+                    let self_ = obj.get_priv();
+
+                    self_.google_fit_selected_image.set_property_icon_name(Some("network-error-symbolic"));
+                    self_.google_fit_selected_image.set_visible(true);
+                    self_.google_fit_spinner.set_spinning(false);
+                    self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
+
+                    obj.open_sync_error(&e.to_string());
+                } else {
+                    spawn!(async move {
+                        // TODO: Start importing data
+                        let self_ = obj.get_priv();
+                        self_.google_fit_selected_image.set_visible(true);
+                        self_.google_fit_spinner.set_spinning(false);
+                        self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
+                    });
+                }
+
+                glib::Continue(false)
+            }));
+
+            std::thread::spawn(move || {
+                let mut sync_provider = GoogleFitSyncProvider::new(db_sender);
+                if let Err(e) = sync_provider.initial_authenticate() {
+                    sender.send(Err(e)).unwrap();
+                } else {
+                    if let Err(e) = sync_provider.initial_import() {
+                        sender.send(Err(e)).unwrap();
+                    }
+
+                    sender.send(Ok(())).unwrap();
+                }
+            });
+        }
     }
 
     fn open_sync_error(&self, errmsg: &str) {

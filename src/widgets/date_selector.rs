@@ -16,12 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use chrono::{DateTime, FixedOffset};
+use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
 use glib::subclass::prelude::*;
 use gtk::prelude::*;
 
 mod imp {
-    use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
+    use chrono::{DateTime, FixedOffset, Local};
     use glib::{clone, subclass};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
@@ -68,34 +68,16 @@ mod imp {
             let controller = gtk::EventControllerFocus::new();
             obj.add_controller(&controller);
 
-            let parse_date = clone!(@weak obj => move || {
-                if let Ok(date) = NaiveDate::parse_from_str(obj.get_text().as_str(), "%x") {
-                        match Local.from_local_datetime(&date.and_hms(12, 0, 0)) {
-                            LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
-                                obj.set_selected_date (d.into());
-                            }
-                            LocalResult::None => {},
-                        }
-                } else {
-                    glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't parse date!");
-                }
-            });
-            controller.connect_enter(clone!(@strong parse_date => move |_| parse_date()));
-            controller.connect_leave(clone!(@strong parse_date => move |_| parse_date()));
-            obj.connect_activate(clone!(@strong parse_date => move |_| parse_date()));
-            obj.connect_icon_press(clone!(@weak obj, @strong parse_date => move |_, pos| {
-                parse_date();
-                let self_ = DateSelector::from_instance(&obj);
-                self_.date_selector_popover.set_pointing_to (&obj.get_icon_area(pos));
-                self_.date_selector_popover.show();
+            controller.connect_enter(clone!(@weak obj => move |_| obj.parse_date()));
+            controller.connect_leave(clone!(@weak obj => move |_| obj.parse_date()));
+            obj.connect_activate(clone!(@weak obj => move |_| obj.parse_date()));
+            obj.connect_icon_press(clone!(@weak obj => move |_, pos| {
+                obj.handle_icon_press(pos)
             }));
-
-            let set_text = clone!(@weak obj => move |c: &gtk::Calendar| {
-                let date = Local.timestamp(c.get_date().to_unix(), 0);
-                obj.set_text(&format!("{}", date.format("%x")));
-                DateSelector::from_instance(&obj).selected_date.replace(date.into());
-            });
-            self.date_chooser.connect_day_selected(set_text);
+            self.date_chooser
+                .connect_day_selected(clone!(@weak obj => move |c| {
+                    obj.handle_date_chooser_connect_day_selected(c)
+                }));
             self.date_selector_popover.set_parent(obj);
             obj.set_selected_date(Local::now().into());
         }
@@ -129,5 +111,33 @@ impl DateSelector {
 
     fn get_priv(&self) -> &imp::DateSelector {
         imp::DateSelector::from_instance(self)
+    }
+
+    fn handle_date_chooser_connect_day_selected(&self, calendar: &gtk::Calendar) {
+        let date = Local.timestamp(calendar.get_date().to_unix(), 0);
+        self.set_text(&format!("{}", date.format("%x")));
+        self.get_priv().selected_date.replace(date.into());
+    }
+
+    fn handle_icon_press(&self, pos: gtk::EntryIconPosition) {
+        self.parse_date();
+        let self_ = self.get_priv();
+        self_
+            .date_selector_popover
+            .set_pointing_to(&self.get_icon_area(pos));
+        self_.date_selector_popover.show();
+    }
+
+    fn parse_date(&self) {
+        if let Ok(date) = NaiveDate::parse_from_str(self.get_text().as_str(), "%x") {
+            match Local.from_local_datetime(&date.and_hms(12, 0, 0)) {
+                LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
+                    self.set_selected_date(d.into());
+                }
+                LocalResult::None => {}
+            }
+        } else {
+            glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't parse date!");
+        }
     }
 }

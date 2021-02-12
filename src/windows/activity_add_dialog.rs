@@ -23,6 +23,7 @@ use crate::{
 use chrono::Duration;
 use glib::{clone, subclass::prelude::*};
 use gtk::prelude::*;
+use gtk_macros::spawn;
 use imp::get_spin_button_value_if_datapoint;
 
 mod imp {
@@ -216,10 +217,196 @@ impl ActivityAddDialog {
     fn connect_handlers(&self) {
         let self_ = self.get_priv();
 
-        self.connect_response(|obj, id| match id {
+        self.connect_response(Self::handle_response);
+        self_
+            .calories_burned_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                obj.handle_calories_burned_spin_button_changed();
+            }));
+        self_
+            .distance_action_row
+            .connect_changed(clone!(@weak self as obj => move || {
+                obj.handle_distance_action_row_changed();
+            }));
+        self_
+            .duration_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                obj.handle_duration_spin_button_changed();
+            }));
+        self_
+            .steps_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                obj.handle_steps_spin_button_changed();
+            }));
+
+        self_.activity_type_selector.connect_activity_selected(
+            clone!(@weak self as obj => move || {
+                obj.handle_activity_type_selector_activity_selected();
+            }),
+        );
+
+        self_
+            .calories_burned_spin_button
+            .connect_input(clone!(@weak self as obj => move |_| {
+                obj.handle_calories_burned_spin_button_input()
+            }));
+        self_
+            .distance_action_row
+            .connect_input(clone!(@weak self as obj => move || {
+                obj.handle_distance_action_row_input()
+            }));
+        self_
+            .duration_spin_button
+            .connect_input(clone!(@weak self as obj => move |_| {
+                obj.handle_duration_spin_button_input()
+            }));
+        self_
+            .steps_spin_button
+            .connect_input(clone!(@weak self as obj => move |_| {
+                obj.handle_steps_spin_button_input()
+            }));
+    }
+
+    fn get_priv(&self) -> &imp::ActivityAddDialog {
+        imp::ActivityAddDialog::from_instance(self)
+    }
+
+    fn set_selected_activity(&self, val: ActivityInfo) {
+        self.get_priv()
+            .activity_type_menu_button
+            .set_label(&val.name);
+    }
+
+    fn filter_activity_entry(&self, o: &glib::Object) -> bool {
+        let self_ = self.get_priv();
+
+        let datapoints = self_
+            .activity_type_selector
+            .get_selected_activity()
+            .available_data_points;
+
+        if let Some(row) = o.downcast_ref::<adw::ActionRow>() {
+            if (row == &self_.activity_type_actionrow.get()
+                || row == &self_.date_selector_actionrow.get())
+                || (row == &self_.calories_burned_action_row.get()
+                    && datapoints.contains(ActivityDataPoints::CALORIES_BURNED))
+                || (row == &self_.distance_action_row.get()
+                    && datapoints.contains(ActivityDataPoints::DISTANCE))
+                || (row == &self_.duration_action_row.get()
+                    && datapoints.contains(ActivityDataPoints::DURATION))
+                || (row == &self_.stepcount_action_row.get()
+                    && datapoints.contains(ActivityDataPoints::STEP_COUNT))
+                || ((row == &self_.heart_rate_average_action_row.get()
+                    || row == &self_.heart_rate_max_action_row.get()
+                    || row == &self_.heart_rate_min_action_row.get())
+                    && datapoints.contains(ActivityDataPoints::HEART_RATE))
+            {
+                return true;
+            }
+        }
+
+        false
+    }
+
+    fn handle_activity_type_selector_activity_selected(&self) {
+        let self_ = self.get_priv();
+        self.set_selected_activity(self_.activity_type_selector.get_selected_activity());
+        let inner = self_.inner.borrow_mut();
+        inner
+            .activity
+            .set_activity_type(inner.selected_activity.activity_type.clone());
+
+        if let Some(model) = &inner.filter_model {
+            if let Some(filter) = model.get_filter() {
+                filter.changed(gtk::FilterChange::Different);
+            }
+        }
+    }
+
+    fn handle_calories_burned_spin_button_input(&self) -> Option<Result<f64, ()>> {
+        self.get_priv()
+            .inner
+            .borrow_mut()
+            .user_changed_datapoints
+            .insert(ActivityDataPoints::CALORIES_BURNED);
+        None
+    }
+
+    fn handle_calories_burned_spin_button_changed(&self) {
+        let self_ = self.get_priv();
+        {
+            let activity = &self_.inner.borrow_mut().activity;
+            activity.set_calories_burned(Some(get_spinbutton_value(
+                &self_.calories_burned_spin_button,
+            )));
+            activity.autofill_from_calories();
+        }
+        self.set_spin_buttons_from_activity(self_.calories_burned_spin_button.upcast_ref());
+    }
+
+    fn handle_distance_action_row_changed(&self) {
+        let self_ = self.get_priv();
+        {
+            let activity = &self_.inner.borrow_mut().activity;
+            activity.set_distance(Some(self_.distance_action_row.get_value()));
+            activity.autofill_from_distance();
+        }
+        self.set_spin_buttons_from_activity(self_.distance_action_row.upcast_ref());
+    }
+
+    fn handle_distance_action_row_input(&self) {
+        self.get_priv()
+            .inner
+            .borrow_mut()
+            .user_changed_datapoints
+            .insert(ActivityDataPoints::DISTANCE);
+    }
+
+    fn handle_duration_spin_button_changed(&self) {
+        let self_ = self.get_priv();
+        {
+            let activity = &self_.inner.borrow_mut().activity;
+            activity.set_duration(Duration::minutes(get_spinbutton_value(
+                &self_.duration_spin_button,
+            )));
+            activity.autofill_from_minutes();
+        }
+        self.set_spin_buttons_from_activity(self_.duration_spin_button.upcast_ref());
+    }
+
+    fn handle_duration_spin_button_input(&self) -> Option<Result<f64, ()>> {
+        self.get_priv()
+            .inner
+            .borrow_mut()
+            .user_changed_datapoints
+            .insert(ActivityDataPoints::DURATION);
+        None
+    }
+
+    fn handle_steps_spin_button_changed(&self) {
+        let self_ = self.get_priv();
+        {
+            let activity = &self_.inner.borrow_mut().activity;
+            activity.set_steps(Some(get_spinbutton_value(&self_.steps_spin_button)));
+            activity.autofill_from_steps();
+        }
+        self.set_spin_buttons_from_activity(self_.steps_spin_button.upcast_ref());
+    }
+
+    fn handle_steps_spin_button_input(&self) -> Option<Result<f64, ()>> {
+        self.get_priv()
+            .inner
+            .borrow_mut()
+            .user_changed_datapoints
+            .insert(ActivityDataPoints::STEP_COUNT);
+        None
+    }
+
+    fn handle_response(&self, id: gtk::ResponseType) {
+        match id {
             gtk::ResponseType::Ok => {
-                let downgraded = obj.downgrade();
-                glib::MainContext::default().spawn_local(async move {
+                let downgraded = self.downgrade();
+                spawn!(async move {
                     if let Some(obj) = downgraded.upgrade() {
                         let self_ = obj.get_priv();
                         let selected_activity =
@@ -288,125 +475,9 @@ impl ActivityAddDialog {
                 });
             }
             _ => {
-                obj.destroy();
-            }
-        });
-
-        self_.calories_burned_spin_button.connect_changed(clone!(@weak self as obj => move |_| {
-            let self_ = obj.get_priv();
-            {
-                let activity = &self_.inner.borrow_mut().activity;
-                activity.set_calories_burned(Some(get_spinbutton_value(&self_.calories_burned_spin_button)));
-                activity.autofill_from_calories();
-            }
-            obj.set_spin_buttons_from_activity(self_.calories_burned_spin_button.upcast_ref());
-        }));
-        self_
-            .distance_action_row
-            .connect_changed(clone!(@weak self as obj => move || {
-                let self_ = obj.get_priv();
-                {
-                    let activity = &self_.inner.borrow_mut().activity;
-                    activity.set_distance(Some(self_.distance_action_row.get_value()));
-                    activity.autofill_from_distance();
-                }
-                obj.set_spin_buttons_from_activity(self_.distance_action_row.upcast_ref());
-            }));
-        self_.duration_spin_button.connect_changed(clone!(@weak self as obj => move |_| {
-            let self_ = obj.get_priv();
-            {
-                let activity = &self_.inner.borrow_mut().activity;
-                activity.set_duration(Duration::minutes(get_spinbutton_value(&self_.duration_spin_button)));
-                activity.autofill_from_minutes();
-            }
-            obj.set_spin_buttons_from_activity(self_.duration_spin_button.upcast_ref());
-        }));
-        self_
-            .steps_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                let self_ = obj.get_priv();
-                {
-                    let activity = &self_.inner.borrow_mut().activity;
-                    activity.set_steps(Some(get_spinbutton_value(&self_.steps_spin_button)));
-                    activity.autofill_from_steps();
-                }
-                obj.set_spin_buttons_from_activity(self_.steps_spin_button.upcast_ref());
-            }));
-
-        self_.activity_type_selector.connect_activity_selected(
-            clone!(@weak self as obj => move || {
-                let self_ = obj.get_priv();
-                obj.set_selected_activity(self_.activity_type_selector.get_selected_activity());
-                let inner = self_.inner.borrow_mut();
-                inner.activity.set_activity_type(inner.selected_activity.activity_type.clone());
-
-                if let Some(model) = &inner.filter_model {
-                    if let Some(filter) = model.get_filter() {
-                        filter.changed(gtk::FilterChange::Different);
-                    }
-                }
-            }),
-        );
-
-        self_.calories_burned_spin_button
-            .connect_input(clone!(@weak self as obj => move |_| {
-                obj.get_priv().inner.borrow_mut().user_changed_datapoints.insert(ActivityDataPoints::CALORIES_BURNED);
-                None
-            }));
-        self_.distance_action_row.connect_input(clone!(@weak self as obj => move || {
-            obj.get_priv().inner.borrow_mut().user_changed_datapoints.insert(ActivityDataPoints::DISTANCE);
-        }));
-        self_.duration_spin_button
-            .connect_input(clone!(@weak self as obj => move |_| {
-                obj.get_priv().inner.borrow_mut().user_changed_datapoints.insert(ActivityDataPoints::DURATION);
-                None
-            }));
-        self_.steps_spin_button
-            .connect_input(clone!(@weak self as obj => move |_| {
-                obj.get_priv().inner.borrow_mut().user_changed_datapoints.insert(ActivityDataPoints::STEP_COUNT);
-                None
-            }));
-    }
-
-    fn get_priv(&self) -> &imp::ActivityAddDialog {
-        imp::ActivityAddDialog::from_instance(self)
-    }
-
-    fn set_selected_activity(&self, val: ActivityInfo) {
-        self.get_priv()
-            .activity_type_menu_button
-            .set_label(&val.name);
-    }
-
-    fn filter_activity_entry(&self, o: &glib::Object) -> bool {
-        let self_ = self.get_priv();
-
-        let datapoints = self_
-            .activity_type_selector
-            .get_selected_activity()
-            .available_data_points;
-
-        if let Some(row) = o.downcast_ref::<adw::ActionRow>() {
-            if (row == &self_.activity_type_actionrow.get()
-                || row == &self_.date_selector_actionrow.get())
-                || (row == &self_.calories_burned_action_row.get()
-                    && datapoints.contains(ActivityDataPoints::CALORIES_BURNED))
-                || (row == &self_.distance_action_row.get()
-                    && datapoints.contains(ActivityDataPoints::DISTANCE))
-                || (row == &self_.duration_action_row.get()
-                    && datapoints.contains(ActivityDataPoints::DURATION))
-                || (row == &self_.stepcount_action_row.get()
-                    && datapoints.contains(ActivityDataPoints::STEP_COUNT))
-                || ((row == &self_.heart_rate_average_action_row.get()
-                    || row == &self_.heart_rate_max_action_row.get()
-                    || row == &self_.heart_rate_min_action_row.get())
-                    && datapoints.contains(ActivityDataPoints::HEART_RATE))
-            {
-                return true;
+                self.destroy();
             }
         }
-
-        false
     }
 
     fn save_recent_activity(&self) {

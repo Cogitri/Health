@@ -114,13 +114,20 @@ impl WeightAddDialog {
         self_
             .weight_spin_button
             .connect_changed(clone!(@weak self as obj => move |e| {
-                let text = e.get_text ().to_string();
-                obj.set_response_sensitive(gtk::ResponseType::Ok, text != "0" && !text.is_empty());
+                obj.handle_weight_spin_button_changed(e);
             }));
 
-        self.connect_response(|obj, id| match id {
+        self.connect_response(Self::handle_response);
+    }
+
+    fn get_priv(&self) -> &imp::WeightAddDialog {
+        imp::WeightAddDialog::from_instance(self)
+    }
+
+    fn handle_response(&self, id: gtk::ResponseType) {
+        match id {
             gtk::ResponseType::Ok => {
-                let downgraded = obj.downgrade();
+                let downgraded = self.downgrade();
                 spawn!(async move {
                     if let Some(obj) = downgraded.upgrade() {
                         let self_ = obj.get_priv();
@@ -151,13 +158,14 @@ impl WeightAddDialog {
                 });
             }
             _ => {
-                obj.destroy();
+                self.destroy();
             }
-        });
+        }
     }
 
-    fn get_priv(&self) -> &imp::WeightAddDialog {
-        imp::WeightAddDialog::from_instance(self)
+    fn handle_weight_spin_button_changed(&self, e: &gtk::SpinButton) {
+        let text = e.get_text().to_string();
+        self.set_response_sensitive(gtk::ResponseType::Ok, text != "0" && !text.is_empty());
     }
 
     fn update_title(&self) {
