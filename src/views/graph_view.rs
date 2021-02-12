@@ -16,8 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use chrono::{Date, FixedOffset};
-use gio::subclass::prelude::ObjectSubclass;
+use chrono::{Date, FixedOffset, Local};
+use gio::subclass::prelude::*;
+use gtk::prelude::*;
+use std::convert::TryInto;
 
 #[derive(Debug, Clone)]
 pub struct Point {
@@ -25,26 +27,25 @@ pub struct Point {
     pub value: f32,
 }
 
+static HALF_X_PADDING: f32 = 40.0;
+static HALF_Y_PADDING: f32 = 30.0;
+
 mod imp {
-    use super::Point;
-    use chrono::Local;
+    use super::{Point, HALF_X_PADDING, HALF_Y_PADDING};
     use gdk::prelude::GdkCairoContextExt;
     use glib::{clone, subclass};
     use gtk::prelude::*;
     use gtk::subclass::prelude::*;
     use std::{cell::RefCell, convert::TryInto, f64::consts::PI};
 
-    static HALF_X_PADDING: f32 = 40.0;
-    static HALF_Y_PADDING: f32 = 30.0;
-
     #[derive(Debug)]
-    struct HoverPoint {
+    pub struct HoverPoint {
         pub point: Point,
         pub x: f32,
         pub y: f32,
     }
 
-    struct GraphViewMut {
+    pub struct GraphViewMut {
         pub biggest_value: f32,
         pub height: f32,
         pub hover_func: Option<Box<dyn Fn(&Point) -> String>>,
@@ -60,7 +61,7 @@ mod imp {
     }
 
     pub struct GraphView {
-        inner: RefCell<GraphViewMut>,
+        pub inner: RefCell<GraphViewMut>,
     }
 
     impl ObjectSubclass for GraphView {
@@ -390,123 +391,22 @@ mod imp {
             obj.set_vexpand(true);
             let gesture_controller = gtk::GestureClick::new();
             gesture_controller.set_touch_only(true);
-            gesture_controller.connect_pressed(clone!(@weak obj => move |c, _, x, y| GraphView::from_instance(&obj).on_motion_event(&obj, x, y, true, c)));
+            gesture_controller.connect_pressed(
+                clone!(@weak obj => move |c, _, x, y| obj.on_motion_event(x, y, true, c)),
+            );
             obj.add_controller(&gesture_controller);
 
             let motion_controller = gtk::EventControllerMotion::new();
-            motion_controller.connect_enter(clone!(@weak obj => move|c, x, y| GraphView::from_instance(&obj).on_motion_event(&obj, x, y, false, c)));
-            motion_controller.connect_motion(clone!(@weak obj => move|c, x, y| GraphView::from_instance(&obj).on_motion_event(&obj, x, y, false, c)));
+            motion_controller.connect_enter(
+                clone!(@weak obj => move|c, x, y| obj.on_motion_event(x, y, false, c)),
+            );
+            motion_controller.connect_motion(
+                clone!(@weak obj => move|c, x, y| obj.on_motion_event(x, y, false, c)),
+            );
             obj.add_controller(&motion_controller);
 
             let mut inner = self.inner.borrow_mut();
             inner.hover_max_pointer_deviation = (8 * obj.get_scale_factor()).try_into().unwrap();
-        }
-    }
-
-    impl GraphView {
-        pub fn set_hover_func(
-            &self,
-            obj: &super::GraphView,
-            hover_func: Option<Box<dyn Fn(&Point) -> String>>,
-        ) {
-            self.inner.borrow_mut().hover_func = hover_func;
-            obj.queue_draw();
-        }
-
-        pub fn set_limit(&self, obj: &super::GraphView, limit: Option<f32>) {
-            let mut inner = self.inner.borrow_mut();
-            inner.limit = limit;
-
-            if inner.biggest_value < inner.limit.unwrap_or(0.0) {
-                inner.biggest_value = inner.limit.unwrap();
-            }
-
-            obj.queue_draw();
-        }
-
-        pub fn set_limit_label(&self, obj: &super::GraphView, label: Option<String>) {
-            self.inner.borrow_mut().limit_label = label;
-            obj.queue_draw();
-        }
-
-        pub fn set_x_lines_interval(&self, obj: &super::GraphView, interval: f32) {
-            self.inner.borrow_mut().x_lines_interval = interval;
-            obj.queue_draw();
-        }
-
-        pub fn set_points(&self, obj: &super::GraphView, points: Vec<Point>) {
-            let layout = obj.create_pango_layout(Some(&format!("{}", Local::now().format("%x"))));
-            let (_, extents) = layout.get_extents();
-            let datapoint_width = pango::units_to_double(extents.width) + f64::from(HALF_X_PADDING);
-
-            obj.set_size_request(
-                (datapoint_width as usize * points.len())
-                    .try_into()
-                    .unwrap(),
-                -1,
-            );
-
-            let mut inner = self.inner.borrow_mut();
-            inner.biggest_value = points
-                .iter()
-                .max_by(|x, y| (x.value as u32).cmp(&(y.value as u32)))
-                .map(|b| b.value)
-                .unwrap();
-
-            if inner.biggest_value < inner.limit.unwrap_or(0.0) {
-                inner.biggest_value = inner.limit.unwrap();
-            }
-
-            inner.points = points;
-            obj.queue_draw();
-        }
-
-        fn on_motion_event(
-            &self,
-            obj: &super::GraphView,
-            x: f64,
-            y: f64,
-            allow_touch: bool,
-            controller: &impl IsA<gtk::EventController>,
-        ) {
-            let mut inner = self.inner.borrow_mut();
-            let hover_max_pointer_deviation = inner.hover_max_pointer_deviation;
-
-            let approx_matches = |num: f64, approx_range: f32| {
-                num > (approx_range - hover_max_pointer_deviation as f32).into()
-                    && num < (approx_range + hover_max_pointer_deviation as f32).into()
-            };
-
-            // Don't handle touch events, we do that via Gtk.GestureClick.
-            if !allow_touch {
-                if let Some(device) = controller.get_current_event_device() {
-                    if device.get_source() == gdk::InputSource::Touchscreen {
-                        return;
-                    }
-                }
-            }
-
-            let mut point_res = None;
-            for (i, point) in inner.points.iter().enumerate() {
-                let point_x = i as f32 * inner.scale_x + HALF_X_PADDING;
-                let point_y = inner.height - point.value * inner.scale_y + HALF_Y_PADDING;
-
-                if approx_matches(x, point_x) && approx_matches(y, point_y) {
-                    point_res = Some(HoverPoint {
-                        point: point.clone(),
-                        x: point_x,
-                        y: point_y,
-                    });
-                }
-            }
-
-            if let Some(point) = point_res {
-                inner.hover_point = Some(point);
-                obj.queue_draw();
-            } else if inner.hover_point.is_some() {
-                inner.hover_point = None;
-                obj.queue_draw();
-            }
         }
     }
 }
@@ -522,22 +422,106 @@ impl GraphView {
     }
 
     pub fn set_hover_func(&self, hover_func: Option<Box<dyn Fn(&Point) -> String>>) {
-        imp::GraphView::from_instance(self).set_hover_func(self, hover_func);
+        self.get_priv().inner.borrow_mut().hover_func = hover_func;
+        self.queue_draw();
     }
 
     pub fn set_limit(&self, limit: Option<f32>) {
-        imp::GraphView::from_instance(self).set_limit(self, limit);
+        let mut inner = self.get_priv().inner.borrow_mut();
+        inner.limit = limit;
+
+        if inner.biggest_value < inner.limit.unwrap_or(0.0) {
+            inner.biggest_value = inner.limit.unwrap();
+        }
+
+        self.queue_draw();
     }
 
-    pub fn set_limit_label(&self, label: Option<String>) {
-        imp::GraphView::from_instance(self).set_limit_label(self, label);
+    pub fn set_limit_label(&self, limit_label: Option<String>) {
+        self.get_priv().inner.borrow_mut().limit_label = limit_label;
+        self.queue_draw();
     }
 
     pub fn set_points(&self, points: Vec<Point>) {
-        imp::GraphView::from_instance(self).set_points(self, points);
+        let layout = self.create_pango_layout(Some(&format!("{}", Local::now().format("%x"))));
+        let (_, extents) = layout.get_extents();
+        let datapoint_width = pango::units_to_double(extents.width) + f64::from(HALF_X_PADDING);
+
+        self.set_size_request(
+            (datapoint_width as usize * points.len())
+                .try_into()
+                .unwrap(),
+            -1,
+        );
+
+        let mut inner = self.get_priv().inner.borrow_mut();
+        inner.biggest_value = points
+            .iter()
+            .max_by(|x, y| (x.value as u32).cmp(&(y.value as u32)))
+            .map(|b| b.value)
+            .unwrap();
+
+        if inner.biggest_value < inner.limit.unwrap_or(0.0) {
+            inner.biggest_value = inner.limit.unwrap();
+        }
+
+        inner.points = points;
+        self.queue_draw();
     }
 
-    pub fn set_x_lines_interval(&self, interval: f32) {
-        imp::GraphView::from_instance(self).set_x_lines_interval(self, interval);
+    pub fn set_x_lines_interval(&self, x_lines_interval: f32) {
+        self.get_priv().inner.borrow_mut().x_lines_interval = x_lines_interval;
+        self.queue_draw();
+    }
+
+    fn get_priv(&self) -> &imp::GraphView {
+        imp::GraphView::from_instance(self)
+    }
+
+    fn on_motion_event(
+        &self,
+        x: f64,
+        y: f64,
+        allow_touch: bool,
+        controller: &impl IsA<gtk::EventController>,
+    ) {
+        let mut inner = self.get_priv().inner.borrow_mut();
+        let hover_max_pointer_deviation = inner.hover_max_pointer_deviation;
+
+        let approx_matches = |num: f64, approx_range: f32| {
+            num > (approx_range - hover_max_pointer_deviation as f32).into()
+                && num < (approx_range + hover_max_pointer_deviation as f32).into()
+        };
+
+        // Don't handle touch events, we do that via Gtk.GestureClick.
+        if !allow_touch {
+            if let Some(device) = controller.get_current_event_device() {
+                if device.get_source() == gdk::InputSource::Touchscreen {
+                    return;
+                }
+            }
+        }
+
+        let mut point_res = None;
+        for (i, point) in inner.points.iter().enumerate() {
+            let point_x = i as f32 * inner.scale_x + HALF_X_PADDING;
+            let point_y = inner.height - point.value * inner.scale_y + HALF_Y_PADDING;
+
+            if approx_matches(x, point_x) && approx_matches(y, point_y) {
+                point_res = Some(imp::HoverPoint {
+                    point: point.clone(),
+                    x: point_x,
+                    y: point_y,
+                });
+            }
+        }
+
+        if let Some(point) = point_res {
+            inner.hover_point = Some(point);
+            self.queue_draw();
+        } else if inner.hover_point.is_some() {
+            inner.hover_point = None;
+            self.queue_draw();
+        }
     }
 }

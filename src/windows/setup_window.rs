@@ -16,33 +16,31 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::Database;
+use crate::core::{
+    i18n,
+    settings::Unitsystem,
+    utils::{get_spinbutton_value, round_decimal_places},
+    Database,
+};
+use adw::prelude::*;
 use gio::prelude::*;
-use glib::subclass::types::ObjectSubclass;
+use glib::{clone, subclass::prelude::*};
+use gtk::prelude::*;
+use uom::si::{
+    f32::{Length, Mass},
+    length::{centimeter, inch, meter},
+    mass::{kilogram, pound},
+};
+
+static OPTIMAL_BMI: f32 = 22.5;
 
 mod imp {
     use crate::{
-        core::{
-            i18n,
-            settings::Unitsystem,
-            utils::{get_spinbutton_value, round_decimal_places},
-            Settings,
-        },
+        core::Settings,
         widgets::{BMILevelBar, SyncListBox},
     };
-    use adw::PreferencesRowExt;
-    use glib::{
-        clone,
-        subclass::{self, Signal},
-    };
+    use glib::subclass::{self, Signal};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
-    use uom::si::{
-        f32::{Length, Mass},
-        length::{centimeter, inch, meter},
-        mass::{kilogram, pound},
-    };
-
-    static OPTIMAL_BMI: f32 = 22.5;
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/setup_window.ui")]
@@ -149,7 +147,7 @@ mod imp {
                 gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
             );
 
-            self.connect_handlers(obj);
+            obj.connect_handlers();
         }
 
         fn signals() -> &'static [Signal] {
@@ -158,162 +156,6 @@ mod imp {
                 Lazy::new(|| vec![Signal::builder("setup-done", &[], glib::Type::Unit).build()]);
 
             SIGNALS.as_ref()
-        }
-    }
-
-    impl SetupWindow {
-        fn try_enable_next_button(&self) {
-            let age = self.age_spin_button.get_text().to_string();
-            let height = self.height_spin_button.get_text().to_string();
-            let sensitive = !age.is_empty() && age != "0" && !height.is_empty() && height != "0";
-            self.setup_next_page_button.set_sensitive(sensitive);
-            self.setup_carousel.set_interactive(sensitive);
-        }
-
-        fn set_optimal_weightgoal(&self) {
-            let unitless_height = get_spinbutton_value(&self.height_spin_button);
-            let height = if self.unit_metric_togglebutton.get_active() {
-                Length::new::<centimeter>(unitless_height)
-            } else {
-                Length::new::<inch>(unitless_height)
-            };
-            let optimal_value = Mass::new::<kilogram>(round_decimal_places(
-                OPTIMAL_BMI * height.get::<meter>() * height.get::<meter>(),
-                1,
-            ));
-            if self.unit_metric_togglebutton.get_active() {
-                self.weightgoal_spin_button
-                    .set_value(optimal_value.get::<kilogram>().into());
-            } else {
-                self.weightgoal_spin_button
-                    .set_value(optimal_value.get::<pound>().into());
-            }
-        }
-
-        fn connect_handlers(&self, obj: &super::SetupWindow) {
-            self.unit_metric_togglebutton
-                .connect_toggled(clone!(@weak obj => move |btn| {
-                    let self_ = SetupWindow::from_instance(&obj);
-                    if btn.get_active() {
-                        self_.height_actionrow.set_title(Some(&i18n("Height in centimeters")));
-                        self_.weightgoal_actionrow.set_title(Some(&i18n("Weightgoal in KG")));
-                        self_.bmi_levelbar.set_unitsystem(Unitsystem::Metric);
-                        self_.height_spin_button.set_value (Length::new::<inch>(self_.height_spin_button.get_value() as f32).get::<centimeter>().into());
-                    } else {
-                        self_.height_actionrow.set_title(Some(&i18n("Height in inch")));
-                        self_.weightgoal_actionrow.set_title(Some(&i18n("Weightgoal in pounds")));
-                        self_.bmi_levelbar.set_unitsystem(Unitsystem::Imperial);
-                        self_.height_spin_button.set_value (Length::new::<centimeter>(self_.height_spin_button.get_value() as f32).get::<inch>().into());
-                    }
-                }));
-
-            self.height_spin_button
-                .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = SetupWindow::from_instance(&obj);
-                    self_.set_optimal_weightgoal();
-                    self_.try_enable_next_button();
-
-                    let unitless_height = get_spinbutton_value(&self_.height_spin_button);
-                    let height = if self_.unit_metric_togglebutton.get_active() {
-                        Length::new::<centimeter>(unitless_height)
-                    } else {
-                        Length::new::<inch>(unitless_height)
-                    };
-                    self_.bmi_levelbar.set_height(height);
-                }));
-
-            self.weightgoal_spin_button
-                .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = SetupWindow::from_instance(&obj);
-                    let unitless_weight = get_spinbutton_value(&self_.weightgoal_spin_button);
-                    let weight = if self_.unit_metric_togglebutton.get_active() {
-                        Mass::new::<kilogram>(unitless_weight)
-                    } else {
-                        Mass::new::<pound>(unitless_weight)
-                    };
-
-                    self_.bmi_levelbar.set_weight(weight);
-                }));
-
-            self.age_spin_button
-                .connect_changed(clone!(@weak obj => move |_| {
-                    SetupWindow::from_instance(&obj).try_enable_next_button();
-                }));
-
-            self.setup_done_button
-                .connect_clicked(clone!(@weak obj => move |_| {
-                    let self_ = SetupWindow::from_instance(&obj);
-                    let unitless_height = get_spinbutton_value(&self_.height_spin_button);
-                    let height = if self_.unit_metric_togglebutton.get_active() {
-                        self_.settings.set_unitsystem(Unitsystem::Metric);
-                        Length::new::<centimeter>(unitless_height)
-                    } else {
-                        self_.settings.set_unitsystem(Unitsystem::Imperial);
-                        Length::new::<inch>(unitless_height)
-                    };
-
-                    self_.settings.set_user_age(get_spinbutton_value(&self_.age_spin_button));
-                    self_.settings.set_user_height (height);
-                    self_.settings.set_user_stepgoal(get_spinbutton_value(&self_.stepgoal_spin_button));
-
-                    let unitless_weight = get_spinbutton_value(&self_.weightgoal_spin_button);
-                    let weight = if self_.unit_metric_togglebutton.get_active() {
-                        Mass::new::<kilogram>(unitless_weight)
-                    } else {
-                        Mass::new::<pound>(unitless_weight)
-                    };
-                    self_.settings.set_user_weightgoal(weight);
-
-                    obj.emit("setup-done", &[]).unwrap();
-                    obj.destroy();
-                }));
-
-            self.setup_quit_button
-                .connect_clicked(clone!(@weak obj => move |_| {
-                    obj.destroy();
-                }));
-
-            self.setup_next_page_button
-                .connect_clicked(clone!(@weak obj => move |_| {
-                    let self_ = SetupWindow::from_instance(&obj);
-                    match self_.setup_carousel.get_position() as u32 {
-                        0 => self_.setup_carousel.scroll_to (&self_.setup_second_page.get()),
-                        1 => self_.setup_carousel.scroll_to (&self_.setup_third_page.get()),
-                        2 => self_.setup_carousel.scroll_to (&self_.setup_fourth_page.get()),
-                        3 => self_.setup_done_button.emit_clicked(),
-                        _ => unimplemented!(),
-                    }
-                }));
-
-            self.setup_previous_page_button
-                .connect_clicked(clone!(@weak obj => move |_| {
-                    let self_ = SetupWindow::from_instance(&obj);
-                    match self_.setup_carousel.get_position() as u32 {
-                        0 => obj.destroy(),
-                        1 => self_.setup_carousel.scroll_to (&self_.setup_first_page.get()),
-                        2 => self_.setup_carousel.scroll_to (&self_.setup_second_page.get()),
-                        3 => self_.setup_carousel.scroll_to (&self_.setup_third_page.get()),
-                        _ => unimplemented!(),
-                    }
-                }));
-
-            self.setup_carousel
-                .connect_page_changed(clone!(@weak obj => move|carousel, index| {
-                    let self_ = SetupWindow::from_instance(&obj);
-
-                    if carousel.get_n_pages() -1 == index {
-                        self_.setup_done_button.set_visible(true);
-                        self_.setup_right_stack.set_visible_child(&self_.setup_done_button.get());
-                    } else if index == 0 {
-                        self_.setup_quit_button.set_visible (true);
-                        self_.setup_left_stack.set_visible_child(&self_.setup_quit_button.get());
-                    } else {
-                        self_.setup_next_page_button.set_visible(true);
-                        self_.setup_previous_page_button.set_visible(true);
-                        self_.setup_right_stack.set_visible_child(&self_.setup_next_page_button.get());
-                        self_.setup_left_stack.set_visible_child(&self_.setup_previous_page_button.get());
-                    }
-                }));
         }
     }
 
@@ -329,21 +171,192 @@ glib::wrapper! {
 }
 
 impl SetupWindow {
-    pub fn new<P: glib::IsA<gtk::Application>>(app: &P, db: Database) -> Self {
-        let o = glib::Object::new(&[("application", app)]).expect("Failed to create SetupWindow");
-
-        imp::SetupWindow::from_instance(&o)
-            .sync_list_box
-            .set_database(db);
-
-        o
-    }
-
     pub fn connect_setup_done<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
         self.connect_local("setup-done", false, move |_| {
             callback();
             None
         })
         .unwrap()
+    }
+
+    pub fn new<P: glib::IsA<gtk::Application>>(app: &P, db: Database) -> Self {
+        let o: Self =
+            glib::Object::new(&[("application", app)]).expect("Failed to create SetupWindow");
+
+        o.get_priv().sync_list_box.set_database(db);
+
+        o
+    }
+
+    fn connect_handlers(&self) {
+        let self_ = self.get_priv();
+
+        self_.unit_metric_togglebutton
+            .connect_toggled(clone!(@weak self as obj => move |btn| {
+                let self_ = obj.get_priv();
+                if btn.get_active() {
+                    self_.height_actionrow.set_title(Some(&i18n("Height in centimeters")));
+                    self_.weightgoal_actionrow.set_title(Some(&i18n("Weightgoal in KG")));
+                    self_.bmi_levelbar.set_unitsystem(Unitsystem::Metric);
+                    self_.height_spin_button.set_value (Length::new::<inch>(self_.height_spin_button.get_value() as f32).get::<centimeter>().into());
+                } else {
+                    self_.height_actionrow.set_title(Some(&i18n("Height in inch")));
+                    self_.weightgoal_actionrow.set_title(Some(&i18n("Weightgoal in pounds")));
+                    self_.bmi_levelbar.set_unitsystem(Unitsystem::Imperial);
+                    self_.height_spin_button.set_value (Length::new::<centimeter>(self_.height_spin_button.get_value() as f32).get::<inch>().into());
+                }
+            }));
+
+        self_
+            .height_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                let self_ = obj.get_priv();
+                obj.set_optimal_weightgoal();
+                obj.try_enable_next_button();
+
+                let unitless_height = get_spinbutton_value(&self_.height_spin_button);
+                let height = if self_.unit_metric_togglebutton.get_active() {
+                    Length::new::<centimeter>(unitless_height)
+                } else {
+                    Length::new::<inch>(unitless_height)
+                };
+                self_.bmi_levelbar.set_height(height);
+            }));
+
+        self_
+            .weightgoal_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                let self_ = obj.get_priv();
+                let unitless_weight = get_spinbutton_value(&self_.weightgoal_spin_button);
+                let weight = if self_.unit_metric_togglebutton.get_active() {
+                    Mass::new::<kilogram>(unitless_weight)
+                } else {
+                    Mass::new::<pound>(unitless_weight)
+                };
+
+                self_.bmi_levelbar.set_weight(weight);
+            }));
+
+        self_
+            .age_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                obj.try_enable_next_button();
+            }));
+
+        self_
+            .setup_done_button
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                let self_ = obj.get_priv();
+                let unitless_height = get_spinbutton_value(&self_.height_spin_button);
+                let height = if self_.unit_metric_togglebutton.get_active() {
+                    self_.settings.set_unitsystem(Unitsystem::Metric);
+                    Length::new::<centimeter>(unitless_height)
+                } else {
+                    self_.settings.set_unitsystem(Unitsystem::Imperial);
+                    Length::new::<inch>(unitless_height)
+                };
+
+                self_.settings.set_user_age(get_spinbutton_value(&self_.age_spin_button));
+                self_.settings.set_user_height (height);
+                self_.settings.set_user_stepgoal(get_spinbutton_value(&self_.stepgoal_spin_button));
+
+                let unitless_weight = get_spinbutton_value(&self_.weightgoal_spin_button);
+                let weight = if self_.unit_metric_togglebutton.get_active() {
+                    Mass::new::<kilogram>(unitless_weight)
+                } else {
+                    Mass::new::<pound>(unitless_weight)
+                };
+                self_.settings.set_user_weightgoal(weight);
+
+                obj.emit("setup-done", &[]).unwrap();
+                obj.destroy();
+            }));
+
+        self_
+            .setup_quit_button
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                obj.destroy();
+            }));
+
+        self_
+            .setup_next_page_button
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                let self_ = obj.get_priv();
+                match self_.setup_carousel.get_position() as u32 {
+                    0 => self_.setup_carousel.scroll_to (&self_.setup_second_page.get()),
+                    1 => self_.setup_carousel.scroll_to (&self_.setup_third_page.get()),
+                    2 => self_.setup_carousel.scroll_to (&self_.setup_fourth_page.get()),
+                    3 => self_.setup_done_button.emit_clicked(),
+                    _ => unimplemented!(),
+                }
+            }));
+
+        self_
+            .setup_previous_page_button
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                let self_ = obj.get_priv();
+                match self_.setup_carousel.get_position() as u32 {
+                    0 => obj.destroy(),
+                    1 => self_.setup_carousel.scroll_to (&self_.setup_first_page.get()),
+                    2 => self_.setup_carousel.scroll_to (&self_.setup_second_page.get()),
+                    3 => self_.setup_carousel.scroll_to (&self_.setup_third_page.get()),
+                    _ => unimplemented!(),
+                }
+            }));
+
+        self_.setup_carousel
+            .connect_page_changed(clone!(@weak self as obj => move|carousel, index| {
+                let self_ = obj.get_priv();
+
+                if carousel.get_n_pages() -1 == index {
+                    self_.setup_done_button.set_visible(true);
+                    self_.setup_right_stack.set_visible_child(&self_.setup_done_button.get());
+                } else if index == 0 {
+                    self_.setup_quit_button.set_visible (true);
+                    self_.setup_left_stack.set_visible_child(&self_.setup_quit_button.get());
+                } else {
+                    self_.setup_next_page_button.set_visible(true);
+                    self_.setup_previous_page_button.set_visible(true);
+                    self_.setup_right_stack.set_visible_child(&self_.setup_next_page_button.get());
+                    self_.setup_left_stack.set_visible_child(&self_.setup_previous_page_button.get());
+                }
+            }));
+    }
+
+    fn get_priv(&self) -> &imp::SetupWindow {
+        imp::SetupWindow::from_instance(self)
+    }
+
+    fn set_optimal_weightgoal(&self) {
+        let self_ = self.get_priv();
+
+        let unitless_height = get_spinbutton_value(&self_.height_spin_button);
+        let height = if self_.unit_metric_togglebutton.get_active() {
+            Length::new::<centimeter>(unitless_height)
+        } else {
+            Length::new::<inch>(unitless_height)
+        };
+        let optimal_value = Mass::new::<kilogram>(round_decimal_places(
+            OPTIMAL_BMI * height.get::<meter>() * height.get::<meter>(),
+            1,
+        ));
+        if self_.unit_metric_togglebutton.get_active() {
+            self_
+                .weightgoal_spin_button
+                .set_value(optimal_value.get::<kilogram>().into());
+        } else {
+            self_
+                .weightgoal_spin_button
+                .set_value(optimal_value.get::<pound>().into());
+        }
+    }
+
+    fn try_enable_next_button(&self) {
+        let self_ = self.get_priv();
+        let age = self_.age_spin_button.get_text().to_string();
+        let height = self_.height_spin_button.get_text().to_string();
+        let sensitive = !age.is_empty() && age != "0" && !height.is_empty() && height != "0";
+        self_.setup_next_page_button.set_sensitive(sensitive);
+        self_.setup_carousel.set_interactive(sensitive);
     }
 }

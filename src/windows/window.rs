@@ -18,24 +18,25 @@
 
 use crate::{
     core::Database,
+    sync::{
+        google_fit::GoogleFitSyncProvider,
+        new_db_receiver,
+        sync_provider::{SyncProvider, SyncProviderError},
+    },
     views::{ViewActivity, ViewSteps, ViewWeight},
+    windows::{ActivityAddDialog, WeightAddDialog},
 };
-use glib::subclass::types::ObjectSubclass;
-use glib::Cast;
+use glib::{clone, signal::Inhibit, subclass::prelude::*, Cast};
 use gtk::prelude::*;
+use imp::ViewMode;
+use std::collections::BTreeMap;
 
 mod imp {
     use crate::{
         core::{Database, Settings},
-        sync::{
-            google_fit::GoogleFitSyncProvider,
-            new_db_receiver,
-            sync_provider::{SyncProvider, SyncProviderError},
-        },
-        views::{View, ViewActivity, ViewSteps, ViewWeight},
-        windows::{ActivityAddDialog, WeightAddDialog},
+        views::View,
     };
-    use glib::{clone, signal::Inhibit, subclass, SourceId};
+    use glib::{subclass, SourceId};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::{cell::RefCell, collections::BTreeMap};
@@ -49,10 +50,10 @@ mod imp {
 
     #[derive(Debug)]
     pub struct WindowMut {
-        current_height: i32,
-        current_width: i32,
-        current_view: ViewMode,
-        sync_source_id: Option<SourceId>,
+        pub current_height: i32,
+        pub current_width: i32,
+        pub current_view: ViewMode,
+        pub sync_source_id: Option<SourceId>,
     }
 
     #[derive(Debug, CompositeTemplate)]
@@ -134,130 +135,7 @@ mod imp {
                 gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
             );
 
-            self.connect_handlers(obj);
-        }
-    }
-
-    impl Window {
-        pub fn show_error(&self, err_msg: &str) {
-            glib::g_warning!(crate::config::LOG_DOMAIN, "{}", err_msg);
-            self.error_label.set_text(err_msg);
-            self.error_infobar.set_revealed(true);
-        }
-
-        fn connect_handlers(&self, obj: &super::Window) {
-            self.error_infobar.connect_response(|bar, response| {
-                if response == gtk::ResponseType::Close {
-                    bar.set_revealed(false);
-                }
-            });
-            self.stack
-                .connect_property_visible_child_notify(clone!(@weak obj => move |s| {
-                    let child_name = s.get_visible_child_name().map(|s| s.to_string());
-                    let self_ = Window::from_instance(&obj);
-
-                    if child_name == self_.views.get().unwrap().get(&ViewMode::STEPS).map(|s| s.get_widget_name().to_string()) {
-                        self_.inner.borrow_mut().current_view = ViewMode::STEPS;
-                    } else if child_name == self_.views.get().unwrap().get(&ViewMode::WEIGHT).map(|s| s.get_widget_name().to_string()) {
-                        self_.inner.borrow_mut().current_view = ViewMode::WEIGHT;
-                    }
-                }));
-            self.add_data_button
-                .connect_clicked(clone!(@weak obj => move |_| {
-                    let self_ = Window::from_instance(&obj);
-                    let db = self_.db.get().unwrap().clone();
-
-                    let dialog = match self_.inner.borrow().current_view {
-                        ViewMode::ACTIVITIES | ViewMode::STEPS => ActivityAddDialog::new(db, obj.upcast_ref()).upcast::<gtk::Dialog>(),
-                        ViewMode::WEIGHT => WeightAddDialog::new(db, obj.upcast_ref()).upcast::<gtk::Dialog>(),
-                    };
-                    dialog.present();
-                }));
-
-            obj.connect_property_default_height_notify(move |w| {
-                Window::from_instance(w).inner.borrow_mut().current_height =
-                    w.get_property_default_height();
-            });
-            obj.connect_property_default_width_notify(move |w| {
-                Window::from_instance(w).inner.borrow_mut().current_width =
-                    w.get_property_default_width();
-            });
-            obj.connect_close_request(|w| {
-                let self_ = Window::from_instance(w);
-                let mut inner = self_.inner.borrow_mut();
-
-                self_
-                    .settings
-                    .set_window_is_maximized(w.get_property_maximized());
-                self_.settings.set_window_height(inner.current_height);
-                self_.settings.set_window_width(inner.current_width);
-
-                if let Some(source_id) = inner.sync_source_id.take() {
-                    glib::source_remove(source_id);
-                }
-
-                Inhibit(false)
-            });
-        }
-
-        pub fn set_db(&self, obj: &super::Window, db: Database) {
-            self.db.set(db.clone()).unwrap();
-
-            let mut views = BTreeMap::new();
-            views.insert(ViewMode::ACTIVITIES, ViewActivity::new(db.clone()).upcast());
-            views.insert(ViewMode::WEIGHT, ViewWeight::new(db.clone()).upcast());
-            views.insert(ViewMode::STEPS, ViewSteps::new(db).upcast());
-            self.views.set(views).unwrap();
-
-            for view in self.views.get().unwrap().values() {
-                let page = self.stack.add_titled(
-                    view,
-                    Some(view.get_widget_name().as_str()),
-                    &view.get_view_title().unwrap(),
-                );
-                page.set_icon_name(&view.get_icon_name().unwrap());
-            }
-
-            obj.update();
-            self.sync_data(obj);
-
-            // FIXME: Allow setting custom sync interval
-            glib::timeout_add_seconds_local(
-                60 * 5,
-                clone!(@weak obj => move || {
-                    let self_ = Window::from_instance(&obj);
-                    self_.sync_data(&obj);
-
-                    glib::Continue(true)
-                }),
-            );
-        }
-
-        fn sync_data(&self, obj: &super::Window) {
-            if self.settings.get_sync_provider_setup_google_fit() {
-                let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-                let db_sender = new_db_receiver(self.db.get().unwrap().clone());
-
-                receiver.attach(
-                    None,
-                    clone!(@weak obj => move |v: Option<SyncProviderError>| {
-                        if let Some(e) = v {
-                            Window::from_instance(&obj).show_error(&e.to_string());
-                        }
-
-                        glib::Continue(false)
-                    }),
-                );
-
-                std::thread::spawn(move || {
-                    let mut sync_proxy = GoogleFitSyncProvider::new(db_sender);
-                    if let Err(e) = sync_proxy.sync_data() {
-                        sender.send(Some(e)).unwrap();
-                    } else {
-                        sender.send(None).unwrap();
-                    }
-                });
-            }
+            obj.connect_handlers();
         }
     }
 
@@ -279,17 +157,146 @@ impl Window {
 
         let obj = o.clone();
         gtk_macros::spawn!(async move {
-            let self_ = imp::Window::from_instance(&obj);
             if let Err(e) = db.migrate().await {
-                self_.show_error(&crate::core::i18n_f(
+                obj.show_error(&crate::core::i18n_f(
                     "Failed to migrate database to new version due to error {}",
                     &[&e.to_string()],
                 ))
             }
-            self_.set_db(&obj, db)
+            obj.set_db(db)
         });
 
         o
+    }
+
+    pub fn open_hamburger_menu(&self) {
+        self.get_priv().primary_menu_popover.popup();
+    }
+
+    fn connect_handlers(&self) {
+        let self_ = self.get_priv();
+
+        self_.error_infobar.connect_response(|bar, response| {
+            if response == gtk::ResponseType::Close {
+                bar.set_revealed(false);
+            }
+        });
+        self_.stack
+            .connect_property_visible_child_notify(clone!(@weak self as obj => move |s| {
+                let child_name = s.get_visible_child_name().map(|s| s.to_string());
+                let self_ = obj.get_priv();
+
+                if child_name == self_.views.get().unwrap().get(&ViewMode::STEPS).map(|s| s.get_widget_name().to_string()) {
+                    self_.inner.borrow_mut().current_view = ViewMode::STEPS;
+                } else if child_name == self_.views.get().unwrap().get(&ViewMode::WEIGHT).map(|s| s.get_widget_name().to_string()) {
+                    self_.inner.borrow_mut().current_view = ViewMode::WEIGHT;
+                }
+            }));
+        self_.add_data_button
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                let self_ = obj.get_priv();
+                let db = self_.db.get().unwrap().clone();
+
+                let dialog = match self_.inner.borrow().current_view {
+                    ViewMode::ACTIVITIES | ViewMode::STEPS => ActivityAddDialog::new(db, obj.upcast_ref()).upcast::<gtk::Dialog>(),
+                    ViewMode::WEIGHT => WeightAddDialog::new(db, obj.upcast_ref()).upcast::<gtk::Dialog>(),
+                };
+                dialog.present();
+            }));
+
+        self.connect_property_default_height_notify(clone!(@weak self as obj => move |w| {
+            obj.get_priv().inner.borrow_mut().current_height = w.get_property_default_height();
+        }));
+        self.connect_property_default_width_notify(clone!(@weak self as obj => move |w| {
+            obj.get_priv().inner.borrow_mut().current_width = w.get_property_default_width();
+        }));
+        self.connect_close_request(clone!(@weak self as obj => move |w| {
+            let self_ = obj.get_priv();
+            let mut inner = self_.inner.borrow_mut();
+
+            self_
+                .settings
+                .set_window_is_maximized(w.get_property_maximized());
+            self_.settings.set_window_height(inner.current_height);
+            self_.settings.set_window_width(inner.current_width);
+
+            if let Some(source_id) = inner.sync_source_id.take() {
+                glib::source_remove(source_id);
+            }
+
+            Inhibit(false)
+        }));
+    }
+
+    fn set_db(&self, db: Database) {
+        let self_ = self.get_priv();
+
+        self_.db.set(db.clone()).unwrap();
+
+        let mut views = BTreeMap::new();
+        views.insert(ViewMode::ACTIVITIES, ViewActivity::new(db.clone()).upcast());
+        views.insert(ViewMode::WEIGHT, ViewWeight::new(db.clone()).upcast());
+        views.insert(ViewMode::STEPS, ViewSteps::new(db).upcast());
+        self_.views.set(views).unwrap();
+
+        for view in self_.views.get().unwrap().values() {
+            let page = self_.stack.add_titled(
+                view,
+                Some(view.get_widget_name().as_str()),
+                &view.get_view_title().unwrap(),
+            );
+            page.set_icon_name(&view.get_icon_name().unwrap());
+        }
+
+        self.update();
+        self.sync_data();
+
+        // FIXME: Allow setting custom sync interval
+        glib::timeout_add_seconds_local(
+            60 * 5,
+            clone!(@weak self as obj => move || {
+                obj.sync_data();
+
+                glib::Continue(true)
+            }),
+        );
+    }
+
+    fn show_error(&self, err_msg: &str) {
+        let self_ = self.get_priv();
+
+        glib::g_warning!(crate::config::LOG_DOMAIN, "{}", err_msg);
+        self_.error_label.set_text(err_msg);
+        self_.error_infobar.set_revealed(true);
+    }
+
+    fn sync_data(&self) {
+        let self_ = self.get_priv();
+
+        if self_.settings.get_sync_provider_setup_google_fit() {
+            let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+            let db_sender = new_db_receiver(self_.db.get().unwrap().clone());
+
+            receiver.attach(
+                None,
+                clone!(@weak self as obj => move |v: Option<SyncProviderError>| {
+                    if let Some(e) = v {
+                        obj.show_error(&e.to_string());
+                    }
+
+                    glib::Continue(false)
+                }),
+            );
+
+            std::thread::spawn(move || {
+                let mut sync_proxy = GoogleFitSyncProvider::new(db_sender);
+                if let Err(e) = sync_proxy.sync_data() {
+                    sender.send(Some(e)).unwrap();
+                } else {
+                    sender.send(None).unwrap();
+                }
+            });
+        }
     }
 
     pub fn update(&self) {
@@ -317,9 +324,7 @@ impl Window {
         }
     }
 
-    pub fn open_hamburger_menu(&self) {
+    fn get_priv(&self) -> &imp::Window {
         imp::Window::from_instance(self)
-            .primary_menu_popover
-            .popup();
     }
 }

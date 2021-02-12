@@ -16,16 +16,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::Database, model::GraphModelSteps, views::View};
-use glib::subclass::types::ObjectSubclass;
+use crate::{
+    core::{i18n, i18n_f, Database},
+    model::GraphModelSteps,
+    views::{GraphView, View},
+};
+use chrono::Duration;
+use glib::{subclass::prelude::*, Cast};
+use std::cell::RefCell;
 
 mod imp {
     use crate::{
-        core::{i18n, i18n_f, Settings},
+        core::Settings,
         model::GraphModelSteps,
         views::{GraphView, View},
     };
-    use chrono::Duration;
     use glib::{subclass, Cast};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
@@ -35,10 +40,10 @@ mod imp {
     #[template(resource = "/dev/Cogitri/Health/ui/step_view.ui")]
     pub struct ViewSteps {
         #[template_child]
-        scrolled_window: TemplateChild<gtk::ScrolledWindow>,
-        settings: Settings,
-        steps_graph_view: OnceCell<GraphView>,
-        steps_graph_model: OnceCell<RefCell<GraphModelSteps>>,
+        pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
+        pub settings: Settings,
+        pub steps_graph_view: OnceCell<GraphView>,
+        pub steps_graph_model: OnceCell<RefCell<GraphModelSteps>>,
     }
 
     impl ObjectSubclass for ViewSteps {
@@ -81,88 +86,6 @@ mod imp {
             self.parent_constructed(obj);
         }
     }
-
-    impl ViewSteps {
-        pub fn set_steps_graph_model(&self, model: GraphModelSteps) {
-            self.steps_graph_model.set(RefCell::new(model)).unwrap();
-        }
-
-        pub async fn update(&self, obj: &super::ViewSteps) {
-            let mut steps_graph_model = { self.steps_graph_model.get().unwrap().borrow().clone() };
-            if let Err(e) = steps_graph_model.reload(Duration::days(30)).await {
-                glib::g_warning!(
-                    crate::config::LOG_DOMAIN,
-                    "Failed to reload step data: {}",
-                    e
-                );
-            }
-
-            let view = obj.upcast_ref::<View>();
-            view.set_title(i18n_f(
-                "Today's steps: {}",
-                &[&steps_graph_model
-                    .get_today_step_count()
-                    .unwrap_or(0)
-                    .to_string()],
-            ));
-
-            let goal_label = view.get_goal_label();
-            let streak_count =
-                steps_graph_model.get_streak_count_today(self.settings.get_user_stepgoal());
-
-            match streak_count {
-                0 => {
-                    let previous_streak = steps_graph_model
-                        .get_streak_count_yesterday(self.settings.get_user_stepgoal());
-                    if previous_streak == 0 {
-                        goal_label.set_text (&i18n("No streak yet. Reach your stepgoal for multiple days to start a streak!"));
-                    } else {
-                        goal_label.set_text (&i18n_f("You're on a streak for {} days. Reach your stepgoal today to continue it!", &[&previous_streak.to_string()]));
-                    }
-                }
-                1 => goal_label.set_text(&i18n(
-                    "You've reached your stepgoal today. Keep going to start a streak!",
-                )),
-                _ => goal_label.set_text(&i18n_f(
-                    "You're on a streak for {} days. Good job!",
-                    &[&streak_count.to_string()],
-                )),
-            }
-
-            if let Some(view) = self.steps_graph_view.get() {
-                view.set_points(steps_graph_model.to_points());
-            } else if !steps_graph_model.is_empty() {
-                let steps_graph_view = GraphView::new();
-                steps_graph_view.set_points(steps_graph_model.to_points());
-                steps_graph_view.set_x_lines_interval(500.0);
-                steps_graph_view.set_hover_func(Some(Box::new(|p| {
-                    return i18n_f(
-                        "{} steps on {}",
-                        &[&p.value.to_string(), &format!("{}", p.date.format("%x"))],
-                    );
-                })));
-                steps_graph_view.set_limit(Some(self.settings.get_user_stepgoal() as f32));
-                steps_graph_view.set_limit_label(Some(i18n("Stepgoal")));
-
-                self.scrolled_window.set_child(Some(&steps_graph_view));
-                view.get_stack().set_visible_child_name("data_page");
-
-                self.steps_graph_view.set(steps_graph_view).unwrap();
-
-                self.settings
-                    .connect_user_stepgoal_changed(glib::clone!(@weak obj => move |_,_| {
-                        glib::MainContext::default().spawn_local(async move {
-                            ViewSteps::from_instance(&obj).update(&obj).await
-                        })
-                    }));
-            }
-
-            self.steps_graph_model
-                .get()
-                .unwrap()
-                .replace(steps_graph_model);
-        }
-    }
 }
 
 glib::wrapper! {
@@ -180,12 +103,100 @@ impl ViewSteps {
             });
         }));
 
-        imp::ViewSteps::from_instance(&o).set_steps_graph_model(GraphModelSteps::new(database));
+        o.get_priv()
+            .steps_graph_model
+            .set(RefCell::new(GraphModelSteps::new(database)))
+            .unwrap();
 
         o
     }
 
     pub async fn update(&self) {
-        imp::ViewSteps::from_instance(self).update(self).await;
+        let self_ = self.get_priv();
+
+        let mut steps_graph_model = { self_.steps_graph_model.get().unwrap().borrow().clone() };
+        if let Err(e) = steps_graph_model.reload(Duration::days(30)).await {
+            glib::g_warning!(
+                crate::config::LOG_DOMAIN,
+                "Failed to reload step data: {}",
+                e
+            );
+        }
+
+        let view = self.upcast_ref::<View>();
+        view.set_title(i18n_f(
+            "Today's steps: {}",
+            &[&steps_graph_model
+                .get_today_step_count()
+                .unwrap_or(0)
+                .to_string()],
+        ));
+
+        let goal_label = view.get_goal_label();
+        let streak_count =
+            steps_graph_model.get_streak_count_today(self_.settings.get_user_stepgoal());
+
+        match streak_count {
+            0 => {
+                let previous_streak = steps_graph_model
+                    .get_streak_count_yesterday(self_.settings.get_user_stepgoal());
+                if previous_streak == 0 {
+                    goal_label.set_text(&i18n(
+                        "No streak yet. Reach your stepgoal for multiple days to start a streak!",
+                    ));
+                } else {
+                    goal_label.set_text(&i18n_f(
+                        "You're on a streak for {} days. Reach your stepgoal today to continue it!",
+                        &[&previous_streak.to_string()],
+                    ));
+                }
+            }
+            1 => goal_label.set_text(&i18n(
+                "You've reached your stepgoal today. Keep going to start a streak!",
+            )),
+            _ => goal_label.set_text(&i18n_f(
+                "You're on a streak for {} days. Good job!",
+                &[&streak_count.to_string()],
+            )),
+        }
+
+        if let Some(view) = self_.steps_graph_view.get() {
+            view.set_points(steps_graph_model.to_points());
+        } else if !steps_graph_model.is_empty() {
+            let steps_graph_view = GraphView::new();
+            steps_graph_view.set_points(steps_graph_model.to_points());
+            steps_graph_view.set_x_lines_interval(500.0);
+            steps_graph_view.set_hover_func(Some(Box::new(|p| {
+                return i18n_f(
+                    "{} steps on {}",
+                    &[&p.value.to_string(), &format!("{}", p.date.format("%x"))],
+                );
+            })));
+            steps_graph_view.set_limit(Some(self_.settings.get_user_stepgoal() as f32));
+            steps_graph_view.set_limit_label(Some(i18n("Stepgoal")));
+
+            self_.scrolled_window.set_child(Some(&steps_graph_view));
+            view.get_stack().set_visible_child_name("data_page");
+
+            self_.steps_graph_view.set(steps_graph_view).unwrap();
+
+            self_.settings.connect_user_stepgoal_changed(
+                glib::clone!(@weak self as obj => move |_,_| {
+                    glib::MainContext::default().spawn_local(async move {
+                        obj.update().await
+                    })
+                }),
+            );
+        }
+
+        self_
+            .steps_graph_model
+            .get()
+            .unwrap()
+            .replace(steps_graph_model);
+    }
+
+    fn get_priv(&self) -> &imp::ViewSteps {
+        imp::ViewSteps::from_instance(self)
     }
 }

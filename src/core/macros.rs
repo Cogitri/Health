@@ -75,16 +75,16 @@ macro_rules! inner_refcell_getter_setter {
 }
 
 #[macro_export]
-macro_rules! imp_getter_setter {
+macro_rules! refcell_getter_setter {
     ($name:ident, $type:ty) => {
         paste::item! {
             pub fn [< get_ $name >] (&self) -> $type {
-                self.get_priv().[< get_ $name >]()
+                self.get_priv().inner.borrow().$name.clone()
             }
         }
         paste::item! {
             pub fn [< set_ $name >] (&self, value: $type) -> &Self {
-                self.get_priv().[< set_ $name >](value);
+                self.get_priv().inner.borrow_mut().$name = value;
                 self
             }
         }

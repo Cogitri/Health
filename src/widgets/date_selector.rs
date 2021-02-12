@@ -17,7 +17,8 @@
  */
 
 use chrono::{DateTime, FixedOffset};
-use glib::subclass::types::ObjectSubclass;
+use glib::subclass::prelude::*;
+use gtk::prelude::*;
 
 mod imp {
     use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
@@ -71,7 +72,7 @@ mod imp {
                 if let Ok(date) = NaiveDate::parse_from_str(obj.get_text().as_str(), "%x") {
                         match Local.from_local_datetime(&date.and_hms(12, 0, 0)) {
                             LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
-                                DateSelector::from_instance(&obj).set_selected_date (&obj, d.into());
+                                obj.set_selected_date (d.into());
                             }
                             LocalResult::None => {},
                         }
@@ -96,7 +97,7 @@ mod imp {
             });
             self.date_chooser.connect_day_selected(set_text);
             self.date_selector_popover.set_parent(obj);
-            self.set_selected_date(&obj, Local::now().into());
+            obj.set_selected_date(Local::now().into());
         }
 
         fn dispose(&self, _obj: &Self::Type) {
@@ -105,17 +106,6 @@ mod imp {
     }
     impl WidgetImpl for DateSelector {}
     impl EntryImpl for DateSelector {}
-
-    impl DateSelector {
-        pub fn get_selected_date(&self) -> DateTime<FixedOffset> {
-            *self.selected_date.borrow()
-        }
-
-        pub fn set_selected_date(&self, obj: &super::DateSelector, value: DateTime<FixedOffset>) {
-            obj.set_text(&format!("{}", value.format("%x")));
-            self.selected_date.replace(value);
-        }
-    }
 }
 
 glib::wrapper! {
@@ -124,15 +114,20 @@ glib::wrapper! {
 }
 
 impl DateSelector {
+    pub fn get_selected_date(&self) -> DateTime<FixedOffset> {
+        *self.get_priv().selected_date.borrow()
+    }
+
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create DateSelector")
     }
 
-    pub fn get_selected_date(&self) -> DateTime<FixedOffset> {
-        imp::DateSelector::from_instance(self).get_selected_date()
+    pub fn set_selected_date(&self, value: DateTime<FixedOffset>) {
+        self.set_text(&format!("{}", value.format("%x")));
+        self.get_priv().selected_date.replace(value);
     }
 
-    pub fn set_selected_date(&self, value: DateTime<FixedOffset>) {
-        imp::DateSelector::from_instance(self).set_selected_date(self, value);
+    fn get_priv(&self) -> &imp::DateSelector {
+        imp::DateSelector::from_instance(self)
     }
 }

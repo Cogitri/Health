@@ -18,17 +18,18 @@
 
 use crate::core::Database;
 use chrono::Duration;
-use glib::subclass::types::ObjectSubclass;
+use gio::prelude::*;
+use glib::subclass::prelude::*;
+use std::convert::TryInto;
 
 mod imp {
     use crate::{
         core::{Database, Settings},
         model::Activity,
     };
-    use chrono::Duration;
-    use gio::ListModelExt;
     use glib::{subclass, Cast, StaticType};
     use gtk::subclass::prelude::*;
+    use once_cell::unsync::OnceCell;
     use std::{
         cell::RefCell,
         convert::{TryFrom, TryInto},
@@ -36,14 +37,14 @@ mod imp {
 
     #[derive(Debug)]
     pub struct ModelActivityMut {
-        database: Option<Database>,
-        vec: Vec<Activity>,
+        pub vec: Vec<Activity>,
     }
 
     #[derive(Debug)]
     pub struct ModelActivity {
-        inner: RefCell<ModelActivityMut>,
-        settings: Settings,
+        pub database: OnceCell<Database>,
+        pub inner: RefCell<ModelActivityMut>,
+        pub settings: Settings,
     }
 
     impl ObjectSubclass for ModelActivity {
@@ -58,10 +59,8 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                inner: RefCell::new(ModelActivityMut {
-                    database: None,
-                    vec: Vec::new(),
-                }),
+                database: OnceCell::new(),
+                inner: RefCell::new(ModelActivityMut { vec: Vec::new() }),
                 settings: Settings::new(),
             }
         }
@@ -85,46 +84,6 @@ mod imp {
                 .map(|o| o.clone().upcast())
         }
     }
-
-    impl ModelActivity {
-        pub async fn reload(
-            &self,
-            obj: &super::ModelActivity,
-            duration: Duration,
-        ) -> Result<(), glib::Error> {
-            let (database, previous_size) = {
-                let inner = self.inner.borrow();
-                (inner.database.clone(), inner.vec.len())
-            };
-            let new_vec = database
-                .as_ref()
-                .unwrap()
-                .get_activities(Some(
-                    chrono::Local::now()
-                        .checked_sub_signed(duration)
-                        .unwrap()
-                        .into(),
-                ))
-                .await?;
-            {
-                self.inner.borrow_mut().vec = new_vec;
-            }
-            obj.items_changed(
-                0,
-                previous_size.try_into().unwrap(),
-                self.inner.borrow().vec.len().try_into().unwrap(),
-            );
-            Ok(())
-        }
-
-        pub fn is_empty(&self) -> bool {
-            self.inner.borrow().vec.is_empty()
-        }
-
-        pub fn set_database(&self, database: Database) {
-            self.inner.borrow_mut().database = Some(database);
-        }
-    }
 }
 
 glib::wrapper! {
@@ -132,21 +91,45 @@ glib::wrapper! {
 }
 
 impl ModelActivity {
-    pub fn new(database: Database) -> Self {
-        let o = glib::Object::new(&[]).expect("Failed to create ModelActivity");
+    pub fn is_empty(&self) -> bool {
+        self.get_priv().inner.borrow().vec.is_empty()
+    }
 
-        imp::ModelActivity::from_instance(&o).set_database(database);
+    pub fn new(database: Database) -> Self {
+        let o: Self = glib::Object::new(&[]).expect("Failed to create ModelActivity");
+
+        o.get_priv().database.set(database).unwrap();
 
         o
     }
 
-    pub fn is_empty(&self) -> bool {
-        imp::ModelActivity::from_instance(self).is_empty()
+    pub async fn reload(&self, duration: Duration) -> Result<(), glib::Error> {
+        let self_ = self.get_priv();
+
+        let previous_size = { self_.inner.borrow().vec.len() };
+        let new_vec = self_
+            .database
+            .get()
+            .unwrap()
+            .get_activities(Some(
+                chrono::Local::now()
+                    .checked_sub_signed(duration)
+                    .unwrap()
+                    .into(),
+            ))
+            .await?;
+        {
+            self_.inner.borrow_mut().vec = new_vec;
+        }
+        self.items_changed(
+            0,
+            previous_size.try_into().unwrap(),
+            self_.inner.borrow().vec.len().try_into().unwrap(),
+        );
+        Ok(())
     }
 
-    pub async fn reload(&self, duration: Duration) -> Result<(), glib::Error> {
+    fn get_priv(&self) -> &imp::ModelActivity {
         imp::ModelActivity::from_instance(self)
-            .reload(self, duration)
-            .await
     }
 }

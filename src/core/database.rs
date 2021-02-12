@@ -16,37 +16,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::model::{Activity, Steps, Weight};
-use chrono::{DateTime, FixedOffset};
+use crate::model::{Activity, ActivityType, Steps, Weight};
+use chrono::{DateTime, Duration, FixedOffset, NaiveDate, SecondsFormat, Utc};
 use glib::{subclass::types::ObjectSubclass, ObjectExt};
+use num_traits::cast::{FromPrimitive, ToPrimitive};
+use std::{
+    convert::{TryFrom, TryInto},
+    path::{Path, PathBuf},
+};
+use uom::si::{
+    length::{meter, Length},
+    mass::{kilogram, Mass},
+};
 
 mod imp {
-    use crate::model::{Activity, ActivityType, Steps, Weight};
-    use chrono::{DateTime, Duration, FixedOffset, NaiveDate, SecondsFormat, Utc};
     use glib::subclass::{self, Signal};
-    use glib::ObjectExt;
     use gtk::subclass::prelude::*;
-    use num_traits::cast::{FromPrimitive, ToPrimitive};
-    use std::{
-        cell::RefCell,
-        convert::{TryFrom, TryInto},
-        path::Path,
-    };
-    use uom::si::{
-        f32::{Length, Mass},
-        length::meter,
-        mass::kilogram,
-    };
+    use std::cell::RefCell;
 
     #[derive(Debug)]
     pub struct DatabaseMut {
-        connection: tracker::SparqlConnection,
-        manager: tracker::NamespaceManager,
+        pub connection: tracker::SparqlConnection,
+        pub manager: tracker::NamespaceManager,
     }
 
     #[derive(Debug)]
     pub struct Database {
-        inner: RefCell<Option<DatabaseMut>>,
+        pub inner: RefCell<Option<DatabaseMut>>,
     }
 
     impl ObjectSubclass for Database {
@@ -79,531 +75,6 @@ mod imp {
             SIGNALS.as_ref()
         }
     }
-
-    impl Database {
-        pub fn connect(
-            &self,
-            ontology_path: Option<std::path::PathBuf>,
-            store_path: Option<std::path::PathBuf>,
-        ) -> Result<(), glib::Error> {
-            let mut store_path = store_path.unwrap_or_else(glib::get_user_data_dir);
-            store_path.push("health");
-
-            let mut ontology_path =
-                ontology_path.unwrap_or_else(|| Path::new(crate::config::PKGDATADIR).to_path_buf());
-            ontology_path.push("ontology");
-
-            let manager = tracker::NamespaceManager::new();
-            manager.add_prefix("health", "https://gitlab.gnome.org/World/health#");
-
-            self.inner.replace(Some(DatabaseMut {
-                connection: tracker::SparqlConnection::new(
-                    tracker::SparqlConnectionFlags::NONE,
-                    Some(&gio::File::new_for_path(store_path)),
-                    Some(&gio::File::new_for_path(ontology_path)),
-                    None::<&gio::Cancellable>,
-                )?,
-                manager,
-            }));
-
-            Ok(())
-        }
-
-        pub async fn get_activities(
-            &self,
-            date_opt: Option<DateTime<FixedOffset>>,
-        ) -> Result<Vec<Activity>, glib::Error> {
-            let cursor = if let Some(date) = date_opt {
-                let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
-                connection.query_async_future(&format!("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY DESC(?date)", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
-            } else {
-                let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
-                connection.query_async_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?
-            };
-
-            let mut ret = Vec::new();
-            while let Ok(true) = cursor.next_async_future().await {
-                let activity = Activity::new();
-
-                for i in 0..cursor.get_n_columns() {
-                    match cursor.get_variable_name(i).unwrap().as_str() {
-                        "id" => {
-                            activity.set_activity_type(
-                                ActivityType::from_i64(cursor.get_integer(i)).unwrap(),
-                            );
-                        }
-                        "date" => {
-                            activity.set_date(
-                                DateTime::parse_from_rfc3339(
-                                    cursor.get_string(i).0.unwrap().as_str(),
-                                )
-                                .unwrap(),
-                            );
-                        }
-                        "calories_burned" => {
-                            activity.set_calories_burned(Some(
-                                cursor.get_integer(i).try_into().unwrap(),
-                            ));
-                        }
-                        "distance" => {
-                            activity.set_distance(Some(Length::new::<meter>(
-                                cursor.get_integer(i) as f32,
-                            )));
-                        }
-                        "heart_rate_avg" => {
-                            activity.set_heart_rate_avg(Some(
-                                cursor.get_integer(i).try_into().unwrap(),
-                            ));
-                        }
-                        "heart_rate_max" => {
-                            activity.set_heart_rate_max(Some(
-                                cursor.get_integer(i).try_into().unwrap(),
-                            ));
-                        }
-                        "heart_rate_min" => {
-                            activity.set_heart_rate_min(Some(
-                                cursor.get_integer(i).try_into().unwrap(),
-                            ));
-                        }
-                        "minutes" => {
-                            activity.set_duration(Duration::minutes(cursor.get_integer(i)));
-                        }
-                        "steps" => {
-                            activity.set_steps(Some(cursor.get_integer(i).try_into().unwrap()));
-                        }
-                        _ => unimplemented!(),
-                    }
-                }
-
-                ret.push(activity);
-            }
-
-            Ok(ret)
-        }
-
-        #[cfg(test)]
-        pub fn get_connection(&self) -> tracker::SparqlConnection {
-            self.inner.borrow().as_ref().unwrap().connection.clone()
-        }
-
-        #[cfg(test)]
-        pub fn get_manager(&self) -> tracker::NamespaceManager {
-            self.inner.borrow().as_ref().unwrap().manager.clone()
-        }
-
-        pub async fn get_steps(
-            &self,
-            date: DateTime<FixedOffset>,
-        ) -> Result<Vec<Steps>, glib::Error> {
-            let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
-            let cursor = connection.query_async_future(&format!("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
-            let mut hashmap = std::collections::HashMap::new();
-
-            while let Ok(true) = cursor.next_async_future().await {
-                hashmap.insert(
-                    DateTime::parse_from_rfc3339(cursor.get_string(0).0.unwrap().as_str()).unwrap(),
-                    hashmap.get(&date).unwrap_or(&0)
-                        + u32::try_from(cursor.get_integer(1)).unwrap(),
-                );
-            }
-
-            let mut v: Vec<Steps> = hashmap
-                .drain()
-                .map(|(date, steps)| Steps::new(date, steps))
-                .collect();
-
-            v.sort_by(|a, b| a.date.cmp(&b.date));
-
-            Ok(v)
-        }
-
-        pub async fn get_weights(
-            &self,
-            date_opt: Option<DateTime<FixedOffset>>,
-        ) -> Result<Vec<Weight>, glib::Error> {
-            let cursor = if let Some(date) = date_opt {
-                let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
-                connection.query_async_future(&format!("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
-            } else {
-                let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
-                connection.query_async_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . } ORDER BY ?date").await?
-            };
-            let mut ret = Vec::new();
-
-            while let Ok(true) = cursor.next_async_future().await {
-                ret.push(Weight::new(
-                    DateTime::parse_from_rfc3339(cursor.get_string(0).0.unwrap().as_str()).unwrap(),
-                    Mass::new::<kilogram>(cursor.get_double(1) as f32),
-                ));
-            }
-
-            Ok(ret)
-        }
-
-        pub async fn get_weight_exists_on_date(
-            &self,
-            date: DateTime<FixedOffset>,
-        ) -> Result<bool, glib::Error> {
-            // FIXME: doesn't work with datetime yet!
-            let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
-            let cursor = connection.query_async_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_date '{}'^^xsd:date; health:weight ?weight . }}", date.date().format("%Y-%m-%d"))).await?;
-
-            assert!(cursor.next_async_future().await?);
-
-            return Ok(cursor.get_boolean(0));
-        }
-
-        pub async fn import_steps(
-            &self,
-            obj: &super::Database,
-            steps: &[Steps],
-        ) -> Result<(), glib::Error> {
-            if steps.is_empty() {
-                return Ok(());
-            }
-
-            let (connection, manager) = {
-                let inner_ref = self.inner.borrow();
-                let inner = inner_ref.as_ref().unwrap();
-                (inner.connection.clone(), inner.manager.clone())
-            };
-
-            for s in steps {
-                let resource = tracker::Resource::new(None);
-                resource.set_uri("rdf:type", "health:Activity");
-                resource.set_string(
-                    "health:activity_datetime",
-                    &s.date.to_rfc3339_opts(SecondsFormat::Secs, true),
-                );
-                resource.set_int64("health:steps", s.steps.into());
-                resource.set_int64(
-                    "health:activity_id",
-                    ActivityType::Walking.to_i64().unwrap(),
-                );
-                // FIXME: Set correct minutes here
-                resource.set_int64("health:minutes", 0);
-
-                connection
-                    .update_async_future(
-                        resource
-                            .print_sparql_update(Some(&manager), None)
-                            .unwrap()
-                            .as_str(),
-                    )
-                    .await?;
-            }
-
-            obj.emit("activities-updated", &[]).unwrap();
-            Ok(())
-        }
-
-        pub async fn import_weights(
-            &self,
-            obj: &super::Database,
-            weights: &[Weight],
-        ) -> Result<(), glib::Error> {
-            if weights.is_empty() {
-                return Ok(());
-            }
-
-            let (connection, manager) = {
-                let inner_ref = self.inner.borrow();
-                let inner = inner_ref.as_ref().unwrap();
-                (inner.connection.clone(), inner.manager.clone())
-            };
-
-            for w in weights {
-                let resource = tracker::Resource::new(None);
-                resource.set_uri("rdf:type", "health:WeightMeasurement");
-                resource.set_string(
-                    "health:weight_date",
-                    &w.date.to_rfc3339_opts(SecondsFormat::Secs, true),
-                );
-                resource.set_double("health:weight", w.weight.get::<kilogram>().into());
-
-                connection
-                    .update_async_future(
-                        resource
-                            .print_sparql_update(Some(&manager), None)
-                            .unwrap()
-                            .as_str(),
-                    )
-                    .await?;
-            }
-
-            obj.emit("weights-updated", &[]).unwrap();
-            Ok(())
-        }
-
-        pub async fn migrate(&self, obj: &super::Database) -> Result<(), glib::Error> {
-            self.migrate_activities_date_datetime(obj).await?;
-            self.migrate_weight_date_datetime(obj).await?;
-            Ok(())
-        }
-
-        pub async fn migrate_activities_date_datetime(
-            &self,
-            obj: &super::Database,
-        ) -> Result<(), glib::Error> {
-            let (connection, manager) = {
-                let inner_ref = self.inner.borrow();
-                let inner = inner_ref.as_ref().unwrap();
-                (inner.connection.clone(), inner.manager.clone())
-            };
-
-            let cursor =
-            connection.query_async_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?;
-
-            while let Ok(true) = cursor.next_async_future().await {
-                let resource = tracker::Resource::new(None);
-                resource.set_uri("rdf:type", "health:Activity");
-
-                for i in 0..cursor.get_n_columns() {
-                    match cursor.get_variable_name(i).unwrap().as_str() {
-                        "id" => {
-                            resource.set_int64("health:activity_id", cursor.get_integer(i));
-                        }
-                        "date" => {
-                            resource.set_string(
-                                "health:activity_datetime",
-                                &DateTime::<Utc>::from_utc(
-                                    NaiveDate::parse_from_str(
-                                        cursor.get_string(i).0.unwrap().as_str(),
-                                        "%Y-%m-%d",
-                                    )
-                                    .unwrap()
-                                    .and_hms(0, 0, 0),
-                                    Utc,
-                                )
-                                .with_timezone(&chrono::Local)
-                                .to_rfc3339_opts(SecondsFormat::Secs, true),
-                            );
-                        }
-                        "calories_burned" => {
-                            let v = cursor.get_integer(i);
-                            if v != 0 {
-                                resource.set_int64("health:calories_burned", v);
-                            }
-                        }
-                        "distance" => {
-                            let v = cursor.get_integer(i);
-                            if v != 0 {
-                                resource.set_int64("health:distance", v);
-                            }
-                        }
-                        "heart_rate_avg" => {
-                            let v = cursor.get_integer(i);
-                            if v != 0 {
-                                resource.set_int64("health:hearth_rate_avg", v);
-                            }
-                        }
-                        "heart_rate_max" => {
-                            let v = cursor.get_integer(i);
-                            if v != 0 {
-                                resource.set_int64("health:hearth_rate_max", v);
-                            }
-                        }
-                        "heart_rate_min" => {
-                            let v = cursor.get_integer(i);
-                            if v != 0 {
-                                resource.set_int64("health:hearth_rate_min", v);
-                            }
-                        }
-                        "minutes" => {
-                            let v = cursor.get_integer(i);
-                            if v != 0 {
-                                resource.set_int64("health:minutes", v);
-                            }
-                        }
-                        "steps" => {
-                            let v = cursor.get_integer(i);
-                            if v != 0 {
-                                resource.set_int64("health:steps", v);
-                            }
-                        }
-                        _ => unimplemented!(),
-                    }
-                }
-
-                connection
-                    .update_async_future(
-                        resource
-                            .print_sparql_update(Some(&manager), None)
-                            .unwrap()
-                            .as_str(),
-                    )
-                    .await?;
-            }
-
-            connection
-                .update_async_future(
-                    "DELETE WHERE { ?datapoint a health:Activity; health:activity_date ?date };",
-                )
-                .await?;
-
-            obj.emit("activities-updated", &[]).unwrap();
-            Ok(())
-        }
-
-        pub async fn migrate_weight_date_datetime(
-            &self,
-            obj: &super::Database,
-        ) -> Result<(), glib::Error> {
-            let (connection, manager) = {
-                let inner_ref = self.inner.borrow();
-                let inner = inner_ref.as_ref().unwrap();
-                (inner.connection.clone(), inner.manager.clone())
-            };
-
-            let cursor =
-            connection.query_async_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . } ORDER BY ?date").await?;
-
-            while let Ok(true) = cursor.next_async_future().await {
-                let resource = tracker::Resource::new(None);
-                resource.set_uri("rdf:type", "health:WeightMeasurement");
-                resource.set_string(
-                    "health:weight_datetime",
-                    &DateTime::<Utc>::from_utc(
-                        NaiveDate::parse_from_str(
-                            cursor.get_string(0).0.unwrap().as_str(),
-                            "%Y-%m-%d",
-                        )
-                        .unwrap()
-                        .and_hms(0, 0, 0),
-                        Utc,
-                    )
-                    .with_timezone(&chrono::Local)
-                    .to_rfc3339_opts(SecondsFormat::Secs, true),
-                );
-                resource.set_double("health:weight", cursor.get_double(1));
-
-                connection
-                    .update_async_future(
-                        resource
-                            .print_sparql_update(Some(&manager), None)
-                            .unwrap()
-                            .as_str(),
-                    )
-                    .await?;
-            }
-
-            connection.update_async_future(
-                "DELETE WHERE { ?datapoint a health:WeightMeasurement; health:weight_date ?date };",
-            ).await?;
-
-            obj.emit("weights-updated", &[]).unwrap();
-            Ok(())
-        }
-
-        pub async fn reset(&self) -> Result<(), glib::Error> {
-            let connection = { self.inner.borrow().as_ref().unwrap().connection.clone() };
-            connection
-                .update_async_future("DELETE WHERE { ?datapoint a health:WeightMeasurement }")
-                .await?;
-            connection
-                .update_async_future("DELETE WHERE { ?datapoint a health:Activity }")
-                .await?;
-
-            Ok(())
-        }
-
-        pub async fn save_activity(
-            &self,
-            obj: &super::Database,
-            activity: Activity,
-        ) -> Result<(), glib::Error> {
-            let resource = tracker::Resource::new(None);
-            resource.set_uri("rdf:type", "health:Activity");
-            resource.set_string(
-                "health:activity_datetime",
-                &activity
-                    .get_date()
-                    .to_rfc3339_opts(SecondsFormat::Secs, true),
-            );
-            resource.set_int64(
-                "health:activity_id",
-                activity.get_activity_type().to_u32().unwrap().into(),
-            );
-
-            if let Some(c) = activity.get_calories_burned() {
-                resource.set_int64("health:calories_burned", c.into());
-            }
-            if let Some(d) = activity.get_distance() {
-                resource.set_int64(
-                    "health:distance",
-                    d.get::<uom::si::length::kilometer>() as i64,
-                );
-            }
-            if let Some(avg) = activity.get_heart_rate_avg() {
-                resource.set_int64("health:hearth_rate_avg", avg.into());
-            }
-            if let Some(max) = activity.get_heart_rate_max() {
-                resource.set_int64("health:hearth_rate_max", max.into());
-            }
-            if let Some(min) = activity.get_heart_rate_min() {
-                resource.set_int64("health:hearth_rate_min", min.into());
-            }
-            if activity.get_duration().num_minutes() != 0 {
-                resource.set_int64("health:minutes", activity.get_duration().num_minutes());
-            }
-            if let Some(s) = activity.get_steps() {
-                resource.set_int64("health:steps", s.into());
-            }
-
-            let (connection, manager) = {
-                let inner_ref = self.inner.borrow();
-                let inner = inner_ref.as_ref().unwrap();
-                (inner.connection.clone(), inner.manager.clone())
-            };
-
-            connection
-                .update_async_future(
-                    resource
-                        .print_sparql_update(Some(&manager), None)
-                        .unwrap()
-                        .as_str(),
-                )
-                .await?;
-
-            obj.emit("activities-updated", &[]).unwrap();
-            Ok(())
-        }
-
-        pub async fn save_weight(
-            &self,
-            obj: &super::Database,
-            weight: Weight,
-        ) -> Result<(), glib::Error> {
-            let resource = tracker::Resource::new(None);
-            resource.set_uri("rdf:type", "health:WeightMeasurement");
-            resource.set_string(
-                "health:weight_datetime",
-                &weight.date.to_rfc3339_opts(SecondsFormat::Secs, true),
-            );
-            resource.set_double(
-                "health:weight",
-                weight.weight.get::<uom::si::mass::kilogram>().into(),
-            );
-
-            let (connection, manager) = {
-                let inner_ref = self.inner.borrow();
-                let inner = inner_ref.as_ref().unwrap();
-                (inner.connection.clone(), inner.manager.clone())
-            };
-
-            connection
-                .update_async_future(
-                    resource
-                        .print_sparql_update(Some(&manager), None)
-                        .unwrap()
-                        .as_str(),
-                )
-                .await?;
-
-            obj.emit("weights-updated", &[]).unwrap();
-            Ok(())
-        }
-    }
 }
 
 glib::wrapper! {
@@ -611,27 +82,6 @@ glib::wrapper! {
 }
 
 impl Database {
-    pub fn new() -> Result<Self, glib::Error> {
-        let o = glib::Object::new(&[]).expect("Failed to create Database");
-
-        imp::Database::from_instance(&o).connect(None, None)?;
-
-        Ok(o)
-    }
-
-    #[cfg(test)]
-    pub fn new_with_store_path(store_path: std::path::PathBuf) -> Result<Self, glib::Error> {
-        let o = glib::Object::new(&[]).expect("Failed to create Database");
-
-        let mut path = std::path::PathBuf::new();
-        path.push(env!("CARGO_MANIFEST_DIR"));
-        path.push("data/tracker");
-
-        imp::Database::from_instance(&o).connect(Some(path), Some(store_path))?;
-
-        Ok(o)
-    }
-
     pub fn connect_activities_updated<F: Fn() + 'static>(
         &self,
         callback: F,
@@ -655,67 +105,533 @@ impl Database {
         &self,
         date_opt: Option<DateTime<FixedOffset>>,
     ) -> Result<Vec<Activity>, glib::Error> {
-        imp::Database::from_instance(self)
-            .get_activities(date_opt)
-            .await
+        let self_ = self.get_priv();
+
+        let cursor = if let Some(date) = date_opt {
+            let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+            connection.query_async_future(&format!("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY DESC(?date)", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
+        } else {
+            let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+            connection.query_async_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?
+        };
+
+        let mut ret = Vec::new();
+        while let Ok(true) = cursor.next_async_future().await {
+            let activity = Activity::new();
+
+            for i in 0..cursor.get_n_columns() {
+                match cursor.get_variable_name(i).unwrap().as_str() {
+                    "id" => {
+                        activity.set_activity_type(
+                            ActivityType::from_i64(cursor.get_integer(i)).unwrap(),
+                        );
+                    }
+                    "date" => {
+                        activity.set_date(
+                            DateTime::parse_from_rfc3339(cursor.get_string(i).0.unwrap().as_str())
+                                .unwrap(),
+                        );
+                    }
+                    "calories_burned" => {
+                        activity
+                            .set_calories_burned(Some(cursor.get_integer(i).try_into().unwrap()));
+                    }
+                    "distance" => {
+                        activity
+                            .set_distance(Some(Length::new::<meter>(cursor.get_integer(i) as f32)));
+                    }
+                    "heart_rate_avg" => {
+                        activity
+                            .set_heart_rate_avg(Some(cursor.get_integer(i).try_into().unwrap()));
+                    }
+                    "heart_rate_max" => {
+                        activity
+                            .set_heart_rate_max(Some(cursor.get_integer(i).try_into().unwrap()));
+                    }
+                    "heart_rate_min" => {
+                        activity
+                            .set_heart_rate_min(Some(cursor.get_integer(i).try_into().unwrap()));
+                    }
+                    "minutes" => {
+                        activity.set_duration(Duration::minutes(cursor.get_integer(i)));
+                    }
+                    "steps" => {
+                        activity.set_steps(Some(cursor.get_integer(i).try_into().unwrap()));
+                    }
+                    _ => unimplemented!(),
+                }
+            }
+
+            ret.push(activity);
+        }
+
+        Ok(ret)
     }
 
     #[cfg(test)]
     pub fn get_connection(&self) -> tracker::SparqlConnection {
-        imp::Database::from_instance(self).get_connection()
+        let self_ = self.get_priv();
+        self_.inner.borrow().as_ref().unwrap().connection.clone()
     }
 
     #[cfg(test)]
     pub fn get_manager(&self) -> tracker::NamespaceManager {
-        imp::Database::from_instance(self).get_manager()
+        let self_ = self.get_priv();
+        self_.inner.borrow().as_ref().unwrap().manager.clone()
     }
 
     pub async fn get_steps(&self, date: DateTime<FixedOffset>) -> Result<Vec<Steps>, glib::Error> {
-        imp::Database::from_instance(self).get_steps(date).await
+        let self_ = self.get_priv();
+
+        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+        let cursor = connection.query_async_future(&format!("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+        let mut hashmap = std::collections::HashMap::new();
+
+        while let Ok(true) = cursor.next_async_future().await {
+            hashmap.insert(
+                DateTime::parse_from_rfc3339(cursor.get_string(0).0.unwrap().as_str()).unwrap(),
+                hashmap.get(&date).unwrap_or(&0) + u32::try_from(cursor.get_integer(1)).unwrap(),
+            );
+        }
+
+        let mut v: Vec<Steps> = hashmap
+            .drain()
+            .map(|(date, steps)| Steps::new(date, steps))
+            .collect();
+
+        v.sort_by(|a, b| a.date.cmp(&b.date));
+
+        Ok(v)
     }
 
     pub async fn get_weights(
         &self,
-        date: Option<DateTime<FixedOffset>>,
+        date_opt: Option<DateTime<FixedOffset>>,
     ) -> Result<Vec<Weight>, glib::Error> {
-        imp::Database::from_instance(self).get_weights(date).await
+        let self_ = self.get_priv();
+
+        let cursor = if let Some(date) = date_opt {
+            let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+            connection.query_async_future(&format!("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
+        } else {
+            let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+            connection.query_async_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . } ORDER BY ?date").await?
+        };
+        let mut ret = Vec::new();
+
+        while let Ok(true) = cursor.next_async_future().await {
+            ret.push(Weight::new(
+                DateTime::parse_from_rfc3339(cursor.get_string(0).0.unwrap().as_str()).unwrap(),
+                Mass::new::<kilogram>(cursor.get_double(1) as f32),
+            ));
+        }
+
+        Ok(ret)
     }
 
     pub async fn get_weight_exists_on_date(
         &self,
         date: DateTime<FixedOffset>,
     ) -> Result<bool, glib::Error> {
-        imp::Database::from_instance(self)
-            .get_weight_exists_on_date(date)
-            .await
+        let self_ = self.get_priv();
+
+        // FIXME: doesn't work with datetime yet!
+        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+        let cursor = connection.query_async_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_date '{}'^^xsd:date; health:weight ?weight . }}", date.date().format("%Y-%m-%d"))).await?;
+
+        assert!(cursor.next_async_future().await?);
+
+        return Ok(cursor.get_boolean(0));
     }
 
     pub async fn import_steps(&self, steps: &[Steps]) -> Result<(), glib::Error> {
-        imp::Database::from_instance(self)
-            .import_steps(self, steps)
-            .await
+        let self_ = self.get_priv();
+
+        if steps.is_empty() {
+            return Ok(());
+        }
+
+        let (connection, manager) = {
+            let inner_ref = self_.inner.borrow();
+            let inner = inner_ref.as_ref().unwrap();
+            (inner.connection.clone(), inner.manager.clone())
+        };
+
+        for s in steps {
+            let resource = tracker::Resource::new(None);
+            resource.set_uri("rdf:type", "health:Activity");
+            resource.set_string(
+                "health:activity_datetime",
+                &s.date.to_rfc3339_opts(SecondsFormat::Secs, true),
+            );
+            resource.set_int64("health:steps", s.steps.into());
+            resource.set_int64(
+                "health:activity_id",
+                ActivityType::Walking.to_i64().unwrap(),
+            );
+            // FIXME: Set correct minutes here
+            resource.set_int64("health:minutes", 0);
+
+            connection
+                .update_async_future(
+                    resource
+                        .print_sparql_update(Some(&manager), None)
+                        .unwrap()
+                        .as_str(),
+                )
+                .await?;
+        }
+
+        self.emit("activities-updated", &[]).unwrap();
+        Ok(())
     }
 
-    pub async fn import_weights(&self, weight: &[Weight]) -> Result<(), glib::Error> {
-        imp::Database::from_instance(self)
-            .import_weights(self, weight)
-            .await
+    pub async fn import_weights(&self, weights: &[Weight]) -> Result<(), glib::Error> {
+        let self_ = self.get_priv();
+
+        if weights.is_empty() {
+            return Ok(());
+        }
+
+        let (connection, manager) = {
+            let inner_ref = self_.inner.borrow();
+            let inner = inner_ref.as_ref().unwrap();
+            (inner.connection.clone(), inner.manager.clone())
+        };
+
+        for w in weights {
+            let resource = tracker::Resource::new(None);
+            resource.set_uri("rdf:type", "health:WeightMeasurement");
+            resource.set_string(
+                "health:weight_date",
+                &w.date.to_rfc3339_opts(SecondsFormat::Secs, true),
+            );
+            resource.set_double("health:weight", w.weight.get::<kilogram>().into());
+
+            connection
+                .update_async_future(
+                    resource
+                        .print_sparql_update(Some(&manager), None)
+                        .unwrap()
+                        .as_str(),
+                )
+                .await?;
+        }
+
+        self.emit("weights-updated", &[]).unwrap();
+        Ok(())
     }
 
     pub async fn migrate(&self) -> Result<(), glib::Error> {
-        imp::Database::from_instance(self).migrate(self).await
+        self.migrate_activities_date_datetime().await?;
+        self.migrate_weight_date_datetime().await?;
+        Ok(())
+    }
+
+    pub async fn migrate_activities_date_datetime(&self) -> Result<(), glib::Error> {
+        let self_ = self.get_priv();
+        let (connection, manager) = {
+            let inner_ref = self_.inner.borrow();
+            let inner = inner_ref.as_ref().unwrap();
+            (inner.connection.clone(), inner.manager.clone())
+        };
+
+        let cursor =
+        connection.query_async_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?;
+
+        while let Ok(true) = cursor.next_async_future().await {
+            let resource = tracker::Resource::new(None);
+            resource.set_uri("rdf:type", "health:Activity");
+
+            for i in 0..cursor.get_n_columns() {
+                match cursor.get_variable_name(i).unwrap().as_str() {
+                    "id" => {
+                        resource.set_int64("health:activity_id", cursor.get_integer(i));
+                    }
+                    "date" => {
+                        resource.set_string(
+                            "health:activity_datetime",
+                            &DateTime::<Utc>::from_utc(
+                                NaiveDate::parse_from_str(
+                                    cursor.get_string(i).0.unwrap().as_str(),
+                                    "%Y-%m-%d",
+                                )
+                                .unwrap()
+                                .and_hms(0, 0, 0),
+                                Utc,
+                            )
+                            .with_timezone(&chrono::Local)
+                            .to_rfc3339_opts(SecondsFormat::Secs, true),
+                        );
+                    }
+                    "calories_burned" => {
+                        let v = cursor.get_integer(i);
+                        if v != 0 {
+                            resource.set_int64("health:calories_burned", v);
+                        }
+                    }
+                    "distance" => {
+                        let v = cursor.get_integer(i);
+                        if v != 0 {
+                            resource.set_int64("health:distance", v);
+                        }
+                    }
+                    "heart_rate_avg" => {
+                        let v = cursor.get_integer(i);
+                        if v != 0 {
+                            resource.set_int64("health:hearth_rate_avg", v);
+                        }
+                    }
+                    "heart_rate_max" => {
+                        let v = cursor.get_integer(i);
+                        if v != 0 {
+                            resource.set_int64("health:hearth_rate_max", v);
+                        }
+                    }
+                    "heart_rate_min" => {
+                        let v = cursor.get_integer(i);
+                        if v != 0 {
+                            resource.set_int64("health:hearth_rate_min", v);
+                        }
+                    }
+                    "minutes" => {
+                        let v = cursor.get_integer(i);
+                        if v != 0 {
+                            resource.set_int64("health:minutes", v);
+                        }
+                    }
+                    "steps" => {
+                        let v = cursor.get_integer(i);
+                        if v != 0 {
+                            resource.set_int64("health:steps", v);
+                        }
+                    }
+                    _ => unimplemented!(),
+                }
+            }
+
+            connection
+                .update_async_future(
+                    resource
+                        .print_sparql_update(Some(&manager), None)
+                        .unwrap()
+                        .as_str(),
+                )
+                .await?;
+        }
+
+        connection
+            .update_async_future(
+                "DELETE WHERE { ?datapoint a health:Activity; health:activity_date ?date };",
+            )
+            .await?;
+
+        self.emit("activities-updated", &[]).unwrap();
+        Ok(())
+    }
+
+    pub async fn migrate_weight_date_datetime(&self) -> Result<(), glib::Error> {
+        let self_ = self.get_priv();
+        let (connection, manager) = {
+            let inner_ref = self_.inner.borrow();
+            let inner = inner_ref.as_ref().unwrap();
+            (inner.connection.clone(), inner.manager.clone())
+        };
+
+        let cursor =
+        connection.query_async_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . } ORDER BY ?date").await?;
+
+        while let Ok(true) = cursor.next_async_future().await {
+            let resource = tracker::Resource::new(None);
+            resource.set_uri("rdf:type", "health:WeightMeasurement");
+            resource.set_string(
+                "health:weight_datetime",
+                &DateTime::<Utc>::from_utc(
+                    NaiveDate::parse_from_str(cursor.get_string(0).0.unwrap().as_str(), "%Y-%m-%d")
+                        .unwrap()
+                        .and_hms(0, 0, 0),
+                    Utc,
+                )
+                .with_timezone(&chrono::Local)
+                .to_rfc3339_opts(SecondsFormat::Secs, true),
+            );
+            resource.set_double("health:weight", cursor.get_double(1));
+
+            connection
+                .update_async_future(
+                    resource
+                        .print_sparql_update(Some(&manager), None)
+                        .unwrap()
+                        .as_str(),
+                )
+                .await?;
+        }
+
+        connection
+            .update_async_future(
+                "DELETE WHERE { ?datapoint a health:WeightMeasurement; health:weight_date ?date };",
+            )
+            .await?;
+
+        self.emit("weights-updated", &[]).unwrap();
+        Ok(())
+    }
+
+    pub fn new() -> Result<Self, glib::Error> {
+        let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
+
+        o.connect(None, None)?;
+
+        Ok(o)
+    }
+
+    #[cfg(test)]
+    pub fn new_with_store_path(store_path: PathBuf) -> Result<Self, glib::Error> {
+        let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
+
+        let mut path = PathBuf::new();
+        path.push(env!("CARGO_MANIFEST_DIR"));
+        path.push("data/tracker");
+
+        o.connect(Some(path), Some(store_path))?;
+
+        Ok(o)
+    }
+
+    pub async fn reset(&self) -> Result<(), glib::Error> {
+        let self_ = self.get_priv();
+        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+        connection
+            .update_async_future("DELETE WHERE { ?datapoint a health:WeightMeasurement }")
+            .await?;
+        connection
+            .update_async_future("DELETE WHERE { ?datapoint a health:Activity }")
+            .await?;
+
+        Ok(())
     }
 
     pub async fn save_activity(&self, activity: Activity) -> Result<(), glib::Error> {
-        imp::Database::from_instance(self)
-            .save_activity(self, activity)
-            .await
+        let self_ = self.get_priv();
+        let resource = tracker::Resource::new(None);
+        resource.set_uri("rdf:type", "health:Activity");
+        resource.set_string(
+            "health:activity_datetime",
+            &activity
+                .get_date()
+                .to_rfc3339_opts(SecondsFormat::Secs, true),
+        );
+        resource.set_int64(
+            "health:activity_id",
+            activity.get_activity_type().to_u32().unwrap().into(),
+        );
+
+        if let Some(c) = activity.get_calories_burned() {
+            resource.set_int64("health:calories_burned", c.into());
+        }
+        if let Some(d) = activity.get_distance() {
+            resource.set_int64(
+                "health:distance",
+                d.get::<uom::si::length::kilometer>() as i64,
+            );
+        }
+        if let Some(avg) = activity.get_heart_rate_avg() {
+            resource.set_int64("health:hearth_rate_avg", avg.into());
+        }
+        if let Some(max) = activity.get_heart_rate_max() {
+            resource.set_int64("health:hearth_rate_max", max.into());
+        }
+        if let Some(min) = activity.get_heart_rate_min() {
+            resource.set_int64("health:hearth_rate_min", min.into());
+        }
+        if activity.get_duration().num_minutes() != 0 {
+            resource.set_int64("health:minutes", activity.get_duration().num_minutes());
+        }
+        if let Some(s) = activity.get_steps() {
+            resource.set_int64("health:steps", s.into());
+        }
+
+        let (connection, manager) = {
+            let inner_ref = self_.inner.borrow();
+            let inner = inner_ref.as_ref().unwrap();
+            (inner.connection.clone(), inner.manager.clone())
+        };
+
+        connection
+            .update_async_future(
+                resource
+                    .print_sparql_update(Some(&manager), None)
+                    .unwrap()
+                    .as_str(),
+            )
+            .await?;
+
+        self.emit("activities-updated", &[]).unwrap();
+        Ok(())
     }
 
     pub async fn save_weight(&self, weight: Weight) -> Result<(), glib::Error> {
+        let self_ = self.get_priv();
+        let resource = tracker::Resource::new(None);
+        resource.set_uri("rdf:type", "health:WeightMeasurement");
+        resource.set_string(
+            "health:weight_datetime",
+            &weight.date.to_rfc3339_opts(SecondsFormat::Secs, true),
+        );
+        resource.set_double(
+            "health:weight",
+            weight.weight.get::<uom::si::mass::kilogram>().into(),
+        );
+
+        let (connection, manager) = {
+            let inner_ref = self_.inner.borrow();
+            let inner = inner_ref.as_ref().unwrap();
+            (inner.connection.clone(), inner.manager.clone())
+        };
+
+        connection
+            .update_async_future(
+                resource
+                    .print_sparql_update(Some(&manager), None)
+                    .unwrap()
+                    .as_str(),
+            )
+            .await?;
+
+        self.emit("weights-updated", &[]).unwrap();
+        Ok(())
+    }
+
+    fn connect(
+        &self,
+        ontology_path: Option<PathBuf>,
+        store_path: Option<PathBuf>,
+    ) -> Result<(), glib::Error> {
+        let mut store_path = store_path.unwrap_or_else(glib::get_user_data_dir);
+        store_path.push("health");
+
+        let mut ontology_path =
+            ontology_path.unwrap_or_else(|| Path::new(crate::config::PKGDATADIR).to_path_buf());
+        ontology_path.push("ontology");
+
+        let manager = tracker::NamespaceManager::new();
+        manager.add_prefix("health", "https://gitlab.gnome.org/World/health#");
+
+        self.get_priv().inner.replace(Some(imp::DatabaseMut {
+            connection: tracker::SparqlConnection::new(
+                tracker::SparqlConnectionFlags::NONE,
+                Some(&gio::File::new_for_path(store_path)),
+                Some(&gio::File::new_for_path(ontology_path)),
+                None::<&gio::Cancellable>,
+            )?,
+            manager,
+        }));
+
+        Ok(())
+    }
+
+    fn get_priv(&self) -> &imp::Database {
         imp::Database::from_instance(self)
-            .save_weight(self, weight)
-            .await
     }
 }
 

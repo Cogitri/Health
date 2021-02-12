@@ -185,16 +185,20 @@ glib::wrapper! {
 }
 
 impl View {
-    pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create View")
-    }
-
     pub fn get_goal_label(&self) -> gtk::Label {
-        imp::View::from_instance(self).goal_label.get()
+        self.get_priv().goal_label.get()
     }
 
     pub fn get_stack(&self) -> gtk::Stack {
-        imp::View::from_instance(self).stack.get()
+        self.get_priv().stack.get()
+    }
+
+    fn get_priv(&self) -> &imp::View {
+        imp::View::from_instance(self)
+    }
+
+    pub fn new() -> Self {
+        glib::Object::new(&[]).expect("Failed to create View")
     }
 
     properties_setter_getter!("empty-title", String);

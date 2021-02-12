@@ -16,9 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gio::prelude::*;
+use crate::core::settings::Unitsystem;
 use glib::subclass::types::ObjectSubclass;
-use uom::si::f32::Length;
+use gtk::prelude::*;
+use uom::si::{
+    f32::Length,
+    length::{kilometer, meter, mile, yard},
+};
 
 mod imp {
     use crate::core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Settings};
@@ -149,34 +153,6 @@ mod imp {
     impl WidgetImpl for DistanceActionRow {}
     impl ListBoxRowImpl for DistanceActionRow {}
     impl ActionRowImpl for DistanceActionRow {}
-
-    impl DistanceActionRow {
-        pub fn get_value(&self) -> Length {
-            *self.value.borrow()
-        }
-
-        pub fn set_value(&self, value: Length) {
-            // FIXME: Disallow both buttons being inactive
-
-            if self.settings.get_unitsystem() == Unitsystem::Metric {
-                if self.small_unit_togglebutton.get_active() {
-                    self.distance_spin_button
-                        .set_value(value.get::<meter>().into())
-                } else if self.big_unit_togglebutton.get_active() {
-                    self.distance_spin_button
-                        .set_value(value.get::<kilometer>().into())
-                }
-            } else if self.small_unit_togglebutton.get_active() {
-                self.distance_spin_button
-                    .set_value(value.get::<yard>().into())
-            } else if self.big_unit_togglebutton.get_active() {
-                self.distance_spin_button
-                    .set_value(value.get::<mile>().into())
-            }
-
-            self.value.replace(value);
-        }
-    }
 }
 
 glib::wrapper! {
@@ -185,18 +161,6 @@ glib::wrapper! {
 }
 
 impl DistanceActionRow {
-    pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create DistanceActionRow")
-    }
-
-    pub fn get_value(&self) -> Length {
-        imp::DistanceActionRow::from_instance(self).get_value()
-    }
-
-    pub fn set_value(&self, value: Length) {
-        imp::DistanceActionRow::from_instance(self).set_value(value)
-    }
-
     pub fn connect_changed<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
         self.connect_local("changed", false, move |_| {
             callback();
@@ -211,5 +175,44 @@ impl DistanceActionRow {
             None
         })
         .unwrap()
+    }
+
+    pub fn get_value(&self) -> Length {
+        *self.get_priv().value.borrow()
+    }
+
+    pub fn new() -> Self {
+        glib::Object::new(&[]).expect("Failed to create DistanceActionRow")
+    }
+
+    pub fn set_value(&self, value: Length) {
+        // FIXME: Disallow both buttons being inactive
+        let self_ = self.get_priv();
+
+        if self_.settings.get_unitsystem() == Unitsystem::Metric {
+            if self_.small_unit_togglebutton.get_active() {
+                self_
+                    .distance_spin_button
+                    .set_value(value.get::<meter>().into())
+            } else if self_.big_unit_togglebutton.get_active() {
+                self_
+                    .distance_spin_button
+                    .set_value(value.get::<kilometer>().into())
+            }
+        } else if self_.small_unit_togglebutton.get_active() {
+            self_
+                .distance_spin_button
+                .set_value(value.get::<yard>().into())
+        } else if self_.big_unit_togglebutton.get_active() {
+            self_
+                .distance_spin_button
+                .set_value(value.get::<mile>().into())
+        }
+
+        self_.value.replace(value);
+    }
+
+    fn get_priv(&self) -> &imp::DistanceActionRow {
+        imp::DistanceActionRow::from_instance(self)
     }
 }

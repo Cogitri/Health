@@ -31,7 +31,7 @@ mod imp {
 
     #[derive(Debug)]
     pub struct ActivityTypeRowData {
-        inner: RefCell<Option<ActivityTypeRowDataMut>>,
+        pub inner: RefCell<Option<ActivityTypeRowDataMut>>,
     }
 
     impl ObjectSubclass for ActivityTypeRowData {
@@ -52,20 +52,6 @@ mod imp {
     }
 
     impl ObjectImpl for ActivityTypeRowData {}
-
-    impl ActivityTypeRowData {
-        pub fn set_inner(&self, inner: Option<ActivityTypeRowDataMut>) {
-            self.inner.replace(inner);
-        }
-
-        pub fn get_id(&self) -> &'static str {
-            self.inner.borrow().as_ref().unwrap().id
-        }
-
-        pub fn get_label(&self) -> String {
-            self.inner.borrow().as_ref().unwrap().label.clone()
-        }
-    }
 }
 
 glib::wrapper! {
@@ -74,21 +60,33 @@ glib::wrapper! {
 
 impl ActivityTypeRowData {
     pub fn new(id: &'static str, label: &str) -> Self {
-        let s = glib::Object::new(&[]).expect("Failed to create ActivityTypeRowData");
+        let o: Self = glib::Object::new(&[]).expect("Failed to create ActivityTypeRowData");
 
-        imp::ActivityTypeRowData::from_instance(&s).set_inner(Some(imp::ActivityTypeRowDataMut {
-            id,
-            label: label.to_string(),
-        }));
+        o.get_priv()
+            .inner
+            .replace(Some(imp::ActivityTypeRowDataMut {
+                id,
+                label: label.to_string(),
+            }));
 
-        s
+        o
     }
 
     pub fn get_id(&self) -> &'static str {
-        imp::ActivityTypeRowData::from_instance(self).get_id()
+        self.get_priv().inner.borrow().as_ref().unwrap().id
     }
 
     pub fn get_label(&self) -> String {
-        imp::ActivityTypeRowData::from_instance(self).get_label()
+        self.get_priv()
+            .inner
+            .borrow()
+            .as_ref()
+            .unwrap()
+            .label
+            .clone()
+    }
+
+    fn get_priv(&self) -> &imp::ActivityTypeRowData {
+        imp::ActivityTypeRowData::from_instance(self)
     }
 }

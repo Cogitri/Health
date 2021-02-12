@@ -16,11 +16,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::settings::Unitsystem, imp_getter_setter};
+use crate::core::settings::Unitsystem;
 use glib::subclass::types::ObjectSubclass;
-use uom::si::f32::{Length, Mass};
+use uom::si::{
+    f32::{Length, Mass},
+    length::centimeter,
+    mass::kilogram,
+};
+
+static LEVEL_BAR_MIN: f32 = 13.5;
+static LEVEL_BAR_MAX: f32 = 30.0;
 
 mod imp {
+    use super::{LEVEL_BAR_MAX, LEVEL_BAR_MIN};
     use crate::core::{settings::Unitsystem, Settings};
     use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
@@ -31,14 +39,11 @@ mod imp {
         mass::kilogram,
     };
 
-    static LEVEL_BAR_MIN: f32 = 13.5;
-    static LEVEL_BAR_MAX: f32 = 30.0;
-
     #[derive(Debug)]
     pub struct BMILevelBarMut {
-        height: Length,
-        weight: Mass,
-        unitsystem: Unitsystem,
+        pub height: Length,
+        pub weight: Mass,
+        pub unitsystem: Unitsystem,
     }
 
     #[derive(Debug, CompositeTemplate)]
@@ -131,56 +136,6 @@ mod imp {
         }
     }
     impl WidgetImpl for BMILevelBar {}
-
-    impl BMILevelBar {
-        pub fn get_height(&self) -> Length {
-            self.inner.borrow().height
-        }
-
-        pub fn get_weight(&self) -> Mass {
-            self.inner.borrow().weight
-        }
-
-        pub fn get_unitsystem(&self) -> Unitsystem {
-            self.inner.borrow().unitsystem
-        }
-
-        pub fn set_height(&self, value: Length) {
-            self.inner.borrow_mut().height = value;
-            self.recalcualte_bmi();
-        }
-
-        pub fn set_weight(&self, value: Mass) {
-            self.inner.borrow_mut().weight = value;
-            self.recalcualte_bmi();
-        }
-
-        pub fn set_unitsystem(&self, value: Unitsystem) {
-            self.inner.borrow_mut().unitsystem = value;
-            self.recalcualte_bmi();
-        }
-
-        fn recalcualte_bmi(&self) {
-            let height = self.inner.borrow().height.get::<centimeter>() as f32 / 100.0;
-            let weight = self.inner.borrow().weight.get::<kilogram>();
-            if height != 0.0 && weight != 0.0 {
-                let current_bmi = weight / (height * height);
-                let fraction = (current_bmi - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN);
-                if fraction < 0.0 {
-                    self.level_bar.set_value(0.0);
-                } else if fraction > 1.0 {
-                    self.level_bar.set_value(1.0);
-                } else {
-                    self.level_bar.set_value(fraction.into());
-                }
-
-                self.bmi_label.set_markup(&crate::core::i18n_f(
-                    "<small>Current BMI: {}</small>",
-                    &[&format!("{bmi:.2}", bmi = current_bmi)],
-                ));
-            }
-        }
-    }
 }
 
 glib::wrapper! {
@@ -189,15 +144,64 @@ glib::wrapper! {
 }
 
 impl BMILevelBar {
+    pub fn get_height(&self) -> Length {
+        self.get_priv().inner.borrow().height
+    }
+
+    pub fn get_weight(&self) -> Mass {
+        self.get_priv().inner.borrow().weight
+    }
+
+    pub fn get_unitsystem(&self) -> Unitsystem {
+        self.get_priv().inner.borrow().unitsystem
+    }
+
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create BMILevelBar")
+    }
+
+    pub fn set_height(&self, value: Length) {
+        let self_ = self.get_priv();
+        self_.inner.borrow_mut().height = value;
+        self.recalcualte_bmi();
+    }
+
+    pub fn set_weight(&self, value: Mass) {
+        let self_ = self.get_priv();
+        self_.inner.borrow_mut().weight = value;
+        self.recalcualte_bmi();
+    }
+
+    pub fn set_unitsystem(&self, value: Unitsystem) {
+        let self_ = self.get_priv();
+        self_.inner.borrow_mut().unitsystem = value;
+        self.recalcualte_bmi();
     }
 
     fn get_priv(&self) -> &imp::BMILevelBar {
         imp::BMILevelBar::from_instance(self)
     }
 
-    imp_getter_setter!(height, Length);
-    imp_getter_setter!(unitsystem, Unitsystem);
-    imp_getter_setter!(weight, Mass);
+    fn recalcualte_bmi(&self) {
+        let self_ = self.get_priv();
+
+        let height = self_.inner.borrow().height.get::<centimeter>() as f32 / 100.0;
+        let weight = self_.inner.borrow().weight.get::<kilogram>();
+        if height != 0.0 && weight != 0.0 {
+            let current_bmi = weight / (height * height);
+            let fraction = (current_bmi - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN);
+            if fraction < 0.0 {
+                self_.level_bar.set_value(0.0);
+            } else if fraction > 1.0 {
+                self_.level_bar.set_value(1.0);
+            } else {
+                self_.level_bar.set_value(fraction.into());
+            }
+
+            self_.bmi_label.set_markup(&crate::core::i18n_f(
+                "<small>Current BMI: {}</small>",
+                &[&format!("{bmi:.2}", bmi = current_bmi)],
+            ));
+        }
+    }
 }

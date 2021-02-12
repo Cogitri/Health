@@ -16,33 +16,38 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::Database, model::GraphModelWeight, views::View};
-use glib::subclass::types::ObjectSubclass;
+use crate::{
+    core::{i18n, i18n_f, settings::Unitsystem, utils::round_decimal_places, Database},
+    model::GraphModelWeight,
+    views::{GraphView, View},
+};
+use chrono::Duration;
+use glib::{subclass::types::ObjectSubclass, Cast};
+use std::cell::RefCell;
+use uom::si::{
+    length::meter,
+    mass::{kilogram, pound},
+};
 
 mod imp {
     use crate::{
-        core::{i18n, i18n_f, settings::Unitsystem, utils::round_decimal_places, Settings},
+        core::Settings,
         model::GraphModelWeight,
         views::{GraphView, View},
     };
-    use chrono::Duration;
     use glib::{subclass, Cast};
     use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
-    use uom::si::{
-        length::meter,
-        mass::{kilogram, pound},
-    };
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_view.ui")]
     pub struct ViewWeight {
         #[template_child]
-        scrolled_window: TemplateChild<gtk::ScrolledWindow>,
-        settings: Settings,
-        weight_graph_view: OnceCell<GraphView>,
-        weight_graph_model: OnceCell<RefCell<GraphModelWeight>>,
+        pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
+        pub settings: Settings,
+        pub weight_graph_view: OnceCell<GraphView>,
+        pub weight_graph_model: OnceCell<RefCell<GraphModelWeight>>,
     }
 
     impl ObjectSubclass for ViewWeight {
@@ -83,147 +88,6 @@ mod imp {
             self.parent_constructed(obj);
         }
     }
-
-    impl ViewWeight {
-        pub fn set_weight_graph_model(&self, graph_model: GraphModelWeight) {
-            self.weight_graph_model
-                .set(RefCell::new(graph_model))
-                .unwrap();
-        }
-
-        fn update_weightgoal_label(
-            &self,
-            obj: &crate::views::ViewWeight,
-            model: &GraphModelWeight,
-        ) {
-            let weightgoal = self.settings.get_user_weightgoal();
-            let unitsystem = self.settings.get_unitsystem();
-            let (weight_value, translation) = if unitsystem == Unitsystem::Imperial {
-                (weightgoal.get::<pound>(), i18n("pounds"))
-            } else {
-                (weightgoal.get::<kilogram>(), i18n("kilogram"))
-            };
-            let goal_label = obj.upcast_ref::<View>().get_goal_label();
-
-            if weight_value > 0.1 && model.is_empty() {
-                /* TRANSLATORS: the second {} format strings is the weight unit, e.g. kilogram */
-                goal_label.set_text (&i18n_f("Your weight goal is {} {}. Add a first weight measurement to see how close you are to reaching it.",&[&weight_value.to_string(), &translation]));
-            } else if weight_value > 0.1 && !model.is_empty() {
-                if model.get_last_weight().unwrap() == weightgoal {
-                    goal_label.set_text(&i18n("You've reached your weightgoal. Great job!"));
-                }
-
-                let unit_diff = model.get_last_weight().unwrap() - weightgoal;
-                let mut diff = if unitsystem == Unitsystem::Imperial {
-                    unit_diff.get::<pound>()
-                } else {
-                    unit_diff.get::<kilogram>()
-                };
-
-                if diff < 0.0 {
-                    diff *= -1.0;
-                }
-
-                /* TRANSLATORS: the second & fourth {} format strings is the weight unit, e.g. kilogram */
-                goal_label.set_text(&i18n_f(
-                    "{} {} left to reach your weightgoal of {} {}",
-                    &[
-                        &format!("{diff:.1}", diff = round_decimal_places(diff, 1)),
-                        &translation,
-                        &format!("{weight_value:.1}", weight_value = weight_value),
-                        &translation,
-                    ],
-                ));
-            } else {
-                goal_label.set_text(&i18n(
-                    "No weightgoal set yet. You can set it in Health's preferences.",
-                ));
-            }
-        }
-
-        fn get_bmi(&self, model: &GraphModelWeight) -> String {
-            if let Some(last_weight) = model.get_last_weight() {
-                let height = self.settings.get_user_height().get::<meter>() as f32;
-                let bmi = round_decimal_places(
-                    last_weight.get::<kilogram>() as f32 / (height * height),
-                    1,
-                );
-                format!("{bmi:.1}", bmi = bmi)
-            } else {
-                i18n("Unknown BMI")
-            }
-        }
-
-        pub async fn update(&self, obj: &super::ViewWeight) {
-            let mut weight_graph_model =
-                { self.weight_graph_model.get().unwrap().borrow().clone() };
-            if let Err(e) = weight_graph_model.reload(Duration::days(30)).await {
-                glib::g_warning!(
-                    crate::config::LOG_DOMAIN,
-                    "Failed to reload weight data: {}",
-                    e
-                );
-            }
-
-            let view = obj.upcast_ref::<View>();
-            view.set_title(i18n_f(
-                "Current BMI: {}",
-                &[&self.get_bmi(&weight_graph_model)],
-            ));
-            self.update_weightgoal_label(obj, &weight_graph_model);
-
-            if let Some(view) = self.weight_graph_view.get() {
-                view.set_points(weight_graph_model.to_points());
-            } else if !weight_graph_model.is_empty() {
-                let weight_graph_view = GraphView::new();
-                weight_graph_view.set_points(weight_graph_model.to_points());
-                weight_graph_view.set_x_lines_interval(10.0);
-                let settings = self.settings.clone();
-                weight_graph_view.set_hover_func(Some(Box::new(move |p| {
-                    let unit = if settings.get_unitsystem() == Unitsystem::Imperial {
-                        "PB"
-                    } else {
-                        "KG"
-                    };
-
-                    return i18n_f(
-                        "{} {} on {}",
-                        &[
-                            &p.value.to_string(),
-                            unit,
-                            &format!("{}", p.date.format("%x")),
-                        ],
-                    );
-                })));
-                let unitgoal = self.settings.get_user_weightgoal();
-                let weightgoal = if self.settings.get_unitsystem() == Unitsystem::Imperial {
-                    unitgoal.get::<pound>()
-                } else {
-                    unitgoal.get::<kilogram>()
-                };
-                weight_graph_view.set_limit(Some(weightgoal));
-                weight_graph_view.set_limit_label(Some(i18n("Weightgoal")));
-
-                self.scrolled_window.set_child(Some(&weight_graph_view));
-                view.get_stack().set_visible_child_name("data_page");
-
-                self.weight_graph_view.set(weight_graph_view).unwrap();
-
-                self.settings.connect_user_weightgoal_changed(
-                    glib::clone!(@weak obj => move |_,_| {
-                        glib::MainContext::default().spawn_local(async move {
-                            ViewWeight::from_instance(&obj).update(&obj).await
-                        })
-                    }),
-                );
-            }
-
-            self.weight_graph_model
-                .get()
-                .unwrap()
-                .replace(weight_graph_model);
-        }
-    }
 }
 
 glib::wrapper! {
@@ -233,10 +97,7 @@ glib::wrapper! {
 
 impl ViewWeight {
     pub fn new(database: Database) -> Self {
-        let o = glib::Object::new(&[]).expect("Failed to create ViewWeight");
-
-        imp::ViewWeight::from_instance(&o)
-            .set_weight_graph_model(GraphModelWeight::new(database.clone()));
+        let o: Self = glib::Object::new(&[]).expect("Failed to create ViewWeight");
 
         database.connect_weights_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
@@ -244,10 +105,144 @@ impl ViewWeight {
             });
         }));
 
+        o.get_priv()
+            .weight_graph_model
+            .set(RefCell::new(GraphModelWeight::new(database)))
+            .unwrap();
+
         o
     }
 
     pub async fn update(&self) {
-        imp::ViewWeight::from_instance(self).update(self).await;
+        let self_ = self.get_priv();
+        let mut weight_graph_model = { self_.weight_graph_model.get().unwrap().borrow().clone() };
+        if let Err(e) = weight_graph_model.reload(Duration::days(30)).await {
+            glib::g_warning!(
+                crate::config::LOG_DOMAIN,
+                "Failed to reload weight data: {}",
+                e
+            );
+        }
+
+        let view = self.upcast_ref::<View>();
+        view.set_title(i18n_f(
+            "Current BMI: {}",
+            &[&self.get_bmi(&weight_graph_model)],
+        ));
+        self.update_weightgoal_label(&weight_graph_model);
+
+        if let Some(view) = self_.weight_graph_view.get() {
+            view.set_points(weight_graph_model.to_points());
+        } else if !weight_graph_model.is_empty() {
+            let weight_graph_view = GraphView::new();
+            weight_graph_view.set_points(weight_graph_model.to_points());
+            weight_graph_view.set_x_lines_interval(10.0);
+            let settings = self_.settings.clone();
+            weight_graph_view.set_hover_func(Some(Box::new(move |p| {
+                let unit = if settings.get_unitsystem() == Unitsystem::Imperial {
+                    "PB"
+                } else {
+                    "KG"
+                };
+
+                return i18n_f(
+                    "{} {} on {}",
+                    &[
+                        &p.value.to_string(),
+                        unit,
+                        &format!("{}", p.date.format("%x")),
+                    ],
+                );
+            })));
+            let unitgoal = self_.settings.get_user_weightgoal();
+            let weightgoal = if self_.settings.get_unitsystem() == Unitsystem::Imperial {
+                unitgoal.get::<pound>()
+            } else {
+                unitgoal.get::<kilogram>()
+            };
+            weight_graph_view.set_limit(Some(weightgoal));
+            weight_graph_view.set_limit_label(Some(i18n("Weightgoal")));
+
+            self_.scrolled_window.set_child(Some(&weight_graph_view));
+            view.get_stack().set_visible_child_name("data_page");
+
+            self_.weight_graph_view.set(weight_graph_view).unwrap();
+
+            self_.settings.connect_user_weightgoal_changed(
+                glib::clone!(@weak self as obj => move |_,_| {
+                    glib::MainContext::default().spawn_local(async move {
+                        obj.update().await
+                    })
+                }),
+            );
+        }
+
+        self_
+            .weight_graph_model
+            .get()
+            .unwrap()
+            .replace(weight_graph_model);
+    }
+
+    fn get_bmi(&self, model: &GraphModelWeight) -> String {
+        if let Some(last_weight) = model.get_last_weight() {
+            let height = self.get_priv().settings.get_user_height().get::<meter>() as f32;
+            let bmi =
+                round_decimal_places(last_weight.get::<kilogram>() as f32 / (height * height), 1);
+            format!("{bmi:.1}", bmi = bmi)
+        } else {
+            i18n("Unknown BMI")
+        }
+    }
+
+    fn get_priv(&self) -> &imp::ViewWeight {
+        imp::ViewWeight::from_instance(self)
+    }
+
+    fn update_weightgoal_label(&self, model: &GraphModelWeight) {
+        let self_ = self.get_priv();
+        let weightgoal = self_.settings.get_user_weightgoal();
+        let unitsystem = self_.settings.get_unitsystem();
+        let (weight_value, translation) = if unitsystem == Unitsystem::Imperial {
+            (weightgoal.get::<pound>(), i18n("pounds"))
+        } else {
+            (weightgoal.get::<kilogram>(), i18n("kilogram"))
+        };
+        let goal_label = self.upcast_ref::<View>().get_goal_label();
+
+        if weight_value > 0.1 && model.is_empty() {
+            /* TRANSLATORS: the second {} format strings is the weight unit, e.g. kilogram */
+            goal_label.set_text (&i18n_f("Your weight goal is {} {}. Add a first weight measurement to see how close you are to reaching it.",&[&weight_value.to_string(), &translation]));
+        } else if weight_value > 0.1 && !model.is_empty() {
+            if model.get_last_weight().unwrap() == weightgoal {
+                goal_label.set_text(&i18n("You've reached your weightgoal. Great job!"));
+            }
+
+            let unit_diff = model.get_last_weight().unwrap() - weightgoal;
+            let mut diff = if unitsystem == Unitsystem::Imperial {
+                unit_diff.get::<pound>()
+            } else {
+                unit_diff.get::<kilogram>()
+            };
+
+            if diff < 0.0 {
+                diff *= -1.0;
+            }
+
+            /* TRANSLATORS: the second & fourth {} format strings is the weight unit, e.g. kilogram */
+            goal_label.set_text(&i18n_f(
+                "{} {} left to reach your weightgoal of {} {}",
+                &[
+                    &format!("{diff:.1}", diff = round_decimal_places(diff, 1)),
+                    &translation,
+                    &format!("{weight_value:.1}", weight_value = weight_value),
+                    &translation,
+                ],
+            ));
+        } else {
+            goal_label.set_text(&i18n(
+                "No weightgoal set yet. You can set it in Health's preferences.",
+            ));
+        }
     }
 }
