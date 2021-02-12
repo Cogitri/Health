@@ -110,12 +110,17 @@ mod imp {
                 inner.scale_y = inner.height / 10000.0;
                 0.1
             } else {
-                //Round up to 500, the graph looks a bit odd if we draw lines at biggest_value / 4 instead of
+                // Round up to 500, the graph looks a bit odd if we draw lines at biggest_value / 4 instead of
                 // using even numbers
                 let biggest_value = inner.biggest_value + inner.x_lines_interval
                     - inner.biggest_value % inner.x_lines_interval;
 
-                inner.scale_x = inner.width / (inner.points.len() - 1) as f32;
+                // If we have more than one points, we don't want an empty point at the end of the graph
+                inner.scale_x = if inner.points.len() > 1 {
+                    inner.width / (inner.points.len() - 1) as f32
+                } else {
+                    inner.width as f32
+                };
                 inner.scale_y = inner.height / biggest_value;
 
                 biggest_value
