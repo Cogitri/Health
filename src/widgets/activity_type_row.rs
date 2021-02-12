@@ -68,6 +68,8 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// An implementation of `gtk::ListBoxRow` that is used in a `ActivityTypeSelector` and displays
+    /// information about a single `ActivityType`.
     pub struct ActivityTypeRow(ObjectSubclass<imp::ActivityTypeRow>)
         @extends gtk::Widget, gtk::ListBoxRow;
 }

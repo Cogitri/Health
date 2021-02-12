@@ -22,16 +22,23 @@ use crate::{
 };
 use std::convert::TryFrom;
 
+/// A struct containing informations about a certain activity type.
 #[derive(Debug, Clone)]
 pub struct ActivityInfo {
     pub activity_type: ActivityType,
     pub available_data_points: ActivityDataPoints,
     pub average_calories_burned_per_minute: u32,
+    /// An ID that can be used for saving things to the DB.
     pub id: &'static str,
+    /// The localised name of the `ActivityType`.
     pub name: String,
 }
 
 impl From<ActivityType> for ActivityInfo {
+    /// Converts an `ActivityType` into an `ActivityInfo` that contains infos like a localised name.
+    ///
+    /// # Returns
+    /// The respective `ActivityInfo`
     fn from(activity_type: ActivityType) -> Self {
         match activity_type {
             ActivityType::Basketball => ActivityInfo::new(
@@ -232,6 +239,7 @@ impl From<ActivityType> for ActivityInfo {
 impl TryFrom<&str> for ActivityInfo {
     type Error = String;
 
+    /// Try converting from an `ActivityInfo` ID to an `ActivitityInfo`.s
     fn try_from(val: &str) -> Result<Self, Self::Error> {
         match ActivityType::try_from(val) {
             Ok(t) => Ok(ActivityInfo::from(t)),

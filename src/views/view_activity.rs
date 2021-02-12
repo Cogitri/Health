@@ -76,6 +76,7 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// An implementation of `View` visualizes activities the user recently did.
     pub struct ViewActivity(ObjectSubclass<imp::ViewActivity>)
         @extends View;
 }
@@ -101,6 +102,7 @@ impl ViewActivity {
         o
     }
 
+    /// Reload the `ActivityModel`'s data and refresh the list of activities
     pub async fn update(&self) {
         let activity_model = self.get_priv().activity_model.get().unwrap();
 

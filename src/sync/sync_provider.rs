@@ -51,23 +51,40 @@ impl From<ureq::Error> for SyncProviderError {
     }
 }
 
+/// `SyncProvider` is a trait that should be implemented by all 3rd party providers.
 pub trait SyncProvider {
+    /// Returns the URL to the API Endpoint
     fn get_api_url(&self) -> &'static str;
 
+    /// Returns the name of the provider (which is used for storing it in the keyring).
     fn get_provider_name(&self) -> &'static str;
 
+    /// Gets the OAuth2 token or reauthenticates with the refresh token if no token has been set yet.
     fn get_oauth2_token(
         &mut self,
     ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>, SyncProviderError>;
 
+    /// Perform the initial authentication. This should open the user's browser so they can
+    /// authenticate with their provider.
     fn initial_authenticate(&mut self) -> Result<(), SyncProviderError>;
 
+    /// Start the initial import. This should import all data from the sync provider to
+    /// the Tracker DB.
     fn initial_import(&mut self) -> Result<(), SyncProviderError>;
 
+    /// Exchange the refresh token we already stored for an access token.
     fn reauthenticate(&mut self) -> Result<(), SyncProviderError>;
 
+    /// This should sync data that has been added since the last sync.
     fn sync_data(&mut self) -> Result<(), SyncProviderError>;
 
+    /// Make a `GET` request against the specified `method`.
+    ///
+    /// # Arguments
+    /// * `method` - The API method to query
+    ///
+    /// # Returns
+    /// The deserialized JSON response
     fn get<T: serde::de::DeserializeOwned>(
         &mut self,
         method: &str,
@@ -84,6 +101,13 @@ pub trait SyncProvider {
             .into_json()?)
     }
 
+    /// Make a `POST` request against the specified `method`.
+    ///
+    /// # Arguments
+    /// * `method` - The API method to query
+    ///
+    /// # Returns
+    /// The deserialized JSON response
     fn post<T: serde::de::DeserializeOwned>(
         &mut self,
         method: &str,
@@ -101,6 +125,7 @@ pub trait SyncProvider {
             .into_json()?)
     }
 
+    /// Exchange a refresh token for an access token.
     fn exchange_refresh_token(
         &self,
         client: &Client<
@@ -124,6 +149,11 @@ pub trait SyncProvider {
         }
     }
 
+    /// Retrieve the `RefreshToken` from the secret store.
+    ///
+    /// # Returns
+    /// A `RefreshToken` if a refresh token is set, or `None` if no refresh token is set.
+    /// May return an error if querying the secret store fails.
     fn get_token(&self) -> Result<Option<RefreshToken>, SsError> {
         let ss = SecretService::new(EncryptionType::Dh)?;
         let collection = get_default_collection_unlocked(&ss)?;
@@ -143,6 +173,13 @@ pub trait SyncProvider {
         }
     }
 
+    /// Set the `RefreshToken` in the secret store.
+    ///
+    /// # Arguments
+    /// * `value` - The `RefreshToken` that should be stored.
+    ///
+    /// # Returns
+    /// May return an error if querying the secret store fails.
     fn set_token(&self, value: RefreshToken) -> Result<(), SsError> {
         let ss = SecretService::new(EncryptionType::Dh)?;
         let collection = get_default_collection_unlocked(&ss)?;
@@ -168,6 +205,16 @@ pub trait SyncProvider {
         Ok(())
     }
 
+    /// Starts a server which listens for the user to finish authenticating with their OAuth2 provider
+    /// and captures the OAuth2 `code` once the user is redirect to the server.
+    ///
+    /// # Arguments
+    /// * `authorize_url` - The URL which should be opened in the user's browser so they can authenticate.
+    ///
+    /// # Returns
+    /// The `AuthorizationCode` and `CrfsToken` that were returned by the sync provider, or an error if
+    /// reading the response fails. Please keep in mind that the returned `CrfsToken` should always be compared
+    /// to what you sent to the provider to make sure the request went through fine.
     fn start_listen_server(
         authorize_url: &str,
     ) -> Result<(AuthorizationCode, CsrfToken), SyncProviderError> {

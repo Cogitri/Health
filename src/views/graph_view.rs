@@ -21,6 +21,7 @@ use gio::subclass::prelude::*;
 use gtk::prelude::*;
 use std::convert::TryInto;
 
+/// A Point describes a single datapoint in a `GraphView`
 #[derive(Debug, Clone)]
 pub struct Point {
     pub date: Date<FixedOffset>,
@@ -417,6 +418,7 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// A View for visualizing the development of data over time.
     pub struct GraphView(ObjectSubclass<imp::GraphView>)
         @extends gtk::Widget;
 }
@@ -426,11 +428,16 @@ impl GraphView {
         glib::Object::new(&[]).expect("Failed to create GraphView")
     }
 
+    /// Set the function that should be called when the user hovers over a point.
+    ///
+    /// # Arguments
+    /// * `hover_func` - A function that takes a `Point` and renders it to a string that is displayed as tooltip on the graph.
     pub fn set_hover_func(&self, hover_func: Option<Box<dyn Fn(&Point) -> String>>) {
         self.get_priv().inner.borrow_mut().hover_func = hover_func;
         self.queue_draw();
     }
 
+    /// Set the limit (e.g. step goal) that is marked in the graph.
     pub fn set_limit(&self, limit: Option<f32>) {
         let mut inner = self.get_priv().inner.borrow_mut();
         inner.limit = limit;
@@ -442,11 +449,13 @@ impl GraphView {
         self.queue_draw();
     }
 
+    /// Set the label that should be displayed on the limit label.
     pub fn set_limit_label(&self, limit_label: Option<String>) {
         self.get_priv().inner.borrow_mut().limit_label = limit_label;
         self.queue_draw();
     }
 
+    /// Sets the points that should be rendered in the graph view.
     pub fn set_points(&self, points: Vec<Point>) {
         let layout = self.create_pango_layout(Some(&format!("{}", Local::now().format("%x"))));
         let (_, extents) = layout.get_extents();
@@ -474,6 +483,8 @@ impl GraphView {
         self.queue_draw();
     }
 
+    /// Set the interval factor in which the background lines are drawn in the graph. E.g. if you set this to `10`,
+    /// lines will be drawn in `biggest_value` / 4 rounded to the next 10 multiple.
     pub fn set_x_lines_interval(&self, x_lines_interval: f32) {
         self.get_priv().inner.borrow_mut().x_lines_interval = x_lines_interval;
         self.queue_draw();

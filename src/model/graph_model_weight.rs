@@ -55,6 +55,13 @@ impl GraphModelWeight {
         }
     }
 
+    /// Reload the data from the Tracker Database.
+    ///
+    /// # Arguments
+    /// * `duration` - How far in the past the data should reach back.
+    ///
+    /// # Returns
+    /// Returns an error if querying the DB fails.
     pub async fn reload(&mut self, duration: Duration) -> Result<(), glib::Error> {
         self.vec = self
             .database
@@ -68,6 +75,7 @@ impl GraphModelWeight {
         Ok(())
     }
 
+    /// Converts the model's data to an array of `Point` so it can be displayed in a `GraphView`.
     pub fn to_points(&self) -> Vec<crate::views::Point> {
         self.vec
             .iter()
@@ -86,10 +94,12 @@ impl GraphModelWeight {
             .collect()
     }
 
+    /// Get if the model is empty.
     pub fn is_empty(&self) -> bool {
         self.vec.is_empty()
     }
 
+    /// Get the last weight the user added.
     pub fn get_last_weight(&self) -> Option<Mass> {
         self.vec.last().map(|w| w.weight)
     }

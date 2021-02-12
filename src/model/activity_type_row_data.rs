@@ -55,6 +55,8 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// The data belonging to a certain `ActivityTypeRow`. This can be fed to a `ActivityTypeRow` via
+    /// a `ListModel`.
     pub struct ActivityTypeRowData(ObjectSubclass<imp::ActivityTypeRowData>);
 }
 

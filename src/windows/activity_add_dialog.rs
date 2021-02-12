@@ -199,6 +199,7 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// A dialog for adding a new activity record.
     pub struct ActivityAddDialog(ObjectSubclass<imp::ActivityAddDialog>)
         @extends gtk::Widget, gtk::Window, gtk::Dialog;
 }

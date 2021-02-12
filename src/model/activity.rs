@@ -97,10 +97,21 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// An `Activity` represents a single `Activity` a user has performed (e.g. walking).
     pub struct Activity(ObjectSubclass<imp::Activity>);
 }
 
 impl Activity {
+    /// Try interpolating data from the `calories` that are set on `self`.
+    ///
+    /// # Examples
+    /// ```
+    /// let activity = Activity::new();
+    /// activity.set_activity_type(ActivityType::Walking);
+    /// activity.set_calories(Some(100));
+    /// activity.autofill_from_calories();
+    /// assert_eq!(activity.get_minutes(), 20);
+    /// ```
     pub fn autofill_from_calories(&self) {
         let self_ = self.get_priv();
 
@@ -124,6 +135,16 @@ impl Activity {
         }
     }
 
+    /// Try interpolating data from the `distance` that is set on `self`.
+    ///
+    /// # Examples
+    /// ```
+    /// let activity = Activity::new();
+    /// activity.set_activity_type(ActivityType::Walking);
+    /// activity.set_distance(Length::new::<kilometer>(1));
+    /// activity.autofill_from_distance();
+    /// assert_eq!(activity.get_minutes(), 11);
+    /// ```
     pub fn autofill_from_distance(&self) {
         let self_ = self.get_priv();
 
@@ -165,6 +186,16 @@ impl Activity {
         }
     }
 
+    /// Try interpolating data from the `minutes` that is set on `self`.
+    ///
+    /// # Examples
+    /// ```
+    /// let activity = Activity::new();
+    /// activity.set_activity_type(ActivityType::Walking);
+    /// activity.set_duration(Duration::minutes(20));
+    /// activity.autofill_from_minutes();
+    /// assert_eq!(activity.get_calories(), Some(100));
+    /// ```
     pub fn autofill_from_minutes(&self) {
         let self_ = self.get_priv();
 
@@ -210,6 +241,16 @@ impl Activity {
         }
     }
 
+    /// Try interpolating data from the `steps` that is set on `self`.
+    ///
+    /// # Examples
+    /// ```
+    /// let activity = Activity::new();
+    /// activity.set_activity_type(ActivityType::Walking);
+    /// activity.set_steps(Some(100));
+    /// activity.autofill_from_steps();
+    /// assert_eq!(activity.get_duration(), Duration::minutes(1));
+    /// ```
     pub fn autofill_from_steps(&self) {
         let self_ = self.get_priv();
 

@@ -38,12 +38,15 @@ pub struct Settings {
 }
 
 impl Settings {
+    /// Create a new `Settings` object. Since this operation is pretty cheap it's OK to call this when
+    /// constructing your struct instead of passing `Settings` around.
     pub fn new() -> Self {
         Self {
             settings: gio::Settings::new("dev.Cogitri.Health"),
         }
     }
 
+    /// Get an array of recent activity IDs.
     pub fn get_recent_activity_types(&self) -> Vec<String> {
         self.settings
             .get_strv("recent-activity-types")
@@ -52,12 +55,14 @@ impl Settings {
             .collect()
     }
 
+    /// Set an array of recent activity IDs.
     pub fn set_recent_activity_types(&self, value: &[&str]) {
         self.settings
             .set_strv("recent-activity-types", value)
             .unwrap();
     }
 
+    /// Get the timestamp of the last sync with Google Fit.
     pub fn get_timestamp_last_sync_google_fit(&self) -> DateTime<FixedOffset> {
         DateTime::parse_from_rfc3339(
             self.settings
@@ -68,12 +73,14 @@ impl Settings {
         .unwrap()
     }
 
+    /// Set the timestamp of the last sync with Google Fit.
     pub fn set_timestamp_last_sync_google_fit(&self, value: DateTime<FixedOffset>) {
         self.settings
             .set_string("timestamp-last-sync-google-fit", &value.to_rfc3339())
             .unwrap();
     }
 
+    /// Connect to the `unitsystem` key changing. Keep in mind that the key has to be read once before connecting or this won't do anything!
     pub fn connect_unitsystem_changed<F: Fn(&gio::Settings, &str) + 'static>(
         &self,
         f: F,
@@ -85,26 +92,31 @@ impl Settings {
         })
     }
 
+    /// Get the current unitsystem.
     pub fn get_unitsystem(&self) -> Unitsystem {
         Unitsystem::from_i32(self.settings.get_enum("unitsystem")).unwrap()
     }
 
+    /// Set the current unitsystem.
     pub fn set_unitsystem(&self, value: Unitsystem) {
         self.settings
             .set_enum("unitsystem", value.to_i32().unwrap())
             .unwrap();
     }
 
+    /// Get the user's height.
     pub fn get_user_height(&self) -> Length {
         Length::new::<centimeter>(self.settings.get_uint("user-height") as f32)
     }
 
+    /// Set the user's height.
     pub fn set_user_height(&self, value: Length) {
         self.settings
             .set_uint("user-height", value.get::<centimeter>() as u32)
             .unwrap();
     }
 
+    /// Connect to the `user-weightgoal` key changing. Keep in mind that the key has to be read once before connecting or this won't do anything!
     pub fn connect_user_weightgoal_changed<F: Fn(&gio::Settings, &str) + 'static>(
         &self,
         f: F,
@@ -116,10 +128,12 @@ impl Settings {
         })
     }
 
+    /// Get the user's current weightgoal.
     pub fn get_user_weightgoal(&self) -> Mass {
         Mass::new::<kilogram>(self.settings.get_double("user-weightgoal") as f32)
     }
 
+    /// Set the user's current weightgoal.
     pub fn set_user_weightgoal(&self, value: Mass) {
         self.settings
             .set_double("user-weightgoal", f64::from(value.get::<kilogram>()))
