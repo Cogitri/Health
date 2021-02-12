@@ -16,17 +16,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::Database, model::ModelActivity, views::View};
-use glib::subclass::types::ObjectSubclass;
+use crate::{
+    core::Database,
+    model::{Activity, ModelActivity},
+    views::View,
+    widgets::ActivityRow,
+};
+use chrono::Duration;
+use glib::{subclass::types::ObjectSubclass, Cast};
 
 mod imp {
-    use crate::{
-        core::Settings,
-        model::{Activity, ModelActivity},
-        views::View,
-        widgets::ActivityRow,
-    };
-    use chrono::Duration;
+    use crate::{core::Settings, model::ModelActivity, views::View};
     use glib::{subclass, Cast};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
@@ -35,7 +35,7 @@ mod imp {
     #[template(resource = "/dev/Cogitri/Health/ui/activity_view.ui")]
     pub struct ViewActivity {
         settings: Settings,
-        activity_model: OnceCell<ModelActivity>,
+        pub activity_model: OnceCell<ModelActivity>,
         #[template_child]
         pub activities_list_box: TemplateChild<gtk::ListBox>,
     }
@@ -73,37 +73,6 @@ mod imp {
     impl WidgetImpl for ViewActivity {}
 
     impl ObjectImpl for ViewActivity {}
-
-    impl ViewActivity {
-        pub fn set_activity_model(&self, model: ModelActivity) {
-            self.activity_model.set(model).unwrap();
-
-            self.activities_list_box
-                .bind_model(Some(self.activity_model.get().unwrap()), |o| {
-                    let row = ActivityRow::new();
-                    row.set_activity(o.clone().downcast::<Activity>().unwrap());
-                    row.upcast()
-                });
-        }
-
-        pub async fn update(&self, obj: &super::ViewActivity) {
-            let activity_model = self.activity_model.get().unwrap();
-
-            if let Err(e) = activity_model.reload(Duration::days(30)).await {
-                glib::g_warning!(
-                    crate::config::LOG_DOMAIN,
-                    "Failed to reload activity data: {}",
-                    e
-                );
-            }
-
-            if !activity_model.is_empty() {
-                obj.upcast_ref::<View>()
-                    .get_stack()
-                    .set_visible_child_name("data_page");
-            }
-        }
-    }
 }
 
 glib::wrapper! {
@@ -113,14 +82,44 @@ glib::wrapper! {
 
 impl ViewActivity {
     pub fn new(database: Database) -> Self {
-        let o = glib::Object::new(&[]).expect("Failed to create ViewActivity");
+        let o: Self = glib::Object::new(&[]).expect("Failed to create ViewActivity");
 
-        imp::ViewActivity::from_instance(&o).set_activity_model(ModelActivity::new(database));
+        let self_ = o.get_priv();
+        self_
+            .activity_model
+            .set(ModelActivity::new(database))
+            .unwrap();
+
+        self_
+            .activities_list_box
+            .bind_model(Some(self_.activity_model.get().unwrap()), |o| {
+                let row = ActivityRow::new();
+                row.set_activity(o.clone().downcast::<Activity>().unwrap());
+                row.upcast()
+            });
 
         o
     }
 
     pub async fn update(&self) {
-        imp::ViewActivity::from_instance(self).update(self).await;
+        let activity_model = self.get_priv().activity_model.get().unwrap();
+
+        if let Err(e) = activity_model.reload(Duration::days(30)).await {
+            glib::g_warning!(
+                crate::config::LOG_DOMAIN,
+                "Failed to reload activity data: {}",
+                e
+            );
+        }
+
+        if !activity_model.is_empty() {
+            self.upcast_ref::<View>()
+                .get_stack()
+                .set_visible_child_name("data_page");
+        }
+    }
+
+    fn get_priv(&self) -> &imp::ViewActivity {
+        imp::ViewActivity::from_instance(self)
     }
 }

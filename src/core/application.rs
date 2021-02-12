@@ -16,16 +16,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use crate::{
+    core::i18n,
+    windows::{PreferencesWindow, Window},
+};
+use gio::prelude::*;
+use glib::{clone, subclass::prelude::*};
+use gtk::prelude::*;
+use gtk_macros::action;
+
 mod imp {
     use crate::{
         config,
-        core::{i18n, Database, Settings},
-        windows::{PreferencesWindow, SetupWindow, Window},
+        core::{Database, Settings},
+        windows::{SetupWindow, Window},
     };
-    use gio::ActionMapExt;
     use glib::{clone, g_warning, subclass};
     use gtk::{prelude::*, subclass::prelude::*};
-    use gtk_macros::action;
     use once_cell::unsync::OnceCell;
 
     #[derive(Debug)]
@@ -65,35 +72,29 @@ mod imp {
     }
 
     impl ApplicationImpl for Application {
-        fn activate(&self, application: &Self::Type) {
-            self.parent_activate(application);
+        fn activate(&self, obj: &Self::Type) {
+            self.parent_activate(obj);
             let has_window = self.window.get().and_then(glib::WeakRef::upgrade).is_some();
 
             if !has_window && self.settings.get_did_initial_setup() {
-                let window = Window::new(application, self.db.clone());
+                let window = Window::new(obj, self.db.clone());
                 window.show();
                 self.window
                     .set(glib::ObjectExt::downgrade(&window))
                     .unwrap();
             } else if !has_window {
-                let setup_window = SetupWindow::new(application, self.db.clone());
+                let setup_window = SetupWindow::new(obj, self.db.clone());
 
-                setup_window.connect_setup_done(clone!(@weak application => move || {
-                    let self_ = Application::from_instance(&application);
-                    self_.settings.set_did_initial_setup(true);
-                    let window = Window::new(&application, self_.db.clone());
-                    window.show();
-                    self_.window
-                        .set(glib::ObjectExt::downgrade(&window))
-                        .unwrap();
+                setup_window.connect_setup_done(clone!(@weak obj => move || {
+                    obj.handle_setup_window_setup_done();
                 }));
 
                 setup_window.show();
             }
         }
 
-        fn startup(&self, application: &Self::Type) {
-            self.parent_startup(application);
+        fn startup(&self, obj: &Self::Type) {
+            self.parent_startup(obj);
             adw::init();
 
             if let Some(true) = gtk::Settings::get_default()
@@ -103,95 +104,11 @@ mod imp {
                 g_warning! (config::LOG_DOMAIN, "Using -dark themes (such as Adwaita-dark) is unsupported. Please use your theme in dark-mode instead (e.g. Adwaita:dark instead of Adwaita-dark)");
             }
 
-            self.setup_actions(application);
-            self.setup_accels(application);
+            obj.setup_actions();
+            obj.setup_accels();
         }
     }
     impl GtkApplicationImpl for Application {}
-
-    impl Application {
-        fn setup_actions(&self, obj: &super::Application) {
-            action!(obj, "about", move |_, _| {
-                gtk::AboutDialogBuilder::new()
-                    .logo_icon_name(crate::config::APPLICATION_ID)
-                    .program_name("Health")
-                    .comments(&i18n("A health tracking app for the GNOME desktop."))
-                    .authors(vec!["Rasmus Thomsen <oss@cogitri.dev>".to_string()])
-                    .translator_credits(&i18n("translator-credits"))
-                    .website("https://gitlab.gnome.org/Cogitri/gnome-health")
-                    .website_label(&i18n("Websites"))
-                    .version(crate::config::VERSION)
-                    .license_type(gtk::License::Gpl30)
-                    .build()
-                    .show()
-            });
-            action!(
-                obj,
-                "fullscreen",
-                clone!(@weak obj => move |_, _| {
-                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(glib::WeakRef::upgrade) {
-                        if window.is_fullscreen() {
-                            window.unfullscreen();
-                        } else {
-                            window.fullscreen();
-                        }
-                    }
-                })
-            );
-
-            action!(
-                obj,
-                "hamburger-menu",
-                clone!(@weak obj => move |_, _| {
-                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(glib::WeakRef::upgrade) {
-                        window.open_hamburger_menu();
-                    }
-                })
-            );
-
-            action!(
-                obj,
-                "help",
-                clone!(@weak obj => move |_, _| {
-                })
-            );
-
-            action!(
-                obj,
-                "preferences",
-                clone!(@weak obj => move |_, _| {
-                    let self_ = Application::from_instance(&obj);
-                    let preferences_window = PreferencesWindow::new(self_.db.clone(), self_.window.get().and_then(glib::WeakRef::upgrade).map(glib::Cast::upcast));
-                    preferences_window.show();
-                })
-            );
-
-            action!(
-                obj,
-                "quit",
-                clone!(@weak obj => move |_, _| {
-                    if let Some(window) = Application::from_instance(&obj).window.get().and_then(glib::WeakRef::upgrade) {
-                        window.destroy();
-                    }
-                })
-            );
-
-            action!(obj, "shortcuts", move |_, _| {
-                gtk::Builder::from_resource("/dev/Cogitri/Health/ui/shortcuts_window.ui")
-                    .get_object::<gtk::ShortcutsWindow>("shortcuts_window")
-                    .unwrap()
-                    .show();
-            });
-        }
-
-        fn setup_accels(&self, obj: &super::Application) {
-            obj.set_accels_for_action("app.fullscreen", &["F11"]);
-            obj.set_accels_for_action("app.hamburger-menu", &["F10"]);
-            obj.set_accels_for_action("app.help", &["F1"]);
-            obj.set_accels_for_action("app.quit", &["<Primary>q"]);
-            obj.set_accels_for_action("app.shortcuts", &["<Primary>question"]);
-        }
-    }
 }
 
 glib::wrapper! {
@@ -206,5 +123,102 @@ impl Application {
             ("flags", &gio::ApplicationFlags::FLAGS_NONE),
         ])
         .expect("Failed to create Application")
+    }
+
+    fn get_priv(&self) -> &imp::Application {
+        imp::Application::from_instance(self)
+    }
+
+    fn handle_setup_window_setup_done(&self) {
+        let self_ = self.get_priv();
+        self_.settings.set_did_initial_setup(true);
+        let window = Window::new(self, self_.db.clone());
+        window.show();
+        self_
+            .window
+            .set(glib::ObjectExt::downgrade(&window))
+            .unwrap();
+    }
+
+    fn setup_accels(&self) {
+        self.set_accels_for_action("app.fullscreen", &["F11"]);
+        self.set_accels_for_action("app.hamburger-menu", &["F10"]);
+        self.set_accels_for_action("app.help", &["F1"]);
+        self.set_accels_for_action("app.quit", &["<Primary>q"]);
+        self.set_accels_for_action("app.shortcuts", &["<Primary>question"]);
+    }
+
+    fn setup_actions(&self) {
+        action!(self, "about", move |_, _| {
+            gtk::AboutDialogBuilder::new()
+                .logo_icon_name(crate::config::APPLICATION_ID)
+                .program_name("Health")
+                .comments(&i18n("A health tracking app for the GNOME desktop."))
+                .authors(vec!["Rasmus Thomsen <oss@cogitri.dev>".to_string()])
+                .translator_credits(&i18n("translator-credits"))
+                .website("https://gitlab.gnome.org/Cogitri/gnome-health")
+                .website_label(&i18n("Websites"))
+                .version(crate::config::VERSION)
+                .license_type(gtk::License::Gpl30)
+                .build()
+                .show()
+        });
+        action!(
+            self,
+            "fullscreen",
+            clone!(@weak self as obj => move |_, _| {
+                if let Some(window) = obj.get_priv().window.get().and_then(glib::WeakRef::upgrade) {
+                    if window.is_fullscreen() {
+                        window.unfullscreen();
+                    } else {
+                        window.fullscreen();
+                    }
+                }
+            })
+        );
+
+        action!(
+            self,
+            "hamburger-menu",
+            clone!(@weak self as obj => move |_, _| {
+                if let Some(window) = obj.get_priv().window.get().and_then(glib::WeakRef::upgrade) {
+                    window.open_hamburger_menu();
+                }
+            })
+        );
+
+        action!(
+            self,
+            "help",
+            clone!(@weak self as obj => move |_, _| {
+            })
+        );
+
+        action!(
+            self,
+            "preferences",
+            clone!(@weak self as obj => move |_, _| {
+                let self_ = obj.get_priv();
+                let preferences_window = PreferencesWindow::new(self_.db.clone(), self_.window.get().and_then(glib::WeakRef::upgrade).map(glib::Cast::upcast));
+                preferences_window.show();
+            })
+        );
+
+        action!(
+            self,
+            "quit",
+            clone!(@weak self as obj => move |_, _| {
+                if let Some(window) = obj.get_priv().window.get().and_then(glib::WeakRef::upgrade) {
+                    window.destroy();
+                }
+            })
+        );
+
+        action!(self, "shortcuts", move |_, _| {
+            gtk::Builder::from_resource("/dev/Cogitri/Health/ui/shortcuts_window.ui")
+                .get_object::<gtk::ShortcutsWindow>("shortcuts_window")
+                .unwrap()
+                .show();
+        });
     }
 }

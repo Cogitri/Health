@@ -135,7 +135,7 @@ mod imp {
 
                 if let Ok(info) = ActivityInfo::try_from(row.get_id()) {
                     let self_ = ActivityTypeSelector::from_instance(&obj);
-                    self_.set_selected_activity(&obj, info);
+                    obj.set_selected_activity(info);
                     let mut i = 0;
                     let selected_activity = self_.selected_activity.borrow();
 
@@ -172,17 +172,6 @@ mod imp {
     }
     impl WidgetImpl for ActivityTypeSelector {}
     impl PopoverImpl for ActivityTypeSelector {}
-
-    impl ActivityTypeSelector {
-        pub fn get_selected_activity(&self) -> ActivityInfo {
-            self.selected_activity.borrow().clone()
-        }
-
-        pub fn set_selected_activity(&self, obj: &super::ActivityTypeSelector, val: ActivityInfo) {
-            self.selected_activity.replace(val);
-            obj.emit("activity-selected", &[]).unwrap();
-        }
-    }
 }
 
 glib::wrapper! {
@@ -191,12 +180,8 @@ glib::wrapper! {
 }
 
 impl ActivityTypeSelector {
-    pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ActivityTypeSelector")
-    }
-
     pub fn get_selected_activity(&self) -> ActivityInfo {
-        imp::ActivityTypeSelector::from_instance(self).get_selected_activity()
+        self.get_priv().selected_activity.borrow().clone()
     }
 
     pub fn connect_activity_selected<F: Fn() + 'static>(
@@ -208,5 +193,18 @@ impl ActivityTypeSelector {
             None
         })
         .unwrap()
+    }
+
+    pub fn new() -> Self {
+        glib::Object::new(&[]).expect("Failed to create ActivityTypeSelector")
+    }
+
+    fn get_priv(&self) -> &imp::ActivityTypeSelector {
+        imp::ActivityTypeSelector::from_instance(self)
+    }
+
+    fn set_selected_activity(&self, val: ActivityInfo) {
+        self.get_priv().selected_activity.replace(val);
+        self.emit("activity-selected", &[]).unwrap();
     }
 }

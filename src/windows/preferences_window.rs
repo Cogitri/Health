@@ -16,26 +16,30 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::Database;
-use glib::subclass::types::ObjectSubclass;
+use crate::{
+    core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Database},
+    sync::csv::CSVHandler,
+};
+use adw::prelude::*;
+use glib::{clone, g_warning, subclass::prelude::*};
 use gtk::prelude::*;
+use gtk_macros::spawn;
+use uom::si::{
+    f32::{Length, Mass},
+    length::{centimeter, inch},
+    mass::{kilogram, pound},
+};
 
 mod imp {
     use crate::{
-        core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Database, Settings},
-        sync::csv::CSVHandler,
+        core::{i18n, settings::Unitsystem, Database, Settings},
         widgets::{BMILevelBar, SyncListBox},
     };
-    use adw::PreferencesRowExt;
-    use glib::{
-        clone, g_warning,
-        subclass::{self, Signal},
-    };
+    use adw::prelude::*;
+    use glib::subclass::{self, Signal};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
-    use gtk_macros::spawn;
     use once_cell::unsync::OnceCell;
     use uom::si::{
-        f32::{Length, Mass},
         length::{centimeter, inch},
         mass::{kilogram, pound},
     };
@@ -157,7 +161,7 @@ mod imp {
 
             self.bmi_levelbar
                 .set_weight(self.settings.get_user_weightgoal());
-            self.connect_handlers(obj);
+            obj.connect_handlers();
         }
 
         fn signals() -> &'static [Signal] {
@@ -173,191 +177,6 @@ mod imp {
     impl WindowImpl for PreferencesWindow {}
     impl adw::subclass::window::AdwWindowImpl for PreferencesWindow {}
     impl adw::subclass::preferences_window::PreferencesWindowImpl for PreferencesWindow {}
-
-    impl PreferencesWindow {
-        fn connect_handlers(&self, obj: &super::PreferencesWindow) {
-            self.age_spin_button
-                .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = PreferencesWindow::from_instance(&obj);
-                    let val = get_spinbutton_value::<u32>(&self_.age_spin_button);
-                    if val != 0 {
-                        self_.settings.set_user_age(val);
-                    }
-                }));
-
-            self.stepgoal_spin_button
-                .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = PreferencesWindow::from_instance(&obj);
-                    let val = get_spinbutton_value::<u32>(&self_.stepgoal_spin_button);
-                    if val != 0 {
-                        self_.settings.set_user_stepgoal(val);
-                    }
-                }));
-
-            self.weightgoal_spin_button
-                .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = PreferencesWindow::from_instance(&obj);
-                    let val = get_spinbutton_value::<f32>(&self_.weightgoal_spin_button);
-                    if val != 0.0 {
-                        let weight = if self_.unit_metric_togglebutton.get_active() {
-                            Mass::new::<kilogram>(val)
-                        } else {
-                            Mass::new::<pound>(val)
-                        };
-
-                        self_.settings.set_user_weightgoal(weight);
-                        self_.bmi_levelbar.set_weight(weight);
-                    }
-                }));
-
-            self.height_spin_button
-                .connect_changed(clone!(@weak obj => move |_| {
-                    let self_ = PreferencesWindow::from_instance(&obj);
-                    let val = get_spinbutton_value::<u32>(&self_.height_spin_button) as f32;
-                    if val != 0.0 {
-                        let height = if self_.unit_metric_togglebutton.get_active() {
-                            Length::new::<centimeter>(val)
-                        } else {
-                            Length::new::<inch>(val)
-                        };
-
-                        self_.settings.set_user_height(height);
-                        self_.bmi_levelbar.set_height(height);
-                    }
-                }));
-
-            self.unit_metric_togglebutton.connect_toggled(clone!(@weak obj => move |btn| {
-                let self_ = PreferencesWindow::from_instance(&obj);
-                if btn.get_active() {
-                    self_.settings.set_unitsystem(Unitsystem::Metric);
-                    self_.bmi_levelbar.set_unitsystem(Unitsystem::Metric);
-                    self_.height_actionrow
-                    .set_title(Some(&i18n("Height in centimeters")));
-                    self_.weightgoal_actionrow
-                        .set_title(Some(&i18n("Weightgoal in KG")));
-                    self_.height_spin_button
-                        .set_value(f64::from(Length::new::<inch>(get_spinbutton_value(&self_.height_spin_button)).get::<centimeter>()));
-                    self_.weightgoal_spin_button
-                        .set_value(f64::from(Mass::new::<pound>(get_spinbutton_value(&self_.height_spin_button)).get::<kilogram>()));
-                } else {
-                    self_.settings.set_unitsystem(Unitsystem::Imperial);
-                    self_.bmi_levelbar.set_unitsystem(Unitsystem::Imperial);
-                    self_.height_actionrow
-                    .set_title(Some(&i18n("Height in inch")));
-                    self_.weightgoal_actionrow
-                        .set_title(Some(&i18n("Weightgoal in pounds")));
-                    self_.height_spin_button
-                        .set_value(f64::from(Length::new::<centimeter>(get_spinbutton_value(&self_.height_spin_button)).get::<inch>()));
-                    self_.weightgoal_spin_button
-                        .set_value(f64::from(Mass::new::<kilogram>(get_spinbutton_value(&self_.height_spin_button)).get::<pound>()));
-                }
-            }));
-
-            self.export_activity_csv_button
-                .connect_clicked(clone!(@weak obj => move |_| {
-                    let file_chooser = gtk::FileChooserNativeBuilder::new()
-                        .title(&i18n("Save Activities"))
-                        .accept_label(&i18n("_Save"))
-                        .cancel_label(&i18n("_Cancel"))
-                        .modal(true)
-                        .transient_for(&obj)
-                        .action(gtk::FileChooserAction::Save)
-                        .build();
-                    file_chooser.set_current_name(&i18n("Activities.csv"));
-                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |_, r| {
-                        if r == gtk::ResponseType::Accept {
-                            let file = file_chooser.get_file().unwrap();
-                            spawn!(async move {
-                                let self_ = PreferencesWindow::from_instance(&obj);
-                                let handler = CSVHandler::new(self_.db.get().unwrap().clone());
-                                if let Err(e) = handler.export_activities_csv(&file).await {
-                                    g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
-                                }
-                            });
-                        }
-                    }));
-                    file_chooser.show();
-                }));
-
-            self.export_weight_csv_button
-                .connect_clicked(clone!(@weak obj => move |_| {
-                    let file_chooser = gtk::FileChooserNativeBuilder::new()
-                        .title(&i18n("Save Weight Measurement"))
-                        .accept_label(&i18n("_Save"))
-                        .cancel_label(&i18n("_Cancel"))
-                        .modal(true)
-                        .transient_for(&obj)
-                        .action(gtk::FileChooserAction::Save)
-                        .build();
-                    file_chooser.set_transient_for(Some(&obj));
-                    file_chooser.set_current_name(&i18n("Weight Measurements.csv"));
-                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |_, r| {
-                        if r == gtk::ResponseType::Accept {
-                            let file = file_chooser.get_file().unwrap();
-                            spawn!(async move {
-                                let self_ = PreferencesWindow::from_instance(&obj);
-                                let handler = CSVHandler::new(self_.db.get().unwrap().clone());
-                                if let Err(e) = handler.export_weights_csv(&file).await {
-                                    g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
-                                }
-                            });
-                        }
-                    }));
-                    file_chooser.show();
-                }));
-
-            self.import_weight_csv_button
-                .connect_clicked(clone!(@weak obj => move |_| {
-                    let file_chooser = gtk::FileChooserNativeBuilder::new()
-                        .title(&i18n("Open Weight Measurement"))
-                        .accept_label(&i18n("_Open"))
-                        .cancel_label(&i18n("_Cancel"))
-                        .modal(true)
-                        .transient_for(&obj)
-                        .action(gtk::FileChooserAction::Open)
-                        .build();
-                    file_chooser.set_transient_for(Some(&obj));
-                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |_, r| {
-                        if r == gtk::ResponseType::Accept {
-                            let file = file_chooser.get_file().unwrap();
-                            spawn!(async move {
-                                let self_ = PreferencesWindow::from_instance(&obj);
-                                let handler = CSVHandler::new(self_.db.get().unwrap().clone());
-                                if let Err(e) = handler.import_weights_csv(&file).await {
-                                    g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
-                                }
-                            });
-                        }
-                    }));
-                    file_chooser.show();
-                }));
-
-            self.import_activity_csv_button
-                .connect_clicked(clone!(@weak obj => move |_| {
-                    let file_chooser = gtk::FileChooserNativeBuilder::new()
-                        .title(&i18n("Open Activities"))
-                        .accept_label(&i18n("_Open"))
-                        .cancel_label(&i18n("_Cancel"))
-                        .modal(true)
-                        .transient_for(&obj)
-                        .action(gtk::FileChooserAction::Open)
-                        .build();
-                    file_chooser.connect_response(clone!(@weak obj, @strong file_chooser => move |_, r| {
-                        if r == gtk::ResponseType::Accept {
-                            let file = file_chooser.get_file().unwrap();
-                            spawn!(async move {
-                                let self_ = PreferencesWindow::from_instance(&obj);
-                                let handler = CSVHandler::new(self_.db.get().unwrap().clone());
-                                if let Err(e) = handler.import_activities_csv(&file).await {
-                                    g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
-                                }
-                            });
-                        }
-                    }));
-                    file_chooser.show();
-                }));
-        }
-    }
 }
 
 glib::wrapper! {
@@ -366,13 +185,20 @@ glib::wrapper! {
 }
 
 impl PreferencesWindow {
+    pub fn connect_import_done<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
+        self.connect_local("import-done", false, move |_| {
+            callback();
+            None
+        })
+        .unwrap()
+    }
+
     pub fn new(db: Database, parent_window: Option<gtk::Window>) -> Self {
-        let o: PreferencesWindow =
-            glib::Object::new(&[]).expect("Failed to create PreferencesWindow");
+        let o: Self = glib::Object::new(&[]).expect("Failed to create PreferencesWindow");
 
         o.set_transient_for(parent_window.as_ref());
 
-        let self_ = imp::PreferencesWindow::from_instance(&o);
+        let self_ = o.get_priv();
         self_.db.set(db.clone()).unwrap();
         self_.sync_list_box.set_database(db);
         self_.parent_window.set(parent_window).unwrap();
@@ -380,11 +206,256 @@ impl PreferencesWindow {
         o
     }
 
-    pub fn connect_import_done<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
-        self.connect_local("import-done", false, move |_| {
-            callback();
-            None
-        })
-        .unwrap()
+    fn connect_handlers(&self) {
+        let self_ = self.get_priv();
+
+        self_
+            .age_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                obj.handle_age_spin_button_changed();
+            }));
+
+        self_
+            .export_activity_csv_button
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                obj.handle_export_activity_csv_button_clicked();
+            }));
+
+        self_
+            .export_weight_csv_button
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                obj.handle_export_weight_csv_button_clicked();
+            }));
+
+        self_
+            .height_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                obj.handle_height_spin_button_changed();
+            }));
+
+        self_
+            .import_activity_csv_button
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                obj.handle_import_activity_csv_button_clicked();
+            }));
+
+        self_
+            .import_weight_csv_button
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                obj.handle_import_weight_csv_button_clicked();
+            }));
+
+        self_
+            .stepgoal_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                obj.handle_stepgoal_spin_button_changed();
+            }));
+
+        self_
+            .weightgoal_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                obj.handle_weightgoal_spin_button_changed();
+            }));
+
+        self_
+            .unit_metric_togglebutton
+            .connect_toggled(clone!(@weak self as obj => move |btn| {
+                obj.handle_unit_metric_togglebutton_toggled(btn);
+            }));
+    }
+
+    fn get_priv(&self) -> &imp::PreferencesWindow {
+        imp::PreferencesWindow::from_instance(self)
+    }
+
+    fn handle_age_spin_button_changed(&self) {
+        let self_ = self.get_priv();
+        let val = get_spinbutton_value::<u32>(&self_.age_spin_button);
+        if val != 0 {
+            self_.settings.set_user_age(val);
+        }
+    }
+
+    fn handle_export_activity_csv_button_clicked(&self) {
+        let file_chooser = gtk::FileChooserNativeBuilder::new()
+            .title(&i18n("Save Activities"))
+            .accept_label(&i18n("_Save"))
+            .cancel_label(&i18n("_Cancel"))
+            .modal(true)
+            .transient_for(self)
+            .action(gtk::FileChooserAction::Save)
+            .build();
+        file_chooser.set_current_name(&i18n("Activities.csv"));
+        file_chooser.connect_response(
+            clone!(@weak self as obj, @strong file_chooser => move |_, r| {
+                if r == gtk::ResponseType::Accept {
+                    let file = file_chooser.get_file().unwrap();
+                    spawn!(async move {
+                        let self_ = obj.get_priv();
+                        let handler = CSVHandler::new(self_.db.get().unwrap().clone());
+                        if let Err(e) = handler.export_activities_csv(&file).await {
+                            g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
+                        }
+                    });
+                }
+            }),
+        );
+        file_chooser.show();
+    }
+
+    fn handle_export_weight_csv_button_clicked(&self) {
+        let file_chooser = gtk::FileChooserNativeBuilder::new()
+            .title(&i18n("Save Weight Measurement"))
+            .accept_label(&i18n("_Save"))
+            .cancel_label(&i18n("_Cancel"))
+            .modal(true)
+            .transient_for(self)
+            .action(gtk::FileChooserAction::Save)
+            .build();
+        file_chooser.set_current_name(&i18n("Weight Measurements.csv"));
+        file_chooser.connect_response(
+            clone!(@weak self as obj, @strong file_chooser => move |_, r| {
+                if r == gtk::ResponseType::Accept {
+                    let file = file_chooser.get_file().unwrap();
+                    spawn!(async move {
+                        let self_ = obj.get_priv();
+                        let handler = CSVHandler::new(self_.db.get().unwrap().clone());
+                        if let Err(e) = handler.export_weights_csv(&file).await {
+                            g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
+                        }
+                    });
+                }
+            }),
+        );
+        file_chooser.show();
+    }
+
+    fn handle_height_spin_button_changed(&self) {
+        let self_ = self.get_priv();
+        let val = get_spinbutton_value::<u32>(&self_.height_spin_button) as f32;
+        if val != 0.0 {
+            let height = if self_.unit_metric_togglebutton.get_active() {
+                Length::new::<centimeter>(val)
+            } else {
+                Length::new::<inch>(val)
+            };
+
+            self_.settings.set_user_height(height);
+            self_.bmi_levelbar.set_height(height);
+        }
+    }
+
+    fn handle_import_activity_csv_button_clicked(&self) {
+        let file_chooser = gtk::FileChooserNativeBuilder::new()
+            .title(&i18n("Open Activities"))
+            .accept_label(&i18n("_Open"))
+            .cancel_label(&i18n("_Cancel"))
+            .modal(true)
+            .transient_for(self)
+            .action(gtk::FileChooserAction::Open)
+            .build();
+        file_chooser.connect_response(
+            clone!(@weak self as obj, @strong file_chooser => move |_, r| {
+                if r == gtk::ResponseType::Accept {
+                    let file = file_chooser.get_file().unwrap();
+                    spawn!(async move {
+                        let self_ = obj.get_priv();
+                        let handler = CSVHandler::new(self_.db.get().unwrap().clone());
+                        if let Err(e) = handler.import_activities_csv(&file).await {
+                            g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
+                        }
+                    });
+                }
+            }),
+        );
+        file_chooser.show();
+    }
+
+    fn handle_import_weight_csv_button_clicked(&self) {
+        let file_chooser = gtk::FileChooserNativeBuilder::new()
+            .title(&i18n("Open Weight Measurement"))
+            .accept_label(&i18n("_Open"))
+            .cancel_label(&i18n("_Cancel"))
+            .modal(true)
+            .transient_for(self)
+            .action(gtk::FileChooserAction::Open)
+            .build();
+        file_chooser.connect_response(
+            clone!(@weak self as obj, @strong file_chooser => move |_, r| {
+                if r == gtk::ResponseType::Accept {
+                    let file = file_chooser.get_file().unwrap();
+                    spawn!(async move {
+                        let self_ = obj.get_priv();
+                        let handler = CSVHandler::new(self_.db.get().unwrap().clone());
+                        if let Err(e) = handler.import_weights_csv(&file).await {
+                            g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
+                        }
+                    });
+                }
+            }),
+        );
+        file_chooser.show();
+    }
+
+    fn handle_stepgoal_spin_button_changed(&self) {
+        let self_ = self.get_priv();
+        let val = get_spinbutton_value::<u32>(&self_.stepgoal_spin_button);
+        if val != 0 {
+            self_.settings.set_user_stepgoal(val);
+        }
+    }
+
+    fn handle_unit_metric_togglebutton_toggled(&self, btn: &gtk::ToggleButton) {
+        let self_ = self.get_priv();
+        if btn.get_active() {
+            self_.settings.set_unitsystem(Unitsystem::Metric);
+            self_.bmi_levelbar.set_unitsystem(Unitsystem::Metric);
+            self_
+                .height_actionrow
+                .set_title(Some(&i18n("Height in centimeters")));
+            self_
+                .weightgoal_actionrow
+                .set_title(Some(&i18n("Weightgoal in KG")));
+            self_.height_spin_button.set_value(f64::from(
+                Length::new::<inch>(get_spinbutton_value(&self_.height_spin_button))
+                    .get::<centimeter>(),
+            ));
+            self_.weightgoal_spin_button.set_value(f64::from(
+                Mass::new::<pound>(get_spinbutton_value(&self_.height_spin_button))
+                    .get::<kilogram>(),
+            ));
+        } else {
+            self_.settings.set_unitsystem(Unitsystem::Imperial);
+            self_.bmi_levelbar.set_unitsystem(Unitsystem::Imperial);
+            self_
+                .height_actionrow
+                .set_title(Some(&i18n("Height in inch")));
+            self_
+                .weightgoal_actionrow
+                .set_title(Some(&i18n("Weightgoal in pounds")));
+            self_.height_spin_button.set_value(f64::from(
+                Length::new::<centimeter>(get_spinbutton_value(&self_.height_spin_button))
+                    .get::<inch>(),
+            ));
+            self_.weightgoal_spin_button.set_value(f64::from(
+                Mass::new::<kilogram>(get_spinbutton_value(&self_.height_spin_button))
+                    .get::<pound>(),
+            ));
+        }
+    }
+
+    fn handle_weightgoal_spin_button_changed(&self) {
+        let self_ = self.get_priv();
+        let val = get_spinbutton_value::<f32>(&self_.weightgoal_spin_button);
+        if val != 0.0 {
+            let weight = if self_.unit_metric_togglebutton.get_active() {
+                Mass::new::<kilogram>(val)
+            } else {
+                Mass::new::<pound>(val)
+            };
+
+            self_.settings.set_user_weightgoal(weight);
+            self_.bmi_levelbar.set_weight(weight);
+        }
     }
 }

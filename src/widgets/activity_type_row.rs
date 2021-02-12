@@ -17,7 +17,8 @@
  */
 
 use crate::model::ActivityTypeRowData;
-use glib::subclass::types::ObjectSubclass;
+use glib::subclass::prelude::*;
+use gtk::prelude::*;
 
 mod imp {
     use glib::subclass;
@@ -64,32 +65,6 @@ mod imp {
     impl ObjectImpl for ActivityTypeRow {}
     impl WidgetImpl for ActivityTypeRow {}
     impl ListBoxRowImpl for ActivityTypeRow {}
-
-    impl ActivityTypeRow {
-        pub fn get_id(&self) -> &'static str {
-            *self.activity_type_id.borrow()
-        }
-
-        pub fn get_label(&self) -> String {
-            self.activity_type_label.get_text().to_string()
-        }
-
-        pub fn get_selected(&self) -> bool {
-            self.selected_image.get_visible()
-        }
-
-        pub fn set_id(&self, value: &'static str) {
-            self.activity_type_id.replace(value);
-        }
-
-        pub fn set_label(&self, value: &str) {
-            self.activity_type_label.set_text(value);
-        }
-
-        pub fn set_selected(&self, value: bool) {
-            self.selected_image.set_visible(value);
-        }
-    }
 }
 
 glib::wrapper! {
@@ -98,38 +73,41 @@ glib::wrapper! {
 }
 
 impl ActivityTypeRow {
-    pub fn new(data: &ActivityTypeRowData, selected: bool) -> Self {
-        let s = glib::Object::new(&[]).expect("Failed to create ActivityTypeRow");
+    pub fn get_id(&self) -> &'static str {
+        *self.get_priv().activity_type_id.borrow()
+    }
 
-        let self_ = imp::ActivityTypeRow::from_instance(&s);
-        self_.set_id(data.get_id());
-        self_.set_label(&data.get_label());
-        self_.set_selected(selected);
+    pub fn get_label(&self) -> String {
+        self.get_priv().activity_type_label.get_text().to_string()
+    }
+
+    pub fn get_selected(&self) -> bool {
+        self.get_priv().selected_image.get_visible()
+    }
+
+    pub fn new(data: &ActivityTypeRowData, selected: bool) -> Self {
+        let s: Self = glib::Object::new(&[]).expect("Failed to create ActivityTypeRow");
+
+        s.set_id(data.get_id());
+        s.set_label(&data.get_label());
+        s.set_selected(selected);
 
         s
     }
 
-    pub fn get_id(&self) -> &'static str {
-        imp::ActivityTypeRow::from_instance(self).get_id()
-    }
-
-    pub fn get_label(&self) -> String {
-        imp::ActivityTypeRow::from_instance(self).get_label()
-    }
-
-    pub fn get_selected(&self) -> bool {
-        imp::ActivityTypeRow::from_instance(self).get_selected()
-    }
-
     pub fn set_id(&self, value: &'static str) {
-        imp::ActivityTypeRow::from_instance(self).set_id(value)
+        self.get_priv().activity_type_id.replace(value);
     }
 
     pub fn set_label(&self, value: &str) {
-        imp::ActivityTypeRow::from_instance(self).set_label(value)
+        self.get_priv().activity_type_label.set_text(value)
     }
 
     pub fn set_selected(&self, value: bool) {
-        imp::ActivityTypeRow::from_instance(self).set_selected(value)
+        self.get_priv().selected_image.set_visible(value)
+    }
+
+    fn get_priv(&self) -> &imp::ActivityTypeRow {
+        imp::ActivityTypeRow::from_instance(self)
     }
 }

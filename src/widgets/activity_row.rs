@@ -16,21 +16,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::model::Activity;
-use glib::subclass::types::ObjectSubclass;
+use crate::{
+    core::{i18n_f, settings::Unitsystem},
+    model::{Activity, ActivityDataPoints, ActivityInfo},
+};
+use glib::subclass::prelude::*;
+use gtk::prelude::*;
+use uom::{
+    fmt::DisplayStyle::Abbreviation,
+    si::length::{meter, yard},
+};
 
 mod imp {
-    use crate::{
-        core::{i18n_f, settings::Unitsystem, Settings},
-        model::{Activity, ActivityDataPoints, ActivityInfo},
-    };
+    use crate::{core::Settings, model::Activity};
     use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
-    use uom::{
-        fmt::DisplayStyle::Abbreviation,
-        si::length::{meter, yard},
-    };
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_row.ui")]
@@ -127,74 +128,6 @@ mod imp {
 
     impl WidgetImpl for ActivityRow {}
     impl ListBoxRowImpl for ActivityRow {}
-
-    impl ActivityRow {
-        pub fn set_activity(&self, activity: Activity) {
-            let activity_info = ActivityInfo::from(activity.get_activity_type());
-
-            self.active_minutes_label.set_label(&i18n_f(
-                "{} Minutes",
-                &[&activity.get_duration().num_minutes().to_string()],
-            ));
-            self.activity_date_label
-                .set_text(&format!("{}", activity.get_date().format("%x")));
-            self.activity_type_label.set_label(&activity_info.name);
-
-            if activity_info
-                .available_data_points
-                .contains(ActivityDataPoints::CALORIES_BURNED)
-            {
-                if let Some(calories_burned) = activity.get_calories_burned() {
-                    self.calories_burned_label
-                        .set_label(&i18n_f("{} Calories", &[&calories_burned.to_string()]));
-                }
-            }
-
-            if activity_info
-                .available_data_points
-                .contains(ActivityDataPoints::HEART_RATE)
-            {
-                if activity.get_heart_rate_avg().unwrap_or(0) != 0 {
-                    self.heart_rate_average_label
-                        .set_text(&activity.get_heart_rate_avg().unwrap().to_string());
-                    self.heart_rate_average_row.set_visible(true);
-                }
-                if activity.get_heart_rate_max().unwrap_or(0) != 0 {
-                    self.heart_rate_maximum_label
-                        .set_text(&activity.get_heart_rate_max().unwrap().to_string());
-                    self.heart_rate_maximum_row.set_visible(true);
-                }
-                if activity.get_heart_rate_min().unwrap_or(0) != 0 {
-                    self.heart_rate_minimum_label
-                        .set_text(&activity.get_heart_rate_min().unwrap().to_string());
-                    self.heart_rate_minimum_row.set_visible(true);
-                }
-            }
-
-            if activity_info
-                .available_data_points
-                .contains(ActivityDataPoints::DISTANCE)
-            {
-                if let Some(distance) = activity.get_distance() {
-                    self.distance_row.set_visible(true);
-
-                    if self.settings.get_unitsystem() == Unitsystem::Imperial {
-                        self.distance_label.set_label(&format!(
-                            "{}",
-                            distance.clone().into_format_args(meter, Abbreviation)
-                        ));
-                    } else {
-                        self.distance_label.set_label(&format!(
-                            "{}",
-                            distance.clone().into_format_args(yard, Abbreviation)
-                        ));
-                    };
-                }
-            }
-
-            self.activity.set(activity).unwrap();
-        }
-    }
 }
 
 glib::wrapper! {
@@ -208,6 +141,79 @@ impl ActivityRow {
     }
 
     pub fn set_activity(&self, activity: Activity) {
-        imp::ActivityRow::from_instance(&self).set_activity(activity);
+        let self_ = self.get_priv();
+
+        let activity_info = ActivityInfo::from(activity.get_activity_type());
+
+        self_.active_minutes_label.set_label(&i18n_f(
+            "{} Minutes",
+            &[&activity.get_duration().num_minutes().to_string()],
+        ));
+        self_
+            .activity_date_label
+            .set_text(&format!("{}", activity.get_date().format("%x")));
+        self_.activity_type_label.set_label(&activity_info.name);
+
+        if activity_info
+            .available_data_points
+            .contains(ActivityDataPoints::CALORIES_BURNED)
+        {
+            if let Some(calories_burned) = activity.get_calories_burned() {
+                self_
+                    .calories_burned_label
+                    .set_label(&i18n_f("{} Calories", &[&calories_burned.to_string()]));
+            }
+        }
+
+        if activity_info
+            .available_data_points
+            .contains(ActivityDataPoints::HEART_RATE)
+        {
+            if activity.get_heart_rate_avg().unwrap_or(0) != 0 {
+                self_
+                    .heart_rate_average_label
+                    .set_text(&activity.get_heart_rate_avg().unwrap().to_string());
+                self_.heart_rate_average_row.set_visible(true);
+            }
+            if activity.get_heart_rate_max().unwrap_or(0) != 0 {
+                self_
+                    .heart_rate_maximum_label
+                    .set_text(&activity.get_heart_rate_max().unwrap().to_string());
+                self_.heart_rate_maximum_row.set_visible(true);
+            }
+            if activity.get_heart_rate_min().unwrap_or(0) != 0 {
+                self_
+                    .heart_rate_minimum_label
+                    .set_text(&activity.get_heart_rate_min().unwrap().to_string());
+                self_.heart_rate_minimum_row.set_visible(true);
+            }
+        }
+
+        if activity_info
+            .available_data_points
+            .contains(ActivityDataPoints::DISTANCE)
+        {
+            if let Some(distance) = activity.get_distance() {
+                self_.distance_row.set_visible(true);
+
+                if self_.settings.get_unitsystem() == Unitsystem::Imperial {
+                    self_.distance_label.set_label(&format!(
+                        "{}",
+                        distance.clone().into_format_args(meter, Abbreviation)
+                    ));
+                } else {
+                    self_.distance_label.set_label(&format!(
+                        "{}",
+                        distance.clone().into_format_args(yard, Abbreviation)
+                    ));
+                };
+            }
+        }
+
+        self_.activity.set(activity).unwrap();
+    }
+
+    fn get_priv(&self) -> &imp::ActivityRow {
+        imp::ActivityRow::from_instance(self)
     }
 }

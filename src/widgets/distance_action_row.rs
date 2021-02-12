@@ -16,12 +16,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gio::prelude::*;
+use crate::core::{i18n, settings::Unitsystem, utils::get_spinbutton_value};
 use glib::subclass::types::ObjectSubclass;
-use uom::si::f32::Length;
+use gtk::prelude::*;
+use uom::si::{
+    f32::Length,
+    length::{kilometer, meter, mile, yard},
+};
 
 mod imp {
-    use crate::core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Settings};
+    use crate::core::Settings;
     use adw::subclass::prelude::*;
     use glib::{
         clone,
@@ -29,10 +33,7 @@ mod imp {
     };
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
-    use uom::si::{
-        f32::Length,
-        length::{kilometer, meter, mile, yard},
-    };
+    use uom::si::{f32::Length, length::meter};
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/distance_action_row.ui")]
@@ -81,56 +82,24 @@ mod imp {
 
     impl ObjectImpl for DistanceActionRow {
         fn constructed(&self, obj: &Self::Type) {
-            let set_togglebutton_text = clone!(@weak obj => move || {
-                let self_ = DistanceActionRow::from_instance(&obj);
-                if self_.settings.get_unitsystem() == Unitsystem::Metric {
-                    self_.big_unit_togglebutton.set_label (&i18n("KM"));
-                    self_.small_unit_togglebutton.set_label (&i18n("Meters"));
-                } else {
-                    self_.big_unit_togglebutton.set_label (&i18n("Miles"));
-                    self_.small_unit_togglebutton.set_label (&i18n("Yards"));
-                }
-            });
-
-            set_togglebutton_text();
-            self.settings
-                .connect_unitsystem_changed(move |_, _| set_togglebutton_text());
+            obj.set_togglebutton_text();
+            self.settings.connect_unitsystem_changed(
+                clone!(@weak obj => move |_, _| obj.set_togglebutton_text()),
+            );
 
             self.small_unit_togglebutton
                 .connect_toggled(clone!(@weak obj => move |btn| {
-                    let adjustment = &DistanceActionRow::from_instance(&obj).distance_adjustment;
-                    if btn.get_active() {
-                        adjustment.set_step_increment(100.0);
-                        adjustment.set_page_increment(1000.0);
-                    } else {
-                        adjustment.set_step_increment(1.0);
-                        adjustment.set_page_increment(5.0);
-                    }
+                    obj.handle_small_unit_togglebutton_toggle(btn)
                 }));
 
             self.distance_spin_button
-                .connect_changed(clone!(@weak obj => move |e| {
-                    let self_ = DistanceActionRow::from_instance(&obj);
-                    let value = get_spinbutton_value::<f32>(e);
-
-                    if self_.settings.get_unitsystem() == Unitsystem::Metric {
-                        if self_.small_unit_togglebutton.get_active() {
-                            self_.value.replace(Length::new::<meter>(value));
-                        } else {
-                            self_.value.replace(Length::new::<kilometer>(value));
-                        }
-                    } else if self_.small_unit_togglebutton.get_active() {
-                        self_.value.replace(Length::new::<yard>(value));
-                    } else {
-                        self_.value.replace(Length::new::<mile>(value));
-                    }
-                    obj.emit("changed", &[]).unwrap();
+                .connect_changed(clone!(@weak obj => move |s| {
+                    obj.handle_distance_spin_button_changed(s);
                 }));
 
             self.distance_spin_button
                 .connect_input(clone!(@weak obj => move |_| {
-                    obj.emit("input", &[]).unwrap();
-                    None
+                    obj.handle_distance_spin_button_input()
                 }));
         }
 
@@ -149,34 +118,6 @@ mod imp {
     impl WidgetImpl for DistanceActionRow {}
     impl ListBoxRowImpl for DistanceActionRow {}
     impl ActionRowImpl for DistanceActionRow {}
-
-    impl DistanceActionRow {
-        pub fn get_value(&self) -> Length {
-            *self.value.borrow()
-        }
-
-        pub fn set_value(&self, value: Length) {
-            // FIXME: Disallow both buttons being inactive
-
-            if self.settings.get_unitsystem() == Unitsystem::Metric {
-                if self.small_unit_togglebutton.get_active() {
-                    self.distance_spin_button
-                        .set_value(value.get::<meter>().into())
-                } else if self.big_unit_togglebutton.get_active() {
-                    self.distance_spin_button
-                        .set_value(value.get::<kilometer>().into())
-                }
-            } else if self.small_unit_togglebutton.get_active() {
-                self.distance_spin_button
-                    .set_value(value.get::<yard>().into())
-            } else if self.big_unit_togglebutton.get_active() {
-                self.distance_spin_button
-                    .set_value(value.get::<mile>().into())
-            }
-
-            self.value.replace(value);
-        }
-    }
 }
 
 glib::wrapper! {
@@ -185,18 +126,6 @@ glib::wrapper! {
 }
 
 impl DistanceActionRow {
-    pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create DistanceActionRow")
-    }
-
-    pub fn get_value(&self) -> Length {
-        imp::DistanceActionRow::from_instance(self).get_value()
-    }
-
-    pub fn set_value(&self, value: Length) {
-        imp::DistanceActionRow::from_instance(self).set_value(value)
-    }
-
     pub fn connect_changed<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
         self.connect_local("changed", false, move |_| {
             callback();
@@ -211,5 +140,89 @@ impl DistanceActionRow {
             None
         })
         .unwrap()
+    }
+
+    pub fn get_value(&self) -> Length {
+        *self.get_priv().value.borrow()
+    }
+
+    pub fn new() -> Self {
+        glib::Object::new(&[]).expect("Failed to create DistanceActionRow")
+    }
+
+    pub fn set_value(&self, value: Length) {
+        // FIXME: Disallow both buttons being inactive
+        let self_ = self.get_priv();
+
+        if self_.settings.get_unitsystem() == Unitsystem::Metric {
+            if self_.small_unit_togglebutton.get_active() {
+                self_
+                    .distance_spin_button
+                    .set_value(value.get::<meter>().into())
+            } else if self_.big_unit_togglebutton.get_active() {
+                self_
+                    .distance_spin_button
+                    .set_value(value.get::<kilometer>().into())
+            }
+        } else if self_.small_unit_togglebutton.get_active() {
+            self_
+                .distance_spin_button
+                .set_value(value.get::<yard>().into())
+        } else if self_.big_unit_togglebutton.get_active() {
+            self_
+                .distance_spin_button
+                .set_value(value.get::<mile>().into())
+        }
+
+        self_.value.replace(value);
+    }
+
+    fn get_priv(&self) -> &imp::DistanceActionRow {
+        imp::DistanceActionRow::from_instance(self)
+    }
+
+    fn handle_distance_spin_button_changed(&self, spinbutton: &gtk::SpinButton) {
+        let self_ = self.get_priv();
+        let value = get_spinbutton_value::<f32>(spinbutton);
+
+        if self_.settings.get_unitsystem() == Unitsystem::Metric {
+            if self_.small_unit_togglebutton.get_active() {
+                self_.value.replace(Length::new::<meter>(value));
+            } else {
+                self_.value.replace(Length::new::<kilometer>(value));
+            }
+        } else if self_.small_unit_togglebutton.get_active() {
+            self_.value.replace(Length::new::<yard>(value));
+        } else {
+            self_.value.replace(Length::new::<mile>(value));
+        }
+        self.emit("changed", &[]).unwrap();
+    }
+
+    fn handle_distance_spin_button_input(&self) -> Option<Result<f64, ()>> {
+        self.emit("input", &[]).unwrap();
+        None
+    }
+
+    fn handle_small_unit_togglebutton_toggle(&self, btn: &gtk::ToggleButton) {
+        let adjustment = &self.get_priv().distance_adjustment;
+        if btn.get_active() {
+            adjustment.set_step_increment(100.0);
+            adjustment.set_page_increment(1000.0);
+        } else {
+            adjustment.set_step_increment(1.0);
+            adjustment.set_page_increment(5.0);
+        }
+    }
+
+    fn set_togglebutton_text(&self) {
+        let self_ = self.get_priv();
+        if self_.settings.get_unitsystem() == Unitsystem::Metric {
+            self_.big_unit_togglebutton.set_label(&i18n("KM"));
+            self_.small_unit_togglebutton.set_label(&i18n("Meters"));
+        } else {
+            self_.big_unit_togglebutton.set_label(&i18n("Miles"));
+            self_.small_unit_togglebutton.set_label(&i18n("Yards"));
+        }
     }
 }
