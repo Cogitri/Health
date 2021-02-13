@@ -50,6 +50,8 @@ where
 ///
 /// # Examples
 /// ```
+/// use libhealth::utils::round_decimal_places;
+///
 /// let val = 13.54231;
 /// assert_eq!(round_decimal_places(val, 1), 13.5);
 /// assert_eq!(round_decimal_places(val, 2), 13.54);

@@ -12,21 +12,17 @@
 
 use gettextrs::{bindtextdomain, setlocale, textdomain, LocaleCategory};
 use gtk::prelude::ApplicationExtManual;
-
-mod config;
-mod core;
-mod model;
-mod sync;
-mod views;
-mod widgets;
-mod windows;
+use libhealth::{
+    config,
+    core::{i18n, Application},
+};
 
 fn main() {
     setlocale(LocaleCategory::LcAll, "");
     bindtextdomain(config::GETTEXT_PACKAGE, config::LOCALEDIR);
     textdomain(config::GETTEXT_PACKAGE);
 
-    glib::set_application_name(&core::i18n("Health"));
+    glib::set_application_name(&i18n("Health"));
     glib::set_prgname(Some("dev.Cogitri.Health"));
 
     gtk::init().expect("Failed to initialize GTK.");
@@ -36,7 +32,7 @@ fn main() {
         .expect("Could not load resources");
     gio::resources_register(&res);
 
-    let app = crate::core::Application::new();
+    let app = Application::new();
 
     let ret = app.run(&std::env::args().collect::<Vec<_>>());
     std::process::exit(ret);
