@@ -65,12 +65,7 @@ impl GraphModelWeight {
     pub async fn reload(&mut self, duration: Duration) -> Result<(), glib::Error> {
         self.vec = self
             .database
-            .get_weights(Some(
-                chrono::Local::now()
-                    .checked_sub_signed(duration)
-                    .unwrap()
-                    .into(),
-            ))
+            .get_weights(Some((chrono::Local::now() - duration).into()))
             .await?;
         Ok(())
     }

@@ -21,7 +21,7 @@ use crate::{
     model::ActivityType,
 };
 use chrono::{DateTime, Duration, FixedOffset, TimeZone};
-use serde::{Deserialize, Deserializer, Serializer};
+use serde::{de, Deserialize, Deserializer, Serializer};
 use std::convert::{TryFrom, TryInto};
 use uom::si::{
     f32::{Length, Mass},
@@ -96,10 +96,13 @@ where
     let date_time = FixedOffset::east(0)
         .ymd(1970, 1, 1)
         .and_hms(0, 0, 0)
-        .checked_add_signed(Duration::seconds(val.try_into().unwrap()))
-        .unwrap();
+        .checked_add_signed(Duration::seconds(val.try_into().unwrap()));
 
-    Ok(date_time)
+    if let Some(date) = date_time {
+        Ok(date)
+    } else {
+        Err(de::Error::custom("date would overflow"))
+    }
 }
 
 pub fn serialize_activity_type<S>(val: &ActivityType, s: S) -> Result<S::Ok, S::Error>

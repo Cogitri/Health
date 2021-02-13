@@ -120,12 +120,7 @@ impl ModelActivity {
             .database
             .get()
             .unwrap()
-            .get_activities(Some(
-                chrono::Local::now()
-                    .checked_sub_signed(duration)
-                    .unwrap()
-                    .into(),
-            ))
+            .get_activities(Some((chrono::Local::now() - duration).into()))
             .await?;
         {
             self_.inner.borrow_mut().vec = new_vec;

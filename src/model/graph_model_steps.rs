@@ -111,12 +111,7 @@ impl GraphModelSteps {
     pub async fn reload(&mut self, duration: Duration) -> Result<(), glib::Error> {
         self.vec = self
             .database
-            .get_steps(
-                chrono::Local::now()
-                    .checked_sub_signed(duration)
-                    .unwrap()
-                    .into(),
-            )
+            .get_steps((chrono::Local::now() - duration).into())
             .await?;
         Ok(())
     }
@@ -133,10 +128,7 @@ impl GraphModelSteps {
 
         for (i, point) in self.vec.iter().enumerate() {
             for j in i..last_val {
-                let date = first_date
-                    .clone()
-                    .checked_add_signed(Duration::days((i + j).try_into().unwrap()))
-                    .unwrap();
+                let date = first_date + Duration::days((i + j).try_into().unwrap());
                 ret.push(Point { date, value: 0.0 });
             }
             ret.push(Point {
@@ -162,10 +154,7 @@ impl GraphModelSteps {
             )
             .unwrap()
         {
-            let date = first_date
-                .clone()
-                .checked_add_signed(Duration::days(x.try_into().unwrap()))
-                .unwrap();
+            let date = first_date + Duration::days(x.try_into().unwrap());
             ret.push(Point { date, value: 0.0 });
         }
 

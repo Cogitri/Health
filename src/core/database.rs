@@ -767,11 +767,9 @@ mod test {
         let retrieved_activities = run_async_test_fn(async move {
             db.save_activity(expected_activity).await.unwrap();
 
-            db.get_activities(Some(
-                date.checked_add_signed(Duration::days(1)).unwrap().into(),
-            ))
-            .await
-            .unwrap()
+            db.get_activities(Some((date + Duration::days(1)).into()))
+                .await
+                .unwrap()
         });
         assert!(retrieved_activities.is_empty());
     }
@@ -787,11 +785,9 @@ mod test {
         let retrieved_weights = run_async_test_fn(async move {
             db.save_weight(w).await.unwrap();
 
-            db.get_weights(Some(
-                date.checked_add_signed(Duration::days(1)).unwrap().into(),
-            ))
-            .await
-            .unwrap()
+            db.get_weights(Some((date + Duration::days(1)).into()))
+                .await
+                .unwrap()
         });
         assert!(retrieved_weights.is_empty());
     }
@@ -812,11 +808,9 @@ mod test {
         let retrieved_activities = run_async_test_fn(async move {
             db.save_activity(a).await.unwrap();
 
-            db.get_activities(Some(
-                date.checked_sub_signed(Duration::days(1)).unwrap().into(),
-            ))
-            .await
-            .unwrap()
+            db.get_activities(Some((date - Duration::days(1)).into()))
+                .await
+                .unwrap()
         });
         let activity = retrieved_activities.get(0).unwrap();
         assert_eq!(
@@ -837,11 +831,9 @@ mod test {
         let retrieved_weights = run_async_test_fn(async move {
             db.save_weight(w).await.unwrap();
 
-            db.get_weights(Some(
-                date.checked_sub_signed(Duration::days(1)).unwrap().into(),
-            ))
-            .await
-            .unwrap()
+            db.get_weights(Some((date - Duration::days(1)).into()))
+                .await
+                .unwrap()
         });
         let weight = retrieved_weights.get(0).unwrap();
         assert_eq!(expected_weight.weight, weight.weight);
@@ -895,11 +887,9 @@ mod test {
 
         let retrieved_activities = run_async_test_fn(async move {
             db.migrate().await.unwrap();
-            db.get_activities(Some(
-                date.checked_sub_signed(Duration::days(1)).unwrap().into(),
-            ))
-            .await
-            .unwrap()
+            db.get_activities(Some((date - Duration::days(1)).into()))
+                .await
+                .unwrap()
         });
         let activity = retrieved_activities.get(0).unwrap();
         assert_eq!(expected_activity.get_steps(), activity.get_steps());
@@ -951,11 +941,9 @@ mod test {
 
         let retrieved_weights = run_async_test_fn(async move {
             db.migrate().await.unwrap();
-            db.get_weights(Some(
-                date.checked_sub_signed(Duration::days(1)).unwrap().into(),
-            ))
-            .await
-            .unwrap()
+            db.get_weights(Some((date - Duration::days(1)).into()))
+                .await
+                .unwrap()
         });
         let weight = retrieved_weights.get(0).unwrap();
         assert_eq!(expected_weight.weight, weight.weight);
