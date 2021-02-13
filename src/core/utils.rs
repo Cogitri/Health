@@ -20,13 +20,13 @@ use gtk::EditableExt;
 #[cfg(test)]
 use std::future::Future;
 
-/// Get the number-value of a `gtk::SpinButton`.
+/// Get the number-value of a [gtk::SpinButton].
 ///
 /// # Arguments
-/// * `spin_button` - The `gtk::SpinButton` to get the value of.
+/// * `spin_button` - The [gtk::SpinButton] to get the value of.
 ///
 /// # Returns
-/// The value of the `gtk::SpinButton` or `T::default()`.
+/// The value of the [gtk::SpinButton] or `T::default()`.
 pub fn get_spinbutton_value<T>(spin_button: &gtk::SpinButton) -> T
 where
     T: std::str::FromStr + Default,

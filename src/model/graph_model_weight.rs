@@ -75,7 +75,7 @@ impl GraphModelWeight {
         Ok(())
     }
 
-    /// Converts the model's data to an array of `Point` so it can be displayed in a `GraphView`.
+    /// Converts the model's data to an array of [Point](crate::views::Point) so it can be displayed in a [GraphView](crate::views::GraphView).
     pub fn to_points(&self) -> Vec<crate::views::Point> {
         self.vec
             .iter()

@@ -89,7 +89,7 @@ impl Database {
     /// * `callback` - The callback which should be invoked when `activities-update` is emitted.
     ///
     /// # Returns
-    /// A `glib::SignalHandlerId` that can be used for disconnecting the signal if so desired.
+    /// A [glib::SignalHandlerId] that can be used for disconnecting the signal if so desired.
     pub fn connect_activities_updated<F: Fn() + 'static>(
         &self,
         callback: F,
@@ -107,7 +107,7 @@ impl Database {
     /// * `callback` - The callback which should be invoked when `weights-update` is emitted.
     ///
     /// # Returns
-    /// A `glib::SignalHandlerId` that can be used for disconnecting the signal if so desired.
+    /// A [glib::SignalHandlerId] that can be used for disconnecting the signal if so desired.
     pub fn connect_weights_updated<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
         self.connect_local("weights-updated", false, move |_| {
             callback();
@@ -122,7 +122,7 @@ impl Database {
     /// * `date_opt` - If `Some`, only get activities that are more recent than `date_opt`.
     ///
     /// # Returns
-    /// An array of `Activity`s that are within the given timeframe (if set), or a `glib::Error` if querying the DB goes wrong.
+    /// An array of [Activity]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn get_activities(
         &self,
         date_opt: Option<DateTime<FixedOffset>>,
@@ -208,7 +208,7 @@ impl Database {
     /// * `date_opt` - If `Some`, only get steps that are more recent than `date_opt`.
     ///
     /// # Returns
-    /// An array of `Steps`s that are within the given timeframe (if set), or a `glib::Error` if querying the DB goes wrong.
+    /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn get_steps(&self, date: DateTime<FixedOffset>) -> Result<Vec<Steps>, glib::Error> {
         let self_ = self.get_priv();
 
@@ -239,7 +239,7 @@ impl Database {
     /// * `date_opt` - If `Some`, only get weights that are more recent than `date_opt`
     ///
     /// # Returns
-    /// An array of `Weight`s that are within the given timeframe (if set), or a `glib::Error` if querying the DB goes wrong.
+    /// An array of [Weight]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn get_weights(
         &self,
         date_opt: Option<DateTime<FixedOffset>>,
@@ -265,13 +265,13 @@ impl Database {
         Ok(ret)
     }
 
-    /// Check if a `WeightMeasurement` exists on a given date
+    /// Check if a [Weight] exists on a given date
     ///
     /// # Arguments
     /// * `date` - The date which should be checked
     ///
     /// # Returns
-    /// True if a `WeightMeasurement` exists on the `date`, or `glib::Error` if querying the DB goes wrong.
+    /// True if a [Weight] exists on the `date`, or [glib::Error] if querying the DB goes wrong.
     pub async fn get_weight_exists_on_date(
         &self,
         date: Date<FixedOffset>,
@@ -287,7 +287,7 @@ impl Database {
         return Ok(cursor.get_boolean(0));
     }
 
-    /// Import an array of Steps into the DB (e.g. when doing the initial sync with a sync provider)
+    /// Import an array of [Steps] into the DB (e.g. when doing the initial sync with a sync provider)
     ///
     /// # Arguments
     /// * `steps` - An array of steps to add to the DB.
@@ -336,7 +336,7 @@ impl Database {
         Ok(())
     }
 
-    /// Import an array of Weight into the DB (e.g. when doing the initial sync with a sync provider)
+    /// Import an array of [Weight] into the DB (e.g. when doing the initial sync with a sync provider)
     ///
     /// # Arguments
     /// * `weight` - An array of weight to add to the DB.
@@ -390,7 +390,7 @@ impl Database {
         Ok(())
     }
 
-    /// Migrate `Activity`s from date to dateTime. This will set all entries where a date is set to the date at 00:00:00 at the local datetime.
+    /// Migrate [Activity]s from `xsd:date` to `xsd:dateTime`. This will set all entries where a date is set to the date at 00:00:00 at the local datetime.
     ///
     /// # Returns
     /// Am error if querying the DB goes wrong.
@@ -550,7 +550,7 @@ impl Database {
     /// Create a new Tracker DB and connect to Tracker.
     ///
     /// # Returns
-    /// Either `Self`, or `glib::Error` if connecting to Tracker failed.
+    /// Either [Database], or [glib::Error] if connecting to Tracker failed.
     pub fn new() -> Result<Self, glib::Error> {
         let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
 
@@ -562,10 +562,10 @@ impl Database {
     /// Create a new Tracker DB and connect to Tracker.
     ///
     /// # Arguments
-    /// * `store_path` - Path to where the Tracker DB should be stored.
+    /// * `store_path` - [PathBuf] to where the Tracker DB should be stored.
     ///
     /// # Returns
-    /// Either `Self`, or `glib::Error` if connecting to Tracker failed.
+    /// Either [Database], or [glib::Error] if connecting to Tracker failed.
     #[cfg(test)]
     pub fn new_with_store_path(store_path: PathBuf) -> Result<Self, glib::Error> {
         let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
@@ -596,10 +596,10 @@ impl Database {
         Ok(())
     }
 
-    /// Save an activity to the database.
+    /// Save an [Activity] to the database.
     ///
     /// # Arguments
-    /// * `activity` - The activity which should be saved.
+    /// * `activity` - The [Activity] which should be saved.
     ///
     /// # Returns
     /// An error if querying the DB goes wrong.
@@ -662,10 +662,10 @@ impl Database {
         Ok(())
     }
 
-    /// Save an weight to the database.
+    /// Save an [Weight] to the database.
     ///
     /// # Arguments
-    /// * `weight` - The weight which should be saved.
+    /// * `weight` - The [Weight] which should be saved.
     ///
     /// # Returns
     /// An error if querying the DB goes wrong.

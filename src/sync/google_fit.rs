@@ -76,7 +76,7 @@ impl GoogleFitSyncProvider {
     /// * `date_opt` - If set, get steps from that date until now. Otherwise get all steps (e.g. for initial import).
     ///
     /// # Returns
-    /// An array of `Steps`, or a `SyncProviderError` if querying the Google Fit API fails.
+    /// An array of [Steps], or a [SyncProviderError] if querying the Google Fit API fails.
     fn get_steps(
         &mut self,
         date_opt: Option<DateTime<FixedOffset>>,
@@ -96,7 +96,7 @@ impl GoogleFitSyncProvider {
     /// * `date_opt` - If set, get weight measurements from that date until now. Otherwise get all weight measurements (e.g. for initial import).
     ///
     /// # Returns
-    /// An array of `Weight`s, or a `SyncProviderError` if querying the Google Fit API fails.
+    /// An array of [Weight]s, or a [SyncProviderError] if querying the Google Fit API fails.
     fn get_weights(
         &mut self,
         date_opt: Option<DateTime<FixedOffset>>,
@@ -110,7 +110,7 @@ impl GoogleFitSyncProvider {
         Ok(Self::points_to_weights(points))
     }
 
-    /// Convert Google-Fit JSON `Points` to an array of `Steps`
+    /// Convert Google-Fit JSON [Points] to an array of [Steps]
     // False-Positive in contains_key, we can't use .entry().insert_or() since we need the else condition
     #[allow(clippy::map_entry)]
     fn points_to_steps(p: Points) -> Vec<Steps> {
@@ -134,7 +134,7 @@ impl GoogleFitSyncProvider {
             .collect()
     }
 
-    /// Convert Google-Fit JSON `Points` to an array of `Weight`
+    /// Convert Google-Fit JSON [Points] to an array of [Weight]
     fn points_to_weights(p: Points) -> Vec<Weight> {
         p.point
             .into_iter()

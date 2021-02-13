@@ -87,8 +87,8 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// An implementation of `ListModel` that stores `Activity`s.
-    /// Can be used with `ActivityView` to display past activities.
+    /// An implementation of [gio::ListModel] that stores [Activity](crate::model::Activity)s.
+    /// Can be used with [ActivityView](crate::views::ViewActivity) to display past activities.
     pub struct ModelActivity(ObjectSubclass<imp::ModelActivity>) @implements gio::ListModel;
 }
 

@@ -35,10 +35,10 @@ pub struct ActivityInfo {
 }
 
 impl From<ActivityType> for ActivityInfo {
-    /// Converts an `ActivityType` into an `ActivityInfo` that contains infos like a localised name.
+    /// Converts an [ActivityType] into an [ActivityInfo] that contains infos like a localised name.
     ///
     /// # Returns
-    /// The respective `ActivityInfo`
+    /// The respective [ActivityInfo]
     ///
     /// # Examples
     /// ```
@@ -250,7 +250,7 @@ impl From<ActivityType> for ActivityInfo {
 impl TryFrom<&str> for ActivityInfo {
     type Error = String;
 
-    /// Try converting from an `ActivityInfo` ID to an `ActivitityInfo`.
+    /// Try converting from an [ActivityInfo] `ID` to an [ActivityInfo].
     ///
     /// # Examples
     /// ```

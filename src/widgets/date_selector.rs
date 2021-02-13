@@ -91,7 +91,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// A widget to select a date via a `gtk::Calendar` or by entering a date into a text entry.
+    /// A widget to select a date via a [gtk::Calendar] or by entering a date into a [gtk::Entry].
     pub struct DateSelector(ObjectSubclass<imp::DateSelector>)
         @extends gtk::Widget, gtk::Entry, @implements gtk::Editable;
 }

@@ -21,7 +21,7 @@ use gio::FileExt;
 use gtk::prelude::*;
 use std::convert::TryFrom;
 
-/// `CSVHandler` is a struct which manages exporting data from the Tracker DB to a
+/// [CSVHandler] is a struct which manages exporting data from the Tracker DB to a
 /// CSV file or importing it from a CSV file into the Tracker DB.
 pub struct CSVHandler {
     db: Database,
@@ -32,7 +32,7 @@ impl CSVHandler {
         Self { db }
     }
 
-    /// Export all `Activity`s in the Tracker DB to a CSV file.
+    /// Export all [Activity](crate::model::Activity)s in the Tracker DB to a CSV file.
     ///
     /// # Arguments
     /// * `file` - The file to write the CSV data to.
@@ -59,7 +59,7 @@ impl CSVHandler {
         Ok(())
     }
 
-    /// Export all `Weight`s in the Tracker DB to a CSV file.
+    /// Export all [Weight](crate::model::Weight) in the Tracker DB to a CSV file.
     ///
     /// # Arguments
     /// * `file` - The file to write the CSV data to.
@@ -86,7 +86,7 @@ impl CSVHandler {
         Ok(())
     }
 
-    /// Import all `Activity`s from a CSV file to the Tracker DB.
+    /// Import all [Activity](crate::model::Activity)s from a CSV file to the Tracker DB.
     ///
     /// # Arguments
     /// * `file` - The file to read the CSV data from.
@@ -112,7 +112,7 @@ impl CSVHandler {
         Ok(())
     }
 
-    /// Import all `Weight`s from a CSV file to the Tracker DB.
+    /// Import all [Weight](crate::model::Weight)s from a CSV file to the Tracker DB.
     ///
     /// # Arguments
     /// * `file` - The file to read the CSV data from.

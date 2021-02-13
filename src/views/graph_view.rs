@@ -21,7 +21,7 @@ use gio::subclass::prelude::*;
 use gtk::prelude::*;
 use std::convert::TryInto;
 
-/// A Point describes a single datapoint in a `GraphView`
+/// A [Point] describes a single datapoint in a [GraphView]
 #[derive(Debug, Clone)]
 pub struct Point {
     pub date: Date<FixedOffset>,

@@ -51,7 +51,7 @@ impl From<ureq::Error> for SyncProviderError {
     }
 }
 
-/// `SyncProvider` is a trait that should be implemented by all 3rd party providers.
+/// [SyncProvider] is a trait that should be implemented by all 3rd party providers.
 pub trait SyncProvider {
     /// Returns the URL to the API Endpoint
     fn get_api_url(&self) -> &'static str;
@@ -149,7 +149,7 @@ pub trait SyncProvider {
         }
     }
 
-    /// Retrieve the `RefreshToken` from the secret store.
+    /// Retrieve the [RefreshToken] from the secret store.
     ///
     /// # Returns
     /// A `RefreshToken` if a refresh token is set, or `None` if no refresh token is set.
@@ -173,10 +173,10 @@ pub trait SyncProvider {
         }
     }
 
-    /// Set the `RefreshToken` in the secret store.
+    /// Set the [RefreshToken] in the secret store.
     ///
     /// # Arguments
-    /// * `value` - The `RefreshToken` that should be stored.
+    /// * `value` - The [RefreshToken] that should be stored.
     ///
     /// # Returns
     /// May return an error if querying the secret store fails.
@@ -212,7 +212,7 @@ pub trait SyncProvider {
     /// * `authorize_url` - The URL which should be opened in the user's browser so they can authenticate.
     ///
     /// # Returns
-    /// The `AuthorizationCode` and `CrfsToken` that were returned by the sync provider, or an error if
+    /// The [AuthorizationCode] and [CsrfToken] that were returned by the sync provider, or an error if
     /// reading the response fails. Please keep in mind that the returned `CrfsToken` should always be compared
     /// to what you sent to the provider to make sure the request went through fine.
     fn start_listen_server(

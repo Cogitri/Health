@@ -27,7 +27,7 @@ pub enum DatabaseValue {
     Weights(Vec<Weight>),
 }
 
-/// Create a `Sender` which can be used in threaded scenarios (e.g. sync providers).
+/// Create a [glib::Sender] which can be used in threaded scenarios (e.g. sync providers).
 /// Values sent through the sender will automatically import it into the DB.
 pub fn new_db_receiver(db: Database) -> glib::Sender<DatabaseValue> {
     let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);

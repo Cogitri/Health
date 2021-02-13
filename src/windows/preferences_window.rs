@@ -180,7 +180,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// The PreferencesWindow is presented to the user to set certain settings
+    /// The [PreferencesWindow] is presented to the user to set certain settings
     /// in the application.
     pub struct PreferencesWindow(ObjectSubclass<imp::PreferencesWindow>)
         @extends gtk::Widget, gtk::Window, adw::PreferencesWindow;

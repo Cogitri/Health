@@ -55,8 +55,9 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// The data belonging to a certain `ActivityTypeRow`. This can be fed to a `ActivityTypeRow` via
-    /// a `ListModel`.
+    /// The data belonging to a certain [ActivityTypeRow](crate::views::ActivityTypeRow).
+    /// This can be fed to a [ActivityTypeRow](crate::views::ActivityTypeRow) via
+    /// a [gio::ListModel].
     pub struct ActivityTypeRowData(ObjectSubclass<imp::ActivityTypeRowData>);
 }
 

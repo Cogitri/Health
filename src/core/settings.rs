@@ -38,7 +38,7 @@ pub struct Settings {
 }
 
 impl Settings {
-    /// Create a new `Settings` object. Since this operation is pretty cheap it's OK to call this when
+    /// Create a new [Settings] object. Since this operation is pretty cheap it's OK to call this when
     /// constructing your struct instead of passing `Settings` around.
     pub fn new() -> Self {
         Self {

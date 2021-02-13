@@ -166,7 +166,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// The `SetupWindow` is shown to the user on the first start of the applcation to fill in some data.
+    /// The [SetupWindow] is shown to the user on the first start of the applcation to fill in some data.
     pub struct SetupWindow(ObjectSubclass<imp::SetupWindow>)
         @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow, adw::ApplicationWindow, @implements gio::ActionMap, gio::ActionGroup;
 }

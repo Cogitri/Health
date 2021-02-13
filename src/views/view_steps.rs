@@ -89,7 +89,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// An implementation of `View` visualizes streak counts and daily step records.
+    /// An implementation of [View] visualizes streak counts and daily step records.
     pub struct ViewSteps(ObjectSubclass<imp::ViewSteps>)
         @extends View;
 }
@@ -112,7 +112,7 @@ impl ViewSteps {
         o
     }
 
-    /// Reload the `StepsGraphModel`'s data and refresh labels & the `StepsGraphView`.
+    /// Reload the [GraphModelSteps]'s data and refresh labels & the [GraphView].
     pub async fn update(&self) {
         let self_ = self.get_priv();
 

@@ -97,7 +97,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// An `Activity` represents a single `Activity` a user has performed (e.g. walking).
+    /// An [Activity] represents a single activity an user has performed (e.g. walking).
     pub struct Activity(ObjectSubclass<imp::Activity>);
 }
 
