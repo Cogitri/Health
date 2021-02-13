@@ -106,11 +106,13 @@ impl Activity {
     ///
     /// # Examples
     /// ```
+    /// use libhealth::{Activity, ActivityType};
+    ///
     /// let activity = Activity::new();
     /// activity.set_activity_type(ActivityType::Walking);
-    /// activity.set_calories(Some(100));
+    /// activity.set_calories_burned(Some(100));
     /// activity.autofill_from_calories();
-    /// assert_eq!(activity.get_minutes(), 20);
+    /// assert_eq!(activity.get_duration().num_minutes(), 20);
     /// ```
     pub fn autofill_from_calories(&self) {
         let self_ = self.get_priv();
@@ -139,64 +141,16 @@ impl Activity {
     ///
     /// # Examples
     /// ```
+    /// use libhealth::{Activity, ActivityType};
+    /// use uom::si::{f32::Length, length::kilometer};
+    ///
     /// let activity = Activity::new();
     /// activity.set_activity_type(ActivityType::Walking);
-    /// activity.set_distance(Length::new::<kilometer>(1));
+    /// activity.set_distance(Some(Length::new::<kilometer>(1.0)));
     /// activity.autofill_from_distance();
-    /// assert_eq!(activity.get_minutes(), 11);
+    /// assert_eq!(activity.get_duration().num_minutes(), 11);
     /// ```
     pub fn autofill_from_distance(&self) {
-        let self_ = self.get_priv();
-
-        let mut inner = self_.inner.borrow_mut();
-        let info = ActivityInfo::from(inner.activity_type.clone());
-        let minutes = u32::try_from(inner.duration.num_minutes()).unwrap();
-
-        if minutes != 0
-            && info
-                .available_data_points
-                .contains(ActivityDataPoints::DURATION)
-        {
-            inner.calories_burned = Some(info.average_calories_burned_per_minute * minutes);
-
-            if let Some(distance) = match inner.activity_type {
-                ActivityType::Bicycling => Some(BICYCLING_METERS_PER_MINUTE * minutes),
-                ActivityType::HorseRiding => Some(HORSE_RIDING_METERS_PER_MINUTE * minutes),
-                ActivityType::Hiking | ActivityType::Walking => {
-                    Some(WALKING_METERS_PER_MINUTE * minutes)
-                }
-                ActivityType::RollerBlading => Some(ROLLER_BLADING_METERS_PER_MINUTE * minutes),
-                ActivityType::Running | ActivityType::TrackAndField => {
-                    Some(RUNNING_METERS_PER_MINUTE * minutes)
-                }
-                ActivityType::Skiing => Some(SKIING_METERS_PER_MINUTE * minutes),
-                ActivityType::Swimming => Some(SWIMMING_METERS_PER_MINUTE * minutes),
-                _ => None,
-            }
-            .map(|v: u32| Length::new::<meter>(v as f32))
-            {
-                inner.distance = Some(distance);
-            }
-
-            match inner.activity_type {
-                ActivityType::Walking | ActivityType::Hiking => inner.steps = Some(minutes * 100),
-                ActivityType::Running => inner.steps = Some(minutes * 150),
-                _ => {}
-            }
-        }
-    }
-
-    /// Try interpolating data from the `minutes` that is set on `self`.
-    ///
-    /// # Examples
-    /// ```
-    /// let activity = Activity::new();
-    /// activity.set_activity_type(ActivityType::Walking);
-    /// activity.set_duration(Duration::minutes(20));
-    /// activity.autofill_from_minutes();
-    /// assert_eq!(activity.get_calories(), Some(100));
-    /// ```
-    pub fn autofill_from_minutes(&self) {
         let self_ = self.get_priv();
 
         let mut inner = self_.inner.borrow_mut();
@@ -241,15 +195,71 @@ impl Activity {
         }
     }
 
+    /// Try interpolating data from the `minutes` that is set on `self`.
+    ///
+    /// # Examples
+    /// ```
+    /// use libhealth::{Activity, ActivityType};
+    /// use chrono::Duration;
+    ///
+    /// let activity = Activity::new();
+    /// activity.set_activity_type(ActivityType::Walking);
+    /// activity.set_duration(Duration::minutes(20));
+    /// activity.autofill_from_minutes();
+    /// assert_eq!(activity.get_calories_burned(), Some(100));
+    /// ```
+    pub fn autofill_from_minutes(&self) {
+        let self_ = self.get_priv();
+
+        let mut inner = self_.inner.borrow_mut();
+        let info = ActivityInfo::from(inner.activity_type.clone());
+        let minutes = u32::try_from(inner.duration.num_minutes()).unwrap();
+
+        if minutes != 0
+            && info
+                .available_data_points
+                .contains(ActivityDataPoints::DURATION)
+        {
+            inner.calories_burned = Some(info.average_calories_burned_per_minute * minutes);
+
+            if let Some(distance) = match inner.activity_type {
+                ActivityType::Bicycling => Some(BICYCLING_METERS_PER_MINUTE * minutes),
+                ActivityType::HorseRiding => Some(HORSE_RIDING_METERS_PER_MINUTE * minutes),
+                ActivityType::Hiking | ActivityType::Walking => {
+                    Some(WALKING_METERS_PER_MINUTE * minutes)
+                }
+                ActivityType::RollerBlading => Some(ROLLER_BLADING_METERS_PER_MINUTE * minutes),
+                ActivityType::Running | ActivityType::TrackAndField => {
+                    Some(RUNNING_METERS_PER_MINUTE * minutes)
+                }
+                ActivityType::Skiing => Some(SKIING_METERS_PER_MINUTE * minutes),
+                ActivityType::Swimming => Some(SWIMMING_METERS_PER_MINUTE * minutes),
+                _ => None,
+            }
+            .map(|v: u32| Length::new::<meter>(v as f32))
+            {
+                inner.distance = Some(distance);
+            }
+
+            match inner.activity_type {
+                ActivityType::Walking | ActivityType::Hiking => inner.steps = Some(minutes * 100),
+                ActivityType::Running => inner.steps = Some(minutes * 150),
+                _ => {}
+            }
+        }
+    }
+
     /// Try interpolating data from the `steps` that is set on `self`.
     ///
     /// # Examples
     /// ```
+    /// use libhealth::{Activity, ActivityType};
+    ///
     /// let activity = Activity::new();
     /// activity.set_activity_type(ActivityType::Walking);
     /// activity.set_steps(Some(100));
     /// activity.autofill_from_steps();
-    /// assert_eq!(activity.get_duration(), Duration::minutes(1));
+    /// assert_eq!(activity.get_duration().num_minutes(), 1);
     /// ```
     pub fn autofill_from_steps(&self) {
         let self_ = self.get_priv();
