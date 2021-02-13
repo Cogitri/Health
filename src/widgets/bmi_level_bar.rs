@@ -139,6 +139,7 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// A widget to visualise the BMI of the user.
     pub struct BMILevelBar(ObjectSubclass<imp::BMILevelBar>)
         @extends gtk::Widget;
 }

@@ -175,6 +175,7 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// A widget for selecting an [ActivityType](crate::model::ActivityType) (e.g. for adding a new activity).
     pub struct ActivityTypeSelector(ObjectSubclass<imp::ActivityTypeSelector>)
         @extends gtk::Widget, gtk::Popover;
 }

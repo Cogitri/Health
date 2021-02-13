@@ -93,6 +93,7 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// A dialog for adding a new weight record.
     pub struct WeightAddDialog(ObjectSubclass<imp::WeightAddDialog>)
         @extends gtk::Widget, gtk::Window, gtk::Dialog;
 }
@@ -177,7 +178,7 @@ impl WeightAddDialog {
                     .database
                     .get()
                     .unwrap()
-                    .get_weight_exists_on_date(self_.date_selector.get_selected_date())
+                    .get_weight_exists_on_date(self_.date_selector.get_selected_date().date())
                     .await;
                 if let Ok(true) = res {
                     obj.set_title(Some(&i18n("Update Weight Measurement")));

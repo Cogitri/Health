@@ -180,6 +180,7 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// [View] is a toplevel container that is implemented by all other views of Health.
     pub struct View(ObjectSubclass<imp::View>)
         @extends gtk::Widget;
 }

@@ -70,6 +70,13 @@ pub struct GoogleFitSyncProvider {
 }
 
 impl GoogleFitSyncProvider {
+    /// Fetch steps from Google Fit.
+    ///
+    /// # Arguments
+    /// * `date_opt` - If set, get steps from that date until now. Otherwise get all steps (e.g. for initial import).
+    ///
+    /// # Returns
+    /// An array of [Steps], or a [SyncProviderError] if querying the Google Fit API fails.
     fn get_steps(
         &mut self,
         date_opt: Option<DateTime<FixedOffset>>,
@@ -83,6 +90,13 @@ impl GoogleFitSyncProvider {
         Ok(Self::points_to_steps(points))
     }
 
+    /// Fetch weight measurement from Google Fit.
+    ///
+    /// # Arguments
+    /// * `date_opt` - If set, get weight measurements from that date until now. Otherwise get all weight measurements (e.g. for initial import).
+    ///
+    /// # Returns
+    /// An array of [Weight]s, or a [SyncProviderError] if querying the Google Fit API fails.
     fn get_weights(
         &mut self,
         date_opt: Option<DateTime<FixedOffset>>,
@@ -96,6 +110,7 @@ impl GoogleFitSyncProvider {
         Ok(Self::points_to_weights(points))
     }
 
+    /// Convert Google-Fit JSON [Points] to an array of [Steps]
     // False-Positive in contains_key, we can't use .entry().insert_or() since we need the else condition
     #[allow(clippy::map_entry)]
     fn points_to_steps(p: Points) -> Vec<Steps> {
@@ -119,6 +134,7 @@ impl GoogleFitSyncProvider {
             .collect()
     }
 
+    /// Convert Google-Fit JSON [Points] to an array of [Weight]
     fn points_to_weights(p: Points) -> Vec<Weight> {
         p.point
             .into_iter()
@@ -153,6 +169,7 @@ impl SyncProvider for GoogleFitSyncProvider {
         }
     }
 
+    /// Exchange the refresh token we already stored for an access token (which is valid for an hour).
     fn reauthenticate(&mut self) -> Result<(), SyncProviderError> {
         let client = BasicClient::new(
             ClientId::new(GOOGLE_CLIENT_ID.to_string()),
@@ -164,6 +181,9 @@ impl SyncProvider for GoogleFitSyncProvider {
         Ok(())
     }
 
+    /// Start the first authentication with Google Fit. This will open the user's
+    /// browser so they can authenticate with Google and store the refresh token
+    /// to the secret store.
     fn initial_authenticate(&mut self) -> Result<(), SyncProviderError> {
         let client = BasicClient::new(
             ClientId::new(GOOGLE_CLIENT_ID.to_string()),
@@ -225,6 +245,8 @@ impl SyncProvider for GoogleFitSyncProvider {
         Ok(())
     }
 
+    /// Start the initial import with Google Fit. This will import all data
+    /// from Google Fit to the Tracker DB.
     fn initial_import(&mut self) -> Result<(), SyncProviderError> {
         let steps = self.get_steps(None)?;
         self.sender.send(DatabaseValue::Steps(steps)).unwrap();
@@ -235,6 +257,8 @@ impl SyncProvider for GoogleFitSyncProvider {
         Ok(())
     }
 
+    /// Start the sync with Google Fit. This will sync data that has been added
+    /// since the last sync.
     fn sync_data(&mut self) -> Result<(), SyncProviderError> {
         let settings = Settings::new();
         let last_sync_date = settings.get_timestamp_last_sync_google_fit();

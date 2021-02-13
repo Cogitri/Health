@@ -146,6 +146,7 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// The toplevel application window that holds all other widgets.
     pub struct Window(ObjectSubclass<imp::Window>)
         @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow, adw::ApplicationWindow, @implements gio::ActionMap, gio::ActionGroup;
 }
@@ -308,6 +309,7 @@ impl Window {
         );
     }
 
+    /// Display an error in a non-intrusive way.
     fn show_error(&self, err_msg: &str) {
         let self_ = self.get_priv();
 

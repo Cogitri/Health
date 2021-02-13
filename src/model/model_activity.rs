@@ -87,6 +87,8 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// An implementation of [gio::ListModel] that stores [Activity](crate::model::Activity)s.
+    /// Can be used with [ActivityView](crate::views::ViewActivity) to display past activities.
     pub struct ModelActivity(ObjectSubclass<imp::ModelActivity>) @implements gio::ListModel;
 }
 
@@ -103,6 +105,13 @@ impl ModelActivity {
         o
     }
 
+    /// Reload the data from the Tracker Database.
+    ///
+    /// # Arguments
+    /// * `duration` - How far in the past the data should reach back.
+    ///
+    /// # Returns
+    /// Returns an error if querying the DB fails.
     pub async fn reload(&self, duration: Duration) -> Result<(), glib::Error> {
         let self_ = self.get_priv();
 

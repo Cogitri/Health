@@ -16,15 +16,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+/// Automatically implement Rust getters and setters for the property `name` of type `type`
 #[macro_export]
 macro_rules! properties_setter_getter {
     ($name:literal, $type:ty) => {
         paste::item! {
+            #[doc = "Get value of property"]
             pub fn [< get_ $name >] (&self) -> Option<$type> {
                 self.get_property($name).unwrap().get().unwrap()
             }
         }
         paste::item! {
+            #[doc = "Set value of property"]
             pub fn [< set_ $name >] (&self, value: $type) {
                 self.set_property($name, &value).unwrap()
             }
@@ -32,20 +35,24 @@ macro_rules! properties_setter_getter {
     };
 }
 
+/// Automatically generate helper functions for connecting to/getting/setting GSettings key
 #[macro_export]
 macro_rules! settings_getter_setter {
     ($type:ty, $name:ident, $key:literal) => {
         paste::item! {
+            #[doc = "Get value of GSettings key"]
             pub fn [< get_ $name >] (&self) -> $type {
                 self.settings.get::<$type>($key)
             }
         }
         paste::item! {
+            #[doc = "Set value of GSettings key"]
             pub fn [< set_ $name >] (&self, value: $type) {
                 self.settings.set::<$type>($key, &value).unwrap();
             }
         }
         paste::item! {
+            #[doc = "Connect to value changes of this key. Keep in mind that the key has to be read once before connecting or this won't do anything!"]
             pub fn [< connect_ $name _changed >]<F: Fn(&gio::Settings, &str) + 'static>(&self, f: F) -> glib::SignalHandlerId {
                 self.settings.connect_changed(move |s, name| {
                     if name == stringify!($name) {
@@ -57,15 +64,18 @@ macro_rules! settings_getter_setter {
     };
 }
 
+/// Automatically generate generate getters&setters for members of the inner struct (where inner is a `RefCell`).
 #[macro_export]
 macro_rules! inner_refcell_getter_setter {
     ($name:ident, $type:ty) => {
         paste::item! {
+            #[doc = "Borrow `RefCell` and get value"]
             pub fn [< get_ $name >] (&self) -> $type {
                 self.inner.borrow().$name.clone()
             }
         }
         paste::item! {
+            #[doc = "Mutably borrow `RefCell` and set value."]
             pub fn [< set_ $name >] (&self, value: $type) -> &Self {
                 self.inner.borrow_mut().$name = value;
                 self
@@ -74,15 +84,18 @@ macro_rules! inner_refcell_getter_setter {
     };
 }
 
+/// Automatically generate getters&setters for the private struct's inner `RefCell`
 #[macro_export]
 macro_rules! refcell_getter_setter {
     ($name:ident, $type:ty) => {
         paste::item! {
+            #[doc = "Borrow `RefCell` and get value"]
             pub fn [< get_ $name >] (&self) -> $type {
                 self.get_priv().inner.borrow().$name.clone()
             }
         }
         paste::item! {
+            #[doc = "Borrow `RefCell` and set value"]
             pub fn [< set_ $name >] (&self, value: $type) -> &Self {
                 self.get_priv().inner.borrow_mut().$name = value;
                 self

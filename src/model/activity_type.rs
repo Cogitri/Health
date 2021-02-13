@@ -19,6 +19,7 @@
 use crate::core::i18n_f;
 use std::convert::TryFrom;
 
+/// All supported [ActivityType]s are listed in this enum.
 #[derive(Debug, num_derive::FromPrimitive, num_derive::ToPrimitive, Clone, PartialEq)]
 pub enum ActivityType {
     Basketball,
@@ -46,6 +47,17 @@ pub enum ActivityType {
 impl TryFrom<&str> for ActivityType {
     type Error = String;
 
+    /// Try to convert from an [ActivityType] `ID` to a [ActivityType]
+    ///
+    /// # Examples
+    /// ```
+    /// use libhealth::ActivityType;
+    /// use std::convert::TryFrom;
+    ///
+    /// assert_eq!(ActivityType::try_from("basketball"), Ok(ActivityType::Basketball));
+    /// assert_eq!(ActivityType::try_from("BasketBall"), Ok(ActivityType::Basketball));
+    /// assert_eq!(ActivityType::try_from("unknown").is_err(), true);
+    /// ```
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         match value.to_lowercase().as_str() {
             "basketball" => Ok(ActivityType::Basketball),
@@ -74,6 +86,14 @@ impl TryFrom<&str> for ActivityType {
 }
 
 impl Into<&'static str> for ActivityType {
+    /// Convert from an [ActivityType] to an ID.
+    ///
+    /// # Examples
+    /// ```
+    /// use libhealth::ActivityType;
+    ///
+    /// assert_eq!(Into::<&str>::into(ActivityType::Basketball), "basketball");
+    /// ```
     fn into(self) -> &'static str {
         match self {
             ActivityType::Basketball => "basketball",

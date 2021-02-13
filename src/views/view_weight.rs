@@ -91,6 +91,7 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// An implementation of [View] visualizes BMI and weight development.
     pub struct ViewWeight(ObjectSubclass<imp::ViewWeight>)
         @extends View;
 }
@@ -113,6 +114,7 @@ impl ViewWeight {
         o
     }
 
+    /// Reload the [GraphModelWeight]'s data and refresh labels & reload the [GraphView].
     pub async fn update(&self) {
         let self_ = self.get_priv();
         let mut weight_graph_model = { self_.weight_graph_model.get().unwrap().borrow().clone() };

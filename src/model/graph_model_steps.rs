@@ -45,6 +45,10 @@ impl GraphModelSteps {
         }
     }
 
+    /// Get how many steps have been done today.
+    ///
+    /// # Returns
+    /// The amount of steps that have been done today, none `None` if no steps have been done yet.
     pub fn get_today_step_count(&self) -> Option<u32> {
         let today = chrono::Local::now().date();
         self.vec.iter().find_map(|s| {
@@ -56,11 +60,19 @@ impl GraphModelSteps {
         })
     }
 
+    /// Get how many days the user has upheld their step streak (as in have reached their stepgoal), including today.
+    ///
+    /// # Returns
+    /// The number of days.
     pub fn get_streak_count_today(&self, step_goal: u32) -> u32 {
         let vec: Vec<&Steps> = self.vec.iter().collect();
         GraphModelSteps::get_streak_count(&vec, step_goal)
     }
 
+    /// Get how many days the user has upheld their step streak (as in have reached their stepgoal), excluding today.
+    ///
+    /// # Returns
+    /// The number of days.
     pub fn get_streak_count_yesterday(&self, step_goal: u32) -> u32 {
         let today = chrono::Local::now().date();
         let vec: Vec<&Steps> = self.vec.iter().filter(|s| s.date.date() != today).collect();
@@ -89,6 +101,13 @@ impl GraphModelSteps {
         streak
     }
 
+    /// Reload the data from the Tracker Database.
+    ///
+    /// # Arguments
+    /// * `duration` - How far in the past the data should reach back.
+    ///
+    /// # Returns
+    /// Returns an error if querying the DB fails.
     pub async fn reload(&mut self, duration: Duration) -> Result<(), glib::Error> {
         self.vec = self
             .database
@@ -102,6 +121,7 @@ impl GraphModelSteps {
         Ok(())
     }
 
+    /// Converts the model's data to an array of `Point` so it can be displayed in a `GraphView`.
     pub fn to_points(&self) -> Vec<crate::views::Point> {
         if self.vec.is_empty() {
             return Vec::new();
@@ -159,6 +179,7 @@ impl GraphModelSteps {
         ret
     }
 
+    /// Get if the model is empty.
     pub fn is_empty(&self) -> bool {
         self.vec.is_empty()
     }

@@ -22,16 +22,34 @@ use crate::{
 };
 use std::convert::TryFrom;
 
+/// A struct containing informations about a certain activity type.
 #[derive(Debug, Clone)]
 pub struct ActivityInfo {
     pub activity_type: ActivityType,
     pub available_data_points: ActivityDataPoints,
     pub average_calories_burned_per_minute: u32,
+    /// An ID that can be used for saving things to the DB.
     pub id: &'static str,
+    /// The localised name of the `ActivityType`.
     pub name: String,
 }
 
 impl From<ActivityType> for ActivityInfo {
+    /// Converts an [ActivityType] into an [ActivityInfo] that contains infos like a localised name.
+    ///
+    /// # Returns
+    /// The respective [ActivityInfo]
+    ///
+    /// # Examples
+    /// ```
+    /// use libhealth::{ActivityInfo, ActivityType, ActivityDataPoints};
+    ///
+    /// let info = ActivityInfo::from(ActivityType::Basketball);
+    /// assert_eq!(info.activity_type, ActivityType::Basketball);
+    /// assert_eq!(info.available_data_points, ActivityDataPoints::CALORIES_BURNED | ActivityDataPoints::DURATION | ActivityDataPoints::HEART_RATE);
+    /// assert_eq!(info.id, "basketball");
+    /// // assert_eq!(info.name, "Basketball") Assuming your language is set to English, this would work too.
+    /// ```
     fn from(activity_type: ActivityType) -> Self {
         match activity_type {
             ActivityType::Basketball => ActivityInfo::new(
@@ -232,6 +250,21 @@ impl From<ActivityType> for ActivityInfo {
 impl TryFrom<&str> for ActivityInfo {
     type Error = String;
 
+    /// Try converting from an [ActivityInfo] `ID` to an [ActivityInfo].
+    ///
+    /// # Examples
+    /// ```
+    /// use libhealth::{ActivityInfo, ActivityType, ActivityDataPoints};
+    /// use std::convert::TryFrom;
+    ///
+    /// let info = ActivityInfo::try_from("basketball").unwrap();
+    /// assert_eq!(info.activity_type, ActivityType::Basketball);
+    /// assert_eq!(info.available_data_points, ActivityDataPoints::CALORIES_BURNED | ActivityDataPoints::DURATION | ActivityDataPoints::HEART_RATE);
+    /// assert_eq!(info.id, "basketball");
+    /// // assert_eq!(info.name, "Basketball") Assuming your language is set to English, this would work too.
+    ///
+    /// assert!(ActivityInfo::try_from("unknown").is_err());
+    /// ```
     fn try_from(val: &str) -> Result<Self, Self::Error> {
         match ActivityType::try_from(val) {
             Ok(t) => Ok(ActivityInfo::from(t)),

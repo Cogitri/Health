@@ -17,7 +17,7 @@
  */
 
 use crate::model::{Activity, ActivityType, Steps, Weight};
-use chrono::{DateTime, Duration, FixedOffset, NaiveDate, SecondsFormat, Utc};
+use chrono::{Date, DateTime, Duration, FixedOffset, NaiveDate, SecondsFormat, Utc};
 use glib::{subclass::types::ObjectSubclass, ObjectExt};
 use num_traits::cast::{FromPrimitive, ToPrimitive};
 use std::{
@@ -78,10 +78,18 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// Helper class to add and retrieve data to and from the Tracker Database.
     pub struct Database(ObjectSubclass<imp::Database>);
 }
 
 impl Database {
+    /// Connect to the `activities-updated` signal.
+    ///
+    /// # Arguments
+    /// * `callback` - The callback which should be invoked when `activities-update` is emitted.
+    ///
+    /// # Returns
+    /// A [glib::SignalHandlerId] that can be used for disconnecting the signal if so desired.
     pub fn connect_activities_updated<F: Fn() + 'static>(
         &self,
         callback: F,
@@ -93,6 +101,13 @@ impl Database {
         .unwrap()
     }
 
+    /// Connect to the `weights-updated` signal.
+    ///
+    /// # Arguments
+    /// * `callback` - The callback which should be invoked when `weights-update` is emitted.
+    ///
+    /// # Returns
+    /// A [glib::SignalHandlerId] that can be used for disconnecting the signal if so desired.
     pub fn connect_weights_updated<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
         self.connect_local("weights-updated", false, move |_| {
             callback();
@@ -101,6 +116,13 @@ impl Database {
         .unwrap()
     }
 
+    /// Get activities.
+    ///
+    /// # Arguments
+    /// * `date_opt` - If `Some`, only get activities that are more recent than `date_opt`.
+    ///
+    /// # Returns
+    /// An array of [Activity]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn get_activities(
         &self,
         date_opt: Option<DateTime<FixedOffset>>,
@@ -180,6 +202,13 @@ impl Database {
         self_.inner.borrow().as_ref().unwrap().manager.clone()
     }
 
+    /// Get steps.
+    ///
+    /// # Arguments
+    /// * `date_opt` - If `Some`, only get steps that are more recent than `date_opt`.
+    ///
+    /// # Returns
+    /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn get_steps(&self, date: DateTime<FixedOffset>) -> Result<Vec<Steps>, glib::Error> {
         let self_ = self.get_priv();
 
@@ -204,6 +233,13 @@ impl Database {
         Ok(v)
     }
 
+    /// Get weights.
+    ///
+    /// # Arguments
+    /// * `date_opt` - If `Some`, only get weights that are more recent than `date_opt`
+    ///
+    /// # Returns
+    /// An array of [Weight]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn get_weights(
         &self,
         date_opt: Option<DateTime<FixedOffset>>,
@@ -229,21 +265,35 @@ impl Database {
         Ok(ret)
     }
 
+    /// Check if a [Weight] exists on a given date
+    ///
+    /// # Arguments
+    /// * `date` - The date which should be checked
+    ///
+    /// # Returns
+    /// True if a [Weight] exists on the `date`, or [glib::Error] if querying the DB goes wrong.
     pub async fn get_weight_exists_on_date(
         &self,
-        date: DateTime<FixedOffset>,
+        date: Date<FixedOffset>,
     ) -> Result<bool, glib::Error> {
         let self_ = self.get_priv();
 
         // FIXME: doesn't work with datetime yet!
         let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
-        let cursor = connection.query_async_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_date '{}'^^xsd:date; health:weight ?weight . }}", date.date().format("%Y-%m-%d"))).await?;
+        let cursor = connection.query_async_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_date '{}'^^xsd:date; health:weight ?weight . }}", date.format("%Y-%m-%d"))).await?;
 
         assert!(cursor.next_async_future().await?);
 
         return Ok(cursor.get_boolean(0));
     }
 
+    /// Import an array of [Steps] into the DB (e.g. when doing the initial sync with a sync provider)
+    ///
+    /// # Arguments
+    /// * `steps` - An array of steps to add to the DB.
+    ///
+    /// # Returns
+    /// An error if querying the DB goes wrong.
     pub async fn import_steps(&self, steps: &[Steps]) -> Result<(), glib::Error> {
         let self_ = self.get_priv();
 
@@ -286,6 +336,13 @@ impl Database {
         Ok(())
     }
 
+    /// Import an array of [Weight] into the DB (e.g. when doing the initial sync with a sync provider)
+    ///
+    /// # Arguments
+    /// * `weight` - An array of weight to add to the DB.
+    ///
+    /// # Returns
+    /// An error if querying the DB goes wrong.
     pub async fn import_weights(&self, weights: &[Weight]) -> Result<(), glib::Error> {
         let self_ = self.get_priv();
 
@@ -322,12 +379,21 @@ impl Database {
         Ok(())
     }
 
+    /// Migrate from an older DB version to a newer one. The migration is one-way (as in you can't switch back to older versions).
+    /// This can be called multiple times without problems, the migration just won't do anything afterwards.
+    ///
+    /// # Returns
+    /// An error if querying the DB goes wrong.
     pub async fn migrate(&self) -> Result<(), glib::Error> {
         self.migrate_activities_date_datetime().await?;
         self.migrate_weight_date_datetime().await?;
         Ok(())
     }
 
+    /// Migrate [Activity]s from `xsd:date` to `xsd:dateTime`. This will set all entries where a date is set to the date at 00:00:00 at the local datetime.
+    ///
+    /// # Returns
+    /// Am error if querying the DB goes wrong.
     pub async fn migrate_activities_date_datetime(&self) -> Result<(), glib::Error> {
         let self_ = self.get_priv();
         let (connection, manager) = {
@@ -430,6 +496,10 @@ impl Database {
         Ok(())
     }
 
+    /// Migrate `Activity`s from date to dateTime. This will set all entries where a date is set to the date at 00:00:00 at the local datetime.
+    ///
+    /// # Returns
+    /// An error if querying the DB goes wrong.
     pub async fn migrate_weight_date_datetime(&self) -> Result<(), glib::Error> {
         let self_ = self.get_priv();
         let (connection, manager) = {
@@ -477,6 +547,10 @@ impl Database {
         Ok(())
     }
 
+    /// Create a new Tracker DB and connect to Tracker.
+    ///
+    /// # Returns
+    /// Either [Database], or [glib::Error] if connecting to Tracker failed.
     pub fn new() -> Result<Self, glib::Error> {
         let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
 
@@ -485,6 +559,13 @@ impl Database {
         Ok(o)
     }
 
+    /// Create a new Tracker DB and connect to Tracker.
+    ///
+    /// # Arguments
+    /// * `store_path` - [PathBuf] to where the Tracker DB should be stored.
+    ///
+    /// # Returns
+    /// Either [Database], or [glib::Error] if connecting to Tracker failed.
     #[cfg(test)]
     pub fn new_with_store_path(store_path: PathBuf) -> Result<Self, glib::Error> {
         let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
@@ -498,6 +579,10 @@ impl Database {
         Ok(o)
     }
 
+    /// Reset the DB (as in delete all entries in it).
+    ///
+    /// # Returns
+    /// Returns an error if querying the DB goes wrong.
     pub async fn reset(&self) -> Result<(), glib::Error> {
         let self_ = self.get_priv();
         let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
@@ -511,6 +596,13 @@ impl Database {
         Ok(())
     }
 
+    /// Save an [Activity] to the database.
+    ///
+    /// # Arguments
+    /// * `activity` - The [Activity] which should be saved.
+    ///
+    /// # Returns
+    /// An error if querying the DB goes wrong.
     pub async fn save_activity(&self, activity: Activity) -> Result<(), glib::Error> {
         let self_ = self.get_priv();
         let resource = tracker::Resource::new(None);
@@ -570,6 +662,13 @@ impl Database {
         Ok(())
     }
 
+    /// Save an [Weight] to the database.
+    ///
+    /// # Arguments
+    /// * `weight` - The [Weight] which should be saved.
+    ///
+    /// # Returns
+    /// An error if querying the DB goes wrong.
     pub async fn save_weight(&self, weight: Weight) -> Result<(), glib::Error> {
         let self_ = self.get_priv();
         let resource = tracker::Resource::new(None);
@@ -602,6 +701,11 @@ impl Database {
         Ok(())
     }
 
+    /// Connect to the tracker DB. This has to be called before calling any other methods on this struct.
+    ///
+    /// # Arguments
+    /// * `ontology_path` - `Some` if a custom path for the Tracker ontology path is desired (e.g. in tests), or `None` to use the default.
+    /// * `store_path` - `Some` if a custom store path for the Tracker DB is desired (e.g. in tests), or `None` to use the default.
     fn connect(
         &self,
         ontology_path: Option<PathBuf>,

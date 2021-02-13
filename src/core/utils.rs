@@ -20,6 +20,13 @@ use gtk::EditableExt;
 #[cfg(test)]
 use std::future::Future;
 
+/// Get the number-value of a [gtk::SpinButton].
+///
+/// # Arguments
+/// * `spin_button` - The [gtk::SpinButton] to get the value of.
+///
+/// # Returns
+/// The value of the [gtk::SpinButton] or `T::default()`.
 pub fn get_spinbutton_value<T>(spin_button: &gtk::SpinButton) -> T
 where
     T: std::str::FromStr + Default,
@@ -32,11 +39,40 @@ where
         .unwrap_or_default()
 }
 
+/// Round a number to a certain amount of decimal places.
+///
+/// # Arguments
+/// * `val` - The value to round.
+/// * `decimal_places` - The amount of decimal places to round this to.
+///
+/// # Returns
+/// The rounded value.
+///
+/// # Examples
+/// ```
+/// use libhealth::utils::round_decimal_places;
+///
+/// let val = 13.54231;
+/// assert_eq!(round_decimal_places(val, 1), 13.5);
+/// assert_eq!(round_decimal_places(val, 2), 13.54);
+/// ```
 pub fn round_decimal_places(val: f32, decimal_places: u32) -> f32 {
     let round_factor = (10_u32).pow(decimal_places) as f32;
     (val * round_factor).round() / round_factor
 }
 
+/// Block on the provided future and return the result.
+///
+/// # Arguments
+/// * `future` - The future to run.
+///
+/// # Returns
+/// Returns the return value of the future.
+///
+/// # Examples
+/// ```
+/// assert_eq!(run_async_test_fn(async { 25 }, 25);
+/// ```
 #[cfg(test)]
 pub fn run_async_test_fn<T: 'static, F: 'static>(future: F) -> T
 where

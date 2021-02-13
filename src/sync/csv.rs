@@ -21,6 +21,8 @@ use gio::FileExt;
 use gtk::prelude::*;
 use std::convert::TryFrom;
 
+/// [CSVHandler] is a struct which manages exporting data from the Tracker DB to a
+/// CSV file or importing it from a CSV file into the Tracker DB.
 pub struct CSVHandler {
     db: Database,
 }
@@ -30,6 +32,13 @@ impl CSVHandler {
         Self { db }
     }
 
+    /// Export all [Activity](crate::model::Activity)s in the Tracker DB to a CSV file.
+    ///
+    /// # Arguments
+    /// * `file` - The file to write the CSV data to.
+    ///
+    /// # Returns
+    /// An error if writing to the file fails or reading from the DB.
     pub async fn export_activities_csv(&self, file: &gio::File) -> Result<(), glib::Error> {
         let mut wtr = csv::Writer::from_writer(vec![]);
 
@@ -50,6 +59,13 @@ impl CSVHandler {
         Ok(())
     }
 
+    /// Export all [Weight](crate::model::Weight) in the Tracker DB to a CSV file.
+    ///
+    /// # Arguments
+    /// * `file` - The file to write the CSV data to.
+    ///
+    /// # Returns
+    /// An error if writing to the file fails or reading from the DB.
     pub async fn export_weights_csv(&self, file: &gio::File) -> Result<(), glib::Error> {
         let mut wtr = csv::Writer::from_writer(vec![]);
 
@@ -70,6 +86,13 @@ impl CSVHandler {
         Ok(())
     }
 
+    /// Import all [Activity](crate::model::Activity)s from a CSV file to the Tracker DB.
+    ///
+    /// # Arguments
+    /// * `file` - The file to read the CSV data from.
+    ///
+    /// # Returns
+    /// An error if reading from the file fails or writing to the DB.
     pub async fn import_activities_csv(&self, file: &gio::File) -> Result<(), glib::Error> {
         let (data, _) = file.load_contents_async_future().await?;
         let mut rdr = csv::Reader::from_reader(&*data);
@@ -89,6 +112,13 @@ impl CSVHandler {
         Ok(())
     }
 
+    /// Import all [Weight](crate::model::Weight)s from a CSV file to the Tracker DB.
+    ///
+    /// # Arguments
+    /// * `file` - The file to read the CSV data from.
+    ///
+    /// # Returns
+    /// An error if reading from the file fails or writing to the DB.
     pub async fn import_weights_csv(&self, file: &gio::File) -> Result<(), glib::Error> {
         let (data, _) = file.load_contents_async_future().await?;
         let mut rdr = csv::Reader::from_reader(&*data);
@@ -108,6 +138,7 @@ impl CSVHandler {
         Ok(())
     }
 
+    /// Write (CSV) data to a `File`.
     async fn write_csv(&self, file: &gio::File, data: Vec<u8>) -> Result<(), glib::Error> {
         let stream = file
             .replace_async_future(

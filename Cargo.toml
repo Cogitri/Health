@@ -4,6 +4,14 @@ version = "0.91.0"
 edition = "2018"
 license = "GPL-3.0-or-later"
 
+[lib]
+name = "libhealth"
+path = "src/lib.rs"
+
+[[bin]]
+name = "health"
+path = "src/main.rs"
+
 [dependencies.adw]
 git = "https://gitlab.gnome.org/bilelmoussaoui/libadwaita-rs"
 package = "libadwaita"
