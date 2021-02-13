@@ -278,9 +278,8 @@ impl Database {
     ) -> Result<bool, glib::Error> {
         let self_ = self.get_priv();
 
-        // FIXME: doesn't work with datetime yet!
         let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
-        let cursor = connection.query_async_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_date '{}'^^xsd:date; health:weight ?weight . }}", date.format("%Y-%m-%d"))).await?;
+        let cursor = connection.query_async_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight ?weight . FILTER(?date >= '{}'^^xsd:date && ?date < '{}'^^xsd:date) }}", date.format("%Y-%m-%d"), (date + Duration::days(1)).format("%Y-%m-%d"))).await?;
 
         assert!(cursor.next_async_future().await?);
 
