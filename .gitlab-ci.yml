@@ -62,6 +62,27 @@ nightly:
   dependencies: ["flatpak"]
   needs: ["flatpak"]
 
+pages:
+  image: cogitri/health-ci-docker
+  stage: deploy
+  before_script:
+    - source $HOME/.cargo/env
+  script:
+    - meson build
+    - cargo doc
+    - rm -rf public
+    - mv target/doc/ public
+  cache:
+    key: pages
+    paths:
+      - target
+  artifacts:
+   paths:
+      - public
+  only:
+    - master
+
+
 create-dist-tarball:
   stage: release-tarball
   image: alpine:edge
