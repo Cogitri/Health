@@ -10,16 +10,28 @@
 #![warn(clippy::unnecessary_unwrap)]
 #![warn(clippy::wildcard_imports)]
 
+#[doc(hidden)]
 pub mod config;
+#[doc(hidden)]
 pub mod core;
+#[doc(hidden)]
 pub mod model;
+#[doc(hidden)]
 pub mod sync;
+#[doc(hidden)]
 pub mod views;
+#[doc(hidden)]
 pub mod widgets;
+#[doc(hidden)]
 pub mod windows;
 
+#[doc(inline)]
 pub use crate::core::*;
+#[doc(inline)]
 pub use crate::model::*;
+#[doc(inline)]
 pub use crate::views::*;
+#[doc(inline)]
 pub use crate::widgets::*;
+#[doc(inline)]
 pub use crate::windows::*;
