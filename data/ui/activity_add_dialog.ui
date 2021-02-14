@@ -95,7 +95,6 @@
             <property name="margin-bottom">6</property>
             <child>
               <object class="GtkListBox" id="activities_list_box">
-                <property name="can-focus">0</property>
                 <property name="selection-mode">none</property>
                 <style>
                   <class name="content"/>
