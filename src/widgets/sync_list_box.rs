@@ -89,11 +89,9 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             if Settings::new().get_sync_provider_setup_google_fit() {
                 self.google_fit_selected_image.set_visible(true);
-                self.google_fit_selected_image
-                    .set_property_icon_name(Some("object-select-symbolic"));
                 self.google_fit_stack
                     .set_visible_child(&self.google_fit_selected_image.get());
-                self.google_fit_start_sync_row.set_activatable(false);
+                self.google_fit_stack.set_visible(true);
             }
 
             obj.connect_handlers();
@@ -191,9 +189,8 @@ impl SyncListBox {
             let db_sender = new_db_receiver(self_.database.get().unwrap().clone());
 
             receiver.attach(None, clone!(@weak self as obj => move |res| {
+                let self_ = obj.get_priv();
                 if let Err(e) = res {
-                    let self_ = obj.get_priv();
-
                     self_.google_fit_selected_image.set_property_icon_name(Some("network-error-symbolic"));
                     self_.google_fit_selected_image.set_visible(true);
                     self_.google_fit_spinner.set_spinning(false);
@@ -201,8 +198,8 @@ impl SyncListBox {
 
                     obj.open_sync_error(&e.to_string());
                 } else {
+                    let obj = obj.clone();
                     spawn!(async move {
-                        // TODO: Start importing data
                         let self_ = obj.get_priv();
                         self_.google_fit_selected_image.set_visible(true);
                         self_.google_fit_spinner.set_spinning(false);
@@ -210,6 +207,7 @@ impl SyncListBox {
                     });
                 }
 
+                self_.google_fit_start_sync_row.set_activatable(false);
                 glib::Continue(false)
             }));
 
