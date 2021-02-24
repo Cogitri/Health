@@ -17,7 +17,6 @@
  */
 
 use gtk::EditableExt;
-#[cfg(test)]
 use std::future::Future;
 
 /// Get the number-value of a [gtk::SpinButton].
@@ -71,10 +70,11 @@ pub fn round_decimal_places(val: f32, decimal_places: u32) -> f32 {
 ///
 /// # Examples
 /// ```
-/// assert_eq!(run_async_test_fn(async { 25 }, 25);
+/// use libhealth::utils::run_gio_future_sync;
+///
+/// assert_eq!(run_gio_future_sync(async { 25 }), 25);
 /// ```
-#[cfg(test)]
-pub fn run_async_test_fn<T: 'static, F: 'static>(future: F) -> T
+pub fn run_gio_future_sync<T: 'static, F: 'static>(future: F) -> T
 where
     F: Future<Output = T>,
 {

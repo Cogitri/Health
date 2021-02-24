@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::i18n;
+use crate::{core::i18n, utils::run_gio_future_sync};
 use oauth2::{
     basic::{BasicErrorResponseType, BasicTokenType},
     url::Url,
@@ -218,7 +218,10 @@ pub trait SyncProvider {
     fn start_listen_server(
         authorize_url: &str,
     ) -> Result<(AuthorizationCode, CsrfToken), SyncProviderError> {
-        gio::AppInfo::launch_default_for_uri(authorize_url, None::<&gio::AppLaunchContext>)?;
+        run_gio_future_sync(gio::AppInfo::launch_default_for_uri_async_future(
+            authorize_url,
+            None::<&gio::AppLaunchContext>,
+        ))?;
 
         let listener = TcpListener::bind("127.0.0.1:34981")?;
         for s in listener.incoming() {

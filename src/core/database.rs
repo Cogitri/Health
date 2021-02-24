@@ -741,7 +741,7 @@ impl Database {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{core::utils::run_async_test_fn, model::ActivityType};
+    use crate::{core::utils::run_gio_future_sync, model::ActivityType};
     use chrono::{Duration, Local};
     use num_traits::cast::ToPrimitive;
     use tempfile::tempdir;
@@ -764,7 +764,7 @@ mod test {
             .set_activity_type(ActivityType::Walking)
             .set_date(date.into());
 
-        let retrieved_activities = run_async_test_fn(async move {
+        let retrieved_activities = run_gio_future_sync(async move {
             db.save_activity(expected_activity).await.unwrap();
 
             db.get_activities(Some((date + Duration::days(1)).into()))
@@ -782,7 +782,7 @@ mod test {
         let expected_weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
         let w = expected_weight.clone();
 
-        let retrieved_weights = run_async_test_fn(async move {
+        let retrieved_weights = run_gio_future_sync(async move {
             db.save_weight(w).await.unwrap();
 
             db.get_weights(Some((date + Duration::days(1)).into()))
@@ -805,7 +805,7 @@ mod test {
             .set_steps(Some(50));
         let a = expected_activity.clone();
 
-        let retrieved_activities = run_async_test_fn(async move {
+        let retrieved_activities = run_gio_future_sync(async move {
             db.save_activity(a).await.unwrap();
 
             db.get_activities(Some((date - Duration::days(1)).into()))
@@ -828,7 +828,7 @@ mod test {
         let expected_weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
         let w = expected_weight.clone();
 
-        let retrieved_weights = run_async_test_fn(async move {
+        let retrieved_weights = run_gio_future_sync(async move {
             db.save_weight(w).await.unwrap();
 
             db.get_weights(Some((date - Duration::days(1)).into()))
@@ -885,7 +885,7 @@ mod test {
             )
             .unwrap();
 
-        let retrieved_activities = run_async_test_fn(async move {
+        let retrieved_activities = run_gio_future_sync(async move {
             db.migrate().await.unwrap();
             db.get_activities(Some((date - Duration::days(1)).into()))
                 .await
@@ -939,7 +939,7 @@ mod test {
             )
             .unwrap();
 
-        let retrieved_weights = run_async_test_fn(async move {
+        let retrieved_weights = run_gio_future_sync(async move {
             db.migrate().await.unwrap();
             db.get_weights(Some((date - Duration::days(1)).into()))
                 .await
