@@ -107,8 +107,8 @@ mod imp {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                 vec![
-                    Signal::builder("input", &[], glib::Type::Unit).build(),
-                    Signal::builder("changed", &[], glib::Type::Unit).build(),
+                    Signal::builder("input", &[], glib::Type::Unit.into()).build(),
+                    Signal::builder("changed", &[], glib::Type::Unit.into()).build(),
                 ]
             });
 
@@ -198,11 +198,11 @@ impl DistanceActionRow {
         } else {
             self_.value.replace(Length::new::<mile>(value));
         }
-        self.emit("changed", &[]).unwrap();
+        self.emit_by_name("changed", &[]).unwrap();
     }
 
     fn handle_distance_spin_button_input(&self) -> Option<Result<f64, ()>> {
-        self.emit("input", &[]).unwrap();
+        self.emit_by_name("input", &[]).unwrap();
         None
     }
 

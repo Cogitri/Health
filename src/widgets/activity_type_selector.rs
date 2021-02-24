@@ -164,7 +164,7 @@ mod imp {
         fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("activity-selected", &[], glib::Type::Unit).build()]
+                vec![Signal::builder("activity-selected", &[], glib::Type::Unit.into()).build()]
             });
 
             SIGNALS.as_ref()
@@ -206,6 +206,6 @@ impl ActivityTypeSelector {
 
     fn set_selected_activity(&self, val: ActivityInfo) {
         self.get_priv().selected_activity.replace(val);
-        self.emit("activity-selected", &[]).unwrap();
+        self.emit_by_name("activity-selected", &[]).unwrap();
     }
 }

@@ -152,8 +152,9 @@ mod imp {
 
         fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<Vec<Signal>> =
-                Lazy::new(|| vec![Signal::builder("setup-done", &[], glib::Type::Unit).build()]);
+            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
+                vec![Signal::builder("setup-done", &[], glib::Type::Unit.into()).build()]
+            });
 
             SIGNALS.as_ref()
         }
@@ -317,7 +318,7 @@ impl SetupWindow {
         };
         self_.settings.set_user_weightgoal(weight);
 
-        self.emit("setup-done", &[]).unwrap();
+        self.emit_by_name("setup-done", &[]).unwrap();
         self.destroy();
     }
 
