@@ -164,7 +164,7 @@ mod imp {
         fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("activity-selected", &[], glib::Type::Unit.into()).build()]
+                vec![Signal::builder("activity-selected", &[], glib::Type::UNIT.into()).build()]
             });
 
             SIGNALS.as_ref()

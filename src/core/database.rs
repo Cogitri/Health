@@ -67,8 +67,8 @@ mod imp {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                 vec![
-                    Signal::builder("activities-updated", &[], glib::Type::Unit.into()).build(),
-                    Signal::builder("weights-updated", &[], glib::Type::Unit.into()).build(),
+                    Signal::builder("activities-updated", &[], glib::Type::UNIT.into()).build(),
+                    Signal::builder("weights-updated", &[], glib::Type::UNIT.into()).build(),
                 ]
             });
 
