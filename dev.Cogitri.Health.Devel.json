@@ -3,7 +3,7 @@
     "runtime": "org.gnome.Platform",
     "runtime-version": "master",
     "sdk": "org.gnome.Sdk",
-    "sdk-extensions" : [
+    "sdk-extensions": [
         "org.freedesktop.Sdk.Extension.rust-stable"
     ],
     "command": "dev.Cogitri.Health.Devel",
@@ -31,24 +31,23 @@
         "/share/vala",
         "*.la",
         "*.a",
-        "/lib/librest-extras*",
         "/lib/girepository-1.0",
         "/share/gir-1.0"
     ],
-    "build-options" : {
-        "append-path" : "/usr/lib/sdk/rust-stable/bin",
-        "build-args" : [
+    "build-options": {
+        "append-path": "/usr/lib/sdk/rust-stable/bin",
+        "build-args": [
             "--share=network"
         ],
-        "env" : {
-            "CARGO_HOME" : "/run/build/Fractal/cargo",
-            "RUST_BACKTRACE" : "1",
-            "RUSTFLAGS" : ""
+        "env": {
+            "CARGO_HOME": "/run/build/Health/cargo",
+            "RUST_BACKTRACE": "1",
+            "RUSTFLAGS": ""
         }
     },
     "modules": [
         {
-            "name": "libhandy",
+            "name": "libadwaita",
             "builddir": true,
             "buildsystem": "meson",
             "config-opts": [
@@ -57,18 +56,14 @@
                 "-Dgtk_doc=false",
                 "-Dtests=false",
                 "-Dexamples=false",
-                "-Dvapi=true",
+                "-Dvapi=false",
                 "-Dglade_catalog=disabled"
             ],
             "sources": [
                 {
                     "type": "git",
                     "url": "https://gitlab.gnome.org/exalm/libadwaita",
-                    "commit": "fca6c26b4faa5e2d860128736595cb1232d4739a"
-                },
-                {
-                    "type": "patch",
-                    "path": "build-aux/libadwaita-dark-theme.patch"
+                    "commit": "699c5eabe94631ad5a61ac731a526f8ec580ab3f"
                 }
             ]
         },
