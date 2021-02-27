@@ -36,7 +36,7 @@ mod imp {
         widgets::{BMILevelBar, SyncListBox},
     };
     use adw::prelude::*;
-    use glib::subclass::{self, Signal};
+    use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use uom::si::{
@@ -162,15 +162,6 @@ mod imp {
             self.bmi_levelbar
                 .set_weight(self.settings.get_user_weightgoal());
             obj.connect_handlers();
-        }
-
-        fn signals() -> &'static [Signal] {
-            use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("import-done", &[], glib::Type::Unit.into()).build()]
-            });
-
-            SIGNALS.as_ref()
         }
     }
 
