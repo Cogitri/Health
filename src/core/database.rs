@@ -223,7 +223,7 @@ impl Database {
         let self_ = self.get_priv();
 
         let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
-        let cursor = connection.query_async_future(&format!("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+        let cursor = connection.query_async_future(&format!("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}  ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
         let mut hashmap = std::collections::HashMap::new();
 
         while let Ok(true) = cursor.next_async_future().await {
