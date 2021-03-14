@@ -52,7 +52,7 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                settings: Settings::new(),
+                settings: Settings::get_instance(),
                 activity_model: OnceCell::new(),
                 activities_list_box: TemplateChild::default(),
             }

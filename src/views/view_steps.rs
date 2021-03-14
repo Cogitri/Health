@@ -57,7 +57,7 @@ mod imp {
         glib::object_subclass!();
 
         fn new() -> Self {
-            let settings = Settings::new();
+            let settings = Settings::get_instance();
 
             Self {
                 scrolled_window: TemplateChild::default(),

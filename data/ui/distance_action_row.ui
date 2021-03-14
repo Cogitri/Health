@@ -39,7 +39,8 @@
             </style>
             <child>
               <object class="GtkToggleButton" id="big_unit_togglebutton">
-                <property name="group">small_unit_togglebutton</property>
+                <property name="action-name">activity_add_dialog.unitsize</property>
+                <property name="action-target">'big'</property>
                 <style>
                   <class name="small-button"/>
                 </style>
@@ -47,7 +48,8 @@
             </child>
             <child>
               <object class="GtkToggleButton" id="small_unit_togglebutton">
-                <property name="active">1</property>
+                <property name="action-name">activity_add_dialog.unitsize</property>
+                <property name="action-target">'small'</property>
                 <style>
                   <class name="small-button"/>
                 </style>

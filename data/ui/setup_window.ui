@@ -191,13 +191,15 @@
                                 <child>
                                   <object class="GtkToggleButton" id="unit_imperial_togglebutton">
                                     <property name="label" translatable="yes">Imperial</property>
+                                    <property name="action-name">app.unitsystem</property>
+                                    <property name="action-target">'imperial'</property>
                                   </object>
                                 </child>
                                 <child>
                                   <object class="GtkToggleButton" id="unit_metric_togglebutton">
                                     <property name="label" translatable="yes">Metric</property>
-                                    <property name="active">1</property>
-                                    <property name="group">unit_imperial_togglebutton</property>
+                                    <property name="action-name">app.unitsystem</property>
+                                    <property name="action-target">'metric'</property>
                                   </object>
                                 </child>
                               </object>

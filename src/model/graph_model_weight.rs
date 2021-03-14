@@ -50,7 +50,7 @@ impl GraphModelWeight {
     pub fn new(database: Database) -> Self {
         Self {
             database,
-            settings: Settings::new(),
+            settings: Settings::get_instance(),
             vec: Vec::new(),
         }
     }

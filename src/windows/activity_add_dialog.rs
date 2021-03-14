@@ -23,8 +23,9 @@ use crate::{
 use chrono::Duration;
 use glib::{clone, subclass::prelude::*};
 use gtk::prelude::*;
-use gtk_macros::spawn;
+use gtk_macros::{spawn, stateful_action};
 use imp::get_spin_button_value_if_datapoint;
+use std::convert::TryFrom;
 
 mod imp {
     use crate::{
@@ -125,7 +126,7 @@ mod imp {
                     user_changed_datapoints: ActivityDataPoints::empty(),
                 }),
                 database: OnceCell::new(),
-                settings: Settings::new(),
+                settings: Settings::get_instance(),
                 date_selector: TemplateChild::default(),
                 activities_list_box: TemplateChild::default(),
                 activity_type_actionrow: TemplateChild::default(),
@@ -190,12 +191,40 @@ mod imp {
             self.inner.borrow_mut().filter_model = Some(filter_model);
             obj.connect_handlers();
             obj.set_selected_activity(ActivityInfo::from(ActivityType::Walking));
+            obj.setup_actions();
         }
     }
 
     impl WidgetImpl for ActivityAddDialog {}
     impl WindowImpl for ActivityAddDialog {}
     impl DialogImpl for ActivityAddDialog {}
+}
+
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum Unitsize {
+    Big,
+    Small,
+}
+
+impl std::fmt::Display for Unitsize {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Unitsize::Big => write!(f, "big"),
+            Unitsize::Small => write!(f, "small"),
+        }
+    }
+}
+
+impl TryFrom<&str> for Unitsize {
+    type Error = String;
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        match value {
+            "big" => Ok(Unitsize::Big),
+            "small" => Ok(Unitsize::Small),
+            _ => Err(format!("Unknown unitsize {}", value)),
+        }
+    }
 }
 
 glib::wrapper! {
@@ -270,6 +299,26 @@ impl ActivityAddDialog {
 
     fn get_priv(&self) -> &imp::ActivityAddDialog {
         imp::ActivityAddDialog::from_instance(self)
+    }
+
+    fn setup_actions(&self) {
+        let action_group = gio::SimpleActionGroup::new();
+
+        stateful_action!(
+            action_group,
+            "unitsize",
+            Some(&String::static_variant_type()),
+            "small",
+            clone!(@weak self as obj => move |a, p| {
+                let parameter = p.unwrap();
+
+                obj.get_priv().distance_action_row.set_unitsize(Unitsize::try_from(parameter.get::<String>().unwrap().as_str()).unwrap());
+
+                a.set_state(parameter);
+            })
+        );
+
+        self.insert_action_group("activity_add_dialog", Some(&action_group));
     }
 
     fn set_selected_activity(&self, val: ActivityInfo) {

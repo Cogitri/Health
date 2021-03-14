@@ -63,7 +63,7 @@ mod imp {
         fn new() -> Self {
             Self {
                 scrolled_window: TemplateChild::default(),
-                settings: Settings::new(),
+                settings: Settings::get_instance(),
                 weight_graph_view: OnceCell::new(),
                 weight_graph_model: OnceCell::new(),
             }

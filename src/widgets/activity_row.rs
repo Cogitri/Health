@@ -85,7 +85,7 @@ mod imp {
         fn new() -> Self {
             Self {
                 activity: OnceCell::new(),
-                settings: Settings::new(),
+                settings: Settings::get_instance(),
                 active_minutes_label: TemplateChild::default(),
                 activity_date_label: TemplateChild::default(),
                 activity_type_label: TemplateChild::default(),

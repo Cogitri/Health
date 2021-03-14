@@ -17,13 +17,14 @@
  */
 
 use crate::{
-    core::i18n,
+    core::{i18n, settings::Unitsystem},
     windows::{PreferencesWindow, Window},
 };
 use gio::prelude::*;
 use glib::{clone, subclass::prelude::*};
 use gtk::prelude::*;
-use gtk_macros::action;
+use gtk_macros::{action, stateful_action};
+use std::convert::TryFrom;
 
 mod imp {
     use crate::{
@@ -55,7 +56,7 @@ mod imp {
         fn new() -> Self {
             Self {
                 db: Database::new().expect("Failed to connect to Tracker Database!"),
-                settings: Settings::new(),
+                settings: Settings::get_instance(),
                 window: OnceCell::new(),
             }
         }
@@ -65,11 +66,7 @@ mod imp {
         fn instance_init(_obj: &glib::subclass::InitializingObject<Self::Type>) {}
     }
 
-    impl ObjectImpl for Application {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-        }
-    }
+    impl ObjectImpl for Application {}
 
     impl ApplicationImpl for Application {
         fn activate(&self, obj: &Self::Type) {
@@ -220,5 +217,22 @@ impl Application {
                 .unwrap()
                 .show();
         });
+
+        stateful_action!(
+            self,
+            "unitsystem",
+            Some(&String::static_variant_type()),
+            {
+                let s: &str = self.get_priv().settings.get_unitsystem().into();
+                s
+            },
+            clone!(@weak self as obj => move |a, p| {
+                let parameter = p.unwrap();
+
+                obj.get_priv().settings.set_unitsystem(Unitsystem::try_from(parameter.to_string().replace("'", "").as_str()).unwrap());
+
+                a.set_state(parameter);
+            })
+        );
     }
 }

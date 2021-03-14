@@ -95,7 +95,7 @@ mod imp {
                     current_view: ViewMode::STEPS,
                     sync_source_id: None,
                 }),
-                settings: Settings::new(),
+                settings: Settings::get_instance(),
                 views: OnceCell::new(),
                 add_data_button: TemplateChild::default(),
                 error_infobar: TemplateChild::default(),

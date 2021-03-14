@@ -20,6 +20,7 @@ use crate::settings_getter_setter;
 use chrono::{DateTime, FixedOffset};
 use gio::prelude::*;
 use num_traits::{FromPrimitive, ToPrimitive};
+use std::convert::TryFrom;
 use uom::si::{
     f32::{Length, Mass},
     length::centimeter,
@@ -32,6 +33,29 @@ pub enum Unitsystem {
     Metric,
 }
 
+impl TryFrom<&str> for Unitsystem {
+    type Error = String;
+
+    fn try_from(s: &str) -> Result<Self, Self::Error> {
+        match s {
+            "imperial" => Ok(Unitsystem::Imperial),
+            "metric" => Ok(Unitsystem::Metric),
+            _ => Err(format!("Unknown unitsystem {}", s)),
+        }
+    }
+}
+
+impl Into<&'static str> for Unitsystem {
+    fn into(self) -> &'static str {
+        match self {
+            Unitsystem::Imperial => "imperial",
+            Unitsystem::Metric => "metric",
+        }
+    }
+}
+
+static mut SETTINGS: Option<Settings> = None;
+
 #[derive(Debug, Clone)]
 pub struct Settings {
     settings: gio::Settings,
@@ -40,9 +64,21 @@ pub struct Settings {
 impl Settings {
     /// Create a new [Settings] object. Since this operation is pretty cheap it's OK to call this when
     /// constructing your struct instead of passing `Settings` around.
-    pub fn new() -> Self {
+    fn new() -> Self {
         Self {
             settings: gio::Settings::new("dev.Cogitri.Health"),
+        }
+    }
+
+    pub fn get_instance() -> Self {
+        unsafe {
+            if let Some(s) = &SETTINGS {
+                s.clone()
+            } else {
+                let settings = Settings::new();
+                SETTINGS = Some(settings.clone());
+                settings
+            }
         }
     }
 

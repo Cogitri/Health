@@ -39,6 +39,7 @@ mod imp {
     use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
+    use std::cell::Cell;
     use uom::si::{
         length::{centimeter, inch},
         mass::{kilogram, pound},
@@ -47,6 +48,7 @@ mod imp {
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/preferences_window.ui")]
     pub struct PreferencesWindow {
+        pub current_unitsystem: Cell<Unitsystem>,
         pub db: OnceCell<Database>,
         pub parent_window: OnceCell<Option<gtk::Window>>,
         pub settings: Settings,
@@ -63,10 +65,6 @@ mod imp {
         pub stepgoal_spin_button: TemplateChild<gtk::SpinButton>,
         #[template_child]
         pub weightgoal_spin_button: TemplateChild<gtk::SpinButton>,
-        #[template_child]
-        pub unit_imperial_togglebutton: TemplateChild<gtk::ToggleButton>,
-        #[template_child]
-        pub unit_metric_togglebutton: TemplateChild<gtk::ToggleButton>,
         #[template_child]
         pub bmi_levelbar: TemplateChild<BMILevelBar>,
         #[template_child]
@@ -92,16 +90,16 @@ mod imp {
         glib::object_subclass!();
 
         fn new() -> Self {
+            let settings = Settings::get_instance();
             Self {
-                settings: Settings::new(),
+                current_unitsystem: Cell::new(settings.get_unitsystem()),
+                settings,
                 height_actionrow: TemplateChild::default(),
                 weightgoal_actionrow: TemplateChild::default(),
                 age_spin_button: TemplateChild::default(),
                 height_spin_button: TemplateChild::default(),
                 stepgoal_spin_button: TemplateChild::default(),
                 weightgoal_spin_button: TemplateChild::default(),
-                unit_imperial_togglebutton: TemplateChild::default(),
-                unit_metric_togglebutton: TemplateChild::default(),
                 bmi_levelbar: TemplateChild::default(),
                 parent_window: OnceCell::new(),
                 db: OnceCell::new(),
@@ -126,8 +124,7 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            if self.settings.get_unitsystem() == Unitsystem::Metric {
-                self.unit_metric_togglebutton.set_active(true);
+            if self.current_unitsystem.get() == Unitsystem::Metric {
                 self.height_actionrow
                     .set_title(Some(&i18n("Height in centimeters")));
                 self.weightgoal_actionrow
@@ -139,7 +136,6 @@ mod imp {
                     self.settings.get_user_weightgoal().get::<kilogram>(),
                 ));
             } else {
-                self.unit_metric_togglebutton.set_active(true);
                 self.height_actionrow
                     .set_title(Some(&i18n("Height in inch")));
                 self.weightgoal_actionrow
@@ -191,6 +187,12 @@ impl PreferencesWindow {
         let o: Self = glib::Object::new(&[]).expect("Failed to create PreferencesWindow");
 
         o.set_transient_for(parent_window.as_ref());
+        o.set_application(
+            parent_window
+                .as_ref()
+                .and_then(|p| p.get_application())
+                .as_ref(),
+        );
 
         let self_ = o.get_priv();
         self_.db.set(db.clone()).unwrap();
@@ -202,6 +204,12 @@ impl PreferencesWindow {
 
     fn connect_handlers(&self) {
         let self_ = self.get_priv();
+
+        self_
+            .settings
+            .connect_unitsystem_changed(clone!(@weak self as obj => move |_, _| {
+                obj.handle_unitsystem_changed();
+            }));
 
         self_
             .age_spin_button
@@ -249,12 +257,6 @@ impl PreferencesWindow {
             .weightgoal_spin_button
             .connect_changed(clone!(@weak self as obj => move |_| {
                 obj.handle_weightgoal_spin_button_changed();
-            }));
-
-        self_
-            .unit_metric_togglebutton
-            .connect_toggled(clone!(@weak self as obj => move |btn| {
-                obj.handle_unit_metric_togglebutton_toggled(btn);
             }));
     }
 
@@ -328,7 +330,7 @@ impl PreferencesWindow {
         let self_ = self.get_priv();
         let val = get_spinbutton_value::<u32>(&self_.height_spin_button) as f32;
         if val != 0.0 {
-            let height = if self_.unit_metric_togglebutton.get_active() {
+            let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
                 Length::new::<centimeter>(val)
             } else {
                 Length::new::<inch>(val)
@@ -399,11 +401,17 @@ impl PreferencesWindow {
         }
     }
 
-    fn handle_unit_metric_togglebutton_toggled(&self, btn: &gtk::ToggleButton) {
+    fn handle_unitsystem_changed(&self) {
         let self_ = self.get_priv();
-        if btn.get_active() {
-            self_.settings.set_unitsystem(Unitsystem::Metric);
-            self_.bmi_levelbar.set_unitsystem(Unitsystem::Metric);
+        let unitsystem = self_.settings.get_unitsystem();
+
+        if self_.current_unitsystem.get() == unitsystem {
+            return;
+        }
+
+        self_.current_unitsystem.set(unitsystem);
+
+        if unitsystem == Unitsystem::Metric {
             self_
                 .height_actionrow
                 .set_title(Some(&i18n("Height in centimeters")));
@@ -415,12 +423,10 @@ impl PreferencesWindow {
                     .get::<centimeter>(),
             ));
             self_.weightgoal_spin_button.set_value(f64::from(
-                Mass::new::<pound>(get_spinbutton_value(&self_.height_spin_button))
+                Mass::new::<pound>(get_spinbutton_value(&self_.weightgoal_spin_button))
                     .get::<kilogram>(),
             ));
         } else {
-            self_.settings.set_unitsystem(Unitsystem::Imperial);
-            self_.bmi_levelbar.set_unitsystem(Unitsystem::Imperial);
             self_
                 .height_actionrow
                 .set_title(Some(&i18n("Height in inch")));
@@ -432,7 +438,7 @@ impl PreferencesWindow {
                     .get::<inch>(),
             ));
             self_.weightgoal_spin_button.set_value(f64::from(
-                Mass::new::<kilogram>(get_spinbutton_value(&self_.height_spin_button))
+                Mass::new::<kilogram>(get_spinbutton_value(&self_.weightgoal_spin_button))
                     .get::<pound>(),
             ));
         }
@@ -442,7 +448,7 @@ impl PreferencesWindow {
         let self_ = self.get_priv();
         let val = get_spinbutton_value::<f32>(&self_.weightgoal_spin_button);
         if val != 0.0 {
-            let weight = if self_.unit_metric_togglebutton.get_active() {
+            let weight = if self_.current_unitsystem.get() == Unitsystem::Metric {
                 Mass::new::<kilogram>(val)
             } else {
                 Mass::new::<pound>(val)

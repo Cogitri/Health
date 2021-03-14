@@ -80,7 +80,7 @@ mod imp {
 
     impl ObjectImpl for ActivityTypeSelector {
         fn constructed(&self, obj: &Self::Type) {
-            let recent_activity_types = Settings::new().get_recent_activity_types();
+            let recent_activity_types = Settings::get_instance().get_recent_activity_types();
 
             if !recent_activity_types.is_empty() {
                 self.recents_box.set_visible(true);

@@ -62,7 +62,7 @@ mod imp {
         fn new() -> Self {
             Self {
                 database: OnceCell::new(),
-                settings: Settings::new(),
+                settings: Settings::get_instance(),
                 date_selector: TemplateChild::default(),
                 weight_spin_button: TemplateChild::default(),
             }

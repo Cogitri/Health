@@ -16,7 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::settings::Unitsystem;
 use glib::subclass::types::ObjectSubclass;
 use uom::si::{
     f32::{Length, Mass},
@@ -29,7 +28,6 @@ static LEVEL_BAR_MAX: f32 = 30.0;
 
 mod imp {
     use super::{LEVEL_BAR_MAX, LEVEL_BAR_MIN};
-    use crate::core::{settings::Unitsystem, Settings};
     use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
@@ -43,7 +41,6 @@ mod imp {
     pub struct BMILevelBarMut {
         pub height: Length,
         pub weight: Mass,
-        pub unitsystem: Unitsystem,
     }
 
     #[derive(Debug, CompositeTemplate)]
@@ -71,7 +68,6 @@ mod imp {
                 inner: RefCell::new(BMILevelBarMut {
                     height: Length::new::<centimeter>(0.0),
                     weight: Mass::new::<kilogram>(0.0),
-                    unitsystem: Unitsystem::Metric,
                 }),
                 bmi_label: TemplateChild::default(),
                 level_bar: TemplateChild::default(),
@@ -91,12 +87,6 @@ mod imp {
 
     impl ObjectImpl for BMILevelBar {
         fn constructed(&self, obj: &Self::Type) {
-            let settings = Settings::new();
-            self.inner.borrow_mut().unitsystem = settings.get_unitsystem();
-            settings.connect_unitsystem_changed(glib::clone!(@weak obj, @strong settings => move |_, _| {
-                BMILevelBar::from_instance(&obj).inner.borrow_mut().unitsystem = settings.get_unitsystem();
-            }));
-
             obj.get_layout_manager()
                 .unwrap()
                 .dynamic_cast_ref::<gtk::Orientable>()
@@ -153,10 +143,6 @@ impl BMILevelBar {
         self.get_priv().inner.borrow().weight
     }
 
-    pub fn get_unitsystem(&self) -> Unitsystem {
-        self.get_priv().inner.borrow().unitsystem
-    }
-
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create BMILevelBar")
     }
@@ -170,12 +156,6 @@ impl BMILevelBar {
     pub fn set_weight(&self, value: Mass) {
         let self_ = self.get_priv();
         self_.inner.borrow_mut().weight = value;
-        self.recalcualte_bmi();
-    }
-
-    pub fn set_unitsystem(&self, value: Unitsystem) {
-        let self_ = self.get_priv();
-        self_.inner.borrow_mut().unitsystem = value;
         self.recalcualte_bmi();
     }
 

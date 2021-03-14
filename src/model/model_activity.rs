@@ -61,7 +61,7 @@ mod imp {
             Self {
                 database: OnceCell::new(),
                 inner: RefCell::new(ModelActivityMut { vec: Vec::new() }),
-                settings: Settings::new(),
+                settings: Settings::get_instance(),
             }
         }
     }

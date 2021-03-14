@@ -16,7 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::{i18n, settings::Unitsystem, utils::get_spinbutton_value};
+use crate::{
+    core::{i18n, settings::Unitsystem, utils::get_spinbutton_value},
+    windows::Unitsize,
+};
 use glib::subclass::types::ObjectSubclass;
 use gtk::prelude::*;
 use uom::si::{
@@ -25,7 +28,7 @@ use uom::si::{
 };
 
 mod imp {
-    use crate::core::Settings;
+    use crate::{core::Settings, windows::Unitsize};
     use adw::subclass::prelude::*;
     use glib::{
         clone,
@@ -35,11 +38,17 @@ mod imp {
     use std::cell::RefCell;
     use uom::si::{f32::Length, length::meter};
 
+    #[derive(Debug)]
+    pub struct DistanceActionRowMut {
+        pub unitsize: Unitsize,
+        pub value: Length,
+    }
+
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/distance_action_row.ui")]
     pub struct DistanceActionRow {
+        pub inner: RefCell<DistanceActionRowMut>,
         pub settings: Settings,
-        pub value: RefCell<Length>,
         #[template_child]
         pub distance_adjustment: TemplateChild<gtk::Adjustment>,
         #[template_child]
@@ -62,8 +71,11 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                settings: Settings::new(),
-                value: RefCell::new(Length::new::<meter>(0.0)),
+                inner: RefCell::new(DistanceActionRowMut {
+                    unitsize: Unitsize::Small,
+                    value: Length::new::<meter>(0.0),
+                }),
+                settings: Settings::get_instance(),
                 distance_adjustment: TemplateChild::default(),
                 distance_spin_button: TemplateChild::default(),
                 big_unit_togglebutton: TemplateChild::default(),
@@ -86,11 +98,6 @@ mod imp {
             self.settings.connect_unitsystem_changed(
                 clone!(@weak obj => move |_, _| obj.set_togglebutton_text()),
             );
-
-            self.small_unit_togglebutton
-                .connect_toggled(clone!(@weak obj => move |btn| {
-                    obj.handle_small_unit_togglebutton_toggle(btn)
-                }));
 
             self.distance_spin_button
                 .connect_changed(clone!(@weak obj => move |s| {
@@ -145,38 +152,57 @@ impl DistanceActionRow {
     }
 
     pub fn get_value(&self) -> Length {
-        *self.get_priv().value.borrow()
+        self.get_priv().inner.borrow().value
     }
 
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create DistanceActionRow")
     }
 
+    pub fn set_unitsize(&self, unitsize: Unitsize) {
+        let adjustment = &self.get_priv().distance_adjustment;
+        if unitsize == Unitsize::Small {
+            adjustment.set_step_increment(100.0);
+            adjustment.set_page_increment(1000.0);
+        } else {
+            adjustment.set_step_increment(1.0);
+            adjustment.set_page_increment(5.0);
+        }
+
+        let val = {
+            let mut inner = self.get_priv().inner.borrow_mut();
+            inner.unitsize = unitsize;
+            inner.value
+        };
+        self.set_value(val)
+    }
+
     pub fn set_value(&self, value: Length) {
         // FIXME: Disallow both buttons being inactive
         let self_ = self.get_priv();
+        let unitsize = self_.inner.borrow().unitsize;
 
         if self_.settings.get_unitsystem() == Unitsystem::Metric {
-            if self_.small_unit_togglebutton.get_active() {
+            if unitsize == Unitsize::Small {
                 self_
                     .distance_spin_button
                     .set_value(value.get::<meter>().into())
-            } else if self_.big_unit_togglebutton.get_active() {
+            } else if unitsize == Unitsize::Big {
                 self_
                     .distance_spin_button
                     .set_value(value.get::<kilometer>().into())
             }
-        } else if self_.small_unit_togglebutton.get_active() {
+        } else if unitsize == Unitsize::Small {
             self_
                 .distance_spin_button
                 .set_value(value.get::<yard>().into())
-        } else if self_.big_unit_togglebutton.get_active() {
+        } else if unitsize == Unitsize::Big {
             self_
                 .distance_spin_button
                 .set_value(value.get::<mile>().into())
         }
 
-        self_.value.replace(value);
+        self_.inner.borrow_mut().value = value;
     }
 
     fn get_priv(&self) -> &imp::DistanceActionRow {
@@ -186,17 +212,18 @@ impl DistanceActionRow {
     fn handle_distance_spin_button_changed(&self, spinbutton: &gtk::SpinButton) {
         let self_ = self.get_priv();
         let value = get_spinbutton_value::<f32>(spinbutton);
+        let unitsize = self_.inner.borrow().unitsize;
 
         if self_.settings.get_unitsystem() == Unitsystem::Metric {
-            if self_.small_unit_togglebutton.get_active() {
-                self_.value.replace(Length::new::<meter>(value));
+            if unitsize == Unitsize::Small {
+                self_.inner.borrow_mut().value = Length::new::<meter>(value);
             } else {
-                self_.value.replace(Length::new::<kilometer>(value));
+                self_.inner.borrow_mut().value = Length::new::<kilometer>(value);
             }
-        } else if self_.small_unit_togglebutton.get_active() {
-            self_.value.replace(Length::new::<yard>(value));
+        } else if unitsize == Unitsize::Small {
+            self_.inner.borrow_mut().value = Length::new::<yard>(value);
         } else {
-            self_.value.replace(Length::new::<mile>(value));
+            self_.inner.borrow_mut().value = Length::new::<mile>(value);
         }
         self.emit_by_name("changed", &[]).unwrap();
     }
@@ -204,17 +231,6 @@ impl DistanceActionRow {
     fn handle_distance_spin_button_input(&self) -> Option<Result<f64, ()>> {
         self.emit_by_name("input", &[]).unwrap();
         None
-    }
-
-    fn handle_small_unit_togglebutton_toggle(&self, btn: &gtk::ToggleButton) {
-        let adjustment = &self.get_priv().distance_adjustment;
-        if btn.get_active() {
-            adjustment.set_step_increment(100.0);
-            adjustment.set_page_increment(1000.0);
-        } else {
-            adjustment.set_step_increment(1.0);
-            adjustment.set_page_increment(5.0);
-        }
     }
 
     fn set_togglebutton_text(&self) {
