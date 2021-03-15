@@ -86,10 +86,10 @@ impl GraphModelSteps {
         }
 
         let mut streak: u32 = 0;
-        let last_date = steps.get(0).unwrap().date;
+        let earliest_date = steps.get(0).unwrap().date;
 
         for x in steps.iter() {
-            if u32::try_from(last_date.signed_duration_since(x.date).num_days()).unwrap() == streak
+            if u32::try_from((x.date - earliest_date).num_days()).unwrap() == streak
                 && x.steps >= step_goal
             {
                 streak += 1;
