@@ -17,7 +17,7 @@
  */
 
 use crate::{core::Database, model::Steps, views::Point};
-use chrono::{DateTime, Duration, FixedOffset, Local};
+use chrono::{DateTime, Duration, FixedOffset, Utc};
 use std::convert::{TryFrom, TryInto};
 
 #[derive(Debug)]
@@ -147,7 +147,7 @@ impl GraphModelSteps {
 
         for x in last_val
             ..usize::try_from(
-                Local::now()
+                Utc::now()
                     .date()
                     .signed_duration_since(first_date)
                     .num_days(),
@@ -158,9 +158,9 @@ impl GraphModelSteps {
             ret.push(Point { date, value: 0.0 });
         }
 
-        if ret.last().unwrap().date != Local::now().date() {
+        if ret.last().unwrap().date != Utc::now().date() {
             ret.push(Point {
-                date: DateTime::<FixedOffset>::from(Local::now()).date(),
+                date: DateTime::<FixedOffset>::from(Utc::now()).date(),
                 value: 0.0,
             });
         }
