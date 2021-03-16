@@ -49,6 +49,7 @@ mod imp {
     pub struct DistanceActionRow {
         pub inner: RefCell<DistanceActionRowMut>,
         pub settings: Settings,
+        pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
         #[template_child]
         pub distance_adjustment: TemplateChild<gtk::Adjustment>,
         #[template_child]
@@ -76,6 +77,7 @@ mod imp {
                     value: Length::new::<meter>(0.0),
                 }),
                 settings: Settings::get_instance(),
+                settings_handler_id: RefCell::new(None),
                 distance_adjustment: TemplateChild::default(),
                 distance_spin_button: TemplateChild::default(),
                 big_unit_togglebutton: TemplateChild::default(),
@@ -95,9 +97,10 @@ mod imp {
     impl ObjectImpl for DistanceActionRow {
         fn constructed(&self, obj: &Self::Type) {
             obj.set_togglebutton_text();
-            self.settings.connect_unitsystem_changed(
-                clone!(@weak obj => move |_, _| obj.set_togglebutton_text()),
-            );
+            self.settings_handler_id
+                .replace(Some(self.settings.connect_unitsystem_changed(
+                    clone!(@weak obj => move |_, _| obj.set_togglebutton_text()),
+                )));
 
             self.distance_spin_button
                 .connect_changed(clone!(@weak obj => move |s| {
@@ -120,6 +123,11 @@ mod imp {
             });
 
             SIGNALS.as_ref()
+        }
+
+        fn dispose(&self, _obj: &Self::Type) {
+            self.settings
+                .disconnect(self.settings_handler_id.borrow_mut().take().unwrap())
         }
     }
     impl WidgetImpl for DistanceActionRow {}

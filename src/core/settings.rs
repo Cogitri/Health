@@ -62,6 +62,10 @@ pub struct Settings {
 }
 
 impl Settings {
+    pub fn disconnect(&self, s: glib::SignalHandlerId) {
+        self.settings.disconnect(s)
+    }
+
     /// Create a new [Settings] object. Since this operation is pretty cheap it's OK to call this when
     /// constructing your struct instead of passing `Settings` around.
     fn new() -> Self {

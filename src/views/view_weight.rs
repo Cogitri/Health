@@ -46,6 +46,7 @@ mod imp {
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         pub settings: Settings,
+        pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
         pub weight_graph_view: OnceCell<GraphView>,
         pub weight_graph_model: OnceCell<RefCell<GraphModelWeight>>,
     }
@@ -64,6 +65,7 @@ mod imp {
             Self {
                 scrolled_window: TemplateChild::default(),
                 settings: Settings::get_instance(),
+                settings_handler_id: RefCell::new(None),
                 weight_graph_view: OnceCell::new(),
                 weight_graph_model: OnceCell::new(),
             }
@@ -86,6 +88,11 @@ mod imp {
     impl ObjectImpl for ViewWeight {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
+        }
+
+        fn dispose(&self, _obj: &Self::Type) {
+            self.settings
+                .disconnect(self.settings_handler_id.borrow_mut().take().unwrap())
         }
     }
 }
@@ -170,13 +177,15 @@ impl ViewWeight {
 
             self_.weight_graph_view.set(weight_graph_view).unwrap();
 
-            self_.settings.connect_user_weightgoal_changed(
-                glib::clone!(@weak self as obj => move |_,_| {
-                    glib::MainContext::default().spawn_local(async move {
-                        obj.update().await
-                    })
-                }),
-            );
+            self_.settings_handler_id.replace(Some(
+                self_.settings.connect_user_weightgoal_changed(
+                    glib::clone!(@weak self as obj => move |_,_| {
+                        glib::MainContext::default().spawn_local(async move {
+                            obj.update().await
+                        })
+                    }),
+                ),
+            ));
         }
 
         self_

@@ -42,6 +42,7 @@ mod imp {
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         pub settings: Settings,
+        pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
         pub steps_graph_view: OnceCell<GraphView>,
         pub steps_graph_model: OnceCell<RefCell<GraphModelSteps>>,
     }
@@ -62,6 +63,7 @@ mod imp {
             Self {
                 scrolled_window: TemplateChild::default(),
                 settings,
+                settings_handler_id: RefCell::new(None),
                 steps_graph_view: OnceCell::new(),
                 steps_graph_model: OnceCell::new(),
             }
@@ -84,6 +86,12 @@ mod imp {
     impl ObjectImpl for ViewSteps {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
+        }
+
+        fn dispose(&self, _obj: &Self::Type) {
+            if let Some(id) = self.settings_handler_id.borrow_mut().take() {
+                self.settings.disconnect(id);
+            }
         }
     }
 }
@@ -182,13 +190,15 @@ impl ViewSteps {
 
             self_.steps_graph_view.set(steps_graph_view).unwrap();
 
-            self_.settings.connect_user_stepgoal_changed(
-                glib::clone!(@weak self as obj => move |_,_| {
-                    glib::MainContext::default().spawn_local(async move {
-                        obj.update().await
-                    })
-                }),
-            );
+            self_
+                .settings_handler_id
+                .replace(Some(self_.settings.connect_user_stepgoal_changed(
+                    glib::clone!(@weak self as obj => move |_,_| {
+                        glib::MainContext::default().spawn_local(async move {
+                            obj.update().await
+                        })
+                    }),
+                )));
         }
 
         self_
