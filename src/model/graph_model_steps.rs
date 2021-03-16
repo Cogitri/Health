@@ -20,6 +20,7 @@ use crate::{core::Database, model::Steps, views::Point};
 use chrono::{DateTime, Duration, FixedOffset, Utc};
 use std::convert::{TryFrom, TryInto};
 
+/// A [GraphModelSteps] manages step data for easy consumption in views.
 #[derive(Debug)]
 pub struct GraphModelSteps {
     database: Database,

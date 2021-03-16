@@ -138,6 +138,10 @@ glib::wrapper! {
 }
 
 impl SyncListBox {
+    /// Create a new [SyncListBox]
+    ///
+    /// # Arguments
+    /// * `parent_window` - The [GtkWindow](gtk::Window) that should be the transient parent for error dialogs (or none).
     pub fn new(parent_window: Option<gtk::Window>) -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create SyncListBox");
 

@@ -170,6 +170,13 @@ glib::wrapper! {
 }
 
 impl SetupWindow {
+    /// Connect to the setup being completed by the user.
+    ///
+    /// # Arguments
+    /// * `callback` - The callback to call once the signal is emitted.
+    ///
+    /// # Returns
+    /// The [glib::SignalHandlerId] to disconnect the signal later on.
     pub fn connect_setup_done<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
         self.connect_local("setup-done", false, move |_| {
             callback();
@@ -178,6 +185,10 @@ impl SetupWindow {
         .unwrap()
     }
 
+    /// Create a new [SetupWindow].
+    ///
+    /// # Arguments
+    /// * `app` - The [GtkApplication](gtk::Application) to use.
     pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
         glib::Object::new(&[("application", app)]).expect("Failed to create SetupWindow")
     }

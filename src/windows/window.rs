@@ -143,6 +143,10 @@ glib::wrapper! {
 }
 
 impl Window {
+    /// Create a new [Window].
+    ///
+    /// # Arguments
+    /// * `app` - The application to use.
     pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
         let o: Window =
             glib::Object::new(&[("application", app)]).expect("Failed to create Window");

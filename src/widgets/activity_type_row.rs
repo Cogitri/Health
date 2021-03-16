@@ -70,18 +70,26 @@ glib::wrapper! {
 }
 
 impl ActivityTypeRow {
+    /// Get the ID of the [ActivityType](crate::model::ActivityType)
     pub fn get_id(&self) -> &'static str {
         *self.get_priv().activity_type_id.borrow()
     }
 
+    /// Get the user visible name of the [ActivityType](crate::model::ActivityType)
     pub fn get_label(&self) -> String {
         self.get_priv().activity_type_label.get_text().to_string()
     }
 
+    /// Get whether or not the row is selected.
     pub fn get_selected(&self) -> bool {
         self.get_priv().selected_image.get_visible()
     }
 
+    /// Create a new [ActivityTypeRow].
+    ///
+    /// # Arguments
+    /// * `data` - The [ActivityTypeRowData] to populate the [ActivityTypeRow] from.
+    /// * `selected` - Whether or not the row is elected.
     pub fn new(data: &ActivityTypeRowData, selected: bool) -> Self {
         let s: Self = glib::Object::new(&[]).expect("Failed to create ActivityTypeRow");
 
@@ -92,14 +100,17 @@ impl ActivityTypeRow {
         s
     }
 
+    /// Set the ID of the [ActivityType](crate::model::ActivityType)
     pub fn set_id(&self, value: &'static str) {
         self.get_priv().activity_type_id.replace(value);
     }
 
+    /// Set the user visible name of the [ActivityType](crate::model::ActivityType)
     pub fn set_label(&self, value: &str) {
         self.get_priv().activity_type_label.set_text(value)
     }
 
+    /// Set whether or not the row is selected.
     pub fn set_selected(&self, value: bool) {
         self.get_priv().selected_image.set_visible(value)
     }

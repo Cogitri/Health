@@ -93,6 +93,10 @@ glib::wrapper! {
 }
 
 impl WeightAddDialog {
+    /// Create a new [WeightAddDialog]
+    ///
+    /// # Arguments
+    /// * `parent` - The [GtkWindow](gtk::Window) which is the transient parent of this dialog.
     pub fn new(parent: &gtk::Window) -> Self {
         let o: Self =
             glib::Object::new(&[("use-header-bar", &1)]).expect("Failed to create WeightAddDialog");

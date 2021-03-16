@@ -17,6 +17,7 @@
  */
 
 bitflags::bitflags! {
+    /// An [ActivityDataPoints] are different data points that an [Activity](crate::model::Activity) can hold.
     pub struct ActivityDataPoints: u16 {
         const CALORIES_BURNED = 0b00_0001;
         const DISTANCE = 0b00_0010;

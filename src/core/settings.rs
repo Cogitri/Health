@@ -56,6 +56,7 @@ impl Into<&'static str> for Unitsystem {
 
 static mut SETTINGS: Option<Settings> = None;
 
+/// [Settings] is a [gio::Settings], but with helper methods to connect to changes/get/set keys.
 #[derive(Debug, Clone)]
 pub struct Settings {
     settings: gio::Settings,

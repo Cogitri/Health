@@ -101,6 +101,7 @@ glib::wrapper! {
 }
 
 impl ViewWeight {
+    /// Create a new [ViewWeight] to display previous weight measurements.
     pub fn new() -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create ViewWeight");
 

@@ -18,6 +18,7 @@
 
 use chrono::{DateTime, FixedOffset};
 
+/// A [Steps] is a single step measurement the user did on a certain date.
 #[derive(Debug)]
 pub struct Steps {
     pub date: DateTime<FixedOffset>,

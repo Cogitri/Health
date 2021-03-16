@@ -93,14 +93,17 @@ glib::wrapper! {
 }
 
 impl DateSelector {
+    /// Get the currently selected date
     pub fn get_selected_date(&self) -> DateTime<FixedOffset> {
         *self.get_priv().selected_date.borrow()
     }
 
+    /// Create a new [DateSelector]
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create DateSelector")
     }
 
+    /// Set the currently selected date.
     pub fn set_selected_date(&self, value: DateTime<FixedOffset>) {
         self.set_text(&format!("{}", value.format("%x")));
         self.get_priv().selected_date.replace(value);

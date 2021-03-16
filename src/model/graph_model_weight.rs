@@ -27,6 +27,7 @@ use uom::si::{
     mass::{kilogram, pound},
 };
 
+/// A [GraphModelWeight] manages weight data for easy consumption in views.
 #[derive(Debug)]
 pub struct GraphModelWeight {
     database: Database,

@@ -103,6 +103,7 @@ mod imp {
 }
 
 glib::wrapper! {
+    /// [Application] is an implementation of [GtkApplication](gtk::Application) that handles starting & managing the windows etc.
     pub struct Application(ObjectSubclass<imp::Application>)
         @extends gio::Application, gtk::Application, @implements gio::ActionMap, gio::ActionGroup;
 }

@@ -136,6 +136,13 @@ glib::wrapper! {
 }
 
 impl DistanceActionRow {
+    /// Connect to a new value being entered (this is only emitted once the user is done editing!).
+    ///
+    /// # Arguments
+    /// * `callback` - The callback to call once the signal is emitted.
+    ///
+    /// # Returns
+    /// The [glib::SignalHandlerId] to disconnect the signal later on.
     pub fn connect_changed<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
         self.connect_local("changed", false, move |_| {
             callback();
@@ -144,6 +151,13 @@ impl DistanceActionRow {
         .unwrap()
     }
 
+    /// Connect to a new value being entered (this is emitted for every change (e.g. key hit) the user does!).
+    ///
+    /// # Arguments
+    /// * `callback` - The callback to call once the signal is emitted.
+    ///
+    /// # Returns
+    /// The [glib::SignalHandlerId] to disconnect the signal later on.
     pub fn connect_input<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
         self.connect_local("input", false, move |_| {
             callback();

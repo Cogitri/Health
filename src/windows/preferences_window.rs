@@ -176,6 +176,11 @@ impl PreferencesWindow {
         .unwrap()
     }
 
+    /// Create a new [PreferencesWindow].
+    ///
+    /// # Arguments
+    /// * `parent_window` - The transient parent of the window.
+    ///
     pub fn new(parent_window: Option<gtk::Window>) -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create PreferencesWindow");
 

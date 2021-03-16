@@ -87,6 +87,7 @@ glib::wrapper! {
 }
 
 impl ViewActivity {
+    /// Create a new [ViewActivity] to display previous activities.
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create ViewActivity")
     }

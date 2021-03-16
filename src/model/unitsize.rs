@@ -1,6 +1,7 @@
 use std::convert::TryFrom;
 use std::fmt;
 
+/// A [Unitsize] is so the user can choose to enter different unit sizes (e.g. km vs meter).
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
 pub enum Unitsize {
     Big,

@@ -132,10 +132,12 @@ glib::wrapper! {
 }
 
 impl ActivityRow {
+    /// Create a new [ActivityRow].
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create ActivityRow")
     }
 
+    /// Set which [Activity] to display.
     pub fn set_activity(&self, activity: Activity) {
         let self_ = self.get_priv();
 

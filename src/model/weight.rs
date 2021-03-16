@@ -20,6 +20,7 @@ use crate::sync::serialize;
 use chrono::{DateTime, FixedOffset};
 use uom::si::f32::Mass;
 
+/// A [Weight] is a single weight measurement the user did on a certain date.
 #[derive(Debug, serde::Deserialize, serde::Serialize, Clone)]
 pub struct Weight {
     #[serde(serialize_with = "serialize::serialize_date")]

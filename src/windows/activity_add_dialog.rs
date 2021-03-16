@@ -93,13 +93,25 @@ mod imp {
         pub stepcount_action_row: TemplateChild<adw::ActionRow>,
     }
 
+    /// Get the value of a spinbutton if the datapoint is set.
+    ///
+    /// # Parameters
+    /// * `spin_button` - The [GtkSpinButton](gtk::SpinButton) whose value to retrieve.
+    /// * `activity` - The [ActivityInfo] that describes the current activity.
+    /// * `datapoints` - The [ActivityDataPoints] to check for.
+    ///
+    /// # Returns
+    /// `Some` with the value of the [GtkSpinButton](gtk::SpinButton) if the activity has that
+    /// particular datapoint, or `None`.
     pub fn get_spin_button_value_if_datapoint(
-        b: &gtk::SpinButton,
-        a: &ActivityInfo,
-        d: ActivityDataPoints,
+        spin_button: &gtk::SpinButton,
+        activity: &ActivityInfo,
+        datapoints: ActivityDataPoints,
     ) -> Option<u32> {
-        if a.available_data_points.contains(d) && b.get_text().as_str() != "" {
-            Some(get_spinbutton_value(b))
+        if activity.available_data_points.contains(datapoints)
+            && spin_button.get_text().as_str() != ""
+        {
+            Some(get_spinbutton_value(spin_button))
         } else {
             None
         }
@@ -202,6 +214,10 @@ glib::wrapper! {
 }
 
 impl ActivityAddDialog {
+    /// Create a new [ActivityAddDialog].
+    ///
+    /// # Arguments
+    /// * `parent` - The [GtkWindow](gtk::Window) who is the transient parent of this dialog.
     pub fn new(parent: &gtk::Window) -> Self {
         let o: Self = glib::Object::new(&[("use-header-bar", &1)])
             .expect("Failed to create ActivityAddDialog");

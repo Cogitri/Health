@@ -130,24 +130,29 @@ glib::wrapper! {
 }
 
 impl BMILevelBar {
+    /// Get the height of the user.
     pub fn get_height(&self) -> Length {
         self.get_priv().inner.borrow().height
     }
 
+    /// Get the weight of the user.
     pub fn get_weight(&self) -> Mass {
         self.get_priv().inner.borrow().weight
     }
 
+    /// Create a new [BMILevelBar].
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create BMILevelBar")
     }
 
+    /// Set the height of the user.
     pub fn set_height(&self, value: Length) {
         let self_ = self.get_priv();
         self_.inner.borrow_mut().height = value;
         self.recalcualte_bmi();
     }
 
+    /// Set the height of the user.
     pub fn set_weight(&self, value: Mass) {
         let self_ = self.get_priv();
         self_.inner.borrow_mut().weight = value;

@@ -174,10 +174,18 @@ glib::wrapper! {
 }
 
 impl ActivityTypeSelector {
+    /// Get the currently selected [ActivityInfo].
     pub fn get_selected_activity(&self) -> ActivityInfo {
         self.get_priv().selected_activity.borrow().clone()
     }
 
+    /// Connect to a new activity being selected.
+    ///
+    /// # Arguments
+    /// * `callback` - The callback to call once the signal is emitted.
+    ///
+    /// # Returns
+    /// The [glib::SignalHandlerId] to disconnect the signal later on.
     pub fn connect_activity_selected<F: Fn() + 'static>(
         &self,
         callback: F,
@@ -189,6 +197,7 @@ impl ActivityTypeSelector {
         .unwrap()
     }
 
+    /// Create a new [ActivityTypeSelector].
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create ActivityTypeSelector")
     }

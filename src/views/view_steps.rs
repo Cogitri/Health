@@ -97,6 +97,7 @@ glib::wrapper! {
 }
 
 impl ViewSteps {
+    /// Create a new [ViewSteps] to display previous step activity.
     pub fn new() -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create ViewSteps");
 
