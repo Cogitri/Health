@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, settings::Unitsystem, Database},
+    core::{i18n, settings::Unitsystem},
     model::Weight,
 };
 use glib::{clone, subclass::prelude::*};
@@ -34,12 +34,11 @@ mod imp {
         widgets::DateSelector,
     };
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
-    use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_add_dialog.ui")]
     pub struct WeightAddDialog {
-        pub database: OnceCell<Database>,
+        pub database: Database,
         pub settings: Settings,
 
         #[template_child]
@@ -56,7 +55,7 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                database: OnceCell::new(),
+                database: Database::get_instance(),
                 settings: Settings::get_instance(),
                 date_selector: TemplateChild::default(),
                 weight_spin_button: TemplateChild::default(),
@@ -94,12 +93,11 @@ glib::wrapper! {
 }
 
 impl WeightAddDialog {
-    pub fn new(database: Database, parent: &gtk::Window) -> Self {
+    pub fn new(parent: &gtk::Window) -> Self {
         let o: Self =
             glib::Object::new(&[("use-header-bar", &1)]).expect("Failed to create WeightAddDialog");
 
         o.set_transient_for(Some(parent));
-        o.get_priv().database.set(database).unwrap();
 
         o
     }
@@ -134,8 +132,6 @@ impl WeightAddDialog {
                         };
                         if let Err(e) = self_
                             .database
-                            .get()
-                            .unwrap()
                             .save_weight(Weight::new(
                                 self_.date_selector.get_selected_date(),
                                 value,
@@ -171,8 +167,6 @@ impl WeightAddDialog {
                 let self_ = obj.get_priv();
                 let res = self_
                     .database
-                    .get()
-                    .unwrap()
                     .get_weight_exists_on_date(self_.date_selector.get_selected_date().date())
                     .await;
                 if let Ok(true) = res {

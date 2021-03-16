@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{utils::get_spinbutton_value, Database},
+    core::utils::get_spinbutton_value,
     model::{Activity, ActivityDataPoints, ActivityInfo, Unitsize},
 };
 use chrono::Duration;
@@ -35,7 +35,6 @@ mod imp {
     };
     use glib::clone;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
-    use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
     #[derive(Debug)]
@@ -51,7 +50,7 @@ mod imp {
     #[template(resource = "/dev/Cogitri/Health/ui/activity_add_dialog.ui")]
     pub struct ActivityAddDialog {
         pub inner: RefCell<ActivityAddDialogMut>,
-        pub database: OnceCell<Database>,
+        pub database: Database,
         pub settings: Settings,
 
         #[template_child]
@@ -121,7 +120,7 @@ mod imp {
                     stop_update: false,
                     user_changed_datapoints: ActivityDataPoints::empty(),
                 }),
-                database: OnceCell::new(),
+                database: Database::get_instance(),
                 settings: Settings::get_instance(),
                 date_selector: TemplateChild::default(),
                 activities_list_box: TemplateChild::default(),
@@ -203,12 +202,11 @@ glib::wrapper! {
 }
 
 impl ActivityAddDialog {
-    pub fn new(database: Database, parent: &gtk::Window) -> Self {
+    pub fn new(parent: &gtk::Window) -> Self {
         let o: Self = glib::Object::new(&[("use-header-bar", &1)])
             .expect("Failed to create ActivityAddDialog");
 
         o.set_transient_for(Some(parent));
-        o.get_priv().database.set(database).unwrap();
 
         o
     }
@@ -479,8 +477,7 @@ impl ActivityAddDialog {
                                 .into(),
                             ));
 
-                        if let Err(e) = self_.database.get().unwrap().save_activity(activity).await
-                        {
+                        if let Err(e) = self_.database.save_activity(activity).await {
                             glib::g_warning!(
                                 crate::config::LOG_DOMAIN,
                                 "Failed to save new data due to error {}",

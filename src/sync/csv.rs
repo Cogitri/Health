@@ -28,8 +28,10 @@ pub struct CSVHandler {
 }
 
 impl CSVHandler {
-    pub fn new(db: Database) -> Self {
-        Self { db }
+    pub fn new() -> Self {
+        Self {
+            db: Database::get_instance(),
+        }
     }
 
     /// Export all [Activity](crate::model::Activity)s in the Tracker DB to a CSV file.

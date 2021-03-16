@@ -32,10 +32,7 @@ use imp::ViewMode;
 use std::collections::BTreeMap;
 
 mod imp {
-    use crate::{
-        core::{Database, Settings},
-        views::View,
-    };
+    use crate::{core::Settings, views::View};
     use glib::SourceId;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
@@ -59,7 +56,6 @@ mod imp {
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/window.ui")]
     pub struct Window {
-        pub db: OnceCell<Database>,
         pub inner: RefCell<WindowMut>,
         pub settings: Settings,
         pub views: OnceCell<BTreeMap<ViewMode, View>>,
@@ -84,7 +80,6 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                db: OnceCell::new(),
                 inner: RefCell::new(WindowMut {
                     current_height: 0,
                     current_width: 0,
@@ -148,19 +143,19 @@ glib::wrapper! {
 }
 
 impl Window {
-    pub fn new<P: glib::IsA<gtk::Application>>(app: &P, db: Database) -> Self {
+    pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
         let o: Window =
             glib::Object::new(&[("application", app)]).expect("Failed to create Window");
 
         let obj = o.clone();
         gtk_macros::spawn!(async move {
-            if let Err(e) = db.migrate().await {
+            if let Err(e) = Database::get_instance().migrate().await {
                 obj.show_error(&crate::core::i18n_f(
                     "Failed to migrate database to new version due to error {}",
                     &[&e.to_string()],
                 ))
             }
-            obj.set_db(db)
+            obj.create_views();
         });
 
         o
@@ -204,13 +199,12 @@ impl Window {
 
     fn handle_add_data_button_clicked(&self) {
         let self_ = self.get_priv();
-        let db = self_.db.get().unwrap().clone();
 
         let dialog = match self_.inner.borrow().current_view {
             ViewMode::ACTIVITIES | ViewMode::STEPS => {
-                ActivityAddDialog::new(db, self.upcast_ref()).upcast::<gtk::Dialog>()
+                ActivityAddDialog::new(self.upcast_ref()).upcast::<gtk::Dialog>()
             }
-            ViewMode::WEIGHT => WeightAddDialog::new(db, self.upcast_ref()).upcast::<gtk::Dialog>(),
+            ViewMode::WEIGHT => WeightAddDialog::new(self.upcast_ref()).upcast::<gtk::Dialog>(),
         };
         dialog.present();
     }
@@ -271,15 +265,13 @@ impl Window {
         }
     }
 
-    fn set_db(&self, db: Database) {
+    fn create_views(&self) {
         let self_ = self.get_priv();
 
-        self_.db.set(db.clone()).unwrap();
-
         let mut views = BTreeMap::new();
-        views.insert(ViewMode::ACTIVITIES, ViewActivity::new(db.clone()).upcast());
-        views.insert(ViewMode::WEIGHT, ViewWeight::new(db.clone()).upcast());
-        views.insert(ViewMode::STEPS, ViewSteps::new(db).upcast());
+        views.insert(ViewMode::ACTIVITIES, ViewActivity::new().upcast());
+        views.insert(ViewMode::WEIGHT, ViewWeight::new().upcast());
+        views.insert(ViewMode::STEPS, ViewSteps::new().upcast());
         self_.views.set(views).unwrap();
 
         for view in self_.views.get().unwrap().values() {
@@ -319,7 +311,7 @@ impl Window {
 
         if self_.settings.get_sync_provider_setup_google_fit() {
             let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-            let db_sender = new_db_receiver(self_.db.get().unwrap().clone());
+            let db_sender = new_db_receiver();
 
             receiver.attach(
                 None,

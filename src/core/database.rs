@@ -73,6 +73,7 @@ mod imp {
         }
     }
 }
+static mut DATABASE: Option<Database> = None;
 
 glib::wrapper! {
     /// Helper class to add and retrieve data to and from the Tracker Database.
@@ -191,6 +192,18 @@ impl Database {
     pub fn get_connection(&self) -> tracker::SparqlConnection {
         let self_ = self.get_priv();
         self_.inner.borrow().as_ref().unwrap().connection.clone()
+    }
+
+    pub fn get_instance() -> Self {
+        unsafe {
+            if let Some(d) = &DATABASE {
+                d.clone()
+            } else {
+                let database = Database::new().expect("Failed to connect to Tracker Database!");
+                DATABASE = Some(database.clone());
+                database
+            }
+        }
     }
 
     #[cfg(test)]
@@ -547,7 +560,7 @@ impl Database {
     ///
     /// # Returns
     /// Either [Database], or [glib::Error] if connecting to Tracker failed.
-    pub fn new() -> Result<Self, glib::Error> {
+    fn new() -> Result<Self, glib::Error> {
         let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
 
         o.connect(None, None)?;

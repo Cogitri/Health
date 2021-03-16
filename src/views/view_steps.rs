@@ -18,12 +18,10 @@
 
 use crate::{
     core::{i18n, i18n_f, Database},
-    model::GraphModelSteps,
     views::{GraphView, View},
 };
 use chrono::Duration;
 use glib::{subclass::prelude::*, Cast};
-use std::cell::RefCell;
 
 mod imp {
     use crate::{
@@ -44,7 +42,7 @@ mod imp {
         pub settings: Settings,
         pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
         pub steps_graph_view: OnceCell<GraphView>,
-        pub steps_graph_model: OnceCell<RefCell<GraphModelSteps>>,
+        pub steps_graph_model: RefCell<GraphModelSteps>,
     }
 
     #[glib::object_subclass]
@@ -61,7 +59,7 @@ mod imp {
                 settings,
                 settings_handler_id: RefCell::new(None),
                 steps_graph_view: OnceCell::new(),
-                steps_graph_model: OnceCell::new(),
+                steps_graph_model: RefCell::new(GraphModelSteps::new()),
             }
         }
 
@@ -99,19 +97,14 @@ glib::wrapper! {
 }
 
 impl ViewSteps {
-    pub fn new(database: Database) -> Self {
+    pub fn new() -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create ViewSteps");
 
-        database.connect_activities_updated(glib::clone!(@weak o => move || {
+        Database::get_instance().connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
                 o.update().await;
             });
         }));
-
-        o.get_priv()
-            .steps_graph_model
-            .set(RefCell::new(GraphModelSteps::new(database)))
-            .unwrap();
 
         o
     }
@@ -120,7 +113,7 @@ impl ViewSteps {
     pub async fn update(&self) {
         let self_ = self.get_priv();
 
-        let mut steps_graph_model = { self_.steps_graph_model.get().unwrap().borrow().clone() };
+        let mut steps_graph_model = { self_.steps_graph_model.borrow().clone() };
         if let Err(e) = steps_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
@@ -197,11 +190,7 @@ impl ViewSteps {
                 )));
         }
 
-        self_
-            .steps_graph_model
-            .get()
-            .unwrap()
-            .replace(steps_graph_model);
+        self_.steps_graph_model.replace(steps_graph_model);
     }
 
     fn get_priv(&self) -> &imp::ViewSteps {

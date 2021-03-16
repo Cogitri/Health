@@ -16,27 +16,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{
-    core::Database,
-    model::{Activity, ModelActivity},
-    views::View,
-    widgets::ActivityRow,
-};
+use crate::views::View;
 use chrono::Duration;
 use gio::subclass::prelude::*;
 use glib::Cast;
 
 mod imp {
-    use crate::{core::Settings, model::ModelActivity, views::View};
+    use crate::{
+        core::Settings,
+        model::{Activity, ModelActivity},
+        views::View,
+        widgets::ActivityRow,
+    };
     use glib::Cast;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
-    use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_view.ui")]
     pub struct ViewActivity {
         settings: Settings,
-        pub activity_model: OnceCell<ModelActivity>,
+        pub activity_model: ModelActivity,
         #[template_child]
         pub activities_list_box: TemplateChild<gtk::ListBox>,
     }
@@ -50,7 +49,7 @@ mod imp {
         fn new() -> Self {
             Self {
                 settings: Settings::get_instance(),
-                activity_model: OnceCell::new(),
+                activity_model: ModelActivity::new(),
                 activities_list_box: TemplateChild::default(),
             }
         }
@@ -69,7 +68,16 @@ mod imp {
 
     impl WidgetImpl for ViewActivity {}
 
-    impl ObjectImpl for ViewActivity {}
+    impl ObjectImpl for ViewActivity {
+        fn constructed(&self, _obj: &Self::Type) {
+            self.activities_list_box
+                .bind_model(Some(&self.activity_model), |o| {
+                    let row = ActivityRow::new();
+                    row.set_activity(o.clone().downcast::<Activity>().unwrap());
+                    row.upcast()
+                });
+        }
+    }
 }
 
 glib::wrapper! {
@@ -79,29 +87,13 @@ glib::wrapper! {
 }
 
 impl ViewActivity {
-    pub fn new(database: Database) -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create ViewActivity");
-
-        let self_ = o.get_priv();
-        self_
-            .activity_model
-            .set(ModelActivity::new(database))
-            .unwrap();
-
-        self_
-            .activities_list_box
-            .bind_model(Some(self_.activity_model.get().unwrap()), |o| {
-                let row = ActivityRow::new();
-                row.set_activity(o.clone().downcast::<Activity>().unwrap());
-                row.upcast()
-            });
-
-        o
+    pub fn new() -> Self {
+        glib::Object::new(&[]).expect("Failed to create ViewActivity")
     }
 
     /// Reload the [ModelActivity]'s data and refresh the list of activities
     pub async fn update(&self) {
-        let activity_model = self.get_priv().activity_model.get().unwrap();
+        let activity_model = &self.get_priv().activity_model;
 
         if let Err(e) = activity_model.reload(Duration::days(30)).await {
             glib::g_warning!(

@@ -16,28 +16,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{
-    core::Database,
-    sync::{
-        google_fit::GoogleFitSyncProvider,
-        new_db_receiver,
-        sync_provider::{SyncProvider, SyncProviderError},
-    },
+use crate::sync::{
+    google_fit::GoogleFitSyncProvider,
+    new_db_receiver,
+    sync_provider::{SyncProvider, SyncProviderError},
 };
 use glib::{clone, g_warning, subclass::prelude::*};
 use gtk::prelude::*;
 use gtk_macros::spawn;
 
 mod imp {
-    use crate::core::{Database, Settings};
+    use crate::core::Settings;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
-    use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/sync_list_box.ui")]
     pub struct SyncListBox {
-        pub database: OnceCell<Database>,
         pub parent_window: RefCell<Option<gtk::Window>>,
 
         #[template_child]
@@ -60,7 +55,6 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                database: OnceCell::new(),
                 parent_window: RefCell::new(None),
                 google_fit_selected_image: TemplateChild::default(),
                 google_fit_start_sync_row: TemplateChild::default(),
@@ -152,10 +146,6 @@ impl SyncListBox {
         o
     }
 
-    pub fn set_database(&self, database: Database) {
-        self.get_priv().database.set(database).unwrap()
-    }
-
     fn connect_handlers(&self) {
         self.get_priv().sync_list_box.connect_row_activated(
             glib::clone!(@weak self as obj => move |_, row| {
@@ -181,7 +171,7 @@ impl SyncListBox {
 
             let (sender, receiver) =
                 glib::MainContext::channel::<Result<(), SyncProviderError>>(glib::PRIORITY_DEFAULT);
-            let db_sender = new_db_receiver(self_.database.get().unwrap().clone());
+            let db_sender = new_db_receiver();
 
             receiver.attach(None, clone!(@weak self as obj => move |res| {
                 let self_ = obj.get_priv();

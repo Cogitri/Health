@@ -20,7 +20,6 @@ use crate::core::{
     i18n,
     settings::Unitsystem,
     utils::{get_spinbutton_value, round_decimal_places},
-    Database,
 };
 use adw::prelude::*;
 use gio::prelude::*;
@@ -179,13 +178,8 @@ impl SetupWindow {
         .unwrap()
     }
 
-    pub fn new<P: glib::IsA<gtk::Application>>(app: &P, db: Database) -> Self {
-        let o: Self =
-            glib::Object::new(&[("application", app)]).expect("Failed to create SetupWindow");
-
-        o.get_priv().sync_list_box.set_database(db);
-
-        o
+    pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
+        glib::Object::new(&[("application", app)]).expect("Failed to create SetupWindow")
     }
 
     fn connect_handlers(&self) {

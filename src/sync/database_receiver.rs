@@ -29,11 +29,11 @@ pub enum DatabaseValue {
 
 /// Create a [glib::Sender] which can be used in threaded scenarios (e.g. sync providers).
 /// Values sent through the sender will automatically import it into the DB.
-pub fn new_db_receiver(db: Database) -> glib::Sender<DatabaseValue> {
+pub fn new_db_receiver() -> glib::Sender<DatabaseValue> {
     let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
 
     receiver.attach(None, move |value| {
-        let db = db.clone();
+        let db = Database::get_instance();
         match value {
             DatabaseValue::Steps(s) => {
                 spawn!(async move {

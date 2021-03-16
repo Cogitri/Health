@@ -16,7 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::Database;
 use chrono::Duration;
 use gio::prelude::*;
 use glib::subclass::prelude::*;
@@ -29,7 +28,6 @@ mod imp {
     };
     use glib::{subclass, Cast, StaticType};
     use gtk::subclass::prelude::*;
-    use once_cell::unsync::OnceCell;
     use std::{
         cell::RefCell,
         convert::{TryFrom, TryInto},
@@ -42,7 +40,7 @@ mod imp {
 
     #[derive(Debug)]
     pub struct ModelActivity {
-        pub database: OnceCell<Database>,
+        pub database: Database,
         pub inner: RefCell<ModelActivityMut>,
         pub settings: Settings,
     }
@@ -58,7 +56,7 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                database: OnceCell::new(),
+                database: Database::get_instance(),
                 inner: RefCell::new(ModelActivityMut { vec: Vec::new() }),
                 settings: Settings::get_instance(),
             }
@@ -96,12 +94,8 @@ impl ModelActivity {
         self.get_priv().inner.borrow().vec.is_empty()
     }
 
-    pub fn new(database: Database) -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create ModelActivity");
-
-        o.get_priv().database.set(database).unwrap();
-
-        o
+    pub fn new() -> Self {
+        glib::Object::new(&[]).expect("Failed to create ModelActivity")
     }
 
     /// Reload the data from the Tracker Database.
@@ -117,8 +111,6 @@ impl ModelActivity {
         let previous_size = { self_.inner.borrow().vec.len() };
         let new_vec = self_
             .database
-            .get()
-            .unwrap()
             .get_activities(Some((chrono::Local::now() - duration).into()))
             .await?;
         {

@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, settings::Unitsystem, utils::get_spinbutton_value, Database},
+    core::{i18n, settings::Unitsystem, utils::get_spinbutton_value},
     sync::csv::CSVHandler,
 };
 use adw::prelude::*;
@@ -32,7 +32,7 @@ use uom::si::{
 
 mod imp {
     use crate::{
-        core::{i18n, settings::Unitsystem, Database, Settings},
+        core::{i18n, settings::Unitsystem, Settings},
         widgets::{BMILevelBar, SyncListBox},
     };
     use adw::prelude::*;
@@ -48,7 +48,6 @@ mod imp {
     #[template(resource = "/dev/Cogitri/Health/ui/preferences_window.ui")]
     pub struct PreferencesWindow {
         pub current_unitsystem: Cell<Unitsystem>,
-        pub db: OnceCell<Database>,
         pub parent_window: OnceCell<Option<gtk::Window>>,
         pub settings: Settings,
 
@@ -97,7 +96,6 @@ mod imp {
                 weightgoal_spin_button: TemplateChild::default(),
                 bmi_levelbar: TemplateChild::default(),
                 parent_window: OnceCell::new(),
-                db: OnceCell::new(),
                 sync_list_box: TemplateChild::default(),
                 export_activity_csv_button: TemplateChild::default(),
                 export_weight_csv_button: TemplateChild::default(),
@@ -178,7 +176,7 @@ impl PreferencesWindow {
         .unwrap()
     }
 
-    pub fn new(db: Database, parent_window: Option<gtk::Window>) -> Self {
+    pub fn new(parent_window: Option<gtk::Window>) -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create PreferencesWindow");
 
         o.set_transient_for(parent_window.as_ref());
@@ -190,8 +188,6 @@ impl PreferencesWindow {
         );
 
         let self_ = o.get_priv();
-        self_.db.set(db.clone()).unwrap();
-        self_.sync_list_box.set_database(db);
         self_.parent_window.set(parent_window).unwrap();
 
         o
@@ -282,8 +278,7 @@ impl PreferencesWindow {
                 if r == gtk::ResponseType::Accept {
                     let file = file_chooser.get_file().unwrap();
                     spawn!(async move {
-                        let self_ = obj.get_priv();
-                        let handler = CSVHandler::new(self_.db.get().unwrap().clone());
+                        let handler = CSVHandler::new();
                         if let Err(e) = handler.export_activities_csv(&file).await {
                             g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
                         }
@@ -309,8 +304,7 @@ impl PreferencesWindow {
                 if r == gtk::ResponseType::Accept {
                     let file = file_chooser.get_file().unwrap();
                     spawn!(async move {
-                        let self_ = obj.get_priv();
-                        let handler = CSVHandler::new(self_.db.get().unwrap().clone());
+                        let handler = CSVHandler::new();
                         if let Err(e) = handler.export_weights_csv(&file).await {
                             g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
                         }
@@ -350,8 +344,7 @@ impl PreferencesWindow {
                 if r == gtk::ResponseType::Accept {
                     let file = file_chooser.get_file().unwrap();
                     spawn!(async move {
-                        let self_ = obj.get_priv();
-                        let handler = CSVHandler::new(self_.db.get().unwrap().clone());
+                        let handler = CSVHandler::new();
                         if let Err(e) = handler.import_activities_csv(&file).await {
                             g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
                         }
@@ -376,8 +369,7 @@ impl PreferencesWindow {
                 if r == gtk::ResponseType::Accept {
                     let file = file_chooser.get_file().unwrap();
                     spawn!(async move {
-                        let self_ = obj.get_priv();
-                        let handler = CSVHandler::new(self_.db.get().unwrap().clone());
+                        let handler = CSVHandler::new();
                         if let Err(e) = handler.import_weights_csv(&file).await {
                             g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
                         }

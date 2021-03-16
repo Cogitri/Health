@@ -47,9 +47,9 @@ impl Clone for GraphModelWeight {
 }
 
 impl GraphModelWeight {
-    pub fn new(database: Database) -> Self {
+    pub fn new() -> Self {
         Self {
-            database,
+            database: Database::get_instance(),
             settings: Settings::get_instance(),
             vec: Vec::new(),
         }

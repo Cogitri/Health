@@ -29,7 +29,7 @@ use std::convert::TryFrom;
 mod imp {
     use crate::{
         config,
-        core::{Database, Settings},
+        core::Settings,
         windows::{SetupWindow, Window},
     };
     use glib::{clone, g_warning};
@@ -38,7 +38,6 @@ mod imp {
 
     #[derive(Debug)]
     pub struct Application {
-        pub db: Database,
         pub settings: Settings,
         pub window: OnceCell<glib::WeakRef<Window>>,
     }
@@ -51,7 +50,6 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                db: Database::new().expect("Failed to connect to Tracker Database!"),
                 settings: Settings::get_instance(),
                 window: OnceCell::new(),
             }
@@ -70,13 +68,13 @@ mod imp {
             let has_window = self.window.get().and_then(glib::WeakRef::upgrade).is_some();
 
             if !has_window && self.settings.get_did_initial_setup() {
-                let window = Window::new(obj, self.db.clone());
+                let window = Window::new(obj);
                 window.show();
                 self.window
                     .set(glib::ObjectExt::downgrade(&window))
                     .unwrap();
             } else if !has_window {
-                let setup_window = SetupWindow::new(obj, self.db.clone());
+                let setup_window = SetupWindow::new(obj);
 
                 setup_window.connect_setup_done(clone!(@weak obj => move || {
                     obj.handle_setup_window_setup_done();
@@ -125,7 +123,7 @@ impl Application {
     fn handle_setup_window_setup_done(&self) {
         let self_ = self.get_priv();
         self_.settings.set_did_initial_setup(true);
-        let window = Window::new(self, self_.db.clone());
+        let window = Window::new(self);
         window.show();
         self_
             .window
@@ -192,7 +190,7 @@ impl Application {
             "preferences",
             clone!(@weak self as obj => move |_, _| {
                 let self_ = obj.get_priv();
-                let preferences_window = PreferencesWindow::new(self_.db.clone(), self_.window.get().and_then(glib::WeakRef::upgrade).map(glib::Cast::upcast));
+                let preferences_window = PreferencesWindow::new(self_.window.get().and_then(glib::WeakRef::upgrade).map(glib::Cast::upcast));
                 preferences_window.show();
             })
         );

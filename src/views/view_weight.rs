@@ -24,7 +24,6 @@ use crate::{
 use chrono::Duration;
 use gio::subclass::prelude::*;
 use glib::Cast;
-use std::cell::RefCell;
 use uom::si::{
     length::meter,
     mass::{kilogram, pound},
@@ -49,7 +48,7 @@ mod imp {
         pub settings: Settings,
         pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
         pub weight_graph_view: OnceCell<GraphView>,
-        pub weight_graph_model: OnceCell<RefCell<GraphModelWeight>>,
+        pub weight_graph_model: RefCell<GraphModelWeight>,
     }
 
     #[glib::object_subclass]
@@ -64,7 +63,7 @@ mod imp {
                 settings: Settings::get_instance(),
                 settings_handler_id: RefCell::new(None),
                 weight_graph_view: OnceCell::new(),
-                weight_graph_model: OnceCell::new(),
+                weight_graph_model: RefCell::new(GraphModelWeight::new()),
             }
         }
 
@@ -101,19 +100,14 @@ glib::wrapper! {
 }
 
 impl ViewWeight {
-    pub fn new(database: Database) -> Self {
+    pub fn new() -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create ViewWeight");
 
-        database.connect_weights_updated(glib::clone!(@weak o => move || {
+        Database::get_instance().connect_weights_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
                 o.update().await;
             });
         }));
-
-        o.get_priv()
-            .weight_graph_model
-            .set(RefCell::new(GraphModelWeight::new(database)))
-            .unwrap();
 
         o
     }
@@ -121,7 +115,7 @@ impl ViewWeight {
     /// Reload the [GraphModelWeight]'s data and refresh labels & reload the [GraphView].
     pub async fn update(&self) {
         let self_ = self.get_priv();
-        let mut weight_graph_model = { self_.weight_graph_model.get().unwrap().borrow().clone() };
+        let mut weight_graph_model = { self_.weight_graph_model.borrow().clone() };
         if let Err(e) = weight_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
@@ -185,11 +179,7 @@ impl ViewWeight {
             ));
         }
 
-        self_
-            .weight_graph_model
-            .get()
-            .unwrap()
-            .replace(weight_graph_model);
+        self_.weight_graph_model.replace(weight_graph_model);
     }
 
     fn get_bmi(&self, model: &GraphModelWeight) -> String {
