@@ -87,8 +87,9 @@ mod imp {
         }
 
         fn dispose(&self, _obj: &Self::Type) {
-            self.settings
-                .disconnect(self.settings_handler_id.borrow_mut().take().unwrap())
+            if let Some(id) = self.settings_handler_id.borrow_mut().take() {
+                self.settings.disconnect(id);
+            }
         }
     }
 }
