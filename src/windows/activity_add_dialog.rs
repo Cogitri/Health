@@ -18,7 +18,7 @@
 
 use crate::{
     core::{utils::get_spinbutton_value, Database},
-    model::{Activity, ActivityDataPoints, ActivityInfo},
+    model::{Activity, ActivityDataPoints, ActivityInfo, Unitsize},
 };
 use chrono::Duration;
 use glib::{clone, subclass::prelude::*};
@@ -194,33 +194,6 @@ mod imp {
     impl WidgetImpl for ActivityAddDialog {}
     impl WindowImpl for ActivityAddDialog {}
     impl DialogImpl for ActivityAddDialog {}
-}
-
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum Unitsize {
-    Big,
-    Small,
-}
-
-impl std::fmt::Display for Unitsize {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            Unitsize::Big => write!(f, "big"),
-            Unitsize::Small => write!(f, "small"),
-        }
-    }
-}
-
-impl TryFrom<&str> for Unitsize {
-    type Error = String;
-
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        match value {
-            "big" => Ok(Unitsize::Big),
-            "small" => Ok(Unitsize::Small),
-            _ => Err(format!("Unknown unitsize {}", value)),
-        }
-    }
 }
 
 glib::wrapper! {

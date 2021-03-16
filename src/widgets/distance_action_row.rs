@@ -18,7 +18,7 @@
 
 use crate::{
     core::{i18n, settings::Unitsystem, utils::get_spinbutton_value},
-    windows::Unitsize,
+    model::Unitsize,
 };
 use gio::subclass::prelude::*;
 use gtk::prelude::*;
@@ -28,7 +28,7 @@ use uom::si::{
 };
 
 mod imp {
-    use crate::{core::Settings, windows::Unitsize};
+    use crate::{core::Settings, model::Unitsize};
     use adw::subclass::prelude::*;
     use glib::{clone, subclass::Signal};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
