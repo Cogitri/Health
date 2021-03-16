@@ -32,7 +32,7 @@ mod imp {
         core::{Database, Settings},
         windows::{SetupWindow, Window},
     };
-    use glib::{clone, g_warning, subclass};
+    use glib::{clone, g_warning};
     use gtk::{prelude::*, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
 
@@ -43,15 +43,11 @@ mod imp {
         pub window: OnceCell<glib::WeakRef<Window>>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for Application {
         const NAME: &'static str = "HealthApplication";
         type ParentType = gtk::Application;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::Application;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -63,7 +59,7 @@ mod imp {
 
         fn class_init(_klass: &mut Self::Class) {}
 
-        fn instance_init(_obj: &glib::subclass::InitializingObject<Self::Type>) {}
+        fn instance_init(_obj: &glib::subclass::InitializingObject<Self>) {}
     }
 
     impl ObjectImpl for Application {}

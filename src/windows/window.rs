@@ -36,7 +36,7 @@ mod imp {
         core::{Database, Settings},
         views::View,
     };
-    use glib::{subclass, SourceId};
+    use glib::SourceId;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::{cell::RefCell, collections::BTreeMap};
@@ -76,15 +76,11 @@ mod imp {
         pub stack: TemplateChild<gtk::Stack>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for Window {
         const NAME: &'static str = "HealthWindow";
         type ParentType = adw::ApplicationWindow;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::Window;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -109,7 +105,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

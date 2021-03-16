@@ -29,7 +29,6 @@ use uom::{
 
 mod imp {
     use crate::{core::Settings, model::Activity};
-    use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
 
@@ -72,15 +71,11 @@ mod imp {
         pub steps_row: TemplateChild<adw::ActionRow>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for ActivityRow {
         const NAME: &'static str = "HealthActivityRow";
         type ParentType = gtk::ListBoxRow;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::ActivityRow;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -109,7 +104,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

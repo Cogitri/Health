@@ -33,7 +33,7 @@ mod imp {
         model::{Activity, ActivityDataPoints, ActivityInfo, ActivityType},
         widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
     };
-    use glib::{clone, subclass};
+    use glib::clone;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
@@ -106,15 +106,11 @@ mod imp {
         }
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for ActivityAddDialog {
         const NAME: &'static str = "HealthActivityAddDialog";
         type ParentType = gtk::Dialog;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::ActivityAddDialog;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -153,7 +149,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

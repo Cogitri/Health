@@ -39,7 +39,7 @@ mod imp {
         core::{settings::Unitsystem, Settings},
         widgets::{BMILevelBar, SyncListBox},
     };
-    use glib::subclass::{self, Signal};
+    use glib::subclass::Signal;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::Cell;
 
@@ -89,15 +89,11 @@ mod imp {
         pub sync_list_box: TemplateChild<SyncListBox>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for SetupWindow {
         const NAME: &'static str = "HealthSetupWindow";
         type ParentType = adw::ApplicationWindow;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::SetupWindow;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             let settings = Settings::get_instance();
@@ -131,7 +127,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

@@ -21,7 +21,6 @@ use glib::subclass::prelude::*;
 use gtk::prelude::*;
 
 mod imp {
-    use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
@@ -35,15 +34,11 @@ mod imp {
         pub selected_image: TemplateChild<gtk::Image>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for ActivityTypeRow {
         const NAME: &'static str = "HealthActivityTypeRow";
         type ParentType = gtk::ListBoxRow;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::ActivityTypeRow;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -57,7 +52,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

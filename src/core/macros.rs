@@ -54,10 +54,8 @@ macro_rules! settings_getter_setter {
         paste::item! {
             #[doc = "Connect to value changes of this key. Keep in mind that the key has to be read once before connecting or this won't do anything!"]
             pub fn [< connect_ $name _changed >]<F: Fn(&gio::Settings, &str) + 'static>(&self, f: F) -> glib::SignalHandlerId {
-                self.settings.connect_changed(move |s, name| {
-                    if name == stringify!($name) {
-                        f(s, name);
-                    }
+                self.settings.connect_changed(Some(stringify!($name)), move |s, name| {
+                    f(s, name);
                 })
             }
         }

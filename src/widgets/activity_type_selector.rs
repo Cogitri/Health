@@ -18,7 +18,7 @@
 
 use crate::model::ActivityInfo;
 use gio::prelude::*;
-use glib::subclass::types::ObjectSubclass;
+use gio::subclass::prelude::*;
 
 mod imp {
     use crate::{
@@ -26,10 +26,7 @@ mod imp {
         model::{ActivityInfo, ActivityType, ActivityTypeRowData},
         widgets::ActivityTypeRow,
     };
-    use glib::{
-        g_warning,
-        subclass::{self, Signal},
-    };
+    use glib::{g_warning, subclass::Signal};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use num_traits::cast::FromPrimitive;
     use std::{cell::RefCell, convert::TryFrom};
@@ -48,15 +45,11 @@ mod imp {
         pub recents_box: TemplateChild<gtk::Box>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for ActivityTypeSelector {
         const NAME: &'static str = "HealthActivityTypeSelector";
         type ParentType = gtk::Popover;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::ActivityTypeSelector;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -73,7 +66,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

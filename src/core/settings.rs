@@ -125,11 +125,10 @@ impl Settings {
         &self,
         f: F,
     ) -> glib::SignalHandlerId {
-        self.settings.connect_changed(move |s, name| {
-            if name == "unitsystem" {
+        self.settings
+            .connect_changed(Some("unitsystem"), move |s, name| {
                 f(s, name);
-            }
-        })
+            })
     }
 
     /// Get the current unitsystem.
@@ -161,11 +160,10 @@ impl Settings {
         &self,
         f: F,
     ) -> glib::SignalHandlerId {
-        self.settings.connect_changed(move |s, name| {
-            if name == "user-weightgoal" {
+        self.settings
+            .connect_changed(Some("user-weightgoal"), move |s, name| {
                 f(s, name);
-            }
-        })
+            })
     }
 
     /// Get the user's current weightgoal.

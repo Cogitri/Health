@@ -34,7 +34,7 @@ static HALF_Y_PADDING: f32 = 30.0;
 mod imp {
     use super::{Point, HALF_X_PADDING, HALF_Y_PADDING};
     use gdk::prelude::GdkCairoContextExt;
-    use glib::{clone, subclass};
+    use glib::clone;
     use gtk::prelude::*;
     use gtk::subclass::prelude::*;
     use std::{cell::RefCell, convert::TryInto, f64::consts::PI};
@@ -65,15 +65,11 @@ mod imp {
         pub inner: RefCell<GraphViewMut>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for GraphView {
         const NAME: &'static str = "HealthGraphView";
         type ParentType = gtk::Widget;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::GraphView;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {

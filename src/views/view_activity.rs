@@ -23,11 +23,12 @@ use crate::{
     widgets::ActivityRow,
 };
 use chrono::Duration;
-use glib::{subclass::types::ObjectSubclass, Cast};
+use gio::subclass::prelude::*;
+use glib::Cast;
 
 mod imp {
     use crate::{core::Settings, model::ModelActivity, views::View};
-    use glib::{subclass, Cast};
+    use glib::Cast;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
 
@@ -40,15 +41,11 @@ mod imp {
         pub activities_list_box: TemplateChild<gtk::ListBox>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for ViewActivity {
         const NAME: &'static str = "HealthViewActivity";
         type ParentType = View;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::ViewActivity;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -62,7 +59,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             unsafe {
                 // FIXME: This really shouldn't be necessary.
                 obj.as_ref().upcast_ref::<View>().init_template();

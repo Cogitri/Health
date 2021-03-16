@@ -16,10 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use glib::subclass::types::ObjectSubclass;
+use gio::subclass::prelude::*;
 
 mod imp {
-    use glib::subclass;
     use gtk::subclass::prelude::*;
     use std::cell::RefCell;
 
@@ -34,15 +33,11 @@ mod imp {
         pub inner: RefCell<Option<ActivityTypeRowDataMut>>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for ActivityTypeRowData {
         const NAME: &'static str = "HealthActivityTypeRowData";
         type ParentType = glib::Object;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::ActivityTypeRowData;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {

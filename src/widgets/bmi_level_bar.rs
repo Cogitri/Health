@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use glib::subclass::types::ObjectSubclass;
+use gio::subclass::prelude::*;
 use uom::si::{
     f32::{Length, Mass},
     length::centimeter,
@@ -28,7 +28,6 @@ static LEVEL_BAR_MAX: f32 = 30.0;
 
 mod imp {
     use super::{LEVEL_BAR_MAX, LEVEL_BAR_MIN};
-    use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
     use uom::si::{
@@ -53,15 +52,11 @@ mod imp {
         pub level_bar: TemplateChild<gtk::LevelBar>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for BMILevelBar {
         const NAME: &'static str = "HealthBMILevelBar";
         type ParentType = gtk::Widget;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::BMILevelBar;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -80,7 +75,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

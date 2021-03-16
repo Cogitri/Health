@@ -30,7 +30,6 @@ use gtk_macros::spawn;
 
 mod imp {
     use crate::core::{Database, Settings};
-    use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
@@ -53,15 +52,11 @@ mod imp {
         pub sync_list_box: TemplateChild<gtk::ListBox>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for SyncListBox {
         const NAME: &'static str = "HealthSyncListBox";
         type ParentType = gtk::Widget;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::SyncListBox;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -80,7 +75,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

@@ -21,7 +21,6 @@ use glib::prelude::*;
 use gtk::subclass::prelude::*;
 
 mod imp {
-    use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
@@ -45,15 +44,11 @@ mod imp {
         pub view_title: RefCell<String>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for View {
         const NAME: &'static str = "HealthView";
         type ParentType = gtk::Widget;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::View;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -73,7 +68,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }
@@ -209,7 +204,11 @@ impl View {
 }
 
 unsafe impl<T: WidgetImpl> IsSubclassable<T> for View {
-    fn override_vfuncs(class: &mut glib::Class<Self>) {
-        <gtk::Widget as IsSubclassable<T>>::override_vfuncs(class);
+    fn class_init(class: &mut glib::Class<Self>) {
+        <gtk::Widget as IsSubclassable<T>>::class_init(class);
+    }
+
+    fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
+        <gtk::Widget as IsSubclassable<T>>::instance_init(instance);
     }
 }

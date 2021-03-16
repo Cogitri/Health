@@ -20,7 +20,7 @@ use crate::{
     core::{i18n, settings::Unitsystem, utils::get_spinbutton_value},
     windows::Unitsize,
 };
-use glib::subclass::types::ObjectSubclass;
+use gio::subclass::prelude::*;
 use gtk::prelude::*;
 use uom::si::{
     f32::Length,
@@ -30,10 +30,7 @@ use uom::si::{
 mod imp {
     use crate::{core::Settings, windows::Unitsize};
     use adw::subclass::prelude::*;
-    use glib::{
-        clone,
-        subclass::{self, Signal},
-    };
+    use glib::{clone, subclass::Signal};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
     use uom::si::{f32::Length, length::meter};
@@ -60,15 +57,11 @@ mod imp {
         pub small_unit_togglebutton: TemplateChild<gtk::ToggleButton>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for DistanceActionRow {
         const NAME: &'static str = "HealthDistanceActionRow";
         type ParentType = adw::ActionRow;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::DistanceActionRow;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -89,7 +82,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

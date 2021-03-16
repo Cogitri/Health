@@ -22,7 +22,8 @@ use crate::{
     views::{GraphView, View},
 };
 use chrono::Duration;
-use glib::{subclass::types::ObjectSubclass, Cast};
+use gio::subclass::prelude::*;
+use glib::Cast;
 use std::cell::RefCell;
 use uom::si::{
     length::meter,
@@ -35,7 +36,7 @@ mod imp {
         model::GraphModelWeight,
         views::{GraphView, View},
     };
-    use glib::{subclass, Cast};
+    use glib::Cast;
     use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
@@ -51,15 +52,11 @@ mod imp {
         pub weight_graph_model: OnceCell<RefCell<GraphModelWeight>>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for ViewWeight {
         const NAME: &'static str = "HealthViewWeight";
         type ParentType = View;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::ViewWeight;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -75,7 +72,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             unsafe {
                 // FIXME: This really shouldn't be necessary.
                 obj.as_ref().upcast_ref::<View>().init_template();

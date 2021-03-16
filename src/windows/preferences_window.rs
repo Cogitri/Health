@@ -36,7 +36,6 @@ mod imp {
         widgets::{BMILevelBar, SyncListBox},
     };
     use adw::prelude::*;
-    use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::Cell;
@@ -79,15 +78,11 @@ mod imp {
         pub import_weight_csv_button: TemplateChild<gtk::Button>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for PreferencesWindow {
         const NAME: &'static str = "HealthPreferencesWindow";
         type ParentType = adw::PreferencesWindow;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::PreferencesWindow;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             let settings = Settings::get_instance();
@@ -115,7 +110,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

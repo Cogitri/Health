@@ -22,7 +22,7 @@ use gtk::prelude::*;
 
 mod imp {
     use chrono::{DateTime, FixedOffset, Local};
-    use glib::{clone, subclass};
+    use glib::clone;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
@@ -36,15 +36,11 @@ mod imp {
         pub date_selector_popover: TemplateChild<gtk::Popover>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for DateSelector {
         const NAME: &'static str = "HealthDateSelector";
         type ParentType = gtk::Entry;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::DateSelector;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -58,7 +54,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

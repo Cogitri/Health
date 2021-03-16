@@ -31,15 +31,12 @@
 //!               use glib::subclass::{self, prelude::*};
 //!
 //!               pub struct MyStruct {}
+//!
+//!               #[glib::object_subclass]
 //!               impl ObjectSubclass for MyStruct {
 //!                   const NAME: &'static str = "MyStruct";
 //!                   type ParentType = glib::Object;
-//!                   type Instance = subclass::simple::InstanceStruct<Self>;
-//!                   type Class = subclass::simple::ClassStruct<Self>;
 //!                   type Type = super::MyStruct;
-//!                   type Interfaces = ();
-//!
-//!                   glib::object_subclass!();
 //!
 //!                   fn new() -> Self {
 //!                       Self { }

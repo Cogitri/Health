@@ -18,7 +18,8 @@
 
 use crate::model::{Activity, ActivityType, Steps, Weight};
 use chrono::{Date, DateTime, Duration, FixedOffset, NaiveDate, SecondsFormat, Utc};
-use glib::{subclass::types::ObjectSubclass, ObjectExt};
+use gio::subclass::prelude::*;
+use glib::prelude::*;
 use num_traits::cast::{FromPrimitive, ToPrimitive};
 use std::{
     convert::{TryFrom, TryInto},
@@ -30,8 +31,8 @@ use uom::si::{
 };
 
 mod imp {
-    use glib::subclass::{self, Signal};
-    use gtk::subclass::prelude::*;
+    use gio::subclass::prelude::*;
+    use glib::subclass::Signal;
     use std::cell::RefCell;
 
     #[derive(Debug)]
@@ -45,15 +46,11 @@ mod imp {
         pub inner: RefCell<Option<DatabaseMut>>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for Database {
         const NAME: &'static str = "HealthDatabase";
         type ParentType = glib::Object;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::Database;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {

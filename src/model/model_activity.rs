@@ -47,15 +47,14 @@ mod imp {
         pub settings: Settings,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for ModelActivity {
         const NAME: &'static str = "HealthModelActivity";
         type ParentType = glib::Object;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
+        type Instance = subclass::basic::InstanceStruct<Self>;
+        type Class = subclass::basic::ClassStruct<Self>;
         type Type = super::ModelActivity;
         type Interfaces = (gio::ListModel,);
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {

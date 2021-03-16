@@ -33,7 +33,6 @@ mod imp {
         core::{Database, Settings},
         widgets::DateSelector,
     };
-    use glib::subclass;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
 
@@ -49,15 +48,11 @@ mod imp {
         pub weight_spin_button: TemplateChild<gtk::SpinButton>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for WeightAddDialog {
         const NAME: &'static str = "HealthWeightAddDialog";
         type ParentType = gtk::Dialog;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::WeightAddDialog;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {
@@ -72,7 +67,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             obj.init_template();
         }
     }

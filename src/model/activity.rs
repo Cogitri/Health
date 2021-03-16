@@ -36,7 +36,6 @@ static WALKING_METERS_PER_MINUTE: u32 = 90;
 mod imp {
     use crate::{model::ActivityType, sync::serialize};
     use chrono::{DateTime, Duration, FixedOffset, Utc};
-    use glib::subclass;
     use gtk::subclass::prelude::*;
     use std::cell::RefCell;
     use uom::si::f32::Length;
@@ -66,15 +65,11 @@ mod imp {
         pub inner: RefCell<ActivityMut>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for Activity {
         const NAME: &'static str = "HealthActivity";
         type ParentType = glib::Object;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::Activity;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             Self {

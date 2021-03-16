@@ -31,7 +31,7 @@ mod imp {
         model::GraphModelSteps,
         views::{GraphView, View},
     };
-    use glib::{subclass, Cast};
+    use glib::Cast;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
@@ -47,15 +47,11 @@ mod imp {
         pub steps_graph_model: OnceCell<RefCell<GraphModelSteps>>,
     }
 
+    #[glib::object_subclass]
     impl ObjectSubclass for ViewSteps {
         const NAME: &'static str = "HealthViewSteps";
         type ParentType = View;
-        type Instance = subclass::simple::InstanceStruct<Self>;
-        type Class = subclass::simple::ClassStruct<Self>;
         type Type = super::ViewSteps;
-        type Interfaces = ();
-
-        glib::object_subclass!();
 
         fn new() -> Self {
             let settings = Settings::get_instance();
@@ -73,7 +69,7 @@ mod imp {
             Self::bind_template(klass);
         }
 
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self::Type>) {
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             unsafe {
                 // FIXME: This really shouldn't be necessary.
                 obj.as_ref().upcast_ref::<View>().init_template();
