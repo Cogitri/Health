@@ -42,3 +42,8 @@ Steps to reproduce:
 #5  0x00007f802feab9c3 in some_other_function
 [...]
 ```
+
+<!--
+    Please don't change the following line, this automatically assigns the correct label.
+-->
+/label ~bug
