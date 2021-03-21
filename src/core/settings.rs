@@ -108,7 +108,6 @@ impl Settings {
         DateTime::parse_from_rfc3339(
             self.settings
                 .get_string("timestamp-last-sync-google-fit")
-                .unwrap()
                 .as_str(),
         )
         .unwrap()
