@@ -31,3 +31,9 @@ subdir('src')
 subdir('po')
 
 meson.add_install_script('build-aux/meson/postinstall.py')
+
+run_target(
+  'release',
+  command: ['build-aux/release.sh', meson.project_name(), meson.project_version()]
+)
+

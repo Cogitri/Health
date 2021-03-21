@@ -7,3 +7,4 @@ app
 .vscode
 src/config.rs
 target
+vendor
