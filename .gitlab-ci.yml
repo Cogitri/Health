@@ -5,7 +5,7 @@ variables:
   MANIFEST_PATH: "dev.Cogitri.Health.Devel.json"
   FLATPAK_MODULE: "health"
   FLATPAK_IMAGE: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master"
-  TARBALL: "dev.Cogitri.Health-${CI_COMMIT_TAG}.tar.xz"
+  TARBALL: "Health-${CI_COMMIT_TAG}.tar.xz"
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/release-tarballs/${CI_COMMIT_TAG}"
 
 .flatpak_cache_template: &flatpak_cache
@@ -97,7 +97,7 @@ create-dist-tarball:
     - cd ..
   script:
     - meson build
-    - env LANG="en_GB.UTF-8" meson dist --include-subprojects -C build
+    - ninja -C build release
   artifacts:
     paths:
       - build/meson-dist/
