@@ -41,6 +41,16 @@
 	</kudos>
 
 	<releases>
+		<release version="0.92.2" date="2021-03-21">
+			<p>
+				Another brown bag release to fix tarball generation.
+			</p>
+		</release>
+		<release version="0.92.1" date="2021-03-21">
+			<p>
+				Brown bag release to fix a bug where the ViewSteps displayed steps multiple times.
+			</p>
+		</release>
 		<release version="0.92.0" date="2021-03-21">
 			<p>
 				This release ports Health to Rust, making it a fair bit more reliable over the course of the rewrite. Additionally, it also features the following changes:
