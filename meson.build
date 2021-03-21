@@ -9,7 +9,7 @@ i18n = import('i18n')
 gnome = import('gnome')
 
 version_suffix = ''
-if get_option('debug')
+if get_option('profile') == 'development'
   profile = '.Devel'
   vcs_tag = run_command('git', 'rev-parse', '--short', 'HEAD').stdout().strip()
   if vcs_tag == ''
