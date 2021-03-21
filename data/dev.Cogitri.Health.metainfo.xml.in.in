@@ -41,6 +41,20 @@
 	</kudos>
 
 	<releases>
+		<release version="0.92.0" date="2021-03-21">
+			<p>
+				This release ports Health to Rust, making it a fair bit more reliable over the course of the rewrite. Additionally, it also features the following changes:
+			</p>
+			<ul>
+				<li>Improved graph drawing, using theme colours for the graph</li>
+				<li>More reliaable synching with Google Fit</li>
+				<li>Make unit handling a lot more robust</li>
+				<li>Use date and time for activities, not only date</li>
+			</ul>
+			<p>
+				And much more!
+			</p>
+		</release>
 		<release version="0.91.0" date="2021-01-19">
 			<p>
 				This releases makes error reporting of sync errors less intrusive and makes it possible to enter distances in KM/Miles and Meters/Yards. It also ships lots of bugfixes:
