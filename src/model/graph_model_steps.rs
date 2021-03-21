@@ -17,8 +17,8 @@
  */
 
 use crate::{core::Database, model::Steps, views::Point};
-use chrono::{DateTime, Duration, FixedOffset, Utc};
-use std::convert::{TryFrom, TryInto};
+use chrono::{Date, DateTime, Duration, FixedOffset, Utc};
+use std::{collections::HashMap, convert::TryFrom};
 
 /// A [GraphModelSteps] manages step data for easy consumption in views.
 #[derive(Debug)]
@@ -124,49 +124,27 @@ impl GraphModelSteps {
         }
 
         let first_date = self.vec.first().unwrap().date.date();
-        let mut last_val = 0;
-        let mut ret = Vec::with_capacity(self.vec.len());
+        let mut map: HashMap<Date<FixedOffset>, u32> =
+            self.vec.iter().map(|s| (s.date.date(), s.steps)).collect();
 
-        for (i, point) in self.vec.iter().enumerate() {
-            for j in i..last_val {
-                let date = first_date + Duration::days((i + j).try_into().unwrap());
-                ret.push(Point { date, value: 0.0 });
-            }
-            ret.push(Point {
-                date: point.date.date(),
-                value: point.steps as f32,
-            });
-
-            last_val = point
-                .date
-                .date()
-                .signed_duration_since(first_date)
-                .num_days()
-                .try_into()
-                .unwrap();
-        }
-
-        for x in last_val
-            ..usize::try_from(
-                Utc::now()
-                    .date()
-                    .signed_duration_since(first_date)
-                    .num_days(),
-            )
-            .unwrap()
+        for date_delta in
+            0..(DateTime::<FixedOffset>::from(Utc::now()).date() - first_date).num_days()
         {
-            let date = first_date + Duration::days(x.try_into().unwrap());
-            ret.push(Point { date, value: 0.0 });
+            map.entry(first_date + Duration::days(date_delta))
+                .or_insert(0);
         }
 
-        if ret.last().unwrap().date != Utc::now().date() {
-            ret.push(Point {
-                date: DateTime::<FixedOffset>::from(Utc::now()).date(),
-                value: 0.0,
-            });
-        }
+        let mut v = map
+            .into_iter()
+            .map(|(date, steps)| Point {
+                date,
+                value: steps as f32,
+            })
+            .collect::<Vec<Point>>();
 
-        ret
+        v.sort_by(|a, b| a.date.cmp(&b.date));
+
+        v
     }
 
     /// Get if the model is empty.
