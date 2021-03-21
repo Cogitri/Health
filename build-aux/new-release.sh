@@ -23,7 +23,7 @@ esac
 
 sed -i "s/version: '$current'/version: '$next'/" meson.build
 sed -i "s/version = \"$current\"/version = \"$next\"/" Cargo.toml
-${EDITOR:=nano} data/dev.Cogitri.Health.appdata.xml.in
+${EDITOR:=nano} data/dev.Cogitri.Health.metainfo.xml.in.in
 
 ninja -C _build test
 
