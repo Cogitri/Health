@@ -74,6 +74,9 @@
             "cleanup": [
                 "/usr/"
             ],
+            "config-opts" : [
+                "-Dprofile=development"
+            ],
             "sources": [
                 {
                     "type": "dir",
