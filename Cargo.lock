@@ -902,7 +902,7 @@ dependencies = [
 
 [[package]]
 name = "health"
-version = "0.92.3"
+version = "0.92.4"
 dependencies = [
  "bitflags",
  "chrono",

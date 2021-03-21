@@ -1,5 +1,5 @@
 project('Health', 'rust',  
-          version: '0.92.3',
+          version: '0.92.4',
     meson_version: '>= 0.50.0',
   default_options: [ 'warning_level=2',
                    ],
