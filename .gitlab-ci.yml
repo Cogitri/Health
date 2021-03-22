@@ -85,22 +85,18 @@ pages:
 
 create-dist-tarball:
   stage: release-tarball
-  image: alpine:edge
+  image: "$FLATPAK_IMAGE"
   rules:
     - if: $CI_COMMIT_TAG
-  before_script:
-    - apk add --no-cache gtk4.0-dev meson build-base git gobject-introspection-dev cargo build-base tracker-dev bash
-    - git clone https://gitlab.gnome.org/exalm/libadwaita
-    - cd libadwaita
-    - meson build -Dvapi=false
-    - meson install -C build
-    - cd ..
+  tags:
+    - flatpak
   script:
-    - meson build
-    - ninja -C build release
+    - flatpak-builder --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} --force-clean app ${MANIFEST_PATH}
+    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} meson _build
+    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} ninja -C _build release
   artifacts:
     paths:
-      - build/meson-dist/
+      - _build/meson-dist/
     expire_in: 5 mins
 
 
