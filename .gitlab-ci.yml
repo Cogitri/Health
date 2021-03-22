@@ -96,7 +96,7 @@ create-dist-tarball:
     - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} ninja -C _build release
   artifacts:
     paths:
-      - _build/meson-dist/
+      - _build/dist/
     expire_in: 5 mins
 
 
@@ -107,7 +107,7 @@ upload-dist-tarball:
     - if: $CI_COMMIT_TAG
   script:
     - |
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file build/meson-dist/${TARBALL} ${PACKAGE_REGISTRY_URL}/${TARBALL}
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file _build/dist/${TARBALL} ${PACKAGE_REGISTRY_URL}/${TARBALL}
 
 # https://gitlab.com/gitlab-org/gitlab/-/issues/271534 The default URL needs authentication right now, which is less than optimal...
 # Get the package_files ID instead and use that as download URL in the "release" step.
@@ -122,7 +122,7 @@ no-auth-url-job:
       export PACKAGE_ID=$(curl --header "PRIVATE-TOKEN: ${GITLAB_SECRET_API_KEY}" "https://gitlab.gnome.org/api/v4/projects/${CI_PROJECT_ID}/packages?sort=desc" | jq -c .[0].id)
     -  |
       export PACKAGE_DOWNLOAD_ID=$(curl --header "PRIVATE-TOKEN: ${GITLAB_SECRET_API_KEY}" "https://gitlab.gnome.org/api/v4/projects/${CI_PROJECT_ID}/packages/${PACKAGE_ID}/package_files" | jq -c .[0].id)
-    - echo "https://gitlab.gnome.org/Cogitri/gnome-health/-/package_files/$PACKAGE_DOWNLOAD_ID/download" > download_url
+    - echo "https://gitlab.gnome.org/Cogitri/Health/-/package_files/$PACKAGE_DOWNLOAD_ID/download" > download_url
   artifacts:
     paths:
       - download_url
