@@ -196,13 +196,14 @@ impl Database {
 
     pub fn get_instance() -> Self {
         unsafe {
-            if let Some(d) = &DATABASE {
-                d.clone()
-            } else {
-                let database = Database::new().expect("Failed to connect to Tracker Database!");
-                DATABASE = Some(database.clone());
-                database
-            }
+            DATABASE.as_ref().map_or_else(
+                || {
+                    let database = Database::new().expect("Failed to connect to Tracker Database!");
+                    DATABASE = Some(database.clone());
+                    database
+                },
+                std::clone::Clone::clone,
+            )
         }
     }
 

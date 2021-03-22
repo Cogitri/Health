@@ -77,13 +77,14 @@ impl Settings {
 
     pub fn get_instance() -> Self {
         unsafe {
-            if let Some(s) = &SETTINGS {
-                s.clone()
-            } else {
-                let settings = Settings::new();
-                SETTINGS = Some(settings.clone());
-                settings
-            }
+            SETTINGS.as_ref().map_or_else(
+                || {
+                    let settings = Settings::new();
+                    SETTINGS = Some(settings.clone());
+                    settings
+                },
+                std::clone::Clone::clone,
+            )
         }
     }
 

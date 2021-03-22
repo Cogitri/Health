@@ -98,11 +98,7 @@ where
         .and_hms(0, 0, 0)
         .checked_add_signed(Duration::seconds(val.try_into().unwrap()));
 
-    if let Some(date) = date_time {
-        Ok(date)
-    } else {
-        Err(de::Error::custom("date would overflow"))
-    }
+    date_time.map_or_else(|| Err(de::Error::custom("date would overflow")), Ok)
 }
 
 pub fn serialize_activity_type<S>(val: &ActivityType, s: S) -> Result<S::Ok, S::Error>
@@ -119,6 +115,8 @@ where
     s.serialize_str(&d.to_rfc3339())
 }
 
+#[allow(clippy::trivially_copy_pass_by_ref)]
+#[allow(clippy::option_if_let_else)]
 pub fn serialize_distance<S>(l: &Option<Length>, s: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
@@ -143,6 +141,7 @@ where
     s.serialize_u32(d.num_minutes().try_into().unwrap())
 }
 
+#[allow(clippy::trivially_copy_pass_by_ref)]
 pub fn serialize_mass<S>(mass: &Mass, s: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,

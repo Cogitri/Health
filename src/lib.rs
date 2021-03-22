@@ -72,6 +72,8 @@
 #![warn(clippy::struct_excessive_bools)]
 #![warn(clippy::unnecessary_unwrap)]
 #![warn(clippy::wildcard_imports)]
+#![warn(clippy::trivially_copy_pass_by_ref)]
+#![warn(clippy::option_if_let_else)]
 
 #[doc(hidden)]
 pub mod config;
