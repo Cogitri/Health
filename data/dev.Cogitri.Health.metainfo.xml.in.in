@@ -22,7 +22,7 @@
 			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot_steps.png</image>
 		</screenshot>
 		<screenshot>
-			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot_weight_empty.png</image>
+			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot_weight.png</image>
 		</screenshot>
 		<screenshot>
 			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot_activities.png</image>
@@ -41,6 +41,13 @@
 	</kudos>
 
 	<releases>
+		<release version="0.92.6" date="2021-03-23">
+			<p>
+				This release fixes multiple regressions introduced during the port to Rust, like steps not being properly
+				displayed when multiple steps have been added at one date.
+				Screenshots have been updateda s well.
+			</p>
+		</release>
 		<release version="0.92.2" date="2021-03-21">
 			<p>
 				Another brown bag release to fix tarball generation.
