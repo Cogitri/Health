@@ -127,14 +127,23 @@ impl GraphModelSteps {
     }
 
     /// Converts the model's data to an array of `Point` so it can be displayed in a `GraphView`.
+    #[allow(clippy::map_entry)]
     pub fn to_points(&self) -> Vec<crate::views::Point> {
         if self.vec.is_empty() {
             return Vec::new();
         }
 
         let first_date = self.vec.first().unwrap().date.date();
-        let mut map: HashMap<Date<FixedOffset>, u32> =
-            self.vec.iter().map(|s| (s.date.date(), s.steps)).collect();
+        let mut map: HashMap<Date<FixedOffset>, u32> = HashMap::new();
+
+        for steps in &self.vec {
+            let date = steps.date.date();
+            if map.contains_key(&date) {
+                map.insert(date, map.get(&date).unwrap() + steps.steps);
+            } else {
+                map.insert(date, steps.steps);
+            }
+        }
 
         for date_delta in
             0..(DateTime::<FixedOffset>::from(Utc::now()).date() - first_date).num_days()
