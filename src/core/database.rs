@@ -185,6 +185,8 @@ impl Database {
             ret.push(activity);
         }
 
+        ret.sort_by_key(crate::Activity::get_date);
+
         Ok(ret)
     }
 
