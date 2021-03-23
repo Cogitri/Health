@@ -273,6 +273,9 @@ impl Database {
             ));
         }
 
+        // FIXME: The DB should sort this.
+        ret.sort_by_key(|a| a.date);
+
         Ok(ret)
     }
 
