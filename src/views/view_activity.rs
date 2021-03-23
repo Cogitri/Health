@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::views::View;
+use crate::{core::Database, views::View};
 use chrono::Duration;
 use gio::subclass::prelude::*;
 use glib::Cast;
@@ -89,7 +89,15 @@ glib::wrapper! {
 impl ViewActivity {
     /// Create a new [ViewActivity] to display previous activities.
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ViewActivity")
+        let o: Self = glib::Object::new(&[]).expect("Failed to create ViewActivity");
+
+        Database::get_instance().connect_activities_updated(glib::clone!(@weak o => move || {
+            gtk_macros::spawn!(async move {
+                o.update().await;
+            });
+        }));
+
+        o
     }
 
     /// Reload the [ModelActivity]'s data and refresh the list of activities
