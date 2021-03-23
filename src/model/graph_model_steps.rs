@@ -52,13 +52,22 @@ impl GraphModelSteps {
     /// The amount of steps that have been done today, none `None` if no steps have been done yet.
     pub fn get_today_step_count(&self) -> Option<u32> {
         let today = chrono::Local::now().date();
-        self.vec.iter().find_map(|s| {
-            if today == s.date.date() {
-                Some(s.steps)
-            } else {
-                None
-            }
-        })
+        let today_steps = self
+            .vec
+            .iter()
+            .filter_map(|s| {
+                if today == s.date.date() {
+                    Some(s.steps)
+                } else {
+                    None
+                }
+            })
+            .sum();
+        if today_steps == 0 {
+            None
+        } else {
+            Some(today_steps)
+        }
     }
 
     /// Get how many days the user has upheld their step streak (as in have reached their stepgoal), including today.
