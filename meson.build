@@ -1,6 +1,6 @@
 project('Health', 'rust',  
           version: '0.92.6',
-    meson_version: '>= 0.50.0',
+    meson_version: '>= 0.54.0',
   default_options: [ 'warning_level=2',
                    ],
 )
@@ -31,9 +31,4 @@ subdir('src')
 subdir('po')
 
 meson.add_install_script('build-aux/meson/postinstall.py')
-
-run_target(
-  'release',
-  command: ['build-aux/release.sh', meson.project_name(), meson.project_version()]
-)
-
+meson.add_dist_script('build-aux/dist.sh', meson.project_name(), meson.project_version())
