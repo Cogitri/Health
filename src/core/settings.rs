@@ -20,38 +20,26 @@ use crate::settings_getter_setter;
 use chrono::{DateTime, FixedOffset};
 use gio::prelude::*;
 use num_traits::{FromPrimitive, ToPrimitive};
-use std::convert::TryFrom;
 use uom::si::{
     f32::{Length, Mass},
     length::centimeter,
     mass::kilogram,
 };
 
-#[derive(PartialEq, Debug, Clone, Copy, num_derive::FromPrimitive, num_derive::ToPrimitive)]
+#[derive(
+    PartialEq,
+    Debug,
+    Clone,
+    Copy,
+    num_derive::FromPrimitive,
+    num_derive::ToPrimitive,
+    strum::EnumString,
+    strum::IntoStaticStr,
+)]
+#[strum(serialize_all = "snake_case")]
 pub enum Unitsystem {
     Imperial,
     Metric,
-}
-
-impl TryFrom<&str> for Unitsystem {
-    type Error = String;
-
-    fn try_from(s: &str) -> Result<Self, Self::Error> {
-        match s {
-            "imperial" => Ok(Unitsystem::Imperial),
-            "metric" => Ok(Unitsystem::Metric),
-            _ => Err(format!("Unknown unitsystem {}", s)),
-        }
-    }
-}
-
-impl Into<&'static str> for Unitsystem {
-    fn into(self) -> &'static str {
-        match self {
-            Unitsystem::Imperial => "imperial",
-            Unitsystem::Metric => "metric",
-        }
-    }
 }
 
 static mut SETTINGS: Option<Settings> = None;
@@ -192,4 +180,26 @@ impl Settings {
     settings_getter_setter!(i32, window_height, "window-height");
     settings_getter_setter!(bool, window_is_maximized, "window-is-maximized");
     settings_getter_setter!(i32, window_width, "window-width");
+}
+
+#[cfg(test)]
+mod test {
+    use super::Unitsystem;
+    use std::str::FromStr;
+
+    #[test]
+    fn deserialize_unitsystem() {
+        assert_eq!(Unitsystem::from_str("imperial"), Ok(Unitsystem::Imperial));
+        assert_eq!(Unitsystem::from_str("metric"), Ok(Unitsystem::Metric));
+
+        assert!(Unitsystem::from_str("unknown").is_err());
+    }
+
+    #[test]
+    fn serialize_unitsystem() {
+        let a: &str = Unitsystem::Imperial.into();
+        assert_eq!(a, "imperial");
+        let b: &str = Unitsystem::Metric.into();
+        assert_eq!(b, "metric");
+    }
 }

@@ -163,7 +163,7 @@ impl Activity {
                 ActivityType::Hiking | ActivityType::Walking => {
                     Some(distance / WALKING_METERS_PER_MINUTE)
                 }
-                ActivityType::RollerBlading => Some(distance / ROLLER_BLADING_METERS_PER_MINUTE),
+                ActivityType::Rollerblading => Some(distance / ROLLER_BLADING_METERS_PER_MINUTE),
                 ActivityType::Running | ActivityType::TrackAndField => {
                     Some(distance / RUNNING_METERS_PER_MINUTE)
                 }
@@ -223,7 +223,7 @@ impl Activity {
                 ActivityType::Hiking | ActivityType::Walking => {
                     Some(WALKING_METERS_PER_MINUTE * minutes)
                 }
-                ActivityType::RollerBlading => Some(ROLLER_BLADING_METERS_PER_MINUTE * minutes),
+                ActivityType::Rollerblading => Some(ROLLER_BLADING_METERS_PER_MINUTE * minutes),
                 ActivityType::Running | ActivityType::TrackAndField => {
                     Some(RUNNING_METERS_PER_MINUTE * minutes)
                 }

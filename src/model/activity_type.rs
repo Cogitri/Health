@@ -16,11 +16,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::i18n_f;
-use std::convert::TryFrom;
-
 /// All supported [ActivityType]s are listed in this enum.
-#[derive(Debug, num_derive::FromPrimitive, num_derive::ToPrimitive, Clone, PartialEq)]
+#[derive(
+    Debug,
+    num_derive::FromPrimitive,
+    num_derive::ToPrimitive,
+    Clone,
+    PartialEq,
+    strum::EnumString,
+    strum::IntoStaticStr,
+)]
+#[strum(serialize_all = "snake_case")]
 pub enum ActivityType {
     Basketball,
     Bicycling,
@@ -32,7 +38,7 @@ pub enum ActivityType {
     Hockey,
     HorseRiding,
     OtherSports,
-    RollerBlading,
+    Rollerblading,
     Running,
     Skiing,
     Soccer,
@@ -40,82 +46,51 @@ pub enum ActivityType {
     Swimming,
     Tennis,
     TrackAndField,
-    VolleyBall,
+    Volleyball,
     Walking,
 }
 
-impl TryFrom<&str> for ActivityType {
-    type Error = String;
+#[cfg(test)]
+mod test {
+    use super::ActivityType;
+    use std::str::FromStr;
 
-    /// Try to convert from an [ActivityType] `ID` to a [ActivityType]
-    ///
-    /// # Examples
-    /// ```
-    /// use libhealth::ActivityType;
-    /// use std::convert::TryFrom;
-    ///
-    /// assert_eq!(ActivityType::try_from("basketball"), Ok(ActivityType::Basketball));
-    /// assert_eq!(ActivityType::try_from("BasketBall"), Ok(ActivityType::Basketball));
-    /// assert_eq!(ActivityType::try_from("unknown").is_err(), true);
-    /// ```
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        match value.to_lowercase().as_str() {
-            "basketball" => Ok(ActivityType::Basketball),
-            "bicycling" => Ok(ActivityType::Bicycling),
-            "boxing" => Ok(ActivityType::Boxing),
-            "dancing" => Ok(ActivityType::Dancing),
-            "football" => Ok(ActivityType::Football),
-            "golf" => Ok(ActivityType::Golf),
-            "hiking" => Ok(ActivityType::Hiking),
-            "hockey" => Ok(ActivityType::Hockey),
-            "horse_riding" => Ok(ActivityType::HorseRiding),
-            "other_sports" => Ok(ActivityType::OtherSports),
-            "rollerblading" => Ok(ActivityType::RollerBlading),
-            "running" => Ok(ActivityType::Running),
-            "skiing" => Ok(ActivityType::Skiing),
-            "soccer" => Ok(ActivityType::Soccer),
-            "softball" => Ok(ActivityType::Softball),
-            "swimming" => Ok(ActivityType::Swimming),
-            "tennis" => Ok(ActivityType::Tennis),
-            "track_and_field" => Ok(ActivityType::TrackAndField),
-            "volleyball" => Ok(ActivityType::VolleyBall),
-            "walking" => Ok(ActivityType::Walking),
-            _ => Err(i18n_f("Unknown ActivityType {}", &[value])),
-        }
+    #[test]
+    fn deserialize_activity_type() {
+        assert_eq!(
+            ActivityType::from_str("basketball"),
+            Ok(ActivityType::Basketball)
+        );
+        assert_eq!(
+            ActivityType::from_str("rollerblading"),
+            Ok(ActivityType::Rollerblading),
+        );
+        assert_eq!(
+            ActivityType::from_str("volleyball"),
+            Ok(ActivityType::Volleyball),
+        );
+        assert_eq!(
+            ActivityType::from_str("horse_riding"),
+            Ok(ActivityType::HorseRiding),
+        );
+        assert_eq!(
+            ActivityType::from_str("track_and_field"),
+            Ok(ActivityType::TrackAndField),
+        );
+        assert!(ActivityType::from_str("unknown").is_err());
     }
-}
 
-impl Into<&'static str> for ActivityType {
-    /// Convert from an [ActivityType] to an ID.
-    ///
-    /// # Examples
-    /// ```
-    /// use libhealth::ActivityType;
-    ///
-    /// assert_eq!(Into::<&str>::into(ActivityType::Basketball), "basketball");
-    /// ```
-    fn into(self) -> &'static str {
-        match self {
-            ActivityType::Basketball => "basketball",
-            ActivityType::Bicycling => "bicycling",
-            ActivityType::Boxing => "boxing",
-            ActivityType::Dancing => "dancing",
-            ActivityType::Football => "football",
-            ActivityType::Golf => "golf",
-            ActivityType::Hiking => "hiking",
-            ActivityType::Hockey => "hockey",
-            ActivityType::HorseRiding => "horse_riding",
-            ActivityType::OtherSports => "other_sports",
-            ActivityType::RollerBlading => "rollerblading",
-            ActivityType::Running => "running",
-            ActivityType::Skiing => "skiing",
-            ActivityType::Soccer => "soccer",
-            ActivityType::Softball => "softball",
-            ActivityType::Swimming => "swimming",
-            ActivityType::Tennis => "tennis",
-            ActivityType::TrackAndField => "track_and_field",
-            ActivityType::VolleyBall => "volleyball",
-            ActivityType::Walking => "walking",
-        }
+    #[test]
+    fn serialize_activity_type() {
+        let a: &str = ActivityType::Basketball.into();
+        assert_eq!(a, "basketball");
+        let a: &str = ActivityType::Rollerblading.into();
+        assert_eq!(a, "rollerblading");
+        let a: &str = ActivityType::Volleyball.into();
+        assert_eq!(a, "volleyball");
+        let a: &str = ActivityType::TrackAndField.into();
+        assert_eq!(a, "track_and_field");
+        let a: &str = ActivityType::HorseRiding.into();
+        assert_eq!(a, "horse_riding");
     }
 }

@@ -20,7 +20,7 @@ use crate::{
     core::i18n,
     model::{ActivityDataPoints, ActivityType},
 };
-use std::convert::TryFrom;
+use std::{convert::TryFrom, str::FromStr};
 
 /// A struct containing informations about a certain activity type.
 #[derive(Debug, Clone)]
@@ -58,7 +58,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE,
                 6,
-                "basketball",
                 i18n("Basketball"),
             ),
             ActivityType::Bicycling => ActivityInfo::new(
@@ -68,7 +67,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE
                     | ActivityDataPoints::DISTANCE,
                 10,
-                "bicycling",
                 i18n("Bicycling"),
             ),
             ActivityType::Boxing => ActivityInfo::new(
@@ -77,7 +75,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE,
                 7,
-                "boxing",
                 i18n("Boxing"),
             ),
             ActivityType::Dancing => ActivityInfo::new(
@@ -86,7 +83,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE,
                 8,
-                "dancing",
                 i18n("Dancing"),
             ),
             ActivityType::Football => ActivityInfo::new(
@@ -95,14 +91,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE,
                 3,
-                "football",
                 i18n("Football"),
             ),
             ActivityType::Golf => ActivityInfo::new(
                 ActivityType::Golf,
                 ActivityDataPoints::CALORIES_BURNED | ActivityDataPoints::DURATION,
                 4,
-                "golf",
                 i18n("Golf"),
             ),
             ActivityType::Hiking => ActivityInfo::new(
@@ -113,7 +107,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::STEP_COUNT
                     | ActivityDataPoints::DISTANCE,
                 8,
-                "hiking",
                 i18n("Hiking"),
             ),
             ActivityType::Hockey => ActivityInfo::new(
@@ -122,7 +115,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE,
                 10,
-                "hockey",
                 i18n("Hockey"),
             ),
             ActivityType::HorseRiding => ActivityInfo::new(
@@ -132,7 +124,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE
                     | ActivityDataPoints::DISTANCE,
                 5,
-                "horse_riding",
                 i18n("Horse Riding"),
             ),
             ActivityType::OtherSports => ActivityInfo::new(
@@ -141,17 +132,15 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE,
                 9,
-                "other_sports",
                 i18n("Other Sports"),
             ),
-            ActivityType::RollerBlading => ActivityInfo::new(
-                ActivityType::RollerBlading,
+            ActivityType::Rollerblading => ActivityInfo::new(
+                ActivityType::Rollerblading,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE
                     | ActivityDataPoints::DISTANCE,
                 10,
-                "rollerblading",
                 i18n("Rollerblading"),
             ),
             ActivityType::Running => ActivityInfo::new(
@@ -162,7 +151,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DISTANCE
                     | ActivityDataPoints::STEP_COUNT,
                 15,
-                "running",
                 i18n("Running"),
             ),
             ActivityType::Skiing => ActivityInfo::new(
@@ -172,7 +160,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE
                     | ActivityDataPoints::DISTANCE,
                 12,
-                "skiing",
                 i18n("Skiing"),
             ),
             ActivityType::Soccer => ActivityInfo::new(
@@ -181,7 +168,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE,
                 8,
-                "soccer",
                 i18n("Soccer"),
             ),
             ActivityType::Softball => ActivityInfo::new(
@@ -190,7 +176,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE,
                 5,
-                "softball",
                 i18n("Softball"),
             ),
             ActivityType::Swimming => ActivityInfo::new(
@@ -200,7 +185,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE
                     | ActivityDataPoints::DISTANCE,
                 12,
-                "swimming",
                 i18n("Swimming"),
             ),
             ActivityType::Tennis => ActivityInfo::new(
@@ -209,7 +193,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE,
                 6,
-                "tennis",
                 i18n("Tennis"),
             ),
             ActivityType::TrackAndField => ActivityInfo::new(
@@ -218,18 +201,16 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE,
                 5,
-                "track_and_field",
                 i18n("Track And Field"),
             ),
-            ActivityType::VolleyBall => ActivityInfo::new(
-                ActivityType::VolleyBall,
+            ActivityType::Volleyball => ActivityInfo::new(
+                ActivityType::Volleyball,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
                     | ActivityDataPoints::HEART_RATE
                     | ActivityDataPoints::DISTANCE
                     | ActivityDataPoints::STEP_COUNT,
                 5,
-                "volleyball",
                 i18n("Volleyball"),
             ),
             ActivityType::Walking => ActivityInfo::new(
@@ -240,7 +221,6 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DISTANCE
                     | ActivityDataPoints::STEP_COUNT,
                 5,
-                "walking",
                 i18n("Walking"),
             ),
         }
@@ -248,7 +228,7 @@ impl From<ActivityType> for ActivityInfo {
 }
 
 impl TryFrom<&str> for ActivityInfo {
-    type Error = String;
+    type Error = strum::ParseError;
 
     /// Try converting from an [ActivityInfo] `ID` to an [ActivityInfo].
     ///
@@ -266,7 +246,7 @@ impl TryFrom<&str> for ActivityInfo {
     /// assert!(ActivityInfo::try_from("unknown").is_err());
     /// ```
     fn try_from(val: &str) -> Result<Self, Self::Error> {
-        match ActivityType::try_from(val) {
+        match ActivityType::from_str(val) {
             Ok(t) => Ok(ActivityInfo::from(t)),
             Err(e) => Err(e),
         }
@@ -278,14 +258,13 @@ impl ActivityInfo {
         activity_type: ActivityType,
         available_data_points: ActivityDataPoints,
         average_calories_burned_per_minute: u32,
-        id: &'static str,
         name: String,
     ) -> Self {
         Self {
+            id: activity_type.clone().into(),
             activity_type,
             available_data_points,
             average_calories_burned_per_minute,
-            id,
             name,
         }
     }

@@ -22,7 +22,7 @@ use crate::{
 };
 use chrono::{DateTime, Duration, FixedOffset, TimeZone};
 use serde::{de, Deserialize, Deserializer, Serializer};
-use std::convert::{TryFrom, TryInto};
+use std::{convert::TryInto, str::FromStr};
 use uom::si::{
     f32::{Length, Mass},
     length::{meter, yard},
@@ -35,7 +35,7 @@ where
 {
     let buf = String::deserialize(deserializer)?;
 
-    ActivityType::try_from(buf.as_str()).map_err(serde::de::Error::custom)
+    ActivityType::from_str(buf.as_str()).map_err(serde::de::Error::custom)
 }
 
 pub fn deserialize_date<'de, D>(deserializer: D) -> Result<DateTime<FixedOffset>, D::Error>

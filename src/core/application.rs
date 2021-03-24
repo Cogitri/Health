@@ -24,7 +24,7 @@ use gio::prelude::*;
 use glib::{clone, subclass::prelude::*};
 use gtk::prelude::*;
 use gtk_macros::{action, stateful_action};
-use std::convert::TryFrom;
+use std::str::FromStr;
 
 mod imp {
     use crate::{
@@ -224,7 +224,7 @@ impl Application {
             clone!(@weak self as obj => move |a, p| {
                 let parameter = p.unwrap();
 
-                obj.get_priv().settings.set_unitsystem(Unitsystem::try_from(parameter.to_string().replace("'", "").as_str()).unwrap());
+                obj.get_priv().settings.set_unitsystem(Unitsystem::from_str(parameter.to_string().replace("'", "").as_str()).unwrap());
 
                 a.set_state(parameter);
             })
