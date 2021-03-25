@@ -17,10 +17,7 @@
  */
 
 use crate::{
-    core::{
-        settings::{prelude::*, Unitsystem},
-        Database,
-    },
+    core::{settings::prelude::*, Database, Unitsystem},
     model::weight::Weight,
     views::Point,
 };

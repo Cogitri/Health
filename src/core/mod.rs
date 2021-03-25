@@ -7,6 +7,8 @@ pub mod i18n;
 pub mod macros;
 #[doc(hidden)]
 pub mod settings;
+#[doc(hidden)]
+pub mod unitsystem;
 pub mod utils;
 
 #[doc(inline)]
@@ -15,3 +17,5 @@ pub use application::Application;
 pub use database::Database;
 pub use i18n::*;
 pub use macros::*;
+#[doc(inline)]
+pub use unitsystem::*;

@@ -18,8 +18,9 @@
 
 use crate::core::{
     i18n,
-    settings::{prelude::*, Unitsystem},
+    settings::prelude::*,
     utils::{get_spinbutton_value, round_decimal_places},
+    Unitsystem,
 };
 use adw::prelude::*;
 use gio::prelude::*;
@@ -35,7 +36,7 @@ static OPTIMAL_BMI: f32 = 22.5;
 
 mod imp {
     use crate::{
-        core::settings::{prelude::*, Unitsystem},
+        core::{settings::prelude::*, Unitsystem},
         widgets::{BMILevelBar, SyncListBox},
     };
     use gio::Settings;

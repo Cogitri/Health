@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::settings_getter_setter;
+use crate::{core::Unitsystem, settings_getter_setter};
 use chrono::{DateTime, FixedOffset};
 use gio::prelude::*;
 use gio::Settings;
@@ -29,22 +29,6 @@ use uom::si::{
 
 pub mod prelude {
     pub use super::*;
-}
-
-#[derive(
-    PartialEq,
-    Debug,
-    Clone,
-    Copy,
-    num_derive::FromPrimitive,
-    num_derive::ToPrimitive,
-    strum::EnumString,
-    strum::IntoStaticStr,
-)]
-#[strum(serialize_all = "snake_case")]
-pub enum Unitsystem {
-    Imperial,
-    Metric,
 }
 
 static mut SETTINGS: Option<Settings> = None;

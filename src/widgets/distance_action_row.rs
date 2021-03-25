@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, settings::prelude::*, settings::Unitsystem, utils::get_spinbutton_value},
+    core::{i18n, settings::prelude::*, utils::get_spinbutton_value, Unitsystem},
     model::Unitsize,
 };
 use gio::subclass::prelude::*;

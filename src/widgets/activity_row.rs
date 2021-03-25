@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n_f, settings::prelude::*, settings::Unitsystem},
+    core::{i18n_f, settings::prelude::*, Unitsystem},
     model::{Activity, ActivityDataPoints, ActivityInfo},
 };
 use glib::subclass::prelude::*;

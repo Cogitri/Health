@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, settings::prelude::*, settings::Unitsystem, utils::get_spinbutton_value},
+    core::{i18n, settings::prelude::*, utils::get_spinbutton_value, Unitsystem},
     sync::csv::CSVHandler,
 };
 use adw::prelude::*;
@@ -32,10 +32,7 @@ use uom::si::{
 
 mod imp {
     use crate::{
-        core::{
-            i18n,
-            settings::{prelude::*, Unitsystem},
-        },
+        core::{i18n, settings::prelude::*, Unitsystem},
         widgets::{BMILevelBar, SyncListBox},
     };
     use adw::prelude::*;

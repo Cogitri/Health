@@ -17,10 +17,7 @@
  */
 
 use crate::{
-    core::{
-        i18n,
-        settings::{prelude::*, Unitsystem},
-    },
+    core::{i18n, settings::prelude::*, Unitsystem},
     model::Weight,
 };
 use glib::{clone, subclass::prelude::*};

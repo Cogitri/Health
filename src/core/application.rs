@@ -17,10 +17,7 @@
  */
 
 use crate::{
-    core::{
-        i18n,
-        settings::{prelude::*, Unitsystem},
-    },
+    core::{i18n, settings::prelude::*, Unitsystem},
     windows::{PreferencesWindow, Window},
 };
 use gio::prelude::*;

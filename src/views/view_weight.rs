@@ -17,10 +17,7 @@
  */
 
 use crate::{
-    core::{
-        i18n, i18n_f, settings::prelude::*, settings::Unitsystem, utils::round_decimal_places,
-        Database,
-    },
+    core::{i18n, i18n_f, settings::prelude::*, utils::round_decimal_places, Database, Unitsystem},
     model::GraphModelWeight,
     views::{GraphView, View},
 };
