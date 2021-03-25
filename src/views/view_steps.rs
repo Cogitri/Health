@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, i18n_f, Database},
+    core::{i18n, i18n_f, settings::prelude::*, Database},
     views::{GraphView, View},
 };
 use chrono::Duration;
@@ -25,10 +25,11 @@ use glib::{subclass::prelude::*, Cast};
 
 mod imp {
     use crate::{
-        core::Settings,
+        core::settings::prelude::*,
         model::GraphModelSteps,
         views::{GraphView, View},
     };
+    use gio::Settings;
     use glib::Cast;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;

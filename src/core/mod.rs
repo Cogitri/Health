@@ -15,5 +15,3 @@ pub use application::Application;
 pub use database::Database;
 pub use i18n::*;
 pub use macros::*;
-#[doc(inline)]
-pub use settings::Settings;

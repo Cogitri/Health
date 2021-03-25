@@ -17,7 +17,10 @@
  */
 
 use crate::{
-    core::{i18n, settings::Unitsystem},
+    core::{
+        i18n,
+        settings::{prelude::*, Unitsystem},
+    },
     model::Weight,
 };
 use glib::{clone, subclass::prelude::*};
@@ -30,9 +33,10 @@ use uom::si::{
 
 mod imp {
     use crate::{
-        core::{Database, Settings},
+        core::{settings::prelude::*, Database},
         widgets::DateSelector,
     };
+    use gio::Settings;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate)]

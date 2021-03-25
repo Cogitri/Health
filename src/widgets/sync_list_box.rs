@@ -26,7 +26,8 @@ use gtk::prelude::*;
 use gtk_macros::spawn;
 
 mod imp {
-    use crate::core::Settings;
+    use crate::core::settings::prelude::*;
+    use gio::Settings;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 

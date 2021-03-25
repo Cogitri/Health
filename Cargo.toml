@@ -25,6 +25,9 @@ version = "0.4"
 [dependencies.csv]
 version = "1.1"
 
+[dependencies.easy-ext]
+version = "0.2"
+
 [dependencies.failure]
 version = "0.1"
 

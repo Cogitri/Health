@@ -19,12 +19,17 @@
 use crate::settings_getter_setter;
 use chrono::{DateTime, FixedOffset};
 use gio::prelude::*;
+use gio::Settings;
 use num_traits::{FromPrimitive, ToPrimitive};
 use uom::si::{
     f32::{Length, Mass},
     length::centimeter,
     mass::kilogram,
 };
+
+pub mod prelude {
+    pub use super::*;
+}
 
 #[derive(
     PartialEq,
@@ -44,30 +49,26 @@ pub enum Unitsystem {
 
 static mut SETTINGS: Option<Settings> = None;
 
-/// [Settings] is a [gio::Settings], but with helper methods to connect to changes/get/set keys.
-#[derive(Debug, Clone)]
-pub struct Settings {
-    settings: gio::Settings,
-}
+settings_getter_setter!(u32, current_view_id, "current-view-id");
+settings_getter_setter!(bool, did_initial_setup, "did-initial-setup");
+settings_getter_setter!(
+    bool,
+    sync_provider_setup_google_fit,
+    "sync-provider-setup-google-fit"
+);
+settings_getter_setter!(u32, user_age, "user-age");
+settings_getter_setter!(u32, user_stepgoal, "user-stepgoal");
+settings_getter_setter!(i32, window_height, "window-height");
+settings_getter_setter!(bool, window_is_maximized, "window-is-maximized");
+settings_getter_setter!(i32, window_width, "window-width");
 
+#[easy_ext::ext(HealthSettingsExt)]
 impl Settings {
-    pub fn disconnect(&self, s: glib::SignalHandlerId) {
-        self.settings.disconnect(s)
-    }
-
-    /// Create a new [Settings] object. Since this operation is pretty cheap it's OK to call this when
-    /// constructing your struct instead of passing `Settings` around.
-    fn new() -> Self {
-        Self {
-            settings: gio::Settings::new("dev.Cogitri.Health"),
-        }
-    }
-
     pub fn get_instance() -> Self {
         unsafe {
             SETTINGS.as_ref().map_or_else(
                 || {
-                    let settings = Settings::new();
+                    let settings = Settings::new("dev.Cogitri.Health");
                     SETTINGS = Some(settings.clone());
                     settings
                 },
@@ -78,8 +79,7 @@ impl Settings {
 
     /// Get an array of recent activity IDs.
     pub fn get_recent_activity_types(&self) -> Vec<String> {
-        self.settings
-            .get_strv("recent-activity-types")
+        self.get_strv("recent-activity-types")
             .iter()
             .map(std::string::ToString::to_string)
             .collect()
@@ -87,16 +87,13 @@ impl Settings {
 
     /// Set an array of recent activity IDs.
     pub fn set_recent_activity_types(&self, value: &[&str]) {
-        self.settings
-            .set_strv("recent-activity-types", value)
-            .unwrap();
+        self.set_strv("recent-activity-types", value).unwrap();
     }
 
     /// Get the timestamp of the last sync with Google Fit.
     pub fn get_timestamp_last_sync_google_fit(&self) -> DateTime<FixedOffset> {
         DateTime::parse_from_rfc3339(
-            self.settings
-                .get_string("timestamp-last-sync-google-fit")
+            self.get_string("timestamp-last-sync-google-fit")
                 .unwrap()
                 .as_str(),
         )
@@ -105,8 +102,7 @@ impl Settings {
 
     /// Set the timestamp of the last sync with Google Fit.
     pub fn set_timestamp_last_sync_google_fit(&self, value: DateTime<FixedOffset>) {
-        self.settings
-            .set_string("timestamp-last-sync-google-fit", &value.to_rfc3339())
+        self.set_string("timestamp-last-sync-google-fit", &value.to_rfc3339())
             .unwrap();
     }
 
@@ -115,33 +111,30 @@ impl Settings {
         &self,
         f: F,
     ) -> glib::SignalHandlerId {
-        self.settings
-            .connect_changed(Some("unitsystem"), move |s, name| {
-                f(s, name);
-            })
+        self.connect_changed(Some("unitsystem"), move |s, name| {
+            f(s, name);
+        })
     }
 
     /// Get the current unitsystem.
     pub fn get_unitsystem(&self) -> Unitsystem {
-        Unitsystem::from_i32(self.settings.get_enum("unitsystem")).unwrap()
+        Unitsystem::from_i32(self.get_enum("unitsystem")).unwrap()
     }
 
     /// Set the current unitsystem.
     pub fn set_unitsystem(&self, value: Unitsystem) {
-        self.settings
-            .set_enum("unitsystem", value.to_i32().unwrap())
+        self.set_enum("unitsystem", value.to_i32().unwrap())
             .unwrap();
     }
 
     /// Get the user's height.
     pub fn get_user_height(&self) -> Length {
-        Length::new::<centimeter>(self.settings.get_uint("user-height") as f32)
+        Length::new::<centimeter>(self.get_uint("user-height") as f32)
     }
 
     /// Set the user's height.
     pub fn set_user_height(&self, value: Length) {
-        self.settings
-            .set_uint("user-height", value.get::<centimeter>() as u32)
+        self.set_uint("user-height", value.get::<centimeter>() as u32)
             .unwrap();
     }
 
@@ -150,36 +143,21 @@ impl Settings {
         &self,
         f: F,
     ) -> glib::SignalHandlerId {
-        self.settings
-            .connect_changed(Some("user-weightgoal"), move |s, name| {
-                f(s, name);
-            })
+        self.connect_changed(Some("user-weightgoal"), move |s, name| {
+            f(s, name);
+        })
     }
 
     /// Get the user's current weightgoal.
     pub fn get_user_weightgoal(&self) -> Mass {
-        Mass::new::<kilogram>(self.settings.get_double("user-weightgoal") as f32)
+        Mass::new::<kilogram>(self.get_double("user-weightgoal") as f32)
     }
 
     /// Set the user's current weightgoal.
     pub fn set_user_weightgoal(&self, value: Mass) {
-        self.settings
-            .set_double("user-weightgoal", f64::from(value.get::<kilogram>()))
+        self.set_double("user-weightgoal", f64::from(value.get::<kilogram>()))
             .unwrap();
     }
-
-    settings_getter_setter!(u32, current_view_id, "current-view-id");
-    settings_getter_setter!(bool, did_initial_setup, "did-initial-setup");
-    settings_getter_setter!(
-        bool,
-        sync_provider_setup_google_fit,
-        "sync-provider-setup-google-fit"
-    );
-    settings_getter_setter!(u32, user_age, "user-age");
-    settings_getter_setter!(u32, user_stepgoal, "user-stepgoal");
-    settings_getter_setter!(i32, window_height, "window-height");
-    settings_getter_setter!(bool, window_is_maximized, "window-is-maximized");
-    settings_getter_setter!(i32, window_width, "window-width");
 }
 
 #[cfg(test)]

@@ -21,11 +21,12 @@ use super::{
     DatabaseValue,
 };
 use crate::{
-    core::{i18n_f, Settings},
+    core::{i18n_f, settings::prelude::*},
     model::{Steps, Weight},
 };
 use chrono::{DateTime, FixedOffset, Utc};
 use failure::Fail;
+use gio::Settings;
 use oauth2::{
     basic::{BasicClient, BasicTokenType},
     AuthUrl, ClientId, ClientSecret, CsrfToken, EmptyExtraTokenFields, PkceCodeChallenge,

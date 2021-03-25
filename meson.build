@@ -1,4 +1,4 @@
-project('Health', 'rust',  
+project('Health', 'rust',
           version: '0.92.6',
     meson_version: '>= 0.54.0',
   default_options: [ 'warning_level=2',

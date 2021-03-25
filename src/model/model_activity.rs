@@ -23,9 +23,10 @@ use std::convert::TryInto;
 
 mod imp {
     use crate::{
-        core::{Database, Settings},
+        core::{settings::prelude::*, Database},
         model::Activity,
     };
+    use gio::Settings;
     use glib::{subclass, Cast, StaticType};
     use gtk::subclass::prelude::*;
     use std::{

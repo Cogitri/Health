@@ -40,23 +40,22 @@ macro_rules! properties_setter_getter {
 macro_rules! settings_getter_setter {
     ($type:ty, $name:ident, $key:literal) => {
         paste::item! {
-            #[doc = "Get value of GSettings key"]
-            pub fn [< get_ $name >] (&self) -> $type {
-                self.settings.get::<$type>($key)
-            }
-        }
-        paste::item! {
-            #[doc = "Set value of GSettings key"]
-            pub fn [< set_ $name >] (&self, value: $type) {
-                self.settings.set::<$type>($key, &value).unwrap();
-            }
-        }
-        paste::item! {
-            #[doc = "Connect to value changes of this key. Keep in mind that the key has to be read once before connecting or this won't do anything!"]
-            pub fn [< connect_ $name _changed >]<F: Fn(&gio::Settings, &str) + 'static>(&self, f: F) -> glib::SignalHandlerId {
-                self.settings.connect_changed(Some(stringify!($name)), move |s, name| {
-                    f(s, name);
-                })
+            #[easy_ext::ext([<HealthSettings $name:camel Ext>])]
+            impl gio::Settings {
+                #[doc = "Get value of GSettings key"]
+                pub fn [< get_ $name >] (&self) -> $type {
+                    self.get::<$type>($key)
+                }
+                #[doc = "Set value of GSettings key"]
+                pub fn [< set_ $name >] (&self, value: $type) {
+                    self.set::<$type>($key, &value).unwrap();
+                }
+                #[doc = "Connect to value changes of this key. Keep in mind that the key has to be read once before connecting or this won't do anything!"]
+                pub fn [< connect_ $name _changed >]<F: Fn(&gio::Settings, &str) + 'static>(&self, f: F) -> glib::SignalHandlerId {
+                    self.connect_changed(Some(stringify!($name)), move |s, name| {
+                        f(s, name);
+                    })
+                }
             }
         }
     };

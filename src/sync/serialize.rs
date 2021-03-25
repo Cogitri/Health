@@ -17,10 +17,11 @@
  */
 
 use crate::{
-    core::{settings::Unitsystem, Settings},
+    core::settings::{prelude::*, Unitsystem},
     model::ActivityType,
 };
 use chrono::{DateTime, Duration, FixedOffset, TimeZone};
+use gio::Settings;
 use serde::{de, Deserialize, Deserializer, Serializer};
 use std::{convert::TryInto, str::FromStr};
 use uom::si::{

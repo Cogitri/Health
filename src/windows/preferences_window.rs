@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, settings::Unitsystem, utils::get_spinbutton_value},
+    core::{i18n, settings::prelude::*, settings::Unitsystem, utils::get_spinbutton_value},
     sync::csv::CSVHandler,
 };
 use adw::prelude::*;
@@ -32,10 +32,14 @@ use uom::si::{
 
 mod imp {
     use crate::{
-        core::{i18n, settings::Unitsystem, Settings},
+        core::{
+            i18n,
+            settings::{prelude::*, Unitsystem},
+        },
         widgets::{BMILevelBar, SyncListBox},
     };
     use adw::prelude::*;
+    use gio::Settings;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::Cell;

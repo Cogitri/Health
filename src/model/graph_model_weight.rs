@@ -17,11 +17,15 @@
  */
 
 use crate::{
-    core::{settings::Unitsystem, Database, Settings},
+    core::{
+        settings::{prelude::*, Unitsystem},
+        Database,
+    },
     model::weight::Weight,
     views::Point,
 };
 use chrono::Duration;
+use gio::Settings;
 use uom::si::{
     f32::Mass,
     mass::{kilogram, pound},

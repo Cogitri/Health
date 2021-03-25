@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::utils::get_spinbutton_value,
+    core::{settings::prelude::*, utils::get_spinbutton_value},
     model::{Activity, ActivityDataPoints, ActivityInfo, Unitsize},
 };
 use chrono::Duration;
@@ -29,10 +29,11 @@ use std::convert::TryFrom;
 
 mod imp {
     use crate::{
-        core::{utils::get_spinbutton_value, Database, Settings},
+        core::{settings::prelude::*, utils::get_spinbutton_value, Database},
         model::{Activity, ActivityDataPoints, ActivityInfo, ActivityType},
         widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
     };
+    use gio::Settings;
     use glib::clone;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;

@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::Database,
+    core::{settings::prelude::*, Database},
     sync::{
         google_fit::GoogleFitSyncProvider,
         new_db_receiver,
@@ -32,7 +32,8 @@ use imp::ViewMode;
 use std::collections::BTreeMap;
 
 mod imp {
-    use crate::{core::Settings, views::View};
+    use crate::{core::settings::prelude::*, views::View};
+    use gio::Settings;
     use glib::SourceId;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;

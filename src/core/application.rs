@@ -17,7 +17,10 @@
  */
 
 use crate::{
-    core::{i18n, settings::Unitsystem},
+    core::{
+        i18n,
+        settings::{prelude::*, Unitsystem},
+    },
     windows::{PreferencesWindow, Window},
 };
 use gio::prelude::*;
@@ -29,9 +32,10 @@ use std::str::FromStr;
 mod imp {
     use crate::{
         config,
-        core::Settings,
+        core::settings::prelude::*,
         windows::{SetupWindow, Window},
     };
+    use gio::Settings;
     use glib::{clone, g_warning};
     use gtk::{prelude::*, subclass::prelude::*};
     use once_cell::unsync::OnceCell;

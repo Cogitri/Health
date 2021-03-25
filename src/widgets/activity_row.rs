@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n_f, settings::Unitsystem},
+    core::{i18n_f, settings::prelude::*, settings::Unitsystem},
     model::{Activity, ActivityDataPoints, ActivityInfo},
 };
 use glib::subclass::prelude::*;
@@ -28,7 +28,8 @@ use uom::{
 };
 
 mod imp {
-    use crate::{core::Settings, model::Activity};
+    use crate::{core::settings::prelude::*, model::Activity};
+    use gio::Settings;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
 

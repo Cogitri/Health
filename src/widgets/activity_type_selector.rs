@@ -22,10 +22,11 @@ use gio::subclass::prelude::*;
 
 mod imp {
     use crate::{
-        core::Settings,
+        core::settings::prelude::*,
         model::{ActivityInfo, ActivityType, ActivityTypeRowData},
         widgets::ActivityTypeRow,
     };
+    use gio::Settings;
     use glib::{g_warning, subclass::Signal};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use num_traits::cast::FromPrimitive;

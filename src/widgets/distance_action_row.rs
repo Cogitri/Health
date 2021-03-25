@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, settings::Unitsystem, utils::get_spinbutton_value},
+    core::{i18n, settings::prelude::*, settings::Unitsystem, utils::get_spinbutton_value},
     model::Unitsize,
 };
 use gio::subclass::prelude::*;
@@ -28,8 +28,9 @@ use uom::si::{
 };
 
 mod imp {
-    use crate::{core::Settings, model::Unitsize};
+    use crate::{core::settings::prelude::*, model::Unitsize};
     use adw::subclass::prelude::*;
+    use gio::Settings;
     use glib::{clone, subclass::Signal};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;

@@ -23,11 +23,12 @@ use glib::Cast;
 
 mod imp {
     use crate::{
-        core::Settings,
+        core::settings::prelude::*,
         model::{Activity, ModelActivity},
         views::View,
         widgets::ActivityRow,
     };
+    use gio::Settings;
     use glib::Cast;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
 

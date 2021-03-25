@@ -17,7 +17,10 @@
  */
 
 use crate::{
-    core::{i18n, i18n_f, settings::Unitsystem, utils::round_decimal_places, Database},
+    core::{
+        i18n, i18n_f, settings::prelude::*, settings::Unitsystem, utils::round_decimal_places,
+        Database,
+    },
     model::GraphModelWeight,
     views::{GraphView, View},
 };
@@ -31,10 +34,12 @@ use uom::si::{
 
 mod imp {
     use crate::{
-        core::Settings,
+        core::settings::prelude::*,
         model::GraphModelWeight,
         views::{GraphView, View},
     };
+    use gio::Settings;
+    use glib::prelude::*;
     use glib::Cast;
     use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
     use once_cell::unsync::OnceCell;
