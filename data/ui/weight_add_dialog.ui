@@ -82,6 +82,7 @@
                         <property name="width-chars">5</property>
                         <property name="text">0</property>
                         <property name="adjustment">weight_adjustment</property>
+                        <property name="digits">1</property>
                         <property name="numeric">1</property>
                         <property name="margin-start">6</property>
                         <property name="margin-end">6</property>
