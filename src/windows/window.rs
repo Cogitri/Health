@@ -189,7 +189,7 @@ impl Window {
                 obj.handle_stack_property_visible_child_notify();
             }));
 
-        self.connect_close_request(clone!(@weak self as obj => move |_| {
+        self.connect_close_request(clone!(@weak self as obj => @default-panic, move |_| {
             obj.handle_close_request()
         }));
 
@@ -294,7 +294,7 @@ impl Window {
         // FIXME: Allow setting custom sync interval
         glib::timeout_add_seconds_local(
             60 * 5,
-            clone!(@weak self as obj => move || {
+            clone!(@weak self as obj => @default-panic, move || {
                 obj.sync_data();
 
                 glib::Continue(true)
@@ -320,7 +320,7 @@ impl Window {
 
             receiver.attach(
                 None,
-                clone!(@weak self as obj => move |v: Option<SyncProviderError>| {
+                clone!(@weak self as obj => @default-panic, move |v: Option<SyncProviderError>| {
                     if let Some(e) = v {
                         obj.show_error(&e.to_string());
                     }

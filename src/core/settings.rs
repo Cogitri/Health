@@ -76,12 +76,8 @@ impl Settings {
 
     /// Get the timestamp of the last sync with Google Fit.
     pub fn get_timestamp_last_sync_google_fit(&self) -> DateTime<FixedOffset> {
-        DateTime::parse_from_rfc3339(
-            self.get_string("timestamp-last-sync-google-fit")
-                .unwrap()
-                .as_str(),
-        )
-        .unwrap()
+        DateTime::parse_from_rfc3339(self.get_string("timestamp-last-sync-google-fit").as_str())
+            .unwrap()
     }
 
     /// Set the timestamp of the last sync with Google Fit.

@@ -102,7 +102,7 @@ mod imp {
                 }));
 
             self.distance_spin_button
-                .connect_input(clone!(@weak obj => move |_| {
+                .connect_input(clone!(@weak obj => @default-panic, move |_| {
                     obj.handle_distance_spin_button_input()
                 }));
         }

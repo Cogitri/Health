@@ -110,7 +110,7 @@ mod imp {
                 i += 1;
             }
 
-            let create_list_box_row = glib::clone!(@weak obj => move |o: &glib::Object| {
+            let create_list_box_row = glib::clone!(@weak obj => @default-panic, move |o: &glib::Object| {
                 let data = o.downcast_ref::<ActivityTypeRowData>().unwrap();
                 let selected_activity = ActivityTypeSelector::from_instance(&obj).selected_activity.borrow();
                 ActivityTypeRow::new(&data, data.get_label() == selected_activity.name)

@@ -178,7 +178,7 @@ impl SyncListBox {
                 glib::MainContext::channel::<Result<(), SyncProviderError>>(glib::PRIORITY_DEFAULT);
             let db_sender = new_db_receiver();
 
-            receiver.attach(None, clone!(@weak self as obj => move |res| {
+            receiver.attach(None, clone!(@weak self as obj => @default-panic, move |res| {
                 let self_ = obj.get_priv();
                 if let Err(e) = res {
                     self_.google_fit_selected_image.set_property_icon_name(Some("network-error-symbolic"));

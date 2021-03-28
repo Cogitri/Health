@@ -187,7 +187,7 @@ mod imp {
                 ],
             );
 
-            let filter = gtk::CustomFilter::new(clone!(@weak obj => move |o| {
+            let filter = gtk::CustomFilter::new(clone!(@weak obj => @default-panic, move |o| {
                 obj.filter_activity_entry(o)
             }));
             let filter_model = gtk::FilterListModel::new(Some(&model), Some(&filter));
@@ -259,26 +259,26 @@ impl ActivityAddDialog {
             }),
         );
 
-        self_
-            .calories_burned_spin_button
-            .connect_input(clone!(@weak self as obj => move |_| {
+        self_.calories_burned_spin_button.connect_input(
+            clone!(@weak self as obj => @default-panic, move |_| {
                 obj.handle_calories_burned_spin_button_input()
-            }));
+            }),
+        );
         self_
             .distance_action_row
             .connect_input(clone!(@weak self as obj => move || {
                 obj.handle_distance_action_row_input()
             }));
-        self_
-            .duration_spin_button
-            .connect_input(clone!(@weak self as obj => move |_| {
+        self_.duration_spin_button.connect_input(
+            clone!(@weak self as obj => @default-panic, move |_| {
                 obj.handle_duration_spin_button_input()
-            }));
-        self_
-            .steps_spin_button
-            .connect_input(clone!(@weak self as obj => move |_| {
+            }),
+        );
+        self_.steps_spin_button.connect_input(
+            clone!(@weak self as obj => @default-panic, move |_| {
                 obj.handle_steps_spin_button_input()
-            }));
+            }),
+        );
     }
 
     fn get_priv(&self) -> &imp::ActivityAddDialog {
