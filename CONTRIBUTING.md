@@ -39,6 +39,8 @@ Health uses the Angular JS commit format guidelines since they make it very easy
 
 Note the `fixes #57`. This automatically closes the issue number `57` upon merging, if your commit fixes a certain issue it's good to include this.
 
+If you're more comfortable using a GUI for your git work, you can read the guide at https://wiki.gnome.org/Newcomers/SubmitContribution.
+
 ### Submitting a merge request
 
 Now that you've committed your work, it's time to submit it upstream (at the original repo), so it's included in Health. When you push new commits to your fork, Gitlab should print a link from which you can open a new merge request at Health. In case it doesn't, or you have lost the link, you can always manually create a merge request, see the [Gitlab docs](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html) for that. Once you've submitted your MR, someone should review it shortly. Thanks for contributing to Health!
