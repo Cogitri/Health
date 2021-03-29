@@ -134,11 +134,11 @@ impl Application {
     }
 
     fn setup_accels(&self) {
-        self.set_accels_for_action("app.fullscreen", &["F11"]);
-        self.set_accels_for_action("app.hamburger-menu", &["F10"]);
+        self.set_accels_for_action("win.fullscreen", &["F11"]);
+        self.set_accels_for_action("win.hamburger-menu", &["F10"]);
         self.set_accels_for_action("app.help", &["F1"]);
-        self.set_accels_for_action("app.quit", &["<Primary>q"]);
         self.set_accels_for_action("app.shortcuts", &["<Primary>question"]);
+        self.set_accels_for_action("win.quit", &["<Primary>q"]);
     }
 
     fn setup_actions(&self) {
@@ -156,29 +156,6 @@ impl Application {
                 .build()
                 .show()
         });
-        action!(
-            self,
-            "fullscreen",
-            clone!(@weak self as obj => move |_, _| {
-                if let Some(window) = obj.get_priv().window.get().and_then(glib::WeakRef::upgrade) {
-                    if window.is_fullscreen() {
-                        window.unfullscreen();
-                    } else {
-                        window.fullscreen();
-                    }
-                }
-            })
-        );
-
-        action!(
-            self,
-            "hamburger-menu",
-            clone!(@weak self as obj => move |_, _| {
-                if let Some(window) = obj.get_priv().window.get().and_then(glib::WeakRef::upgrade) {
-                    window.open_hamburger_menu();
-                }
-            })
-        );
 
         action!(
             self,

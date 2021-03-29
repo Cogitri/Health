@@ -28,6 +28,7 @@ use crate::{
 };
 use glib::{clone, signal::Inhibit, subclass::prelude::*, Cast};
 use gtk::prelude::*;
+use gtk_macros::action;
 use imp::ViewMode;
 use std::collections::BTreeMap;
 
@@ -128,6 +129,7 @@ mod imp {
             );
 
             obj.connect_handlers();
+            obj.setup_actions();
         }
     }
 
@@ -200,6 +202,34 @@ impl Window {
         self.connect_property_default_width_notify(clone!(@weak self as obj => move |_| {
             obj.handle_property_default_width_notify();
         }));
+    }
+
+    fn setup_actions(&self) {
+        action!(
+            self,
+            "quit",
+            clone!(@weak self as obj => move |_, _| {
+                obj.destroy();
+            })
+        );
+        action!(
+            self,
+            "hamburger-menu",
+            clone!(@weak self as obj => move |_, _| {
+                obj.open_hamburger_menu();
+            })
+        );
+        action!(
+            self,
+            "fullscreen",
+            clone!(@weak self as obj => move |_, _| {
+                if obj.is_fullscreen() {
+                    obj.unfullscreen();
+                } else {
+                    obj.fullscreen();
+                }
+            })
+        );
     }
 
     fn handle_add_data_button_clicked(&self) {

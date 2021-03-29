@@ -26,6 +26,7 @@ use adw::prelude::*;
 use gio::prelude::*;
 use glib::{clone, subclass::prelude::*};
 use gtk::prelude::*;
+use gtk_macros::action;
 use uom::si::{
     f32::{Length, Mass},
     length::{centimeter, inch, meter},
@@ -147,6 +148,7 @@ mod imp {
             );
 
             obj.connect_handlers();
+            obj.setup_actions();
         }
 
         fn signals() -> &'static [Signal] {
@@ -251,6 +253,27 @@ impl SetupWindow {
             .connect_changed(clone!(@weak self as obj => move |_| {
                 obj.handle_weight_spin_button_changed();
             }));
+    }
+
+    fn setup_actions(&self) {
+        action!(
+            self,
+            "quit",
+            clone!(@weak self as obj => move |_, _| {
+                obj.destroy();
+            })
+        );
+        action!(
+            self,
+            "fullscreen",
+            clone!(@weak self as obj => move |_, _| {
+                if obj.is_fullscreen() {
+                    obj.unfullscreen();
+                } else {
+                    obj.fullscreen();
+                }
+            })
+        );
     }
 
     fn get_priv(&self) -> &imp::SetupWindow {
