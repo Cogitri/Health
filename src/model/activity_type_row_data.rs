@@ -88,3 +88,15 @@ impl ActivityTypeRowData {
         imp::ActivityTypeRowData::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ActivityTypeRowData;
+
+    #[test]
+    fn get_label() {
+        let s = ActivityTypeRowData::new("id", "label");
+        assert_eq!(s.get_id(), "id");
+        assert_eq!(s.get_label(), String::from("label"));
+    }
+}
