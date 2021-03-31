@@ -40,7 +40,7 @@ mod imp {
     use std::cell::RefCell;
     use uom::si::f32::Length;
 
-    #[derive(Debug, serde::Deserialize, serde::Serialize)]
+    #[derive(Debug, serde::Deserialize, serde::Serialize, PartialEq)]
     pub struct ActivityMut {
         #[serde(serialize_with = "serialize::serialize_activity_type")]
         #[serde(deserialize_with = "serialize::deserialize_activity_type")]
@@ -262,7 +262,6 @@ impl Activity {
         let mut inner = self_.inner.borrow_mut();
         let info = ActivityInfo::from(inner.activity_type.clone());
         let steps = inner.steps.unwrap_or(0);
-        let num_minutes = u32::try_from(inner.duration.num_minutes()).unwrap();
 
         if steps != 0
             && info
@@ -273,25 +272,31 @@ impl Activity {
                 ActivityType::Walking => {
                     inner.duration = Duration::minutes((steps / 100).into());
                     inner.distance = Some(Length::new::<meter>(
-                        (num_minutes * WALKING_METERS_PER_MINUTE) as f32,
+                        (u32::try_from(inner.duration.num_minutes()).unwrap()
+                            * WALKING_METERS_PER_MINUTE) as f32,
                     ));
                 }
                 ActivityType::Hiking => {
                     inner.duration = Duration::minutes((steps / 80).into());
                     inner.distance = Some(Length::new::<meter>(
-                        (num_minutes * WALKING_METERS_PER_MINUTE) as f32,
+                        (u32::try_from(inner.duration.num_minutes()).unwrap()
+                            * WALKING_METERS_PER_MINUTE) as f32,
                     ));
                 }
                 ActivityType::Running => {
                     inner.duration = Duration::minutes((steps / 150).into());
                     inner.distance = Some(Length::new::<meter>(
-                        (num_minutes * RUNNING_METERS_PER_MINUTE) as f32,
+                        (u32::try_from(inner.duration.num_minutes()).unwrap()
+                            * RUNNING_METERS_PER_MINUTE) as f32,
                     ));
                 }
                 _ => {}
             }
 
-            inner.calories_burned = Some(info.average_calories_burned_per_minute * num_minutes);
+            inner.calories_burned = Some(
+                info.average_calories_burned_per_minute
+                    * u32::try_from(inner.duration.num_minutes()).unwrap(),
+            );
         }
     }
 
@@ -336,5 +341,77 @@ impl<'de> serde::Deserialize<'de> for Activity {
         let a = Activity::new();
         a.get_priv().inner.replace(inner);
         Ok(a)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::Activity;
+    use chrono::{DateTime, Duration};
+    use serde_test::{assert_ser_tokens, Token};
+    use uom::si::{f32::Length, length::kilometer};
+
+    #[test]
+    fn serialize_default() {
+        let a = Activity::new();
+        a.set_date(DateTime::parse_from_rfc3339("2021-03-28T20:39:08.315749637+00:00").unwrap());
+        assert_ser_tokens(
+            &a,
+            &[
+                Token::Struct {
+                    name: "ActivityMut",
+                    len: 9,
+                },
+                Token::Str("activity_type"),
+                Token::Str("walking"),
+                Token::Str("calories_burned"),
+                Token::None,
+                Token::Str("date"),
+                Token::Str("2021-03-28T20:39:08.315749637+00:00"),
+                Token::Str("distance"),
+                Token::F32(0.0),
+                Token::Str("heart_rate_avg"),
+                Token::None,
+                Token::Str("heart_rate_max"),
+                Token::None,
+                Token::Str("heart_rate_min"),
+                Token::None,
+                Token::Str("duration"),
+                Token::U32(0),
+                Token::Str("steps"),
+                Token::None,
+                Token::StructEnd,
+            ],
+        );
+    }
+
+    #[test]
+    fn autofill_from_steps() {
+        let a = Activity::new();
+        a.set_steps(Some(2000));
+        a.autofill_from_steps();
+        assert_eq!(a.get_duration(), Duration::minutes(20));
+        assert_eq!(a.get_distance(), Some(Length::new::<kilometer>(1.8)));
+        assert_eq!(a.get_calories_burned(), Some(100));
+    }
+
+    #[test]
+    fn autofill_from_minutes() {
+        let a = Activity::new();
+        a.set_duration(Duration::minutes(20));
+        a.autofill_from_minutes();
+        assert_eq!(a.get_calories_burned(), Some(100));
+        assert_eq!(a.get_steps(), Some(2000));
+        assert_eq!(a.get_distance(), Some(Length::new::<kilometer>(1.8)));
+    }
+
+    #[test]
+    fn autofill_from_calories() {
+        let a = Activity::new();
+        a.set_calories_burned(Some(100));
+        a.autofill_from_calories();
+        assert_eq!(a.get_distance(), Some(Length::new::<kilometer>(1.8)));
+        assert_eq!(a.get_steps(), Some(2000));
+        assert_eq!(a.get_duration(), Duration::minutes(20));
     }
 }
