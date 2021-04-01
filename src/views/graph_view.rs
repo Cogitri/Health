@@ -22,7 +22,7 @@ use gtk::prelude::*;
 use std::convert::TryInto;
 
 /// A [Point] describes a single datapoint in a [GraphView]
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Point {
     pub date: Date<FixedOffset>,
     pub value: f32,

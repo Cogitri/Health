@@ -179,7 +179,7 @@ impl GraphModelSteps {
 #[cfg(test)]
 mod test {
     use super::GraphModelSteps;
-    use crate::{core::Database, model::Activity};
+    use crate::{core::Database, model::Activity, views::Point};
     use chrono::{Duration, Local};
     use tempfile::tempdir;
 
@@ -216,12 +216,71 @@ mod test {
         act.set_date((Local::now() - Duration::days(1)).into());
         ctx.block_on(db.save_activity(act)).unwrap();
         ctx.block_on(model.reload(Duration::days(30))).unwrap();
-
-        let data = ctx.block_on(db.get_activities(None)).unwrap();
-        for x in data {
-            println!("date: {}, steps: {}", x.get_date(), x.get_steps().unwrap());
-        }
-
         assert_eq!(model.get_streak_count_today(5000), 2);
+    }
+
+    #[test]
+    fn to_points() {
+        let ctx = glib::MainContext::new();
+        ctx.push_thread_default();
+        let data_dir = tempdir().unwrap();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+
+        let mut model = GraphModelSteps::new_with_database(db.clone());
+        ctx.block_on(model.reload(Duration::days(1))).unwrap();
+        assert_eq!(model.to_points(), vec![]);
+
+        let act = Activity::new();
+        act.set_steps(Some(5000));
+        let date = Local::now().into();
+        act.set_date(date);
+        ctx.block_on(db.save_activity(act)).unwrap();
+        ctx.block_on(model.reload(Duration::days(1))).unwrap();
+        assert_eq!(
+            model.to_points(),
+            vec![Point {
+                date: date.date(),
+                value: 5000.0
+            }]
+        );
+
+        let act = Activity::new();
+        act.set_steps(Some(8000));
+        let date_y = (Local::now() - Duration::days(1) - Duration::hours(1)).into();
+        act.set_date(date_y);
+        ctx.block_on(db.save_activity(act)).unwrap();
+        ctx.block_on(model.reload(Duration::days(30))).unwrap();
+        assert_eq!(
+            model.to_points(),
+            vec![
+                Point {
+                    date: date_y.date(),
+                    value: 8000.0
+                },
+                Point {
+                    date: date.date(),
+                    value: 5000.0
+                }
+            ]
+        );
+
+        let act = Activity::new();
+        act.set_steps(Some(400));
+        act.set_date((Local::now() - Duration::days(1)).into());
+        ctx.block_on(db.save_activity(act)).unwrap();
+        ctx.block_on(model.reload(Duration::days(30))).unwrap();
+        assert_eq!(
+            model.to_points(),
+            vec![
+                Point {
+                    date: date_y.date(),
+                    value: 8400.0
+                },
+                Point {
+                    date: date.date(),
+                    value: 5000.0
+                }
+            ]
+        );
     }
 }
