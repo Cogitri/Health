@@ -55,7 +55,7 @@ git = "https://github.com/gtk-rs/gtk-rs"
 features = ["v2_60"]
 
 [dependencies.http]
-version = "0.1"
+version = "0.2"
 
 [dependencies.num-derive]
 version = "0.3"
@@ -64,8 +64,9 @@ version = "0.3"
 version = "0.2"
 
 [dependencies.oauth2]
-version = "3"
+version = "4.0.0-beta.1"
 default-features = false
+features = ["ureq"]
 
 [dependencies.once_cell]
 version = "1.5"

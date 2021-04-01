@@ -18,10 +18,10 @@
 
 use crate::{core::i18n, utils::run_gio_future_sync};
 use oauth2::{
-    basic::{BasicErrorResponseType, BasicTokenType},
+    basic::{BasicClient, BasicTokenType},
     url::Url,
-    AuthorizationCode, Client, CsrfToken, EmptyExtraTokenFields, RefreshToken,
-    StandardErrorResponse, StandardTokenResponse, TokenResponse,
+    AuthorizationCode, CsrfToken, EmptyExtraTokenFields, RefreshToken, StandardTokenResponse,
+    TokenResponse,
 };
 use secret_service::{Collection, EncryptionType, Error as SsError, SecretService};
 use std::{
@@ -128,17 +128,13 @@ pub trait SyncProvider {
     /// Exchange a refresh token for an access token.
     fn exchange_refresh_token(
         &self,
-        client: &Client<
-            StandardErrorResponse<BasicErrorResponseType>,
-            StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>,
-            BasicTokenType,
-        >,
+        client: &BasicClient,
     ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>, SyncProviderError>
     {
         match self.get_token() {
             Ok(Some(token)) => client
                 .exchange_refresh_token(&token)
-                .request(super::ureq_http_client::http_client)
+                .request(oauth2::ureq::http_client)
                 .map_err(|e| SyncProviderError::RefreshFailed(e.to_string())),
             Ok(None) => {
                 Err(SyncProviderError::NoRefreshTokenSet(i18n("Can't retrieve OAuth2 token when no refesh token is set! Please re-authenticate with your sync provider.")))

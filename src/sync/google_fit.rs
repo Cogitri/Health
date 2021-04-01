@@ -192,7 +192,7 @@ impl SyncProvider for GoogleFitSyncProvider {
             AuthUrl::new(GOOGLE_AUTH_ENDPOINT_URL.to_string()).unwrap(),
             Some(TokenUrl::new(GOOGLE_TOKEN_ENDPOINT_URL.to_string()).unwrap()),
         )
-        .set_redirect_url(RedirectUrl::new("http://localhost:34981".to_string()).unwrap());
+        .set_redirect_uri(RedirectUrl::new("http://localhost:34981".to_string()).unwrap());
         let (pkce_code_challenge, pkce_code_verifier) = PkceCodeChallenge::new_random_sha256();
         let (authorize_url, csrf_state) = client
             .authorize_url(CsrfToken::new_random)
@@ -226,7 +226,7 @@ impl SyncProvider for GoogleFitSyncProvider {
             client
                 .exchange_code(code)
                 .set_pkce_verifier(pkce_code_verifier)
-                .request(super::ureq_http_client::http_client)
+                .request(oauth2::ureq::http_client)
                 .map_err(|e| {
                     SyncProviderError::RequestToken(i18n_f(
                         "Requesting OAuth2 token failed due to error {}",

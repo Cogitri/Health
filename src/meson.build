@@ -49,7 +49,6 @@ sources = files(
   'sync/mod.rs',
   'sync/serialize.rs',
   'sync/sync_provider.rs',
-  'sync/ureq_http_client.rs',
   'views/graph_view.rs',
   'views/mod.rs',
   'views/view.rs',
