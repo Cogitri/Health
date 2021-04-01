@@ -16,6 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use std::collections::BTreeMap;
+
 use crate::{
     core::{settings::prelude::*, Database, Unitsystem},
     model::weight::Weight,
@@ -57,6 +59,15 @@ impl GraphModelWeight {
         }
     }
 
+    #[cfg(test)]
+    pub fn new_with_database(database: Database) -> Self {
+        Self {
+            database,
+            settings: Settings::get_instance(),
+            vec: Vec::new(),
+        }
+    }
+
     /// Reload the data from the Tracker Database.
     ///
     /// # Arguments
@@ -74,7 +85,8 @@ impl GraphModelWeight {
 
     /// Converts the model's data to an array of [Point](crate::views::Point) so it can be displayed in a [GraphView](crate::views::GraphView).
     pub fn to_points(&self) -> Vec<crate::views::Point> {
-        self.vec
+        let map = self
+            .vec
             .iter()
             .map(|w| {
                 let val = if self.settings.get_unitsystem() == Unitsystem::Metric {
@@ -83,11 +95,12 @@ impl GraphModelWeight {
                     w.weight.get::<pound>()
                 };
 
-                Point {
-                    date: w.date.date(),
-                    value: val,
-                }
+                (w.date.date(), val)
             })
+            .collect::<BTreeMap<_, _>>();
+
+        map.into_iter()
+            .map(|(date, value)| Point { date, value })
             .collect()
     }
 
@@ -99,5 +112,72 @@ impl GraphModelWeight {
     /// Get the last weight the user added.
     pub fn get_last_weight(&self) -> Option<Mass> {
         self.vec.last().map(|w| w.weight)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::GraphModelWeight;
+    use crate::{core::Database, model::Weight, views::Point};
+    use chrono::{Duration, Local};
+    use tempfile::tempdir;
+    use uom::si::{f32::Mass, mass::kilogram};
+
+    #[test]
+    fn to_points() {
+        let ctx = glib::MainContext::new();
+        ctx.push_thread_default();
+        let data_dir = tempdir().unwrap();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+
+        let mut model = GraphModelWeight::new_with_database(db.clone());
+        ctx.block_on(model.reload(Duration::days(1))).unwrap();
+        assert_eq!(model.to_points(), vec![]);
+
+        let date = Local::now().into();
+        let weight = Weight::new(date, Mass::new::<kilogram>(42.0));
+        ctx.block_on(db.save_weight(weight)).unwrap();
+        ctx.block_on(model.reload(Duration::days(1))).unwrap();
+        assert_eq!(
+            model.to_points(),
+            vec![Point {
+                date: date.date(),
+                value: 42.0,
+            }]
+        );
+
+        let weight = Weight::new(date - Duration::days(1), Mass::new::<kilogram>(43.0));
+        ctx.block_on(db.save_weight(weight)).unwrap();
+        ctx.block_on(model.reload(Duration::days(1))).unwrap();
+        assert_eq!(
+            model.to_points(),
+            vec![
+                Point {
+                    date: (date - Duration::days(1)).date(),
+                    value: 43.0,
+                },
+                Point {
+                    date: date.date(),
+                    value: 42.0,
+                }
+            ]
+        );
+
+        let weight = Weight::new(date, Mass::new::<kilogram>(43.0));
+        ctx.block_on(db.save_weight(weight)).unwrap();
+        ctx.block_on(model.reload(Duration::days(1))).unwrap();
+        assert_eq!(
+            model.to_points(),
+            vec![
+                Point {
+                    date: (date - Duration::days(1)).date(),
+                    value: 43.0,
+                },
+                Point {
+                    date: date.date(),
+                    value: 43.0,
+                }
+            ]
+        );
     }
 }
