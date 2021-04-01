@@ -7,7 +7,7 @@
   <name xml:lang="en">Health</name>
   <shortdesc xml:lang="en">A health tracking app for the GNOME desktop.</shortdesc>
   <description>A health tracking app for the GNOME desktop.</description>
-  <programming-language>Vala</programming-language>
+  <programming-language>Rust</programming-language>
 
   <maintainer>
     <foaf:Person>
