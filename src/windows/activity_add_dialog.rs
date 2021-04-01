@@ -25,7 +25,7 @@ use glib::{clone, subclass::prelude::*};
 use gtk::prelude::*;
 use gtk_macros::{spawn, stateful_action};
 use imp::get_spin_button_value_if_datapoint;
-use std::convert::TryFrom;
+use std::str::FromStr;
 
 mod imp {
     use crate::{
@@ -296,7 +296,7 @@ impl ActivityAddDialog {
             clone!(@weak self as obj => move |a, p| {
                 let parameter = p.unwrap();
 
-                obj.get_priv().distance_action_row.set_unitsize(Unitsize::try_from(parameter.get::<String>().unwrap().as_str()).unwrap());
+                obj.get_priv().distance_action_row.set_unitsize(Unitsize::from_str(parameter.get::<String>().unwrap().as_str()).unwrap());
 
                 a.set_state(parameter);
             })

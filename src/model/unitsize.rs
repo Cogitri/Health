@@ -1,30 +1,38 @@
-use std::convert::TryFrom;
-use std::fmt;
-
 /// A [Unitsize] is so the user can choose to enter different unit sizes (e.g. km vs meter).
-#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord)]
+#[derive(
+    Debug,
+    Copy,
+    Clone,
+    PartialEq,
+    Eq,
+    Hash,
+    PartialOrd,
+    Ord,
+    strum::EnumString,
+    strum::IntoStaticStr,
+)]
+#[strum(serialize_all = "snake_case")]
 pub enum Unitsize {
     Big,
     Small,
 }
 
-impl fmt::Display for Unitsize {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self {
-            Unitsize::Big => write!(f, "big"),
-            Unitsize::Small => write!(f, "small"),
-        }
+#[cfg(test)]
+mod test {
+    use super::Unitsize;
+    use std::str::FromStr;
+
+    #[test]
+    fn deserialize() {
+        assert_eq!(Unitsize::from_str("big").unwrap(), Unitsize::Big);
+        assert_eq!(Unitsize::from_str("small").unwrap(), Unitsize::Small);
     }
-}
 
-impl TryFrom<&str> for Unitsize {
-    type Error = String;
-
-    fn try_from(value: &str) -> Result<Self, Self::Error> {
-        match value {
-            "big" => Ok(Unitsize::Big),
-            "small" => Ok(Unitsize::Small),
-            _ => Err(format!("Unknown unitsize {}", value)),
-        }
+    #[test]
+    fn serialize() {
+        let a: &str = Unitsize::Big.into();
+        assert_eq!(a, "big");
+        let b: &str = Unitsize::Small.into();
+        assert_eq!(b, "small");
     }
 }
