@@ -798,6 +798,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "glob"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9b919933a397b79c37e33b77bb2aa3dc8eb6e165ad809e58ff75bc7db2e34574"
+
+[[package]]
 name = "gobject-sys"
 version = "0.13.0"
 source = "git+https://github.com/gtk-rs/gtk-rs#b945350cee05b0b7ec027d5c7a9a1425df6868b9"
@@ -932,6 +938,7 @@ dependencies = [
  "gettext-rs",
  "gio",
  "glib",
+ "glob",
  "gtk-macros",
  "gtk4",
  "http",

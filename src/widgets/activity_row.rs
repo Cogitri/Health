@@ -216,3 +216,44 @@ impl ActivityRow {
         imp::ActivityRow::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ActivityRow;
+    use crate::{core::i18n_f, model::Activity};
+    use gtk::WidgetExt;
+    use uom::si::{f32::Length, length::kilometer};
+
+    #[test]
+    fn test_set_activity() {
+        crate::utils::init_gtk();
+
+        let act = Activity::new();
+        act.set_calories_burned(Some(100));
+        act.set_heart_rate_avg(Some(75));
+        act.set_distance(Some(Length::new::<kilometer>(1.0)));
+        let row = ActivityRow::new();
+        let row_priv = row.get_priv();
+        row.set_activity(act);
+
+        assert_eq!(
+            row_priv.calories_burned_label.get_label().as_str(),
+            i18n_f("{} Calories", &[&100.to_string()]).as_str()
+        );
+        assert_eq!(
+            row_priv.heart_rate_average_label.get_label().as_str(),
+            75.to_string().as_str(),
+        );
+        assert!(row_priv
+            .heart_rate_minimum_label
+            .get_label()
+            .as_str()
+            .is_empty());
+        assert!(row_priv
+            .heart_rate_maximum_label
+            .get_label()
+            .as_str()
+            .is_empty());
+        assert!(row_priv.distance_row.get_visible());
+    }
+}

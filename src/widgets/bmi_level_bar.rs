@@ -186,3 +186,33 @@ impl BMILevelBar {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::BMILevelBar;
+    use uom::si::{
+        f32::{Length, Mass},
+        length::meter,
+        mass::kilogram,
+    };
+
+    #[test]
+    fn recalcualte_bmi() {
+        crate::utils::init_gtk();
+
+        let bar = BMILevelBar::new();
+        bar.set_height(Length::new::<meter>(1.85));
+        bar.set_weight(Mass::new::<kilogram>(70.0));
+
+        let self_ = bar.get_priv();
+        assert_eq!(self_.level_bar.get_value(), 0.4213869571685791);
+        assert_eq!(
+            self_.bmi_label.get_label().as_str(),
+            crate::core::i18n_f(
+                "<small>Current BMI: {}</small>",
+                &[&format!("{bmi:.2}", bmi = 20.45)],
+            )
+            .as_str()
+        );
+    }
+}

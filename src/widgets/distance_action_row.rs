@@ -260,3 +260,22 @@ impl DistanceActionRow {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::DistanceActionRow;
+    use crate::model::Unitsize;
+    use uom::si::{f32::Length, length::meter};
+
+    #[test]
+    pub fn set_unitsize() {
+        crate::utils::init_gtk();
+
+        let row = DistanceActionRow::new();
+        let row_ = row.get_priv();
+        row.set_value(Length::new::<meter>(1500.0));
+        assert_eq!(row_.distance_spin_button.get_value(), 1500.0);
+        row.set_unitsize(Unitsize::Big);
+        assert_eq!(row_.distance_spin_button.get_value(), 1.5);
+    }
+}

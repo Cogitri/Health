@@ -93,3 +93,19 @@ where
 
     receiver.recv().unwrap()
 }
+
+#[cfg(test)]
+pub fn init_gtk() {
+    let res = gio::Resource::load(
+        glob::glob("./**/dev.Cogitri.Health.gresource")
+            .ok()
+            .and_then(|mut p| p.next())
+            .and_then(|p| p.ok())
+            .expect("Couldn't find GResource file, did you run meson? `meson build && ninja -C build data/dev.Cogitri.Health.gresource` should get you up to speed."),
+    )
+    .expect("Could not load resources");
+
+    gio::resources_register(&res);
+
+    gtk::init().unwrap();
+}
