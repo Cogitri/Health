@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{settings::prelude::*, Database},
+    core::{i18n_f, settings::prelude::*, Database},
     sync::{
         google_fit::GoogleFitSyncProvider,
         new_db_receiver,
@@ -352,7 +352,10 @@ impl Window {
                 None,
                 clone!(@weak self as obj => @default-panic, move |v: Option<SyncProviderError>| {
                     if let Some(e) = v {
-                        obj.show_error(&e.to_string());
+                        obj.show_error(&i18n_f(
+                            "Couldn't sync Google Fit data due to error: {}",
+                            &[&e.to_string()],
+                        ));
                     }
 
                     glib::Continue(false)
