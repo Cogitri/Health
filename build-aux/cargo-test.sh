@@ -6,6 +6,10 @@ export CARGO_TARGET_DIR="$MESON_BUILD_ROOT"/target
 export CARGO_HOME="$CARGO_TARGET_DIR"/cargo-home
 export BUILDTYPE="$3"
 
+if ! [ -z $FLATPAK_ID ]; then
+    export PATH="$PATH:/usr/lib/sdk/rust-stable/bin"
+fi
+
 if [ $BUILDTYPE = "release" ]
 then
     echo "RELEASE MODE"
