@@ -375,7 +375,7 @@ impl Database {
             let resource = tracker::Resource::new(None);
             resource.set_uri("rdf:type", "health:WeightMeasurement");
             resource.set_string(
-                "health:weight_date",
+                "health:weight_datetime",
                 &w.date.to_rfc3339_opts(SecondsFormat::Secs, true),
             );
             resource.set_double("health:weight", w.weight.get::<kilogram>().into());
