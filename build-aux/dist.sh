@@ -10,4 +10,4 @@ DIST="$MESON_BUILD_ROOT/meson-dist/$PKGVER"
 
 mkdir -p "${DIST}"/.cargo
 cargo vendor vendor | sed 's/^directory = ".*"/directory = "vendor"/g' > "${DIST}"/.cargo/config
-cp -r vendor "${DIST}"
+mv vendor "${DIST}"
