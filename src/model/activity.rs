@@ -33,6 +33,9 @@ static SKIING_METERS_PER_MINUTE: u32 = 400;
 static SWIMMING_METERS_PER_MINUTE: u32 = 160;
 static WALKING_METERS_PER_MINUTE: u32 = 90;
 
+static WALKING_STEPS_PER_MINUTE: u32 = 100;
+static RUNNING_STEPS_PER_MINUTE: u32 = 150;
+
 mod imp {
     use crate::{model::ActivityType, sync::serialize};
     use chrono::{DateTime, Duration, FixedOffset, Utc};
@@ -182,8 +185,17 @@ impl Activity {
             );
 
             match inner.activity_type {
-                ActivityType::Walking | ActivityType::Hiking | ActivityType::Running => {
-                    inner.steps = Some((distance as f32 * 1.4) as u32);
+                ActivityType::Walking | ActivityType::Hiking => {
+                    inner.steps = Some(
+                        u32::try_from(inner.duration.num_minutes()).unwrap()
+                            * WALKING_STEPS_PER_MINUTE,
+                    )
+                }
+                ActivityType::Running => {
+                    inner.steps = Some(
+                        u32::try_from(inner.duration.num_minutes()).unwrap()
+                            * RUNNING_STEPS_PER_MINUTE,
+                    )
                 }
                 _ => {}
             }
@@ -237,8 +249,10 @@ impl Activity {
             }
 
             match inner.activity_type {
-                ActivityType::Walking | ActivityType::Hiking => inner.steps = Some(minutes * 100),
-                ActivityType::Running => inner.steps = Some(minutes * 150),
+                ActivityType::Walking | ActivityType::Hiking => {
+                    inner.steps = Some(minutes * WALKING_STEPS_PER_MINUTE)
+                }
+                ActivityType::Running => inner.steps = Some(minutes * RUNNING_STEPS_PER_MINUTE),
                 _ => {}
             }
         }
@@ -269,22 +283,15 @@ impl Activity {
                 .contains(ActivityDataPoints::STEP_COUNT)
         {
             match inner.activity_type {
-                ActivityType::Walking => {
-                    inner.duration = Duration::minutes((steps / 100).into());
-                    inner.distance = Some(Length::new::<meter>(
-                        (u32::try_from(inner.duration.num_minutes()).unwrap()
-                            * WALKING_METERS_PER_MINUTE) as f32,
-                    ));
-                }
-                ActivityType::Hiking => {
-                    inner.duration = Duration::minutes((steps / 80).into());
+                ActivityType::Walking | ActivityType::Hiking => {
+                    inner.duration = Duration::minutes((steps / WALKING_STEPS_PER_MINUTE).into());
                     inner.distance = Some(Length::new::<meter>(
                         (u32::try_from(inner.duration.num_minutes()).unwrap()
                             * WALKING_METERS_PER_MINUTE) as f32,
                     ));
                 }
                 ActivityType::Running => {
-                    inner.duration = Duration::minutes((steps / 150).into());
+                    inner.duration = Duration::minutes((steps / RUNNING_STEPS_PER_MINUTE).into());
                     inner.distance = Some(Length::new::<meter>(
                         (u32::try_from(inner.duration.num_minutes()).unwrap()
                             * RUNNING_METERS_PER_MINUTE) as f32,
@@ -403,6 +410,16 @@ mod test {
         assert_eq!(a.get_calories_burned(), Some(100));
         assert_eq!(a.get_steps(), Some(2000));
         assert_eq!(a.get_distance(), Some(Length::new::<kilometer>(1.8)));
+    }
+
+    #[test]
+    fn autofill_from_distance() {
+        let a = Activity::new();
+        a.set_distance(Some(Length::new::<kilometer>(1.8)));
+        a.autofill_from_distance();
+        assert_eq!(a.get_calories_burned(), Some(100));
+        assert_eq!(a.get_steps(), Some(2000));
+        assert_eq!(a.get_duration(), Duration::minutes(20));
     }
 
     #[test]
