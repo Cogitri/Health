@@ -40,7 +40,6 @@
             "--share=network"
         ],
         "env": {
-            "CARGO_HOME": "/run/build/Health/cargo",
             "RUST_BACKTRACE": "1",
             "RUSTFLAGS": ""
         }
