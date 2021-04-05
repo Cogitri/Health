@@ -197,7 +197,7 @@ impl View {
         glib::Object::new(&[]).expect("Failed to create View")
     }
 
-    properties_setter_getter!("empty-title", String);
+    properties_setter_getter!("empty-subtitle", String);
     properties_setter_getter!("icon-name", String);
     properties_setter_getter!("title", String);
     properties_setter_getter!("view-title", String);
