@@ -82,6 +82,10 @@ mod imp {
         #[template_child]
         pub weightgoal_spin_button: TemplateChild<gtk::SpinButton>,
         #[template_child]
+        pub unit_imperial_togglebutton: TemplateChild<gtk::ToggleButton>,
+        #[template_child]
+        pub unit_metric_togglebutton: TemplateChild<gtk::ToggleButton>,
+        #[template_child]
         pub height_actionrow: TemplateChild<adw::ActionRow>,
         #[template_child]
         pub weightgoal_actionrow: TemplateChild<adw::ActionRow>,
@@ -117,7 +121,8 @@ mod imp {
                 height_spin_button: TemplateChild::default(),
                 stepgoal_spin_button: TemplateChild::default(),
                 weightgoal_spin_button: TemplateChild::default(),
-
+                unit_imperial_togglebutton: TemplateChild::default(),
+                unit_metric_togglebutton: TemplateChild::default(),
                 height_actionrow: TemplateChild::default(),
                 weightgoal_actionrow: TemplateChild::default(),
                 setup_carousel: TemplateChild::default(),
@@ -399,6 +404,12 @@ impl SetupWindow {
     fn handle_unitsystem_changed(&self) {
         let self_ = self.get_priv();
         let unitsystem = self_.settings.get_unitsystem();
+
+        if unitsystem == Unitsystem::Imperial && !self_.unit_imperial_togglebutton.get_active() {
+            self_.unit_imperial_togglebutton.set_active(true);
+        } else if unitsystem == Unitsystem::Metric && !self_.unit_metric_togglebutton.get_active() {
+            self_.unit_metric_togglebutton.set_active(true);
+        }
 
         if self_.current_unitsystem.get() == unitsystem {
             return;

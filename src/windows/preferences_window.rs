@@ -76,6 +76,10 @@ mod imp {
         pub import_activity_csv_button: TemplateChild<gtk::Button>,
         #[template_child]
         pub import_weight_csv_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub unit_imperial_togglebutton: TemplateChild<gtk::ToggleButton>,
+        #[template_child]
+        pub unit_metric_togglebutton: TemplateChild<gtk::ToggleButton>,
     }
 
     #[glib::object_subclass]
@@ -102,6 +106,8 @@ mod imp {
                 export_weight_csv_button: TemplateChild::default(),
                 import_activity_csv_button: TemplateChild::default(),
                 import_weight_csv_button: TemplateChild::default(),
+                unit_imperial_togglebutton: TemplateChild::default(),
+                unit_metric_togglebutton: TemplateChild::default(),
             }
         }
 
@@ -397,6 +403,12 @@ impl PreferencesWindow {
     fn handle_unitsystem_changed(&self) {
         let self_ = self.get_priv();
         let unitsystem = self_.settings.get_unitsystem();
+
+        if unitsystem == Unitsystem::Imperial && !self_.unit_imperial_togglebutton.get_active() {
+            self_.unit_imperial_togglebutton.set_active(true);
+        } else if unitsystem == Unitsystem::Metric && !self_.unit_metric_togglebutton.get_active() {
+            self_.unit_metric_togglebutton.set_active(true);
+        }
 
         if self_.current_unitsystem.get() == unitsystem {
             return;

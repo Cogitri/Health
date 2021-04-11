@@ -176,13 +176,20 @@ impl DistanceActionRow {
     }
 
     pub fn set_unitsize(&self, unitsize: Unitsize) {
-        let adjustment = &self.get_priv().distance_adjustment;
+        let self_ = self.get_priv();
+        let adjustment = &self_.distance_adjustment;
         if unitsize == Unitsize::Small {
             adjustment.set_step_increment(100.0);
             adjustment.set_page_increment(1000.0);
         } else {
             adjustment.set_step_increment(1.0);
             adjustment.set_page_increment(5.0);
+        }
+
+        if unitsize == Unitsize::Big && !self_.big_unit_togglebutton.get_active() {
+            self_.big_unit_togglebutton.set_active(true);
+        } else if unitsize == Unitsize::Small && !self_.small_unit_togglebutton.get_active() {
+            self_.small_unit_togglebutton.set_active(true);
         }
 
         let val = {
