@@ -92,16 +92,42 @@ where
 
 #[cfg(test)]
 pub fn init_gtk() {
-    let res = gio::Resource::load(
-        glob::glob("./**/dev.Cogitri.Health.gresource")
-            .ok()
-            .and_then(|mut p| p.next())
-            .and_then(|p| p.ok())
-            .expect("Couldn't find GResource file, did you run meson? `meson build && ninja -C build data/dev.Cogitri.Health.gresource` should get you up to speed."),
-    )
-    .expect("Could not load resources");
+    let res = if let Some(gresource_path) = glob::glob(&format!(
+        "{}/**/dev.Cogitri.Health.gresource",
+        env!("CARGO_MANIFEST_DIR")
+    ))
+    .ok()
+    .and_then(|mut p| p.next())
+    .and_then(|p| p.ok())
+    {
+        gio::Resource::load(gresource_path)
+    } else {
+        use std::process::Command;
+        use tempfile::tempdir;
 
-    gio::resources_register(&res);
+        let dir = tempdir().unwrap();
+        let mut gresource_path = dir.path().to_path_buf();
+        gresource_path.push("out.gresource");
+
+        Command::new("glib-compile-resources")
+            .arg(&format!(
+                "{}/data/dev.Cogitri.Health.gresource.xml",
+                env!("CARGO_MANIFEST_DIR")
+            ))
+            .arg("--sourcedir")
+            .arg(&format!("{}/data", env!("CARGO_MANIFEST_DIR")))
+            .arg("--internal")
+            .arg("--target")
+            .arg(&gresource_path)
+            .spawn()
+            .expect("Failed to run glib-compile-resources!");
+
+        std::thread::sleep(std::time::Duration::from_secs(1));
+
+        gio::Resource::load(gresource_path)
+    };
+
+    gio::resources_register(&res.unwrap());
 
     gtk::init().unwrap();
 }
