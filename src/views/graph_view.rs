@@ -99,8 +99,8 @@ mod imp {
         fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
             let mut inner = self.inner.borrow_mut();
 
-            inner.height = widget.get_height() as f32 - HALF_Y_PADDING * 2.0;
-            inner.width = widget.get_width() as f32 - HALF_X_PADDING * 2.0;
+            inner.height = widget.height() as f32 - HALF_Y_PADDING * 2.0;
+            inner.width = widget.width() as f32 - HALF_X_PADDING * 2.0;
 
             let biggest_value = if inner.points.is_empty() {
                 inner.scale_x = inner.width;
@@ -127,11 +127,11 @@ mod imp {
                 .append_cairo(&gtk::graphene::Rect::new(
                     0.0,
                     0.0,
-                    widget.get_width() as f32,
-                    widget.get_height() as f32,
+                    widget.width() as f32,
+                    widget.height() as f32,
                 ))
                 .unwrap();
-            let style_context = widget.get_style_context();
+            let style_context = widget.style_context();
             let background_color = style_context.lookup_color("insensitive_fg_color").unwrap();
 
             GdkCairoContextExt::set_source_rgba(&cr, &background_color);
@@ -155,7 +155,7 @@ mod imp {
                 let layout = widget.create_pango_layout(Some(
                     &((biggest_value / 4.0 * (4 - i) as f32) as u32).to_string(),
                 ));
-                let (_, extents) = layout.get_extents();
+                let (_, extents) = layout.extents();
 
                 cr.rel_move_to(0.0, pango::units_to_double(extents.height) * -1.0);
                 pangocairo::show_layout(&cr, &layout);
@@ -173,7 +173,7 @@ mod imp {
             for (i, point) in inner.points.iter().enumerate() {
                 let layout =
                     widget.create_pango_layout(Some(&format!("{}", point.date.format("%x"))));
-                let (_, extents) = layout.get_extents();
+                let (_, extents) = layout.extents();
 
                 cr.move_to(
                     f64::from(i as f32 * inner.scale_x + HALF_X_PADDING)
@@ -208,7 +208,7 @@ mod imp {
                 );
 
                 let layout = widget.create_pango_layout(inner.limit_label.as_deref());
-                let (_, extents) = layout.get_extents();
+                let (_, extents) = layout.extents();
                 cr.move_to(
                     f64::from(inner.width + HALF_X_PADDING) - pango::units_to_double(extents.width),
                     f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING)
@@ -312,7 +312,7 @@ mod imp {
             if let Some(hover_func) = &inner.hover_func {
                 if let Some(hover_point) = &inner.hover_point {
                     let layout = widget.create_pango_layout(Some(&hover_func(&hover_point.point)));
-                    let (_, extents) = layout.get_extents();
+                    let (_, extents) = layout.extents();
                     let radius = pango::units_to_double(extents.height) / 5.0;
                     let degrees = PI / 180.0;
                     let padding = 12.0;
@@ -408,7 +408,7 @@ mod imp {
             obj.add_controller(&motion_controller);
 
             let mut inner = self.inner.borrow_mut();
-            inner.hover_max_pointer_deviation = (8 * obj.get_scale_factor()).try_into().unwrap();
+            inner.hover_max_pointer_deviation = (8 * obj.scale_factor()).try_into().unwrap();
         }
     }
 }
@@ -454,7 +454,7 @@ impl GraphView {
     /// Sets the points that should be rendered in the graph view.
     pub fn set_points(&self, points: Vec<Point>) {
         let layout = self.create_pango_layout(Some(&format!("{}", Local::now().format("%x"))));
-        let (_, extents) = layout.get_extents();
+        let (_, extents) = layout.extents();
         let datapoint_width = pango::units_to_double(extents.width) + f64::from(HALF_X_PADDING);
 
         self.set_size_request(
@@ -507,8 +507,8 @@ impl GraphView {
 
         // Don't handle touch events, we do that via Gtk.GestureClick.
         if !allow_touch {
-            if let Some(device) = controller.get_current_event_device() {
-                if device.get_source() == gdk::InputSource::Touchscreen {
+            if let Some(device) = controller.current_event_device() {
+                if device.source() == gdk::InputSource::Touchscreen {
                     return;
                 }
             }

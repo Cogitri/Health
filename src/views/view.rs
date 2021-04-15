@@ -81,7 +81,7 @@ mod imp {
         }
 
         fn dispose(&self, obj: &Self::Type) {
-            while let Some(child) = obj.get_first_child() {
+            while let Some(child) = obj.first_child() {
                 child.unparent();
             }
         }
@@ -90,35 +90,35 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpec::object(
+                    glib::ParamSpec::new_object(
                         "content-widget",
                         "content-widget",
                         "content-widget",
                         gtk::Widget::static_type(),
                         glib::ParamFlags::WRITABLE,
                     ),
-                    glib::ParamSpec::string(
+                    glib::ParamSpec::new_string(
                         "empty-subtitle",
                         "empty-subtitle",
                         "empty-subtitle",
                         None,
                         glib::ParamFlags::READWRITE,
                     ),
-                    glib::ParamSpec::string(
+                    glib::ParamSpec::new_string(
                         "icon-name",
                         "icon-name",
                         "icon-name",
                         None,
                         glib::ParamFlags::READWRITE,
                     ),
-                    glib::ParamSpec::string(
+                    glib::ParamSpec::new_string(
                         "title",
                         "title",
                         "title",
                         None,
                         glib::ParamFlags::READWRITE,
                     ),
-                    glib::ParamSpec::string(
+                    glib::ParamSpec::new_string(
                         "view-title",
                         "view-title",
                         "view-title",
@@ -138,14 +138,14 @@ mod imp {
             value: &glib::Value,
             pspec: &glib::ParamSpec,
         ) {
-            match pspec.get_name() {
+            match pspec.name() {
                 "content-widget" => self
                     .main_box
                     .append(&value.get::<gtk::Widget>().unwrap().unwrap()),
                 "empty-subtitle" => self
                     .subtitle_empty_view_label
                     .set_label(value.get().unwrap().unwrap_or("")),
-                "icon-name" => self.empty_icon.set_property_icon_name(value.get().unwrap()),
+                "icon-name" => self.empty_icon.set_icon_name(value.get().unwrap()),
                 "title" => self
                     .title_label
                     .set_label(value.get().unwrap().unwrap_or("")),
@@ -163,10 +163,10 @@ mod imp {
             _id: usize,
             pspec: &glib::ParamSpec,
         ) -> glib::Value {
-            match pspec.get_name() {
-                "empty-subtitle" => self.subtitle_empty_view_label.get_label().to_value(),
-                "icon-name" => self.empty_icon.get_icon_name().to_value(),
-                "title" => self.title_label.get_label().to_value(),
+            match pspec.name() {
+                "empty-subtitle" => self.subtitle_empty_view_label.label().to_value(),
+                "icon-name" => self.empty_icon.icon_name().to_value(),
+                "title" => self.title_label.label().to_value(),
                 "view-title" => self.view_title.borrow().to_value(),
                 _ => unimplemented!(),
             }

@@ -77,7 +77,7 @@ impl ActivityTypeRow {
 
     /// Get the user visible name of the [ActivityType](crate::model::ActivityType)
     pub fn get_label(&self) -> String {
-        self.get_priv().activity_type_label.get_text().to_string()
+        self.get_priv().activity_type_label.text().to_string()
     }
 
     /// Get whether or not the row is selected.

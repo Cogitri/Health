@@ -112,10 +112,10 @@ mod imp {
             self.parent_constructed(obj);
 
             if crate::config::APPLICATION_ID.ends_with("Devel") {
-                obj.get_style_context().add_class("devel");
+                obj.style_context().add_class("devel");
 
                 // When in devel mode our application ID is different so we have to manually add the icon theme
-                if let Some(icon_theme) = gtk::IconTheme::get_for_display(&obj.get_display()) {
+                if let Some(icon_theme) = gtk::IconTheme::get_for_display(&obj.display()) {
                     icon_theme.add_resource_path("/dev/Cogitri/Health/icons");
                 }
             }
@@ -123,7 +123,7 @@ mod imp {
             let provider = gtk::CssProvider::new();
             provider.load_from_resource("/dev/Cogitri/Health/custom.css");
             gtk::StyleContext::add_provider_for_display(
-                &obj.get_display(),
+                &obj.display(),
                 &provider,
                 gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
             );
@@ -248,9 +248,7 @@ impl Window {
         let self_ = self.get_priv();
         let mut inner = self_.inner.borrow_mut();
 
-        self_
-            .settings
-            .set_window_is_maximized(self.get_property_maximized());
+        self_.settings.set_window_is_maximized(self.is_maximized());
         self_.settings.set_window_height(inner.current_height);
         self_.settings.set_window_width(inner.current_width);
 
@@ -268,16 +266,16 @@ impl Window {
     }
 
     fn handle_property_default_height_notify(&self) {
-        self.get_priv().inner.borrow_mut().current_height = self.get_property_default_height();
+        self.get_priv().inner.borrow_mut().current_height = self.default_height();
     }
 
     fn handle_property_default_width_notify(&self) {
-        self.get_priv().inner.borrow_mut().current_height = self.get_property_default_height();
+        self.get_priv().inner.borrow_mut().current_height = self.default_height();
     }
 
     fn handle_stack_property_visible_child_notify(&self) {
         let self_ = self.get_priv();
-        let child_name = self_.stack.get_visible_child_name().map(|s| s.to_string());
+        let child_name = self_.stack.visible_child_name().map(|s| s.to_string());
 
         if child_name
             == self_
@@ -285,7 +283,7 @@ impl Window {
                 .get()
                 .unwrap()
                 .get(&ViewMode::STEPS)
-                .map(|s| s.get_widget_name().to_string())
+                .map(|s| s.widget_name().to_string())
         {
             self_.inner.borrow_mut().current_view = ViewMode::STEPS;
         } else if child_name
@@ -294,7 +292,7 @@ impl Window {
                 .get()
                 .unwrap()
                 .get(&ViewMode::WEIGHT)
-                .map(|s| s.get_widget_name().to_string())
+                .map(|s| s.widget_name().to_string())
         {
             self_.inner.borrow_mut().current_view = ViewMode::WEIGHT;
         }
@@ -312,7 +310,7 @@ impl Window {
         for view in self_.views.get().unwrap().values() {
             let page = self_.stack.add_titled(
                 view,
-                Some(view.get_widget_name().as_str()),
+                Some(view.widget_name().as_str()),
                 &view.get_view_title().unwrap(),
             );
             page.set_icon_name(&view.get_icon_name().unwrap());

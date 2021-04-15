@@ -117,7 +117,7 @@ mod imp {
             let gesture_controller = gtk::GestureClick::new();
             gesture_controller.connect_pressed(glib::clone!(@weak obj => move |_,_,_,_| {
                 let self_ = ActivityRow::from_instance(&obj);
-                self_.details_revealer.set_reveal_child(!self_.details_revealer.get_reveal_child());
+                self_.details_revealer.set_reveal_child(!self_.details_revealer.reveals_child());
             }));
         }
     }
@@ -237,21 +237,21 @@ mod test {
         row.set_activity(act);
 
         assert_eq!(
-            row_priv.calories_burned_label.get_label().as_str(),
+            row_priv.calories_burned_label.label().as_str(),
             i18n_f("{} Calories", &[&100.to_string()]).as_str()
         );
         assert_eq!(
-            row_priv.heart_rate_average_label.get_label().as_str(),
+            row_priv.heart_rate_average_label.label().as_str(),
             75.to_string().as_str(),
         );
         assert!(row_priv
             .heart_rate_minimum_label
-            .get_label()
+            .label()
             .as_str()
             .is_empty());
         assert!(row_priv
             .heart_rate_maximum_label
-            .get_label()
+            .label()
             .as_str()
             .is_empty());
         assert!(row_priv.distance_row.get_visible());

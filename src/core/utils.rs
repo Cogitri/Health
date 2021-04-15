@@ -31,11 +31,7 @@ where
     T: std::str::FromStr + Default,
     <T as std::str::FromStr>::Err: std::fmt::Debug,
 {
-    spin_button
-        .get_text()
-        .as_str()
-        .parse::<T>()
-        .unwrap_or_default()
+    spin_button.text().as_str().parse::<T>().unwrap_or_default()
 }
 
 /// Round a number to a certain amount of decimal places.

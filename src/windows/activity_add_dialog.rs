@@ -109,8 +109,7 @@ mod imp {
         activity: &ActivityInfo,
         datapoints: ActivityDataPoints,
     ) -> Option<u32> {
-        if activity.available_data_points.contains(datapoints)
-            && spin_button.get_text().as_str() != ""
+        if activity.available_data_points.contains(datapoints) && spin_button.text().as_str() != ""
         {
             Some(get_spinbutton_value(spin_button))
         } else {
@@ -351,7 +350,7 @@ impl ActivityAddDialog {
             .set_activity_type(inner.selected_activity.activity_type.clone());
 
         if let Some(model) = &inner.filter_model {
-            if let Some(filter) = model.get_filter() {
+            if let Some(filter) = model.filter() {
                 filter.changed(gtk::FilterChange::Different);
             }
         }

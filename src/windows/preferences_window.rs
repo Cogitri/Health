@@ -195,7 +195,7 @@ impl PreferencesWindow {
         o.set_application(
             parent_window
                 .as_ref()
-                .and_then(|p| p.get_application())
+                .and_then(|p| p.application())
                 .as_ref(),
         );
 
@@ -288,7 +288,7 @@ impl PreferencesWindow {
         file_chooser.connect_response(
             clone!(@weak self as obj, @strong file_chooser => move |_, r| {
                 if r == gtk::ResponseType::Accept {
-                    let file = file_chooser.get_file().unwrap();
+                    let file = file_chooser.file().unwrap();
                     spawn!(async move {
                         let handler = CSVHandler::new();
                         if let Err(e) = handler.export_activities_csv(&file).await {
@@ -314,7 +314,7 @@ impl PreferencesWindow {
         file_chooser.connect_response(
             clone!(@weak self as obj, @strong file_chooser => move |_, r| {
                 if r == gtk::ResponseType::Accept {
-                    let file = file_chooser.get_file().unwrap();
+                    let file = file_chooser.file().unwrap();
                     spawn!(async move {
                         let handler = CSVHandler::new();
                         if let Err(e) = handler.export_weights_csv(&file).await {
@@ -354,7 +354,7 @@ impl PreferencesWindow {
         file_chooser.connect_response(
             clone!(@weak self as obj, @strong file_chooser => move |_, r| {
                 if r == gtk::ResponseType::Accept {
-                    let file = file_chooser.get_file().unwrap();
+                    let file = file_chooser.file().unwrap();
                     spawn!(async move {
                         let handler = CSVHandler::new();
                         if let Err(e) = handler.import_activities_csv(&file).await {
@@ -379,7 +379,7 @@ impl PreferencesWindow {
         file_chooser.connect_response(
             clone!(@weak self as obj, @strong file_chooser => move |_, r| {
                 if r == gtk::ResponseType::Accept {
-                    let file = file_chooser.get_file().unwrap();
+                    let file = file_chooser.file().unwrap();
                     spawn!(async move {
                         let handler = CSVHandler::new();
                         if let Err(e) = handler.import_weights_csv(&file).await {
@@ -404,9 +404,9 @@ impl PreferencesWindow {
         let self_ = self.get_priv();
         let unitsystem = self_.settings.get_unitsystem();
 
-        if unitsystem == Unitsystem::Imperial && !self_.unit_imperial_togglebutton.get_active() {
+        if unitsystem == Unitsystem::Imperial && !self_.unit_imperial_togglebutton.is_active() {
             self_.unit_imperial_togglebutton.set_active(true);
-        } else if unitsystem == Unitsystem::Metric && !self_.unit_metric_togglebutton.get_active() {
+        } else if unitsystem == Unitsystem::Metric && !self_.unit_metric_togglebutton.is_active() {
             self_.unit_metric_togglebutton.set_active(true);
         }
 

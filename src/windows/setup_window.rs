@@ -147,7 +147,7 @@ mod imp {
             let provider = gtk::CssProvider::new();
             provider.load_from_resource("/dev/Cogitri/Health/custom.css");
             gtk::StyleContext::add_provider_for_display(
-                &obj.get_display(),
+                &obj.display(),
                 &provider,
                 gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
             );
@@ -302,7 +302,7 @@ impl SetupWindow {
     fn handle_setup_carousel_page_changed(&self, carousel: &adw::Carousel, index: u32) {
         let self_ = self.get_priv();
 
-        if carousel.get_n_pages() - 1 == index {
+        if carousel.n_pages() - 1 == index {
             self_.setup_done_button.set_visible(true);
             self_
                 .setup_right_stack
@@ -357,7 +357,7 @@ impl SetupWindow {
 
     fn handle_setup_next_page_button_clicked(&self) {
         let self_ = self.get_priv();
-        match self_.setup_carousel.get_position() as u32 {
+        match self_.setup_carousel.position() as u32 {
             0 => self_
                 .setup_carousel
                 .scroll_to(&self_.setup_second_page.get()),
@@ -374,7 +374,7 @@ impl SetupWindow {
 
     fn handle_setup_previous_page_button_clicked(&self) {
         let self_ = self.get_priv();
-        match self_.setup_carousel.get_position() as u32 {
+        match self_.setup_carousel.position() as u32 {
             0 => self.destroy(),
             1 => self_
                 .setup_carousel
@@ -405,9 +405,9 @@ impl SetupWindow {
         let self_ = self.get_priv();
         let unitsystem = self_.settings.get_unitsystem();
 
-        if unitsystem == Unitsystem::Imperial && !self_.unit_imperial_togglebutton.get_active() {
+        if unitsystem == Unitsystem::Imperial && !self_.unit_imperial_togglebutton.is_active() {
             self_.unit_imperial_togglebutton.set_active(true);
-        } else if unitsystem == Unitsystem::Metric && !self_.unit_metric_togglebutton.get_active() {
+        } else if unitsystem == Unitsystem::Metric && !self_.unit_metric_togglebutton.is_active() {
             self_.unit_metric_togglebutton.set_active(true);
         }
 
@@ -425,7 +425,7 @@ impl SetupWindow {
                 .weightgoal_actionrow
                 .set_title(Some(&i18n("Weightgoal in KG")));
             self_.height_spin_button.set_value(
-                Length::new::<inch>(self_.height_spin_button.get_value() as f32)
+                Length::new::<inch>(self_.height_spin_button.value() as f32)
                     .get::<centimeter>()
                     .into(),
             );
@@ -437,7 +437,7 @@ impl SetupWindow {
                 .weightgoal_actionrow
                 .set_title(Some(&i18n("Weightgoal in pounds")));
             self_.height_spin_button.set_value(
-                Length::new::<centimeter>(self_.height_spin_button.get_value() as f32)
+                Length::new::<centimeter>(self_.height_spin_button.value() as f32)
                     .get::<inch>()
                     .into(),
             );
@@ -470,8 +470,8 @@ impl SetupWindow {
 
     fn try_enable_next_button(&self) {
         let self_ = self.get_priv();
-        let age = self_.age_spin_button.get_text().to_string();
-        let height = self_.height_spin_button.get_text().to_string();
+        let age = self_.age_spin_button.text().to_string();
+        let height = self_.height_spin_button.text().to_string();
         let sensitive = !age.is_empty() && age != "0" && !height.is_empty() && height != "0";
         self_.setup_next_page_button.set_sensitive(sensitive);
         self_.setup_carousel.set_interactive(sensitive);

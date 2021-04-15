@@ -114,7 +114,7 @@ impl DateSelector {
     }
 
     fn handle_date_chooser_connect_day_selected(&self, calendar: &gtk::Calendar) {
-        let date = Local.timestamp(calendar.get_date().to_unix(), 0);
+        let date = Local.timestamp(calendar.date().to_unix(), 0);
         self.set_text(&format!("{}", date.format("%x")));
         self.get_priv().selected_date.replace(date.into());
     }
@@ -129,7 +129,7 @@ impl DateSelector {
     }
 
     fn parse_date(&self) {
-        if let Ok(date) = NaiveDate::parse_from_str(self.get_text().as_str(), "%x") {
+        if let Ok(date) = NaiveDate::parse_from_str(self.text().as_str(), "%x") {
             match Local.from_local_datetime(&date.and_hms(12, 0, 0)) {
                 LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
                     self.set_selected_date(d.into());

@@ -131,9 +131,9 @@ impl WeightAddDialog {
                     if let Some(obj) = downgraded.upgrade() {
                         let self_ = obj.get_priv();
                         let value = if self_.settings.get_unitsystem() == Unitsystem::Metric {
-                            Mass::new::<kilogram>(self_.weight_spin_button.get_value() as f32)
+                            Mass::new::<kilogram>(self_.weight_spin_button.value() as f32)
                         } else {
-                            Mass::new::<pound>(self_.weight_spin_button.get_value() as f32)
+                            Mass::new::<pound>(self_.weight_spin_button.value() as f32)
                         };
                         if let Err(e) = self_
                             .database
@@ -161,7 +161,7 @@ impl WeightAddDialog {
     }
 
     fn handle_weight_spin_button_changed(&self, e: &gtk::SpinButton) {
-        let text = e.get_text().to_string();
+        let text = e.text().to_string();
         self.set_response_sensitive(gtk::ResponseType::Ok, text != "0" && !text.is_empty());
     }
 

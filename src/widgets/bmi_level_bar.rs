@@ -82,7 +82,7 @@ mod imp {
 
     impl ObjectImpl for BMILevelBar {
         fn constructed(&self, obj: &Self::Type) {
-            obj.get_layout_manager()
+            obj.layout_manager()
                 .unwrap()
                 .dynamic_cast_ref::<gtk::Orientable>()
                 .unwrap()
@@ -115,7 +115,7 @@ mod imp {
         }
 
         fn dispose(&self, obj: &Self::Type) {
-            while let Some(child) = obj.get_first_child() {
+            while let Some(child) = obj.first_child() {
                 child.unparent();
             }
         }
@@ -205,9 +205,9 @@ mod test {
         bar.set_weight(Mass::new::<kilogram>(70.0));
 
         let self_ = bar.get_priv();
-        assert_eq!(self_.level_bar.get_value(), 0.4213869571685791);
+        assert_eq!(self_.level_bar.value(), 0.4213869571685791);
         assert_eq!(
-            self_.bmi_label.get_label().as_str(),
+            self_.bmi_label.label().as_str(),
             crate::core::i18n_f(
                 "<small>Current BMI: {}</small>",
                 &[&format!("{bmi:.2}", bmi = 20.45)],

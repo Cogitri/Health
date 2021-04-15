@@ -90,7 +90,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpec::object(
+                vec![glib::ParamSpec::new_object(
                     "parent-window",
                     "parent-window",
                     "parent-window",
@@ -109,7 +109,7 @@ mod imp {
             value: &glib::Value,
             pspec: &glib::ParamSpec,
         ) {
-            match pspec.get_name() {
+            match pspec.name() {
                 "parent-window" => {
                     self.parent_window.replace(value.get().unwrap());
                 }
@@ -123,7 +123,7 @@ mod imp {
             _id: usize,
             pspec: &glib::ParamSpec,
         ) -> glib::Value {
-            match pspec.get_name() {
+            match pspec.name() {
                 "parent-window" => self.parent_window.borrow().to_value(),
                 _ => unimplemented!(),
             }
@@ -181,7 +181,7 @@ impl SyncListBox {
             receiver.attach(None, clone!(@weak self as obj => @default-panic, move |res| {
                 let self_ = obj.get_priv();
                 if let Err(e) = res {
-                    self_.google_fit_selected_image.set_property_icon_name(Some("network-error-symbolic"));
+                    self_.google_fit_selected_image.set_icon_name(Some("network-error-symbolic"));
                     self_.google_fit_selected_image.set_visible(true);
                     self_.google_fit_spinner.set_spinning(false);
                     self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());

@@ -90,7 +90,7 @@ mod imp {
             adw::init();
 
             if let Some(true) = gtk::Settings::get_default()
-                .and_then(|s| s.get_property_gtk_theme_name())
+                .and_then(|s| s.gtk_theme_name())
                 .map(|s| s.as_str().contains("-dark"))
             {
                 g_warning! (config::LOG_DOMAIN, "Using -dark themes (such as Adwaita-dark) is unsupported. Please use your theme in dark-mode instead (e.g. Adwaita:dark instead of Adwaita-dark)");

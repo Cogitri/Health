@@ -186,9 +186,9 @@ impl DistanceActionRow {
             adjustment.set_page_increment(5.0);
         }
 
-        if unitsize == Unitsize::Big && !self_.big_unit_togglebutton.get_active() {
+        if unitsize == Unitsize::Big && !self_.big_unit_togglebutton.is_active() {
             self_.big_unit_togglebutton.set_active(true);
-        } else if unitsize == Unitsize::Small && !self_.small_unit_togglebutton.get_active() {
+        } else if unitsize == Unitsize::Small && !self_.small_unit_togglebutton.is_active() {
             self_.small_unit_togglebutton.set_active(true);
         }
 
@@ -281,8 +281,8 @@ mod test {
         let row = DistanceActionRow::new();
         let row_ = row.get_priv();
         row.set_value(Length::new::<meter>(1500.0));
-        assert_eq!(row_.distance_spin_button.get_value(), 1500.0);
+        assert_eq!(row_.distance_spin_button.value(), 1500.0);
         row.set_unitsize(Unitsize::Big);
-        assert_eq!(row_.distance_spin_button.get_value(), 1.5);
+        assert_eq!(row_.distance_spin_button.value(), 1.5);
     }
 }
