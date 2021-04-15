@@ -74,7 +74,7 @@ mod imp {
 
     impl ObjectImpl for ActivityTypeSelector {
         fn constructed(&self, obj: &Self::Type) {
-            let recent_activity_types = Settings::get_instance().get_recent_activity_types();
+            let recent_activity_types = Settings::instance().recent_activity_types();
 
             if !recent_activity_types.is_empty() {
                 self.recents_box.set_visible(true);
@@ -113,7 +113,7 @@ mod imp {
             let create_list_box_row = glib::clone!(@weak obj => @default-panic, move |o: &glib::Object| {
                 let data = o.downcast_ref::<ActivityTypeRowData>().unwrap();
                 let selected_activity = ActivityTypeSelector::from_instance(&obj).selected_activity.borrow();
-                ActivityTypeRow::new(&data, data.get_label() == selected_activity.name)
+                ActivityTypeRow::new(&data, data.label() == selected_activity.name)
                     .upcast::<gtk::Widget>()
 
             });
@@ -127,7 +127,7 @@ mod imp {
             let activated_list_box_row = glib::clone!(@weak obj => move |b: &gtk::ListBox, r: &gtk::ListBoxRow| {
                 let row = r.downcast_ref::<ActivityTypeRow>().unwrap();
 
-                if let Ok(info) = ActivityInfo::try_from(row.get_id()) {
+                if let Ok(info) = ActivityInfo::try_from(row.id()) {
                     let self_ = ActivityTypeSelector::from_instance(&obj);
                     obj.set_selected_activity(info);
                     let mut i = 0;
@@ -135,7 +135,7 @@ mod imp {
 
                     while let Some(row) = b.get_row_at_index(i) {
                         let cast = row.downcast::<ActivityTypeRow>().unwrap();
-                        cast.set_selected (cast.get_label() == selected_activity.name);
+                        cast.set_selected (cast.label() == selected_activity.name);
                         i += 1;
                     }
 
@@ -144,7 +144,7 @@ mod imp {
                     g_warning!(
                         crate::config::LOG_DOMAIN,
                         "Unknown Activity {}",
-                        row.get_id()
+                        row.id()
                     );
                 }
             });
@@ -176,8 +176,8 @@ glib::wrapper! {
 
 impl ActivityTypeSelector {
     /// Get the currently selected [ActivityInfo].
-    pub fn get_selected_activity(&self) -> ActivityInfo {
-        self.get_priv().selected_activity.borrow().clone()
+    pub fn selected_activity(&self) -> ActivityInfo {
+        self.imp().selected_activity.borrow().clone()
     }
 
     /// Connect to a new activity being selected.
@@ -203,12 +203,12 @@ impl ActivityTypeSelector {
         glib::Object::new(&[]).expect("Failed to create ActivityTypeSelector")
     }
 
-    fn get_priv(&self) -> &imp::ActivityTypeSelector {
+    fn imp(&self) -> &imp::ActivityTypeSelector {
         imp::ActivityTypeSelector::from_instance(self)
     }
 
     fn set_selected_activity(&self, val: ActivityInfo) {
-        self.get_priv().selected_activity.replace(val);
+        self.imp().selected_activity.replace(val);
         self.emit_by_name("activity-selected", &[]).unwrap();
     }
 }

@@ -181,15 +181,15 @@ glib::wrapper! {
 }
 
 impl View {
-    pub fn get_goal_label(&self) -> gtk::Label {
-        self.get_priv().goal_label.get()
+    pub fn goal_label(&self) -> gtk::Label {
+        self.imp().goal_label.get()
     }
 
-    pub fn get_stack(&self) -> gtk::Stack {
-        self.get_priv().stack.get()
+    pub fn stack(&self) -> gtk::Stack {
+        self.imp().stack.get()
     }
 
-    fn get_priv(&self) -> &imp::View {
+    fn imp(&self) -> &imp::View {
         imp::View::from_instance(self)
     }
 

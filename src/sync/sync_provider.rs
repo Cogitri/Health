@@ -54,13 +54,13 @@ impl From<ureq::Error> for SyncProviderError {
 /// [SyncProvider] is a trait that should be implemented by all 3rd party providers.
 pub trait SyncProvider {
     /// Returns the URL to the API Endpoint
-    fn get_api_url(&self) -> &'static str;
+    fn api_url(&self) -> &'static str;
 
     /// Returns the name of the provider (which is used for storing it in the keyring).
-    fn get_provider_name(&self) -> &'static str;
+    fn provider_name(&self) -> &'static str;
 
     /// Gets the OAuth2 token or reauthenticates with the refresh token if no token has been set yet.
-    fn get_oauth2_token(
+    fn oauth2_token(
         &mut self,
     ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>, SyncProviderError>;
 
@@ -89,13 +89,10 @@ pub trait SyncProvider {
         &mut self,
         method: &str,
     ) -> Result<T, SyncProviderError> {
-        Ok(ureq::get(&format!("{}/{}", self.get_api_url(), method))
+        Ok(ureq::get(&format!("{}/{}", self.api_url(), method))
             .set(
                 "Authorization",
-                &format!(
-                    "Bearer {}",
-                    self.get_oauth2_token()?.access_token().secret()
-                ),
+                &format!("Bearer {}", self.oauth2_token()?.access_token().secret()),
             )
             .call()?
             .into_json()?)
@@ -113,13 +110,10 @@ pub trait SyncProvider {
         method: &str,
         data: ureq::SerdeValue,
     ) -> Result<T, SyncProviderError> {
-        Ok(ureq::post(&format!("{}/{}", self.get_api_url(), method))
+        Ok(ureq::post(&format!("{}/{}", self.api_url(), method))
             .set(
                 "Authorization",
-                &format!(
-                    "Bearer {}",
-                    self.get_oauth2_token()?.access_token().secret()
-                ),
+                &format!("Bearer {}", self.oauth2_token()?.access_token().secret()),
             )
             .send_json(data)?
             .into_json()?)
@@ -131,7 +125,7 @@ pub trait SyncProvider {
         client: &BasicClient,
     ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>, SyncProviderError>
     {
-        match self.get_token() {
+        match self.token() {
             Ok(Some(token)) => client
                 .exchange_refresh_token(&token)
                 .request(oauth2::ureq::http_client)
@@ -150,14 +144,14 @@ pub trait SyncProvider {
     /// # Returns
     /// A `RefreshToken` if a refresh token is set, or `None` if no refresh token is set.
     /// May return an error if querying the secret store fails.
-    fn get_token(&self) -> Result<Option<RefreshToken>, SsError> {
+    fn token(&self) -> Result<Option<RefreshToken>, SsError> {
         let ss = SecretService::new(EncryptionType::Dh)?;
-        let collection = get_default_collection_unlocked(&ss)?;
+        let collection = default_collection_unlocked(&ss)?;
 
         if let Some(password) = collection
             .get_all_items()?
             .iter()
-            .find(|p| p.get_label().unwrap_or_default() == self.get_provider_name())
+            .find(|p| p.get_label().unwrap_or_default() == self.provider_name())
         {
             password.unlock()?;
 
@@ -178,20 +172,20 @@ pub trait SyncProvider {
     /// May return an error if querying the secret store fails.
     fn set_token(&self, value: RefreshToken) -> Result<(), SsError> {
         let ss = SecretService::new(EncryptionType::Dh)?;
-        let collection = get_default_collection_unlocked(&ss)?;
+        let collection = default_collection_unlocked(&ss)?;
 
         // Delete old entries
         for p in collection
             .get_all_items()?
             .iter()
-            .filter(|p| p.get_label().unwrap_or_default() == self.get_provider_name())
+            .filter(|p| p.get_label().unwrap_or_default() == self.provider_name())
         {
             p.unlock()?;
             p.delete()?;
         }
 
         collection.create_item(
-            self.get_provider_name(),
+            self.provider_name(),
             std::collections::HashMap::new(),
             value.secret().as_bytes(),
             true,
@@ -274,7 +268,7 @@ pub trait SyncProvider {
     }
 }
 
-fn get_default_collection_unlocked<'a>(ss: &'a SecretService) -> Result<Collection<'a>, SsError> {
+fn default_collection_unlocked<'a>(ss: &'a SecretService) -> Result<Collection<'a>, SsError> {
     let collection = match ss.get_default_collection() {
         Ok(collection) => Ok(collection),
         Err(SsError::NoResult) => ss.create_collection("default", "default"),

@@ -19,7 +19,7 @@
 use crate::core::{
     i18n,
     settings::prelude::*,
-    utils::{get_spinbutton_value, round_decimal_places},
+    utils::{round_decimal_places, spinbutton_value},
     Unitsystem,
 };
 use adw::prelude::*;
@@ -102,9 +102,9 @@ mod imp {
         type Type = super::SetupWindow;
 
         fn new() -> Self {
-            let settings = Settings::get_instance();
+            let settings = Settings::instance();
             Self {
-                current_unitsystem: Cell::new(settings.get_unitsystem()),
+                current_unitsystem: Cell::new(settings.unitsystem()),
                 settings,
                 bmi_levelbar: TemplateChild::default(),
                 setup_first_page: TemplateChild::default(),
@@ -203,7 +203,7 @@ impl SetupWindow {
     }
 
     fn connect_handlers(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         self_
             .age_spin_button
@@ -281,16 +281,16 @@ impl SetupWindow {
         );
     }
 
-    fn get_priv(&self) -> &imp::SetupWindow {
+    fn imp(&self) -> &imp::SetupWindow {
         imp::SetupWindow::from_instance(self)
     }
 
     fn handle_height_spin_button_changed(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         self.set_optimal_weightgoal();
         self.try_enable_next_button();
 
-        let unitless_height = get_spinbutton_value(&self_.height_spin_button);
+        let unitless_height = spinbutton_value(&self_.height_spin_button);
         let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
             Length::new::<centimeter>(unitless_height)
         } else {
@@ -300,7 +300,7 @@ impl SetupWindow {
     }
 
     fn handle_setup_carousel_page_changed(&self, carousel: &adw::Carousel, index: u32) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         if carousel.n_pages() - 1 == index {
             self_.setup_done_button.set_visible(true);
@@ -325,8 +325,8 @@ impl SetupWindow {
     }
 
     fn handle_setup_done_button_clicked(&self) {
-        let self_ = self.get_priv();
-        let unitless_height = get_spinbutton_value(&self_.height_spin_button);
+        let self_ = self.imp();
+        let unitless_height = spinbutton_value(&self_.height_spin_button);
         let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
             self_.settings.set_unitsystem(Unitsystem::Metric);
             Length::new::<centimeter>(unitless_height)
@@ -337,13 +337,13 @@ impl SetupWindow {
 
         self_
             .settings
-            .set_user_age(get_spinbutton_value(&self_.age_spin_button));
+            .set_user_age(spinbutton_value(&self_.age_spin_button));
         self_.settings.set_user_height(height);
         self_
             .settings
-            .set_user_stepgoal(get_spinbutton_value(&self_.stepgoal_spin_button));
+            .set_user_stepgoal(spinbutton_value(&self_.stepgoal_spin_button));
 
-        let unitless_weight = get_spinbutton_value(&self_.weightgoal_spin_button);
+        let unitless_weight = spinbutton_value(&self_.weightgoal_spin_button);
         let weight = if self_.current_unitsystem.get() == Unitsystem::Metric {
             Mass::new::<kilogram>(unitless_weight)
         } else {
@@ -356,7 +356,7 @@ impl SetupWindow {
     }
 
     fn handle_setup_next_page_button_clicked(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         match self_.setup_carousel.position() as u32 {
             0 => self_
                 .setup_carousel
@@ -373,7 +373,7 @@ impl SetupWindow {
     }
 
     fn handle_setup_previous_page_button_clicked(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         match self_.setup_carousel.position() as u32 {
             0 => self.destroy(),
             1 => self_
@@ -390,8 +390,8 @@ impl SetupWindow {
     }
 
     fn handle_weight_spin_button_changed(&self) {
-        let self_ = self.get_priv();
-        let unitless_weight = get_spinbutton_value(&self_.weightgoal_spin_button);
+        let self_ = self.imp();
+        let unitless_weight = spinbutton_value(&self_.weightgoal_spin_button);
         let weight = if self_.current_unitsystem.get() == Unitsystem::Metric {
             Mass::new::<kilogram>(unitless_weight)
         } else {
@@ -402,8 +402,8 @@ impl SetupWindow {
     }
 
     fn handle_unitsystem_changed(&self) {
-        let self_ = self.get_priv();
-        let unitsystem = self_.settings.get_unitsystem();
+        let self_ = self.imp();
+        let unitsystem = self_.settings.unitsystem();
 
         if unitsystem == Unitsystem::Imperial && !self_.unit_imperial_togglebutton.is_active() {
             self_.unit_imperial_togglebutton.set_active(true);
@@ -445,9 +445,9 @@ impl SetupWindow {
     }
 
     fn set_optimal_weightgoal(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
-        let unitless_height = get_spinbutton_value(&self_.height_spin_button);
+        let unitless_height = spinbutton_value(&self_.height_spin_button);
         let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
             Length::new::<centimeter>(unitless_height)
         } else {
@@ -469,7 +469,7 @@ impl SetupWindow {
     }
 
     fn try_enable_next_button(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         let age = self_.age_spin_button.text().to_string();
         let height = self_.height_spin_button.text().to_string();
         let sensitive = !age.is_empty() && age != "0" && !height.is_empty() && height != "0";

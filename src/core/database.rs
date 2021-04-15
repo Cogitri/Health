@@ -121,11 +121,11 @@ impl Database {
     ///
     /// # Returns
     /// An array of [Activity]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
-    pub async fn get_activities(
+    pub async fn activities(
         &self,
         date_opt: Option<DateTime<FixedOffset>>,
     ) -> Result<Vec<Activity>, glib::Error> {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let cursor = if let Some(date) = date_opt {
             let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
@@ -139,7 +139,7 @@ impl Database {
         while let Ok(true) = cursor.next_async_future().await {
             let activity = Activity::new();
 
-            for i in 0..cursor.get_n_columns() {
+            for i in 0..cursor.n_columns() {
                 match cursor.get_variable_name(i).unwrap().as_str() {
                     "id" => {
                         activity.set_activity_type(
@@ -185,18 +185,18 @@ impl Database {
             ret.push(activity);
         }
 
-        ret.sort_by_key(crate::Activity::get_date);
+        ret.sort_by_key(crate::Activity::date);
 
         Ok(ret)
     }
 
     #[cfg(test)]
-    pub fn get_connection(&self) -> tracker::SparqlConnection {
-        let self_ = self.get_priv();
+    pub fn connection(&self) -> tracker::SparqlConnection {
+        let self_ = self.imp();
         self_.inner.borrow().as_ref().unwrap().connection.clone()
     }
 
-    pub fn get_instance() -> Self {
+    pub fn instance() -> Self {
         unsafe {
             DATABASE.as_ref().map_or_else(
                 || {
@@ -210,8 +210,8 @@ impl Database {
     }
 
     #[cfg(test)]
-    pub fn get_manager(&self) -> tracker::NamespaceManager {
-        let self_ = self.get_priv();
+    pub fn manager(&self) -> tracker::NamespaceManager {
+        let self_ = self.imp();
         self_.inner.borrow().as_ref().unwrap().manager.clone()
     }
 
@@ -222,8 +222,8 @@ impl Database {
     ///
     /// # Returns
     /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
-    pub async fn get_steps(&self, date: DateTime<FixedOffset>) -> Result<Vec<Steps>, glib::Error> {
-        let self_ = self.get_priv();
+    pub async fn steps(&self, date: DateTime<FixedOffset>) -> Result<Vec<Steps>, glib::Error> {
+        let self_ = self.imp();
 
         let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
         let cursor = connection.query_async_future(&format!("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}  ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
@@ -253,11 +253,11 @@ impl Database {
     ///
     /// # Returns
     /// An array of [Weight]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
-    pub async fn get_weights(
+    pub async fn weights(
         &self,
         date_opt: Option<DateTime<FixedOffset>>,
     ) -> Result<Vec<Weight>, glib::Error> {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let cursor = if let Some(date) = date_opt {
             let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
@@ -288,11 +288,11 @@ impl Database {
     ///
     /// # Returns
     /// True if a [Weight] exists on the `date`, or [glib::Error] if querying the DB goes wrong.
-    pub async fn get_weight_exists_on_date(
+    pub async fn weight_exists_on_date(
         &self,
         date: Date<FixedOffset>,
     ) -> Result<bool, glib::Error> {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
         let cursor = connection.query_async_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight ?weight . FILTER(?date >= '{}'^^xsd:date && ?date < '{}'^^xsd:date) }}", date.format("%Y-%m-%d"), (date + Duration::days(1)).format("%Y-%m-%d"))).await?;
@@ -310,7 +310,7 @@ impl Database {
     /// # Returns
     /// An error if querying the DB goes wrong.
     pub async fn import_steps(&self, steps: &[Steps]) -> Result<(), glib::Error> {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         if steps.is_empty() {
             return Ok(());
@@ -359,7 +359,7 @@ impl Database {
     /// # Returns
     /// An error if querying the DB goes wrong.
     pub async fn import_weights(&self, weights: &[Weight]) -> Result<(), glib::Error> {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         if weights.is_empty() {
             return Ok(());
@@ -410,7 +410,7 @@ impl Database {
     /// # Returns
     /// Am error if querying the DB goes wrong.
     pub async fn migrate_activities_date_datetime(&self) -> Result<(), glib::Error> {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         let (connection, manager) = {
             let inner_ref = self_.inner.borrow();
             let inner = inner_ref.as_ref().unwrap();
@@ -424,7 +424,7 @@ impl Database {
             let resource = tracker::Resource::new(None);
             resource.set_uri("rdf:type", "health:Activity");
 
-            for i in 0..cursor.get_n_columns() {
+            for i in 0..cursor.n_columns() {
                 match cursor.get_variable_name(i).unwrap().as_str() {
                     "id" => {
                         resource.set_int64("health:activity_id", cursor.get_integer(i));
@@ -516,7 +516,7 @@ impl Database {
     /// # Returns
     /// An error if querying the DB goes wrong.
     pub async fn migrate_weight_date_datetime(&self) -> Result<(), glib::Error> {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         let (connection, manager) = {
             let inner_ref = self_.inner.borrow();
             let inner = inner_ref.as_ref().unwrap();
@@ -599,7 +599,7 @@ impl Database {
     /// # Returns
     /// Returns an error if querying the DB goes wrong.
     pub async fn reset(&self) -> Result<(), glib::Error> {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
         connection
             .update_async_future("DELETE WHERE { ?datapoint a health:WeightMeasurement }")
@@ -619,42 +619,40 @@ impl Database {
     /// # Returns
     /// An error if querying the DB goes wrong.
     pub async fn save_activity(&self, activity: Activity) -> Result<(), glib::Error> {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         let resource = tracker::Resource::new(None);
         resource.set_uri("rdf:type", "health:Activity");
         resource.set_string(
             "health:activity_datetime",
-            &activity
-                .get_date()
-                .to_rfc3339_opts(SecondsFormat::Secs, true),
+            &activity.date().to_rfc3339_opts(SecondsFormat::Secs, true),
         );
         resource.set_int64(
             "health:activity_id",
-            activity.get_activity_type().to_u32().unwrap().into(),
+            activity.activity_type().to_u32().unwrap().into(),
         );
 
-        if let Some(c) = activity.get_calories_burned() {
+        if let Some(c) = activity.calories_burned() {
             resource.set_int64("health:calories_burned", c.into());
         }
-        if let Some(d) = activity.get_distance() {
+        if let Some(d) = activity.distance() {
             resource.set_int64(
                 "health:distance",
                 d.get::<uom::si::length::kilometer>() as i64,
             );
         }
-        if let Some(avg) = activity.get_heart_rate_avg() {
+        if let Some(avg) = activity.heart_rate_avg() {
             resource.set_int64("health:hearth_rate_avg", avg.into());
         }
-        if let Some(max) = activity.get_heart_rate_max() {
+        if let Some(max) = activity.heart_rate_max() {
             resource.set_int64("health:hearth_rate_max", max.into());
         }
-        if let Some(min) = activity.get_heart_rate_min() {
+        if let Some(min) = activity.heart_rate_min() {
             resource.set_int64("health:hearth_rate_min", min.into());
         }
-        if activity.get_duration().num_minutes() != 0 {
-            resource.set_int64("health:minutes", activity.get_duration().num_minutes());
+        if activity.duration().num_minutes() != 0 {
+            resource.set_int64("health:minutes", activity.duration().num_minutes());
         }
-        if let Some(s) = activity.get_steps() {
+        if let Some(s) = activity.steps() {
             resource.set_int64("health:steps", s.into());
         }
 
@@ -685,7 +683,7 @@ impl Database {
     /// # Returns
     /// An error if querying the DB goes wrong.
     pub async fn save_weight(&self, weight: Weight) -> Result<(), glib::Error> {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         let resource = tracker::Resource::new(None);
         resource.set_uri("rdf:type", "health:WeightMeasurement");
         resource.set_string(
@@ -736,7 +734,7 @@ impl Database {
         let manager = tracker::NamespaceManager::new();
         manager.add_prefix("health", "https://gitlab.gnome.org/World/health#");
 
-        self.get_priv().inner.replace(Some(imp::DatabaseMut {
+        self.imp().inner.replace(Some(imp::DatabaseMut {
             connection: tracker::SparqlConnection::new(
                 tracker::SparqlConnectionFlags::NONE,
                 Some(&gio::File::new_for_path(store_path)),
@@ -749,7 +747,7 @@ impl Database {
         Ok(())
     }
 
-    fn get_priv(&self) -> &imp::Database {
+    fn imp(&self) -> &imp::Database {
         imp::Database::from_instance(self)
     }
 }
@@ -783,7 +781,7 @@ mod test {
         let retrieved_activities = run_gio_future_sync(async move {
             db.save_activity(expected_activity).await.unwrap();
 
-            db.get_activities(Some((date + Duration::days(1)).into()))
+            db.activities(Some((date + Duration::days(1)).into()))
                 .await
                 .unwrap()
         });
@@ -801,7 +799,7 @@ mod test {
         let retrieved_weights = run_gio_future_sync(async move {
             db.save_weight(w).await.unwrap();
 
-            db.get_weights(Some((date + Duration::days(1)).into()))
+            db.weights(Some((date + Duration::days(1)).into()))
                 .await
                 .unwrap()
         });
@@ -824,16 +822,13 @@ mod test {
         let retrieved_activities = run_gio_future_sync(async move {
             db.save_activity(a).await.unwrap();
 
-            db.get_activities(Some((date - Duration::days(1)).into()))
+            db.activities(Some((date - Duration::days(1)).into()))
                 .await
                 .unwrap()
         });
         let activity = retrieved_activities.get(0).unwrap();
-        assert_eq!(
-            expected_activity.get_activity_type(),
-            activity.get_activity_type()
-        );
-        assert_eq!(expected_activity.get_steps(), activity.get_steps());
+        assert_eq!(expected_activity.activity_type(), activity.activity_type());
+        assert_eq!(expected_activity.steps(), activity.steps());
     }
 
     #[test]
@@ -847,7 +842,7 @@ mod test {
         let retrieved_weights = run_gio_future_sync(async move {
             db.save_weight(w).await.unwrap();
 
-            db.get_weights(Some((date - Duration::days(1)).into()))
+            db.weights(Some((date - Duration::days(1)).into()))
                 .await
                 .unwrap()
         });
@@ -860,9 +855,9 @@ mod test {
         let data_dir = tempdir().unwrap();
         let date = Local::now();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
-        let connection = db.get_connection();
+        let connection = db.connection();
         let expected_activity = Activity::new();
-        let manager = db.get_manager();
+        let manager = db.manager();
         let resource = tracker::Resource::new(None);
 
         expected_activity
@@ -873,23 +868,13 @@ mod test {
         resource.set_uri("rdf:type", "health:Activity");
         resource.set_string(
             "health:activity_date",
-            &format!(
-                "{}",
-                &expected_activity.get_date().date().format("%Y-%m-%d")
-            ),
+            &format!("{}", &expected_activity.date().date().format("%Y-%m-%d")),
         );
         resource.set_int64(
             "health:activity_id",
-            expected_activity
-                .get_activity_type()
-                .to_u32()
-                .unwrap()
-                .into(),
+            expected_activity.activity_type().to_u32().unwrap().into(),
         );
-        resource.set_int64(
-            "health:steps",
-            expected_activity.get_steps().unwrap().into(),
-        );
+        resource.set_int64("health:steps", expected_activity.steps().unwrap().into());
 
         connection
             .update(
@@ -903,23 +888,23 @@ mod test {
 
         let retrieved_activities = run_gio_future_sync(async move {
             db.migrate().await.unwrap();
-            db.get_activities(Some((date - Duration::days(1)).into()))
+            db.activities(Some((date - Duration::days(1)).into()))
                 .await
                 .unwrap()
         });
         let activity = retrieved_activities.get(0).unwrap();
-        assert_eq!(expected_activity.get_steps(), activity.get_steps());
+        assert_eq!(expected_activity.steps(), activity.steps());
         assert_eq!(
             expected_activity
-                .get_date()
+                .date()
                 .date()
                 .and_hms(0, 0, 0)
                 .to_rfc3339(),
-            activity.get_date().with_timezone(&chrono::Utc).to_rfc3339()
+            activity.date().with_timezone(&chrono::Utc).to_rfc3339()
         );
         assert_eq!(
-            expected_activity.get_activity_type().to_u32().unwrap(),
-            activity.get_activity_type().to_u32().unwrap()
+            expected_activity.activity_type().to_u32().unwrap(),
+            activity.activity_type().to_u32().unwrap()
         );
     }
 
@@ -928,9 +913,9 @@ mod test {
         let data_dir = tempdir().unwrap();
         let date = Local::now();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
-        let connection = db.get_connection();
+        let connection = db.connection();
         let expected_weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
-        let manager = db.get_manager();
+        let manager = db.manager();
         let resource = tracker::Resource::new(None);
         resource.set_uri("rdf:type", "health:WeightMeasurement");
         resource.set_string(
@@ -957,7 +942,7 @@ mod test {
 
         let retrieved_weights = run_gio_future_sync(async move {
             db.migrate().await.unwrap();
-            db.get_weights(Some((date - Duration::days(1)).into()))
+            db.weights(Some((date - Duration::days(1)).into()))
                 .await
                 .unwrap()
         });

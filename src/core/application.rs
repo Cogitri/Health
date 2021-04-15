@@ -51,7 +51,7 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                settings: Settings::get_instance(),
+                settings: Settings::instance(),
                 window: OnceCell::new(),
             }
         }
@@ -68,7 +68,7 @@ mod imp {
             self.parent_activate(obj);
             let has_window = self.window.get().and_then(glib::WeakRef::upgrade).is_some();
 
-            if !has_window && self.settings.get_did_initial_setup() {
+            if !has_window && self.settings.did_initial_setup() {
                 let window = Window::new(obj);
                 window.show();
                 self.window
@@ -118,12 +118,12 @@ impl Application {
         .expect("Failed to create Application")
     }
 
-    fn get_priv(&self) -> &imp::Application {
+    fn imp(&self) -> &imp::Application {
         imp::Application::from_instance(self)
     }
 
     fn handle_setup_window_setup_done(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         self_.settings.set_did_initial_setup(true);
         let window = Window::new(self);
         window.show();
@@ -168,7 +168,7 @@ impl Application {
             self,
             "preferences",
             clone!(@weak self as obj => move |_, _| {
-                let self_ = obj.get_priv();
+                let self_ = obj.imp();
                 let preferences_window = PreferencesWindow::new(self_.window.get().and_then(glib::WeakRef::upgrade).map(glib::Cast::upcast));
                 preferences_window.show();
             })
@@ -178,7 +178,7 @@ impl Application {
             self,
             "quit",
             clone!(@weak self as obj => move |_, _| {
-                if let Some(window) = obj.get_priv().window.get().and_then(glib::WeakRef::upgrade) {
+                if let Some(window) = obj.imp().window.get().and_then(glib::WeakRef::upgrade) {
                     window.destroy();
                 }
             })
@@ -196,13 +196,13 @@ impl Application {
             "unitsystem",
             Some(&String::static_variant_type()),
             {
-                let s: &str = self.get_priv().settings.get_unitsystem().into();
+                let s: &str = self.imp().settings.unitsystem().into();
                 s
             },
             clone!(@weak self as obj => move |a, p| {
                 let parameter = p.unwrap();
 
-                obj.get_priv().settings.set_unitsystem(Unitsystem::from_str(parameter.to_string().replace("'", "").as_str()).unwrap());
+                obj.imp().settings.set_unitsystem(Unitsystem::from_str(parameter.to_string().replace("'", "").as_str()).unwrap());
 
                 a.set_state(parameter);
             })

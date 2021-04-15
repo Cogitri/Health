@@ -94,8 +94,8 @@ glib::wrapper! {
 
 impl DateSelector {
     /// Get the currently selected date
-    pub fn get_selected_date(&self) -> DateTime<FixedOffset> {
-        *self.get_priv().selected_date.borrow()
+    pub fn selected_date(&self) -> DateTime<FixedOffset> {
+        *self.imp().selected_date.borrow()
     }
 
     /// Create a new [DateSelector]
@@ -106,22 +106,22 @@ impl DateSelector {
     /// Set the currently selected date.
     pub fn set_selected_date(&self, value: DateTime<FixedOffset>) {
         self.set_text(&format!("{}", value.format("%x")));
-        self.get_priv().selected_date.replace(value);
+        self.imp().selected_date.replace(value);
     }
 
-    fn get_priv(&self) -> &imp::DateSelector {
+    fn imp(&self) -> &imp::DateSelector {
         imp::DateSelector::from_instance(self)
     }
 
     fn handle_date_chooser_connect_day_selected(&self, calendar: &gtk::Calendar) {
         let date = Local.timestamp(calendar.date().to_unix(), 0);
         self.set_text(&format!("{}", date.format("%x")));
-        self.get_priv().selected_date.replace(date.into());
+        self.imp().selected_date.replace(date.into());
     }
 
     fn handle_icon_press(&self, pos: gtk::EntryIconPosition) {
         self.parse_date();
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         self_
             .date_selector_popover
             .set_pointing_to(&self.get_icon_area(pos));

@@ -56,8 +56,8 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                database: Database::get_instance(),
-                settings: Settings::get_instance(),
+                database: Database::instance(),
+                settings: Settings::instance(),
                 date_selector: TemplateChild::default(),
                 weight_spin_button: TemplateChild::default(),
             }
@@ -108,7 +108,7 @@ impl WeightAddDialog {
     }
 
     fn connect_handlers(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         self_
             .weight_spin_button
@@ -119,7 +119,7 @@ impl WeightAddDialog {
         self.connect_response(Self::handle_response);
     }
 
-    fn get_priv(&self) -> &imp::WeightAddDialog {
+    fn imp(&self) -> &imp::WeightAddDialog {
         imp::WeightAddDialog::from_instance(self)
     }
 
@@ -129,18 +129,15 @@ impl WeightAddDialog {
                 let downgraded = self.downgrade();
                 spawn!(async move {
                     if let Some(obj) = downgraded.upgrade() {
-                        let self_ = obj.get_priv();
-                        let value = if self_.settings.get_unitsystem() == Unitsystem::Metric {
+                        let self_ = obj.imp();
+                        let value = if self_.settings.unitsystem() == Unitsystem::Metric {
                             Mass::new::<kilogram>(self_.weight_spin_button.value() as f32)
                         } else {
                             Mass::new::<pound>(self_.weight_spin_button.value() as f32)
                         };
                         if let Err(e) = self_
                             .database
-                            .save_weight(Weight::new(
-                                self_.date_selector.get_selected_date(),
-                                value,
-                            ))
+                            .save_weight(Weight::new(self_.date_selector.selected_date(), value))
                             .await
                         {
                             glib::g_warning!(
@@ -169,10 +166,10 @@ impl WeightAddDialog {
         let downgraded = self.downgrade();
         glib::MainContext::default().spawn_local(async move {
             if let Some(obj) = downgraded.upgrade() {
-                let self_ = obj.get_priv();
+                let self_ = obj.imp();
                 let res = self_
                     .database
-                    .get_weight_exists_on_date(self_.date_selector.get_selected_date().date())
+                    .weight_exists_on_date(self_.date_selector.selected_date().date())
                     .await;
                 if let Ok(true) = res {
                     obj.set_title(Some(&i18n("Update Weight Measurement")));

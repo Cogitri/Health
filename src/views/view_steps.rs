@@ -53,7 +53,7 @@ mod imp {
         type Type = super::ViewSteps;
 
         fn new() -> Self {
-            let settings = Settings::get_instance();
+            let settings = Settings::instance();
 
             Self {
                 scrolled_window: TemplateChild::default(),
@@ -102,7 +102,7 @@ impl ViewSteps {
     pub fn new() -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create ViewSteps");
 
-        Database::get_instance().connect_activities_updated(glib::clone!(@weak o => move || {
+        Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
                 o.update().await;
             });
@@ -113,7 +113,7 @@ impl ViewSteps {
 
     /// Reload the [GraphModelSteps]'s data and refresh labels & the [GraphView].
     pub async fn update(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let mut steps_graph_model = { self_.steps_graph_model.borrow().clone() };
         if let Err(e) = steps_graph_model.reload(Duration::days(30)).await {
@@ -128,19 +128,18 @@ impl ViewSteps {
         view.set_title(i18n_f(
             "Today's steps: {}",
             &[&steps_graph_model
-                .get_today_step_count()
+                .today_step_count()
                 .unwrap_or(0)
                 .to_string()],
         ));
 
-        let goal_label = view.get_goal_label();
-        let streak_count =
-            steps_graph_model.get_streak_count_today(self_.settings.get_user_stepgoal());
+        let goal_label = view.goal_label();
+        let streak_count = steps_graph_model.streak_count_today(self_.settings.user_stepgoal());
 
         match streak_count {
             0 => {
-                let previous_streak = steps_graph_model
-                    .get_streak_count_yesterday(self_.settings.get_user_stepgoal());
+                let previous_streak =
+                    steps_graph_model.streak_count_yesterday(self_.settings.user_stepgoal());
                 if previous_streak == 0 {
                     goal_label.set_text(&i18n(
                         "No streak yet. Reach your stepgoal for multiple days to start a streak!",
@@ -173,11 +172,11 @@ impl ViewSteps {
                     &[&p.value.to_string(), &format!("{}", p.date.format("%x"))],
                 );
             })));
-            steps_graph_view.set_limit(Some(self_.settings.get_user_stepgoal() as f32));
+            steps_graph_view.set_limit(Some(self_.settings.user_stepgoal() as f32));
             steps_graph_view.set_limit_label(Some(i18n("Stepgoal")));
 
             self_.scrolled_window.set_child(Some(&steps_graph_view));
-            view.get_stack().set_visible_child_name("data_page");
+            view.stack().set_visible_child_name("data_page");
 
             self_.steps_graph_view.set(steps_graph_view).unwrap();
 
@@ -195,7 +194,7 @@ impl ViewSteps {
         self_.steps_graph_model.replace(steps_graph_model);
     }
 
-    fn get_priv(&self) -> &imp::ViewSteps {
+    fn imp(&self) -> &imp::ViewSteps {
         imp::ViewSteps::from_instance(self)
     }
 }

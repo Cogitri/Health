@@ -53,8 +53,8 @@ impl Clone for GraphModelWeight {
 impl GraphModelWeight {
     pub fn new() -> Self {
         Self {
-            database: Database::get_instance(),
-            settings: Settings::get_instance(),
+            database: Database::instance(),
+            settings: Settings::instance(),
             vec: Vec::new(),
         }
     }
@@ -63,7 +63,7 @@ impl GraphModelWeight {
     pub fn new_with_database(database: Database) -> Self {
         Self {
             database,
-            settings: Settings::get_instance(),
+            settings: Settings::instance(),
             vec: Vec::new(),
         }
     }
@@ -78,7 +78,7 @@ impl GraphModelWeight {
     pub async fn reload(&mut self, duration: Duration) -> Result<(), glib::Error> {
         self.vec = self
             .database
-            .get_weights(Some((chrono::Local::now() - duration).into()))
+            .weights(Some((chrono::Local::now() - duration).into()))
             .await?;
         Ok(())
     }
@@ -89,7 +89,7 @@ impl GraphModelWeight {
             .vec
             .iter()
             .map(|w| {
-                let val = if self.settings.get_unitsystem() == Unitsystem::Metric {
+                let val = if self.settings.unitsystem() == Unitsystem::Metric {
                     w.weight.get::<kilogram>()
                 } else {
                     w.weight.get::<pound>()
@@ -110,7 +110,7 @@ impl GraphModelWeight {
     }
 
     /// Get the last weight the user added.
-    pub fn get_last_weight(&self) -> Option<Mass> {
+    pub fn last_weight(&self) -> Option<Mass> {
         self.vec.last().map(|w| w.weight)
     }
 }

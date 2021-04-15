@@ -22,7 +22,7 @@ macro_rules! properties_setter_getter {
     ($name:literal, $type:ty) => {
         paste::item! {
             #[doc = "Get value of property"]
-            pub fn [< get_ $name >] (&self) -> Option<$type> {
+            pub fn [< $name >] (&self) -> Option<$type> {
                 self.get_property($name).unwrap().get().unwrap()
             }
         }
@@ -43,7 +43,7 @@ macro_rules! settings_getter_setter {
             #[easy_ext::ext([<HealthSettings $name:camel Ext>])]
             impl gio::Settings {
                 #[doc = "Get value of GSettings key"]
-                pub fn [< get_ $name >] (&self) -> $type {
+                pub fn [< $name >] (&self) -> $type {
                     self.get::<$type>($key)
                 }
                 #[doc = "Set value of GSettings key"]
@@ -67,7 +67,7 @@ macro_rules! inner_refcell_getter_setter {
     ($name:ident, $type:ty) => {
         paste::item! {
             #[doc = "Borrow `RefCell` and get value"]
-            pub fn [< get_ $name >] (&self) -> $type {
+            pub fn [< $name >] (&self) -> $type {
                 self.inner.borrow().$name.clone()
             }
         }
@@ -87,14 +87,14 @@ macro_rules! refcell_getter_setter {
     ($name:ident, $type:ty) => {
         paste::item! {
             #[doc = "Borrow `RefCell` and get value"]
-            pub fn [< get_ $name >] (&self) -> $type {
-                self.get_priv().inner.borrow().$name.clone()
+            pub fn [< $name >] (&self) -> $type {
+                self.imp().inner.borrow().$name.clone()
             }
         }
         paste::item! {
             #[doc = "Borrow `RefCell` and set value"]
             pub fn [< set_ $name >] (&self, value: $type) -> &Self {
-                self.get_priv().inner.borrow_mut().$name = value;
+                self.imp().inner.borrow_mut().$name = value;
                 self
             }
         }

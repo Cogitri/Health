@@ -205,7 +205,7 @@ source = "git+https://github.com/gtk-rs/gtk-rs#3b154eb4ca3e9fc8bcb1e4d089d40f57c
 dependencies = [
  "glib-sys",
  "libc",
- "system-deps 3.1.1",
+ "system-deps",
 ]
 
 [[package]]
@@ -552,7 +552,7 @@ dependencies = [
  "glib-sys",
  "gobject-sys",
  "libc",
- "system-deps 3.1.1",
+ "system-deps",
 ]
 
 [[package]]
@@ -582,7 +582,7 @@ dependencies = [
  "gobject-sys",
  "libc",
  "pango-sys",
- "system-deps 3.1.1",
+ "system-deps",
 ]
 
 [[package]]
@@ -667,7 +667,7 @@ dependencies = [
  "glib-sys",
  "gobject-sys",
  "libc",
- "system-deps 3.1.1",
+ "system-deps",
  "winapi",
 ]
 
@@ -709,7 +709,7 @@ version = "0.13.0"
 source = "git+https://github.com/gtk-rs/gtk-rs#3b154eb4ca3e9fc8bcb1e4d089d40f57cda77b6c"
 dependencies = [
  "libc",
- "system-deps 3.1.1",
+ "system-deps",
 ]
 
 [[package]]
@@ -725,7 +725,7 @@ source = "git+https://github.com/gtk-rs/gtk-rs#3b154eb4ca3e9fc8bcb1e4d089d40f57c
 dependencies = [
  "glib-sys",
  "libc",
- "system-deps 3.1.1",
+ "system-deps",
 ]
 
 [[package]]
@@ -746,7 +746,7 @@ dependencies = [
  "glib-sys",
  "libc",
  "pkg-config",
- "system-deps 3.1.1",
+ "system-deps",
 ]
 
 [[package]]
@@ -776,7 +776,7 @@ dependencies = [
  "graphene-sys",
  "libc",
  "pango-sys",
- "system-deps 3.1.1",
+ "system-deps",
 ]
 
 [[package]]
@@ -837,7 +837,7 @@ dependencies = [
  "gsk4-sys",
  "libc",
  "pango-sys",
- "system-deps 3.1.1",
+ "system-deps",
 ]
 
 [[package]]
@@ -980,7 +980,7 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 [[package]]
 name = "libadwaita"
 version = "0.1.0"
-source = "git+https://gitlab.gnome.org/Cogitri/libadwaita-rs?branch=regen#052411ea20f18407f1554b3b87849bd7f165c5b6"
+source = "git+https://gitlab.gnome.org/bilelmoussaoui/libadwaita-rs#b653c305c2a644ae1bbc257eb45fa88378c5d5b6"
 dependencies = [
  "bitflags",
  "gdk-pixbuf",
@@ -997,7 +997,7 @@ dependencies = [
 [[package]]
 name = "libadwaita-sys"
 version = "0.1.0"
-source = "git+https://gitlab.gnome.org/Cogitri/libadwaita-rs?branch=regen#052411ea20f18407f1554b3b87849bd7f165c5b6"
+source = "git+https://gitlab.gnome.org/bilelmoussaoui/libadwaita-rs#b653c305c2a644ae1bbc257eb45fa88378c5d5b6"
 dependencies = [
  "gdk-pixbuf-sys",
  "gdk4-sys",
@@ -1007,7 +1007,7 @@ dependencies = [
  "gtk4-sys",
  "libc",
  "pango-sys",
- "system-deps 3.1.1",
+ "system-deps",
 ]
 
 [[package]]
@@ -1274,7 +1274,7 @@ dependencies = [
  "glib-sys",
  "gobject-sys",
  "libc",
- "system-deps 3.1.1",
+ "system-deps",
 ]
 
 [[package]]
@@ -1299,7 +1299,7 @@ dependencies = [
  "glib-sys",
  "libc",
  "pango-sys",
- "system-deps 3.1.1",
+ "system-deps",
 ]
 
 [[package]]
@@ -1810,21 +1810,6 @@ dependencies = [
 
 [[package]]
 name = "system-deps"
-version = "2.0.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1b59b8aafd652f3c1469f16e6c223121e8a8dbe40c71475209c1401cff3a67ef"
-dependencies = [
- "heck",
- "pkg-config",
- "strum",
- "strum_macros",
- "thiserror",
- "toml",
- "version-compare",
-]
-
-[[package]]
-name = "system-deps"
 version = "3.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c248107ad7bc1ac07066a4d003cae9e9a7bc2e27d3418f7a9cdcdc8699dbea70"
@@ -1912,7 +1897,7 @@ dependencies = [
 [[package]]
 name = "tracker-rs"
 version = "0.1.0"
-source = "git+https://gitlab.com/dleggo/tracker-rs#fb0e36fcae816098341d051ba147bc0c7b5588ff"
+source = "git+https://gitlab.com/dleggo/tracker-rs#73e8febed8d33bb85ab833a8858be35185e4ae5f"
 dependencies = [
  "bitflags",
  "gio",
@@ -1925,13 +1910,13 @@ dependencies = [
 [[package]]
 name = "tracker-sys"
 version = "0.0.1"
-source = "git+https://gitlab.com/dleggo/tracker-rs#fb0e36fcae816098341d051ba147bc0c7b5588ff"
+source = "git+https://gitlab.com/dleggo/tracker-rs#73e8febed8d33bb85ab833a8858be35185e4ae5f"
 dependencies = [
  "gio-sys",
  "glib-sys",
  "gobject-sys",
  "libc",
- "system-deps 2.0.3",
+ "system-deps",
 ]
 
 [[package]]

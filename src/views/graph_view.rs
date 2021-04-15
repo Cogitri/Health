@@ -429,13 +429,13 @@ impl GraphView {
     /// # Arguments
     /// * `hover_func` - A function that takes a `Point` and renders it to a string that is displayed as tooltip on the graph.
     pub fn set_hover_func(&self, hover_func: Option<Box<dyn Fn(&Point) -> String>>) {
-        self.get_priv().inner.borrow_mut().hover_func = hover_func;
+        self.imp().inner.borrow_mut().hover_func = hover_func;
         self.queue_draw();
     }
 
     /// Set the limit (e.g. step goal) that is marked in the graph.
     pub fn set_limit(&self, limit: Option<f32>) {
-        let mut inner = self.get_priv().inner.borrow_mut();
+        let mut inner = self.imp().inner.borrow_mut();
         inner.limit = limit;
 
         if inner.biggest_value < inner.limit.unwrap_or(0.0) {
@@ -447,7 +447,7 @@ impl GraphView {
 
     /// Set the label that should be displayed on the limit label.
     pub fn set_limit_label(&self, limit_label: Option<String>) {
-        self.get_priv().inner.borrow_mut().limit_label = limit_label;
+        self.imp().inner.borrow_mut().limit_label = limit_label;
         self.queue_draw();
     }
 
@@ -464,7 +464,7 @@ impl GraphView {
             -1,
         );
 
-        let mut inner = self.get_priv().inner.borrow_mut();
+        let mut inner = self.imp().inner.borrow_mut();
         inner.biggest_value = points
             .iter()
             .max_by(|x, y| (x.value as u32).cmp(&(y.value as u32)))
@@ -482,11 +482,11 @@ impl GraphView {
     /// Set the interval factor in which the background lines are drawn in the graph. E.g. if you set this to `10`,
     /// lines will be drawn in `biggest_value` / 4 rounded to the next 10 multiple.
     pub fn set_x_lines_interval(&self, x_lines_interval: f32) {
-        self.get_priv().inner.borrow_mut().x_lines_interval = x_lines_interval;
+        self.imp().inner.borrow_mut().x_lines_interval = x_lines_interval;
         self.queue_draw();
     }
 
-    fn get_priv(&self) -> &imp::GraphView {
+    fn imp(&self) -> &imp::GraphView {
         imp::GraphView::from_instance(self)
     }
 
@@ -497,7 +497,7 @@ impl GraphView {
         allow_touch: bool,
         controller: &impl IsA<gtk::EventController>,
     ) {
-        let mut inner = self.get_priv().inner.borrow_mut();
+        let mut inner = self.imp().inner.borrow_mut();
         let hover_max_pointer_deviation = inner.hover_max_pointer_deviation;
 
         let approx_matches = |num: f64, approx_range: f32| {

@@ -26,7 +26,7 @@ use std::future::Future;
 ///
 /// # Returns
 /// The value of the [gtk::SpinButton] or `T::default()`.
-pub fn get_spinbutton_value<T>(spin_button: &gtk::SpinButton) -> T
+pub fn spinbutton_value<T>(spin_button: &gtk::SpinButton) -> T
 where
     T: std::str::FromStr + Default,
     <T as std::str::FromStr>::Err: std::fmt::Debug,

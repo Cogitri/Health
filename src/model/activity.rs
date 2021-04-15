@@ -110,10 +110,10 @@ impl Activity {
     /// activity.set_activity_type(ActivityType::Walking);
     /// activity.set_calories_burned(Some(100));
     /// activity.autofill_from_calories();
-    /// assert_eq!(activity.get_duration().num_minutes(), 20);
+    /// assert_eq!(activity.duration().num_minutes(), 20);
     /// ```
     pub fn autofill_from_calories(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let (calories, info) = {
             let inner = self_.inner.borrow();
@@ -146,10 +146,10 @@ impl Activity {
     /// activity.set_activity_type(ActivityType::Walking);
     /// activity.set_distance(Some(Length::new::<kilometer>(1.0)));
     /// activity.autofill_from_distance();
-    /// assert_eq!(activity.get_duration().num_minutes(), 11);
+    /// assert_eq!(activity.duration().num_minutes(), 11);
     /// ```
     pub fn autofill_from_distance(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let mut inner = self_.inner.borrow_mut();
         let info = ActivityInfo::from(inner.activity_type.clone());
@@ -213,10 +213,10 @@ impl Activity {
     /// activity.set_activity_type(ActivityType::Walking);
     /// activity.set_duration(Duration::minutes(20));
     /// activity.autofill_from_minutes();
-    /// assert_eq!(activity.get_calories_burned(), Some(100));
+    /// assert_eq!(activity.calories_burned(), Some(100));
     /// ```
     pub fn autofill_from_minutes(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let mut inner = self_.inner.borrow_mut();
         let info = ActivityInfo::from(inner.activity_type.clone());
@@ -268,10 +268,10 @@ impl Activity {
     /// activity.set_activity_type(ActivityType::Walking);
     /// activity.set_steps(Some(100));
     /// activity.autofill_from_steps();
-    /// assert_eq!(activity.get_duration().num_minutes(), 1);
+    /// assert_eq!(activity.duration().num_minutes(), 1);
     /// ```
     pub fn autofill_from_steps(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let mut inner = self_.inner.borrow_mut();
         let info = ActivityInfo::from(inner.activity_type.clone());
@@ -311,7 +311,7 @@ impl Activity {
         glib::Object::new(&[]).expect("Failed to create Activity")
     }
 
-    fn get_priv(&self) -> &imp::Activity {
+    fn imp(&self) -> &imp::Activity {
         imp::Activity::from_instance(self)
     }
 
@@ -334,7 +334,7 @@ impl serde::Serialize for Activity {
     where
         S: serde::Serializer,
     {
-        self.get_priv().inner.borrow().serialize(serializer)
+        self.imp().inner.borrow().serialize(serializer)
     }
 }
 
@@ -346,7 +346,7 @@ impl<'de> serde::Deserialize<'de> for Activity {
         let inner = imp::ActivityMut::deserialize(deserializer)?;
 
         let a = Activity::new();
-        a.get_priv().inner.replace(inner);
+        a.imp().inner.replace(inner);
         Ok(a)
     }
 }
@@ -397,9 +397,9 @@ mod test {
         let a = Activity::new();
         a.set_steps(Some(2000));
         a.autofill_from_steps();
-        assert_eq!(a.get_duration(), Duration::minutes(20));
-        assert_eq!(a.get_distance(), Some(Length::new::<kilometer>(1.8)));
-        assert_eq!(a.get_calories_burned(), Some(100));
+        assert_eq!(a.duration(), Duration::minutes(20));
+        assert_eq!(a.distance(), Some(Length::new::<kilometer>(1.8)));
+        assert_eq!(a.calories_burned(), Some(100));
     }
 
     #[test]
@@ -407,9 +407,9 @@ mod test {
         let a = Activity::new();
         a.set_duration(Duration::minutes(20));
         a.autofill_from_minutes();
-        assert_eq!(a.get_calories_burned(), Some(100));
-        assert_eq!(a.get_steps(), Some(2000));
-        assert_eq!(a.get_distance(), Some(Length::new::<kilometer>(1.8)));
+        assert_eq!(a.calories_burned(), Some(100));
+        assert_eq!(a.steps(), Some(2000));
+        assert_eq!(a.distance(), Some(Length::new::<kilometer>(1.8)));
     }
 
     #[test]
@@ -417,9 +417,9 @@ mod test {
         let a = Activity::new();
         a.set_distance(Some(Length::new::<kilometer>(1.8)));
         a.autofill_from_distance();
-        assert_eq!(a.get_calories_burned(), Some(100));
-        assert_eq!(a.get_steps(), Some(2000));
-        assert_eq!(a.get_duration(), Duration::minutes(20));
+        assert_eq!(a.calories_burned(), Some(100));
+        assert_eq!(a.steps(), Some(2000));
+        assert_eq!(a.duration(), Duration::minutes(20));
     }
 
     #[test]
@@ -427,8 +427,8 @@ mod test {
         let a = Activity::new();
         a.set_calories_burned(Some(100));
         a.autofill_from_calories();
-        assert_eq!(a.get_distance(), Some(Length::new::<kilometer>(1.8)));
-        assert_eq!(a.get_steps(), Some(2000));
-        assert_eq!(a.get_duration(), Duration::minutes(20));
+        assert_eq!(a.distance(), Some(Length::new::<kilometer>(1.8)));
+        assert_eq!(a.steps(), Some(2000));
+        assert_eq!(a.duration(), Duration::minutes(20));
     }
 }

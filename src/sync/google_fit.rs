@@ -78,7 +78,7 @@ impl GoogleFitSyncProvider {
     ///
     /// # Returns
     /// An array of [Steps], or a [SyncProviderError] if querying the Google Fit API fails.
-    fn get_steps(
+    fn steps(
         &mut self,
         date_opt: Option<DateTime<FixedOffset>>,
     ) -> Result<Vec<Steps>, SyncProviderError> {
@@ -98,7 +98,7 @@ impl GoogleFitSyncProvider {
     ///
     /// # Returns
     /// An array of [Weight]s, or a [SyncProviderError] if querying the Google Fit API fails.
-    fn get_weights(
+    fn weights(
         &mut self,
         date_opt: Option<DateTime<FixedOffset>>,
     ) -> Result<Vec<Weight>, SyncProviderError> {
@@ -150,15 +150,15 @@ impl GoogleFitSyncProvider {
 }
 
 impl SyncProvider for GoogleFitSyncProvider {
-    fn get_provider_name(&self) -> &'static str {
+    fn provider_name(&self) -> &'static str {
         GOOGLE_PROVIDER_NAME
     }
 
-    fn get_api_url(&self) -> &'static str {
+    fn api_url(&self) -> &'static str {
         GOOGLE_API_ENDPOINT
     }
 
-    fn get_oauth2_token(
+    fn oauth2_token(
         &mut self,
     ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>, SyncProviderError>
     {
@@ -238,7 +238,7 @@ impl SyncProvider for GoogleFitSyncProvider {
 
         if let Some(refresh_token) = self.token.as_ref().unwrap().refresh_token() {
             self.set_token(refresh_token.clone())?;
-            let settings = Settings::get_instance();
+            let settings = Settings::instance();
             settings.set_sync_provider_setup_google_fit(true);
             settings.set_timestamp_last_sync_google_fit(chrono::Local::now().into());
         }
@@ -249,10 +249,10 @@ impl SyncProvider for GoogleFitSyncProvider {
     /// Start the initial import with Google Fit. This will import all data
     /// from Google Fit to the Tracker DB.
     fn initial_import(&mut self) -> Result<(), SyncProviderError> {
-        let steps = self.get_steps(None)?;
+        let steps = self.steps(None)?;
         self.sender.send(DatabaseValue::Steps(steps)).unwrap();
 
-        let weights = self.get_weights(None)?;
+        let weights = self.weights(None)?;
         self.sender.send(DatabaseValue::Weights(weights)).unwrap();
 
         Ok(())
@@ -261,14 +261,14 @@ impl SyncProvider for GoogleFitSyncProvider {
     /// Start the sync with Google Fit. This will sync data that has been added
     /// since the last sync.
     fn sync_data(&mut self) -> Result<(), SyncProviderError> {
-        let settings = Settings::get_instance();
-        let last_sync_date = settings.get_timestamp_last_sync_google_fit();
+        let settings = Settings::instance();
+        let last_sync_date = settings.timestamp_last_sync_google_fit();
         settings.set_timestamp_last_sync_google_fit(chrono::Local::now().into());
 
-        let steps = self.get_steps(Some(last_sync_date))?;
+        let steps = self.steps(Some(last_sync_date))?;
         self.sender.send(DatabaseValue::Steps(steps)).unwrap();
 
-        let weights = self.get_weights(Some(last_sync_date))?;
+        let weights = self.weights(Some(last_sync_date))?;
         self.sender.send(DatabaseValue::Weights(weights)).unwrap();
 
         Ok(())

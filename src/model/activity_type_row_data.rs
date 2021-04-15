@@ -60,31 +60,23 @@ impl ActivityTypeRowData {
     pub fn new(id: &'static str, label: &str) -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create ActivityTypeRowData");
 
-        o.get_priv()
-            .inner
-            .replace(Some(imp::ActivityTypeRowDataMut {
-                id,
-                label: label.to_string(),
-            }));
+        o.imp().inner.replace(Some(imp::ActivityTypeRowDataMut {
+            id,
+            label: label.to_string(),
+        }));
 
         o
     }
 
-    pub fn get_id(&self) -> &'static str {
-        self.get_priv().inner.borrow().as_ref().unwrap().id
+    pub fn id(&self) -> &'static str {
+        self.imp().inner.borrow().as_ref().unwrap().id
     }
 
-    pub fn get_label(&self) -> String {
-        self.get_priv()
-            .inner
-            .borrow()
-            .as_ref()
-            .unwrap()
-            .label
-            .clone()
+    pub fn label(&self) -> String {
+        self.imp().inner.borrow().as_ref().unwrap().label.clone()
     }
 
-    fn get_priv(&self) -> &imp::ActivityTypeRowData {
+    fn imp(&self) -> &imp::ActivityTypeRowData {
         imp::ActivityTypeRowData::from_instance(self)
     }
 }
@@ -94,9 +86,9 @@ mod test {
     use super::ActivityTypeRowData;
 
     #[test]
-    fn get_label() {
+    fn label() {
         let s = ActivityTypeRowData::new("id", "label");
-        assert_eq!(s.get_id(), "id");
-        assert_eq!(s.get_label(), String::from("label"));
+        assert_eq!(s.id(), "id");
+        assert_eq!(s.label(), String::from("label"));
     }
 }

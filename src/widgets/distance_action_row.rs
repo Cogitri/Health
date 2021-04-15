@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, settings::prelude::*, utils::get_spinbutton_value, Unitsystem},
+    core::{i18n, settings::prelude::*, utils::spinbutton_value, Unitsystem},
     model::Unitsize,
 };
 use gio::subclass::prelude::*;
@@ -70,7 +70,7 @@ mod imp {
                     unitsize: Unitsize::Small,
                     value: Length::new::<meter>(0.0),
                 }),
-                settings: Settings::get_instance(),
+                settings: Settings::instance(),
                 settings_handler_id: RefCell::new(None),
                 distance_adjustment: TemplateChild::default(),
                 distance_spin_button: TemplateChild::default(),
@@ -167,8 +167,8 @@ impl DistanceActionRow {
         .unwrap()
     }
 
-    pub fn get_value(&self) -> Length {
-        self.get_priv().inner.borrow().value
+    pub fn value(&self) -> Length {
+        self.imp().inner.borrow().value
     }
 
     pub fn new() -> Self {
@@ -176,7 +176,7 @@ impl DistanceActionRow {
     }
 
     pub fn set_unitsize(&self, unitsize: Unitsize) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         let adjustment = &self_.distance_adjustment;
         if unitsize == Unitsize::Small {
             adjustment.set_step_increment(100.0);
@@ -193,7 +193,7 @@ impl DistanceActionRow {
         }
 
         let val = {
-            let mut inner = self.get_priv().inner.borrow_mut();
+            let mut inner = self.imp().inner.borrow_mut();
             inner.unitsize = unitsize;
             inner.value
         };
@@ -202,10 +202,10 @@ impl DistanceActionRow {
 
     pub fn set_value(&self, value: Length) {
         // FIXME: Disallow both buttons being inactive
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         let unitsize = self_.inner.borrow().unitsize;
 
-        if self_.settings.get_unitsystem() == Unitsystem::Metric {
+        if self_.settings.unitsystem() == Unitsystem::Metric {
             if unitsize == Unitsize::Small {
                 self_
                     .distance_spin_button
@@ -228,16 +228,16 @@ impl DistanceActionRow {
         self_.inner.borrow_mut().value = value;
     }
 
-    fn get_priv(&self) -> &imp::DistanceActionRow {
+    fn imp(&self) -> &imp::DistanceActionRow {
         imp::DistanceActionRow::from_instance(self)
     }
 
     fn handle_distance_spin_button_changed(&self, spinbutton: &gtk::SpinButton) {
-        let self_ = self.get_priv();
-        let value = get_spinbutton_value::<f32>(spinbutton);
+        let self_ = self.imp();
+        let value = spinbutton_value::<f32>(spinbutton);
         let unitsize = self_.inner.borrow().unitsize;
 
-        if self_.settings.get_unitsystem() == Unitsystem::Metric {
+        if self_.settings.unitsystem() == Unitsystem::Metric {
             if unitsize == Unitsize::Small {
                 self_.inner.borrow_mut().value = Length::new::<meter>(value);
             } else {
@@ -257,8 +257,8 @@ impl DistanceActionRow {
     }
 
     fn set_togglebutton_text(&self) {
-        let self_ = self.get_priv();
-        if self_.settings.get_unitsystem() == Unitsystem::Metric {
+        let self_ = self.imp();
+        if self_.settings.unitsystem() == Unitsystem::Metric {
             self_.big_unit_togglebutton.set_label(&i18n("KM"));
             self_.small_unit_togglebutton.set_label(&i18n("Meters"));
         } else {
@@ -279,7 +279,7 @@ mod test {
         crate::utils::init_gtk();
 
         let row = DistanceActionRow::new();
-        let row_ = row.get_priv();
+        let row_ = row.imp();
         row.set_value(Length::new::<meter>(1500.0));
         assert_eq!(row_.distance_spin_button.value(), 1500.0);
         row.set_unitsize(Unitsize::Big);

@@ -48,7 +48,7 @@ settings_getter_setter!(i32, window_width, "window-width");
 
 #[easy_ext::ext(HealthSettingsExt)]
 impl Settings {
-    pub fn get_instance() -> Self {
+    pub fn instance() -> Self {
         unsafe {
             SETTINGS.as_ref().map_or_else(
                 || {
@@ -62,7 +62,7 @@ impl Settings {
     }
 
     /// Get an array of recent activity IDs.
-    pub fn get_recent_activity_types(&self) -> Vec<String> {
+    pub fn recent_activity_types(&self) -> Vec<String> {
         self.get_strv("recent-activity-types")
             .iter()
             .map(std::string::ToString::to_string)
@@ -75,7 +75,7 @@ impl Settings {
     }
 
     /// Get the timestamp of the last sync with Google Fit.
-    pub fn get_timestamp_last_sync_google_fit(&self) -> DateTime<FixedOffset> {
+    pub fn timestamp_last_sync_google_fit(&self) -> DateTime<FixedOffset> {
         DateTime::parse_from_rfc3339(self.get_string("timestamp-last-sync-google-fit").as_str())
             .unwrap()
     }
@@ -97,7 +97,7 @@ impl Settings {
     }
 
     /// Get the current unitsystem.
-    pub fn get_unitsystem(&self) -> Unitsystem {
+    pub fn unitsystem(&self) -> Unitsystem {
         Unitsystem::from_i32(self.get_enum("unitsystem")).unwrap()
     }
 
@@ -108,7 +108,7 @@ impl Settings {
     }
 
     /// Get the user's height.
-    pub fn get_user_height(&self) -> Length {
+    pub fn user_height(&self) -> Length {
         Length::new::<centimeter>(self.get_uint("user-height") as f32)
     }
 
@@ -129,7 +129,7 @@ impl Settings {
     }
 
     /// Get the user's current weightgoal.
-    pub fn get_user_weightgoal(&self) -> Mass {
+    pub fn user_weightgoal(&self) -> Mass {
         Mass::new::<kilogram>(self.get_double("user-weightgoal") as f32)
     }
 

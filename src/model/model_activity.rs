@@ -57,9 +57,9 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                database: Database::get_instance(),
+                database: Database::instance(),
                 inner: RefCell::new(ModelActivityMut { vec: Vec::new() }),
-                settings: Settings::get_instance(),
+                settings: Settings::instance(),
             }
         }
     }
@@ -92,7 +92,7 @@ glib::wrapper! {
 
 impl ModelActivity {
     pub fn is_empty(&self) -> bool {
-        self.get_priv().inner.borrow().vec.is_empty()
+        self.imp().inner.borrow().vec.is_empty()
     }
 
     pub fn new() -> Self {
@@ -107,12 +107,12 @@ impl ModelActivity {
     /// # Returns
     /// Returns an error if querying the DB fails.
     pub async fn reload(&self, duration: Duration) -> Result<(), glib::Error> {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let previous_size = { self_.inner.borrow().vec.len() };
         let new_vec = self_
             .database
-            .get_activities(Some((chrono::Local::now() - duration).into()))
+            .activities(Some((chrono::Local::now() - duration).into()))
             .await?;
         {
             self_.inner.borrow_mut().vec = new_vec;
@@ -125,7 +125,7 @@ impl ModelActivity {
         Ok(())
     }
 
-    fn get_priv(&self) -> &imp::ModelActivity {
+    fn imp(&self) -> &imp::ModelActivity {
         imp::ModelActivity::from_instance(self)
     }
 }

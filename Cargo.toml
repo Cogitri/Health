@@ -13,8 +13,7 @@ name = "health"
 path = "src/main.rs"
 
 [dependencies.adw]
-git = "https://gitlab.gnome.org/Cogitri/libadwaita-rs"
-branch = "regen"
+git = "https://gitlab.gnome.org/bilelmoussaoui/libadwaita-rs"
 package = "libadwaita"
 
 [dependencies.bitflags]

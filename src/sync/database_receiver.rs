@@ -33,7 +33,7 @@ pub fn new_db_receiver() -> glib::Sender<DatabaseValue> {
     let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
 
     receiver.attach(None, move |value| {
-        let db = Database::get_instance();
+        let db = Database::instance();
         match value {
             DatabaseValue::Steps(s) => {
                 spawn!(async move {

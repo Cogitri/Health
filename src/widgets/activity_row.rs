@@ -81,7 +81,7 @@ mod imp {
         fn new() -> Self {
             Self {
                 activity: OnceCell::new(),
-                settings: Settings::get_instance(),
+                settings: Settings::instance(),
                 active_minutes_label: TemplateChild::default(),
                 activity_date_label: TemplateChild::default(),
                 activity_type_label: TemplateChild::default(),
@@ -140,24 +140,24 @@ impl ActivityRow {
 
     /// Set which [Activity] to display.
     pub fn set_activity(&self, activity: Activity) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
-        let activity_info = ActivityInfo::from(activity.get_activity_type());
+        let activity_info = ActivityInfo::from(activity.activity_type());
 
         self_.active_minutes_label.set_label(&i18n_f(
             "{} Minutes",
-            &[&activity.get_duration().num_minutes().to_string()],
+            &[&activity.duration().num_minutes().to_string()],
         ));
         self_
             .activity_date_label
-            .set_text(&format!("{}", activity.get_date().format("%x")));
+            .set_text(&format!("{}", activity.date().format("%x")));
         self_.activity_type_label.set_label(&activity_info.name);
 
         if activity_info
             .available_data_points
             .contains(ActivityDataPoints::CALORIES_BURNED)
         {
-            if let Some(calories_burned) = activity.get_calories_burned() {
+            if let Some(calories_burned) = activity.calories_burned() {
                 self_
                     .calories_burned_label
                     .set_label(&i18n_f("{} Calories", &[&calories_burned.to_string()]));
@@ -168,22 +168,22 @@ impl ActivityRow {
             .available_data_points
             .contains(ActivityDataPoints::HEART_RATE)
         {
-            if activity.get_heart_rate_avg().unwrap_or(0) != 0 {
+            if activity.heart_rate_avg().unwrap_or(0) != 0 {
                 self_
                     .heart_rate_average_label
-                    .set_text(&activity.get_heart_rate_avg().unwrap().to_string());
+                    .set_text(&activity.heart_rate_avg().unwrap().to_string());
                 self_.heart_rate_average_row.set_visible(true);
             }
-            if activity.get_heart_rate_max().unwrap_or(0) != 0 {
+            if activity.heart_rate_max().unwrap_or(0) != 0 {
                 self_
                     .heart_rate_maximum_label
-                    .set_text(&activity.get_heart_rate_max().unwrap().to_string());
+                    .set_text(&activity.heart_rate_max().unwrap().to_string());
                 self_.heart_rate_maximum_row.set_visible(true);
             }
-            if activity.get_heart_rate_min().unwrap_or(0) != 0 {
+            if activity.heart_rate_min().unwrap_or(0) != 0 {
                 self_
                     .heart_rate_minimum_label
-                    .set_text(&activity.get_heart_rate_min().unwrap().to_string());
+                    .set_text(&activity.heart_rate_min().unwrap().to_string());
                 self_.heart_rate_minimum_row.set_visible(true);
             }
         }
@@ -192,10 +192,10 @@ impl ActivityRow {
             .available_data_points
             .contains(ActivityDataPoints::DISTANCE)
         {
-            if let Some(distance) = activity.get_distance() {
+            if let Some(distance) = activity.distance() {
                 self_.distance_row.set_visible(true);
 
-                if self_.settings.get_unitsystem() == Unitsystem::Imperial {
+                if self_.settings.unitsystem() == Unitsystem::Imperial {
                     self_.distance_label.set_label(&format!(
                         "{}",
                         distance.clone().into_format_args(meter, Abbreviation)
@@ -212,7 +212,7 @@ impl ActivityRow {
         self_.activity.set(activity).unwrap();
     }
 
-    fn get_priv(&self) -> &imp::ActivityRow {
+    fn imp(&self) -> &imp::ActivityRow {
         imp::ActivityRow::from_instance(self)
     }
 }
@@ -233,7 +233,7 @@ mod test {
         act.set_heart_rate_avg(Some(75));
         act.set_distance(Some(Length::new::<kilometer>(1.0)));
         let row = ActivityRow::new();
-        let row_priv = row.get_priv();
+        let row_priv = row.imp();
         row.set_activity(act);
 
         assert_eq!(

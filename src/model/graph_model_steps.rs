@@ -41,7 +41,7 @@ impl Clone for GraphModelSteps {
 impl GraphModelSteps {
     pub fn new() -> Self {
         Self {
-            database: Database::get_instance(),
+            database: Database::instance(),
             vec: Vec::new(),
         }
     }
@@ -58,7 +58,7 @@ impl GraphModelSteps {
     ///
     /// # Returns
     /// The amount of steps that have been done today, none `None` if no steps have been done yet.
-    pub fn get_today_step_count(&self) -> Option<u32> {
+    pub fn today_step_count(&self) -> Option<u32> {
         let today = chrono::Local::now().date();
         let today_steps = self
             .vec
@@ -82,22 +82,22 @@ impl GraphModelSteps {
     ///
     /// # Returns
     /// The number of days.
-    pub fn get_streak_count_today(&self, step_goal: u32) -> u32 {
+    pub fn streak_count_today(&self, step_goal: u32) -> u32 {
         let today = chrono::Local::now();
-        self.get_streak_count(step_goal, today.into())
+        self.streak_count(step_goal, today.into())
     }
 
     /// Get how many days the user has upheld their step streak (as in have reached their stepgoal), excluding today.
     ///
     /// # Returns
     /// The number of days.
-    pub fn get_streak_count_yesterday(&self, step_goal: u32) -> u32 {
+    pub fn streak_count_yesterday(&self, step_goal: u32) -> u32 {
         let yesterday = chrono::Local::now() - Duration::days(1);
-        self.get_streak_count(step_goal, yesterday.into())
+        self.streak_count(step_goal, yesterday.into())
     }
 
     #[allow(clippy::map_entry)]
-    fn get_streak_count(&self, step_goal: u32, date: DateTime<FixedOffset>) -> u32 {
+    fn streak_count(&self, step_goal: u32, date: DateTime<FixedOffset>) -> u32 {
         let mut map = BTreeMap::new();
         for steps in &self.vec {
             let date = steps.date.date();
@@ -131,7 +131,7 @@ impl GraphModelSteps {
     pub async fn reload(&mut self, duration: Duration) -> Result<(), glib::Error> {
         self.vec = self
             .database
-            .get_steps((chrono::Local::now() - duration).into())
+            .steps((chrono::Local::now() - duration).into())
             .await?;
         Ok(())
     }
@@ -192,31 +192,31 @@ mod test {
 
         let mut model = GraphModelSteps::new_with_database(db.clone());
         ctx.block_on(model.reload(Duration::days(1))).unwrap();
-        assert_eq!(model.get_streak_count_today(5000), 0);
+        assert_eq!(model.streak_count_today(5000), 0);
 
         let act = Activity::new();
         act.set_steps(Some(5000));
         act.set_date(Local::now().into());
         ctx.block_on(db.save_activity(act)).unwrap();
         ctx.block_on(model.reload(Duration::days(1))).unwrap();
-        assert_eq!(model.get_streak_count_today(5000), 1);
+        assert_eq!(model.streak_count_today(5000), 1);
 
         let act = Activity::new();
         act.set_steps(Some(8000));
         act.set_date((Local::now() - Duration::days(1) - Duration::hours(1)).into());
         ctx.block_on(db.save_activity(act)).unwrap();
         ctx.block_on(model.reload(Duration::days(30))).unwrap();
-        assert_eq!(model.get_streak_count_today(5000), 2);
-        assert_eq!(model.get_streak_count_today(8000), 0);
-        assert_eq!(model.get_streak_count_yesterday(5000), 1);
-        assert_eq!(model.get_streak_count_yesterday(8000), 1);
+        assert_eq!(model.streak_count_today(5000), 2);
+        assert_eq!(model.streak_count_today(8000), 0);
+        assert_eq!(model.streak_count_yesterday(5000), 1);
+        assert_eq!(model.streak_count_yesterday(8000), 1);
 
         let act = Activity::new();
         act.set_steps(Some(400));
         act.set_date((Local::now() - Duration::days(1)).into());
         ctx.block_on(db.save_activity(act)).unwrap();
         ctx.block_on(model.reload(Duration::days(30))).unwrap();
-        assert_eq!(model.get_streak_count_today(5000), 2);
+        assert_eq!(model.streak_count_today(5000), 2);
     }
 
     #[test]

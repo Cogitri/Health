@@ -49,7 +49,7 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                settings: Settings::get_instance(),
+                settings: Settings::instance(),
                 activity_model: ModelActivity::new(),
                 activities_list_box: TemplateChild::default(),
             }
@@ -92,7 +92,7 @@ impl ViewActivity {
     pub fn new() -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create ViewActivity");
 
-        Database::get_instance().connect_activities_updated(glib::clone!(@weak o => move || {
+        Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
                 o.update().await;
             });
@@ -103,7 +103,7 @@ impl ViewActivity {
 
     /// Reload the [ModelActivity]'s data and refresh the list of activities
     pub async fn update(&self) {
-        let activity_model = &self.get_priv().activity_model;
+        let activity_model = &self.imp().activity_model;
 
         if let Err(e) = activity_model.reload(Duration::days(30)).await {
             glib::g_warning!(
@@ -115,12 +115,12 @@ impl ViewActivity {
 
         if !activity_model.is_empty() {
             self.upcast_ref::<View>()
-                .get_stack()
+                .stack()
                 .set_visible_child_name("data_page");
         }
     }
 
-    fn get_priv(&self) -> &imp::ViewActivity {
+    fn imp(&self) -> &imp::ViewActivity {
         imp::ViewActivity::from_instance(self)
     }
 }

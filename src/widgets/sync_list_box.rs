@@ -77,7 +77,7 @@ mod imp {
 
     impl ObjectImpl for SyncListBox {
         fn constructed(&self, obj: &Self::Type) {
-            if Settings::get_instance().get_sync_provider_setup_google_fit() {
+            if Settings::instance().sync_provider_setup_google_fit() {
                 self.google_fit_selected_image.set_visible(true);
                 self.google_fit_stack
                     .set_visible_child(&self.google_fit_selected_image.get());
@@ -146,25 +146,25 @@ impl SyncListBox {
     pub fn new(parent_window: Option<gtk::Window>) -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create SyncListBox");
 
-        o.get_priv().parent_window.replace(parent_window);
+        o.imp().parent_window.replace(parent_window);
 
         o
     }
 
     fn connect_handlers(&self) {
-        self.get_priv().sync_list_box.connect_row_activated(
+        self.imp().sync_list_box.connect_row_activated(
             glib::clone!(@weak self as obj => move |_, row| {
                 obj.handle_row_activated(row);
             }),
         );
     }
 
-    fn get_priv(&self) -> &imp::SyncListBox {
+    fn imp(&self) -> &imp::SyncListBox {
         imp::SyncListBox::from_instance(self)
     }
 
     fn handle_row_activated(self, row: &gtk::ListBoxRow) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         if row == &self_.google_fit_start_sync_row.get() {
             self_.google_fit_stack.set_visible(true);
             self_.google_fit_spinner.set_visible(true);
@@ -179,7 +179,7 @@ impl SyncListBox {
             let db_sender = new_db_receiver();
 
             receiver.attach(None, clone!(@weak self as obj => @default-panic, move |res| {
-                let self_ = obj.get_priv();
+                let self_ = obj.imp();
                 if let Err(e) = res {
                     self_.google_fit_selected_image.set_icon_name(Some("network-error-symbolic"));
                     self_.google_fit_selected_image.set_visible(true);
@@ -190,7 +190,7 @@ impl SyncListBox {
                 } else {
                     let obj = obj.clone();
                     spawn!(async move {
-                        let self_ = obj.get_priv();
+                        let self_ = obj.imp();
                         self_.google_fit_selected_image.set_visible(true);
                         self_.google_fit_spinner.set_spinning(false);
                         self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
@@ -220,7 +220,7 @@ impl SyncListBox {
         g_warning!(crate::config::LOG_DOMAIN, "{}", errmsg);
 
         let dialog = gtk::MessageDialog::new(
-            self.get_priv().parent_window.borrow().as_ref(),
+            self.imp().parent_window.borrow().as_ref(),
             gtk::DialogFlags::DESTROY_WITH_PARENT | gtk::DialogFlags::MODAL,
             gtk::MessageType::Error,
             gtk::ButtonsType::Close,

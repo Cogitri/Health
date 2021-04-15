@@ -71,18 +71,18 @@ glib::wrapper! {
 
 impl ActivityTypeRow {
     /// Get the ID of the [ActivityType](crate::model::ActivityType)
-    pub fn get_id(&self) -> &'static str {
-        *self.get_priv().activity_type_id.borrow()
+    pub fn id(&self) -> &'static str {
+        *self.imp().activity_type_id.borrow()
     }
 
     /// Get the user visible name of the [ActivityType](crate::model::ActivityType)
-    pub fn get_label(&self) -> String {
-        self.get_priv().activity_type_label.text().to_string()
+    pub fn label(&self) -> String {
+        self.imp().activity_type_label.text().to_string()
     }
 
     /// Get whether or not the row is selected.
-    pub fn get_selected(&self) -> bool {
-        self.get_priv().selected_image.get_visible()
+    pub fn selected(&self) -> bool {
+        self.imp().selected_image.get_visible()
     }
 
     /// Create a new [ActivityTypeRow].
@@ -93,8 +93,8 @@ impl ActivityTypeRow {
     pub fn new(data: &ActivityTypeRowData, selected: bool) -> Self {
         let s: Self = glib::Object::new(&[]).expect("Failed to create ActivityTypeRow");
 
-        s.set_id(data.get_id());
-        s.set_label(&data.get_label());
+        s.set_id(data.id());
+        s.set_label(&data.label());
         s.set_selected(selected);
 
         s
@@ -102,20 +102,20 @@ impl ActivityTypeRow {
 
     /// Set the ID of the [ActivityType](crate::model::ActivityType)
     pub fn set_id(&self, value: &'static str) {
-        self.get_priv().activity_type_id.replace(value);
+        self.imp().activity_type_id.replace(value);
     }
 
     /// Set the user visible name of the [ActivityType](crate::model::ActivityType)
     pub fn set_label(&self, value: &str) {
-        self.get_priv().activity_type_label.set_text(value)
+        self.imp().activity_type_label.set_text(value)
     }
 
     /// Set whether or not the row is selected.
     pub fn set_selected(&self, value: bool) {
-        self.get_priv().selected_image.set_visible(value)
+        self.imp().selected_image.set_visible(value)
     }
 
-    fn get_priv(&self) -> &imp::ActivityTypeRow {
+    fn imp(&self) -> &imp::ActivityTypeRow {
         imp::ActivityTypeRow::from_instance(self)
     }
 }

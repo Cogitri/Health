@@ -30,7 +30,7 @@ pub struct CSVHandler {
 impl CSVHandler {
     pub fn new() -> Self {
         Self {
-            db: Database::get_instance(),
+            db: Database::instance(),
         }
     }
 
@@ -44,7 +44,7 @@ impl CSVHandler {
     pub async fn export_activities_csv(&self, file: &gio::File) -> Result<(), glib::Error> {
         let mut wtr = csv::Writer::from_writer(vec![]);
 
-        for activity in self.db.get_activities(None).await? {
+        for activity in self.db.activities(None).await? {
             match wtr.serialize(activity) {
                 Ok(_) => {}
                 Err(e) => {
@@ -71,7 +71,7 @@ impl CSVHandler {
     pub async fn export_weights_csv(&self, file: &gio::File) -> Result<(), glib::Error> {
         let mut wtr = csv::Writer::from_writer(vec![]);
 
-        for weight in self.db.get_weights(None).await? {
+        for weight in self.db.weights(None).await? {
             match wtr.serialize(weight) {
                 Ok(_) => {}
                 Err(e) => {

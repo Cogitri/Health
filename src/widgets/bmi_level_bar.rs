@@ -131,13 +131,13 @@ glib::wrapper! {
 
 impl BMILevelBar {
     /// Get the height of the user.
-    pub fn get_height(&self) -> Length {
-        self.get_priv().inner.borrow().height
+    pub fn height(&self) -> Length {
+        self.imp().inner.borrow().height
     }
 
     /// Get the weight of the user.
-    pub fn get_weight(&self) -> Mass {
-        self.get_priv().inner.borrow().weight
+    pub fn weight(&self) -> Mass {
+        self.imp().inner.borrow().weight
     }
 
     /// Create a new [BMILevelBar].
@@ -147,24 +147,24 @@ impl BMILevelBar {
 
     /// Set the height of the user.
     pub fn set_height(&self, value: Length) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         self_.inner.borrow_mut().height = value;
         self.recalcualte_bmi();
     }
 
     /// Set the height of the user.
     pub fn set_weight(&self, value: Mass) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         self_.inner.borrow_mut().weight = value;
         self.recalcualte_bmi();
     }
 
-    fn get_priv(&self) -> &imp::BMILevelBar {
+    fn imp(&self) -> &imp::BMILevelBar {
         imp::BMILevelBar::from_instance(self)
     }
 
     fn recalcualte_bmi(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let height = self_.inner.borrow().height.get::<centimeter>() as f32 / 100.0;
         let weight = self_.inner.borrow().weight.get::<kilogram>();
@@ -204,7 +204,7 @@ mod test {
         bar.set_height(Length::new::<meter>(1.85));
         bar.set_weight(Mass::new::<kilogram>(70.0));
 
-        let self_ = bar.get_priv();
+        let self_ = bar.imp();
         assert_eq!(self_.level_bar.value(), 0.4213869571685791);
         assert_eq!(
             self_.bmi_label.label().as_str(),

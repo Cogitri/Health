@@ -88,7 +88,7 @@ mod imp {
                     current_view: ViewMode::STEPS,
                     sync_source_id: None,
                 }),
-                settings: Settings::get_instance(),
+                settings: Settings::instance(),
                 views: OnceCell::new(),
                 add_data_button: TemplateChild::default(),
                 error_infobar: TemplateChild::default(),
@@ -156,7 +156,7 @@ impl Window {
 
         let obj = o.clone();
         gtk_macros::spawn!(async move {
-            if let Err(e) = Database::get_instance().migrate().await {
+            if let Err(e) = Database::instance().migrate().await {
                 obj.show_error(&crate::core::i18n_f(
                     "Failed to migrate database to new version due to error {}",
                     &[&e.to_string()],
@@ -169,11 +169,11 @@ impl Window {
     }
 
     pub fn open_hamburger_menu(&self) {
-        self.get_priv().primary_menu_popover.popup();
+        self.imp().primary_menu_popover.popup();
     }
 
     fn connect_handlers(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         self_
             .add_data_button
@@ -233,7 +233,7 @@ impl Window {
     }
 
     fn handle_add_data_button_clicked(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let dialog = match self_.inner.borrow().current_view {
             ViewMode::ACTIVITIES | ViewMode::STEPS => {
@@ -245,7 +245,7 @@ impl Window {
     }
 
     fn handle_close_request(&self) -> Inhibit {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         let mut inner = self_.inner.borrow_mut();
 
         self_.settings.set_window_is_maximized(self.is_maximized());
@@ -266,15 +266,15 @@ impl Window {
     }
 
     fn handle_property_default_height_notify(&self) {
-        self.get_priv().inner.borrow_mut().current_height = self.default_height();
+        self.imp().inner.borrow_mut().current_height = self.default_height();
     }
 
     fn handle_property_default_width_notify(&self) {
-        self.get_priv().inner.borrow_mut().current_height = self.default_height();
+        self.imp().inner.borrow_mut().current_height = self.default_height();
     }
 
     fn handle_stack_property_visible_child_notify(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
         let child_name = self_.stack.visible_child_name().map(|s| s.to_string());
 
         if child_name
@@ -299,7 +299,7 @@ impl Window {
     }
 
     fn create_views(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         let mut views = BTreeMap::new();
         views.insert(ViewMode::ACTIVITIES, ViewActivity::new().upcast());
@@ -311,9 +311,9 @@ impl Window {
             let page = self_.stack.add_titled(
                 view,
                 Some(view.widget_name().as_str()),
-                &view.get_view_title().unwrap(),
+                &view.view_title().unwrap(),
             );
-            page.set_icon_name(&view.get_icon_name().unwrap());
+            page.set_icon_name(&view.icon_name().unwrap());
         }
 
         self.update();
@@ -332,7 +332,7 @@ impl Window {
 
     /// Display an error in a non-intrusive way.
     fn show_error(&self, err_msg: &str) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
         glib::g_warning!(crate::config::LOG_DOMAIN, "{}", err_msg);
         self_.error_label.set_text(err_msg);
@@ -340,9 +340,9 @@ impl Window {
     }
 
     fn sync_data(&self) {
-        let self_ = self.get_priv();
+        let self_ = self.imp();
 
-        if self_.settings.get_sync_provider_setup_google_fit() {
+        if self_.settings.sync_provider_setup_google_fit() {
             let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
             let db_sender = new_db_receiver();
 
@@ -396,7 +396,7 @@ impl Window {
         }
     }
 
-    fn get_priv(&self) -> &imp::Window {
+    fn imp(&self) -> &imp::Window {
         imp::Window::from_instance(self)
     }
 }
