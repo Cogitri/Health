@@ -107,6 +107,14 @@ impl DateSelector {
     pub fn set_selected_date(&self, value: DateTime<FixedOffset>) {
         self.set_text(&format!("{}", value.format("%x")));
         self.imp().selected_date.replace(value);
+        self.disallow_future_dates();
+    }
+
+    fn disallow_future_dates(&self) {
+        let date: DateTime<FixedOffset> = Local::now().into();
+        if self.imp().selected_date.borrow().date() > date.date() {
+            self.set_selected_date(date);
+        }
     }
 
     fn imp(&self) -> &imp::DateSelector {
