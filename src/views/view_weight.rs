@@ -38,7 +38,7 @@ mod imp {
     use gio::Settings;
     use glib::prelude::*;
     use glib::Cast;
-    use gtk::{subclass::prelude::*, CompositeTemplate, WidgetExt};
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 

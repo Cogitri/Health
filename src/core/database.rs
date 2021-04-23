@@ -140,43 +140,37 @@ impl Database {
             let activity = Activity::new();
 
             for i in 0..cursor.n_columns() {
-                match cursor.get_variable_name(i).unwrap().as_str() {
+                match cursor.variable_name(i).unwrap().as_str() {
                     "id" => {
-                        activity.set_activity_type(
-                            ActivityType::from_i64(cursor.get_integer(i)).unwrap(),
-                        );
+                        activity
+                            .set_activity_type(ActivityType::from_i64(cursor.integer(i)).unwrap());
                     }
                     "date" => {
                         activity.set_date(
-                            DateTime::parse_from_rfc3339(cursor.get_string(i).0.unwrap().as_str())
+                            DateTime::parse_from_rfc3339(cursor.string(i).0.unwrap().as_str())
                                 .unwrap(),
                         );
                     }
                     "calories_burned" => {
-                        activity
-                            .set_calories_burned(Some(cursor.get_integer(i).try_into().unwrap()));
+                        activity.set_calories_burned(Some(cursor.integer(i).try_into().unwrap()));
                     }
                     "distance" => {
-                        activity
-                            .set_distance(Some(Length::new::<meter>(cursor.get_integer(i) as f32)));
+                        activity.set_distance(Some(Length::new::<meter>(cursor.integer(i) as f32)));
                     }
                     "heart_rate_avg" => {
-                        activity
-                            .set_heart_rate_avg(Some(cursor.get_integer(i).try_into().unwrap()));
+                        activity.set_heart_rate_avg(Some(cursor.integer(i).try_into().unwrap()));
                     }
                     "heart_rate_max" => {
-                        activity
-                            .set_heart_rate_max(Some(cursor.get_integer(i).try_into().unwrap()));
+                        activity.set_heart_rate_max(Some(cursor.integer(i).try_into().unwrap()));
                     }
                     "heart_rate_min" => {
-                        activity
-                            .set_heart_rate_min(Some(cursor.get_integer(i).try_into().unwrap()));
+                        activity.set_heart_rate_min(Some(cursor.integer(i).try_into().unwrap()));
                     }
                     "minutes" => {
-                        activity.set_duration(Duration::minutes(cursor.get_integer(i)));
+                        activity.set_duration(Duration::minutes(cursor.integer(i)));
                     }
                     "steps" => {
-                        activity.set_steps(Some(cursor.get_integer(i).try_into().unwrap()));
+                        activity.set_steps(Some(cursor.integer(i).try_into().unwrap()));
                     }
                     _ => unimplemented!(),
                 }
@@ -231,8 +225,8 @@ impl Database {
 
         while let Ok(true) = cursor.next_async_future().await {
             hashmap.insert(
-                DateTime::parse_from_rfc3339(cursor.get_string(0).0.unwrap().as_str()).unwrap(),
-                hashmap.get(&date).unwrap_or(&0) + u32::try_from(cursor.get_integer(1)).unwrap(),
+                DateTime::parse_from_rfc3339(cursor.string(0).0.unwrap().as_str()).unwrap(),
+                hashmap.get(&date).unwrap_or(&0) + u32::try_from(cursor.integer(1)).unwrap(),
             );
         }
 
@@ -270,8 +264,8 @@ impl Database {
 
         while let Ok(true) = cursor.next_async_future().await {
             ret.push(Weight::new(
-                DateTime::parse_from_rfc3339(cursor.get_string(0).0.unwrap().as_str()).unwrap(),
-                Mass::new::<kilogram>(cursor.get_double(1) as f32),
+                DateTime::parse_from_rfc3339(cursor.string(0).0.unwrap().as_str()).unwrap(),
+                Mass::new::<kilogram>(cursor.double(1) as f32),
             ));
         }
 
@@ -299,7 +293,7 @@ impl Database {
 
         assert!(cursor.next_async_future().await?);
 
-        return Ok(cursor.get_boolean(0));
+        return Ok(cursor.is_boolean(0));
     }
 
     /// Import an array of [Steps] into the DB (e.g. when doing the initial sync with a sync provider)
@@ -425,16 +419,16 @@ impl Database {
             resource.set_uri("rdf:type", "health:Activity");
 
             for i in 0..cursor.n_columns() {
-                match cursor.get_variable_name(i).unwrap().as_str() {
+                match cursor.variable_name(i).unwrap().as_str() {
                     "id" => {
-                        resource.set_int64("health:activity_id", cursor.get_integer(i));
+                        resource.set_int64("health:activity_id", cursor.integer(i));
                     }
                     "date" => {
                         resource.set_string(
                             "health:activity_datetime",
                             &DateTime::<Utc>::from_utc(
                                 NaiveDate::parse_from_str(
-                                    cursor.get_string(i).0.unwrap().as_str(),
+                                    cursor.string(i).0.unwrap().as_str(),
                                     "%Y-%m-%d",
                                 )
                                 .unwrap()
@@ -446,43 +440,43 @@ impl Database {
                         );
                     }
                     "calories_burned" => {
-                        let v = cursor.get_integer(i);
+                        let v = cursor.integer(i);
                         if v != 0 {
                             resource.set_int64("health:calories_burned", v);
                         }
                     }
                     "distance" => {
-                        let v = cursor.get_integer(i);
+                        let v = cursor.integer(i);
                         if v != 0 {
                             resource.set_int64("health:distance", v);
                         }
                     }
                     "heart_rate_avg" => {
-                        let v = cursor.get_integer(i);
+                        let v = cursor.integer(i);
                         if v != 0 {
                             resource.set_int64("health:hearth_rate_avg", v);
                         }
                     }
                     "heart_rate_max" => {
-                        let v = cursor.get_integer(i);
+                        let v = cursor.integer(i);
                         if v != 0 {
                             resource.set_int64("health:hearth_rate_max", v);
                         }
                     }
                     "heart_rate_min" => {
-                        let v = cursor.get_integer(i);
+                        let v = cursor.integer(i);
                         if v != 0 {
                             resource.set_int64("health:hearth_rate_min", v);
                         }
                     }
                     "minutes" => {
-                        let v = cursor.get_integer(i);
+                        let v = cursor.integer(i);
                         if v != 0 {
                             resource.set_int64("health:minutes", v);
                         }
                     }
                     "steps" => {
-                        let v = cursor.get_integer(i);
+                        let v = cursor.integer(i);
                         if v != 0 {
                             resource.set_int64("health:steps", v);
                         }
@@ -532,7 +526,7 @@ impl Database {
             resource.set_string(
                 "health:weight_datetime",
                 &DateTime::<Utc>::from_utc(
-                    NaiveDate::parse_from_str(cursor.get_string(0).0.unwrap().as_str(), "%Y-%m-%d")
+                    NaiveDate::parse_from_str(cursor.string(0).0.unwrap().as_str(), "%Y-%m-%d")
                         .unwrap()
                         .and_hms(0, 0, 0),
                     Utc,
@@ -540,7 +534,7 @@ impl Database {
                 .with_timezone(&chrono::Local)
                 .to_rfc3339_opts(SecondsFormat::Secs, true),
             );
-            resource.set_double("health:weight", cursor.get_double(1));
+            resource.set_double("health:weight", cursor.double(1));
 
             connection
                 .update_async_future(
@@ -724,7 +718,7 @@ impl Database {
         ontology_path: Option<PathBuf>,
         store_path: Option<PathBuf>,
     ) -> Result<(), glib::Error> {
-        let mut store_path = store_path.unwrap_or_else(glib::get_user_data_dir);
+        let mut store_path = store_path.unwrap_or_else(glib::user_data_dir);
         store_path.push("health");
 
         let mut ontology_path =

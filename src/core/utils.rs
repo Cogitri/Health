@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::EditableExt;
+use gtk::prelude::*;
 use std::future::Future;
 
 /// Get the number-value of a [gtk::SpinButton].

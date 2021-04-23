@@ -13,7 +13,7 @@ name = "health"
 path = "src/main.rs"
 
 [dependencies.adw]
-git = "https://gitlab.gnome.org/bilelmoussaoui/libadwaita-rs"
+git = "https://gitlab.gnome.org/World/Rust/libadwaita-rs"
 package = "libadwaita"
 
 [dependencies.bitflags]
@@ -95,7 +95,7 @@ version = "0.20"
 features = ["derive"]
 
 [dependencies.tracker]
-git = "https://gitlab.com/dleggo/tracker-rs"
+git = "https://gitlab.com/dleggo/tracker-rs/"
 package = "tracker-rs"
 
 [dependencies.thiserror]

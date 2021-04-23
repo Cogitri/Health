@@ -139,30 +139,23 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "content-widget" => self
-                    .main_box
-                    .append(&value.get::<gtk::Widget>().unwrap().unwrap()),
+                "content-widget" => self.main_box.append(&value.get::<gtk::Widget>().unwrap()),
                 "empty-subtitle" => self
                     .subtitle_empty_view_label
-                    .set_label(value.get().unwrap().unwrap_or("")),
+                    .set_label(value.get::<&str>().unwrap_or("")),
                 "icon-name" => self.empty_icon.set_icon_name(value.get().unwrap()),
                 "title" => self
                     .title_label
-                    .set_label(value.get().unwrap().unwrap_or("")),
+                    .set_label(value.get::<&str>().unwrap_or("")),
                 "view-title" => {
                     self.view_title
-                        .replace(value.get().unwrap().unwrap_or_else(|| "".to_string()));
+                        .replace(value.get::<String>().unwrap_or_else(|_| "".to_string()));
                 }
                 _ => unimplemented!(),
             }
         }
 
-        fn get_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            pspec: &glib::ParamSpec,
-        ) -> glib::Value {
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "empty-subtitle" => self.subtitle_empty_view_label.label().to_value(),
                 "icon-name" => self.empty_icon.icon_name().to_value(),

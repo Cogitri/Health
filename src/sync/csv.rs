@@ -17,8 +17,7 @@
  */
 
 use crate::core::Database;
-use gio::FileExt;
-use gtk::prelude::*;
+use gio::prelude::*;
 use std::convert::TryFrom;
 
 /// [CSVHandler] is a struct which manages exporting data from the Tracker DB to a

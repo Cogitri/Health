@@ -132,7 +132,7 @@ impl DateSelector {
         let self_ = self.imp();
         self_
             .date_selector_popover
-            .set_pointing_to(&self.get_icon_area(pos));
+            .set_pointing_to(&self.icon_area(pos));
         self_.date_selector_popover.show();
     }
 

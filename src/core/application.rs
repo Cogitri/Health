@@ -89,7 +89,7 @@ mod imp {
             self.parent_startup(obj);
             adw::init();
 
-            if let Some(true) = gtk::Settings::get_default()
+            if let Some(true) = gtk::Settings::default()
                 .and_then(|s| s.gtk_theme_name())
                 .map(|s| s.as_str().contains("-dark"))
             {
@@ -188,7 +188,7 @@ impl Application {
 
         action!(self, "shortcuts", move |_, _| {
             gtk::Builder::from_resource("/dev/Cogitri/Health/ui/shortcuts_window.ui")
-                .get_object::<gtk::ShortcutsWindow>("shortcuts_window")
+                .object::<gtk::ShortcutsWindow>("shortcuts_window")
                 .unwrap()
                 .show();
         });

@@ -133,7 +133,7 @@ mod imp {
                     let mut i = 0;
                     let selected_activity = self_.selected_activity.borrow();
 
-                    while let Some(row) = b.get_row_at_index(i) {
+                    while let Some(row) = b.row_at_index(i) {
                         let cast = row.downcast::<ActivityTypeRow>().unwrap();
                         cast.set_selected (cast.label() == selected_activity.name);
                         i += 1;

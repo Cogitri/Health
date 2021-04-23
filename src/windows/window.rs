@@ -115,7 +115,7 @@ mod imp {
                 obj.style_context().add_class("devel");
 
                 // When in devel mode our application ID is different so we have to manually add the icon theme
-                if let Some(icon_theme) = gtk::IconTheme::get_for_display(&obj.display()) {
+                if let Some(icon_theme) = gtk::IconTheme::for_display(&obj.display()) {
                     icon_theme.add_resource_path("/dev/Cogitri/Health/icons");
                 }
             }

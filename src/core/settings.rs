@@ -63,7 +63,7 @@ impl Settings {
 
     /// Get an array of recent activity IDs.
     pub fn recent_activity_types(&self) -> Vec<String> {
-        self.get_strv("recent-activity-types")
+        self.strv("recent-activity-types")
             .iter()
             .map(std::string::ToString::to_string)
             .collect()
@@ -76,7 +76,7 @@ impl Settings {
 
     /// Get the timestamp of the last sync with Google Fit.
     pub fn timestamp_last_sync_google_fit(&self) -> DateTime<FixedOffset> {
-        DateTime::parse_from_rfc3339(self.get_string("timestamp-last-sync-google-fit").as_str())
+        DateTime::parse_from_rfc3339(self.string("timestamp-last-sync-google-fit").as_str())
             .unwrap()
     }
 
@@ -98,7 +98,7 @@ impl Settings {
 
     /// Get the current unitsystem.
     pub fn unitsystem(&self) -> Unitsystem {
-        Unitsystem::from_i32(self.get_enum("unitsystem")).unwrap()
+        Unitsystem::from_i32(self.enum_("unitsystem")).unwrap()
     }
 
     /// Set the current unitsystem.
@@ -109,7 +109,7 @@ impl Settings {
 
     /// Get the user's height.
     pub fn user_height(&self) -> Length {
-        Length::new::<centimeter>(self.get_uint("user-height") as f32)
+        Length::new::<centimeter>(self.uint("user-height") as f32)
     }
 
     /// Set the user's height.
@@ -130,7 +130,7 @@ impl Settings {
 
     /// Get the user's current weightgoal.
     pub fn user_weightgoal(&self) -> Mass {
-        Mass::new::<kilogram>(self.get_double("user-weightgoal") as f32)
+        Mass::new::<kilogram>(self.double("user-weightgoal") as f32)
     }
 
     /// Set the user's current weightgoal.
