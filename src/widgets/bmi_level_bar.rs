@@ -37,15 +37,15 @@ mod imp {
     };
 
     #[derive(Debug)]
-    pub struct BMILevelBarMut {
+    pub struct BmiLevelBarMut {
         pub height: Length,
         pub weight: Mass,
     }
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/bmi_level_bar.ui")]
-    pub struct BMILevelBar {
-        pub inner: RefCell<BMILevelBarMut>,
+    pub struct BmiLevelBar {
+        pub inner: RefCell<BmiLevelBarMut>,
         #[template_child]
         pub bmi_label: TemplateChild<gtk::Label>,
         #[template_child]
@@ -53,14 +53,14 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for BMILevelBar {
+    impl ObjectSubclass for BmiLevelBar {
         const NAME: &'static str = "HealthBMILevelBar";
         type ParentType = gtk::Widget;
-        type Type = super::BMILevelBar;
+        type Type = super::BmiLevelBar;
 
         fn new() -> Self {
             Self {
-                inner: RefCell::new(BMILevelBarMut {
+                inner: RefCell::new(BmiLevelBarMut {
                     height: Length::new::<centimeter>(0.0),
                     weight: Mass::new::<kilogram>(0.0),
                 }),
@@ -80,7 +80,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for BMILevelBar {
+    impl ObjectImpl for BmiLevelBar {
         fn constructed(&self, obj: &Self::Type) {
             obj.layout_manager()
                 .unwrap()
@@ -120,16 +120,16 @@ mod imp {
             }
         }
     }
-    impl WidgetImpl for BMILevelBar {}
+    impl WidgetImpl for BmiLevelBar {}
 }
 
 glib::wrapper! {
     /// A widget to visualise the BMI of the user.
-    pub struct BMILevelBar(ObjectSubclass<imp::BMILevelBar>)
+    pub struct BmiLevelBar(ObjectSubclass<imp::BmiLevelBar>)
         @extends gtk::Widget;
 }
 
-impl BMILevelBar {
+impl BmiLevelBar {
     /// Get the height of the user.
     pub fn height(&self) -> Length {
         self.imp().inner.borrow().height
@@ -140,9 +140,9 @@ impl BMILevelBar {
         self.imp().inner.borrow().weight
     }
 
-    /// Create a new [BMILevelBar].
+    /// Create a new [BmiLevelBar].
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create BMILevelBar")
+        glib::Object::new(&[]).expect("Failed to create BmiLevelBar")
     }
 
     /// Set the height of the user.
@@ -159,8 +159,8 @@ impl BMILevelBar {
         self.recalcualte_bmi();
     }
 
-    fn imp(&self) -> &imp::BMILevelBar {
-        imp::BMILevelBar::from_instance(self)
+    fn imp(&self) -> &imp::BmiLevelBar {
+        imp::BmiLevelBar::from_instance(self)
     }
 
     fn recalcualte_bmi(&self) {
@@ -189,7 +189,7 @@ impl BMILevelBar {
 
 #[cfg(test)]
 mod test {
-    use super::BMILevelBar;
+    use super::BmiLevelBar;
     use uom::si::{
         f32::{Length, Mass},
         length::meter,
@@ -200,7 +200,7 @@ mod test {
     fn recalcualte_bmi() {
         crate::utils::init_gtk();
 
-        let bar = BMILevelBar::new();
+        let bar = BmiLevelBar::new();
         bar.set_height(Length::new::<meter>(1.85));
         bar.set_weight(Mass::new::<kilogram>(70.0));
 

@@ -3,7 +3,7 @@
 #![warn(clippy::await_holding_refcell_ref)]
 #![warn(clippy::cast_lossless)]
 #![warn(clippy::comparison_to_empty)]
-#![warn(clippy::find_map)]
+#![warn(clippy::manual_find_map)]
 #![warn(clippy::map_unwrap_or)]
 #![warn(clippy::redundant_closure_for_method_calls)]
 #![warn(clippy::struct_excessive_bools)]

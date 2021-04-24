@@ -13,7 +13,7 @@
 //!     * sync: The code for synching with third party providers (e.g. Google Fit) or exporting/importing data lies here.
 //!     * views: This directory contains Views. These make up a single page in Health, e.g. the [ViewSteps](crate::views::ViewSteps)
 //!       that draws a that draws a graph of the user's step count.
-//!     * widgets: Widgets are smaller, reusable parts of Health's UI, e.g the [BMILevelBar](crate::widgets::BMILevelBar)
+//!     * widgets: Widgets are smaller, reusable parts of Health's UI, e.g the [BmiLevelBar](crate::widgets::BmiLevelBar)
 //!       is contained in this module.
 //!     * windows: This directory contains actual windows, like the main [Window](crate::windows::Window) or the
 //!       [PreferencesWindow](crate::windows::PreferencesWindow).
@@ -66,7 +66,7 @@
 #![warn(clippy::await_holding_refcell_ref)]
 #![warn(clippy::cast_lossless)]
 #![warn(clippy::comparison_to_empty)]
-#![warn(clippy::find_map)]
+#![warn(clippy::manual_find_map)]
 #![warn(clippy::map_unwrap_or)]
 #![warn(clippy::redundant_closure_for_method_calls)]
 #![warn(clippy::struct_excessive_bools)]

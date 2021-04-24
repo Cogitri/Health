@@ -38,7 +38,7 @@ static OPTIMAL_BMI: f32 = 22.5;
 mod imp {
     use crate::{
         core::{settings::prelude::*, Unitsystem},
-        widgets::{BMILevelBar, SyncListBox},
+        widgets::{BmiLevelBar, SyncListBox},
     };
     use gio::Settings;
     use glib::subclass::Signal;
@@ -52,7 +52,7 @@ mod imp {
         pub settings: Settings,
 
         #[template_child]
-        pub bmi_levelbar: TemplateChild<BMILevelBar>,
+        pub bmi_levelbar: TemplateChild<BmiLevelBar>,
         #[template_child]
         pub setup_first_page: TemplateChild<gtk::Box>,
         #[template_child]

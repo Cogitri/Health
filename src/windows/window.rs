@@ -42,9 +42,9 @@ mod imp {
 
     #[derive(Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
     pub enum ViewMode {
-        STEPS,
-        WEIGHT,
-        ACTIVITIES,
+        Steps,
+        Weight,
+        Activities,
     }
 
     #[derive(Debug)]
@@ -85,7 +85,7 @@ mod imp {
                 inner: RefCell::new(WindowMut {
                     current_height: 0,
                     current_width: 0,
-                    current_view: ViewMode::STEPS,
+                    current_view: ViewMode::Steps,
                     sync_source_id: None,
                 }),
                 settings: Settings::instance(),
@@ -236,10 +236,10 @@ impl Window {
         let self_ = self.imp();
 
         let dialog = match self_.inner.borrow().current_view {
-            ViewMode::ACTIVITIES | ViewMode::STEPS => {
+            ViewMode::Activities | ViewMode::Steps => {
                 ActivityAddDialog::new(self.upcast_ref()).upcast::<gtk::Dialog>()
             }
-            ViewMode::WEIGHT => WeightAddDialog::new(self.upcast_ref()).upcast::<gtk::Dialog>(),
+            ViewMode::Weight => WeightAddDialog::new(self.upcast_ref()).upcast::<gtk::Dialog>(),
         };
         dialog.present();
     }
@@ -282,19 +282,19 @@ impl Window {
                 .views
                 .get()
                 .unwrap()
-                .get(&ViewMode::STEPS)
+                .get(&ViewMode::Steps)
                 .map(|s| s.widget_name().to_string())
         {
-            self_.inner.borrow_mut().current_view = ViewMode::STEPS;
+            self_.inner.borrow_mut().current_view = ViewMode::Steps;
         } else if child_name
             == self_
                 .views
                 .get()
                 .unwrap()
-                .get(&ViewMode::WEIGHT)
+                .get(&ViewMode::Weight)
                 .map(|s| s.widget_name().to_string())
         {
-            self_.inner.borrow_mut().current_view = ViewMode::WEIGHT;
+            self_.inner.borrow_mut().current_view = ViewMode::Weight;
         }
     }
 
@@ -302,9 +302,9 @@ impl Window {
         let self_ = self.imp();
 
         let mut views = BTreeMap::new();
-        views.insert(ViewMode::ACTIVITIES, ViewActivity::new().upcast());
-        views.insert(ViewMode::WEIGHT, ViewWeight::new().upcast());
-        views.insert(ViewMode::STEPS, ViewSteps::new().upcast());
+        views.insert(ViewMode::Activities, ViewActivity::new().upcast());
+        views.insert(ViewMode::Weight, ViewWeight::new().upcast());
+        views.insert(ViewMode::Steps, ViewSteps::new().upcast());
         self_.views.set(views).unwrap();
 
         for view in self_.views.get().unwrap().values() {
@@ -374,19 +374,19 @@ impl Window {
     pub fn update(&self) {
         for (mode, view) in imp::Window::from_instance(self).views.get().unwrap() {
             match mode {
-                imp::ViewMode::STEPS => {
+                imp::ViewMode::Steps => {
                     let v = view.clone().downcast::<ViewSteps>().unwrap();
                     glib::MainContext::default().spawn_local(async move {
                         v.update().await;
                     });
                 }
-                imp::ViewMode::WEIGHT => {
+                imp::ViewMode::Weight => {
                     let v = view.clone().downcast::<ViewWeight>().unwrap();
                     glib::MainContext::default().spawn_local(async move {
                         v.update().await;
                     });
                 }
-                imp::ViewMode::ACTIVITIES => {
+                imp::ViewMode::Activities => {
                     let v = view.clone().downcast::<ViewActivity>().unwrap();
                     glib::MainContext::default().spawn_local(async move {
                         v.update().await;

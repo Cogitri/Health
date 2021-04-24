@@ -34,7 +34,7 @@ use std::{
 pub enum SyncProviderError {
     CrsfMismatch(String),
     GLib(#[from] glib::Error),
-    IO(#[from] std::io::Error),
+    Io(#[from] std::io::Error),
     NoRefreshTokenSet(String),
     NoRequestReceived(String),
     RefreshFailed(String),

@@ -20,13 +20,13 @@ use crate::core::Database;
 use gio::prelude::*;
 use std::convert::TryFrom;
 
-/// [CSVHandler] is a struct which manages exporting data from the Tracker DB to a
+/// [CsvHandler] is a struct which manages exporting data from the Tracker DB to a
 /// CSV file or importing it from a CSV file into the Tracker DB.
-pub struct CSVHandler {
+pub struct CsvHandler {
     db: Database,
 }
 
-impl CSVHandler {
+impl CsvHandler {
     pub fn new() -> Self {
         Self {
             db: Database::instance(),
