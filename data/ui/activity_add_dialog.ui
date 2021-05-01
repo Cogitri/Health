@@ -110,10 +110,7 @@
     <property name="title" translatable="yes">Date</property>
     <child>
       <object class="HealthDateSelector" id="date_selector">
-        <property name="margin-start">6</property>
-        <property name="margin-end">6</property>
-        <property name="margin-top">6</property>
-        <property name="margin-bottom">6</property>
+        <property name="valign">center</property>
       </object>
     </child>
   </object>
@@ -122,10 +119,7 @@
     <property name="title" translatable="yes">Activity Type</property>
     <child>
       <object class="GtkMenuButton" id="activity_type_menu_button">
-        <property name="margin-start">6</property>
-        <property name="margin-end">6</property>
-        <property name="margin-top">6</property>
-        <property name="margin-bottom">6</property>
+        <property name="valign">center</property>
         <property name="popover">activity_type_selector</property>
       </object>
     </child>
@@ -138,10 +132,7 @@
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">calories_burned_adjustment</property>
         <property name="numeric">1</property>
-        <property name="margin-start">6</property>
-        <property name="margin-end">6</property>
-        <property name="margin-top">6</property>
-        <property name="margin-bottom">6</property>
+        <property name="valign">center</property>
       </object>
     </child>
   </object>
@@ -154,10 +145,7 @@
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">activity_duration_adjustment</property>
         <property name="numeric">1</property>
-        <property name="margin-start">6</property>
-        <property name="margin-end">6</property>
-        <property name="margin-top">6</property>
-        <property name="margin-bottom">6</property>
+        <property name="valign">center</property>
       </object>
     </child>
   </object>
@@ -169,10 +157,7 @@
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">heart_rate_average_adjustment</property>
         <property name="numeric">1</property>
-        <property name="margin-start">6</property>
-        <property name="margin-end">6</property>
-        <property name="margin-top">6</property>
-        <property name="margin-bottom">6</property>
+        <property name="valign">center</property>
       </object>
     </child>
   </object>
@@ -184,10 +169,7 @@
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">heart_rate_min_adjustment</property>
         <property name="numeric">1</property>
-        <property name="margin-start">6</property>
-        <property name="margin-end">6</property>
-        <property name="margin-top">6</property>
-        <property name="margin-bottom">6</property>
+        <property name="valign">center</property>
       </object>
     </child>
   </object>
@@ -199,10 +181,7 @@
         <property name="text" translatable="yes">0</property>
         <property name="adjustment">heart_rate_max_adjustment</property>
         <property name="numeric">1</property>
-        <property name="margin-start">6</property>
-        <property name="margin-end">6</property>
-        <property name="margin-top">6</property>
-        <property name="margin-bottom">6</property>
+        <property name="valign">center</property>
       </object>
     </child>
   </object>
@@ -214,10 +193,7 @@
         <property name="text">0</property>
         <property name="adjustment">steps_adjustment</property>
         <property name="numeric">1</property>
-        <property name="margin-start">6</property>
-        <property name="margin-end">6</property>
-        <property name="margin-top">6</property>
-        <property name="margin-bottom">6</property>
+        <property name="valign">center</property>
       </object>
     </child>
   </object>
