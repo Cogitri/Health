@@ -142,22 +142,26 @@ impl Application {
     }
 
     fn setup_actions(&self) {
-        action!(self, "about", clone!(@weak self as this => move |_, _| {
-            gtk::AboutDialogBuilder::new()
-                .transient_for(&this.imp().window.get().and_then(glib::WeakRef::upgrade).unwrap())
-                .modal(true)
-                .logo_icon_name(crate::config::APPLICATION_ID)
-                .program_name("Health")
-                .comments(&i18n("A health tracking app for the GNOME desktop."))
-                .authors(vec!["Rasmus Thomsen <oss@cogitri.dev>".to_string()])
-                .translator_credits(&i18n("translator-credits"))
-                .website("https://gitlab.gnome.org/Cogitri/gnome-health")
-                .website_label(&i18n("Websites"))
-                .version(crate::config::VERSION)
-                .license_type(gtk::License::Gpl30)
-                .build()
-                .show()
-        }));
+        action!(
+            self,
+            "about",
+            clone!(@weak self as this => move |_, _| {
+                gtk::AboutDialogBuilder::new()
+                    .transient_for(&this.imp().window.get().and_then(glib::WeakRef::upgrade).unwrap())
+                    .modal(true)
+                    .logo_icon_name(crate::config::APPLICATION_ID)
+                    .program_name("Health")
+                    .comments(&i18n("A health tracking app for the GNOME desktop."))
+                    .authors(vec!["Rasmus Thomsen <oss@cogitri.dev>".to_string()])
+                    .translator_credits(&i18n("translator-credits"))
+                    .website("https://gitlab.gnome.org/Cogitri/gnome-health")
+                    .website_label(&i18n("Websites"))
+                    .version(crate::config::VERSION)
+                    .license_type(gtk::License::Gpl30)
+                    .build()
+                    .show()
+            })
+        );
 
         action!(
             self,
