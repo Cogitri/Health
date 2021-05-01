@@ -60,10 +60,7 @@
                 <property name="title" translatable="yes">Unitsystem</property>
                 <child>
                   <object class="GtkBox">
-                    <property name="margin-top">6</property>
-                    <property name="margin-bottom">6</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
+                    <property name="valign">center</property>
                     <style>
                       <class name="linked"/>
                     </style>
@@ -94,10 +91,7 @@
                     <property name="text">0</property>
                     <property name="adjustment">age_adjustment</property>
                     <property name="numeric">1</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
-                    <property name="margin-top">6</property>
-                    <property name="margin-bottom">6</property>
+                    <property name="valign">center</property>
                   </object>
                 </child>
               </object>
@@ -110,10 +104,7 @@
                     <property name="text">0</property>
                     <property name="adjustment">height_adjustment</property>
                     <property name="numeric">1</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
-                    <property name="margin-top">6</property>
-                    <property name="margin-bottom">6</property>
+                    <property name="valign">center</property>
                   </object>
                 </child>
               </object>
@@ -133,10 +124,7 @@
                     <property name="text">10000</property>
                     <property name="adjustment">stepgoal_adjustment</property>
                     <property name="numeric">1</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
-                    <property name="margin-top">6</property>
-                    <property name="margin-bottom">6</property>
+                    <property name="valign">center</property>
                   </object>
                 </child>
               </object>
@@ -151,6 +139,7 @@
                 <property name="subtitle" translatable="yes">The WHO recommends a BMI of 18.5-24.9.</property>
                 <child>
                   <object class="GtkBox">
+                    <property name="spacing">12</property>
                     <child>
                       <object class="HealthBMILevelBar" id="bmi_levelbar">
                         <property name="valign">center</property>
@@ -162,10 +151,7 @@
                         <property name="digits">1</property>
                         <property name="width-chars">5</property>
                         <property name="adjustment">weightgoal_adjustment</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-bottom">6</property>
+                    <property name="valign">center</property>
                       </object>
                     </child>
                   </object>
@@ -199,10 +185,7 @@
                 <child>
                   <object class="GtkButton" id="export_activity_csv_button">
                     <property name="label" translatable="yes">Export</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
-                    <property name="margin-top">6</property>
-                    <property name="margin-bottom">6</property>
+                    <property name="valign">center</property>
                   </object>
                 </child>
               </object>
@@ -213,10 +196,7 @@
                 <child>
                   <object class="GtkButton" id="export_weight_csv_button">
                     <property name="label" translatable="yes">Export</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
-                    <property name="margin-top">6</property>
-                    <property name="margin-bottom">6</property>
+                    <property name="valign">center</property>
                   </object>
                 </child>
               </object>
@@ -227,10 +207,7 @@
                 <child>
                   <object class="GtkButton" id="import_activity_csv_button">
                     <property name="label" translatable="yes">Import</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
-                    <property name="margin-top">6</property>
-                    <property name="margin-bottom">6</property>
+                    <property name="valign">center</property>
                   </object>
                 </child>
               </object>
@@ -241,10 +218,7 @@
                 <child>
                   <object class="GtkButton" id="import_weight_csv_button">
                     <property name="label" translatable="yes">Import</property>
-                    <property name="margin-start">6</property>
-                    <property name="margin-end">6</property>
-                    <property name="margin-top">6</property>
-                    <property name="margin-bottom">6</property>
+                    <property name="valign">center</property>
                   </object>
                 </child>
               </object>
