@@ -29,11 +29,10 @@
     <property name="title" translatable="yes">Distance</property>
     <child>
       <object class="GtkBox">
+        <property name="spacing">12</property>
         <child>
           <object class="GtkBox" id="unit_box">
-            <property name="margin-top">6</property>
-            <property name="margin-bottom">6</property>
-            <property name="margin-start">6</property>
+            <property name="valign">center</property>
             <style>
               <class name="linked"/>
             </style>
@@ -63,10 +62,7 @@
             <property name="text">0</property>
             <property name="adjustment">distance_adjustment</property>
             <property name="numeric">1</property>
-            <property name="margin-start">6</property>
-            <property name="margin-end">6</property>
-            <property name="margin-top">6</property>
-            <property name="margin-bottom">6</property>
+            <property name="valign">center</property>
           </object>
         </child>
       </object>
