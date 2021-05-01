@@ -142,8 +142,10 @@ impl Application {
     }
 
     fn setup_actions(&self) {
-        action!(self, "about", move |_, _| {
+        action!(self, "about", clone!(@weak self as this => move |_, _| {
             gtk::AboutDialogBuilder::new()
+                .transient_for(&this.imp().window.get().and_then(glib::WeakRef::upgrade).unwrap())
+                .modal(true)
                 .logo_icon_name(crate::config::APPLICATION_ID)
                 .program_name("Health")
                 .comments(&i18n("A health tracking app for the GNOME desktop."))
@@ -155,7 +157,7 @@ impl Application {
                 .license_type(gtk::License::Gpl30)
                 .build()
                 .show()
-        });
+        }));
 
         action!(
             self,
