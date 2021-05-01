@@ -17,7 +17,10 @@
  */
 
 use crate::{
-    core::{i18n, i18n_f, settings::prelude::*, utils::round_decimal_places, Database, Unitsystem},
+    core::{
+        date::prelude::*, i18n, i18n_f, settings::prelude::*, utils::round_decimal_places,
+        Database, Unitsystem,
+    },
     model::GraphModelWeight,
     views::{GraphView, View},
 };
@@ -146,14 +149,10 @@ impl ViewWeight {
                     "KG"
                 };
 
-                return i18n_f(
+                i18n_f(
                     "{} {} on {}",
-                    &[
-                        &p.value.to_string(),
-                        unit,
-                        &format!("{}", p.date.format("%x")),
-                    ],
-                );
+                    &[&p.value.to_string(), unit, &p.date.format_local()],
+                )
             })));
             let unitgoal = self_.settings.user_weightgoal();
             let weightgoal = if self_.settings.unitsystem() == Unitsystem::Imperial {

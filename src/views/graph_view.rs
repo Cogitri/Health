@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use crate::core::date::prelude::*;
 use chrono::{Date, FixedOffset, Local};
 use gio::subclass::prelude::*;
 use gtk::prelude::*;
@@ -33,6 +34,7 @@ static HALF_Y_PADDING: f32 = 30.0;
 
 mod imp {
     use super::{Point, HALF_X_PADDING, HALF_Y_PADDING};
+    use crate::core::date::prelude::*;
     use gdk::prelude::GdkCairoContextExt;
     use glib::clone;
     use gtk::prelude::*;
@@ -171,8 +173,7 @@ mod imp {
             cr.save().unwrap();
 
             for (i, point) in inner.points.iter().enumerate() {
-                let layout =
-                    widget.create_pango_layout(Some(&format!("{}", point.date.format("%x"))));
+                let layout = widget.create_pango_layout(Some(&point.date.format_local()));
                 let (_, extents) = layout.extents();
 
                 cr.move_to(
@@ -453,7 +454,7 @@ impl GraphView {
 
     /// Sets the points that should be rendered in the graph view.
     pub fn set_points(&self, points: Vec<Point>) {
-        let layout = self.create_pango_layout(Some(&format!("{}", Local::now().format("%x"))));
+        let layout = self.create_pango_layout(Some(&Local::now().format_local()));
         let (_, extents) = layout.extents();
         let datapoint_width = pango::units_to_double(extents.width) + f64::from(HALF_X_PADDING);
 

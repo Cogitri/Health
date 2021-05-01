@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, i18n_f, settings::prelude::*, Database},
+    core::{date::prelude::*, i18n, i18n_f, settings::prelude::*, Database},
     views::{GraphView, View},
 };
 use chrono::Duration;
@@ -167,10 +167,10 @@ impl ViewSteps {
             steps_graph_view.set_points(steps_graph_model.to_points());
             steps_graph_view.set_x_lines_interval(500.0);
             steps_graph_view.set_hover_func(Some(Box::new(|p| {
-                return i18n_f(
+                i18n_f(
                     "{} steps on {}",
-                    &[&p.value.to_string(), &format!("{}", p.date.format("%x"))],
-                );
+                    &[&p.value.to_string(), &p.date.format_local()],
+                )
             })));
             steps_graph_view.set_limit(Some(self_.settings.user_stepgoal() as f32));
             steps_graph_view.set_limit_label(Some(i18n("Stepgoal")));

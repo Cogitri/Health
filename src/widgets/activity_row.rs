@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n_f, settings::prelude::*, Unitsystem},
+    core::{date::prelude::*, i18n_f, settings::prelude::*, Unitsystem},
     model::{Activity, ActivityDataPoints, ActivityInfo},
 };
 use glib::subclass::prelude::*;
@@ -150,7 +150,7 @@ impl ActivityRow {
         ));
         self_
             .activity_date_label
-            .set_text(&format!("{}", activity.date().format("%x")));
+            .set_text(&activity.date().format_local());
         self_.activity_type_label.set_label(&activity_info.name);
 
         if activity_info

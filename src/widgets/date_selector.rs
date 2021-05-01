@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use crate::core::date::prelude::*;
 use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
 use glib::subclass::prelude::*;
 use gtk::prelude::*;
@@ -105,7 +106,7 @@ impl DateSelector {
 
     /// Set the currently selected date.
     pub fn set_selected_date(&self, value: DateTime<FixedOffset>) {
-        self.set_text(&format!("{}", value.format("%x")));
+        self.set_text(&value.format_local());
         self.imp().selected_date.replace(value);
         self.disallow_future_dates();
     }
@@ -123,7 +124,7 @@ impl DateSelector {
 
     fn handle_date_chooser_connect_day_selected(&self, calendar: &gtk::Calendar) {
         let date = Local.timestamp(calendar.date().to_unix(), 0);
-        self.set_text(&format!("{}", date.format("%x")));
+        self.set_text(&date.format_local());
         self.imp().selected_date.replace(date.into());
     }
 
