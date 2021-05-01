@@ -66,10 +66,7 @@
                     <property name="title" translatable="yes">Date</property>
                     <child>
                       <object class="HealthDateSelector" id="date_selector">
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-bottom">6</property>
+                        <property name="valign">center</property>
                       </object>
                     </child>
                   </object>
@@ -84,10 +81,7 @@
                         <property name="adjustment">weight_adjustment</property>
                         <property name="digits">1</property>
                         <property name="numeric">1</property>
-                        <property name="margin-start">6</property>
-                        <property name="margin-end">6</property>
-                        <property name="margin-top">6</property>
-                        <property name="margin-bottom">6</property>
+                        <property name="valign">center</property>
                       </object>
                     </child>
                   </object>
