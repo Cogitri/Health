@@ -64,3 +64,8 @@ calendar stack.month {
 	border-top-style: solid;
 	border-top-color: @borders;
 }
+
+/* Drops the 2px padding in the setup window's weight goal page. */
+list.content.weightgoal > row {
+	padding: 0;
+}
