@@ -221,7 +221,7 @@ impl ActivityRow {
 mod test {
     use super::ActivityRow;
     use crate::{core::i18n_f, model::Activity};
-    use gtk::WidgetExt;
+    use gtk::prelude::WidgetExt;
     use uom::si::{f32::Length, length::kilometer};
 
     #[test]
