@@ -27,24 +27,115 @@
     <property name="title" translatable="yes">Recent Activities</property>
     <property name="view-title" translatable="yes">Activities</property>
     <property name="content-widget">
-      <object class="GtkScrolledWindow" id="scrolled_window">
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
         <child>
-          <object class="AdwClamp">
-            <property name="maximum-size">800</property>
-            <property name="tightening-threshold">600</property>
-            <property name="valign">center</property>
-            <property name="vexpand">True</property>
-            <property name="hexpand">True</property>
-            <property name="margin-start">6</property>
-            <property name="margin-end">6</property>
-            <property name="margin-top">6</property>
-            <property name="margin-bottom">6</property>
+          <object class="GtkBox">
+          <property name="homogeneous">1</property>
+          <property name="margin-start">100</property>
+          <property name="margin-end">100</property>
+          <property name="margin-bottom">20</property>
+            <style>
+              <class name="linked"/>
+            </style>
             <child>
-              <object class="GtkListBox" id="activities_list_box">
-                <property name="selection-mode">none</property>
-                <style>
-                  <class name="content"/>
-                </style>
+              <object class="GtkToggleButton" id="toggle_week">
+                <property name="label">Week</property>
+                <property name="active">1</property>
+                <property name="action-name">view_activity.view_period</property>
+                <property name="action-target">'week'</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="toggle_month">
+                <property name="label">Month</property>
+                <property name="action-name">view_activity.view_period</property>
+                <property name="action-target">'month'</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="toggle_quarter">
+                <property name="label">Quarter</property>
+                <property name="action-name">view_activity.view_period</property>
+                <property name="action-target">'quarter'</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="toggle_year">
+                <property name="label">Year</property>
+                <property name="action-name">view_activity.view_period</property>
+                <property name="action-target">'year'</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkToggleButton" id="toggle_all">
+                <property name="label">All</property>
+                <property name="action-name">view_activity.view_period</property>
+                <property name="action-target">'all'</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkStack" id="stack_activity">
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">no_recent</property>
+                <property name="child">
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkImage" id="empty_icon">
+                        <property name="pixel_size">96</property>
+                        <property name="icon-name">walking-symbolic</property>
+                        <style>
+                          <class name="dim-label"/>
+                        </style>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="since_date">
+                        <property name="margin-top">10</property>
+                      </object>
+                    </child>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">recent_activities</property>
+                <property name="child">
+                  <object class="GtkBox">
+                    <child>
+                      <object class="GtkScrolledWindow" id="scrolled_window">
+                        <child>
+                          <object class="AdwClamp">
+                            <property name="maximum-size">800</property>
+                            <property name="tightening-threshold">600</property>
+                            <property name="valign">center</property>
+                            <property name="vexpand">True</property>
+                            <property name="hexpand">True</property>
+                            <property name="margin-start">6</property>
+                            <property name="margin-end">6</property>
+                            <property name="margin-top">6</property>
+                            <property name="margin-bottom">6</property>
+                            <child>
+                              <object class="GtkListBox" id="activities_list_box">
+                                <property name="selection-mode">none</property>
+                                <property name="margin-start">50</property>
+                                <property name="margin-end">50</property>
+                                <style>
+                                  <class name="content"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </property>
               </object>
             </child>
           </object>

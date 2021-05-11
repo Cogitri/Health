@@ -16,15 +16,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::Database, views::View};
-use chrono::Duration;
-use gio::subclass::prelude::*;
-use glib::Cast;
+use crate::{
+    core::{date::prelude::DateExt, i18n_f, Database},
+    model::ViewPeriod,
+    views::View,
+};
+use glib::{clone, subclass::prelude::*, Cast};
+use gtk::prelude::*;
+use gtk_macros::stateful_action;
+use std::str::FromStr;
 
 mod imp {
     use crate::{
         core::settings::prelude::*,
-        model::{Activity, ModelActivity},
+        model::{Activity, ModelActivity, ViewPeriod},
         views::View,
         widgets::ActivityRow,
     };
@@ -32,13 +37,33 @@ mod imp {
     use glib::Cast;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
 
+    #[derive(Debug)]
+    pub struct ViewActivityMut {
+        pub period: ViewPeriod,
+    }
+
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_view.ui")]
     pub struct ViewActivity {
+        pub inner: std::cell::RefCell<ViewActivityMut>,
         settings: Settings,
         pub activity_model: ModelActivity,
         #[template_child]
         pub activities_list_box: TemplateChild<gtk::ListBox>,
+        #[template_child]
+        pub stack_activity: TemplateChild<gtk::Stack>,
+        #[template_child]
+        pub toggle_week: TemplateChild<gtk::ToggleButton>,
+        #[template_child]
+        pub toggle_month: TemplateChild<gtk::ToggleButton>,
+        #[template_child]
+        pub toggle_quarter: TemplateChild<gtk::ToggleButton>,
+        #[template_child]
+        pub toggle_year: TemplateChild<gtk::ToggleButton>,
+        #[template_child]
+        pub toggle_all: TemplateChild<gtk::ToggleButton>,
+        #[template_child]
+        pub since_date: TemplateChild<gtk::Label>,
     }
 
     #[glib::object_subclass]
@@ -49,9 +74,19 @@ mod imp {
 
         fn new() -> Self {
             Self {
+                inner: std::cell::RefCell::new(ViewActivityMut {
+                    period: ViewPeriod::Week,
+                }),
                 settings: Settings::instance(),
                 activity_model: ModelActivity::new(),
                 activities_list_box: TemplateChild::default(),
+                stack_activity: TemplateChild::default(),
+                toggle_week: TemplateChild::default(),
+                toggle_month: TemplateChild::default(),
+                toggle_quarter: TemplateChild::default(),
+                toggle_year: TemplateChild::default(),
+                toggle_all: TemplateChild::default(),
+                since_date: TemplateChild::default(),
             }
         }
 
@@ -70,13 +105,14 @@ mod imp {
     impl WidgetImpl for ViewActivity {}
 
     impl ObjectImpl for ViewActivity {
-        fn constructed(&self, _obj: &Self::Type) {
+        fn constructed(&self, obj: &Self::Type) {
             self.activities_list_box
                 .bind_model(Some(&self.activity_model), |o| {
                     let row = ActivityRow::new();
                     row.set_activity(o.clone().downcast::<Activity>().unwrap());
                     row.upcast()
                 });
+            obj.setup_actions();
         }
     }
 }
@@ -84,7 +120,7 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [View] visualizes activities the user recently did.
     pub struct ViewActivity(ObjectSubclass<imp::ViewActivity>)
-        @extends View;
+        @extends View, gtk::Widget;
 }
 
 impl ViewActivity {
@@ -101,22 +137,77 @@ impl ViewActivity {
         o
     }
 
+    fn setup_actions(&self) {
+        let action_group = gio::SimpleActionGroup::new();
+
+        stateful_action!(
+            action_group,
+            "view_period",
+            Some(&String::static_variant_type()),
+            "week",
+            clone!(@weak self as obj => move |a, p| {
+                let parameter = p.unwrap();
+
+                obj.set_view_period(ViewPeriod::from_str(parameter.get::<String>().unwrap().as_str()).unwrap());
+
+                a.set_state(parameter);
+            })
+        );
+
+        self.insert_action_group("view_activity", Some(&action_group));
+    }
+
+    pub fn set_view_period(&self, view_period: ViewPeriod) {
+        let downgraded = self.downgrade();
+        gtk_macros::spawn!(async move {
+            if let Some(obj) = downgraded.upgrade() {
+                obj.imp().inner.borrow_mut().period = view_period;
+                obj.update().await;
+                obj.imp().toggle_week.set_active(false);
+                obj.imp().toggle_month.set_active(false);
+                obj.imp().toggle_quarter.set_active(false);
+                obj.imp().toggle_year.set_active(false);
+                obj.imp().toggle_all.set_active(false);
+                match obj.imp().inner.borrow().period {
+                    ViewPeriod::Week => obj.imp().toggle_week.set_active(true),
+                    ViewPeriod::Month => obj.imp().toggle_month.set_active(true),
+                    ViewPeriod::Quarter => obj.imp().toggle_quarter.set_active(true),
+                    ViewPeriod::Year => obj.imp().toggle_year.set_active(true),
+                    ViewPeriod::All => obj.imp().toggle_all.set_active(true),
+                }
+            }
+        });
+    }
+
     /// Reload the [ModelActivity]'s data and refresh the list of activities
     pub async fn update(&self) {
         let activity_model = &self.imp().activity_model;
-
-        if let Err(e) = activity_model.reload(Duration::days(30)).await {
+        let new_period = self.imp().inner.borrow().period;
+        let reload_result = activity_model.reload(new_period).await;
+        if let Err(e) = reload_result {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
                 "Failed to reload activity data: {}",
                 e
             );
+        } else if let Ok(Some(date)) = reload_result {
+            self.imp().since_date.set_label(&i18n_f(
+                "No activities on or after {}",
+                &[&date.format_local()],
+            ));
         }
 
-        if !activity_model.is_empty() {
+        if activity_model.activity_present().await {
             self.upcast_ref::<View>()
                 .stack()
                 .set_visible_child_name("data_page");
+            self.imp()
+                .stack_activity
+                .set_visible_child_name(if !activity_model.is_empty() {
+                    "recent_activities"
+                } else {
+                    "no_recent"
+                });
         }
     }
 

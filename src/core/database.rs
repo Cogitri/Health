@@ -178,10 +178,27 @@ impl Database {
 
             ret.push(activity);
         }
-
-        ret.sort_by_key(crate::Activity::date);
+        //when tracker ordering is fixed, sparql query will order by desc date
+        //ret.sort_by_key(crate::Activity::date);
 
         Ok(ret)
+    }
+
+    pub async fn num_activities(&self) -> Result<i64, glib::Error> {
+        let connection = {
+            self.imp()
+                .inner
+                .borrow()
+                .as_ref()
+                .unwrap()
+                .connection
+                .clone()
+        };
+        let cursor = connection
+            .query_async_future("SELECT COUNT (?datapoint) WHERE { ?datapoint a health:Activity }")
+            .await?;
+        cursor.next_async_future().await?;
+        Ok(cursor.integer(0))
     }
 
     #[cfg(test)]
