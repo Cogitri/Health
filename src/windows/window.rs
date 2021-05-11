@@ -187,7 +187,7 @@ impl Window {
 
         self_
             .stack
-            .connect_property_visible_child_notify(clone!(@weak self as obj => move |_| {
+            .connect_visible_child_notify(clone!(@weak self as obj => move |_| {
                 obj.handle_stack_property_visible_child_notify();
             }));
 
@@ -195,11 +195,11 @@ impl Window {
             obj.handle_close_request()
         }));
 
-        self.connect_property_default_height_notify(clone!(@weak self as obj => move |_| {
+        self.connect_default_height_notify(clone!(@weak self as obj => move |_| {
             obj.handle_property_default_height_notify();
         }));
 
-        self.connect_property_default_width_notify(clone!(@weak self as obj => move |_| {
+        self.connect_default_width_notify(clone!(@weak self as obj => move |_| {
             obj.handle_property_default_width_notify();
         }));
     }

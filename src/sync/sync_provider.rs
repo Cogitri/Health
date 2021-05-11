@@ -205,6 +205,7 @@ pub trait SyncProvider {
     /// The [AuthorizationCode] and [CsrfToken] that were returned by the sync provider, or an error if
     /// reading the response fails. Please keep in mind that the returned `CrfsToken` should always be compared
     /// to what you sent to the provider to make sure the request went through fine.
+    #[allow(clippy::manual_flatten)]
     fn start_listen_server(
         authorize_url: &str,
     ) -> Result<(AuthorizationCode, CsrfToken), SyncProviderError> {

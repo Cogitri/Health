@@ -748,8 +748,8 @@ impl Database {
         self.imp().inner.replace(Some(imp::DatabaseMut {
             connection: tracker::SparqlConnection::new(
                 tracker::SparqlConnectionFlags::NONE,
-                Some(&gio::File::new_for_path(store_path)),
-                Some(&gio::File::new_for_path(ontology_path)),
+                Some(&gio::File::for_path(store_path)),
+                Some(&gio::File::for_path(ontology_path)),
                 None::<&gio::Cancellable>,
             )?,
             manager,

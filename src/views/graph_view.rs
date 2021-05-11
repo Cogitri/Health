@@ -163,7 +163,7 @@ mod imp {
                 pangocairo::show_layout(&cr, &layout);
             }
 
-            cr.stroke();
+            cr.stroke().expect("Couldn't stroke on Cairo Context");
             cr.restore().unwrap();
 
             /*
@@ -185,7 +185,7 @@ mod imp {
                 pangocairo::show_layout(&cr, &layout);
             }
 
-            cr.stroke();
+            cr.stroke().expect("Couldn't stroke on Cairo Context");
             cr.restore().unwrap();
 
             /*
@@ -217,7 +217,7 @@ mod imp {
                 );
                 pangocairo::show_layout(&cr, &layout);
 
-                cr.stroke();
+                cr.stroke().expect("Couldn't stroke on Cairo Context");
                 cr.restore().unwrap();
             }
 
@@ -243,7 +243,7 @@ mod imp {
                 cr.arc(x, y, 2.0, 0.0, 2.0 * PI);
             }
 
-            cr.stroke();
+            cr.stroke().expect("Couldn't stroke on Cairo Context");
             cr.restore().unwrap();
 
             /*
@@ -287,7 +287,8 @@ mod imp {
                         + HALF_Y_PADDING,
                 ),
             );
-            cr.stroke_preserve();
+            cr.stroke_preserve()
+                .expect("Couldn't stroke on Cairo Context");
 
             cr.set_line_width(0.0);
             cr.line_to(
@@ -306,8 +307,9 @@ mod imp {
                 f64::from(graph_color.blue),
                 0.65,
             );
-            cr.stroke_preserve();
-            cr.fill();
+            cr.stroke_preserve()
+                .expect("Couldn't stroke on Cairo Context");
+            cr.fill().expect("Couldn't fill Cairo Context");
             cr.restore().unwrap();
 
             if let Some(hover_func) = &inner.hover_func {
@@ -372,7 +374,7 @@ mod imp {
                     );
                     cr.close_path();
                     cr.set_source_rgba(0.0, 0.0, 0.0, 0.65);
-                    cr.fill_preserve();
+                    cr.fill_preserve().expect("Couldn't fill Cairo Context");
 
                     cr.move_to(
                         f64::from(hover_point.x + padding * 1.5 + x_delta),
@@ -380,7 +382,7 @@ mod imp {
                     );
                     cr.set_source_rgba(1.0, 1.0, 1.0, 1.0);
                     pangocairo::show_layout(&cr, &layout);
-                    cr.stroke();
+                    cr.stroke().expect("Couldn't stroke on Cairo Context");
                 }
             }
         }
