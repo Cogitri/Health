@@ -1,0 +1,48 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'health'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=health",
+                    "--package=health"
+                ],
+                "filter": {
+                    "name": "health",
+                    "kind": "bin"
+                }
+            },
+            "env": {
+                "G_DEBUG": "fatal-criticals"
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=health"
+                ],
+                "filter": {
+                    "name": "libhealth",
+                    "kind": "lib"
+                }
+            },
+            "env": {
+                "G_DEBUG": "fatal-criticals"
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}

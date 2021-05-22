@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "vadimcn.vscode-lldb",
+        "matklad.rust-analyzer",
+        "rafaelmardojai.vscode-gnome-theme"
+    ]
+}

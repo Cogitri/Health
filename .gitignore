@@ -4,7 +4,7 @@ _build
 subprojects/vala-unit
 app
 .flatpak-builder
-.vscode
+.vscode/settings.json
 src/config.rs
 target
 vendor
