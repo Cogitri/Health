@@ -252,11 +252,11 @@ impl ActivityAddDialog {
                 obj.handle_steps_spin_button_changed();
             }));
 
-        self_.activity_type_selector.connect_activity_selected(
-            clone!(@weak self as obj => move || {
+        self_
+            .activity_type_selector
+            .connect_selected_activity_notify(clone!(@weak self as obj => move |_| {
                 obj.handle_activity_type_selector_activity_selected();
-            }),
-        );
+            }));
 
         self_.calories_burned_spin_button.connect_input(
             clone!(@weak self as obj => @default-panic, move |_| {

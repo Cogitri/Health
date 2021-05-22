@@ -20,10 +20,15 @@ use crate::{
     core::i18n,
     model::{ActivityDataPoints, ActivityType},
 };
+use glib::GBoxed;
 use std::{convert::TryFrom, str::FromStr};
 
+#[derive(Clone, Debug, PartialEq, Eq, GBoxed)]
+#[gboxed(type_name = "ActivityInfo")]
+pub struct ActivityInfoBoxed(pub ActivityInfo);
+
 /// A struct containing informations about a certain activity type.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ActivityInfo {
     pub activity_type: ActivityType,
     pub available_data_points: ActivityDataPoints,

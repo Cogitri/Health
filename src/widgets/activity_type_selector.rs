@@ -16,18 +16,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::model::ActivityInfo;
+use crate::{model::ActivityInfo, ActivityInfoBoxed};
 use gio::prelude::*;
 use gio::subclass::prelude::*;
+use glib::SignalHandlerId;
 
 mod imp {
     use crate::{
         core::settings::prelude::*,
         model::{ActivityInfo, ActivityType, ActivityTypeRowData},
         widgets::ActivityTypeRow,
+        ActivityInfoBoxed,
     };
     use gio::Settings;
-    use glib::{g_warning, subclass::Signal};
+    use glib::g_warning;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use num_traits::cast::FromPrimitive;
     use std::{cell::RefCell, convert::TryFrom};
@@ -155,15 +157,46 @@ mod imp {
                 .connect_row_activated(activated_list_box_row);
         }
 
-        fn signals() -> &'static [Signal] {
+        fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("activity-selected", &[], glib::Type::UNIT.into()).build()]
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpec::new_boxed(
+                    "selected-activity",
+                    "selected-activity",
+                    "selected-activity",
+                    ActivityInfoBoxed::static_type(),
+                    glib::ParamFlags::READWRITE,
+                )]
             });
+            &PROPERTIES
+        }
 
-            SIGNALS.as_ref()
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "selected-activity" => {
+                    ActivityInfoBoxed(self.selected_activity.borrow().clone()).to_value()
+                }
+                _ => unimplemented!(),
+            }
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "selected-activity" => {
+                    self.selected_activity
+                        .replace(value.get::<ActivityInfoBoxed>().unwrap().0);
+                }
+                _ => unimplemented!(),
+            }
         }
     }
+
     impl WidgetImpl for ActivityTypeSelector {}
     impl PopoverImpl for ActivityTypeSelector {}
 }
@@ -175,27 +208,27 @@ glib::wrapper! {
 }
 
 impl ActivityTypeSelector {
-    /// Get the currently selected [ActivityInfo].
-    pub fn selected_activity(&self) -> ActivityInfo {
-        self.imp().selected_activity.borrow().clone()
-    }
-
     /// Connect to a new activity being selected.
     ///
     /// # Arguments
-    /// * `callback` - The callback to call once the signal is emitted.
+    /// * `callback` - The callback to call once the ::notify signal is emitted.
     ///
     /// # Returns
     /// The [glib::SignalHandlerId] to disconnect the signal later on.
-    pub fn connect_activity_selected<F: Fn() + 'static>(
+    pub fn connect_selected_activity_notify<F: Fn(&Self) + 'static>(
         &self,
-        callback: F,
-    ) -> glib::SignalHandlerId {
-        self.connect_local("activity-selected", false, move |_| {
-            callback();
-            None
-        })
-        .unwrap()
+        f: F,
+    ) -> SignalHandlerId {
+        self.connect_notify_local(Some("selected-activity"), move |s, _| f(s))
+    }
+
+    /// Get the currently selected [ActivityInfo].
+    pub fn selected_activity(&self) -> ActivityInfo {
+        self.property("selected-activity")
+            .unwrap()
+            .get::<ActivityInfoBoxed>()
+            .unwrap()
+            .0
     }
 
     /// Create a new [ActivityTypeSelector].
@@ -203,12 +236,13 @@ impl ActivityTypeSelector {
         glib::Object::new(&[]).expect("Failed to create ActivityTypeSelector")
     }
 
+    #[allow(dead_code)]
     fn imp(&self) -> &imp::ActivityTypeSelector {
         imp::ActivityTypeSelector::from_instance(self)
     }
 
     fn set_selected_activity(&self, val: ActivityInfo) {
-        self.imp().selected_activity.replace(val);
-        self.emit_by_name("activity-selected", &[]).unwrap();
+        self.set_property("selected-activity", ActivityInfoBoxed(val))
+            .unwrap();
     }
 }

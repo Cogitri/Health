@@ -23,6 +23,7 @@
     num_derive::ToPrimitive,
     Clone,
     PartialEq,
+    Eq,
     strum::EnumString,
     strum::IntoStaticStr,
 )]
