@@ -17,7 +17,7 @@
  */
 
 use crate::core::date::prelude::*;
-use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
+use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone, Utc};
 use glib::{subclass::prelude::*, SignalHandlerId};
 use gtk::prelude::*;
 
@@ -176,7 +176,7 @@ impl DateSelector {
     }
 
     fn handle_date_chooser_connect_day_selected(&self, calendar: &gtk::Calendar) {
-        let date: DateTime<FixedOffset> = Local.timestamp(calendar.date().to_unix(), 0).into();
+        let date: DateTime<FixedOffset> = Utc.timestamp(calendar.date().to_unix(), 0).into();
         self.set_selected_date(date);
     }
 
