@@ -84,13 +84,9 @@
             </child>
             <child>
               <object class="AdwActionRow" id="age_actionrow">
-                <property name="title" translatable="yes">Age</property>
+                <property name="title" translatable="yes">Birthday</property>
                 <child>
-                  <object class="GtkSpinButton" id="age_spin_button">
-                    <property name="width-chars">3</property>
-                    <property name="text">0</property>
-                    <property name="adjustment">age_adjustment</property>
-                    <property name="numeric">1</property>
+                  <object class="HealthDateSelector" id="birthday_selector">
                     <property name="valign">center</property>
                   </object>
                 </child>

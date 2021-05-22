@@ -18,10 +18,11 @@
 
 use crate::core::date::prelude::*;
 use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
-use glib::subclass::prelude::*;
+use glib::{subclass::prelude::*, SignalHandlerId};
 use gtk::prelude::*;
 
 mod imp {
+    use crate::date::DateTimeBoxed;
     use chrono::{DateTime, FixedOffset, Local};
     use glib::clone;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
@@ -82,7 +83,45 @@ mod imp {
         fn dispose(&self, _obj: &Self::Type) {
             self.date_selector_popover.unparent();
         }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpec::new_boxed(
+                    "selected-date",
+                    "selected-date",
+                    "selected-date",
+                    DateTimeBoxed::static_type(),
+                    glib::ParamFlags::READWRITE,
+                )]
+            });
+            &PROPERTIES
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "selected-date" => DateTimeBoxed(*self.selected_date.borrow()).to_value(),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "selected-date" => {
+                    self.selected_date
+                        .replace(value.get::<DateTimeBoxed>().unwrap().0);
+                }
+                _ => unimplemented!(),
+            }
+        }
     }
+
     impl WidgetImpl for DateSelector {}
     impl EntryImpl for DateSelector {}
 }
@@ -94,9 +133,24 @@ glib::wrapper! {
 }
 
 impl DateSelector {
+    /// Connect to a new date being selected.
+    ///
+    /// # Arguments
+    /// * `callback` - The callback to call once the ::notify signal is emitted.
+    ///
+    /// # Returns
+    /// The [glib::SignalHandlerId] to disconnect the signal later on.
+    pub fn connect_selected_date_notify<F: Fn(&Self) + 'static>(&self, f: F) -> SignalHandlerId {
+        self.connect_notify_local(Some("selected-date"), move |s, _| f(s))
+    }
+
     /// Get the currently selected date
     pub fn selected_date(&self) -> DateTime<FixedOffset> {
-        *self.imp().selected_date.borrow()
+        self.property("selected-date")
+            .unwrap()
+            .get::<DateTimeBoxed>()
+            .unwrap()
+            .0
     }
 
     /// Create a new [DateSelector]
@@ -107,14 +161,13 @@ impl DateSelector {
     /// Set the currently selected date.
     pub fn set_selected_date(&self, value: DateTime<FixedOffset>) {
         self.set_text(&value.format_local());
-        self.imp().selected_date.replace(value);
-        self.disallow_future_dates();
-    }
-
-    fn disallow_future_dates(&self) {
-        let date: DateTime<FixedOffset> = Local::now().into();
-        if self.imp().selected_date.borrow().date() > date.date() {
-            self.set_selected_date(date);
+        let now: DateTime<FixedOffset> = Local::now().into();
+        if value.date() > now.date() {
+            self.set_property("selected-date", DateTimeBoxed(now))
+                .unwrap();
+        } else {
+            self.set_property("selected-date", DateTimeBoxed(value))
+                .unwrap();
         }
     }
 
@@ -123,9 +176,8 @@ impl DateSelector {
     }
 
     fn handle_date_chooser_connect_day_selected(&self, calendar: &gtk::Calendar) {
-        let date = Local.timestamp(calendar.date().to_unix(), 0);
-        self.set_text(&date.format_local());
-        self.imp().selected_date.replace(date.into());
+        let date: DateTime<FixedOffset> = Local.timestamp(calendar.date().to_unix(), 0).into();
+        self.set_selected_date(date);
     }
 
     fn handle_icon_press(&self, pos: gtk::EntryIconPosition) {

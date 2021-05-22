@@ -1,9 +1,14 @@
-use chrono::{Date, DateTime, TimeZone};
+use chrono::{Date, DateTime, FixedOffset, TimeZone};
 use glib::DateTime as GDateTime;
+use glib::GBoxed;
 
 pub mod prelude {
     pub use super::*;
 }
+
+#[derive(Clone, Debug, PartialEq, Eq, GBoxed)]
+#[gboxed(type_name = "DateTimeBoxed")]
+pub struct DateTimeBoxed(pub DateTime<FixedOffset>);
 
 #[easy_ext::ext(DateTimeExt)]
 impl<T> DateTime<T>

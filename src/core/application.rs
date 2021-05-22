@@ -20,6 +20,7 @@ use crate::{
     core::{i18n, settings::prelude::*, Unitsystem},
     windows::{PreferencesWindow, Window},
 };
+use chrono::{DateTime, Duration, FixedOffset, Local};
 use gio::prelude::*;
 use glib::{clone, subclass::prelude::*};
 use gtk::prelude::*;
@@ -96,6 +97,7 @@ mod imp {
                 g_warning! (config::LOG_DOMAIN, "Using -dark themes (such as Adwaita-dark) is unsupported. Please use your theme in dark-mode instead (e.g. Adwaita:dark instead of Adwaita-dark)");
             }
 
+            obj.migrate_gsettings();
             obj.setup_actions();
             obj.setup_accels();
         }
@@ -131,6 +133,16 @@ impl Application {
             .window
             .set(glib::ObjectExt::downgrade(&window))
             .unwrap();
+    }
+
+    fn migrate_gsettings(&self) {
+        let self_ = self.imp();
+        if self_.settings.user_birthday().is_none() {
+            let age = self_.settings.user_age();
+            let datetime: DateTime<FixedOffset> =
+                (Local::now() - Duration::weeks((age * 52).into())).into();
+            self_.settings.set_user_birthday(datetime.date());
+        }
     }
 
     fn setup_accels(&self) {
@@ -212,6 +224,36 @@ impl Application {
 
                 a.set_state(parameter);
             })
+        );
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::Application;
+    use crate::core::{settings::prelude::*, utils::init_gschema};
+    use chrono::{Duration, Local};
+    use gio::Settings;
+
+    #[test]
+    fn migrate_gsettings() {
+        let _tmp = init_gschema();
+
+        let app = Application::new();
+        let settings = Settings::instance();
+        settings.set_user_age(50);
+        assert_eq!(settings.user_birthday(), None);
+        app.migrate_gsettings();
+        assert_eq!(
+            settings
+                .user_birthday()
+                .unwrap()
+                .format("%Y-%m-%d")
+                .to_string(),
+            (Local::now() - Duration::weeks(50 * 52))
+                .date()
+                .format("%Y-%m-%d")
+                .to_string(),
         );
     }
 }

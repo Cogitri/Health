@@ -91,15 +91,16 @@ where
 }
 
 #[cfg(test)]
+pub fn get_file_in_builddir(filename: &str) -> Option<std::path::PathBuf> {
+    glob::glob(&format!("{}/**/{}", env!("CARGO_MANIFEST_DIR"), filename))
+        .ok()
+        .and_then(|mut p| p.next())
+        .and_then(|p| p.ok())
+}
+
+#[cfg(test)]
 pub fn init_gtk() {
-    let res = if let Some(gresource_path) = glob::glob(&format!(
-        "{}/**/dev.Cogitri.Health.gresource",
-        env!("CARGO_MANIFEST_DIR")
-    ))
-    .ok()
-    .and_then(|mut p| p.next())
-    .and_then(|p| p.ok())
-    {
+    let res = if let Some(gresource_path) = get_file_in_builddir("dev.Cogitri.Health.gresource") {
         gio::Resource::load(gresource_path)
     } else {
         use std::process::Command;
@@ -130,4 +131,41 @@ pub fn init_gtk() {
     gio::resources_register(&res.unwrap());
 
     gtk::init().unwrap();
+}
+
+/// Initialise some environment variables for testing GSchemas and compile the GSchema
+/// if meson hasn't done so for us already.
+///
+/// # Returns
+/// A [TempDir](tempfile::TempDir) if we had to compile the GSchema ourselves and put the
+/// result in a temporary directory. You have to hold onto the return value for as long
+/// as you need the GSchema (so probably your entire test function), since the temporary
+/// directory on the disk will be cleaned once the return value is dropped.
+#[cfg(test)]
+#[must_use]
+pub fn init_gschema() -> Option<tempfile::TempDir> {
+    use std::env::set_var;
+
+    set_var("GSETTINGS_BACKEND", "memory");
+    if let Some(dir) = get_file_in_builddir("gschemas.compiled") {
+        set_var("GSETTINGS_SCHEMA_DIR", dir.parent().unwrap());
+        None
+    } else {
+        use std::process::Command;
+        use tempfile::tempdir;
+
+        let dir = tempdir().unwrap();
+        let gschema_path = dir.path().to_path_buf();
+
+        Command::new("glib-compile-schemas")
+            .arg(&format!("{}/data", env!("CARGO_MANIFEST_DIR")))
+            .arg("--targetdir")
+            .arg(&gschema_path)
+            .spawn()
+            .expect("Failed to run glib-compile-schemas!");
+
+        std::thread::sleep(std::time::Duration::from_secs(1));
+        set_var("GSETTINGS_SCHEMA_DIR", gschema_path);
+        Some(dir)
+    }
 }

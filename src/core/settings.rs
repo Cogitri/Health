@@ -17,7 +17,7 @@
  */
 
 use crate::{core::Unitsystem, settings_getter_setter};
-use chrono::{DateTime, FixedOffset};
+use chrono::{Date, DateTime, FixedOffset};
 use gio::prelude::*;
 use gio::Settings;
 use num_traits::{FromPrimitive, ToPrimitive};
@@ -104,6 +104,27 @@ impl Settings {
     /// Set the current unitsystem.
     pub fn set_unitsystem(&self, value: Unitsystem) {
         self.set_enum("unitsystem", value.to_i32().unwrap())
+            .unwrap();
+    }
+
+    /// Get the timestamp of the last sync with Google Fit.
+    pub fn user_birthday(&self) -> Option<Date<FixedOffset>> {
+        let str = self.string("user-birthday");
+
+        if str.is_empty() {
+            None
+        } else {
+            Some(
+                DateTime::parse_from_rfc3339(str.as_str())
+                    .map(|s| s.date())
+                    .unwrap(),
+            )
+        }
+    }
+
+    /// Set the timestamp of the last sync with Google Fit.
+    pub fn set_user_birthday(&self, value: Date<FixedOffset>) {
+        self.set_string("user-birthday", &value.and_hms(0, 0, 0).to_rfc3339())
             .unwrap();
     }
 

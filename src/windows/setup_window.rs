@@ -23,6 +23,7 @@ use crate::core::{
     Unitsystem,
 };
 use adw::prelude::*;
+use chrono::Local;
 use gio::prelude::*;
 use glib::{clone, subclass::prelude::*};
 use gtk::prelude::*;
@@ -38,7 +39,7 @@ static OPTIMAL_BMI: f32 = 22.5;
 mod imp {
     use crate::{
         core::{settings::prelude::*, Unitsystem},
-        widgets::{BmiLevelBar, SyncListBox},
+        widgets::{BmiLevelBar, DateSelector, SyncListBox},
     };
     use gio::Settings;
     use glib::subclass::Signal;
@@ -74,7 +75,7 @@ mod imp {
         #[template_child]
         pub setup_left_stack: TemplateChild<gtk::Stack>,
         #[template_child]
-        pub age_spin_button: TemplateChild<gtk::SpinButton>,
+        pub birthday_selector: TemplateChild<DateSelector>,
         #[template_child]
         pub height_spin_button: TemplateChild<gtk::SpinButton>,
         #[template_child]
@@ -117,7 +118,7 @@ mod imp {
                 setup_previous_page_button: TemplateChild::default(),
                 setup_right_stack: TemplateChild::default(),
                 setup_left_stack: TemplateChild::default(),
-                age_spin_button: TemplateChild::default(),
+                birthday_selector: TemplateChild::default(),
                 height_spin_button: TemplateChild::default(),
                 stepgoal_spin_button: TemplateChild::default(),
                 weightgoal_spin_button: TemplateChild::default(),
@@ -205,11 +206,11 @@ impl SetupWindow {
     fn connect_handlers(&self) {
         let self_ = self.imp();
 
-        self_
-            .age_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
+        self_.birthday_selector.connect_selected_date_notify(
+            clone!(@weak self as obj => move |_| {
                 obj.try_enable_next_button();
-            }));
+            }),
+        );
 
         self_
             .height_spin_button
@@ -337,7 +338,7 @@ impl SetupWindow {
 
         self_
             .settings
-            .set_user_age(spinbutton_value(&self_.age_spin_button));
+            .set_user_birthday(self_.birthday_selector.selected_date().date());
         self_.settings.set_user_height(height);
         self_
             .settings
@@ -470,9 +471,9 @@ impl SetupWindow {
 
     fn try_enable_next_button(&self) {
         let self_ = self.imp();
-        let age = self_.age_spin_button.text().to_string();
+        let birthday = self_.birthday_selector.selected_date().date();
         let height = self_.height_spin_button.text().to_string();
-        let sensitive = !age.is_empty() && age != "0" && !height.is_empty() && height != "0";
+        let sensitive = birthday != Local::now().date() && !height.is_empty() && height != "0";
         self_.setup_next_page_button.set_sensitive(sensitive);
         self_.setup_carousel.set_interactive(sensitive);
     }

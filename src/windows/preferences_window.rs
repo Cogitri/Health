@@ -33,7 +33,7 @@ use uom::si::{
 mod imp {
     use crate::{
         core::{i18n, settings::prelude::*, Unitsystem},
-        widgets::{BmiLevelBar, SyncListBox},
+        widgets::{BmiLevelBar, DateSelector, SyncListBox},
     };
     use adw::prelude::*;
     use gio::Settings;
@@ -57,7 +57,7 @@ mod imp {
         #[template_child]
         pub weightgoal_actionrow: TemplateChild<adw::ActionRow>,
         #[template_child]
-        pub age_spin_button: TemplateChild<gtk::SpinButton>,
+        pub birthday_selector: TemplateChild<DateSelector>,
         #[template_child]
         pub height_spin_button: TemplateChild<gtk::SpinButton>,
         #[template_child]
@@ -95,7 +95,7 @@ mod imp {
                 settings,
                 height_actionrow: TemplateChild::default(),
                 weightgoal_actionrow: TemplateChild::default(),
-                age_spin_button: TemplateChild::default(),
+                birthday_selector: TemplateChild::default(),
                 height_spin_button: TemplateChild::default(),
                 stepgoal_spin_button: TemplateChild::default(),
                 weightgoal_spin_button: TemplateChild::default(),
@@ -146,9 +146,10 @@ mod imp {
 
             self.stepgoal_spin_button
                 .set_value(f64::from(self.settings.user_stepgoal()));
-            self.age_spin_button
-                .set_value(f64::from(self.settings.user_age()));
-
+            if let Some(date) = self.settings.user_birthday() {
+                self.birthday_selector
+                    .set_selected_date(date.and_hms(0, 0, 0));
+            }
             self.bmi_levelbar.set_height(self.settings.user_height());
 
             self.bmi_levelbar
@@ -210,11 +211,11 @@ impl PreferencesWindow {
                 obj.handle_unitsystem_changed();
             }));
 
-        self_
-            .age_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_age_spin_button_changed();
-            }));
+        self_.birthday_selector.connect_selected_date_notify(
+            clone!(@weak self as obj => move |_| {
+                obj.handle_birthday_selector_changed();
+            }),
+        );
 
         self_
             .export_activity_csv_button
@@ -263,12 +264,11 @@ impl PreferencesWindow {
         imp::PreferencesWindow::from_instance(self)
     }
 
-    fn handle_age_spin_button_changed(&self) {
+    fn handle_birthday_selector_changed(&self) {
         let self_ = self.imp();
-        let val = spinbutton_value::<u32>(&self_.age_spin_button);
-        if val != 0 {
-            self_.settings.set_user_age(val);
-        }
+        self_
+            .settings
+            .set_user_birthday(self_.birthday_selector.selected_date().date());
     }
 
     fn handle_export_activity_csv_button_clicked(&self) {

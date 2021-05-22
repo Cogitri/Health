@@ -39,7 +39,12 @@
     <key name="user-age" type="u">
       <default>0</default>
       <summary>User age</summary>
-      <description>The age of the user.</description>
+      <description>The age of the user (depreacted).</description>
+    </key>
+    <key name="user-birthday" type="s">
+      <default>""</default>
+      <summary>Absolute user age</summary>
+      <description>The age of the user in absolute terms (like 01/01/1970)</description>
     </key>
     <key name="user-height" type="u">
       <default>0</default>
