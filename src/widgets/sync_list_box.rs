@@ -17,10 +17,9 @@
  */
 
 use crate::sync::{
-    google_fit::GoogleFitSyncProvider,
-    new_db_receiver,
-    sync_provider::{SyncProvider, SyncProviderError},
+    google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider,
 };
+use anyhow::Result;
 use glib::{clone, g_warning, subclass::prelude::*};
 use gtk::prelude::*;
 use gtk_macros::spawn;
@@ -170,7 +169,7 @@ impl SyncListBox {
                 .set_visible_child(&self_.google_fit_spinner.get());
 
             let (sender, receiver) =
-                glib::MainContext::channel::<Result<(), SyncProviderError>>(glib::PRIORITY_DEFAULT);
+                glib::MainContext::channel::<Result<()>>(glib::PRIORITY_DEFAULT);
             let db_sender = new_db_receiver();
 
             receiver.attach(None, clone!(@weak self as obj => @default-panic, move |res| {

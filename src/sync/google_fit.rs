@@ -16,16 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use super::{
-    sync_provider::{SyncProvider, SyncProviderError},
-    DatabaseValue,
-};
+use super::{sync_provider::SyncProvider, DatabaseValue};
 use crate::{
     core::{i18n_f, settings::prelude::*},
     model::{Steps, Weight},
 };
+use anyhow::Result;
 use chrono::{DateTime, FixedOffset, Utc};
-use failure::Fail;
 use gio::Settings;
 use oauth2::{
     basic::{BasicClient, BasicTokenType},
@@ -33,6 +30,7 @@ use oauth2::{
     RedirectUrl, Scope, StandardTokenResponse, TokenResponse, TokenUrl,
 };
 use std::collections::HashMap;
+use std::error::Error;
 use uom::si::{f32::Mass, mass::kilogram};
 
 static GOOGLE_PROVIDER_NAME: &str = "google-fit";
@@ -77,11 +75,8 @@ impl GoogleFitSyncProvider {
     /// * `date_opt` - If set, get steps from that date until now. Otherwise get all steps (e.g. for initial import).
     ///
     /// # Returns
-    /// An array of [Steps], or a [SyncProviderError] if querying the Google Fit API fails.
-    fn steps(
-        &mut self,
-        date_opt: Option<DateTime<FixedOffset>>,
-    ) -> Result<Vec<Steps>, SyncProviderError> {
+    /// An array of [Steps], or a [anyhow::Error] if querying the Google Fit API fails.
+    fn steps(&mut self, date_opt: Option<DateTime<FixedOffset>>) -> Result<Vec<Steps>> {
         let points = if let Some(date) = date_opt {
             self.get::<Points>(&format!("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/{}-{}", date.timestamp_nanos(), Utc::now().timestamp_nanos()))
         } else {
@@ -97,11 +92,8 @@ impl GoogleFitSyncProvider {
     /// * `date_opt` - If set, get weight measurements from that date until now. Otherwise get all weight measurements (e.g. for initial import).
     ///
     /// # Returns
-    /// An array of [Weight]s, or a [SyncProviderError] if querying the Google Fit API fails.
-    fn weights(
-        &mut self,
-        date_opt: Option<DateTime<FixedOffset>>,
-    ) -> Result<Vec<Weight>, SyncProviderError> {
+    /// An array of [Weight]s, or a [anyhow::Error] if querying the Google Fit API fails.
+    fn weights(&mut self, date_opt: Option<DateTime<FixedOffset>>) -> Result<Vec<Weight>> {
         let points = if let Some(date) = date_opt {
             self.get::<Points>(&format!("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/{}-{}", date.timestamp_nanos(), Utc::now().timestamp_nanos()))
         } else {
@@ -160,8 +152,7 @@ impl SyncProvider for GoogleFitSyncProvider {
 
     fn oauth2_token(
         &mut self,
-    ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>, SyncProviderError>
-    {
+    ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>> {
         if let Some(token) = &self.token {
             Ok(token.clone())
         } else {
@@ -171,7 +162,7 @@ impl SyncProvider for GoogleFitSyncProvider {
     }
 
     /// Exchange the refresh token we already stored for an access token (which is valid for an hour).
-    fn reauthenticate(&mut self) -> Result<(), SyncProviderError> {
+    fn reauthenticate(&mut self) -> Result<()> {
         let client = BasicClient::new(
             ClientId::new(GOOGLE_CLIENT_ID.to_string()),
             Some(ClientSecret::new(GOOGLE_CLIENT_SECRET.to_string())),
@@ -185,7 +176,7 @@ impl SyncProvider for GoogleFitSyncProvider {
     /// Start the first authentication with Google Fit. This will open the user's
     /// browser so they can authenticate with Google and store the refresh token
     /// to the secret store.
-    fn initial_authenticate(&mut self) -> Result<(), SyncProviderError> {
+    fn initial_authenticate(&mut self) -> Result<()> {
         let client = BasicClient::new(
             ClientId::new(GOOGLE_CLIENT_ID.to_string()),
             Some(ClientSecret::new(GOOGLE_CLIENT_SECRET.to_string())),
@@ -215,10 +206,13 @@ impl SyncProvider for GoogleFitSyncProvider {
             GoogleFitSyncProvider::start_listen_server(authorize_url.as_str())?;
 
         if csrf_state.secret() != returned_crfst_state.secret() {
-            return Err(SyncProviderError::CrsfMismatch(i18n_f(
-                "CRSF Verification failed, got {}, expected {}",
-                &[returned_crfst_state.secret(), csrf_state.secret()],
-            )));
+            anyhow::bail!(
+                "{}",
+                i18n_f(
+                    "CRSF Verification failed, got {}, expected {}",
+                    &[returned_crfst_state.secret(), csrf_state.secret()],
+                )
+            );
         }
 
         // Exchange the code with a token.
@@ -228,11 +222,14 @@ impl SyncProvider for GoogleFitSyncProvider {
                 .set_pkce_verifier(pkce_code_verifier)
                 .request(oauth2::ureq::http_client)
                 .map_err(|e| {
-                    SyncProviderError::RequestToken(i18n_f(
-                        "Requesting OAuth2 token failed due to error {}",
-                        &[&e.cause()
-                            .map_or(String::new(), std::string::ToString::to_string)],
-                    ))
+                    anyhow::anyhow!(
+                        "{}",
+                        i18n_f(
+                            "Requesting OAuth2 token failed due to error {}",
+                            &[&e.source()
+                                .map_or(String::new(), std::string::ToString::to_string)],
+                        )
+                    )
                 })?,
         );
 
@@ -248,7 +245,7 @@ impl SyncProvider for GoogleFitSyncProvider {
 
     /// Start the initial import with Google Fit. This will import all data
     /// from Google Fit to the Tracker DB.
-    fn initial_import(&mut self) -> Result<(), SyncProviderError> {
+    fn initial_import(&mut self) -> Result<()> {
         let steps = self.steps(None)?;
         self.sender.send(DatabaseValue::Steps(steps)).unwrap();
 
@@ -260,7 +257,7 @@ impl SyncProvider for GoogleFitSyncProvider {
 
     /// Start the sync with Google Fit. This will sync data that has been added
     /// since the last sync.
-    fn sync_data(&mut self) -> Result<(), SyncProviderError> {
+    fn sync_data(&mut self) -> Result<()> {
         let settings = Settings::instance();
         let last_sync_date = settings.timestamp_last_sync_google_fit();
         settings.set_timestamp_last_sync_google_fit(chrono::Local::now().into());

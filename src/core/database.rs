@@ -17,6 +17,7 @@
  */
 
 use crate::model::{Activity, ActivityType, Steps, Weight};
+use anyhow::Result;
 use chrono::{Date, DateTime, Duration, FixedOffset, NaiveDate, SecondsFormat, Utc};
 use gio::subclass::prelude::*;
 use glib::prelude::*;
@@ -124,7 +125,7 @@ impl Database {
     pub async fn activities(
         &self,
         date_opt: Option<DateTime<FixedOffset>>,
-    ) -> Result<Vec<Activity>, glib::Error> {
+    ) -> Result<Vec<Activity>> {
         let self_ = self.imp();
 
         let cursor = if let Some(date) = date_opt {
@@ -184,7 +185,7 @@ impl Database {
         Ok(ret)
     }
 
-    pub async fn num_activities(&self) -> Result<i64, glib::Error> {
+    pub async fn num_activities(&self) -> Result<i64> {
         let connection = {
             self.imp()
                 .inner
@@ -233,7 +234,7 @@ impl Database {
     ///
     /// # Returns
     /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
-    pub async fn steps(&self, date: DateTime<FixedOffset>) -> Result<Vec<Steps>, glib::Error> {
+    pub async fn steps(&self, date: DateTime<FixedOffset>) -> Result<Vec<Steps>> {
         let self_ = self.imp();
 
         let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
@@ -264,10 +265,7 @@ impl Database {
     ///
     /// # Returns
     /// An array of [Weight]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
-    pub async fn weights(
-        &self,
-        date_opt: Option<DateTime<FixedOffset>>,
-    ) -> Result<Vec<Weight>, glib::Error> {
+    pub async fn weights(&self, date_opt: Option<DateTime<FixedOffset>>) -> Result<Vec<Weight>> {
         let self_ = self.imp();
 
         let cursor = if let Some(date) = date_opt {
@@ -299,10 +297,7 @@ impl Database {
     ///
     /// # Returns
     /// True if a [Weight] exists on the `date`, or [glib::Error] if querying the DB goes wrong.
-    pub async fn weight_exists_on_date(
-        &self,
-        date: Date<FixedOffset>,
-    ) -> Result<bool, glib::Error> {
+    pub async fn weight_exists_on_date(&self, date: Date<FixedOffset>) -> Result<bool> {
         let self_ = self.imp();
 
         let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
@@ -320,7 +315,7 @@ impl Database {
     ///
     /// # Returns
     /// An error if querying the DB goes wrong.
-    pub async fn import_steps(&self, steps: &[Steps]) -> Result<(), glib::Error> {
+    pub async fn import_steps(&self, steps: &[Steps]) -> Result<()> {
         let self_ = self.imp();
 
         if steps.is_empty() {
@@ -369,7 +364,7 @@ impl Database {
     ///
     /// # Returns
     /// An error if querying the DB goes wrong.
-    pub async fn import_weights(&self, weights: &[Weight]) -> Result<(), glib::Error> {
+    pub async fn import_weights(&self, weights: &[Weight]) -> Result<()> {
         let self_ = self.imp();
 
         if weights.is_empty() {
@@ -410,7 +405,7 @@ impl Database {
     ///
     /// # Returns
     /// An error if querying the DB goes wrong.
-    pub async fn migrate(&self) -> Result<(), glib::Error> {
+    pub async fn migrate(&self) -> Result<()> {
         self.migrate_activities_date_datetime().await?;
         self.migrate_weight_date_datetime().await?;
         Ok(())
@@ -420,7 +415,7 @@ impl Database {
     ///
     /// # Returns
     /// Am error if querying the DB goes wrong.
-    pub async fn migrate_activities_date_datetime(&self) -> Result<(), glib::Error> {
+    pub async fn migrate_activities_date_datetime(&self) -> Result<()> {
         let self_ = self.imp();
         let (connection, manager) = {
             let inner_ref = self_.inner.borrow();
@@ -526,7 +521,7 @@ impl Database {
     ///
     /// # Returns
     /// An error if querying the DB goes wrong.
-    pub async fn migrate_weight_date_datetime(&self) -> Result<(), glib::Error> {
+    pub async fn migrate_weight_date_datetime(&self) -> Result<()> {
         let self_ = self.imp();
         let (connection, manager) = {
             let inner_ref = self_.inner.borrow();
@@ -577,7 +572,7 @@ impl Database {
     ///
     /// # Returns
     /// Either [Database], or [glib::Error] if connecting to Tracker failed.
-    fn new() -> Result<Self, glib::Error> {
+    fn new() -> Result<Self> {
         let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
 
         o.connect(None, None)?;
@@ -593,7 +588,7 @@ impl Database {
     /// # Returns
     /// Either [Database], or [glib::Error] if connecting to Tracker failed.
     #[cfg(test)]
-    pub fn new_with_store_path(store_path: PathBuf) -> Result<Self, glib::Error> {
+    pub fn new_with_store_path(store_path: PathBuf) -> Result<Self> {
         let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
 
         let mut path = PathBuf::new();
@@ -609,7 +604,7 @@ impl Database {
     ///
     /// # Returns
     /// Returns an error if querying the DB goes wrong.
-    pub async fn reset(&self) -> Result<(), glib::Error> {
+    pub async fn reset(&self) -> Result<()> {
         let self_ = self.imp();
         let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
         connection
@@ -629,7 +624,7 @@ impl Database {
     ///
     /// # Returns
     /// An error if querying the DB goes wrong.
-    pub async fn save_activity(&self, activity: Activity) -> Result<(), glib::Error> {
+    pub async fn save_activity(&self, activity: Activity) -> Result<()> {
         let self_ = self.imp();
         let resource = tracker::Resource::new(None);
         resource.set_uri("rdf:type", "health:Activity");
@@ -693,7 +688,7 @@ impl Database {
     ///
     /// # Returns
     /// An error if querying the DB goes wrong.
-    pub async fn save_weight(&self, weight: Weight) -> Result<(), glib::Error> {
+    pub async fn save_weight(&self, weight: Weight) -> Result<()> {
         let self_ = self.imp();
         let resource = tracker::Resource::new(None);
         resource.set_uri("rdf:type", "health:WeightMeasurement");
@@ -730,11 +725,7 @@ impl Database {
     /// # Arguments
     /// * `ontology_path` - `Some` if a custom path for the Tracker ontology path is desired (e.g. in tests), or `None` to use the default.
     /// * `store_path` - `Some` if a custom store path for the Tracker DB is desired (e.g. in tests), or `None` to use the default.
-    fn connect(
-        &self,
-        ontology_path: Option<PathBuf>,
-        store_path: Option<PathBuf>,
-    ) -> Result<(), glib::Error> {
+    fn connect(&self, ontology_path: Option<PathBuf>, store_path: Option<PathBuf>) -> Result<()> {
         let mut store_path = store_path.unwrap_or_else(glib::user_data_dir);
         store_path.push("health");
 

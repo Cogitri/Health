@@ -18,11 +18,7 @@
 
 use crate::{
     core::{i18n_f, settings::prelude::*, Database},
-    sync::{
-        google_fit::GoogleFitSyncProvider,
-        new_db_receiver,
-        sync_provider::{SyncProvider, SyncProviderError},
-    },
+    sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
     views::{ViewActivity, ViewSteps, ViewWeight},
     windows::{ActivityAddDialog, WeightAddDialog},
 };
@@ -348,7 +344,7 @@ impl Window {
 
             receiver.attach(
                 None,
-                clone!(@weak self as obj => @default-panic, move |v: Option<SyncProviderError>| {
+                clone!(@weak self as obj => @default-panic, move |v: Option<anyhow::Error>| {
                     if let Some(e) = v {
                         obj.show_error(&i18n_f(
                             "Couldn't sync Google Fit data due to error: {}",

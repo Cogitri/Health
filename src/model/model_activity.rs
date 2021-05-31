@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use anyhow::Result;
 use chrono::{Datelike, Duration, TimeZone};
 use gio::prelude::*;
 use glib::subclass::prelude::*;
@@ -125,10 +126,7 @@ impl ModelActivity {
     ///
     /// # Returns start date of viewing period (None for ViewPeriod::All)
     /// Returns an error if querying the DB fails.
-    pub async fn reload(
-        &self,
-        choice: ViewPeriod,
-    ) -> Result<Option<chrono::Date<chrono::Local>>, glib::Error> {
+    pub async fn reload(&self, choice: ViewPeriod) -> Result<Option<chrono::Date<chrono::Local>>> {
         let self_ = self.imp();
         let previous_size = { self_.inner.borrow().vec.len() };
         let start_date = match choice {

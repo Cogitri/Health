@@ -17,6 +17,7 @@
  */
 
 use crate::core::Database;
+use anyhow::Result;
 use gio::prelude::*;
 use std::convert::TryFrom;
 
@@ -40,19 +41,11 @@ impl CsvHandler {
     ///
     /// # Returns
     /// An error if writing to the file fails or reading from the DB.
-    pub async fn export_activities_csv(&self, file: &gio::File) -> Result<(), glib::Error> {
+    pub async fn export_activities_csv(&self, file: &gio::File) -> Result<()> {
         let mut wtr = csv::Writer::from_writer(vec![]);
 
         for activity in self.db.activities(None).await? {
-            match wtr.serialize(activity) {
-                Ok(_) => {}
-                Err(e) => {
-                    return Err(glib::error::Error::new(
-                        glib::FileError::Failed,
-                        &e.to_string(),
-                    ))
-                }
-            }
+            wtr.serialize(activity)?;
         }
 
         self.write_csv(file, wtr.into_inner().unwrap()).await?;
@@ -67,19 +60,11 @@ impl CsvHandler {
     ///
     /// # Returns
     /// An error if writing to the file fails or reading from the DB.
-    pub async fn export_weights_csv(&self, file: &gio::File) -> Result<(), glib::Error> {
+    pub async fn export_weights_csv(&self, file: &gio::File) -> Result<()> {
         let mut wtr = csv::Writer::from_writer(vec![]);
 
         for weight in self.db.weights(None).await? {
-            match wtr.serialize(weight) {
-                Ok(_) => {}
-                Err(e) => {
-                    return Err(glib::error::Error::new(
-                        glib::FileError::Failed,
-                        &e.to_string(),
-                    ))
-                }
-            }
+            wtr.serialize(weight)?;
         }
 
         self.write_csv(file, wtr.into_inner().unwrap()).await?;
@@ -94,19 +79,14 @@ impl CsvHandler {
     ///
     /// # Returns
     /// An error if reading from the file fails or writing to the DB.
-    pub async fn import_activities_csv(&self, file: &gio::File) -> Result<(), glib::Error> {
+    pub async fn import_activities_csv(&self, file: &gio::File) -> Result<()> {
         let (data, _) = file.load_contents_async_future().await?;
         let mut rdr = csv::Reader::from_reader(&*data);
 
         for activity in rdr.deserialize() {
             match activity {
                 Ok(a) => Ok(self.db.save_activity(a).await?),
-                Err(e) => {
-                    return Err(glib::error::Error::new(
-                        glib::FileError::Failed,
-                        &e.to_string(),
-                    ))
-                }
+                Err(e) => Err(e),
             }?;
         }
 
@@ -120,19 +100,14 @@ impl CsvHandler {
     ///
     /// # Returns
     /// An error if reading from the file fails or writing to the DB.
-    pub async fn import_weights_csv(&self, file: &gio::File) -> Result<(), glib::Error> {
+    pub async fn import_weights_csv(&self, file: &gio::File) -> Result<()> {
         let (data, _) = file.load_contents_async_future().await?;
         let mut rdr = csv::Reader::from_reader(&*data);
 
         for weight in rdr.deserialize() {
             match weight {
                 Ok(a) => Ok(self.db.save_weight(a).await?),
-                Err(e) => {
-                    return Err(glib::error::Error::new(
-                        glib::FileError::Failed,
-                        &e.to_string(),
-                    ))
-                }
+                Err(e) => Err(e),
             }?;
         }
 
@@ -140,7 +115,7 @@ impl CsvHandler {
     }
 
     /// Write (CSV) data to a `File`.
-    async fn write_csv(&self, file: &gio::File, data: Vec<u8>) -> Result<(), glib::Error> {
+    async fn write_csv(&self, file: &gio::File, data: Vec<u8>) -> Result<()> {
         let stream = file
             .replace_async_future(
                 None,

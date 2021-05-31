@@ -17,6 +17,7 @@
  */
 
 use crate::{core::i18n, utils::run_gio_future_sync};
+use anyhow::Result;
 use oauth2::{
     basic::{BasicClient, BasicTokenType},
     url::Url,
@@ -29,28 +30,6 @@ use std::{
     net::TcpListener,
 };
 
-#[derive(Debug, thiserror::Error)]
-#[error("{}", _0)]
-pub enum SyncProviderError {
-    CrsfMismatch(String),
-    GLib(#[from] glib::Error),
-    Io(#[from] std::io::Error),
-    NoRefreshTokenSet(String),
-    NoRequestReceived(String),
-    RefreshFailed(String),
-    RequestToken(String),
-    SecretService(#[from] SsError),
-    UReq(Box<ureq::Error>),
-    UrlParse(#[from] oauth2::url::ParseError),
-}
-
-// Box ureq::Error since it's pretty huge (1008 Byte)
-impl From<ureq::Error> for SyncProviderError {
-    fn from(e: ureq::Error) -> Self {
-        Self::UReq(Box::new(e))
-    }
-}
-
 /// [SyncProvider] is a trait that should be implemented by all 3rd party providers.
 pub trait SyncProvider {
     /// Returns the URL to the API Endpoint
@@ -62,21 +41,21 @@ pub trait SyncProvider {
     /// Gets the OAuth2 token or reauthenticates with the refresh token if no token has been set yet.
     fn oauth2_token(
         &mut self,
-    ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>, SyncProviderError>;
+    ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>>;
 
     /// Perform the initial authentication. This should open the user's browser so they can
     /// authenticate with their provider.
-    fn initial_authenticate(&mut self) -> Result<(), SyncProviderError>;
+    fn initial_authenticate(&mut self) -> Result<()>;
 
     /// Start the initial import. This should import all data from the sync provider to
     /// the Tracker DB.
-    fn initial_import(&mut self) -> Result<(), SyncProviderError>;
+    fn initial_import(&mut self) -> Result<()>;
 
     /// Exchange the refresh token we already stored for an access token.
-    fn reauthenticate(&mut self) -> Result<(), SyncProviderError>;
+    fn reauthenticate(&mut self) -> Result<()>;
 
     /// This should sync data that has been added since the last sync.
-    fn sync_data(&mut self) -> Result<(), SyncProviderError>;
+    fn sync_data(&mut self) -> Result<()>;
 
     /// Make a `GET` request against the specified `method`.
     ///
@@ -85,10 +64,7 @@ pub trait SyncProvider {
     ///
     /// # Returns
     /// The deserialized JSON response
-    fn get<T: serde::de::DeserializeOwned>(
-        &mut self,
-        method: &str,
-    ) -> Result<T, SyncProviderError> {
+    fn get<T: serde::de::DeserializeOwned>(&mut self, method: &str) -> Result<T> {
         Ok(ureq::get(&format!("{}/{}", self.api_url(), method))
             .set(
                 "Authorization",
@@ -109,7 +85,7 @@ pub trait SyncProvider {
         &mut self,
         method: &str,
         data: ureq::SerdeValue,
-    ) -> Result<T, SyncProviderError> {
+    ) -> Result<T> {
         Ok(ureq::post(&format!("{}/{}", self.api_url(), method))
             .set(
                 "Authorization",
@@ -123,18 +99,16 @@ pub trait SyncProvider {
     fn exchange_refresh_token(
         &self,
         client: &BasicClient,
-    ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>, SyncProviderError>
-    {
+    ) -> Result<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>> {
         match self.token() {
-            Ok(Some(token)) => client
+            Ok(Some(token)) => Ok(client
                 .exchange_refresh_token(&token)
-                .request(oauth2::ureq::http_client)
-                .map_err(|e| SyncProviderError::RefreshFailed(e.to_string())),
+                .request(oauth2::ureq::http_client)?),
             Ok(None) => {
-                Err(SyncProviderError::NoRefreshTokenSet(i18n("Can't retrieve OAuth2 token when no refesh token is set! Please re-authenticate with your sync provider.")))
+                Err(anyhow::anyhow!("{}", i18n("Can't retrieve OAuth2 token when no refesh token is set! Please re-authenticate with your sync provider.")))
             }
             Err(e) => {
-                Err(e.into())
+                Err(e)
             }
         }
     }
@@ -144,7 +118,7 @@ pub trait SyncProvider {
     /// # Returns
     /// A `RefreshToken` if a refresh token is set, or `None` if no refresh token is set.
     /// May return an error if querying the secret store fails.
-    fn token(&self) -> Result<Option<RefreshToken>, SsError> {
+    fn token(&self) -> Result<Option<RefreshToken>> {
         let ss = SecretService::new(EncryptionType::Dh)?;
         let collection = default_collection_unlocked(&ss)?;
 
@@ -170,7 +144,7 @@ pub trait SyncProvider {
     ///
     /// # Returns
     /// May return an error if querying the secret store fails.
-    fn set_token(&self, value: RefreshToken) -> Result<(), SsError> {
+    fn set_token(&self, value: RefreshToken) -> Result<()> {
         let ss = SecretService::new(EncryptionType::Dh)?;
         let collection = default_collection_unlocked(&ss)?;
 
@@ -206,9 +180,7 @@ pub trait SyncProvider {
     /// reading the response fails. Please keep in mind that the returned `CrfsToken` should always be compared
     /// to what you sent to the provider to make sure the request went through fine.
     #[allow(clippy::manual_flatten)]
-    fn start_listen_server(
-        authorize_url: &str,
-    ) -> Result<(AuthorizationCode, CsrfToken), SyncProviderError> {
+    fn start_listen_server(authorize_url: &str) -> Result<(AuthorizationCode, CsrfToken)> {
         run_gio_future_sync(gio::AppInfo::launch_default_for_uri_async_future(
             authorize_url,
             None::<&gio::AppLaunchContext>,
@@ -263,13 +235,11 @@ pub trait SyncProvider {
             }
         }
 
-        Err(SyncProviderError::NoRequestReceived(i18n(
-            "Couldn't parse OAuth2 response",
-        )))
+        anyhow::bail!("{}", i18n("Couldn't parse OAuth2 response"))
     }
 }
 
-fn default_collection_unlocked<'a>(ss: &'a SecretService) -> Result<Collection<'a>, SsError> {
+fn default_collection_unlocked<'a>(ss: &'a SecretService) -> Result<Collection<'a>> {
     let collection = match ss.get_default_collection() {
         Ok(collection) => Ok(collection),
         Err(SsError::NoResult) => ss.create_collection("default", "default"),
@@ -281,6 +251,6 @@ fn default_collection_unlocked<'a>(ss: &'a SecretService) -> Result<Collection<'
             c.unlock()?;
             Ok(c)
         }
-        Err(e) => Err(e),
+        Err(e) => Err(e.into()),
     }
 }

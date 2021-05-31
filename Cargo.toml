@@ -13,93 +13,114 @@ name = "health"
 path = "src/main.rs"
 
 [dependencies.adw]
+default-features = false
 git = "https://gitlab.gnome.org/World/Rust/libadwaita-rs"
 package = "libadwaita"
 
+[dependencies.anyhow]
+default-features = false
+version = "1.0"
+
 [dependencies.bitflags]
+default-features = false
 version = "1.0"
 
 [dependencies.chrono]
+default-features = false
 version = "0.4"
 
 [dependencies.csv]
+default-features = false
 version = "1.1"
 
 [dependencies.easy-ext]
+default-features = false
 version = "0.2"
 
-[dependencies.failure]
-version = "0.1"
-
 [dependencies.gettext-rs]
-version = "0.6"
+default-features = false
+version = "0.7"
 features = ["gettext-system"]
 
 [dependencies.gdk]
+default-features = false
 git = "https://github.com/gtk-rs/gtk4-rs"
 package = "gdk4"
 
 [dependencies.gtk]
+default-features = false
 git = "https://github.com/gtk-rs/gtk4-rs"
 package = "gtk4"
 
 [dependencies.gtk-macros]
-version = "0.2.0"
+default-features = false
+version = "0.3.0"
 
 [dependencies.gio]
+default-features = false
 git = "https://github.com/gtk-rs/gtk-rs-core"
 features = ["v2_60"]
 
 [dependencies.glib]
+default-features = false
 git = "https://github.com/gtk-rs/gtk-rs-core"
 features = ["v2_60"]
 
 [dependencies.http]
+default-features = false
 version = "0.2"
 
 [dependencies.num-derive]
+default-features = false
 version = "0.3"
 
 [dependencies.num-traits]
+default-features = false
 version = "0.2"
 
 [dependencies.oauth2]
-version = "4.0.0-beta.1"
 default-features = false
+version = "4.0.0"
 features = ["ureq"]
 
 [dependencies.once_cell]
+default-features = false
 version = "1.5"
 
 [dependencies.pango]
+default-features = false
 git = "https://github.com/gtk-rs/gtk-rs-core"
 
 [dependencies.pangocairo]
+default-features = false
 git = "https://github.com/gtk-rs/gtk-rs-core"
 
 [dependencies.paste]
+default-features = false
 version = "1.0"
 
 [dependencies.regex]
+default-features = false
 version = "1.4.3"
 
 [dependencies.serde]
+default-features = false
 version = "1"
 features = ["serde_derive"]
 
 [dependencies.serde_json]
+default-features = false
 version = "1"
 
 [dependencies.strum]
-version = "0.20"
+default-features = false
+version = "0.21"
 features = ["derive"]
 
 [dependencies.tracker]
+default-features = false
 git = "https://gitlab.com/dleggo/tracker-rs/"
 package = "tracker-rs"
-
-[dependencies.thiserror]
-version = "1"
 
 [dependencies.uom]
 default-features = false
@@ -107,19 +128,24 @@ version = "0.31"
 features = ["f32", "si"]
 
 [dependencies.ureq]
+default-features = false
 version = "2"
 features = ["json"]
 
 [dependencies.secret-service]
+default-features = false
 version = "2"
 
 [dev-dependencies.glob]
+default-features = false
 version = "0.3"
 
 [dev-dependencies.serde_test]
+default-features = false
 version = "1"
 
 [dev-dependencies.tempfile]
+default-features = false
 version = "3"
 
 [profile.release]

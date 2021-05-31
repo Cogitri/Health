@@ -16,15 +16,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use std::collections::BTreeMap;
-
 use crate::{
     core::{settings::prelude::*, Database, Unitsystem},
     model::weight::Weight,
     views::Point,
 };
+use anyhow::Result;
 use chrono::Duration;
 use gio::Settings;
+use std::collections::BTreeMap;
 use uom::si::{
     f32::Mass,
     mass::{kilogram, pound},
@@ -75,7 +75,7 @@ impl GraphModelWeight {
     ///
     /// # Returns
     /// Returns an error if querying the DB fails.
-    pub async fn reload(&mut self, duration: Duration) -> Result<(), glib::Error> {
+    pub async fn reload(&mut self, duration: Duration) -> Result<()> {
         self.vec = self
             .database
             .weights(Some((chrono::Local::now() - duration).into()))

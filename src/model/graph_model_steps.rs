@@ -17,6 +17,7 @@
  */
 
 use crate::{core::Database, model::Steps, views::Point};
+use anyhow::Result;
 use chrono::{DateTime, Duration, FixedOffset, Utc};
 use std::{collections::BTreeMap, convert::TryInto};
 
@@ -128,7 +129,7 @@ impl GraphModelSteps {
     ///
     /// # Returns
     /// Returns an error if querying the DB fails.
-    pub async fn reload(&mut self, duration: Duration) -> Result<(), glib::Error> {
+    pub async fn reload(&mut self, duration: Duration) -> Result<()> {
         self.vec = self
             .database
             .steps((chrono::Local::now() - duration).into())
