@@ -53,6 +53,8 @@ sources = files(
   'views/mod.rs',
   'views/view.rs',
   'views/view_activity.rs',
+  'views/view_add_weight.rs',
+  'views/view_add_activity.rs',
   'views/view_steps.rs',
   'views/view_weight.rs',
   'widgets/activity_row.rs',
@@ -63,11 +65,9 @@ sources = files(
   'widgets/distance_action_row.rs',
   'widgets/mod.rs',
   'widgets/sync_list_box.rs',
-  'windows/activity_add_dialog.rs',
   'windows/mod.rs',
   'windows/preferences_window.rs',
   'windows/setup_window.rs',
-  'windows/weight_add_dialog.rs',
   'windows/window.rs',
 )
 

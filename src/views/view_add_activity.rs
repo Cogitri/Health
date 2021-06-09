@@ -1,4 +1,4 @@
-/* activity_add_dialog.rs
+/* view_add_activity.rs
  *
  * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
  *
@@ -19,11 +19,12 @@
 use crate::{
     core::{settings::prelude::*, utils::spinbutton_value},
     model::{Activity, ActivityDataPoints, ActivityInfo, Unitsize},
+    views::View,
 };
 use chrono::Duration;
 use glib::{clone, subclass::prelude::*};
 use gtk::prelude::*;
-use gtk_macros::{spawn, stateful_action};
+use gtk_macros::stateful_action;
 use imp::spin_button_value_if_datapoint;
 use std::str::FromStr;
 
@@ -31,6 +32,7 @@ mod imp {
     use crate::{
         core::{settings::prelude::*, utils::spinbutton_value, Database},
         model::{Activity, ActivityDataPoints, ActivityInfo, ActivityType},
+        views::View,
         widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
     };
     use gio::Settings;
@@ -39,7 +41,7 @@ mod imp {
     use std::cell::RefCell;
 
     #[derive(Debug)]
-    pub struct ActivityAddDialogMut {
+    pub struct ViewAddActivityMut {
         pub activity: Activity,
         pub user_changed_datapoints: ActivityDataPoints,
         pub filter_model: Option<gtk::FilterListModel>,
@@ -49,8 +51,8 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_add_dialog.ui")]
-    pub struct ActivityAddDialog {
-        pub inner: RefCell<ActivityAddDialogMut>,
+    pub struct ViewAddActivity {
+        pub inner: RefCell<ViewAddActivityMut>,
         pub database: Database,
         pub settings: Settings,
 
@@ -118,14 +120,14 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for ActivityAddDialog {
-        const NAME: &'static str = "HealthActivityAddDialog";
-        type ParentType = gtk::Dialog;
-        type Type = super::ActivityAddDialog;
+    impl ObjectSubclass for ViewAddActivity {
+        const NAME: &'static str = "HealthViewAddActivity";
+        type ParentType = View;
+        type Type = super::ViewAddActivity;
 
         fn new() -> Self {
             Self {
-                inner: RefCell::new(ActivityAddDialogMut {
+                inner: RefCell::new(ViewAddActivityMut {
                     activity: Activity::new(),
                     filter_model: None,
                     selected_activity: ActivityInfo::from(ActivityType::Walking),
@@ -165,7 +167,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for ActivityAddDialog {
+    impl ObjectImpl for ViewAddActivity {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
@@ -202,35 +204,24 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for ActivityAddDialog {}
-    impl WindowImpl for ActivityAddDialog {}
-    impl DialogImpl for ActivityAddDialog {}
+    impl WidgetImpl for ViewAddActivity {}
 }
 
 glib::wrapper! {
-    /// A dialog for adding a new activity record.
-    pub struct ActivityAddDialog(ObjectSubclass<imp::ActivityAddDialog>)
-        @extends gtk::Widget, gtk::Window, gtk::Dialog;
+    /// A few widgets for adding a new activity record.
+    pub struct ViewAddActivity(ObjectSubclass<imp::ViewAddActivity>)
+        @extends gtk::Widget, View;
 }
 
-impl ActivityAddDialog {
-    /// Create a new [ActivityAddDialog].
-    ///
-    /// # Arguments
-    /// * `parent` - The [GtkWindow](gtk::Window) who is the transient parent of this dialog.
-    pub fn new(parent: &gtk::Window) -> Self {
-        let o: Self = glib::Object::new(&[("use-header-bar", &1)])
-            .expect("Failed to create ActivityAddDialog");
-
-        o.set_transient_for(Some(parent));
-
-        o
+impl ViewAddActivity {
+    /// Create a new [ViewAddActivity].
+    pub fn new() -> Self {
+        glib::Object::new(&[]).expect("Failed to create ViewAddActivity")
     }
 
     fn connect_handlers(&self) {
         let self_ = self.imp();
 
-        self.connect_response(Self::handle_response);
         self_
             .calories_burned_spin_button
             .connect_changed(clone!(@weak self as obj => move |_| {
@@ -280,8 +271,8 @@ impl ActivityAddDialog {
         );
     }
 
-    fn imp(&self) -> &imp::ActivityAddDialog {
-        imp::ActivityAddDialog::from_instance(self)
+    fn imp(&self) -> &imp::ViewAddActivity {
+        imp::ViewAddActivity::from_instance(self)
     }
 
     fn setup_actions(&self) {
@@ -432,79 +423,67 @@ impl ActivityAddDialog {
         None
     }
 
-    fn handle_response(&self, id: gtk::ResponseType) {
-        match id {
-            gtk::ResponseType::Ok => {
-                let downgraded = self.downgrade();
-                spawn!(async move {
-                    if let Some(obj) = downgraded.upgrade() {
-                        let self_ = obj.imp();
-                        let selected_activity = self_.activity_type_selector.selected_activity();
-                        let distance = if selected_activity
-                            .available_data_points
-                            .contains(ActivityDataPoints::DISTANCE)
-                        {
-                            Some(self_.distance_action_row.value())
-                        } else {
-                            None
-                        };
+    pub async fn handle_response(&self, id: gtk::ResponseType) {
+        if id == gtk::ResponseType::Ok {
+            let self_ = self.imp();
+            let selected_activity = self_.activity_type_selector.selected_activity();
+            let distance = if selected_activity
+                .available_data_points
+                .contains(ActivityDataPoints::DISTANCE)
+            {
+                Some(self_.distance_action_row.value())
+            } else {
+                None
+            };
 
-                        let activity = Activity::new();
-                        activity
-                            .set_date(self_.date_selector.selected_date())
-                            .set_activity_type(selected_activity.activity_type.clone())
-                            .set_calories_burned(spin_button_value_if_datapoint(
-                                &self_.calories_burned_spin_button,
-                                &selected_activity,
-                                ActivityDataPoints::CALORIES_BURNED,
-                            ))
-                            .set_distance(distance)
-                            .set_heart_rate_avg(spin_button_value_if_datapoint(
-                                &self_.heart_rate_average_spin_button,
-                                &selected_activity,
-                                ActivityDataPoints::HEART_RATE,
-                            ))
-                            .set_heart_rate_min(spin_button_value_if_datapoint(
-                                &self_.heart_rate_min_spin_button,
-                                &selected_activity,
-                                ActivityDataPoints::HEART_RATE,
-                            ))
-                            .set_heart_rate_max(spin_button_value_if_datapoint(
-                                &self_.heart_rate_max_spin_button,
-                                &selected_activity,
-                                ActivityDataPoints::HEART_RATE,
-                            ))
-                            .set_steps(spin_button_value_if_datapoint(
-                                &self_.steps_spin_button,
-                                &selected_activity,
-                                ActivityDataPoints::STEP_COUNT,
-                            ))
-                            .set_duration(Duration::minutes(
-                                spin_button_value_if_datapoint(
-                                    &self_.calories_burned_spin_button,
-                                    &selected_activity,
-                                    ActivityDataPoints::DURATION,
-                                )
-                                .unwrap_or(0)
-                                .into(),
-                            ));
+            let activity = Activity::new();
+            activity
+                .set_date(self_.date_selector.selected_date())
+                .set_activity_type(selected_activity.activity_type.clone())
+                .set_calories_burned(spin_button_value_if_datapoint(
+                    &self_.calories_burned_spin_button,
+                    &selected_activity,
+                    ActivityDataPoints::CALORIES_BURNED,
+                ))
+                .set_distance(distance)
+                .set_heart_rate_avg(spin_button_value_if_datapoint(
+                    &self_.heart_rate_average_spin_button,
+                    &selected_activity,
+                    ActivityDataPoints::HEART_RATE,
+                ))
+                .set_heart_rate_min(spin_button_value_if_datapoint(
+                    &self_.heart_rate_min_spin_button,
+                    &selected_activity,
+                    ActivityDataPoints::HEART_RATE,
+                ))
+                .set_heart_rate_max(spin_button_value_if_datapoint(
+                    &self_.heart_rate_max_spin_button,
+                    &selected_activity,
+                    ActivityDataPoints::HEART_RATE,
+                ))
+                .set_steps(spin_button_value_if_datapoint(
+                    &self_.steps_spin_button,
+                    &selected_activity,
+                    ActivityDataPoints::STEP_COUNT,
+                ))
+                .set_duration(Duration::minutes(
+                    spin_button_value_if_datapoint(
+                        &self_.calories_burned_spin_button,
+                        &selected_activity,
+                        ActivityDataPoints::DURATION,
+                    )
+                    .unwrap_or(0)
+                    .into(),
+                ));
 
-                        if let Err(e) = self_.database.save_activity(activity).await {
-                            glib::g_warning!(
-                                crate::config::LOG_DOMAIN,
-                                "Failed to save new data due to error {}",
-                                e.to_string()
-                            )
-                        }
-                        obj.save_recent_activity();
-
-                        obj.destroy();
-                    }
-                });
+            if let Err(e) = self_.database.save_activity(activity).await {
+                glib::g_warning!(
+                    crate::config::LOG_DOMAIN,
+                    "Failed to save new data due to error {}",
+                    e.to_string()
+                )
             }
-            _ => {
-                self.destroy();
-            }
+            self.save_recent_activity();
         }
     }
 

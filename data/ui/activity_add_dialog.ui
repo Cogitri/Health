@@ -57,28 +57,11 @@
       <widget name="calories_burned_spin_button"/>
     </widgets>
   </object>
-  <template class="HealthActivityAddDialog" parent="GtkDialog">
-    <property name="use-header-bar">1</property>
-    <property name="modal">1</property>
-    <property name="destroy-with-parent">1</property>
-    <property name="title" translatable="yes">Add New Activity</property>
-    <property name="default-width">400</property>
-    <child type="action">
-      <object class="GtkButton" id="button_cancel">
-        <property name="label" translatable="yes">_Cancel</property>
-        <property name="use-underline">1</property>
-      </object>
-    </child>
-    <child type="action">
-      <object class="GtkButton" id="button_ok">
-        <property name="label" translatable="yes">_Save</property>
-        <property name="use-underline">1</property>
-      </object>
-    </child>
-    <action-widgets>
-      <action-widget response="cancel">button_cancel</action-widget>
-      <action-widget response="ok" default="true">button_ok</action-widget>
-    </action-widgets>
+  <template class="HealthViewAddActivity" parent="HealthView">
+    <property name="view-title">Add New Activity</property>
+    <property name="icon-name">walking-symbolic</property>
+    <property name="name">Add Activity Data</property>
+    <property name="title" translatable="yes">Add An Activity</property>
     <child>
       <object class="GtkScrolledWindow">
         <property name="propagate-natural-height">1</property>

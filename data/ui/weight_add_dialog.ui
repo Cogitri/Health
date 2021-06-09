@@ -25,26 +25,11 @@
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
   </object>
-  <template class="HealthWeightAddDialog" parent="GtkDialog">
-    <property name="use-header-bar">1</property>
-    <property name="modal">1</property>
-    <property name="destroy-with-parent">1</property>
-    <child type="action">
-      <object class="GtkButton" id="button_cancel">
-        <property name="label" translatable="yes">_Cancel</property>
-        <property name="use-underline">1</property>
-      </object>
-    </child>
-    <child type="action">
-      <object class="GtkButton" id="button_ok">
-        <property name="label" translatable="yes">_Save</property>
-        <property name="use-underline">1</property>
-      </object>
-    </child>
-    <action-widgets>
-      <action-widget response="cancel">button_cancel</action-widget>
-      <action-widget response="ok" default="true">button_ok</action-widget>
-    </action-widgets>
+  <template class="HealthViewAddWeight" parent="HealthView">
+    <property name="icon-name">weight-scale-symbolic</property>
+    <property name="name">Add Weight Data</property>
+    <property name="title" translatable="yes">Weight Measurements</property>
+    <property name="view-title" translatable="yes">Add Weight Record</property>
     <child>
       <object class="GtkScrolledWindow">
         <property name="propagate-natural-height">1</property>

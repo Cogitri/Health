@@ -45,12 +45,12 @@ src/model/weight.rs
 src/windows/mod.rs
 src/windows/setup_window.rs
 src/windows/preferences_window.rs
-src/windows/activity_add_dialog.rs
-src/windows/weight_add_dialog.rs
 src/windows/window.rs
 src/views/graph_view.rs
 src/views/mod.rs
 src/views/view.rs
+src/views/view_add_activity.rs
+src/views/view_add_weight.rs
 src/views/view_weight.rs
 src/views/view_activity.rs
 src/views/view_steps.rs

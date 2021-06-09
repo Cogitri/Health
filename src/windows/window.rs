@@ -20,7 +20,7 @@ use crate::{
     core::{i18n_f, settings::prelude::*, Database},
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
     views::{ViewActivity, ViewSteps, ViewWeight},
-    windows::{ActivityAddDialog, WeightAddDialog},
+    windows::DataAddDialog,
 };
 use glib::{clone, signal::Inhibit, subclass::prelude::*, Cast};
 use gtk::prelude::*;
@@ -229,14 +229,7 @@ impl Window {
     }
 
     fn handle_add_data_button_clicked(&self) {
-        let self_ = self.imp();
-
-        let dialog = match self_.inner.borrow().current_view {
-            ViewMode::Activities | ViewMode::Steps => {
-                ActivityAddDialog::new(self.upcast_ref()).upcast::<gtk::Dialog>()
-            }
-            ViewMode::Weight => WeightAddDialog::new(self.upcast_ref()).upcast::<gtk::Dialog>(),
-        };
+        let dialog = DataAddDialog::new(self.upcast_ref()).upcast::<gtk::Dialog>();
         dialog.present();
     }
 
