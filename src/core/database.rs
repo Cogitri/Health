@@ -30,6 +30,7 @@ use uom::si::{
     length::{meter, Length},
     mass::{kilogram, Mass},
 };
+use tracker::prelude::*;
 
 mod imp {
     use gio::subclass::prelude::*;
@@ -148,7 +149,7 @@ impl Database {
                     }
                     "date" => {
                         activity.set_date(
-                            DateTime::parse_from_rfc3339(cursor.string(i).0.unwrap().as_str())
+                            DateTime::parse_from_rfc3339(cursor.string(i).unwrap().as_str())
                                 .unwrap(),
                         );
                     }
@@ -243,7 +244,7 @@ impl Database {
 
         while let Ok(true) = cursor.next_async_future().await {
             hashmap.insert(
-                DateTime::parse_from_rfc3339(cursor.string(0).0.unwrap().as_str()).unwrap(),
+                DateTime::parse_from_rfc3339(cursor.string(0).unwrap().as_str()).unwrap(),
                 hashmap.get(&date).unwrap_or(&0) + u32::try_from(cursor.integer(1)).unwrap(),
             );
         }
@@ -279,7 +280,7 @@ impl Database {
 
         while let Ok(true) = cursor.next_async_future().await {
             ret.push(Weight::new(
-                DateTime::parse_from_rfc3339(cursor.string(0).0.unwrap().as_str()).unwrap(),
+                DateTime::parse_from_rfc3339(cursor.string(0).unwrap().as_str()).unwrap(),
                 Mass::new::<kilogram>(cursor.double(1) as f32),
             ));
         }
@@ -440,7 +441,7 @@ impl Database {
                             "health:activity_datetime",
                             &DateTime::<Utc>::from_utc(
                                 NaiveDate::parse_from_str(
-                                    cursor.string(i).0.unwrap().as_str(),
+                                    cursor.string(i).unwrap().as_str(),
                                     "%Y-%m-%d",
                                 )
                                 .unwrap()
@@ -538,7 +539,7 @@ impl Database {
             resource.set_string(
                 "health:weight_datetime",
                 &DateTime::<Utc>::from_utc(
-                    NaiveDate::parse_from_str(cursor.string(0).0.unwrap().as_str(), "%Y-%m-%d")
+                    NaiveDate::parse_from_str(cursor.string(0).unwrap().as_str(), "%Y-%m-%d")
                         .unwrap()
                         .and_hms(0, 0, 0),
                     Utc,
