@@ -26,11 +26,11 @@ use std::{
     convert::{TryFrom, TryInto},
     path::{Path, PathBuf},
 };
+use tracker::prelude::*;
 use uom::si::{
     length::{meter, Length},
     mass::{kilogram, Mass},
 };
-use tracker::prelude::*;
 
 mod imp {
     use gio::subclass::prelude::*;
