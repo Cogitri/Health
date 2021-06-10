@@ -18,12 +18,11 @@
 
 use crate::{
     core::{i18n, settings::prelude::*, utils::spinbutton_value, Unitsystem},
-    sync::csv::CsvHandler,
+    windows::{ExportDialog, ImportDialog},
 };
 use adw::prelude::*;
-use glib::{clone, g_warning, subclass::prelude::*};
+use glib::{clone, subclass::prelude::*};
 use gtk::prelude::*;
-use gtk_macros::spawn;
 use uom::si::{
     f32::{Length, Mass},
     length::{centimeter, inch},
@@ -69,13 +68,9 @@ mod imp {
         #[template_child]
         pub sync_list_box: TemplateChild<SyncListBox>,
         #[template_child]
-        pub export_activity_csv_button: TemplateChild<gtk::Button>,
+        pub export_csv_button: TemplateChild<gtk::Button>,
         #[template_child]
-        pub export_weight_csv_button: TemplateChild<gtk::Button>,
-        #[template_child]
-        pub import_activity_csv_button: TemplateChild<gtk::Button>,
-        #[template_child]
-        pub import_weight_csv_button: TemplateChild<gtk::Button>,
+        pub import_csv_button: TemplateChild<gtk::Button>,
         #[template_child]
         pub unit_imperial_togglebutton: TemplateChild<gtk::ToggleButton>,
         #[template_child]
@@ -102,10 +97,8 @@ mod imp {
                 bmi_levelbar: TemplateChild::default(),
                 parent_window: OnceCell::new(),
                 sync_list_box: TemplateChild::default(),
-                export_activity_csv_button: TemplateChild::default(),
-                export_weight_csv_button: TemplateChild::default(),
-                import_activity_csv_button: TemplateChild::default(),
-                import_weight_csv_button: TemplateChild::default(),
+                export_csv_button: TemplateChild::default(),
+                import_csv_button: TemplateChild::default(),
                 unit_imperial_togglebutton: TemplateChild::default(),
                 unit_metric_togglebutton: TemplateChild::default(),
             }
@@ -218,15 +211,9 @@ impl PreferencesWindow {
         );
 
         self_
-            .export_activity_csv_button
+            .export_csv_button
             .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_export_activity_csv_button_clicked();
-            }));
-
-        self_
-            .export_weight_csv_button
-            .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_export_weight_csv_button_clicked();
+                obj.handle_export_csv_button_clicked();
             }));
 
         self_
@@ -236,15 +223,9 @@ impl PreferencesWindow {
             }));
 
         self_
-            .import_activity_csv_button
+            .import_csv_button
             .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_import_activity_csv_button_clicked();
-            }));
-
-        self_
-            .import_weight_csv_button
-            .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_import_weight_csv_button_clicked();
+                obj.handle_import_csv_button_clicked();
             }));
 
         self_
@@ -271,56 +252,9 @@ impl PreferencesWindow {
             .set_user_birthday(self_.birthday_selector.selected_date().date());
     }
 
-    fn handle_export_activity_csv_button_clicked(&self) {
-        let file_chooser = gtk::FileChooserNativeBuilder::new()
-            .title(&i18n("Save Activities"))
-            .accept_label(&i18n("_Save"))
-            .cancel_label(&i18n("_Cancel"))
-            .modal(true)
-            .transient_for(self)
-            .action(gtk::FileChooserAction::Save)
-            .build();
-        file_chooser.set_current_name(&i18n("Activities.csv"));
-        file_chooser.connect_response(
-            clone!(@weak self as obj, @strong file_chooser => move |_, r| {
-                if r == gtk::ResponseType::Accept {
-                    let file = file_chooser.file().unwrap();
-                    spawn!(async move {
-                        let handler = CsvHandler::new();
-                        if let Err(e) = handler.export_activities_csv(&file).await {
-                            g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
-                        }
-                    });
-                }
-            }),
-        );
-        file_chooser.show();
-    }
-
-    fn handle_export_weight_csv_button_clicked(&self) {
-        let file_chooser = gtk::FileChooserNativeBuilder::new()
-            .title(&i18n("Save Weight Measurement"))
-            .accept_label(&i18n("_Save"))
-            .cancel_label(&i18n("_Cancel"))
-            .modal(true)
-            .transient_for(self)
-            .action(gtk::FileChooserAction::Save)
-            .build();
-        file_chooser.set_current_name(&i18n("Weight Measurements.csv"));
-        file_chooser.connect_response(
-            clone!(@weak self as obj, @strong file_chooser => move |_, r| {
-                if r == gtk::ResponseType::Accept {
-                    let file = file_chooser.file().unwrap();
-                    spawn!(async move {
-                        let handler = CsvHandler::new();
-                        if let Err(e) = handler.export_weights_csv(&file).await {
-                            g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
-                        }
-                    });
-                }
-            }),
-        );
-        file_chooser.show();
+    fn handle_export_csv_button_clicked(&self) {
+        let dialog = ExportDialog::new(self.imp().parent_window.get().unwrap().as_ref());
+        dialog.show();
     }
 
     fn handle_height_spin_button_changed(&self) {
@@ -338,54 +272,9 @@ impl PreferencesWindow {
         }
     }
 
-    fn handle_import_activity_csv_button_clicked(&self) {
-        let file_chooser = gtk::FileChooserNativeBuilder::new()
-            .title(&i18n("Open Activities"))
-            .accept_label(&i18n("_Open"))
-            .cancel_label(&i18n("_Cancel"))
-            .modal(true)
-            .transient_for(self)
-            .action(gtk::FileChooserAction::Open)
-            .build();
-        file_chooser.connect_response(
-            clone!(@weak self as obj, @strong file_chooser => move |_, r| {
-                if r == gtk::ResponseType::Accept {
-                    let file = file_chooser.file().unwrap();
-                    spawn!(async move {
-                        let handler = CsvHandler::new();
-                        if let Err(e) = handler.import_activities_csv(&file).await {
-                            g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
-                        }
-                    });
-                }
-            }),
-        );
-        file_chooser.show();
-    }
-
-    fn handle_import_weight_csv_button_clicked(&self) {
-        let file_chooser = gtk::FileChooserNativeBuilder::new()
-            .title(&i18n("Open Weight Measurement"))
-            .accept_label(&i18n("_Open"))
-            .cancel_label(&i18n("_Cancel"))
-            .modal(true)
-            .transient_for(self)
-            .action(gtk::FileChooserAction::Open)
-            .build();
-        file_chooser.connect_response(
-            clone!(@weak self as obj, @strong file_chooser => move |_, r| {
-                if r == gtk::ResponseType::Accept {
-                    let file = file_chooser.file().unwrap();
-                    spawn!(async move {
-                        let handler = CsvHandler::new();
-                        if let Err(e) = handler.import_weights_csv(&file).await {
-                            g_warning!(crate::config::LOG_DOMAIN, "{}", e.to_string());
-                        }
-                    });
-                }
-            }),
-        );
-        file_chooser.show();
+    fn handle_import_csv_button_clicked(&self) {
+        let dialog = ImportDialog::new(self.imp().parent_window.get().unwrap().as_ref());
+        dialog.show();
     }
 
     fn handle_stepgoal_spin_button_changed(&self) {

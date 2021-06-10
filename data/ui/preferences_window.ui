@@ -177,10 +177,10 @@
             <property name="title" translatable="yes">Importing and exporting data</property>
             <child>
               <object class="AdwActionRow">
-                <property name="title" translatable="yes">Export activities as CSV</property>
+                <property name="title" translatable="yes">Export data as CSV</property>
                 <child>
-                  <object class="GtkButton" id="export_activity_csv_button">
-                    <property name="label" translatable="yes">Export</property>
+                  <object class="GtkButton" id="export_csv_button">
+                    <property name="label" translatable="yes">Export…</property>
                     <property name="valign">center</property>
                   </object>
                 </child>
@@ -188,32 +188,10 @@
             </child>
             <child>
               <object class="AdwActionRow">
-                <property name="title" translatable="yes">Export weight measurements as CSV</property>
+                <property name="title" translatable="yes">Import data from CSV</property>
                 <child>
-                  <object class="GtkButton" id="export_weight_csv_button">
-                    <property name="label" translatable="yes">Export</property>
-                    <property name="valign">center</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="AdwActionRow">
-                <property name="title" translatable="yes">Import activities from CSV</property>
-                <child>
-                  <object class="GtkButton" id="import_activity_csv_button">
-                    <property name="label" translatable="yes">Import</property>
-                    <property name="valign">center</property>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="AdwActionRow">
-                <property name="title" translatable="yes">Import weight measurements from CSV</property>
-                <child>
-                  <object class="GtkButton" id="import_weight_csv_button">
-                    <property name="label" translatable="yes">Import</property>
+                  <object class="GtkButton" id="import_csv_button">
+                    <property name="label" translatable="yes">Import…</property>
                     <property name="valign">center</property>
                   </object>
                 </child>

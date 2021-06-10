@@ -1,0 +1,474 @@
+/* import_export_dialog_base.rs
+ *
+ * Copyright 2021 Rasmus Thomsen <oss@cogitri.dev>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+pub use self::imp::PinnedResultFuture;
+use crate::i18n::i18n;
+use glib::{
+    clone,
+    subclass::prelude::*,
+    translate::{from_glib_borrow, ToGlibPtr},
+};
+use gtk::prelude::*;
+
+mod imp {
+    use std::{future::Future, pin::Pin};
+
+    use crate::{i18n, widgets::PasswordEntry};
+    use adw::prelude::*;
+    use anyhow::Result;
+    use glib::translate::from_glib_borrow;
+    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+
+    pub type ImportExportDialogBaseInstance =
+        <ImportExportDialogBase as super::ObjectSubclass>::Instance;
+    pub type PinnedResultFuture = Pin<Box<dyn Future<Output = Result<()>> + 'static>>;
+
+    #[repr(C)]
+    pub struct ImportExportDialogBaseClass {
+        pub parent_class: gtk::ffi::GtkDialogClass,
+        pub on_activities: Option<
+            unsafe extern "C" fn(
+                *mut ImportExportDialogBaseInstance,
+                password: *mut Option<String>,
+            ) -> PinnedResultFuture,
+        >,
+        pub on_weights: Option<
+            unsafe extern "C" fn(
+                *mut ImportExportDialogBaseInstance,
+                password: *mut Option<String>,
+            ) -> PinnedResultFuture,
+        >,
+    }
+
+    unsafe impl ClassStruct for ImportExportDialogBaseClass {
+        type Type = super::imp::ImportExportDialogBase;
+    }
+
+    impl std::ops::Deref for ImportExportDialogBaseClass {
+        type Target = glib::Class<glib::Object>;
+
+        fn deref(&self) -> &Self::Target {
+            unsafe { &*(self as *const ImportExportDialogBaseClass).cast::<Self::Target>() }
+        }
+    }
+
+    impl std::ops::DerefMut for ImportExportDialogBaseClass {
+        fn deref_mut(&mut self) -> &mut glib::Class<glib::Object> {
+            unsafe {
+                &mut *(self as *mut ImportExportDialogBaseClass).cast::<glib::Class<glib::Object>>()
+            }
+        }
+    }
+
+    #[derive(Debug, CompositeTemplate, Default)]
+    #[template(resource = "/dev/Cogitri/Health/ui/import_export_dialog_base.ui")]
+    pub struct ImportExportDialogBase {
+        #[template_child]
+        pub button_cancel: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub button_ok: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub encrypt_switch: TemplateChild<gtk::Switch>,
+        #[template_child]
+        pub activities_switch: TemplateChild<gtk::Switch>,
+        #[template_child]
+        pub weight_switch: TemplateChild<gtk::Switch>,
+        #[template_child]
+        pub password_entry: TemplateChild<PasswordEntry>,
+        #[template_child]
+        pub activities_action_row: TemplateChild<adw::ActionRow>,
+        #[template_child]
+        pub encrypt_action_row: TemplateChild<adw::ActionRow>,
+        #[template_child]
+        pub weights_action_row: TemplateChild<adw::ActionRow>,
+        #[template_child]
+        pub stack: TemplateChild<gtk::Stack>,
+        #[template_child]
+        pub end_icon: TemplateChild<gtk::Image>,
+        #[template_child]
+        pub end_title_label: TemplateChild<gtk::Label>,
+        #[template_child]
+        pub end_content_label: TemplateChild<gtk::Label>,
+    }
+
+    // Virtual method default implementation trampolines
+    unsafe extern "C" fn on_activities_default_trampoline(
+        this: *mut ImportExportDialogBaseInstance,
+        password: *mut Option<String>,
+    ) -> PinnedResultFuture {
+        let imp = (*this).impl_();
+        imp.on_activities(&from_glib_borrow(this), Box::from_raw(password))
+    }
+
+    unsafe extern "C" fn on_weights_default_trampoline(
+        this: *mut ImportExportDialogBaseInstance,
+        password: *mut Option<String>,
+    ) -> PinnedResultFuture {
+        let imp = (*this).impl_();
+        imp.on_weights(&from_glib_borrow(this), Box::from_raw(password))
+    }
+
+    #[no_mangle]
+    pub unsafe extern "C" fn import_export_dialog_base_on_activities(
+        this: *mut ImportExportDialogBaseInstance,
+        password: *mut Option<String>,
+    ) -> PinnedResultFuture {
+        let klass = glib::subclass::types::InstanceStruct::class(&*this);
+
+        (klass.on_activities.unwrap())(this, password)
+    }
+
+    #[no_mangle]
+    pub unsafe extern "C" fn import_export_dialog_base_on_weights(
+        this: *mut ImportExportDialogBaseInstance,
+        password: *mut Option<String>,
+    ) -> PinnedResultFuture {
+        let klass = glib::subclass::types::InstanceStruct::class(&*this);
+
+        (klass.on_weights.unwrap())(this, password)
+    }
+
+    #[allow(clippy::boxed_local)]
+    impl ImportExportDialogBase {
+        fn on_activities(
+            &self,
+            obj: &super::ImportExportDialogBase,
+            _password: Box<Option<String>>,
+        ) -> PinnedResultFuture {
+            Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
+                send.resolve(Ok(()));
+            }))
+        }
+
+        fn on_weights(
+            &self,
+            obj: &super::ImportExportDialogBase,
+            _password: Box<Option<String>>,
+        ) -> PinnedResultFuture {
+            Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
+                send.resolve(Ok(()));
+            }))
+        }
+    }
+
+    #[glib::object_subclass]
+    impl ObjectSubclass for ImportExportDialogBase {
+        const NAME: &'static str = "HealthImportExportDialogBase";
+        type ParentType = gtk::Dialog;
+        type Type = super::ImportExportDialogBase;
+        type Class = ImportExportDialogBaseClass;
+
+        fn class_init(klass: &mut Self::Class) {
+            klass.on_activities = Some(on_activities_default_trampoline);
+            klass.on_weights = Some(on_weights_default_trampoline);
+
+            Self::bind_template(klass);
+        }
+
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
+            obj.init_template();
+        }
+    }
+
+    impl ObjectImpl for ImportExportDialogBase {
+        fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
+            obj.set_response_sensitive(gtk::ResponseType::Ok, false);
+            obj.connect_handlers();
+        }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpec::new_boolean(
+                    "is-import",
+                    "is-import",
+                    "is-import",
+                    false,
+                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                )]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "is-import" => (!self.password_entry.show_password_repeat()).to_value(),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "is-import" => {
+                    let val: bool = value.get().unwrap();
+                    self.password_entry.set_show_password_repeat(!val);
+                    self.password_entry.set_show_password_strength(!val);
+
+                    if val {
+                        self.activities_action_row
+                            .set_title(Some(&i18n("Import activities")));
+                        self.encrypt_action_row
+                            .set_title(Some(&i18n("Import is encrypted")));
+                        self.weights_action_row
+                            .set_title(Some(&i18n("Import weights")));
+                        self.button_ok.set_label(&i18n("Import"));
+                    }
+                }
+                _ => unimplemented!(),
+            }
+        }
+    }
+
+    impl WidgetImpl for ImportExportDialogBase {}
+    impl WindowImpl for ImportExportDialogBase {}
+    impl DialogImpl for ImportExportDialogBase {}
+}
+
+pub enum DialogState {
+    ActivityFileChooserDone,
+    WeightFileChooserDone,
+}
+
+glib::wrapper! {
+    /// A dialog for exporting data
+    pub struct ImportExportDialogBase(ObjectSubclass<imp::ImportExportDialogBase>)
+        @extends gtk::Widget, gtk::Window, gtk::Dialog;
+}
+
+impl ImportExportDialogBase {
+    fn connect_handlers(&self) {
+        let self_ = self.imp();
+
+        self.connect_response(|s, id| {
+            let obj = s.clone();
+            gtk_macros::spawn!(async move {
+                obj.on_response(id).await;
+            });
+        });
+        self_
+            .activities_switch
+            .connect_active_notify(clone!(@weak self as obj => move |_| {
+                obj.check_activate_response()
+            }));
+        self_
+            .weight_switch
+            .connect_active_notify(clone!(@weak self as obj => move |_| {
+                obj.check_activate_response()
+            }));
+        self_
+            .encrypt_switch
+            .connect_active_notify(clone!(@weak self as obj => move |s| {
+                obj.check_activate_response();
+                obj.imp().password_entry.set_sensitive(s.is_active());
+            }));
+        self_
+            .password_entry
+            .connect_password_notify(clone!(@weak self as obj => move |_| {
+                obj.check_activate_response();
+            }));
+    }
+
+    fn check_activate_response(&self) {
+        let self_ = self.imp();
+        let any_option_activated =
+            self_.activities_switch.is_active() || self_.weight_switch.is_active();
+        let password_set = if self_.encrypt_switch.is_active() {
+            self_.password_entry.password().is_some()
+        } else {
+            true
+        };
+
+        self.set_response_sensitive(gtk::ResponseType::Ok, any_option_activated && password_set);
+    }
+
+    fn imp(&self) -> &imp::ImportExportDialogBase {
+        imp::ImportExportDialogBase::from_instance(self)
+    }
+
+    async fn on_response(&self, id: gtk::ResponseType) {
+        let self_ = self.imp();
+        if id == gtk::ResponseType::Ok {
+            if self_.stack.visible_child_name().unwrap() == "begin" {
+                let password = self_.password_entry.password();
+                let mut error_text = String::new();
+                if self_.activities_switch.is_active() {
+                    if let Err(e) = self.on_activities(Box::new(password.clone())).await {
+                        error_text.push_str(&e.to_string());
+                    }
+                }
+
+                if self_.weight_switch.is_active() {
+                    if let Err(e) = self.on_weights(Box::new(password)).await {
+                        if !error_text.is_empty() {
+                            error_text.push('\n');
+                        }
+                        error_text.push_str(&e.to_string());
+                    }
+                }
+
+                if error_text.is_empty() {
+                    self_.end_title_label.set_text(&i18n("Sucess!"));
+                    self_.end_icon.set_icon_name(Some("emblem-ok-symbolic"));
+                } else {
+                    glib::g_warning!(crate::config::LOG_DOMAIN, "{}", &error_text);
+                    self_.end_title_label.set_text(&i18n("An error occured!"));
+                    self_.end_content_label.set_text(&error_text);
+                    self_
+                        .end_icon
+                        .set_icon_name(Some("emblem-important-symbolic"));
+                }
+                self_.button_ok.set_label(&i18n("Close"));
+                self.set_response_sensitive(gtk::ResponseType::Cancel, false);
+                self_.stack.set_visible_child_name("end");
+            } else {
+                self.destroy();
+            }
+        } else {
+            self.destroy();
+        }
+    }
+}
+
+pub trait ImportExportDialogBaseExt {
+    fn on_activities(&self, password: Box<Option<String>>) -> PinnedResultFuture;
+    fn on_weights(&self, password: Box<Option<String>>) -> PinnedResultFuture;
+}
+
+impl<O: IsA<ImportExportDialogBase>> ImportExportDialogBaseExt for O {
+    fn on_activities(&self, password: Box<Option<String>>) -> PinnedResultFuture {
+        unsafe {
+            imp::import_export_dialog_base_on_activities(
+                self.as_ref().to_glib_none().0,
+                Box::into_raw(password),
+            )
+        }
+    }
+
+    fn on_weights(&self, password: Box<Option<String>>) -> PinnedResultFuture {
+        unsafe {
+            imp::import_export_dialog_base_on_weights(
+                self.as_ref().to_glib_none().0,
+                Box::into_raw(password),
+            )
+        }
+    }
+}
+
+pub trait ImportExportDialogBaseImpl: ObjectImpl + 'static {
+    fn on_activities(
+        &self,
+        obj: &ImportExportDialogBase,
+        password: Box<Option<String>>,
+    ) -> PinnedResultFuture {
+        self.parent_on_activities(obj, password)
+    }
+
+    fn on_weights(
+        &self,
+        obj: &ImportExportDialogBase,
+        password: Box<Option<String>>,
+    ) -> PinnedResultFuture {
+        self.parent_on_weights(obj, password)
+    }
+
+    fn parent_on_activities(
+        &self,
+        obj: &ImportExportDialogBase,
+        password: Box<Option<String>>,
+    ) -> PinnedResultFuture {
+        unsafe {
+            let data = Self::type_data();
+            let parent_class = data
+                .as_ref()
+                .parent_class()
+                .cast::<imp::ImportExportDialogBaseClass>();
+            if let Some(ref f) = (*parent_class).on_activities {
+                f(obj.to_glib_none().0, Box::into_raw(password))
+            } else {
+                unimplemented!()
+            }
+        }
+    }
+
+    fn parent_on_weights(
+        &self,
+        obj: &ImportExportDialogBase,
+        password: Box<Option<String>>,
+    ) -> PinnedResultFuture {
+        unsafe {
+            let data = Self::type_data();
+            let parent_class = data
+                .as_ref()
+                .parent_class()
+                .cast::<imp::ImportExportDialogBaseClass>();
+            if let Some(ref f) = (*parent_class).on_weights {
+                f(obj.to_glib_none().0, Box::into_raw(password))
+            } else {
+                unimplemented!()
+            }
+        }
+    }
+}
+
+unsafe impl<T: ImportExportDialogBaseImpl> IsSubclassable<T> for ImportExportDialogBase {
+    fn class_init(class: &mut glib::Class<Self>) {
+        <glib::Object as IsSubclassable<T>>::class_init(class);
+
+        let klass = class.as_mut();
+        klass.on_activities = Some(on_activities_trampoline::<T>);
+        klass.on_weights = Some(on_weights_trampoline::<T>);
+    }
+
+    fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
+        <glib::Object as IsSubclassable<T>>::instance_init(instance);
+    }
+}
+
+// Virtual method default implementation trampolines
+unsafe extern "C" fn on_activities_trampoline<T: ObjectSubclass>(
+    this: *mut imp::ImportExportDialogBaseInstance,
+    password: *mut Option<String>,
+) -> PinnedResultFuture
+where
+    T: ImportExportDialogBaseImpl,
+{
+    let instance = &*(this as *const T::Instance);
+    let imp = instance.impl_();
+    imp.on_activities(&from_glib_borrow(this), Box::from_raw(password))
+}
+
+unsafe extern "C" fn on_weights_trampoline<T: ObjectSubclass>(
+    this: *mut imp::ImportExportDialogBaseInstance,
+    password: *mut Option<String>,
+) -> PinnedResultFuture
+where
+    T: ImportExportDialogBaseImpl,
+{
+    let instance = &*(this as *const T::Instance);
+    let imp = instance.impl_();
+    imp.on_weights(&from_glib_borrow(this), Box::from_raw(password))
+}

@@ -11,6 +11,8 @@ pub mod date_selector;
 #[doc(hidden)]
 pub mod distance_action_row;
 #[doc(hidden)]
+pub mod password_entry;
+#[doc(hidden)]
 pub mod sync_list_box;
 
 #[doc(inline)]
@@ -25,5 +27,7 @@ pub use bmi_level_bar::*;
 pub use date_selector::*;
 #[doc(inline)]
 pub use distance_action_row::*;
+#[doc(inline)]
+pub use password_entry::*;
 #[doc(inline)]
 pub use sync_list_box::*;

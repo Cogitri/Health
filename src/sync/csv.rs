@@ -16,10 +16,34 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::Database;
+use crate::{core::Database, i18n::i18n};
 use anyhow::Result;
+use chacha20poly1305::aead::{Aead, NewAead};
+use chacha20poly1305::{Key, XChaCha20Poly1305, XNonce};
 use gio::prelude::*;
+use ring::rand::{self, SecureRandom};
+use sha2::{Digest, Sha256};
 use std::convert::TryFrom;
+
+#[derive(thiserror::Error, Debug, PartialEq, Eq, PartialOrd, Ord)]
+enum EncryptionError {
+    #[error("{0}")]
+    NonceGenerate(String),
+    #[error("{0}")]
+    Decrypt(String),
+    #[error("{0}")]
+    Encrypt(String),
+    #[error("{0}")]
+    UnencryptedAsEncrypted(String),
+    #[error("{0}")]
+    EncryptedAsUnencrypted(String),
+}
+
+#[derive(Debug, serde::Serialize, serde::Deserialize)]
+struct EncryptedValue {
+    pub data: Vec<u8>,
+    pub nonce: Vec<u8>,
+}
 
 /// [CsvHandler] is a struct which manages exporting data from the Tracker DB to a
 /// CSV file or importing it from a CSV file into the Tracker DB.
@@ -34,6 +58,11 @@ impl CsvHandler {
         }
     }
 
+    #[cfg(test)]
+    pub fn new_with_database(db: Database) -> Self {
+        Self { db }
+    }
+
     /// Export all [Activity](crate::model::Activity)s in the Tracker DB to a CSV file.
     ///
     /// # Arguments
@@ -41,14 +70,24 @@ impl CsvHandler {
     ///
     /// # Returns
     /// An error if writing to the file fails or reading from the DB.
-    pub async fn export_activities_csv(&self, file: &gio::File) -> Result<()> {
+    pub async fn export_activities_csv(&self, file: &gio::File, key: Option<&str>) -> Result<()> {
         let mut wtr = csv::Writer::from_writer(vec![]);
+        let activities = self.db.activities(None).await?;
 
-        for activity in self.db.activities(None).await? {
+        if activities.is_empty() {
+            anyhow::bail!(i18n("No activities added yet; can't create empy export!"));
+        }
+
+        for activity in activities {
             wtr.serialize(activity)?;
         }
 
-        self.write_csv(file, wtr.into_inner().unwrap()).await?;
+        let data = wtr.into_inner().unwrap();
+        if let Some(k) = key {
+            self.write_csv_encrypted(file, &data, k).await?;
+        } else {
+            self.write_csv(file, &data).await?;
+        }
 
         Ok(())
     }
@@ -60,14 +99,26 @@ impl CsvHandler {
     ///
     /// # Returns
     /// An error if writing to the file fails or reading from the DB.
-    pub async fn export_weights_csv(&self, file: &gio::File) -> Result<()> {
+    pub async fn export_weights_csv(&self, file: &gio::File, key: Option<&str>) -> Result<()> {
         let mut wtr = csv::Writer::from_writer(vec![]);
+        let weights = self.db.weights(None).await?;
 
-        for weight in self.db.weights(None).await? {
+        if weights.is_empty() {
+            anyhow::bail!(i18n(
+                "No weight measurements added yet; can't create empy export!"
+            ));
+        }
+
+        for weight in weights {
             wtr.serialize(weight)?;
         }
 
-        self.write_csv(file, wtr.into_inner().unwrap()).await?;
+        let data = wtr.into_inner().unwrap();
+        if let Some(k) = key {
+            self.write_csv_encrypted(file, &data, k).await?;
+        } else {
+            self.write_csv(file, &data).await?;
+        }
 
         Ok(())
     }
@@ -79,8 +130,12 @@ impl CsvHandler {
     ///
     /// # Returns
     /// An error if reading from the file fails or writing to the DB.
-    pub async fn import_activities_csv(&self, file: &gio::File) -> Result<()> {
-        let (data, _) = file.load_contents_async_future().await?;
+    pub async fn import_activities_csv(&self, file: &gio::File, key: Option<&str>) -> Result<()> {
+        let data = if let Some(k) = key {
+            self.read_csv_encrypted(file, k).await?
+        } else {
+            self.read_csv(file).await?
+        };
         let mut rdr = csv::Reader::from_reader(&*data);
 
         for activity in rdr.deserialize() {
@@ -100,8 +155,12 @@ impl CsvHandler {
     ///
     /// # Returns
     /// An error if reading from the file fails or writing to the DB.
-    pub async fn import_weights_csv(&self, file: &gio::File) -> Result<()> {
-        let (data, _) = file.load_contents_async_future().await?;
+    pub async fn import_weights_csv(&self, file: &gio::File, key: Option<&str>) -> Result<()> {
+        let data = if let Some(k) = key {
+            self.read_csv_encrypted(file, k).await?
+        } else {
+            self.read_csv(file).await?
+        };
         let mut rdr = csv::Reader::from_reader(&*data);
 
         for weight in rdr.deserialize() {
@@ -114,8 +173,41 @@ impl CsvHandler {
         Ok(())
     }
 
-    /// Write (CSV) data to a `File`.
-    async fn write_csv(&self, file: &gio::File, data: Vec<u8>) -> Result<()> {
+    async fn read_csv(&self, file: &gio::File) -> Result<Vec<u8>> {
+        let data = file.load_contents_async_future().await?.0;
+
+        if serde_json::from_slice::<EncryptedValue>(&data).is_ok() {
+            Err(EncryptionError::EncryptedAsUnencrypted(i18n(
+                "Can't parse encrypted backup without encryption key!",
+            )))
+            .map_err(anyhow::Error::msg)
+        } else {
+            Ok(data)
+        }
+    }
+
+    async fn read_csv_encrypted(&self, file: &gio::File, key: &str) -> Result<Vec<u8>> {
+        let raw_contents = file.load_contents_async_future().await?.0;
+        let encrypted_value: EncryptedValue = serde_json::from_slice(&raw_contents)
+            .map_err(|_| EncryptionError::UnencryptedAsEncrypted(i18n("Couldn't parse CSV. Are you trying to read an unencrypted backup as an encrypted one?")))?;
+        let mut hasher = Sha256::new();
+        hasher.update(key.as_bytes());
+        let hash = hasher.finalize();
+        let key = Key::from_slice(&hash);
+        let cipher = XChaCha20Poly1305::new(key);
+
+        let nonce = XNonce::from_slice(&encrypted_value.nonce);
+
+        Ok(cipher
+            .decrypt(nonce, encrypted_value.data.as_slice())
+            .map_err(|_| {
+                EncryptionError::Decrypt(i18n(
+                    "Couldn't decrypt data. Are you sure you're using the right key?",
+                ))
+            })?)
+    }
+
+    async fn write_csv(&self, file: &gio::File, data: &[u8]) -> Result<()> {
         let stream = file
             .replace_async_future(
                 None,
@@ -132,5 +224,154 @@ impl CsvHandler {
         }
 
         Ok(())
+    }
+
+    /// Write (CSV) data to a `File`.
+    async fn write_csv_encrypted(&self, file: &gio::File, data: &[u8], key: &str) -> Result<()> {
+        let rng = rand::SystemRandom::new();
+
+        let mut nonce = [0u8; 24];
+        rng.fill(&mut nonce)
+            .map_err(|e| EncryptionError::NonceGenerate(e.to_string()))?;
+
+        let mut hasher = Sha256::new();
+        hasher.update(key.as_bytes());
+        let hash = hasher.finalize();
+        let key = Key::from_slice(&hash);
+        let aead = XChaCha20Poly1305::new(key);
+
+        let nonce = XNonce::from_slice(&nonce);
+        let ciphertext = aead
+            .encrypt(nonce, data)
+            .map_err(|e| EncryptionError::Encrypt(e.to_string()))?;
+
+        let encrypted_value = EncryptedValue {
+            data: ciphertext,
+            nonce: nonce.to_vec(),
+        };
+        let json = serde_json::to_string_pretty(&encrypted_value)?;
+        self.write_csv(file, json.as_bytes()).await
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::CsvHandler;
+    use crate::{core::Database, i18n, sync::csv::EncryptionError};
+    use tempfile::tempdir;
+
+    #[test]
+    fn simple_read_write() {
+        let ctx = glib::MainContext::new();
+        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let data_dir = tempdir().unwrap();
+        let csv_handler = CsvHandler::new_with_database(
+            Database::new_with_store_path(data_dir.path().into()).unwrap(),
+        );
+        let data = b"test string";
+        ctx.block_on(csv_handler.write_csv(&file, data)).unwrap();
+        let data_readback = ctx.block_on(csv_handler.read_csv(&file)).unwrap();
+        assert_eq!(
+            std::str::from_utf8(data).unwrap(),
+            std::str::from_utf8(&data_readback).unwrap()
+        );
+    }
+
+    #[test]
+    fn en_decrypt() {
+        let ctx = glib::MainContext::new();
+        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let data_dir = tempdir().unwrap();
+        let csv_handler = CsvHandler::new_with_database(
+            Database::new_with_store_path(data_dir.path().into()).unwrap(),
+        );
+        let key = "super secret test key here";
+        let data = b"test string";
+        ctx.block_on(csv_handler.write_csv_encrypted(&file, data, key))
+            .unwrap();
+        let data_readback = ctx
+            .block_on(csv_handler.read_csv_encrypted(&file, key))
+            .unwrap();
+        assert_eq!(
+            std::str::from_utf8(data).unwrap(),
+            std::str::from_utf8(&data_readback).unwrap()
+        );
+    }
+
+    #[test]
+    fn encrypted_write_try_unecrypted_read() {
+        let ctx = glib::MainContext::new();
+        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let data_dir = tempdir().unwrap();
+        let csv_handler = CsvHandler::new_with_database(
+            Database::new_with_store_path(data_dir.path().into()).unwrap(),
+        );
+        let key = "super secret test key here";
+        let data = b"test string";
+        ctx.block_on(csv_handler.write_csv_encrypted(&file, data, key))
+            .unwrap();
+        let data_readback = ctx.block_on(csv_handler.read_csv(&file));
+
+        assert_eq!(
+            data_readback.err().and_then(|e| e.downcast().ok()),
+            Some(EncryptionError::EncryptedAsUnencrypted(i18n(
+                "Can't parse encrypted backup without encryption key!"
+            ))),
+        );
+    }
+
+    #[test]
+    fn unencrypt_write_try_unencrypted_read() {
+        let ctx = glib::MainContext::new();
+        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let data_dir = tempdir().unwrap();
+        let csv_handler = CsvHandler::new_with_database(
+            Database::new_with_store_path(data_dir.path().into()).unwrap(),
+        );
+        let key = "super secret test key here";
+        let data = b"test string";
+        ctx.block_on(csv_handler.write_csv(&file, data)).unwrap();
+        let data_readback = ctx.block_on(csv_handler.read_csv_encrypted(&file, key));
+
+        assert_eq!(
+            data_readback.err().and_then(|e| e.downcast().ok()),
+            Some(EncryptionError::UnencryptedAsEncrypted(i18n("Couldn't parse CSV. Are you trying to read an unencrypted backup as an encrypted one?"))),
+        );
+    }
+
+    #[test]
+    fn empty_activities_export() {
+        let ctx = glib::MainContext::new();
+        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let data_dir = tempdir().unwrap();
+        let csv_handler = CsvHandler::new_with_database(
+            Database::new_with_store_path(data_dir.path().into()).unwrap(),
+        );
+
+        assert_eq!(
+            ctx.block_on(csv_handler.export_activities_csv(&file, None))
+                .err()
+                .unwrap()
+                .to_string(),
+            i18n("No activities added yet; can't create empy export!")
+        );
+    }
+
+    #[test]
+    fn empty_weights_export() {
+        let ctx = glib::MainContext::new();
+        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let data_dir = tempdir().unwrap();
+        let csv_handler = CsvHandler::new_with_database(
+            Database::new_with_store_path(data_dir.path().into()).unwrap(),
+        );
+
+        assert_eq!(
+            ctx.block_on(csv_handler.export_weights_csv(&file, None))
+                .err()
+                .unwrap()
+                .to_string(),
+            i18n("No weight measurements added yet; can't create empy export!")
+        );
     }
 }
