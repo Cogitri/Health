@@ -106,6 +106,8 @@ mod imp {
 
     impl ObjectImpl for ViewActivity {
         fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
             self.activities_list_box
                 .bind_model(Some(&self.activity_model), |o| {
                     let row = ActivityRow::new();

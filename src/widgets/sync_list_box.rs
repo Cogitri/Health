@@ -76,6 +76,8 @@ mod imp {
 
     impl ObjectImpl for SyncListBox {
         fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
             if Settings::instance().sync_provider_setup_google_fit() {
                 self.google_fit_selected_image.set_visible(true);
                 self.google_fit_stack

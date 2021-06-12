@@ -90,6 +90,8 @@ mod imp {
 
     impl ObjectImpl for DistanceActionRow {
         fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
             obj.set_togglebutton_text();
             self.settings_handler_id
                 .replace(Some(self.settings.connect_unitsystem_changed(

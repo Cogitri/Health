@@ -63,6 +63,8 @@ mod imp {
 
     impl ObjectImpl for DateSelector {
         fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
             let controller = gtk::EventControllerFocus::new();
             obj.add_controller(&controller);
 

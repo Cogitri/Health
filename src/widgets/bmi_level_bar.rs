@@ -82,6 +82,8 @@ mod imp {
 
     impl ObjectImpl for BmiLevelBar {
         fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
             obj.layout_manager()
                 .unwrap()
                 .dynamic_cast_ref::<gtk::Orientable>()

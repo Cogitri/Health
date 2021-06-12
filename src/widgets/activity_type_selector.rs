@@ -76,6 +76,8 @@ mod imp {
 
     impl ObjectImpl for ActivityTypeSelector {
         fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
             let recent_activity_types = Settings::instance().recent_activity_types();
 
             if !recent_activity_types.is_empty() {
