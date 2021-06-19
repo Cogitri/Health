@@ -43,7 +43,7 @@ mod imp {
         pub manager: tracker::NamespaceManager,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Default)]
     pub struct Database {
         pub inner: RefCell<Option<DatabaseMut>>,
     }
@@ -53,12 +53,6 @@ mod imp {
         const NAME: &'static str = "HealthDatabase";
         type ParentType = glib::Object;
         type Type = super::Database;
-
-        fn new() -> Self {
-            Self {
-                inner: RefCell::new(None),
-            }
-        }
     }
 
     impl ObjectImpl for Database {
@@ -80,6 +74,12 @@ static mut DATABASE: Option<Database> = None;
 glib::wrapper! {
     /// Helper class to add and retrieve data to and from the Tracker Database.
     pub struct Database(ObjectSubclass<imp::Database>);
+}
+
+impl Default for Database {
+    fn default() -> Self {
+        Database::instance()
+    }
 }
 
 impl Database {

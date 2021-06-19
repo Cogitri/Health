@@ -16,11 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{
-    core::{settings::prelude::*, Unitsystem},
-    model::Weight,
-    views::View,
-};
+use crate::{core::Unitsystem, model::Weight, views::View};
 use glib::subclass::prelude::*;
 use uom::si::{
     f32::Mass,
@@ -29,14 +25,13 @@ use uom::si::{
 
 mod imp {
     use crate::{
-        core::{settings::prelude::*, Database},
+        core::{Database, Settings},
         views::View,
         widgets::DateSelector,
     };
-    use gio::Settings;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_add_dialog.ui")]
     pub struct ViewAddWeight {
         pub database: Database,
@@ -53,15 +48,6 @@ mod imp {
         const NAME: &'static str = "HealthViewAddWeight";
         type ParentType = View;
         type Type = super::ViewAddWeight;
-
-        fn new() -> Self {
-            Self {
-                database: Database::instance(),
-                settings: Settings::instance(),
-                date_selector: TemplateChild::default(),
-                weight_spin_button: TemplateChild::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);

@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, settings::prelude::*, utils::spinbutton_value, Unitsystem},
+    core::{i18n, utils::spinbutton_value, Unitsystem},
     model::Unitsize,
 };
 use gio::subclass::prelude::*;
@@ -28,21 +28,20 @@ use uom::si::{
 };
 
 mod imp {
-    use crate::{core::settings::prelude::*, model::Unitsize};
+    use crate::{core::Settings, model::Unitsize};
     use adw::subclass::prelude::*;
-    use gio::Settings;
     use glib::{clone, subclass::Signal};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
-    use uom::si::{f32::Length, length::meter};
+    use uom::si::f32::Length;
 
-    #[derive(Debug)]
+    #[derive(Debug, Default)]
     pub struct DistanceActionRowMut {
         pub unitsize: Unitsize,
         pub value: Length,
     }
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/distance_action_row.ui")]
     pub struct DistanceActionRow {
         pub inner: RefCell<DistanceActionRowMut>,
@@ -63,21 +62,6 @@ mod imp {
         const NAME: &'static str = "HealthDistanceActionRow";
         type ParentType = adw::ActionRow;
         type Type = super::DistanceActionRow;
-
-        fn new() -> Self {
-            Self {
-                inner: RefCell::new(DistanceActionRowMut {
-                    unitsize: Unitsize::Small,
-                    value: Length::new::<meter>(0.0),
-                }),
-                settings: Settings::instance(),
-                settings_handler_id: RefCell::new(None),
-                distance_adjustment: TemplateChild::default(),
-                distance_spin_button: TemplateChild::default(),
-                big_unit_togglebutton: TemplateChild::default(),
-                small_unit_togglebutton: TemplateChild::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);

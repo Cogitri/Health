@@ -16,9 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::settings::prelude::*, model::ActivityType, Unitsystem};
+use crate::{core::Settings, model::ActivityType, Unitsystem};
 use chrono::{DateTime, Duration, FixedOffset, TimeZone};
-use gio::Settings;
 use serde::{de, Deserialize, Deserializer, Serializer};
 use std::{convert::TryInto, str::FromStr};
 use uom::si::{

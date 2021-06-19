@@ -24,7 +24,7 @@ mod imp {
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_type_row.ui")]
     pub struct ActivityTypeRow {
         pub activity_type_id: RefCell<&'static str>,
@@ -39,14 +39,6 @@ mod imp {
         const NAME: &'static str = "HealthActivityTypeRow";
         type ParentType = gtk::ListBoxRow;
         type Type = super::ActivityTypeRow;
-
-        fn new() -> Self {
-            Self {
-                activity_type_id: RefCell::new(""),
-                activity_type_label: TemplateChild::default(),
-                selected_image: TemplateChild::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);

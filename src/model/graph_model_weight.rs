@@ -17,13 +17,12 @@
  */
 
 use crate::{
-    core::{settings::prelude::*, Database, Unitsystem},
+    core::{Database, Settings, Unitsystem},
     model::weight::Weight,
     views::Point,
 };
 use anyhow::Result;
 use chrono::Duration;
-use gio::Settings;
 use std::collections::BTreeMap;
 use uom::si::{
     f32::Mass,
@@ -31,7 +30,7 @@ use uom::si::{
 };
 
 /// A [GraphModelWeight] manages weight data for easy consumption in views.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct GraphModelWeight {
     database: Database,
     settings: Settings,
@@ -42,11 +41,7 @@ pub struct GraphModelWeight {
 /// clone in view_weight to avoid holding a `RefCell`s  `Ref` for too long.
 impl Clone for GraphModelWeight {
     fn clone(&self) -> Self {
-        Self {
-            database: self.database.clone(),
-            settings: self.settings.clone(),
-            vec: Vec::new(),
-        }
+        Self::default()
     }
 }
 

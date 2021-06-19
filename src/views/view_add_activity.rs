@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{settings::prelude::*, utils::spinbutton_value},
+    core::utils::spinbutton_value,
     model::{Activity, ActivityDataPoints, ActivityInfo, Unitsize},
     views::View,
 };
@@ -30,12 +30,11 @@ use std::str::FromStr;
 
 mod imp {
     use crate::{
-        core::{settings::prelude::*, utils::spinbutton_value, Database},
+        core::{utils::spinbutton_value, Database, Settings},
         model::{Activity, ActivityDataPoints, ActivityInfo, ActivityType},
         views::View,
         widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
     };
-    use gio::Settings;
     use glib::clone;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
@@ -49,7 +48,19 @@ mod imp {
         pub stop_update: bool,
     }
 
-    #[derive(Debug, CompositeTemplate)]
+    impl Default for ViewAddActivityMut {
+        fn default() -> Self {
+            ViewAddActivityMut {
+                activity: Activity::new(),
+                filter_model: None,
+                selected_activity: ActivityInfo::from(ActivityType::default()),
+                stop_update: false,
+                user_changed_datapoints: ActivityDataPoints::empty(),
+            }
+        }
+    }
+
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_add_dialog.ui")]
     pub struct ViewAddActivity {
         pub inner: RefCell<ViewAddActivityMut>,
@@ -124,39 +135,6 @@ mod imp {
         const NAME: &'static str = "HealthViewAddActivity";
         type ParentType = View;
         type Type = super::ViewAddActivity;
-
-        fn new() -> Self {
-            Self {
-                inner: RefCell::new(ViewAddActivityMut {
-                    activity: Activity::new(),
-                    filter_model: None,
-                    selected_activity: ActivityInfo::from(ActivityType::Walking),
-                    stop_update: false,
-                    user_changed_datapoints: ActivityDataPoints::empty(),
-                }),
-                database: Database::instance(),
-                settings: Settings::instance(),
-                date_selector: TemplateChild::default(),
-                activities_list_box: TemplateChild::default(),
-                activity_type_actionrow: TemplateChild::default(),
-                activity_type_menu_button: TemplateChild::default(),
-                activity_type_selector: TemplateChild::default(),
-                calories_burned_action_row: TemplateChild::default(),
-                calories_burned_spin_button: TemplateChild::default(),
-                date_selector_actionrow: TemplateChild::default(),
-                distance_action_row: TemplateChild::default(),
-                duration_action_row: TemplateChild::default(),
-                duration_spin_button: TemplateChild::default(),
-                heart_rate_average_action_row: TemplateChild::default(),
-                heart_rate_average_spin_button: TemplateChild::default(),
-                heart_rate_max_action_row: TemplateChild::default(),
-                heart_rate_max_spin_button: TemplateChild::default(),
-                heart_rate_min_action_row: TemplateChild::default(),
-                heart_rate_min_spin_button: TemplateChild::default(),
-                stepcount_action_row: TemplateChild::default(),
-                steps_spin_button: TemplateChild::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);

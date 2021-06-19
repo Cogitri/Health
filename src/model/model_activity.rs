@@ -41,12 +41,17 @@ pub enum ViewPeriod {
     All,
 }
 
+impl Default for ViewPeriod {
+    fn default() -> Self {
+        ViewPeriod::Week
+    }
+}
+
 mod imp {
     use crate::{
-        core::{settings::prelude::*, Database},
+        core::{Database, Settings},
         model::Activity,
     };
-    use gio::Settings;
     use glib::{subclass, Cast, StaticType};
     use gtk::subclass::prelude::*;
     use std::{
@@ -54,12 +59,12 @@ mod imp {
         convert::{TryFrom, TryInto},
     };
 
-    #[derive(Debug)]
+    #[derive(Debug, Default)]
     pub struct ModelActivityMut {
         pub vec: Vec<Activity>,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Default)]
     pub struct ModelActivity {
         pub database: Database,
         pub inner: RefCell<ModelActivityMut>,
@@ -74,14 +79,6 @@ mod imp {
         type Class = subclass::basic::ClassStruct<Self>;
         type Type = super::ModelActivity;
         type Interfaces = (gio::ListModel,);
-
-        fn new() -> Self {
-            Self {
-                database: Database::instance(),
-                inner: RefCell::new(ModelActivityMut { vec: Vec::new() }),
-                settings: Settings::instance(),
-            }
-        }
     }
 
     impl ObjectImpl for ModelActivity {}
@@ -108,6 +105,12 @@ glib::wrapper! {
     /// An implementation of [gio::ListModel] that stores [Activity](crate::model::Activity)s.
     /// Can be used with [ActivityView](crate::views::ViewActivity) to display past activities.
     pub struct ModelActivity(ObjectSubclass<imp::ModelActivity>) @implements gio::ListModel;
+}
+
+impl Default for ModelActivity {
+    fn default() -> Self {
+        ModelActivity::new()
+    }
 }
 
 impl ModelActivity {

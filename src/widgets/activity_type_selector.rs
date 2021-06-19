@@ -23,12 +23,11 @@ use glib::SignalHandlerId;
 
 mod imp {
     use crate::{
-        core::settings::prelude::*,
+        core::Settings,
         model::{ActivityInfo, ActivityType, ActivityTypeRowData},
         widgets::ActivityTypeRow,
         ActivityInfoBoxed,
     };
-    use gio::Settings;
     use glib::g_warning;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use num_traits::cast::FromPrimitive;

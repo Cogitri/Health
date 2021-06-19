@@ -19,7 +19,6 @@
 use crate::{core::Unitsystem, settings_getter_setter};
 use chrono::{Date, DateTime, FixedOffset};
 use gio::prelude::*;
-use gio::Settings;
 use num_traits::{FromPrimitive, ToPrimitive};
 use uom::si::{
     f32::{Length, Mass},
@@ -27,32 +26,73 @@ use uom::si::{
     mass::kilogram,
 };
 
-pub mod prelude {
-    pub use super::*;
-}
+#[derive(Debug, Clone)]
+pub struct Settings(gio::Settings);
 
 static mut SETTINGS: Option<Settings> = None;
 
-settings_getter_setter!(u32, current_view_id, "current-view-id");
-settings_getter_setter!(bool, did_initial_setup, "did-initial-setup");
-settings_getter_setter!(
-    bool,
-    sync_provider_setup_google_fit,
-    "sync-provider-setup-google-fit"
-);
-settings_getter_setter!(u32, user_age, "user-age");
-settings_getter_setter!(u32, user_stepgoal, "user-stepgoal");
-settings_getter_setter!(i32, window_height, "window-height");
-settings_getter_setter!(bool, window_is_maximized, "window-is-maximized");
-settings_getter_setter!(i32, window_width, "window-width");
+impl Settings {
+    settings_getter_setter!(u32, current_view_id, "current-view-id");
+    settings_getter_setter!(bool, did_initial_setup, "did-initial-setup");
+    settings_getter_setter!(
+        bool,
+        sync_provider_setup_google_fit,
+        "sync-provider-setup-google-fit"
+    );
+    settings_getter_setter!(u32, user_age, "user-age");
+    settings_getter_setter!(u32, user_stepgoal, "user-stepgoal");
+    settings_getter_setter!(i32, window_height, "window-height");
+    settings_getter_setter!(bool, window_is_maximized, "window-is-maximized");
+    settings_getter_setter!(i32, window_width, "window-width");
 
-#[easy_ext::ext(HealthSettingsExt)]
+    delegate::delegate! {
+        to self.0 {
+            pub fn bind<'a, P: IsA<glib::Object>>(
+                &'a self,
+                key: &'a str,
+                object: &'a P,
+                property: &'a str
+            ) -> gio::BindingBuilder<'a>;
+
+            pub fn connect_changed<F: Fn(&gio::Settings, &str) + 'static>(
+                &self,
+                detail: Option<&str>,
+                f: F
+            ) -> glib::SignalHandlerId;
+
+            pub fn disconnect(&self, handler_id: glib::SignalHandlerId);
+
+            fn enum_(&self, key: &str) -> i32;
+
+            fn get<U: glib::FromVariant>(&self, key: &str) -> U;
+
+            fn set<U: ToVariant>(&self, key: &str, value: &U) -> Result<(), glib::BoolError>;
+
+            fn set_enum(&self, key: &str, value: i32) -> Result<(), glib::BoolError>;
+
+            fn set_strv(&self, key: &str, value: &[&str]) -> Result<(), glib::BoolError>;
+
+            fn set_string(&self, key: &str, value: &str) -> Result<(), glib::BoolError>;
+
+            fn string(&self, key: &str) -> glib::GString;
+
+            fn strv(&self, key: &str) -> Vec<glib::GString>;
+        }
+    }
+}
+
+impl Default for Settings {
+    fn default() -> Self {
+        Settings::instance()
+    }
+}
+
 impl Settings {
     pub fn instance() -> Self {
         unsafe {
             SETTINGS.as_ref().map_or_else(
                 || {
-                    let settings = Settings::new("dev.Cogitri.Health");
+                    let settings = Settings(gio::Settings::new("dev.Cogitri.Health"));
                     SETTINGS = Some(settings.clone());
                     settings
                 },
@@ -130,12 +170,12 @@ impl Settings {
 
     /// Get the user's height.
     pub fn user_height(&self) -> Length {
-        Length::new::<centimeter>(self.uint("user-height") as f32)
+        Length::new::<centimeter>(self.get::<f64>("user-height") as f32)
     }
 
     /// Set the user's height.
     pub fn set_user_height(&self, value: Length) {
-        self.set_uint("user-height", value.get::<centimeter>() as u32)
+        self.set("user-height", &(value.get::<centimeter>() as u32))
             .unwrap();
     }
 
@@ -151,12 +191,12 @@ impl Settings {
 
     /// Get the user's current weightgoal.
     pub fn user_weightgoal(&self) -> Mass {
-        Mass::new::<kilogram>(self.double("user-weightgoal") as f32)
+        Mass::new::<kilogram>(self.get::<f64>("user-weightgoal") as f32)
     }
 
     /// Set the user's current weightgoal.
     pub fn set_user_weightgoal(&self, value: Mass) {
-        self.set_double("user-weightgoal", f64::from(value.get::<kilogram>()))
+        self.set("user-weightgoal", &f64::from(value.get::<kilogram>()))
             .unwrap();
     }
 }

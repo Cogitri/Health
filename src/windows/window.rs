@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n_f, settings::prelude::*, Database},
+    core::{i18n_f, Database},
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
     views::{ViewActivity, ViewSteps, ViewWeight},
     windows::DataAddDialog,
@@ -29,8 +29,7 @@ use imp::ViewMode;
 use std::collections::BTreeMap;
 
 mod imp {
-    use crate::{core::settings::prelude::*, views::View};
-    use gio::Settings;
+    use crate::{core::Settings, views::View};
     use glib::SourceId;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
@@ -43,7 +42,13 @@ mod imp {
         Activities,
     }
 
-    #[derive(Debug)]
+    impl Default for ViewMode {
+        fn default() -> Self {
+            ViewMode::Steps
+        }
+    }
+
+    #[derive(Debug, Default)]
     pub struct WindowMut {
         pub current_height: i32,
         pub current_width: i32,
@@ -51,7 +56,7 @@ mod imp {
         pub sync_source_id: Option<SourceId>,
     }
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/window.ui")]
     pub struct Window {
         pub inner: RefCell<WindowMut>,
@@ -75,24 +80,6 @@ mod imp {
         const NAME: &'static str = "HealthWindow";
         type ParentType = adw::ApplicationWindow;
         type Type = super::Window;
-
-        fn new() -> Self {
-            Self {
-                inner: RefCell::new(WindowMut {
-                    current_height: 0,
-                    current_width: 0,
-                    current_view: ViewMode::Steps,
-                    sync_source_id: None,
-                }),
-                settings: Settings::instance(),
-                views: OnceCell::new(),
-                add_data_button: TemplateChild::default(),
-                error_infobar: TemplateChild::default(),
-                error_label: TemplateChild::default(),
-                primary_menu_popover: TemplateChild::default(),
-                stack: TemplateChild::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);

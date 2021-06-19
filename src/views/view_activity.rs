@@ -28,21 +28,20 @@ use std::str::FromStr;
 
 mod imp {
     use crate::{
-        core::settings::prelude::*,
+        core::Settings,
         model::{Activity, ModelActivity, ViewPeriod},
         views::View,
         widgets::ActivityRow,
     };
-    use gio::Settings;
     use glib::Cast;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
 
-    #[derive(Debug)]
+    #[derive(Debug, Default)]
     pub struct ViewActivityMut {
         pub period: ViewPeriod,
     }
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_view.ui")]
     pub struct ViewActivity {
         pub inner: std::cell::RefCell<ViewActivityMut>,
@@ -71,24 +70,6 @@ mod imp {
         const NAME: &'static str = "HealthViewActivity";
         type ParentType = View;
         type Type = super::ViewActivity;
-
-        fn new() -> Self {
-            Self {
-                inner: std::cell::RefCell::new(ViewActivityMut {
-                    period: ViewPeriod::Week,
-                }),
-                settings: Settings::instance(),
-                activity_model: ModelActivity::new(),
-                activities_list_box: TemplateChild::default(),
-                stack_activity: TemplateChild::default(),
-                toggle_week: TemplateChild::default(),
-                toggle_month: TemplateChild::default(),
-                toggle_quarter: TemplateChild::default(),
-                toggle_year: TemplateChild::default(),
-                toggle_all: TemplateChild::default(),
-                since_date: TemplateChild::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);

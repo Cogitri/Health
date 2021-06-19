@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{date::prelude::*, i18n, i18n_f, settings::prelude::*, Database},
+    core::{date::prelude::*, i18n, i18n_f, Database},
     views::{GraphView, View},
 };
 use chrono::Duration;
@@ -25,17 +25,16 @@ use glib::{subclass::prelude::*, Cast};
 
 mod imp {
     use crate::{
-        core::settings::prelude::*,
         model::GraphModelSteps,
         views::{GraphView, View},
+        Settings,
     };
-    use gio::Settings;
     use glib::Cast;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/step_view.ui")]
     pub struct ViewSteps {
         #[template_child]
@@ -51,18 +50,6 @@ mod imp {
         const NAME: &'static str = "HealthViewSteps";
         type ParentType = View;
         type Type = super::ViewSteps;
-
-        fn new() -> Self {
-            let settings = Settings::instance();
-
-            Self {
-                scrolled_window: TemplateChild::default(),
-                settings,
-                settings_handler_id: RefCell::new(None),
-                steps_graph_view: OnceCell::new(),
-                steps_graph_model: RefCell::new(GraphModelSteps::new()),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);

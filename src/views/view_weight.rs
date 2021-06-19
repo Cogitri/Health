@@ -17,10 +17,7 @@
  */
 
 use crate::{
-    core::{
-        date::prelude::*, i18n, i18n_f, settings::prelude::*, utils::round_decimal_places,
-        Database, Unitsystem,
-    },
+    core::{date::prelude::*, i18n, i18n_f, utils::round_decimal_places, Database, Unitsystem},
     model::GraphModelWeight,
     views::{GraphView, View},
 };
@@ -34,18 +31,16 @@ use uom::si::{
 
 mod imp {
     use crate::{
-        core::settings::prelude::*,
+        core::Settings,
         model::GraphModelWeight,
         views::{GraphView, View},
     };
-    use gio::Settings;
-    use glib::prelude::*;
     use glib::Cast;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_view.ui")]
     pub struct ViewWeight {
         #[template_child]
@@ -61,16 +56,6 @@ mod imp {
         const NAME: &'static str = "HealthViewWeight";
         type ParentType = View;
         type Type = super::ViewWeight;
-
-        fn new() -> Self {
-            Self {
-                scrolled_window: TemplateChild::default(),
-                settings: Settings::instance(),
-                settings_handler_id: RefCell::new(None),
-                weight_graph_view: OnceCell::new(),
-                weight_graph_model: RefCell::new(GraphModelWeight::new()),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);

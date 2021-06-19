@@ -51,6 +51,12 @@ pub enum ActivityType {
     Walking,
 }
 
+impl Default for ActivityType {
+    fn default() -> Self {
+        ActivityType::Walking
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::ActivityType;

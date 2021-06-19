@@ -30,6 +30,7 @@
 //!           mod imp {
 //!               use glib::subclass::{self, prelude::*};
 //!
+//!               #[derive(Default, Debug)]
 //!               pub struct MyStruct {}
 //!
 //!               #[glib::object_subclass]
@@ -38,9 +39,6 @@
 //!                   type ParentType = glib::Object;
 //!                   type Type = super::MyStruct;
 //!
-//!                   fn new() -> Self {
-//!                       Self { }
-//!                   }
 //!               }
 //!
 //!               impl ObjectImpl for MyStruct {}

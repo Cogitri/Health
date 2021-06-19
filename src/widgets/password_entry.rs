@@ -23,7 +23,7 @@ mod imp {
     use adw::subclass::prelude::*;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/password_entry.ui")]
     pub struct PasswordEntry {
         #[template_child]
@@ -41,15 +41,6 @@ mod imp {
         const NAME: &'static str = "HealthPasswordEntry";
         type ParentType = adw::Bin;
         type Type = super::PasswordEntry;
-
-        fn new() -> Self {
-            Self {
-                password_entry: TemplateChild::default(),
-                password_repeat_entry: TemplateChild::default(),
-                password_repeat_label: TemplateChild::default(),
-                password_strength_bar: TemplateChild::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             klass.set_layout_manager_type::<gtk::BinLayout>();

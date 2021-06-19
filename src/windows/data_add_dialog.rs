@@ -23,7 +23,7 @@ use gtk::prelude::*;
 mod imp {
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/data_add_dialog.ui")]
     pub struct DataAddDialog {
         #[template_child]
@@ -36,11 +36,6 @@ mod imp {
         type ParentType = gtk::Dialog;
         type Type = super::DataAddDialog;
 
-        fn new() -> Self {
-            Self {
-                stack: TemplateChild::default(),
-            }
-        }
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
         }

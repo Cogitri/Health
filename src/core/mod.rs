@@ -20,4 +20,6 @@ pub use database::Database;
 pub use i18n::*;
 pub use macros::*;
 #[doc(inline)]
+pub use settings::Settings;
+#[doc(inline)]
 pub use unitsystem::*;

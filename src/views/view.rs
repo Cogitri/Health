@@ -24,7 +24,7 @@ mod imp {
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/view.ui")]
     pub struct View {
         #[template_child]
@@ -49,19 +49,6 @@ mod imp {
         const NAME: &'static str = "HealthView";
         type ParentType = gtk::Widget;
         type Type = super::View;
-
-        fn new() -> Self {
-            Self {
-                empty_icon: TemplateChild::default(),
-                goal_label: TemplateChild::default(),
-                main_box: TemplateChild::default(),
-                subtitle_empty_view_label: TemplateChild::default(),
-                stack: TemplateChild::default(),
-                title_empty_view_label: TemplateChild::default(),
-                title_label: TemplateChild::default(),
-                view_title: RefCell::new(String::new()),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             klass.set_layout_manager_type::<gtk::BinLayout>();

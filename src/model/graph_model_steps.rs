@@ -22,7 +22,7 @@ use chrono::{DateTime, Duration, FixedOffset, Utc};
 use std::{collections::BTreeMap, convert::TryInto};
 
 /// A [GraphModelSteps] manages step data for easy consumption in views.
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct GraphModelSteps {
     database: Database,
     vec: Vec<Steps>,
@@ -41,10 +41,7 @@ impl Clone for GraphModelSteps {
 
 impl GraphModelSteps {
     pub fn new() -> Self {
-        Self {
-            database: Database::instance(),
-            vec: Vec::new(),
-        }
+        Self::default()
     }
 
     #[cfg(test)]

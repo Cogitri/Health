@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, settings::prelude::*, Unitsystem},
+    core::{i18n, Unitsystem},
     windows::{PreferencesWindow, Window},
 };
 use chrono::{DateTime, Duration, FixedOffset, Local};
@@ -30,15 +30,14 @@ use std::str::FromStr;
 mod imp {
     use crate::{
         config,
-        core::settings::prelude::*,
+        core::Settings,
         windows::{SetupWindow, Window},
     };
-    use gio::Settings;
     use glib::{clone, g_warning};
     use gtk::{prelude::*, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
 
-    #[derive(Debug)]
+    #[derive(Debug, Default)]
     pub struct Application {
         pub settings: Settings,
         pub window: OnceCell<glib::WeakRef<Window>>,
@@ -49,13 +48,6 @@ mod imp {
         const NAME: &'static str = "HealthApplication";
         type ParentType = gtk::Application;
         type Type = super::Application;
-
-        fn new() -> Self {
-            Self {
-                settings: Settings::instance(),
-                window: OnceCell::new(),
-            }
-        }
 
         fn class_init(_klass: &mut Self::Class) {}
 
@@ -231,9 +223,8 @@ impl Application {
 #[cfg(test)]
 mod test {
     use super::Application;
-    use crate::core::{settings::prelude::*, utils::init_gschema};
+    use crate::core::{utils::init_gschema, Settings};
     use chrono::{Duration, Local};
-    use gio::Settings;
 
     #[test]
     fn migrate_gsettings() {

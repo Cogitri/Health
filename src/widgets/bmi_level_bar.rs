@@ -30,19 +30,15 @@ mod imp {
     use super::{LEVEL_BAR_MAX, LEVEL_BAR_MIN};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
-    use uom::si::{
-        f32::{Length, Mass},
-        length::centimeter,
-        mass::kilogram,
-    };
+    use uom::si::f32::{Length, Mass};
 
-    #[derive(Debug)]
+    #[derive(Debug, Default)]
     pub struct BmiLevelBarMut {
         pub height: Length,
         pub weight: Mass,
     }
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/bmi_level_bar.ui")]
     pub struct BmiLevelBar {
         pub inner: RefCell<BmiLevelBarMut>,
@@ -57,17 +53,6 @@ mod imp {
         const NAME: &'static str = "HealthBMILevelBar";
         type ParentType = gtk::Widget;
         type Type = super::BmiLevelBar;
-
-        fn new() -> Self {
-            Self {
-                inner: RefCell::new(BmiLevelBarMut {
-                    height: Length::new::<centimeter>(0.0),
-                    weight: Mass::new::<kilogram>(0.0),
-                }),
-                bmi_label: TemplateChild::default(),
-                level_bar: TemplateChild::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             klass.set_layout_manager_type::<gtk::BoxLayout>();

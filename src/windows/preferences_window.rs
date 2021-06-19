@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, settings::prelude::*, utils::spinbutton_value, Unitsystem},
+    core::{i18n, utils::spinbutton_value, Unitsystem},
     windows::{ExportDialog, ImportDialog},
 };
 use adw::prelude::*;
@@ -31,11 +31,10 @@ use uom::si::{
 
 mod imp {
     use crate::{
-        core::{i18n, settings::prelude::*, Unitsystem},
+        core::{i18n, Settings, Unitsystem},
         widgets::{BmiLevelBar, DateSelector, SyncListBox},
     };
     use adw::prelude::*;
-    use gio::Settings;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::Cell;

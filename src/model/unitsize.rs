@@ -17,6 +17,12 @@ pub enum Unitsize {
     Small,
 }
 
+impl Default for Unitsize {
+    fn default() -> Self {
+        Unitsize::Small
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::Unitsize;

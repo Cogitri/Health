@@ -28,7 +28,7 @@ mod imp {
         pub label: String,
     }
 
-    #[derive(Debug)]
+    #[derive(Debug, Default)]
     pub struct ActivityTypeRowData {
         pub inner: RefCell<Option<ActivityTypeRowDataMut>>,
     }
@@ -38,12 +38,6 @@ mod imp {
         const NAME: &'static str = "HealthActivityTypeRowData";
         type ParentType = glib::Object;
         type Type = super::ActivityTypeRowData;
-
-        fn new() -> Self {
-            Self {
-                inner: RefCell::new(None),
-            }
-        }
     }
 
     impl ObjectImpl for ActivityTypeRowData {}

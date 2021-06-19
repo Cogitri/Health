@@ -77,7 +77,7 @@ mod imp {
         fn new() -> Self {
             Self {
                 inner: RefCell::new(ActivityMut {
-                    activity_type: ActivityType::Walking,
+                    activity_type: ActivityType::default(),
                     calories_burned: None,
                     date: Utc::now().into(),
                     distance: None,

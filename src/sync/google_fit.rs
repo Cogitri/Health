@@ -18,12 +18,11 @@
 
 use super::{sync_provider::SyncProvider, DatabaseValue};
 use crate::{
-    core::{i18n_f, settings::prelude::*},
+    core::{i18n_f, Settings},
     model::{Steps, Weight},
 };
 use anyhow::Result;
 use chrono::{DateTime, FixedOffset, Utc};
-use gio::Settings;
 use oauth2::{
     basic::{BasicClient, BasicTokenType},
     AuthUrl, ClientId, ClientSecret, CsrfToken, EmptyExtraTokenFields, PkceCodeChallenge,

@@ -25,12 +25,11 @@ use gtk::prelude::*;
 use gtk_macros::spawn;
 
 mod imp {
-    use crate::core::settings::prelude::*;
-    use gio::Settings;
+    use crate::core::Settings;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/sync_list_box.ui")]
     pub struct SyncListBox {
         pub parent_window: RefCell<Option<gtk::Window>>,
@@ -52,17 +51,6 @@ mod imp {
         const NAME: &'static str = "HealthSyncListBox";
         type ParentType = gtk::Widget;
         type Type = super::SyncListBox;
-
-        fn new() -> Self {
-            Self {
-                parent_window: RefCell::new(None),
-                google_fit_selected_image: TemplateChild::default(),
-                google_fit_start_sync_row: TemplateChild::default(),
-                google_fit_stack: TemplateChild::default(),
-                google_fit_spinner: TemplateChild::default(),
-                sync_list_box: TemplateChild::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             klass.set_layout_manager_type::<gtk::BinLayout>();

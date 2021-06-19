@@ -18,7 +18,6 @@
 
 use crate::core::{
     i18n,
-    settings::prelude::*,
     utils::{round_decimal_places, spinbutton_value},
     Unitsystem,
 };
@@ -38,10 +37,9 @@ static OPTIMAL_BMI: f32 = 22.5;
 
 mod imp {
     use crate::{
-        core::{settings::prelude::*, Unitsystem},
+        core::{Settings, Unitsystem},
         widgets::{BmiLevelBar, DateSelector, SyncListBox},
     };
-    use gio::Settings;
     use glib::subclass::Signal;
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::Cell;

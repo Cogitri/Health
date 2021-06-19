@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{date::prelude::*, i18n_f, settings::prelude::*, Unitsystem},
+    core::{date::prelude::*, i18n_f, Unitsystem},
     model::{Activity, ActivityDataPoints, ActivityInfo},
 };
 use glib::subclass::prelude::*;
@@ -28,12 +28,11 @@ use uom::{
 };
 
 mod imp {
-    use crate::{core::settings::prelude::*, model::Activity};
-    use gio::Settings;
+    use crate::{core::Settings, model::Activity};
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_row.ui")]
     pub struct ActivityRow {
         pub activity: OnceCell<Activity>,
@@ -77,29 +76,6 @@ mod imp {
         const NAME: &'static str = "HealthActivityRow";
         type ParentType = gtk::ListBoxRow;
         type Type = super::ActivityRow;
-
-        fn new() -> Self {
-            Self {
-                activity: OnceCell::new(),
-                settings: Settings::instance(),
-                active_minutes_label: TemplateChild::default(),
-                activity_date_label: TemplateChild::default(),
-                activity_type_label: TemplateChild::default(),
-                calories_burned_label: TemplateChild::default(),
-                distance_label: TemplateChild::default(),
-                heart_rate_average_label: TemplateChild::default(),
-                heart_rate_maximum_label: TemplateChild::default(),
-                heart_rate_minimum_label: TemplateChild::default(),
-                steps_label: TemplateChild::default(),
-                details_revealer: TemplateChild::default(),
-                calories_burned_row: TemplateChild::default(),
-                distance_row: TemplateChild::default(),
-                heart_rate_average_row: TemplateChild::default(),
-                heart_rate_maximum_row: TemplateChild::default(),
-                heart_rate_minimum_row: TemplateChild::default(),
-                steps_row: TemplateChild::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
