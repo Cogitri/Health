@@ -170,7 +170,7 @@ impl Settings {
 
     /// Get the user's height.
     pub fn user_height(&self) -> Length {
-        Length::new::<centimeter>(self.get::<f64>("user-height") as f32)
+        Length::new::<centimeter>(self.get::<u32>("user-height") as f32)
     }
 
     /// Set the user's height.
@@ -198,5 +198,103 @@ impl Settings {
     pub fn set_user_weightgoal(&self, value: Mass) {
         self.set("user-weightgoal", &f64::from(value.get::<kilogram>()))
             .unwrap();
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::Settings;
+    use crate::utils::init_gschema;
+    use chrono::{DateTime, FixedOffset, Local};
+
+    fn get() -> (Option<tempfile::TempDir>, Settings) {
+        (init_gschema(), Settings::instance())
+    }
+
+    #[test]
+    fn current_view_id() {
+        let (_tmp, settings) = get();
+        settings.set_current_view_id(settings.current_view_id());
+    }
+
+    #[test]
+    fn did_initial_setup() {
+        let (_tmp, settings) = get();
+        settings.set_did_initial_setup(settings.did_initial_setup());
+    }
+
+    #[test]
+    fn sync_provider_setup_google_fit() {
+        let (_tmp, settings) = get();
+        settings.set_sync_provider_setup_google_fit(settings.sync_provider_setup_google_fit());
+    }
+
+    #[test]
+    fn user_age() {
+        let (_tmp, settings) = get();
+        settings.set_user_age(settings.user_age());
+    }
+
+    #[test]
+    fn user_stepgoal() {
+        let (_tmp, settings) = get();
+        settings.set_user_stepgoal(settings.user_stepgoal());
+    }
+
+    #[test]
+    fn window_height() {
+        let (_tmp, settings) = get();
+        settings.set_window_height(settings.window_height());
+    }
+
+    #[test]
+    fn window_is_maximized() {
+        let (_tmp, settings) = get();
+        settings.set_window_is_maximized(settings.window_is_maximized());
+    }
+
+    #[test]
+    fn window_width() {
+        let (_tmp, settings) = get();
+        settings.set_window_width(settings.window_width());
+    }
+
+    #[test]
+    fn recent_activity_types() {
+        let (_tmp, settings) = get();
+        let types = settings.recent_activity_types();
+        let s: Vec<&str> = types.iter().map(|s| &**s).collect();
+        settings.set_recent_activity_types(&s);
+    }
+
+    #[test]
+    fn timestamp_last_sync_google_fit() {
+        let (_tmp, settings) = get();
+        settings.set_timestamp_last_sync_google_fit(settings.timestamp_last_sync_google_fit());
+    }
+
+    #[test]
+    fn unitsystem() {
+        let (_tmp, settings) = get();
+        settings.set_unitsystem(settings.unitsystem());
+    }
+
+    #[test]
+    fn user_birthday() {
+        let (_tmp, settings) = get();
+        let d: DateTime<FixedOffset> = Local::now().into();
+        settings.set_user_birthday(settings.user_birthday().unwrap_or(d.date()));
+    }
+
+    #[test]
+    fn user_height() {
+        let (_tmp, settings) = get();
+        settings.set_user_height(settings.user_height());
+    }
+
+    #[test]
+    fn user_weightgoal() {
+        let (_tmp, settings) = get();
+        settings.set_user_weightgoal(settings.user_weightgoal());
     }
 }
