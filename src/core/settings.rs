@@ -83,7 +83,7 @@ impl Settings {
 
 impl Default for Settings {
     fn default() -> Self {
-        Settings::instance()
+        Self::instance()
     }
 }
 
@@ -92,7 +92,7 @@ impl Settings {
         unsafe {
             SETTINGS.as_ref().map_or_else(
                 || {
-                    let settings = Settings(gio::Settings::new("dev.Cogitri.Health"));
+                    let settings = Self(gio::Settings::new("dev.Cogitri.Health"));
                     SETTINGS = Some(settings.clone());
                     settings
                 },

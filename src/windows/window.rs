@@ -44,7 +44,7 @@ mod imp {
 
     impl Default for ViewMode {
         fn default() -> Self {
-            ViewMode::Steps
+            Self::Steps
         }
     }
 
@@ -134,8 +134,7 @@ impl Window {
     /// # Arguments
     /// * `app` - The application to use.
     pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
-        let o: Window =
-            glib::Object::new(&[("application", app)]).expect("Failed to create Window");
+        let o: Self = glib::Object::new(&[("application", app)]).expect("Failed to create Window");
 
         let obj = o.clone();
         gtk_macros::spawn!(async move {

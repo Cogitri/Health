@@ -43,7 +43,7 @@ pub enum ViewPeriod {
 
 impl Default for ViewPeriod {
     fn default() -> Self {
-        ViewPeriod::Week
+        Self::Week
     }
 }
 
@@ -109,7 +109,7 @@ glib::wrapper! {
 
 impl Default for ModelActivity {
     fn default() -> Self {
-        ModelActivity::new()
+        Self::new()
     }
 }
 

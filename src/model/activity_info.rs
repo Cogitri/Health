@@ -39,6 +39,12 @@ pub struct ActivityInfo {
     pub name: String,
 }
 
+impl Default for ActivityInfo {
+    fn default() -> Self {
+        Self::from(ActivityType::default())
+    }
+}
+
 impl From<ActivityType> for ActivityInfo {
     /// Converts an [ActivityType] into an [ActivityInfo] that contains infos like a localised name.
     ///
@@ -57,7 +63,7 @@ impl From<ActivityType> for ActivityInfo {
     /// ```
     fn from(activity_type: ActivityType) -> Self {
         match activity_type {
-            ActivityType::Basketball => ActivityInfo::new(
+            ActivityType::Basketball => Self::new(
                 ActivityType::Basketball,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -65,7 +71,7 @@ impl From<ActivityType> for ActivityInfo {
                 6,
                 i18n("Basketball"),
             ),
-            ActivityType::Bicycling => ActivityInfo::new(
+            ActivityType::Bicycling => Self::new(
                 ActivityType::Bicycling,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -74,7 +80,7 @@ impl From<ActivityType> for ActivityInfo {
                 10,
                 i18n("Bicycling"),
             ),
-            ActivityType::Boxing => ActivityInfo::new(
+            ActivityType::Boxing => Self::new(
                 ActivityType::Boxing,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -82,7 +88,7 @@ impl From<ActivityType> for ActivityInfo {
                 7,
                 i18n("Boxing"),
             ),
-            ActivityType::Dancing => ActivityInfo::new(
+            ActivityType::Dancing => Self::new(
                 ActivityType::Dancing,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -90,7 +96,7 @@ impl From<ActivityType> for ActivityInfo {
                 8,
                 i18n("Dancing"),
             ),
-            ActivityType::Football => ActivityInfo::new(
+            ActivityType::Football => Self::new(
                 ActivityType::Football,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -98,13 +104,13 @@ impl From<ActivityType> for ActivityInfo {
                 3,
                 i18n("Football"),
             ),
-            ActivityType::Golf => ActivityInfo::new(
+            ActivityType::Golf => Self::new(
                 ActivityType::Golf,
                 ActivityDataPoints::CALORIES_BURNED | ActivityDataPoints::DURATION,
                 4,
                 i18n("Golf"),
             ),
-            ActivityType::Hiking => ActivityInfo::new(
+            ActivityType::Hiking => Self::new(
                 ActivityType::Hiking,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -114,7 +120,7 @@ impl From<ActivityType> for ActivityInfo {
                 8,
                 i18n("Hiking"),
             ),
-            ActivityType::Hockey => ActivityInfo::new(
+            ActivityType::Hockey => Self::new(
                 ActivityType::Hockey,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -122,7 +128,7 @@ impl From<ActivityType> for ActivityInfo {
                 10,
                 i18n("Hockey"),
             ),
-            ActivityType::HorseRiding => ActivityInfo::new(
+            ActivityType::HorseRiding => Self::new(
                 ActivityType::HorseRiding,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -131,7 +137,7 @@ impl From<ActivityType> for ActivityInfo {
                 5,
                 i18n("Horse Riding"),
             ),
-            ActivityType::OtherSports => ActivityInfo::new(
+            ActivityType::OtherSports => Self::new(
                 ActivityType::OtherSports,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -139,7 +145,7 @@ impl From<ActivityType> for ActivityInfo {
                 9,
                 i18n("Other Sports"),
             ),
-            ActivityType::Rollerblading => ActivityInfo::new(
+            ActivityType::Rollerblading => Self::new(
                 ActivityType::Rollerblading,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -148,7 +154,7 @@ impl From<ActivityType> for ActivityInfo {
                 10,
                 i18n("Rollerblading"),
             ),
-            ActivityType::Running => ActivityInfo::new(
+            ActivityType::Running => Self::new(
                 ActivityType::Running,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -158,7 +164,7 @@ impl From<ActivityType> for ActivityInfo {
                 15,
                 i18n("Running"),
             ),
-            ActivityType::Skiing => ActivityInfo::new(
+            ActivityType::Skiing => Self::new(
                 ActivityType::Skiing,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -167,7 +173,7 @@ impl From<ActivityType> for ActivityInfo {
                 12,
                 i18n("Skiing"),
             ),
-            ActivityType::Soccer => ActivityInfo::new(
+            ActivityType::Soccer => Self::new(
                 ActivityType::Soccer,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -175,7 +181,7 @@ impl From<ActivityType> for ActivityInfo {
                 8,
                 i18n("Soccer"),
             ),
-            ActivityType::Softball => ActivityInfo::new(
+            ActivityType::Softball => Self::new(
                 ActivityType::Softball,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -183,7 +189,7 @@ impl From<ActivityType> for ActivityInfo {
                 5,
                 i18n("Softball"),
             ),
-            ActivityType::Swimming => ActivityInfo::new(
+            ActivityType::Swimming => Self::new(
                 ActivityType::Swimming,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -192,7 +198,7 @@ impl From<ActivityType> for ActivityInfo {
                 12,
                 i18n("Swimming"),
             ),
-            ActivityType::Tennis => ActivityInfo::new(
+            ActivityType::Tennis => Self::new(
                 ActivityType::Tennis,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -200,7 +206,7 @@ impl From<ActivityType> for ActivityInfo {
                 6,
                 i18n("Tennis"),
             ),
-            ActivityType::TrackAndField => ActivityInfo::new(
+            ActivityType::TrackAndField => Self::new(
                 ActivityType::TrackAndField,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -208,7 +214,7 @@ impl From<ActivityType> for ActivityInfo {
                 5,
                 i18n("Track And Field"),
             ),
-            ActivityType::Volleyball => ActivityInfo::new(
+            ActivityType::Volleyball => Self::new(
                 ActivityType::Volleyball,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -218,7 +224,7 @@ impl From<ActivityType> for ActivityInfo {
                 5,
                 i18n("Volleyball"),
             ),
-            ActivityType::Walking => ActivityInfo::new(
+            ActivityType::Walking => Self::new(
                 ActivityType::Walking,
                 ActivityDataPoints::CALORIES_BURNED
                     | ActivityDataPoints::DURATION
@@ -252,7 +258,7 @@ impl TryFrom<&str> for ActivityInfo {
     /// ```
     fn try_from(val: &str) -> Result<Self, Self::Error> {
         match ActivityType::from_str(val) {
-            Ok(t) => Ok(ActivityInfo::from(t)),
+            Ok(t) => Ok(Self::from(t)),
             Err(e) => Err(e),
         }
     }

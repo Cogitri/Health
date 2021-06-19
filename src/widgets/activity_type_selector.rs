@@ -115,8 +115,8 @@ mod imp {
 
             let create_list_box_row = glib::clone!(@weak obj => @default-panic, move |o: &glib::Object| {
                 let data = o.downcast_ref::<ActivityTypeRowData>().unwrap();
-                let selected_activity = ActivityTypeSelector::from_instance(&obj).selected_activity.borrow();
-                ActivityTypeRow::new(&data, data.label() == selected_activity.name)
+                let selected_activity = obj.imp().selected_activity.borrow();
+                ActivityTypeRow::new(data, data.label() == selected_activity.name)
                     .upcast::<gtk::Widget>()
 
             });
@@ -131,10 +131,9 @@ mod imp {
                 let row = r.downcast_ref::<ActivityTypeRow>().unwrap();
 
                 if let Ok(info) = ActivityInfo::try_from(row.id()) {
-                    let self_ = ActivityTypeSelector::from_instance(&obj);
                     obj.set_selected_activity(info);
                     let mut i = 0;
-                    let selected_activity = self_.selected_activity.borrow();
+                    let selected_activity = obj.imp().selected_activity.borrow();
 
                     while let Some(row) = b.row_at_index(i) {
                         let cast = row.downcast::<ActivityTypeRow>().unwrap();

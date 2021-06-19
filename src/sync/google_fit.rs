@@ -201,8 +201,7 @@ impl SyncProvider for GoogleFitSyncProvider {
             .set_pkce_challenge(pkce_code_challenge)
             .url();
 
-        let (code, returned_crfst_state) =
-            GoogleFitSyncProvider::start_listen_server(authorize_url.as_str())?;
+        let (code, returned_crfst_state) = Self::start_listen_server(authorize_url.as_str())?;
 
         if csrf_state.secret() != returned_crfst_state.secret() {
             anyhow::bail!(

@@ -92,7 +92,7 @@ mod imp {
 
             let gesture_controller = gtk::GestureClick::new();
             gesture_controller.connect_pressed(glib::clone!(@weak obj => move |_,_,_,_| {
-                let self_ = ActivityRow::from_instance(&obj);
+                let self_ = obj.imp();
                 self_.details_revealer.set_reveal_child(!self_.details_revealer.reveals_child());
             }));
         }
@@ -174,12 +174,12 @@ impl ActivityRow {
                 if self_.settings.unitsystem() == Unitsystem::Imperial {
                     self_.distance_label.set_label(&format!(
                         "{}",
-                        distance.clone().into_format_args(meter, Abbreviation)
+                        distance.into_format_args(meter, Abbreviation)
                     ));
                 } else {
                     self_.distance_label.set_label(&format!(
                         "{}",
-                        distance.clone().into_format_args(yard, Abbreviation)
+                        distance.into_format_args(yard, Abbreviation)
                     ));
                 };
             }

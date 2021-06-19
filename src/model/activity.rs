@@ -99,6 +99,12 @@ glib::wrapper! {
     pub struct Activity(ObjectSubclass<imp::Activity>);
 }
 
+impl Default for Activity {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Activity {
     /// Try interpolating data from the `calories` that are set on `self`.
     ///
@@ -339,13 +345,13 @@ impl serde::Serialize for Activity {
 }
 
 impl<'de> serde::Deserialize<'de> for Activity {
-    fn deserialize<D>(deserializer: D) -> Result<Activity, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
     where
         D: serde::Deserializer<'de>,
     {
         let inner = imp::ActivityMut::deserialize(deserializer)?;
 
-        let a = Activity::new();
+        let a = Self::new();
         a.imp().inner.replace(inner);
         Ok(a)
     }

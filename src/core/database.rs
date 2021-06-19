@@ -78,7 +78,7 @@ glib::wrapper! {
 
 impl Default for Database {
     fn default() -> Self {
-        Database::instance()
+        Self::instance()
     }
 }
 
@@ -213,7 +213,7 @@ impl Database {
         unsafe {
             DATABASE.as_ref().map_or_else(
                 || {
-                    let database = Database::new().expect("Failed to connect to Tracker Database!");
+                    let database = Self::new().expect("Failed to connect to Tracker Database!");
                     DATABASE = Some(database.clone());
                     database
                 },
@@ -306,7 +306,7 @@ impl Database {
 
         assert!(cursor.next_async_future().await?);
 
-        return Ok(cursor.is_boolean(0));
+        Ok(cursor.is_boolean(0))
     }
 
     /// Import an array of [Steps] into the DB (e.g. when doing the initial sync with a sync provider)

@@ -53,7 +53,7 @@ pub enum ActivityType {
 
 impl Default for ActivityType {
     fn default() -> Self {
-        ActivityType::Walking
+        Self::Walking
     }
 }
 

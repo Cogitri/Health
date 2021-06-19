@@ -26,3 +26,9 @@ bitflags::bitflags! {
         const STEP_COUNT = 0b01_0000;
     }
 }
+
+impl Default for ActivityDataPoints {
+    fn default() -> Self {
+        Self::empty()
+    }
+}

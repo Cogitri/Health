@@ -19,7 +19,7 @@ pub enum Unitsize {
 
 impl Default for Unitsize {
     fn default() -> Self {
-        Unitsize::Small
+        Self::Small
     }
 }
 

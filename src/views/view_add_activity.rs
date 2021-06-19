@@ -39,25 +39,13 @@ mod imp {
     use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
-    #[derive(Debug)]
+    #[derive(Debug, Default)]
     pub struct ViewAddActivityMut {
         pub activity: Activity,
         pub user_changed_datapoints: ActivityDataPoints,
         pub filter_model: Option<gtk::FilterListModel>,
         pub selected_activity: ActivityInfo,
         pub stop_update: bool,
-    }
-
-    impl Default for ViewAddActivityMut {
-        fn default() -> Self {
-            ViewAddActivityMut {
-                activity: Activity::new(),
-                filter_model: None,
-                selected_activity: ActivityInfo::from(ActivityType::default()),
-                stop_update: false,
-                user_changed_datapoints: ActivityDataPoints::empty(),
-            }
-        }
     }
 
     #[derive(Debug, CompositeTemplate, Default)]
@@ -470,10 +458,9 @@ impl ViewAddActivity {
         let inner = self_.inner.borrow();
 
         let mut recent_activities = self_.settings.recent_activity_types();
-        if recent_activities
+        if !recent_activities
             .iter()
-            .find(|s| &inner.selected_activity.id == s)
-            .is_none()
+            .any(|s| inner.selected_activity.id == s)
         {
             recent_activities.push(inner.selected_activity.id.to_string());
             if recent_activities.len() > 4 {

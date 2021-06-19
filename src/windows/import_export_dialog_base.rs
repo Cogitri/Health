@@ -63,15 +63,13 @@ mod imp {
         type Target = glib::Class<glib::Object>;
 
         fn deref(&self) -> &Self::Target {
-            unsafe { &*(self as *const ImportExportDialogBaseClass).cast::<Self::Target>() }
+            unsafe { &*(self as *const Self).cast::<Self::Target>() }
         }
     }
 
     impl std::ops::DerefMut for ImportExportDialogBaseClass {
         fn deref_mut(&mut self) -> &mut glib::Class<glib::Object> {
-            unsafe {
-                &mut *(self as *mut ImportExportDialogBaseClass).cast::<glib::Class<glib::Object>>()
-            }
+            unsafe { &mut *(self as *mut Self).cast::<glib::Class<glib::Object>>() }
         }
     }
 
