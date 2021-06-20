@@ -28,6 +28,8 @@ version = "1.0"
 version = "0.8.0"
 
 [dependencies.chrono]
+default-features = false
+features = ["std"]
 version = "0.4"
 
 [dependencies.csv]

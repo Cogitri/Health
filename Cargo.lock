@@ -653,7 +653,7 @@ dependencies = [
 [[package]]
 name = "gdk4"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5516ecedd9971500a957c77fd0dbfe28cdbc9608"
+source = "git+https://github.com/gtk-rs/gtk4-rs#5db703baab049ee46ddaaaa388a0c768105accce"
 dependencies = [
  "bitflags",
  "cairo-rs",
@@ -668,7 +668,7 @@ dependencies = [
 [[package]]
 name = "gdk4-sys"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5516ecedd9971500a957c77fd0dbfe28cdbc9608"
+source = "git+https://github.com/gtk-rs/gtk4-rs#5db703baab049ee46ddaaaa388a0c768105accce"
 dependencies = [
  "cairo-sys-rs",
  "gdk-pixbuf-sys",
@@ -842,7 +842,7 @@ dependencies = [
 [[package]]
 name = "gsk4"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5516ecedd9971500a957c77fd0dbfe28cdbc9608"
+source = "git+https://github.com/gtk-rs/gtk4-rs#5db703baab049ee46ddaaaa388a0c768105accce"
 dependencies = [
  "bitflags",
  "cairo-rs",
@@ -857,7 +857,7 @@ dependencies = [
 [[package]]
 name = "gsk4-sys"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5516ecedd9971500a957c77fd0dbfe28cdbc9608"
+source = "git+https://github.com/gtk-rs/gtk4-rs#5db703baab049ee46ddaaaa388a0c768105accce"
 dependencies = [
  "cairo-sys-rs",
  "gdk4-sys",
@@ -878,7 +878,7 @@ checksum = "da5bf7748fd4cd0b2490df8debcc911809dbcbee4ece9531b96c29a9c729de5a"
 [[package]]
 name = "gtk4"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5516ecedd9971500a957c77fd0dbfe28cdbc9608"
+source = "git+https://github.com/gtk-rs/gtk4-rs#5db703baab049ee46ddaaaa388a0c768105accce"
 dependencies = [
  "bitflags",
  "cairo-rs",
@@ -900,7 +900,7 @@ dependencies = [
 [[package]]
 name = "gtk4-macros"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5516ecedd9971500a957c77fd0dbfe28cdbc9608"
+source = "git+https://github.com/gtk-rs/gtk4-rs#5db703baab049ee46ddaaaa388a0c768105accce"
 dependencies = [
  "anyhow",
  "heck",
@@ -915,7 +915,7 @@ dependencies = [
 [[package]]
 name = "gtk4-sys"
 version = "0.1.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5516ecedd9971500a957c77fd0dbfe28cdbc9608"
+source = "git+https://github.com/gtk-rs/gtk4-rs#5db703baab049ee46ddaaaa388a0c768105accce"
 dependencies = [
  "cairo-sys-rs",
  "gdk-pixbuf-sys",
@@ -1622,9 +1622,9 @@ dependencies = [
 
 [[package]]
 name = "redox_syscall"
-version = "0.2.8"
+version = "0.2.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "742739e41cd49414de871ea5e549afb7e2a3ac77b589bcbebe8c82fab37147fc"
+checksum = "5ab49abadf3f9e1c4bc499e8845e152ad87d2ad2d30371841171169e9d75feee"
 dependencies = [
  "bitflags",
 ]
