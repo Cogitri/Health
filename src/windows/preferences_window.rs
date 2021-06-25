@@ -21,8 +21,10 @@ use crate::{
     windows::{ExportDialog, ImportDialog},
 };
 use adw::prelude::*;
-use glib::{clone, subclass::prelude::*};
-use gtk::prelude::*;
+use gtk::{
+    glib::{self, clone, subclass::prelude::*},
+    prelude::*,
+};
 use uom::si::{
     f32::{Length, Mass},
     length::{centimeter, inch},
@@ -35,7 +37,7 @@ mod imp {
         widgets::{BmiLevelBar, DateSelector, SyncListBox},
     };
     use adw::prelude::*;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::Cell;
     use uom::si::{

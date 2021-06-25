@@ -21,8 +21,11 @@ use crate::{
     model::ViewPeriod,
     views::View,
 };
-use glib::{clone, subclass::prelude::*, Cast};
-use gtk::prelude::*;
+use gtk::{
+    gio,
+    glib::{self, clone, subclass::prelude::*, Cast},
+    prelude::*,
+};
 use gtk_macros::stateful_action;
 use std::str::FromStr;
 
@@ -33,8 +36,13 @@ mod imp {
         views::View,
         widgets::ActivityRow,
     };
-    use glib::Cast;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{
+        self,
+        glib::{self, Cast},
+        prelude::*,
+        subclass::prelude::*,
+        CompositeTemplate,
+    };
 
     #[derive(Debug, Default)]
     pub struct ViewActivityMut {

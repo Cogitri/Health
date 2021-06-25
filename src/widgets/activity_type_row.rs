@@ -17,11 +17,13 @@
  */
 
 use crate::model::ActivityTypeRowData;
-use glib::subclass::prelude::*;
-use gtk::prelude::*;
+use gtk::{
+    glib::{self, subclass::prelude::*},
+    prelude::*,
+};
 
 mod imp {
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate, Default)]

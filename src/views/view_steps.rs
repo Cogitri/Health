@@ -21,7 +21,7 @@ use crate::{
     views::{GraphView, View},
 };
 use chrono::Duration;
-use glib::{subclass::prelude::*, Cast};
+use gtk::glib::{self, subclass::prelude::*, Cast};
 
 mod imp {
     use crate::{
@@ -29,8 +29,10 @@ mod imp {
         views::{GraphView, View},
         Settings,
     };
-    use glib::Cast;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{
+        glib::{self, Cast},
+        {prelude::*, subclass::prelude::*, CompositeTemplate},
+    };
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 

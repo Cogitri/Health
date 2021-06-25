@@ -19,8 +19,10 @@
 use crate::model::{Activity, ActivityType, Steps, Weight};
 use anyhow::Result;
 use chrono::{Date, DateTime, Duration, FixedOffset, NaiveDate, SecondsFormat, Utc};
-use gio::subclass::prelude::*;
-use glib::prelude::*;
+use gtk::{
+    gio::{self, subclass::prelude::*},
+    glib::{self, prelude::*},
+};
 use num_traits::cast::{FromPrimitive, ToPrimitive};
 use std::{
     convert::{TryFrom, TryInto},
@@ -33,8 +35,10 @@ use uom::si::{
 };
 
 mod imp {
-    use gio::subclass::prelude::*;
-    use glib::subclass::Signal;
+    use gtk::{
+        gio::subclass::prelude::*,
+        glib::{self, subclass::Signal},
+    };
     use std::cell::RefCell;
 
     #[derive(Debug)]

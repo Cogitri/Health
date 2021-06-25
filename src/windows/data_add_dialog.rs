@@ -17,11 +17,13 @@
  */
 
 use crate::views::{View, ViewAddActivity, ViewAddWeight};
-use glib::subclass::prelude::*;
-use gtk::prelude::*;
+use gtk::{
+    glib::{self, subclass::prelude::*},
+    prelude::*,
+};
 
 mod imp {
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/data_add_dialog.ui")]

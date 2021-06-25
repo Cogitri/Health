@@ -17,7 +17,7 @@
  */
 
 use crate::{core::Unitsystem, model::Weight, views::View};
-use glib::subclass::prelude::*;
+use gtk::glib::{self, subclass::prelude::*};
 use uom::si::{
     f32::Mass,
     mass::{kilogram, pound},
@@ -29,7 +29,7 @@ mod imp {
         views::View,
         widgets::DateSelector,
     };
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_add_dialog.ui")]

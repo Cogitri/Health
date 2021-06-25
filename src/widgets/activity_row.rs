@@ -20,8 +20,10 @@ use crate::{
     core::{date::prelude::*, i18n_f, Unitsystem},
     model::{Activity, ActivityDataPoints, ActivityInfo},
 };
-use glib::subclass::prelude::*;
-use gtk::prelude::*;
+use gtk::{
+    glib::{self, subclass::prelude::*},
+    prelude::*,
+};
 use uom::{
     fmt::DisplayStyle::Abbreviation,
     si::length::{meter, yard},
@@ -29,7 +31,7 @@ use uom::{
 
 mod imp {
     use crate::{core::Settings, model::Activity};
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate, Default)]

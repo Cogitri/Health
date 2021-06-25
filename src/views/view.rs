@@ -17,11 +17,13 @@
  */
 
 use crate::properties_setter_getter;
-use glib::prelude::*;
-use gtk::subclass::prelude::*;
+use gtk::{
+    glib::{self, prelude::*},
+    subclass::prelude::*,
+};
 
 mod imp {
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate, Default)]

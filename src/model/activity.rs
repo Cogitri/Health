@@ -21,7 +21,7 @@ use crate::{
     refcell_getter_setter,
 };
 use chrono::{DateTime, Duration, FixedOffset};
-use glib::subclass::prelude::*;
+use gtk::glib::{self, subclass::prelude::*};
 use std::convert::TryFrom;
 use uom::si::{f32::Length, length::meter};
 
@@ -39,7 +39,7 @@ static RUNNING_STEPS_PER_MINUTE: u32 = 150;
 mod imp {
     use crate::{model::ActivityType, sync::serialize};
     use chrono::{DateTime, Duration, FixedOffset, Utc};
-    use gtk::subclass::prelude::*;
+    use gtk::{glib, subclass::prelude::*};
     use std::cell::RefCell;
     use uom::si::f32::Length;
 

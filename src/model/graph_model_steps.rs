@@ -179,6 +179,7 @@ mod test {
     use super::GraphModelSteps;
     use crate::{core::Database, model::Activity, views::Point};
     use chrono::{Duration, Local};
+    use gtk::glib;
     use tempfile::tempdir;
 
     #[test]

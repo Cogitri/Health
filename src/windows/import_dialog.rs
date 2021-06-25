@@ -17,7 +17,7 @@
  */
 
 use crate::i18n::i18n;
-use gtk::prelude::*;
+use gtk::{glib, prelude::*};
 
 mod imp {
     use crate::{
@@ -27,7 +27,7 @@ mod imp {
             ImportExportDialogBase, ImportExportDialogBaseImpl, PinnedResultFuture,
         },
     };
-    use gtk::{prelude::*, subclass::prelude::*};
+    use gtk::{gio, glib, prelude::*, subclass::prelude::*};
     use gtk_macros::spawn;
 
     #[derive(Debug, Default)]

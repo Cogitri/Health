@@ -18,12 +18,15 @@
 
 pub use self::imp::PinnedResultFuture;
 use crate::i18n::i18n;
-use glib::{
-    clone,
-    subclass::prelude::*,
-    translate::{from_glib_borrow, ToGlibPtr},
+use gtk::{
+    glib::{
+        self, clone,
+        prelude::*,
+        subclass::prelude::*,
+        translate::{from_glib_borrow, ToGlibPtr},
+    },
+    prelude::*,
 };
-use gtk::prelude::*;
 
 mod imp {
     use std::{future::Future, pin::Pin};
@@ -31,8 +34,11 @@ mod imp {
     use crate::{i18n, widgets::PasswordEntry};
     use adw::prelude::*;
     use anyhow::Result;
-    use glib::translate::from_glib_borrow;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{
+        gio,
+        glib::{self, translate::from_glib_borrow},
+        {prelude::*, subclass::prelude::*, CompositeTemplate},
+    };
 
     pub type ImportExportDialogBaseInstance =
         <ImportExportDialogBase as super::ObjectSubclass>::Instance;

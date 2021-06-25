@@ -22,8 +22,10 @@ use crate::{
     views::{GraphView, View},
 };
 use chrono::Duration;
-use gio::subclass::prelude::*;
-use glib::Cast;
+use gtk::{
+    gio::subclass::prelude::*,
+    glib::{self, Cast},
+};
 use uom::si::{
     length::meter,
     mass::{kilogram, pound},
@@ -35,8 +37,10 @@ mod imp {
         model::GraphModelWeight,
         views::{GraphView, View},
     };
-    use glib::Cast;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{
+        glib::{self, Cast},
+        {prelude::*, subclass::prelude::*, CompositeTemplate},
+    };
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 

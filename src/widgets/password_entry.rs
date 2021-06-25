@@ -16,12 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use glib::{clone, subclass::prelude::*, SignalHandlerId};
+use gtk::glib::{self, clone, subclass::prelude::*, SignalHandlerId};
 use gtk::prelude::*;
 
 mod imp {
     use adw::subclass::prelude::*;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/password_entry.ui")]

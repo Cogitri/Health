@@ -20,7 +20,10 @@ use crate::{core::Database, i18n::i18n};
 use anyhow::Result;
 use chacha20poly1305::aead::{Aead, NewAead};
 use chacha20poly1305::{Key, XChaCha20Poly1305, XNonce};
-use gio::prelude::*;
+use gtk::{
+    gio::{self, prelude::*},
+    glib,
+};
 use ring::rand::{self, SecureRandom};
 use sha2::{Digest, Sha256};
 use std::convert::TryFrom;
@@ -258,6 +261,7 @@ impl CsvHandler {
 mod test {
     use super::CsvHandler;
     use crate::{core::Database, i18n, sync::csv::EncryptionError};
+    use gtk::{gio, glib};
     use tempfile::tempdir;
 
     #[test]

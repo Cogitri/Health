@@ -20,7 +20,7 @@ use crate::{
     core::i18n,
     model::{ActivityDataPoints, ActivityType},
 };
-use glib::GBoxed;
+use gtk::glib::{self, GBoxed};
 use std::{convert::TryFrom, str::FromStr};
 
 #[derive(Clone, Debug, PartialEq, Eq, GBoxed)]

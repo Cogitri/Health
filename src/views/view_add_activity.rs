@@ -22,8 +22,11 @@ use crate::{
     views::View,
 };
 use chrono::Duration;
-use glib::{clone, subclass::prelude::*};
-use gtk::prelude::*;
+use gtk::{
+    gio,
+    glib::{self, clone, subclass::prelude::*},
+    prelude::*,
+};
 use gtk_macros::stateful_action;
 use imp::spin_button_value_if_datapoint;
 use std::str::FromStr;
@@ -35,8 +38,13 @@ mod imp {
         views::View,
         widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
     };
-    use glib::clone;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{
+        gio,
+        glib::{self, clone},
+        prelude::*,
+        subclass::prelude::*,
+        CompositeTemplate,
+    };
     use std::cell::RefCell;
 
     #[derive(Debug, Default)]

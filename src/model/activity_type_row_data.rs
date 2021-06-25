@@ -16,10 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gio::subclass::prelude::*;
+use gtk::{gio::subclass::prelude::*, glib};
 
 mod imp {
-    use gtk::subclass::prelude::*;
+    use gtk::{glib, subclass::prelude::*};
     use std::cell::RefCell;
 
     #[derive(Debug)]

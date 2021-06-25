@@ -115,6 +115,7 @@ mod test {
     use super::GraphModelWeight;
     use crate::{core::Database, model::Weight, views::Point};
     use chrono::{Duration, Local};
+    use gtk::glib;
     use tempfile::tempdir;
     use uom::si::{f32::Mass, mass::kilogram};
 

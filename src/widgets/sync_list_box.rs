@@ -20,13 +20,15 @@ use crate::sync::{
     google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider,
 };
 use anyhow::Result;
-use glib::{clone, g_warning, subclass::prelude::*};
-use gtk::prelude::*;
+use gtk::{
+    glib::{self, clone, g_warning, subclass::prelude::*},
+    prelude::*,
+};
 use gtk_macros::spawn;
 
 mod imp {
     use crate::core::Settings;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate, Default)]

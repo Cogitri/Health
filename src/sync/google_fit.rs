@@ -23,6 +23,7 @@ use crate::{
 };
 use anyhow::Result;
 use chrono::{DateTime, FixedOffset, Utc};
+use gtk::glib;
 use oauth2::{
     basic::{BasicClient, BasicTokenType},
     AuthUrl, ClientId, ClientSecret, CsrfToken, EmptyExtraTokenFields, PkceCodeChallenge,

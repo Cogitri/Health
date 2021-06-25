@@ -18,14 +18,18 @@
 
 use crate::core::date::prelude::*;
 use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
-use glib::{subclass::prelude::*, SignalHandlerId};
+use gtk::glib::{self, subclass::prelude::*, SignalHandlerId};
 use gtk::prelude::*;
 
 mod imp {
     use crate::date::DateTimeBoxed;
     use chrono::{DateTime, FixedOffset, Local};
-    use glib::clone;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{
+        glib::{self, clone},
+        prelude::*,
+        subclass::prelude::*,
+        CompositeTemplate,
+    };
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate)]

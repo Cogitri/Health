@@ -20,8 +20,7 @@ use crate::{
     core::{i18n, utils::spinbutton_value, Unitsystem},
     model::Unitsize,
 };
-use gio::subclass::prelude::*;
-use gtk::prelude::*;
+use gtk::{gio::subclass::prelude::*, glib, prelude::*};
 use uom::si::{
     f32::Length,
     length::{kilometer, meter, mile, yard},
@@ -30,8 +29,12 @@ use uom::si::{
 mod imp {
     use crate::{core::Settings, model::Unitsize};
     use adw::subclass::prelude::*;
-    use glib::{clone, subclass::Signal};
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{
+        glib::{self, clone, subclass::Signal},
+        prelude::*,
+        subclass::prelude::*,
+        CompositeTemplate,
+    };
     use std::cell::RefCell;
     use uom::si::f32::Length;
 

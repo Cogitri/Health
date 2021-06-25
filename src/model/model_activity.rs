@@ -18,8 +18,10 @@
 
 use anyhow::Result;
 use chrono::{Datelike, Duration, TimeZone};
-use gio::prelude::*;
-use glib::subclass::prelude::*;
+use gtk::{
+    gio::{self, prelude::*},
+    glib::{self, subclass::prelude::*},
+};
 use std::convert::TryInto;
 
 #[derive(
@@ -52,8 +54,11 @@ mod imp {
         core::{Database, Settings},
         model::Activity,
     };
-    use glib::{subclass, Cast, StaticType};
     use gtk::subclass::prelude::*;
+    use gtk::{
+        gio,
+        glib::{self, subclass, Cast, StaticType},
+    };
     use std::{
         cell::RefCell,
         convert::{TryFrom, TryInto},

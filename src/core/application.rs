@@ -21,9 +21,11 @@ use crate::{
     windows::{PreferencesWindow, Window},
 };
 use chrono::{DateTime, Duration, FixedOffset, Local};
-use gio::prelude::*;
-use glib::{clone, subclass::prelude::*};
-use gtk::prelude::*;
+use gtk::{
+    gio::{self, prelude::*},
+    glib::{self, clone, subclass::prelude::*},
+    prelude::*,
+};
 use gtk_macros::{action, stateful_action};
 use std::str::FromStr;
 
@@ -33,7 +35,7 @@ mod imp {
         core::Settings,
         windows::{SetupWindow, Window},
     };
-    use glib::{clone, g_warning};
+    use gtk::glib::{self, clone, g_warning};
     use gtk::{prelude::*, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
 

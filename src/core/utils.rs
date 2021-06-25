@@ -16,7 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::prelude::*;
+#[cfg(test)]
+use gtk::gio;
+use gtk::{glib, prelude::*};
 use std::future::Future;
 
 /// Get the number-value of a [gtk::SpinButton].

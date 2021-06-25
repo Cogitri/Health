@@ -23,12 +23,12 @@
 //!     * Please make sure your subclasses roughly follow this structure:
 //!       ```
 //!       mod my_struct {
-//!           use glib::subclass::prelude::*;
+//!           use gtk::glib::{subclass::prelude::*, self};
 //!
 //!           // This is your struct to do GObject subclassing.
 //!           // No additional logic should be implemented here.
 //!           mod imp {
-//!               use glib::subclass::{self, prelude::*};
+//!               use gtk::glib::{subclass::{self, prelude::*}, self};
 //!
 //!               #[derive(Default, Debug)]
 //!               pub struct MyStruct {}

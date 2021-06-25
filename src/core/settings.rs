@@ -18,7 +18,10 @@
 
 use crate::{core::Unitsystem, settings_getter_setter};
 use chrono::{Date, DateTime, FixedOffset};
-use gio::prelude::*;
+use gtk::{
+    gio::{self, prelude::*},
+    glib,
+};
 use num_traits::{FromPrimitive, ToPrimitive};
 use uom::si::{
     f32::{Length, Mass},

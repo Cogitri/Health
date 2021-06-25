@@ -17,9 +17,10 @@
  */
 
 use crate::{model::ActivityInfo, ActivityInfoBoxed};
-use gio::prelude::*;
-use gio::subclass::prelude::*;
-use glib::SignalHandlerId;
+use gtk::{
+    gio::{prelude::*, subclass::prelude::*},
+    glib::{self, SignalHandlerId},
+};
 
 mod imp {
     use crate::{
@@ -28,8 +29,11 @@ mod imp {
         widgets::ActivityTypeRow,
         ActivityInfoBoxed,
     };
-    use glib::g_warning;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{
+        gio,
+        glib::{self, g_warning},
+        {prelude::*, subclass::prelude::*, CompositeTemplate},
+    };
     use num_traits::cast::FromPrimitive;
     use std::{cell::RefCell, convert::TryFrom};
 

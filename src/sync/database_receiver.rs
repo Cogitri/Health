@@ -20,6 +20,7 @@ use crate::{
     core::{i18n_f, Database},
     model::{Steps, Weight},
 };
+use gtk::glib;
 use gtk_macros::spawn;
 
 pub enum DatabaseValue {

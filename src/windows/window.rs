@@ -22,16 +22,23 @@ use crate::{
     views::{ViewActivity, ViewSteps, ViewWeight},
     windows::DataAddDialog,
 };
-use glib::{clone, signal::Inhibit, subclass::prelude::*, Cast};
-use gtk::prelude::*;
+use gtk::{
+    gio,
+    glib::{self, clone, signal::Inhibit, subclass::prelude::*, Cast},
+    prelude::*,
+};
 use gtk_macros::action;
 use imp::ViewMode;
 use std::collections::BTreeMap;
 
 mod imp {
     use crate::{core::Settings, views::View};
-    use glib::SourceId;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{
+        glib::{self, SourceId},
+        prelude::*,
+        subclass::prelude::*,
+        CompositeTemplate,
+    };
     use once_cell::unsync::OnceCell;
     use std::{cell::RefCell, collections::BTreeMap};
 

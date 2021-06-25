@@ -18,6 +18,7 @@
 
 use crate::{core::i18n, utils::run_gio_future_sync};
 use anyhow::Result;
+use gtk::gio;
 use oauth2::{
     basic::{BasicClient, BasicTokenType},
     url::Url,

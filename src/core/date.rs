@@ -1,6 +1,5 @@
 use chrono::{Date, DateTime, FixedOffset, TimeZone};
-use glib::DateTime as GDateTime;
-use glib::GBoxed;
+use gtk::glib::{self, DateTime as GDateTime, GBoxed};
 
 pub mod prelude {
     pub use super::*;

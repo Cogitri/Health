@@ -23,9 +23,11 @@ use crate::core::{
 };
 use adw::prelude::*;
 use chrono::Local;
-use gio::prelude::*;
-use glib::{clone, subclass::prelude::*};
-use gtk::prelude::*;
+use gtk::{
+    gio::{self, prelude::*},
+    glib::{self, clone, subclass::prelude::*},
+    prelude::*,
+};
 use gtk_macros::action;
 use uom::si::{
     f32::{Length, Mass},
@@ -40,8 +42,12 @@ mod imp {
         core::{Settings, Unitsystem},
         widgets::{BmiLevelBar, DateSelector, SyncListBox},
     };
-    use glib::subclass::Signal;
-    use gtk::{prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{
+        glib::{self, subclass::Signal},
+        prelude::*,
+        subclass::prelude::*,
+        CompositeTemplate,
+    };
     use std::cell::Cell;
 
     #[derive(Debug, CompositeTemplate)]

@@ -18,8 +18,7 @@
 
 use crate::core::date::prelude::*;
 use chrono::{Date, FixedOffset, Local};
-use gio::subclass::prelude::*;
-use gtk::prelude::*;
+use gtk::{gdk, gio::subclass::prelude::*, glib, pango, prelude::*};
 use std::convert::TryInto;
 
 /// A [Point] describes a single datapoint in a [GraphView]
@@ -35,10 +34,13 @@ static HALF_Y_PADDING: f32 = 30.0;
 mod imp {
     use super::{Point, HALF_X_PADDING, HALF_Y_PADDING};
     use crate::core::date::prelude::*;
-    use gdk::prelude::GdkCairoContextExt;
-    use glib::clone;
-    use gtk::prelude::*;
-    use gtk::subclass::prelude::*;
+    use gtk::{
+        gdk::prelude::GdkCairoContextExt,
+        glib::{self, clone},
+        pango,
+        prelude::*,
+        subclass::prelude::*,
+    };
     use std::{cell::RefCell, convert::TryInto, f64::consts::PI};
 
     #[derive(Debug)]
