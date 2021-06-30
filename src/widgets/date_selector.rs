@@ -17,7 +17,7 @@
  */
 
 use crate::core::date::prelude::*;
-use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
+use chrono::{DateTime, FixedOffset, Local, LocalResult, TimeZone};
 use gtk::glib::{self, subclass::prelude::*, SignalHandlerId};
 use gtk::prelude::*;
 
@@ -196,15 +196,58 @@ impl DateSelector {
     }
 
     fn parse_date(&self) {
-        if let Ok(date) = NaiveDate::parse_from_str(self.text().as_str(), "%x") {
-            match Local.from_local_datetime(&date.and_hms(12, 0, 0)) {
-                LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
-                    self.set_selected_date(d.into());
+        match dtparse::parse(self.text().as_str()) {
+            Ok((d, timezone)) => {
+                match timezone
+                    .unwrap_or_else(|| *Local.timestamp(0, 0).offset())
+                    .from_local_datetime(&d)
+                {
+                    LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
+                        self.set_selected_date(d);
+                    }
+                    LocalResult::None => {}
                 }
-                LocalResult::None => {}
             }
-        } else {
-            glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't parse date!");
+            Err(e) => {
+                glib::g_warning!(
+                    crate::config::LOG_DOMAIN,
+                    "Couldn't parse date: {}",
+                    e.to_string()
+                )
+            }
         }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+    use chrono::NaiveDate;
+
+    #[test]
+    fn test_parse_date() {
+        crate::utils::init_gtk();
+
+        let selector = DateSelector::new();
+        let mut date = NaiveDate::from_ymd(2009, 2, 16);
+        let mut assert_date = |s: &str| {
+            selector.set_text(s);
+            selector.parse_date();
+            date += chrono::Duration::days(1);
+            assert_eq!(selector.selected_date().date().naive_local(), date);
+        };
+
+        assert_date("02/17/2009");
+        assert_date("18/02/2009");
+        assert_date("2009/02/19");
+        assert_date("February 20, 2009");
+        assert_date("2/21/2009");
+        assert_date(" 2/22/2009");
+        assert_date("23/ 2/2009");
+        assert_date("2009/ 2/24");
+        assert_date("25Feb2009");
+        assert_date("Feb 26, 2009");
+        assert_date("27 Feb, 2009");
+        assert_date("2009, Feb 28");
     }
 }
