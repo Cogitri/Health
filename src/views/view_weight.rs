@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{date::prelude::*, i18n, i18n_f, utils::round_decimal_places, Database, Unitsystem},
+    core::{date::prelude::*, i18n, i18n_f, utils::prelude::*, Database, Unitsystem},
     model::GraphModelWeight,
     views::{GraphView, View},
 };
@@ -175,7 +175,7 @@ impl ViewWeight {
         if let Some(last_weight) = model.last_weight() {
             let height = self.imp().settings.user_height().get::<meter>() as f32;
             let bmi =
-                round_decimal_places(last_weight.get::<kilogram>() as f32 / (height * height), 1);
+                (last_weight.get::<kilogram>() as f32 / (height * height)).round_decimal_places(1);
             format!("{bmi:.1}", bmi = bmi)
         } else {
             i18n("Unknown BMI")
@@ -220,7 +220,7 @@ impl ViewWeight {
             goal_label.set_text(&i18n_f(
                 "{} {} left to reach your weightgoal of {} {}",
                 &[
-                    &format!("{diff:.1}", diff = round_decimal_places(diff, 1)),
+                    &format!("{diff:.1}", diff = diff.round_decimal_places(1)),
                     &translation,
                     &format!("{weight_value:.1}", weight_value = weight_value),
                     &translation,

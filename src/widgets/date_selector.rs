@@ -17,44 +17,41 @@
  */
 
 use crate::core::date::prelude::*;
-use chrono::{DateTime, FixedOffset, Local, LocalResult, TimeZone};
-use gtk::glib::{self, subclass::prelude::*, SignalHandlerId};
-use gtk::prelude::*;
+use chrono::{DateTime, FixedOffset, Local, NaiveDate};
+use gtk::{
+    glib::{self, SignalHandlerId},
+    prelude::*,
+    subclass::prelude::*,
+};
 
 mod imp {
-    use crate::date::DateTimeBoxed;
-    use chrono::{DateTime, FixedOffset, Local};
+    use crate::{date::DateTimeBoxed, utils::prelude::*};
+    use chrono::{Datelike, Local, LocalResult, NaiveDate, TimeZone};
     use gtk::{
         glib::{self, clone},
         prelude::*,
         subclass::prelude::*,
         CompositeTemplate,
     };
-    use std::cell::RefCell;
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/date_editor.ui")]
     pub struct DateSelector {
-        pub selected_date: RefCell<DateTime<FixedOffset>>,
         #[template_child]
-        pub date_chooser: TemplateChild<gtk::Calendar>,
+        pub day_adjustment: TemplateChild<gtk::Adjustment>,
         #[template_child]
-        pub date_selector_popover: TemplateChild<gtk::Popover>,
+        pub day_spinner: TemplateChild<gtk::SpinButton>,
+        #[template_child]
+        pub month_dropdown: TemplateChild<gtk::DropDown>,
+        #[template_child]
+        pub year_spinner: TemplateChild<gtk::SpinButton>,
     }
 
     #[glib::object_subclass]
     impl ObjectSubclass for DateSelector {
         const NAME: &'static str = "HealthDateSelector";
-        type ParentType = gtk::Entry;
+        type ParentType = gtk::Grid;
         type Type = super::DateSelector;
-
-        fn new() -> Self {
-            Self {
-                selected_date: RefCell::new(chrono::Utc::now().into()),
-                date_chooser: TemplateChild::default(),
-                date_selector_popover: TemplateChild::default(),
-            }
-        }
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -69,25 +66,22 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            let controller = gtk::EventControllerFocus::new();
-            obj.add_controller(&controller);
-
-            controller.connect_enter(clone!(@weak obj => move |_| obj.parse_date()));
-            controller.connect_leave(clone!(@weak obj => move |_| obj.parse_date()));
-            obj.connect_activate(clone!(@weak obj => move |_| obj.parse_date()));
-            obj.connect_icon_press(clone!(@weak obj => move |_, pos| {
-                obj.handle_icon_press(pos)
-            }));
-            self.date_chooser
-                .connect_day_selected(clone!(@weak obj => move |c| {
-                    obj.handle_date_chooser_connect_day_selected(c)
+            self.day_spinner
+                .connect_changed(clone!(@weak obj => move |_| {
+                    obj.handle_date_widget_changed();
                 }));
-            self.date_selector_popover.set_parent(obj);
-            obj.set_selected_date(Local::now().into());
-        }
-
-        fn dispose(&self, _obj: &Self::Type) {
-            self.date_selector_popover.unparent();
+            self.month_dropdown
+                .connect_selected_notify(clone!(@weak obj => move |_| {
+                    obj.handle_date_widget_changed();
+                }));
+            self.year_spinner
+                .connect_changed(clone!(@weak obj => move |_| {
+                    obj.handle_date_widget_changed();
+                }));
+            let now = Local::now();
+            obj.set_selected_date(now.into());
+            self.day_adjustment
+                .set_upper(obj.get_days_from_month(now.date().year(), now.date().month()) as f64);
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -106,22 +100,41 @@ mod imp {
 
         fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
-                "selected-date" => DateTimeBoxed(*self.selected_date.borrow()).to_value(),
+                "selected-date" => {
+                    let naive_date = NaiveDate::from_ymd(
+                        self.year_spinner.raw_value().unwrap_or(0),
+                        // The dropdown starts counting from 0, not 1.
+                        self.month_dropdown.selected() + 1,
+                        self.day_spinner.raw_value().unwrap_or(0),
+                    );
+                    match Local.from_local_datetime(&naive_date.and_hms(12, 0, 0)) {
+                        LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
+                            DateTimeBoxed(d.into()).to_value()
+                        }
+                        LocalResult::None => {
+                            unimplemented!()
+                        }
+                    }
+                }
                 _ => unimplemented!(),
             }
         }
 
         fn set_property(
             &self,
-            _obj: &Self::Type,
+            obj: &Self::Type,
             _id: usize,
             value: &glib::Value,
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
                 "selected-date" => {
-                    self.selected_date
-                        .replace(value.get::<DateTimeBoxed>().unwrap().0);
+                    let date = value.get::<DateTimeBoxed>().unwrap().0.date();
+                    self.day_adjustment
+                        .set_upper(obj.get_days_from_month(date.year(), date.month()) as f64);
+                    self.day_spinner.set_value(date.day().into());
+                    self.month_dropdown.set_selected(date.month() - 1);
+                    self.year_spinner.set_value(date.year().into());
                 }
                 _ => unimplemented!(),
             }
@@ -129,13 +142,13 @@ mod imp {
     }
 
     impl WidgetImpl for DateSelector {}
-    impl EntryImpl for DateSelector {}
+    impl GridImpl for DateSelector {}
 }
 
 glib::wrapper! {
     /// A widget to select a date via a [gtk::Calendar] or by entering a date into a [gtk::Entry].
     pub struct DateSelector(ObjectSubclass<imp::DateSelector>)
-        @extends gtk::Widget, gtk::Entry, @implements gtk::Editable;
+        @extends gtk::Widget, gtk::Grid;
 }
 
 impl DateSelector {
@@ -159,6 +172,10 @@ impl DateSelector {
             .0
     }
 
+    pub fn handle_date_widget_changed(&self) {
+        self.notify("selected-date");
+    }
+
     /// Create a new [DateSelector]
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create DateSelector")
@@ -166,88 +183,86 @@ impl DateSelector {
 
     /// Set the currently selected date.
     pub fn set_selected_date(&self, value: DateTime<FixedOffset>) {
-        self.set_text(&value.format_local());
         let now: DateTime<FixedOffset> = Local::now().into();
-        if value.date() > now.date() {
-            self.set_property("selected-date", DateTimeBoxed(now))
-                .unwrap();
+        let datetime = if value.date() > now.date() {
+            now
         } else {
-            self.set_property("selected-date", DateTimeBoxed(value))
-                .unwrap();
-        }
+            value
+        };
+
+        self.set_property("selected-date", DateTimeBoxed(datetime))
+            .unwrap();
     }
 
+    fn get_days_from_month(&self, year: i32, month: u32) -> i64 {
+        NaiveDate::from_ymd(
+            match month {
+                12 => year + 1,
+                _ => year,
+            },
+            match month {
+                12 => 1,
+                _ => month + 1,
+            },
+            1,
+        )
+        .signed_duration_since(NaiveDate::from_ymd(year, month, 1))
+        .num_days()
+    }
+
+    #[allow(dead_code)]
     fn imp(&self) -> &imp::DateSelector {
         imp::DateSelector::from_instance(self)
-    }
-
-    fn handle_date_chooser_connect_day_selected(&self, calendar: &gtk::Calendar) {
-        let date = calendar.date().to_chrono();
-        self.set_selected_date(date);
-    }
-
-    fn handle_icon_press(&self, pos: gtk::EntryIconPosition) {
-        self.parse_date();
-        let self_ = self.imp();
-        self_
-            .date_selector_popover
-            .set_pointing_to(&self.icon_area(pos));
-        self_.date_selector_popover.show();
-    }
-
-    fn parse_date(&self) {
-        match dtparse::parse(self.text().as_str()) {
-            Ok((d, timezone)) => {
-                match timezone
-                    .unwrap_or_else(|| *Local.timestamp(0, 0).offset())
-                    .from_local_datetime(&d)
-                {
-                    LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
-                        self.set_selected_date(d);
-                    }
-                    LocalResult::None => {}
-                }
-            }
-            Err(e) => {
-                glib::g_warning!(
-                    crate::config::LOG_DOMAIN,
-                    "Couldn't parse date: {}",
-                    e.to_string()
-                )
-            }
-        }
     }
 }
 
 #[cfg(test)]
 mod test {
+    use chrono::Datelike;
+
     use super::*;
-    use chrono::NaiveDate;
+    use crate::{i18n::i18n, utils::init_gtk};
 
     #[test]
-    fn test_parse_date() {
-        crate::utils::init_gtk();
+    fn selected_date() {
+        init_gtk();
 
         let selector = DateSelector::new();
-        let mut date = NaiveDate::from_ymd(2009, 2, 16);
-        let mut assert_date = |s: &str| {
-            selector.set_text(s);
-            selector.parse_date();
-            date += chrono::Duration::days(1);
-            assert_eq!(selector.selected_date().date().naive_local(), date);
-        };
+        let selector_ = selector.imp();
+        selector_.day_spinner.set_value(17.0);
+        selector_.month_dropdown.set_selected(1);
+        assert_eq!(
+            selector_
+                .month_dropdown
+                .model()
+                .unwrap()
+                .downcast_ref::<gtk::StringList>()
+                .unwrap()
+                .string(1)
+                .unwrap(),
+            i18n("February")
+        );
+        selector_.year_spinner.set_value(2007.0);
+        assert_eq!(
+            selector.selected_date().date().naive_local(),
+            NaiveDate::from_ymd(2007, 2, 17)
+        );
+    }
 
-        assert_date("02/17/2009");
-        assert_date("18/02/2009");
-        assert_date("2009/02/19");
-        assert_date("February 20, 2009");
-        assert_date("2/21/2009");
-        assert_date(" 2/22/2009");
-        assert_date("23/ 2/2009");
-        assert_date("2009/ 2/24");
-        assert_date("25Feb2009");
-        assert_date("Feb 26, 2009");
-        assert_date("27 Feb, 2009");
-        assert_date("2009, Feb 28");
+    #[test]
+    fn set_selected_date() {
+        init_gtk();
+        let selector = DateSelector::new();
+        let selector_ = selector.imp();
+
+        let now = DateTime::<chrono::Utc>::from_utc(
+            NaiveDate::from_ymd(2007, 2, 17).and_hms(12, 0, 0),
+            chrono::Utc,
+        );
+        selector.set_selected_date(now.into());
+        assert_eq!(selector_.day_spinner.value() as u32, now.date().day());
+        assert_eq!(selector_.month_dropdown.selected(), now.date().month() - 1);
+        assert_eq!(selector_.year_spinner.value() as i32, now.date().year());
+        assert_eq!(selector_.day_adjustment.upper(), 28.0);
     }
 }

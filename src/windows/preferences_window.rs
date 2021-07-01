@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, utils::spinbutton_value, Unitsystem},
+    core::{i18n, utils::prelude::*, Unitsystem},
     windows::{ExportDialog, ImportDialog},
 };
 use adw::prelude::*;
@@ -260,8 +260,7 @@ impl PreferencesWindow {
 
     fn handle_height_spin_button_changed(&self) {
         let self_ = self.imp();
-        let val = spinbutton_value::<u32>(&self_.height_spin_button) as f32;
-        if val != 0.0 {
+        if let Some(val) = self_.height_spin_button.raw_value::<f32>() {
             let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
                 Length::new::<centimeter>(val)
             } else {
@@ -280,8 +279,7 @@ impl PreferencesWindow {
 
     fn handle_stepgoal_spin_button_changed(&self) {
         let self_ = self.imp();
-        let val = spinbutton_value::<u32>(&self_.stepgoal_spin_button);
-        if val != 0 {
+        if let Some(val) = self_.stepgoal_spin_button.raw_value::<u32>() {
             self_.settings.set_user_stepgoal(val);
         }
     }
@@ -310,11 +308,11 @@ impl PreferencesWindow {
                 .weightgoal_actionrow
                 .set_title(Some(&i18n("Weightgoal in KG")));
             self_.height_spin_button.set_value(f64::from(
-                Length::new::<inch>(spinbutton_value(&self_.height_spin_button))
+                Length::new::<inch>(self_.height_spin_button.raw_value().unwrap_or_default())
                     .get::<centimeter>(),
             ));
             self_.weightgoal_spin_button.set_value(f64::from(
-                Mass::new::<pound>(spinbutton_value(&self_.weightgoal_spin_button))
+                Mass::new::<pound>(self_.weightgoal_spin_button.raw_value().unwrap_or_default())
                     .get::<kilogram>(),
             ));
         } else {
@@ -325,11 +323,11 @@ impl PreferencesWindow {
                 .weightgoal_actionrow
                 .set_title(Some(&i18n("Weightgoal in pounds")));
             self_.height_spin_button.set_value(f64::from(
-                Length::new::<centimeter>(spinbutton_value(&self_.height_spin_button))
+                Length::new::<centimeter>(self_.height_spin_button.raw_value().unwrap_or_default())
                     .get::<inch>(),
             ));
             self_.weightgoal_spin_button.set_value(f64::from(
-                Mass::new::<kilogram>(spinbutton_value(&self_.weightgoal_spin_button))
+                Mass::new::<kilogram>(self_.weightgoal_spin_button.raw_value().unwrap_or_default())
                     .get::<pound>(),
             ));
         }
@@ -337,8 +335,7 @@ impl PreferencesWindow {
 
     fn handle_weightgoal_spin_button_changed(&self) {
         let self_ = self.imp();
-        let val = spinbutton_value::<f32>(&self_.weightgoal_spin_button);
-        if val != 0.0 {
+        if let Some(val) = self_.weightgoal_spin_button.raw_value::<f32>() {
             let weight = if self_.current_unitsystem.get() == Unitsystem::Metric {
                 Mass::new::<kilogram>(val)
             } else {

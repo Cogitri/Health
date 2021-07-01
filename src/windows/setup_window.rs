@@ -16,11 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::{
-    i18n,
-    utils::{round_decimal_places, spinbutton_value},
-    Unitsystem,
-};
+use crate::core::{i18n, utils::prelude::*, Unitsystem};
 use adw::prelude::*;
 use chrono::Local;
 use gtk::{
@@ -295,7 +291,7 @@ impl SetupWindow {
         self.set_optimal_weightgoal();
         self.try_enable_next_button();
 
-        let unitless_height = spinbutton_value(&self_.height_spin_button);
+        let unitless_height = self_.height_spin_button.raw_value().unwrap_or_default();
         let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
             Length::new::<centimeter>(unitless_height)
         } else {
@@ -331,7 +327,7 @@ impl SetupWindow {
 
     fn handle_setup_done_button_clicked(&self) {
         let self_ = self.imp();
-        let unitless_height = spinbutton_value(&self_.height_spin_button);
+        let unitless_height = self_.height_spin_button.raw_value().unwrap_or_default();
         let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
             self_.settings.set_unitsystem(Unitsystem::Metric);
             Length::new::<centimeter>(unitless_height)
@@ -346,9 +342,9 @@ impl SetupWindow {
         self_.settings.set_user_height(height);
         self_
             .settings
-            .set_user_stepgoal(spinbutton_value(&self_.stepgoal_spin_button));
+            .set_user_stepgoal(self_.stepgoal_spin_button.raw_value().unwrap_or_default());
 
-        let unitless_weight = spinbutton_value(&self_.weightgoal_spin_button);
+        let unitless_weight = self_.weightgoal_spin_button.raw_value().unwrap_or_default();
         let weight = if self_.current_unitsystem.get() == Unitsystem::Metric {
             Mass::new::<kilogram>(unitless_weight)
         } else {
@@ -396,7 +392,7 @@ impl SetupWindow {
 
     fn handle_weight_spin_button_changed(&self) {
         let self_ = self.imp();
-        let unitless_weight = spinbutton_value(&self_.weightgoal_spin_button);
+        let unitless_weight = self_.weightgoal_spin_button.raw_value().unwrap_or_default();
         let weight = if self_.current_unitsystem.get() == Unitsystem::Metric {
             Mass::new::<kilogram>(unitless_weight)
         } else {
@@ -452,16 +448,15 @@ impl SetupWindow {
     fn set_optimal_weightgoal(&self) {
         let self_ = self.imp();
 
-        let unitless_height = spinbutton_value(&self_.height_spin_button);
+        let unitless_height = self_.height_spin_button.raw_value().unwrap_or_default();
         let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
             Length::new::<centimeter>(unitless_height)
         } else {
             Length::new::<inch>(unitless_height)
         };
-        let optimal_value = Mass::new::<kilogram>(round_decimal_places(
-            OPTIMAL_BMI * height.get::<meter>() * height.get::<meter>(),
-            1,
-        ));
+        let optimal_value = Mass::new::<kilogram>(
+            (OPTIMAL_BMI * height.get::<meter>() * height.get::<meter>()).round_decimal_places(1),
+        );
         if self_.current_unitsystem.get() == Unitsystem::Metric {
             self_
                 .weightgoal_spin_button

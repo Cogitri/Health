@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::i18n, utils::run_gio_future_sync};
+use crate::{core::i18n, utils::prelude::*};
 use anyhow::Result;
 use gtk::gio;
 use oauth2::{
@@ -182,10 +182,11 @@ pub trait SyncProvider {
     /// to what you sent to the provider to make sure the request went through fine.
     #[allow(clippy::manual_flatten)]
     fn start_listen_server(authorize_url: &str) -> Result<(AuthorizationCode, CsrfToken)> {
-        run_gio_future_sync(gio::AppInfo::launch_default_for_uri_async_future(
+        gio::AppInfo::launch_default_for_uri_async_future(
             authorize_url,
             None::<&gio::AppLaunchContext>,
-        ))?;
+        )
+        .block()?;
 
         let listener = TcpListener::bind("127.0.0.1:34981")?;
         for s in listener.incoming() {

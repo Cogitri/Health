@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, utils::spinbutton_value, Unitsystem},
+    core::{i18n, utils::prelude::*, Unitsystem},
     model::Unitsize,
 };
 use gtk::{gio::subclass::prelude::*, glib, prelude::*};
@@ -223,7 +223,7 @@ impl DistanceActionRow {
 
     fn handle_distance_spin_button_changed(&self, spinbutton: &gtk::SpinButton) {
         let self_ = self.imp();
-        let value = spinbutton_value::<f32>(spinbutton);
+        let value = spinbutton.raw_value::<f32>().unwrap_or_default();
         let unitsize = self_.inner.borrow().unitsize;
 
         if self_.settings.unitsystem() == Unitsystem::Metric {

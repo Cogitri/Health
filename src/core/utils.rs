@@ -18,78 +18,92 @@
 
 #[cfg(test)]
 use gtk::gio;
-use gtk::{glib, prelude::*};
-use std::future::Future;
 
-/// Get the number-value of a [gtk::SpinButton].
-///
-/// # Arguments
-/// * `spin_button` - The [gtk::SpinButton] to get the value of.
-///
-/// # Returns
-/// The value of the [gtk::SpinButton] or `T::default()`.
-pub fn spinbutton_value<T>(spin_button: &gtk::SpinButton) -> T
-where
-    T: std::str::FromStr + Default,
-    <T as std::str::FromStr>::Err: std::fmt::Debug,
-{
-    spin_button.text().as_str().parse::<T>().unwrap_or_default()
-}
+pub mod prelude {
+    use gtk::{glib, prelude::*};
+    use std::future::Future;
 
-/// Round a number to a certain amount of decimal places.
-///
-/// # Arguments
-/// * `val` - The value to round.
-/// * `decimal_places` - The amount of decimal places to round this to.
-///
-/// # Returns
-/// The rounded value.
-///
-/// # Examples
-/// ```
-/// use libhealth::utils::round_decimal_places;
-///
-/// let val = 13.54231;
-/// assert_eq!(round_decimal_places(val, 1), 13.5);
-/// assert_eq!(round_decimal_places(val, 2), 13.54);
-/// ```
-pub fn round_decimal_places(val: f32, decimal_places: u32) -> f32 {
-    let round_factor = (10_u32).pow(decimal_places) as f32;
-    (val * round_factor).round() / round_factor
-}
+    #[easy_ext::ext(HealthEditableExt)]
+    impl<B> B
+    where
+        B: IsA<gtk::Editable>,
+    {
+        /// Get the number-value of a [gtk::Editable], even if the user hasn't pressed `Enter` yet to commit the value.
+        ///
+        ///
+        /// # Returns
+        /// The value of the [gtk::Editable] or `T::default()`.
+        pub fn raw_value<T>(&self) -> Option<T>
+        where
+            T: std::str::FromStr + Default,
+            <T as std::str::FromStr>::Err: std::fmt::Debug,
+        {
+            self.text().as_str().parse::<T>().ok()
+        }
+    }
 
-/// Block on the provided future and return the result.
-///
-/// # Arguments
-/// * `future` - The future to run.
-///
-/// # Returns
-/// Returns the return value of the future.
-///
-/// # Examples
-/// ```
-/// use libhealth::utils::run_gio_future_sync;
-///
-/// assert_eq!(run_gio_future_sync(async { 25 }), 25);
-/// ```
-pub fn run_gio_future_sync<T: 'static, F: 'static>(future: F) -> T
-where
-    F: Future<Output = T>,
-{
-    let context = glib::MainContext::new();
-    let ml = glib::MainLoop::new(Some(&context), false);
-    let (sender, receiver) = std::sync::mpsc::channel();
+    #[easy_ext::ext(F32Ext)]
+    impl f32 {
+        /// Round a number to a certain amount of decimal places.
+        ///
+        /// # Arguments
+        /// * `self` - The value to round.
+        /// * `decimal_places` - The amount of decimal places to round this to.
+        ///
+        /// # Returns
+        /// The rounded value.
+        ///
+        /// # Examples
+        /// ```
+        /// use libhealth::utils::prelude::*;
+        ///
+        /// let val: f32 = 13.54231;
+        /// assert_eq!(val.round_decimal_places(1), 13.5);
+        /// assert_eq!(val.round_decimal_places(2), 13.54);
+        /// ```
+        pub fn round_decimal_places(self, decimal_places: u32) -> f32 {
+            let round_factor = (10_u32).pow(decimal_places) as f32;
+            (self * round_factor).round() / round_factor
+        }
+    }
 
-    context.push_thread_default();
-    let m = ml.clone();
-    context.spawn_local(async move {
-        sender.send(future.await).unwrap();
-        m.quit();
-    });
+    #[easy_ext::ext(HealthFutureExt)]
+    impl<F, T> F
+    where
+        F: Future<Output = T> + 'static,
+        T: 'static,
+    {
+        /// Block on the provided future and return the result.
+        ///
+        /// # Arguments
+        /// * `future` - The future to run.
+        ///
+        /// # Returns
+        /// Returns the return value of the future.
+        ///
+        /// # Examples
+        /// ```
+        /// use libhealth::utils::prelude::*;
+        ///
+        /// assert_eq!(async { 25 }.block(), 25);
+        /// ```
+        pub fn block(self) -> T {
+            let context = glib::MainContext::new();
+            let ml = glib::MainLoop::new(Some(&context), false);
+            let (sender, receiver) = std::sync::mpsc::channel();
 
-    ml.run();
+            context.push_thread_default();
+            let m = ml.clone();
+            context.spawn_local(async move {
+                sender.send(self.await).unwrap();
+                m.quit();
+            });
 
-    receiver.recv().unwrap()
+            ml.run();
+
+            receiver.recv().unwrap()
+        }
+    }
 }
 
 #[cfg(test)]

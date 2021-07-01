@@ -762,7 +762,7 @@ impl Database {
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{core::utils::run_gio_future_sync, model::ActivityType};
+    use crate::{core::utils::prelude::*, model::ActivityType};
     use chrono::{Duration, Local};
     use num_traits::cast::ToPrimitive;
     use tempfile::tempdir;
@@ -785,13 +785,14 @@ mod test {
             .set_activity_type(ActivityType::Walking)
             .set_date(date.into());
 
-        let retrieved_activities = run_gio_future_sync(async move {
+        let retrieved_activities = async move {
             db.save_activity(expected_activity).await.unwrap();
 
             db.activities(Some((date + Duration::days(1)).into()))
                 .await
                 .unwrap()
-        });
+        }
+        .block();
         assert!(retrieved_activities.is_empty());
     }
 
@@ -803,13 +804,14 @@ mod test {
         let expected_weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
         let w = expected_weight.clone();
 
-        let retrieved_weights = run_gio_future_sync(async move {
+        let retrieved_weights = async move {
             db.save_weight(w).await.unwrap();
 
             db.weights(Some((date + Duration::days(1)).into()))
                 .await
                 .unwrap()
-        });
+        }
+        .block();
         assert!(retrieved_weights.is_empty());
     }
 
@@ -826,13 +828,14 @@ mod test {
             .set_steps(Some(50));
         let a = expected_activity.clone();
 
-        let retrieved_activities = run_gio_future_sync(async move {
+        let retrieved_activities = async move {
             db.save_activity(a).await.unwrap();
 
             db.activities(Some((date - Duration::days(1)).into()))
                 .await
                 .unwrap()
-        });
+        }
+        .block();
         let activity = retrieved_activities.get(0).unwrap();
         assert_eq!(expected_activity.activity_type(), activity.activity_type());
         assert_eq!(expected_activity.steps(), activity.steps());
@@ -846,13 +849,14 @@ mod test {
         let expected_weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
         let w = expected_weight.clone();
 
-        let retrieved_weights = run_gio_future_sync(async move {
+        let retrieved_weights = async move {
             db.save_weight(w).await.unwrap();
 
             db.weights(Some((date - Duration::days(1)).into()))
                 .await
                 .unwrap()
-        });
+        }
+        .block();
         let weight = retrieved_weights.get(0).unwrap();
         assert_eq!(expected_weight.weight, weight.weight);
     }
@@ -893,12 +897,13 @@ mod test {
             )
             .unwrap();
 
-        let retrieved_activities = run_gio_future_sync(async move {
+        let retrieved_activities = async move {
             db.migrate().await.unwrap();
             db.activities(Some((date - Duration::days(1)).into()))
                 .await
                 .unwrap()
-        });
+        }
+        .block();
         let activity = retrieved_activities.get(0).unwrap();
         assert_eq!(expected_activity.steps(), activity.steps());
         assert_eq!(
@@ -947,12 +952,13 @@ mod test {
             )
             .unwrap();
 
-        let retrieved_weights = run_gio_future_sync(async move {
+        let retrieved_weights = async move {
             db.migrate().await.unwrap();
             db.weights(Some((date - Duration::days(1)).into()))
                 .await
                 .unwrap()
-        });
+        }
+        .block();
         let weight = retrieved_weights.get(0).unwrap();
         assert_eq!(expected_weight.weight, weight.weight);
         assert_eq!(

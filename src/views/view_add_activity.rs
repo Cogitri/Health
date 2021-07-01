@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::utils::spinbutton_value,
+    core::utils::prelude::*,
     model::{Activity, ActivityDataPoints, ActivityInfo, Unitsize},
     views::View,
 };
@@ -33,7 +33,7 @@ use std::str::FromStr;
 
 mod imp {
     use crate::{
-        core::{utils::spinbutton_value, Database, Settings},
+        core::{utils::prelude::*, Database, Settings},
         model::{Activity, ActivityDataPoints, ActivityInfo, ActivityType},
         views::View,
         widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
@@ -120,7 +120,7 @@ mod imp {
     ) -> Option<u32> {
         if activity.available_data_points.contains(datapoints) && spin_button.text().as_str() != ""
         {
-            Some(spinbutton_value(spin_button))
+            Some(spin_button.raw_value().unwrap_or_default())
         } else {
             None
         }
@@ -332,8 +332,12 @@ impl ViewAddActivity {
         let self_ = self.imp();
         {
             let activity = &self_.inner.borrow_mut().activity;
-            activity
-                .set_calories_burned(Some(spinbutton_value(&self_.calories_burned_spin_button)));
+            activity.set_calories_burned(Some(
+                self_
+                    .calories_burned_spin_button
+                    .raw_value()
+                    .unwrap_or_default(),
+            ));
             activity.autofill_from_calories();
         }
         self.set_spin_buttons_from_activity(self_.calories_burned_spin_button.upcast_ref());
@@ -361,9 +365,9 @@ impl ViewAddActivity {
         let self_ = self.imp();
         {
             let activity = &self_.inner.borrow_mut().activity;
-            activity.set_duration(Duration::minutes(spinbutton_value(
-                &self_.duration_spin_button,
-            )));
+            activity.set_duration(Duration::minutes(
+                self_.duration_spin_button.raw_value().unwrap_or_default(),
+            ));
             activity.autofill_from_minutes();
         }
         self.set_spin_buttons_from_activity(self_.duration_spin_button.upcast_ref());
@@ -382,7 +386,9 @@ impl ViewAddActivity {
         let self_ = self.imp();
         {
             let activity = &self_.inner.borrow_mut().activity;
-            activity.set_steps(Some(spinbutton_value(&self_.steps_spin_button)));
+            activity.set_steps(Some(
+                self_.steps_spin_button.raw_value().unwrap_or_default(),
+            ));
             activity.autofill_from_steps();
         }
         self.set_spin_buttons_from_activity(self_.steps_spin_button.upcast_ref());
@@ -530,7 +536,11 @@ impl ViewAddActivity {
         };
 
         if calories != 0
-            && calories != spinbutton_value::<u32>(&self_.calories_burned_spin_button)
+            && calories
+                != self_
+                    .calories_burned_spin_button
+                    .raw_value::<u32>()
+                    .unwrap_or_default()
             && self_
                 .calories_burned_action_row
                 .get()
@@ -548,14 +558,22 @@ impl ViewAddActivity {
             self_.distance_action_row.set_value(distance.unwrap());
         }
         if minutes != 0
-            && minutes != spinbutton_value::<i64>(&self_.duration_spin_button)
+            && minutes
+                != self_
+                    .duration_spin_button
+                    .raw_value::<i64>()
+                    .unwrap_or_default()
             && self_.duration_action_row.get().upcast_ref::<gtk::Widget>() != emitter
             && !minutes_changed
         {
             self_.duration_spin_button.set_value(minutes as f64);
         }
         if steps != 0
-            && steps != spinbutton_value::<u32>(&self_.steps_spin_button)
+            && steps
+                != self_
+                    .steps_spin_button
+                    .raw_value::<u32>()
+                    .unwrap_or_default()
             && self_.stepcount_action_row.get().upcast_ref::<gtk::Widget>() != emitter
             && !steps_changed
         {
