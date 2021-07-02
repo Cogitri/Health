@@ -19,12 +19,7 @@
 pub use self::imp::PinnedResultFuture;
 use crate::i18n::i18n;
 use gtk::{
-    glib::{
-        self, clone,
-        prelude::*,
-        subclass::prelude::*,
-        translate::{from_glib_borrow, ToGlibPtr},
-    },
+    glib::{self, clone, prelude::*, subclass::prelude::*},
     prelude::*,
 };
 
@@ -36,27 +31,26 @@ mod imp {
     use anyhow::Result;
     use gtk::{
         gio,
-        glib::{self, translate::from_glib_borrow},
+        glib::{self},
         {prelude::*, subclass::prelude::*, CompositeTemplate},
     };
 
-    pub type ImportExportDialogBaseInstance =
-        <ImportExportDialogBase as super::ObjectSubclass>::Instance;
+    pub type ImportExportDialogBaseInstance = super::ImportExportDialogBase;
     pub type PinnedResultFuture = Pin<Box<dyn Future<Output = Result<()>> + 'static>>;
 
     #[repr(C)]
     pub struct ImportExportDialogBaseClass {
         pub parent_class: gtk::ffi::GtkDialogClass,
         pub on_activities: Option<
-            unsafe extern "C" fn(
-                *mut ImportExportDialogBaseInstance,
-                password: *mut Option<String>,
+            unsafe fn(
+                &ImportExportDialogBaseInstance,
+                password: Option<String>,
             ) -> PinnedResultFuture,
         >,
         pub on_weights: Option<
-            unsafe extern "C" fn(
-                *mut ImportExportDialogBaseInstance,
-                password: *mut Option<String>,
+            unsafe fn(
+                &ImportExportDialogBaseInstance,
+                password: Option<String>,
             ) -> PinnedResultFuture,
         >,
     }
@@ -111,48 +105,43 @@ mod imp {
     }
 
     // Virtual method default implementation trampolines
-    unsafe extern "C" fn on_activities_default_trampoline(
-        this: *mut ImportExportDialogBaseInstance,
-        password: *mut Option<String>,
+    unsafe fn on_activities_default_trampoline(
+        this: &ImportExportDialogBaseInstance,
+        password: Option<String>,
     ) -> PinnedResultFuture {
-        let imp = (*this).impl_();
-        imp.on_activities(&from_glib_borrow(this), Box::from_raw(password))
+        ImportExportDialogBase::from_instance(this).on_activities(this, password)
     }
 
-    unsafe extern "C" fn on_weights_default_trampoline(
-        this: *mut ImportExportDialogBaseInstance,
-        password: *mut Option<String>,
+    unsafe fn on_weights_default_trampoline(
+        this: &ImportExportDialogBaseInstance,
+        password: Option<String>,
     ) -> PinnedResultFuture {
-        let imp = (*this).impl_();
-        imp.on_weights(&from_glib_borrow(this), Box::from_raw(password))
+        ImportExportDialogBase::from_instance(this).on_weights(this, password)
     }
 
-    #[no_mangle]
-    pub unsafe extern "C" fn import_export_dialog_base_on_activities(
-        this: *mut ImportExportDialogBaseInstance,
-        password: *mut Option<String>,
+    pub unsafe fn import_export_dialog_base_on_activities(
+        this: &ImportExportDialogBaseInstance,
+        password: Option<String>,
     ) -> PinnedResultFuture {
-        let klass = glib::subclass::types::InstanceStruct::class(&*this);
+        let klass = &*(this.class() as *const _ as *const ImportExportDialogBaseClass);
 
         (klass.on_activities.unwrap())(this, password)
     }
 
-    #[no_mangle]
-    pub unsafe extern "C" fn import_export_dialog_base_on_weights(
-        this: *mut ImportExportDialogBaseInstance,
-        password: *mut Option<String>,
+    pub unsafe fn import_export_dialog_base_on_weights(
+        this: &ImportExportDialogBaseInstance,
+        password: Option<String>,
     ) -> PinnedResultFuture {
-        let klass = glib::subclass::types::InstanceStruct::class(&*this);
+        let klass = &*(this.class() as *const _ as *const ImportExportDialogBaseClass);
 
         (klass.on_weights.unwrap())(this, password)
     }
 
-    #[allow(clippy::boxed_local)]
     impl ImportExportDialogBase {
         fn on_activities(
             &self,
             obj: &super::ImportExportDialogBase,
-            _password: Box<Option<String>>,
+            _password: Option<String>,
         ) -> PinnedResultFuture {
             Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
                 send.resolve(Ok(()));
@@ -162,7 +151,7 @@ mod imp {
         fn on_weights(
             &self,
             obj: &super::ImportExportDialogBase,
-            _password: Box<Option<String>>,
+            _password: Option<String>,
         ) -> PinnedResultFuture {
             Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
                 send.resolve(Ok(()));
@@ -320,13 +309,13 @@ impl ImportExportDialogBase {
                 let password = self_.password_entry.password();
                 let mut error_text = String::new();
                 if self_.activities_switch.is_active() {
-                    if let Err(e) = self.on_activities(Box::new(password.clone())).await {
+                    if let Err(e) = self.on_activities(password.clone()).await {
                         error_text.push_str(&e.to_string());
                     }
                 }
 
                 if self_.weight_switch.is_active() {
-                    if let Err(e) = self.on_weights(Box::new(password)).await {
+                    if let Err(e) = self.on_weights(password).await {
                         if !error_text.is_empty() {
                             error_text.push('\n');
                         }
@@ -358,27 +347,17 @@ impl ImportExportDialogBase {
 }
 
 pub trait ImportExportDialogBaseExt {
-    fn on_activities(&self, password: Box<Option<String>>) -> PinnedResultFuture;
-    fn on_weights(&self, password: Box<Option<String>>) -> PinnedResultFuture;
+    fn on_activities(&self, password: Option<String>) -> PinnedResultFuture;
+    fn on_weights(&self, password: Option<String>) -> PinnedResultFuture;
 }
 
 impl<O: IsA<ImportExportDialogBase>> ImportExportDialogBaseExt for O {
-    fn on_activities(&self, password: Box<Option<String>>) -> PinnedResultFuture {
-        unsafe {
-            imp::import_export_dialog_base_on_activities(
-                self.as_ref().to_glib_none().0,
-                Box::into_raw(password),
-            )
-        }
+    fn on_activities(&self, password: Option<String>) -> PinnedResultFuture {
+        unsafe { imp::import_export_dialog_base_on_activities(self.upcast_ref(), password) }
     }
 
-    fn on_weights(&self, password: Box<Option<String>>) -> PinnedResultFuture {
-        unsafe {
-            imp::import_export_dialog_base_on_weights(
-                self.as_ref().to_glib_none().0,
-                Box::into_raw(password),
-            )
-        }
+    fn on_weights(&self, password: Option<String>) -> PinnedResultFuture {
+        unsafe { imp::import_export_dialog_base_on_weights(self.upcast_ref(), password) }
     }
 }
 
@@ -386,7 +365,7 @@ pub trait ImportExportDialogBaseImpl: ObjectImpl + 'static {
     fn on_activities(
         &self,
         obj: &ImportExportDialogBase,
-        password: Box<Option<String>>,
+        password: Option<String>,
     ) -> PinnedResultFuture {
         self.parent_on_activities(obj, password)
     }
@@ -394,15 +373,30 @@ pub trait ImportExportDialogBaseImpl: ObjectImpl + 'static {
     fn on_weights(
         &self,
         obj: &ImportExportDialogBase,
-        password: Box<Option<String>>,
+        password: Option<String>,
     ) -> PinnedResultFuture {
         self.parent_on_weights(obj, password)
     }
+}
 
+pub trait ImportExportDialogBaseImplExt: ObjectSubclass {
     fn parent_on_activities(
         &self,
         obj: &ImportExportDialogBase,
-        password: Box<Option<String>>,
+        password: Option<String>,
+    ) -> PinnedResultFuture;
+    fn parent_on_weights(
+        &self,
+        obj: &ImportExportDialogBase,
+        password: Option<String>,
+    ) -> PinnedResultFuture;
+}
+
+impl<T: ImportExportDialogBaseImpl> ImportExportDialogBaseImplExt for T {
+    fn parent_on_activities(
+        &self,
+        obj: &ImportExportDialogBase,
+        password: Option<String>,
     ) -> PinnedResultFuture {
         unsafe {
             let data = Self::type_data();
@@ -411,7 +405,7 @@ pub trait ImportExportDialogBaseImpl: ObjectImpl + 'static {
                 .parent_class()
                 .cast::<imp::ImportExportDialogBaseClass>();
             if let Some(ref f) = (*parent_class).on_activities {
-                f(obj.to_glib_none().0, Box::into_raw(password))
+                f(obj, password)
             } else {
                 unimplemented!()
             }
@@ -421,7 +415,7 @@ pub trait ImportExportDialogBaseImpl: ObjectImpl + 'static {
     fn parent_on_weights(
         &self,
         obj: &ImportExportDialogBase,
-        password: Box<Option<String>>,
+        password: Option<String>,
     ) -> PinnedResultFuture {
         unsafe {
             let data = Self::type_data();
@@ -430,7 +424,7 @@ pub trait ImportExportDialogBaseImpl: ObjectImpl + 'static {
                 .parent_class()
                 .cast::<imp::ImportExportDialogBaseClass>();
             if let Some(ref f) = (*parent_class).on_weights {
-                f(obj.to_glib_none().0, Box::into_raw(password))
+                f(obj, password)
             } else {
                 unimplemented!()
             }
@@ -453,26 +447,26 @@ unsafe impl<T: ImportExportDialogBaseImpl> IsSubclassable<T> for ImportExportDia
 }
 
 // Virtual method default implementation trampolines
-unsafe extern "C" fn on_activities_trampoline<T: ObjectSubclass>(
-    this: *mut imp::ImportExportDialogBaseInstance,
-    password: *mut Option<String>,
+unsafe fn on_activities_trampoline<T: ObjectSubclass>(
+    this: &imp::ImportExportDialogBaseInstance,
+    password: Option<String>,
 ) -> PinnedResultFuture
 where
     T: ImportExportDialogBaseImpl,
 {
-    let instance = &*(this as *const T::Instance);
+    let instance = &*(this as *const _ as *const T::Instance);
     let imp = instance.impl_();
-    imp.on_activities(&from_glib_borrow(this), Box::from_raw(password))
+    imp.on_activities(this, password)
 }
 
-unsafe extern "C" fn on_weights_trampoline<T: ObjectSubclass>(
-    this: *mut imp::ImportExportDialogBaseInstance,
-    password: *mut Option<String>,
+unsafe fn on_weights_trampoline<T: ObjectSubclass>(
+    this: &imp::ImportExportDialogBaseInstance,
+    password: Option<String>,
 ) -> PinnedResultFuture
 where
     T: ImportExportDialogBaseImpl,
 {
-    let instance = &*(this as *const T::Instance);
+    let instance = &*(this as *const _ as *const T::Instance);
     let imp = instance.impl_();
-    imp.on_weights(&from_glib_borrow(this), Box::from_raw(password))
+    imp.on_weights(this, password)
 }

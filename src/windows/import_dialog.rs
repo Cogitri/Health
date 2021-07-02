@@ -48,7 +48,7 @@ mod imp {
         fn on_activities(
             &self,
             obj: &ImportExportDialogBase,
-            password: Box<Option<String>>,
+            password: Option<String>,
         ) -> PinnedResultFuture {
             let file_chooser = gtk::FileChooserNativeBuilder::new()
                 .title(&i18n("Open Activities"))
@@ -77,7 +77,7 @@ mod imp {
         fn on_weights(
             &self,
             obj: &ImportExportDialogBase,
-            password: Box<Option<String>>,
+            password: Option<String>,
         ) -> PinnedResultFuture {
             let file_chooser = gtk::FileChooserNativeBuilder::new()
                 .title(&i18n("Open Weight Measurement"))
