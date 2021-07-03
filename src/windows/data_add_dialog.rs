@@ -16,7 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::views::{View, ViewAddActivity, ViewAddWeight};
+use crate::{
+    views::{View, ViewAddActivity, ViewAddWeight},
+    windows::ViewMode,
+};
 use gtk::{
     glib::{self, subclass::prelude::*},
     prelude::*,
@@ -68,7 +71,7 @@ impl DataAddDialog {
     ///
     /// # Arguments
     /// * `parent` - The [GtkWindow](gtk::Window) who is the transient parent of this dialog.
-    pub fn new(parent: &gtk::Window) -> Self {
+    pub fn new(parent: &gtk::Window, view_mode: ViewMode) -> Self {
         let o: Self =
             glib::Object::new(&[("use-header-bar", &1)]).expect("Failed to create DataAddDialog");
 
@@ -91,6 +94,9 @@ impl DataAddDialog {
                     &stack_page.view_title().unwrap(),
                 )
                 .set_icon_name(&stack_page.icon_name().unwrap());
+        }
+        if view_mode == ViewMode::Weight {
+            self_.stack.set_visible_child_name("Add Weight Data");
         }
 
         o

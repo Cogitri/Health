@@ -65,10 +65,6 @@ mod imp {
     impl WidgetImpl for View {}
 
     impl ObjectImpl for View {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-        }
-
         fn dispose(&self, obj: &Self::Type) {
             while let Some(child) = obj.first_child() {
                 child.unparent();

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  home_page.ui
+
+  Copyright 2021 Visvesh Subramanian <visveshs.blogspot.com>
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<interface domain="dev.Cogitri.Health">
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="HealthViewHomePage" parent="HealthView">
+    <property name="empty-subtitle" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new activity.</property>
+    <property name="icon-name">walking-symbolic</property>
+    <property name="name">HomePage</property>
+    <property name="title" translatable="yes">Recent Activities</property>
+    <property name="view-title" translatable="yes">Home Page</property>
+  <object class="GtkAdjustment" id="age_adjustment">
+    <property name="upper">200</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="height_adjustment">
+    <property name="upper">300</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="stepgoal_adjustment">
+    <property name="upper">99999</property>
+    <property name="step-increment">100</property>
+    <property name="page-increment">1000</property>
+  </object>
+  <object class="GtkAdjustment" id="weightgoal_adjustment">
+    <property name="upper">999</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
+    <child>
+      <object class="AdwClamp">
+        <property name="maximum-size">400</property>
+        <property name="tightening-threshold">200</property>
+        <property name="valign">center</property>
+        <property name="vexpand">True</property>
+        <property name="hexpand">True</property>
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+        <child>
+          <object class="AdwPreferencesPage">
+            <property name="icon_name">emblem-system-symbolic</property>
+            <property name="title" translatable="yes">General</property>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <property name="title" translatable="yes">Today</property>
+                <child>
+                  <object class="AdwActionRow" id="steps_actionrow">
+                    <property name="title" translatable="yes">Steps</property>
+                    <property name="subtitle" translatable="yes"></property>
+                     <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="margin-end">13</property>
+                            <child>
+                              <object class="GtkScrolledWindow">
+                                <child>
+                                  <object class="HealthCircularProgressBar" id="circular_progress_bar"/>
+                                </child>
+                              </object>
+                            </child>
+                        <child>
+                          <object class="GtkLabel" id="steps_percentage"/>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="activity_subtext">
+                            <property name="wrap">1</property>
+                            <property name="max-width-chars">15</property>
+                            <property translatable="yes" name="label">of daily step goal</property>
+                            <attributes>
+                              <attribute name="font-desc" value="8.0"></attribute>
+                              <attribute name="weight" value="200.0"></attribute>
+                            </attributes>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="AdwActionRow" id="weight_actionrow">
+                    <property name="title" translatable="yes">Weight</property>
+                    <property name="subtitle" translatable="yes"></property>
+                     <child>
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <property name="margin-top">3</property>
+                        <property name="margin-bottom">3</property>
+                        <child>
+                          <object class="GtkScrolledWindow" id="arrow_box">
+                            <property name="visible">0</property>
+                            <child>
+                              <object class="HealthArrows" id="arrow">
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="weight_change">
+                            <property name="wrap">1</property>
+                            <property name="max-width-chars">8</property>
+                            <property name="label">No weight record added</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="weight_subtext">
+                            <property name="wrap">1</property>
+                            <property name="max-width-chars">15</property>
+                            <property translatable="yes" name="label"></property>
+                            <attributes>
+                              <attribute name="font-desc" value="8.0"></attribute>
+                              <attribute name="weight" value="200.0"></attribute>
+                            </attributes>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwPreferencesGroup">
+                <property name="title">All Data</property>
+                <child>
+                  <object class="GtkFlowBox" id="button_flow_box">
+                    <property name="homogeneous">1</property>
+                    <property name="max-children-per-line">2</property>
+                    <property name="selection-mode">GTK_SELECTION_NONE</property>
+                    <property name="row-spacing">2</property>
+                    <property name="column-spacing">2</property>
+                    <child>
+                      <object class="HealthTabButton" id="tab_button">
+                        <property name="tab-name">Weight</property>
+                        <property name="icon-name">weight-scale-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="HealthTabButton">
+                        <property name="tab-name">Steps</property>
+                        <property name="icon-name">steps-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="HealthTabButton">
+                        <property name="tab-name">Activities</property>
+                        <property name="icon-name">walking-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

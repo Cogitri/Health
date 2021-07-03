@@ -9,6 +9,8 @@ pub mod view_add_activity;
 #[doc(hidden)]
 pub mod view_add_weight;
 #[doc(hidden)]
+pub mod view_home_page;
+#[doc(hidden)]
 pub mod view_steps;
 #[doc(hidden)]
 pub mod view_weight;
@@ -23,6 +25,8 @@ pub use view_activity::*;
 pub use view_add_activity::*;
 #[doc(inline)]
 pub use view_add_weight::*;
+#[doc(inline)]
+pub use view_home_page::*;
 #[doc(inline)]
 pub use view_steps::*;
 #[doc(inline)]

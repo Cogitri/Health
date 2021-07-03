@@ -19,7 +19,7 @@
 use crate::{
     core::{i18n_f, Database},
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
-    views::{ViewActivity, ViewSteps, ViewWeight},
+    views::{ViewActivity, ViewHomePage, ViewSteps, ViewWeight},
     windows::DataAddDialog,
 };
 use gtk::{
@@ -28,11 +28,23 @@ use gtk::{
     prelude::*,
 };
 use gtk_macros::action;
-use imp::ViewMode;
 use std::collections::BTreeMap;
 
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum ViewMode {
+    Steps,
+    Weight,
+    Activities,
+    HomePage,
+}
+impl Default for ViewMode {
+    fn default() -> Self {
+        Self::HomePage
+    }
+}
+
 mod imp {
-    use crate::{core::Settings, views::View};
+    use crate::{core::Settings, views::View, windows::ViewMode};
     use gtk::{
         glib::{self, SourceId},
         prelude::*,
@@ -41,19 +53,6 @@ mod imp {
     };
     use once_cell::unsync::OnceCell;
     use std::{cell::RefCell, collections::BTreeMap};
-
-    #[derive(Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
-    pub enum ViewMode {
-        Steps,
-        Weight,
-        Activities,
-    }
-
-    impl Default for ViewMode {
-        fn default() -> Self {
-            Self::Steps
-        }
-    }
 
     #[derive(Debug, Default)]
     pub struct WindowMut {
@@ -72,6 +71,8 @@ mod imp {
 
         #[template_child]
         pub add_data_button: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub back_button: TemplateChild<gtk::Button>,
         #[template_child]
         pub error_infobar: TemplateChild<gtk::InfoBar>,
         #[template_child]
@@ -157,6 +158,15 @@ impl Window {
         o
     }
 
+    fn handle_button_press(&self, view_mode: ViewMode) {
+        let self_ = self.imp();
+        self_
+            .stack
+            .set_visible_child(self_.views.get().unwrap().get(&view_mode).unwrap());
+        self_.back_button.set_visible(true);
+        self_.inner.borrow_mut().current_view = view_mode;
+    }
+
     pub fn open_hamburger_menu(&self) {
         self.imp().primary_menu_popover.popup();
     }
@@ -168,6 +178,12 @@ impl Window {
             .add_data_button
             .connect_clicked(clone!(@weak self as obj => move |_| {
                 obj.handle_add_data_button_clicked();
+            }));
+
+        self_
+            .back_button
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                obj.handle_back_button_clicked();
             }));
 
         self_
@@ -222,10 +238,15 @@ impl Window {
     }
 
     fn handle_add_data_button_clicked(&self) {
-        let dialog = DataAddDialog::new(self.upcast_ref()).upcast::<gtk::Dialog>();
+        let dialog = DataAddDialog::new(self.upcast_ref(), self.imp().inner.borrow().current_view)
+            .upcast::<gtk::Dialog>();
         dialog.present();
     }
 
+    fn handle_back_button_clicked(&self) {
+        self.imp().stack.set_visible_child_name("HomePage");
+        self.imp().back_button.set_visible(false);
+    }
     fn handle_close_request(&self) -> Inhibit {
         let self_ = self.imp();
         let mut inner = self_.inner.borrow_mut();
@@ -283,7 +304,12 @@ impl Window {
     fn create_views(&self) {
         let self_ = self.imp();
 
+        let view_home_page = ViewHomePage::new();
+        view_home_page.connect_view_changed(glib::clone!(@weak self as obj => move |view_mode| {
+            obj.handle_button_press(view_mode);
+        }));
         let mut views = BTreeMap::new();
+        views.insert(ViewMode::HomePage, view_home_page.upcast());
         views.insert(ViewMode::Activities, ViewActivity::new().upcast());
         views.insert(ViewMode::Weight, ViewWeight::new().upcast());
         views.insert(ViewMode::Steps, ViewSteps::new().upcast());
@@ -297,6 +323,9 @@ impl Window {
             );
             page.set_icon_name(&view.icon_name().unwrap());
         }
+        self_
+            .stack
+            .set_visible_child(self_.views.get().unwrap().get(&ViewMode::HomePage).unwrap());
 
         self.update();
         self.sync_data();
@@ -356,22 +385,32 @@ impl Window {
     pub fn update(&self) {
         for (mode, view) in imp::Window::from_instance(self).views.get().unwrap() {
             match mode {
-                imp::ViewMode::Steps => {
+                ViewMode::Steps => {
                     let v = view.clone().downcast::<ViewSteps>().unwrap();
                     glib::MainContext::default().spawn_local(async move {
                         v.update().await;
                     });
                 }
-                imp::ViewMode::Weight => {
+                ViewMode::Weight => {
                     let v = view.clone().downcast::<ViewWeight>().unwrap();
                     glib::MainContext::default().spawn_local(async move {
                         v.update().await;
                     });
                 }
-                imp::ViewMode::Activities => {
+                ViewMode::Activities => {
                     let v = view.clone().downcast::<ViewActivity>().unwrap();
                     glib::MainContext::default().spawn_local(async move {
                         v.update().await;
+                    });
+                }
+                ViewMode::HomePage => {
+                    let v = view.clone().downcast::<ViewHomePage>().unwrap();
+                    glib::MainContext::default().spawn_local(async move {
+                        v.update_activities().await;
+                    });
+                    let v = view.clone().downcast::<ViewHomePage>().unwrap();
+                    glib::MainContext::default().spawn_local(async move {
+                        v.update_weights().await;
                     });
                 }
             }

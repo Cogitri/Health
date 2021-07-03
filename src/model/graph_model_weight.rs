@@ -108,6 +108,14 @@ impl GraphModelWeight {
     pub fn last_weight(&self) -> Option<Mass> {
         self.vec.last().map(|w| w.weight)
     }
+
+    pub fn penultimate_weight(&self) -> Option<Mass> {
+        if self.vec.len() == 1 {
+            self.last_weight()
+        } else {
+            Some(self.vec[self.vec.len() - 2].weight)
+        }
+    }
 }
 
 #[cfg(test)]

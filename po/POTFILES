@@ -4,6 +4,7 @@ data/ui/activity_row.ui
 data/ui/activity_type_row.ui
 data/ui/activity_type_selector.ui
 data/ui/activity_view.ui
+data/ui/home_page.ui
 data/ui/bmi_level_bar.ui
 data/ui/date_editor.ui
 data/ui/distance_action_row.ui
@@ -49,11 +50,12 @@ src/windows/window.rs
 src/views/graph_view.rs
 src/views/mod.rs
 src/views/view.rs
+src/views/view_activity.rs
 src/views/view_add_activity.rs
 src/views/view_add_weight.rs
-src/views/view_weight.rs
-src/views/view_activity.rs
+src/views/view_home_page
 src/views/view_steps.rs
+src/views/view_weight.rs
 src/widgets/activity_row.rs
 src/widgets/activity_type_row.rs
 src/widgets/mod.rs
@@ -65,4 +67,3 @@ src/widgets/date_selector.rs
 src/sync/mod.rs
 src/sync/csv.rs
 src/sync/serialize.rs
-
