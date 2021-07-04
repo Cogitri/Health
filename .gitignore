@@ -8,3 +8,4 @@ app
 src/config.rs
 target
 vendor
+po/*.pot

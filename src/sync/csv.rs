@@ -78,7 +78,7 @@ impl CsvHandler {
         let activities = self.db.activities(None).await?;
 
         if activities.is_empty() {
-            anyhow::bail!(i18n("No activities added yet; can't create empy export!"));
+            anyhow::bail!(i18n("No activities added yet; can't create empty export!"));
         }
 
         for activity in activities {
@@ -108,7 +108,7 @@ impl CsvHandler {
 
         if weights.is_empty() {
             anyhow::bail!(i18n(
-                "No weight measurements added yet; can't create empy export!"
+                "No weight measurements added yet; can't create empty export!"
             ));
         }
 
@@ -357,7 +357,7 @@ mod test {
                 .err()
                 .unwrap()
                 .to_string(),
-            i18n("No activities added yet; can't create empy export!")
+            i18n("No activities added yet; can't create empty export!")
         );
     }
 
@@ -375,7 +375,7 @@ mod test {
                 .err()
                 .unwrap()
                 .to_string(),
-            i18n("No weight measurements added yet; can't create empy export!")
+            i18n("No weight measurements added yet; can't create empty export!")
         );
     }
 }

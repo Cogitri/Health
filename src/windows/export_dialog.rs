@@ -59,8 +59,10 @@ mod imp {
                 .action(gtk::FileChooserAction::Save)
                 .build();
             if password.is_some() {
+                // TRANSLATORS: Please keep the file extension (.csv.encrypted)
                 file_chooser.set_current_name(&i18n("Activities.csv.encrypted"));
             } else {
+                // TRANSLATORS: Please keep the file extension (.csv)
                 file_chooser.set_current_name(&i18n("Activities.csv"));
             }
 

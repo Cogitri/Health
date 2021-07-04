@@ -264,25 +264,34 @@ impl ViewHomePage {
             self_.arrow.set_weight(last_weight_round);
             let difference = (last_weight - prev_weight).round_decimal_places(1);
             self_.arrow.set_weight_difference(difference);
-            let unit = &i18n(if self_.settings.unitsystem() == Unitsystem::Imperial {
-                "lb"
+            let subtitle = if self_.settings.unitsystem() == Unitsystem::Imperial {
+                // TRANSLATORS: Current user weight
+                i18n_f("{} pounds", &[&last_weight_round.to_string()])
             } else {
-                "kg"
-            });
-            self_.weight_actionrow.set_subtitle(Some(&i18n_f(
-                "{} {}",
-                &[&last_weight_round.to_string(), &unit],
-            )));
+                // TRANSLATORS: Current user weight
+                i18n_f("{} kilogram", &[&last_weight_round.to_string()])
+            };
+            self_.weight_actionrow.set_subtitle(Some(&subtitle));
             if difference > 0.0 {
-                self_
-                    .weight_change
-                    .set_label(&i18n_f("+ {} {}", &[&difference.to_string(), &unit]))
+                let label = if self_.settings.unitsystem() == Unitsystem::Imperial {
+                    // TRANSLATORS: Difference to last weight measurement
+                    i18n_f("+ {} pounds", &[&difference.to_string()])
+                } else {
+                    // TRANSLATORS: Difference to last weight measurement
+                    i18n_f("+ {} kilogram", &[&difference.to_string()])
+                };
+                self_.weight_change.set_label(&label)
             } else if difference < 0.0 {
-                self_
-                    .weight_change
-                    .set_label(&i18n_f("- {} {}", &[&difference.abs().to_string(), &unit]))
+                let label = if self_.settings.unitsystem() == Unitsystem::Imperial {
+                    // TRANSLATORS: Difference to last weight measurement
+                    i18n_f("- {} pounds", &[&difference.to_string()])
+                } else {
+                    // TRANSLATORS: Difference to last weight measurement
+                    i18n_f("- {} kilogram", &[&difference.to_string()])
+                };
+                self_.weight_change.set_label(&label)
             } else {
-                self_.weight_change.set_label(&i18n("No change in Weight"));
+                self_.weight_change.set_label(&i18n("No change in weight"));
                 self_.arrow_box.set_visible(false);
             }
             self_

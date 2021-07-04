@@ -26,26 +26,26 @@
     <property name="name">HomePage</property>
     <property name="title" translatable="yes">Recent Activities</property>
     <property name="view-title" translatable="yes">Home Page</property>
-  <object class="GtkAdjustment" id="age_adjustment">
-    <property name="upper">200</property>
-    <property name="step-increment">1</property>
-    <property name="page-increment">10</property>
-  </object>
-  <object class="GtkAdjustment" id="height_adjustment">
-    <property name="upper">300</property>
-    <property name="step-increment">1</property>
-    <property name="page-increment">10</property>
-  </object>
-  <object class="GtkAdjustment" id="stepgoal_adjustment">
-    <property name="upper">99999</property>
-    <property name="step-increment">100</property>
-    <property name="page-increment">1000</property>
-  </object>
-  <object class="GtkAdjustment" id="weightgoal_adjustment">
-    <property name="upper">999</property>
-    <property name="step-increment">1</property>
-    <property name="page-increment">10</property>
-  </object>
+    <object class="GtkAdjustment" id="age_adjustment">
+      <property name="upper">200</property>
+      <property name="step-increment">1</property>
+      <property name="page-increment">10</property>
+    </object>
+    <object class="GtkAdjustment" id="height_adjustment">
+      <property name="upper">300</property>
+      <property name="step-increment">1</property>
+      <property name="page-increment">10</property>
+    </object>
+    <object class="GtkAdjustment" id="stepgoal_adjustment">
+      <property name="upper">99999</property>
+      <property name="step-increment">100</property>
+      <property name="page-increment">1000</property>
+    </object>
+    <object class="GtkAdjustment" id="weightgoal_adjustment">
+      <property name="upper">999</property>
+      <property name="step-increment">1</property>
+      <property name="page-increment">10</property>
+    </object>
     <child>
       <object class="AdwClamp">
         <property name="maximum-size">400</property>
@@ -68,17 +68,17 @@
                   <object class="AdwActionRow" id="steps_actionrow">
                     <property name="title" translatable="yes">Steps</property>
                     <property name="subtitle" translatable="yes"></property>
-                     <child>
+                    <child>
                       <object class="GtkBox">
                         <property name="orientation">vertical</property>
                         <property name="margin-end">13</property>
+                        <child>
+                          <object class="GtkScrolledWindow">
                             <child>
-                              <object class="GtkScrolledWindow">
-                                <child>
-                                  <object class="HealthCircularProgressBar" id="circular_progress_bar"/>
-                                </child>
-                              </object>
+                              <object class="HealthCircularProgressBar" id="circular_progress_bar"/>
                             </child>
+                          </object>
+                        </child>
                         <child>
                           <object class="GtkLabel" id="steps_percentage"/>
                         </child>
@@ -86,6 +86,7 @@
                           <object class="GtkLabel" id="activity_subtext">
                             <property name="wrap">1</property>
                             <property name="max-width-chars">15</property>
+                            <!-- TRANSLATORS: This is displayed via two strings: x% and then this label. E.g. 100% of daily step goal -->
                             <property translatable="yes" name="label">of daily step goal</property>
                             <attributes>
                               <attribute name="font-desc" value="8.0"></attribute>
@@ -101,7 +102,7 @@
                   <object class="AdwActionRow" id="weight_actionrow">
                     <property name="title" translatable="yes">Weight</property>
                     <property name="subtitle" translatable="yes"></property>
-                     <child>
+                    <child>
                       <object class="GtkBox">
                         <property name="orientation">vertical</property>
                         <property name="margin-top">3</property>

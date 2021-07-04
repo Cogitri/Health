@@ -253,7 +253,7 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">The WHO recommends about 10.000 steps per day.</property>
+                    <property name="label" translatable="yes">The WHO recommends 10.000 steps per day.</property>
                     <property name="wrap">1</property>
                     <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
                     <attributes>

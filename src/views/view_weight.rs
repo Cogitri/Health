@@ -132,16 +132,19 @@ impl ViewWeight {
             weight_graph_view.set_x_lines_interval(10.0);
             let settings = self_.settings.clone();
             weight_graph_view.set_hover_func(Some(Box::new(move |p| {
-                let unit = if settings.unitsystem() == Unitsystem::Imperial {
-                    "PB"
+                if settings.unitsystem() == Unitsystem::Imperial {
+                    // TRANSLATORS: Weight X on date Y
+                    i18n_f(
+                        "{} pounds on {}",
+                        &[&p.value.to_string(), &p.date.format_local()],
+                    )
                 } else {
-                    "KG"
-                };
-
-                i18n_f(
-                    "{} {} on {}",
-                    &[&p.value.to_string(), unit, &p.date.format_local()],
-                )
+                    // TRANSLATORS: Weight X on date Y
+                    i18n_f(
+                        "{} kilogram on {}",
+                        &[&p.value.to_string(), &p.date.format_local()],
+                    )
+                }
             })));
             let unitgoal = self_.settings.user_weightgoal();
             let weightgoal = if self_.settings.unitsystem() == Unitsystem::Imperial {
@@ -190,16 +193,20 @@ impl ViewWeight {
         let self_ = self.imp();
         let weightgoal = self_.settings.user_weightgoal();
         let unitsystem = self_.settings.unitsystem();
-        let (weight_value, translation) = if unitsystem == Unitsystem::Imperial {
-            (weightgoal.get::<pound>(), i18n("pounds"))
+        let weight_value = if unitsystem == Unitsystem::Imperial {
+            weightgoal.get::<pound>()
         } else {
-            (weightgoal.get::<kilogram>(), i18n("kilogram"))
+            weightgoal.get::<kilogram>()
         };
         let goal_label = self.upcast_ref::<View>().goal_label();
 
         if weight_value > 0.1 && model.is_empty() {
-            /* TRANSLATORS: the second {} format strings is the weight unit, e.g. kilogram */
-            goal_label.set_text (&i18n_f("Your weight goal is {} {}. Add a first weight measurement to see how close you are to reaching it.",&[&weight_value.to_string(), &translation]));
+            let goal_label_text = if unitsystem == Unitsystem::Imperial {
+                i18n_f("Your weight goal is {} pounds. Add a first weight measurement to see how close you are to reaching it.",&[&weight_value.to_string()])
+            } else {
+                i18n_f("Your weight goal is {} kilogram. Add a first weight measurement to see how close you are to reaching it.",&[&weight_value.to_string()])
+            };
+            goal_label.set_text(&goal_label_text);
         } else if weight_value > 0.1 && !model.is_empty() {
             if model.last_weight().unwrap() == weightgoal {
                 goal_label.set_text(&i18n("You've reached your weightgoal. Great job!"));
@@ -216,16 +223,24 @@ impl ViewWeight {
                 diff *= -1.0;
             }
 
-            /* TRANSLATORS: the second & fourth {} format strings is the weight unit, e.g. kilogram */
-            goal_label.set_text(&i18n_f(
-                "{} {} left to reach your weightgoal of {} {}",
-                &[
-                    &format!("{diff:.1}", diff = diff.round_decimal_places(1)),
-                    &translation,
-                    &format!("{weight_value:.1}", weight_value = weight_value),
-                    &translation,
-                ],
-            ));
+            let goal_label_text = if unitsystem == Unitsystem::Imperial {
+                i18n_f(
+                    "{} pounds left to reach your weightgoal of {} pounds",
+                    &[
+                        &format!("{diff:.1}", diff = diff.round_decimal_places(1)),
+                        &format!("{weight_value:.1}", weight_value = weight_value),
+                    ],
+                )
+            } else {
+                i18n_f(
+                    "{} kilogram left to reach your weightgoal of {} kilogram",
+                    &[
+                        &format!("{diff:.1}", diff = diff.round_decimal_places(1)),
+                        &format!("{weight_value:.1}", weight_value = weight_value),
+                    ],
+                )
+            };
+            goal_label.set_text(&goal_label_text);
         } else {
             goal_label.set_text(&i18n(
                 "No weightgoal set yet. You can set it in Health's preferences.",
