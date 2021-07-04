@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, i18n_f, utils::round_decimal_places, Database, Unitsystem},
+    core::{i18n, i18n_f, utils::prelude::*, Database, Unitsystem},
     model::{GraphModelSteps, GraphModelWeight},
     views::View,
     windows::ViewMode,
@@ -260,9 +260,9 @@ impl ViewHomePage {
             } else {
                 weight_model.penultimate_weight().unwrap().get::<kilogram>()
             };
-            let last_weight_round = round_decimal_places(last_weight, 1);
+            let last_weight_round = last_weight.round_decimal_places(1);
             self_.arrow.set_weight(last_weight_round);
-            let difference = round_decimal_places(last_weight - prev_weight, 1);
+            let difference = (last_weight - prev_weight).round_decimal_places(1);
             self_.arrow.set_weight_difference(difference);
             let unit = &i18n(if self_.settings.unitsystem() == Unitsystem::Imperial {
                 "lb"
