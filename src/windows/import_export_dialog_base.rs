@@ -105,21 +105,21 @@ mod imp {
     }
 
     // Virtual method default implementation trampolines
-    unsafe fn on_activities_default_trampoline(
+    fn on_activities_default_trampoline(
         this: &ImportExportDialogBaseInstance,
         password: Option<String>,
     ) -> PinnedResultFuture {
         ImportExportDialogBase::from_instance(this).on_activities(this, password)
     }
 
-    unsafe fn on_weights_default_trampoline(
+    fn on_weights_default_trampoline(
         this: &ImportExportDialogBaseInstance,
         password: Option<String>,
     ) -> PinnedResultFuture {
         ImportExportDialogBase::from_instance(this).on_weights(this, password)
     }
 
-    pub unsafe fn import_export_dialog_base_on_activities(
+    pub(super) unsafe fn import_export_dialog_base_on_activities(
         this: &ImportExportDialogBaseInstance,
         password: Option<String>,
     ) -> PinnedResultFuture {
@@ -128,7 +128,7 @@ mod imp {
         (klass.on_activities.unwrap())(this, password)
     }
 
-    pub unsafe fn import_export_dialog_base_on_weights(
+    pub(super) unsafe fn import_export_dialog_base_on_weights(
         this: &ImportExportDialogBaseInstance,
         password: Option<String>,
     ) -> PinnedResultFuture {
