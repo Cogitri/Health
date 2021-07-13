@@ -2,8 +2,8 @@
 <component type="desktop-application">
 	<id>@APPLICATION_ID@</id>
 	<name>Health</name>
-	<url type="homepage">https://gitlab.gnome.org/Cogitri/gnome-health</url>
-	<url type="bugtracker">https://gitlab.gnome.org/Cogitri/gnome-health/issues</url>
+	<url type="homepage">https://gitlab.gnome.org/Cogitri/Health</url>
+	<url type="bugtracker">https://gitlab.gnome.org/Cogitri/Health/issues</url>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
 	<summary>A health tracking app for the GNOME desktop.</summary>
@@ -19,13 +19,13 @@
 	<launchable type="desktop-id">@APPLICATION_ID@.desktop</launchable>
 	<screenshots>
 		<screenshot type="default">
-			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot_steps.png</image>
+			<image>https://gitlab.gnome.org/Cogitri/Health/raw/master/docs/screenshot_steps.png</image>
 		</screenshot>
 		<screenshot>
-			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot_weight.png</image>
+			<image>https://gitlab.gnome.org/Cogitri/Health/raw/master/docs/screenshot_weight.png</image>
 		</screenshot>
 		<screenshot>
-			<image>https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot_activities.png</image>
+			<image>https://gitlab.gnome.org/Cogitri/Health/raw/master/docs/screenshot_activities.png</image>
 		</screenshot>
 	</screenshots>
 	<developer_name>Rasmus “Cogitri” Thomsen</developer_name>
