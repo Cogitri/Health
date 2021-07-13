@@ -13,7 +13,7 @@ name = "health"
 path = "src/main.rs"
 
 [dependencies.adw]
-version = "0.1.0-alpha"
+version = "0.1.0-alpha-2"
 package = "libadwaita"
 
 [dependencies.anyhow]
@@ -39,7 +39,7 @@ version = "1.1"
 version = "1.2"
 
 [dependencies.delegate]
-version = "0.5"
+version = "0.6"
 
 [dependencies.easy-ext]
 default-features = false
@@ -50,7 +50,7 @@ version = "0.7"
 features = ["gettext-system"]
 
 [dependencies.gtk]
-version = "0.1.0"
+version = "0.2"
 package = "gtk4"
 features = ["v4_2"]
 
