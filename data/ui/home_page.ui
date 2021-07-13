@@ -153,19 +153,19 @@
                     <child>
                       <object class="HealthTabButton" id="tab_button">
                         <property name="tab-name">Weight</property>
-                        <property name="icon-name">weight-scale-symbolic</property>
+                        <property name="icon-name">weight-scale-thin-symbolic</property>
                       </object>
                     </child>
                     <child>
                       <object class="HealthTabButton">
                         <property name="tab-name">Steps</property>
-                        <property name="icon-name">steps-symbolic</property>
+                        <property name="icon-name">steps-thin-symbolic</property>
                       </object>
                     </child>
                     <child>
                       <object class="HealthTabButton">
                         <property name="tab-name">Activities</property>
-                        <property name="icon-name">walking-symbolic</property>
+                        <property name="icon-name">walking-thin-symbolic</property>
                       </object>
                     </child>
                   </object>

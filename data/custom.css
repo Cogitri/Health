@@ -70,5 +70,10 @@ list.content.weightgoal > row {
 	padding: 0;
 }
 
+#HomePage image {
+  margin: 6px 12px;
+  color: @theme_fg_color;
+}
+
 @define-color blue #3584e4;
 @define-color light-blue #b8d4f6;
