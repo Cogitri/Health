@@ -41,18 +41,7 @@
                       </object>
                     </child>
                     <child>
-                      <object class="GtkBox">
-                        <child>
-                          <object class="GtkLabel" id="tab_name">
-                            <property name="label"></property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkImage">
-                            <property name="icon-name">go-next-symbolic</property>
-                          </object>
-                        </child>
-                      </object>
+                      <object class="GtkLabel" id="tab_name"/>
                     </child>
                   </object>
                 </child>
