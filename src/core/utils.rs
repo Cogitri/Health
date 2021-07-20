@@ -106,12 +106,11 @@ pub mod prelude {
     }
 }
 
-#[cfg(test)]
 pub fn get_file_in_builddir(filename: &str) -> Option<std::path::PathBuf> {
     glob::glob(&format!("{}/**/{}", env!("CARGO_MANIFEST_DIR"), filename))
         .ok()
         .and_then(|mut p| p.next())
-        .and_then(|p| p.ok())
+        .and_then(std::result::Result::ok)
 }
 
 #[cfg(test)]

@@ -16,7 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::model::{Activity, ActivityType, Steps, Weight};
+use crate::{
+    config,
+    model::{Activity, ActivityType, Steps, Weight},
+};
 use anyhow::Result;
 use chrono::{Date, DateTime, Duration, FixedOffset, NaiveDate, SecondsFormat, Utc};
 use gtk::{
@@ -734,9 +737,18 @@ impl Database {
         let mut store_path = store_path.unwrap_or_else(glib::user_data_dir);
         store_path.push("health");
 
-        let mut ontology_path =
-            ontology_path.unwrap_or_else(|| Path::new(crate::config::PKGDATADIR).to_path_buf());
-        ontology_path.push("ontology");
+        let ontology_path = if config::APPLICATION_ID.ends_with("Devel") {
+            let mut path = Path::new(env!("CARGO_MANIFEST_DIR")).to_path_buf();
+            path.push("data");
+            path.push("tracker");
+            path.push("ontology");
+            path
+        } else {
+            let mut ontology_path =
+                ontology_path.unwrap_or_else(|| Path::new(crate::config::PKGDATADIR).to_path_buf());
+            ontology_path.push("ontology");
+            ontology_path
+        };
 
         let manager = tracker::NamespaceManager::new();
         manager.add_prefix("health", "https://gitlab.gnome.org/World/health#");

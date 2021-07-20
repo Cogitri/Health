@@ -49,6 +49,9 @@ version = "0.2"
 version = "0.7"
 features = ["gettext-system"]
 
+[dependencies.glob]
+version = "0.3"
+
 [dependencies.gtk]
 version = "0.2"
 package = "gtk4"
@@ -123,9 +126,6 @@ branch = "zbus-2"
 
 [dependencies.zxcvbn]
 version = "2"
-
-[dev-dependencies.glob]
-version = "0.3"
 
 [dev-dependencies.serde_test]
 version = "1"

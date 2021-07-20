@@ -16,7 +16,7 @@ use gettextrs::{bindtextdomain, setlocale, textdomain, LocaleCategory};
 use gtk::{gio, glib, prelude::ApplicationExtManual};
 use libhealth::{
     config,
-    core::{i18n, Application},
+    core::{i18n, utils, Application},
 };
 
 fn main() {
@@ -34,8 +34,13 @@ fn main() {
     gtk::init().expect("Failed to initialize GTK.");
     adw::init();
 
-    let res = gio::Resource::load(config::PKGDATADIR.to_owned() + "/dev.Cogitri.Health.gresource")
-        .expect("Could not load resources");
+    let res = if config::APPLICATION_ID.ends_with("Devel") {
+        gio::Resource::load(utils::get_file_in_builddir("dev.Cogitri.Health.gresource").unwrap())
+            .expect("Could not load resources")
+    } else {
+        gio::Resource::load(config::PKGDATADIR.to_owned() + "/dev.Cogitri.Health.gresource")
+            .expect("Could not load resources")
+    };
     gio::resources_register(&res);
 
     let app = Application::new();
