@@ -78,6 +78,8 @@ pub mod config;
 #[doc(hidden)]
 pub mod core;
 #[doc(hidden)]
+pub mod daemon;
+#[doc(hidden)]
 pub mod model;
 #[doc(hidden)]
 pub mod sync;
@@ -90,6 +92,8 @@ pub mod windows;
 
 #[doc(inline)]
 pub use crate::core::*;
+#[doc(inline)]
+pub use crate::daemon::*;
 #[doc(inline)]
 pub use crate::model::*;
 #[doc(inline)]

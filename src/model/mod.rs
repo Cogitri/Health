@@ -15,6 +15,8 @@ pub mod graph_model_weight;
 #[doc(hidden)]
 pub mod model_activity;
 #[doc(hidden)]
+pub mod model_notification;
+#[doc(hidden)]
 pub mod steps;
 #[doc(hidden)]
 pub mod unitsize;
@@ -37,6 +39,8 @@ pub use graph_model_steps::*;
 pub use graph_model_weight::*;
 #[doc(inline)]
 pub use model_activity::*;
+#[doc(inline)]
+pub use model_notification::*;
 #[doc(inline)]
 pub use steps::*;
 #[doc(inline)]

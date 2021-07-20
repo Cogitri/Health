@@ -18,13 +18,18 @@
 
 use crate::{
     core::{i18n, utils::prelude::*, Unitsystem},
+    model::NotifyMode,
     windows::{ExportDialog, ImportDialog},
 };
 use adw::prelude::*;
+use chrono::{NaiveTime, Timelike};
 use gtk::{
+    gio,
     glib::{self, clone, subclass::prelude::*},
     prelude::*,
 };
+use gtk_macros::stateful_action;
+use std::str::FromStr;
 use uom::si::{
     f32::{Length, Mass},
     length::{centimeter, inch},
@@ -76,6 +81,16 @@ mod imp {
         pub unit_imperial_togglebutton: TemplateChild<gtk::ToggleButton>,
         #[template_child]
         pub unit_metric_togglebutton: TemplateChild<gtk::ToggleButton>,
+        #[template_child]
+        pub enable_notify: TemplateChild<gtk::Switch>,
+        #[template_child]
+        pub periodic_frequency_select: TemplateChild<adw::ActionRow>,
+        #[template_child]
+        pub reminder_time: TemplateChild<adw::ActionRow>,
+        #[template_child]
+        pub reminder_hour: TemplateChild<gtk::SpinButton>,
+        #[template_child]
+        pub reminder_minutes: TemplateChild<gtk::SpinButton>,
     }
 
     #[glib::object_subclass]
@@ -102,6 +117,11 @@ mod imp {
                 import_csv_button: TemplateChild::default(),
                 unit_imperial_togglebutton: TemplateChild::default(),
                 unit_metric_togglebutton: TemplateChild::default(),
+                enable_notify: TemplateChild::default(),
+                reminder_time: TemplateChild::default(),
+                periodic_frequency_select: TemplateChild::default(),
+                reminder_hour: TemplateChild::default(),
+                reminder_minutes: TemplateChild::default(),
             }
         }
 
@@ -148,6 +168,7 @@ mod imp {
 
             self.bmi_levelbar
                 .set_weight(self.settings.user_weightgoal());
+            obj.setup_actions();
             obj.connect_handlers();
         }
     }
@@ -192,8 +213,42 @@ impl PreferencesWindow {
 
         let self_ = o.imp();
         self_.parent_window.set(parent_window).unwrap();
+        o.handle_enable_notify_changed(true);
+        o.init_time_buttons();
+        o.upcast_ref::<gtk::Window>().connect_close_request(
+            clone!(@weak o as obj => @default-return gtk::Inhibit(false), move |_| {
+                obj.handle_close_window()
+            }),
+        );
 
         o
+    }
+
+    fn setup_actions(&self) {
+        let action_group = gtk::gio::SimpleActionGroup::new();
+
+        stateful_action!(
+            action_group,
+            "frequency",
+            Some(&String::static_variant_type()),
+            "hourly",
+            clone!(@weak self as obj => move |a, p| {
+                let parameter = p.unwrap();
+
+                obj.set_notification_frequency(NotifyMode::from_str(parameter.get::<String>().unwrap().as_str()).unwrap());
+
+                a.set_state(parameter);
+            })
+        );
+
+        self.insert_action_group("notification", Some(&action_group));
+    }
+
+    fn set_notification_frequency(&self, frequency: NotifyMode) {
+        self.imp().settings.set_notification_frequency(frequency);
+        self.imp()
+            .reminder_time
+            .set_visible(frequency == NotifyMode::Fixed);
     }
 
     fn connect_handlers(&self) {
@@ -210,6 +265,12 @@ impl PreferencesWindow {
                 obj.handle_birthday_selector_changed();
             }),
         );
+
+        self_
+            .enable_notify
+            .connect_active_notify(clone!(@weak self as obj => move |_| {
+                obj.handle_enable_notify_changed(false);
+            }));
 
         self_
             .export_csv_button
@@ -251,6 +312,22 @@ impl PreferencesWindow {
         self_
             .settings
             .set_user_birthday(self_.birthday_selector.selected_date().date());
+    }
+
+    fn handle_enable_notify_changed(&self, initializing: bool) {
+        let self_ = self.imp();
+        let switch_state = if initializing {
+            self_.settings.enable_notifications()
+        } else {
+            self_.enable_notify.is_active()
+        };
+        self_.settings.set_enable_notifications(switch_state);
+        self_.enable_notify.set_active(switch_state);
+        self_.periodic_frequency_select.set_visible(switch_state);
+        self_.reminder_time.set_visible(
+            self_.settings.enable_notifications()
+                && self_.settings.notification_frequency() == NotifyMode::Fixed,
+        );
     }
 
     fn handle_export_csv_button_clicked(&self) {
@@ -345,5 +422,30 @@ impl PreferencesWindow {
             self_.settings.set_user_weightgoal(weight);
             self_.bmi_levelbar.set_weight(weight);
         }
+    }
+
+    fn init_time_buttons(&self) {
+        let self_ = self.imp();
+        let notify_time =
+            NaiveTime::parse_from_str(self_.settings.notification_time().as_str(), "%H:%M:%S")
+                .unwrap();
+        self_.reminder_hour.set_value(f64::from(notify_time.hour()));
+        self_
+            .reminder_minutes
+            .set_value(f64::from(notify_time.minute()));
+    }
+
+    fn handle_close_window(&self) -> gtk::Inhibit {
+        let self_ = self.imp();
+        let remind_time = NaiveTime::from_hms_milli(
+            self_.reminder_hour.value_as_int() as u32,
+            self_.reminder_minutes.value_as_int() as u32,
+            0,
+            0,
+        );
+        self_
+            .settings
+            .set_notification_time(remind_time.to_string());
+        gtk::Inhibit(false)
     }
 }

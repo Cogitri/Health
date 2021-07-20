@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::Unitsystem, settings_getter_setter};
+use crate::{core::Unitsystem, model::NotifyMode, settings_getter_setter};
 use chrono::{Date, DateTime, FixedOffset};
 use gtk::{
     gio::{self, prelude::*},
@@ -37,6 +37,8 @@ static mut SETTINGS: Option<Settings> = None;
 impl Settings {
     settings_getter_setter!(u32, current_view_id, "current-view-id");
     settings_getter_setter!(bool, did_initial_setup, "did-initial-setup");
+    settings_getter_setter!(bool, enable_notifications, "enable-notifications");
+    settings_getter_setter!(String, notification_time, "notification-time");
     settings_getter_setter!(
         bool,
         sync_provider_setup_google_fit,
@@ -139,6 +141,17 @@ impl Settings {
         })
     }
 
+    /// Get the current notification frequency.
+    pub fn notification_frequency(&self) -> NotifyMode {
+        NotifyMode::from_i32(self.enum_("notification-frequency")).unwrap()
+    }
+
+    /// Set the current notification frequency.
+    pub fn set_notification_frequency(&self, value: NotifyMode) {
+        self.set_enum("notification-frequency", value.to_i32().unwrap())
+            .unwrap();
+    }
+
     /// Get the current unitsystem.
     pub fn unitsystem(&self) -> Unitsystem {
         Unitsystem::from_i32(self.enum_("unitsystem")).unwrap()
@@ -224,6 +237,24 @@ mod test {
     fn did_initial_setup() {
         let (_tmp, settings) = get();
         settings.set_did_initial_setup(settings.did_initial_setup());
+    }
+
+    #[test]
+    fn enable_notifications() {
+        let (_tmp, settings) = get();
+        settings.set_enable_notifications(settings.enable_notifications());
+    }
+
+    #[test]
+    fn notification_frequency() {
+        let (_tmp, settings) = get();
+        settings.set_notification_frequency(settings.notification_frequency());
+    }
+
+    #[test]
+    fn notification_time() {
+        let (_tmp, settings) = get();
+        settings.set_notification_time(settings.notification_time());
     }
 
     #[test]

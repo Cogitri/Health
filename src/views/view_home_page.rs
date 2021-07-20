@@ -284,10 +284,10 @@ impl ViewHomePage {
             } else if difference < 0.0 {
                 let label = if self_.settings.unitsystem() == Unitsystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement
-                    i18n_f("- {} pounds", &[&difference.to_string()])
+                    i18n_f("{} pounds", &[&difference.to_string()])
                 } else {
                     // TRANSLATORS: Difference to last weight measurement
-                    i18n_f("- {} kilogram", &[&difference.to_string()])
+                    i18n_f("{} kilogram", &[&difference.to_string()])
                 };
                 self_.weight_change.set_label(&label)
             } else {

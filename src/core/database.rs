@@ -266,6 +266,28 @@ impl Database {
         Ok(v)
     }
 
+    /// Get today's steps.
+    ///
+    /// # Arguments
+    /// * `date_opt` - If `Some`, only get steps that are more recent than `date_opt`.
+    ///
+    /// # Returns
+    /// Total number of [Steps] taken on or after the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
+    pub async fn todays_steps(&self, date: DateTime<FixedOffset>) -> Result<i64> {
+        let self_ = self.imp();
+
+        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+        let cursor = connection.query_async_future(&format!("SELECT SUM(?steps) WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+
+        let steps = if let Ok(true) = cursor.next_async_future().await {
+            cursor.integer(0)
+        } else {
+            0
+        };
+
+        Ok(steps)
+    }
+
     /// Get weights.
     ///
     /// # Arguments

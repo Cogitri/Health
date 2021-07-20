@@ -22,6 +22,9 @@ run_command(
 
 sources = files(
   'config.rs',
+  'daemon/application.rs',
+  'daemon/main.rs',
+  'daemon/mod.rs',
   'core/application.rs',
   'core/database.rs',
   'core/date.rs',
