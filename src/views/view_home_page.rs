@@ -24,10 +24,7 @@ use crate::{
 };
 use adw::prelude::*;
 use chrono::Duration;
-use gtk::{
-    glib::{self, clone, object::ObjectExt, subclass::prelude::*, Cast},
-    prelude::*,
-};
+use gtk::glib::{self, clone, object::ObjectExt, subclass::prelude::*, Cast};
 use uom::si::mass::{kilogram, pound};
 
 mod imp {
@@ -230,10 +227,9 @@ impl ViewHomePage {
         self_
             .circular_progress_bar
             .set_step_count(i64::from(step_count));
-        self_.steps_actionrow.set_subtitle(Some(&i18n_f(
-            "{} steps taken today",
-            &[&step_count.to_string()],
-        )));
+        self_
+            .steps_actionrow
+            .set_subtitle(&i18n_f("{} steps taken today", &[&step_count.to_string()]));
         self_.steps_percentage.set_label(&i18n_f(
             "{}%",
             &[&(100 * step_count / self_.settings.user_stepgoal() as u32).to_string()],
@@ -273,7 +269,7 @@ impl ViewHomePage {
                 // TRANSLATORS: Current user weight
                 i18n_f("{} kilogram", &[&last_weight_round.to_string()])
             };
-            self_.weight_actionrow.set_subtitle(Some(&subtitle));
+            self_.weight_actionrow.set_subtitle(&subtitle);
             if difference > 0.0 {
                 let label = if self_.settings.unitsystem() == Unitsystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement

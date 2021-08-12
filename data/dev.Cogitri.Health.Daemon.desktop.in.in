@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Health Daemon
+Exec=@APPLICATION_ID@.Daemon
+Terminal=false
+Type=Application
+Categories=GNOME;GTK;Utility;MedicalSoftware;
+StartupNotify=true

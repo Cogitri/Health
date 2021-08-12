@@ -140,7 +140,7 @@
             <property name="title" translatable="yes">Notifications</property>
             <child>
               <object class="AdwActionRow">
-                <property name="title" translatable="yes">enable Notifications</property>
+                <property name="title" translatable="yes">Enable notifications</property>
                 <child>
                   <object class="GtkSwitch" id="enable_notify">
                     <property name="active">0</property>

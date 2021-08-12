@@ -32,7 +32,7 @@ mod imp {
     use gtk::{
         gio,
         glib::{self},
-        {prelude::*, subclass::prelude::*, CompositeTemplate},
+        {subclass::prelude::*, CompositeTemplate},
     };
 
     pub type ImportExportDialogBaseInstance = super::ImportExportDialogBase;
@@ -223,11 +223,10 @@ mod imp {
 
                     if val {
                         self.activities_action_row
-                            .set_title(Some(&i18n("Import activities")));
+                            .set_title(&i18n("Import activities"));
                         self.encrypt_action_row
-                            .set_title(Some(&i18n("Import is encrypted")));
-                        self.weights_action_row
-                            .set_title(Some(&i18n("Import weights")));
+                            .set_title(&i18n("Import is encrypted"));
+                        self.weights_action_row.set_title(&i18n("Import weights"));
                         self.button_ok.set_label(&i18n("Import"));
                     }
                 }

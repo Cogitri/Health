@@ -93,7 +93,7 @@ cargo_release = custom_target(
   'cargo-build',
   build_by_default: true,
   input: sources,
-  output: application_id,
+  output: [application_id, '@0@.Daemon'.format(application_id)],
   console: true,
   install: true,
   install_dir: get_option('bindir'),
@@ -101,9 +101,11 @@ cargo_release = custom_target(
     find_program(meson.source_root() / 'build-aux' / 'cargo.sh'),
     meson.build_root(),
     meson.source_root(),
-    '@OUTPUT@',
+    '@OUTPUT0@',
     get_option('buildtype'),
     'health',
+    'health-daemon',
+    '@OUTPUT1@',
   ]
 )
 

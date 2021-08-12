@@ -35,8 +35,13 @@ fn main() {
     adw::init();
 
     let res = if config::APPLICATION_ID.ends_with("Devel") {
-        gio::Resource::load(utils::get_file_in_builddir("dev.Cogitri.Health.gresource").unwrap())
-            .expect("Could not load resources")
+        utils::get_file_in_builddir("dev.Cogitri.Health.gresource").map_or_else(
+            || {
+                gio::Resource::load(config::PKGDATADIR.to_owned() + "/dev.Cogitri.Health.gresource")
+                    .expect("Could not load resources")
+            },
+            |s| gio::Resource::load(s).expect("Could not load resources"),
+        )
     } else {
         gio::Resource::load(config::PKGDATADIR.to_owned() + "/dev.Cogitri.Health.gresource")
             .expect("Could not load resources")

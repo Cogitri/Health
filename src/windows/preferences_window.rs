@@ -26,9 +26,8 @@ use chrono::{NaiveTime, Timelike};
 use gtk::{
     gio,
     glib::{self, clone, subclass::prelude::*},
-    prelude::*,
 };
-use gtk_macros::stateful_action;
+use gtk_macros::{spawn, stateful_action};
 use std::str::FromStr;
 use uom::si::{
     f32::{Length, Mass},
@@ -42,7 +41,7 @@ mod imp {
         widgets::{BmiLevelBar, DateSelector, SyncListBox},
     };
     use adw::prelude::*;
-    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::Cell;
     use uom::si::{
@@ -140,18 +139,17 @@ mod imp {
 
             if self.current_unitsystem.get() == Unitsystem::Metric {
                 self.height_actionrow
-                    .set_title(Some(&i18n("Height in centimeters")));
+                    .set_title(&i18n("Height in centimeters"));
                 self.weightgoal_actionrow
-                    .set_title(Some(&i18n("Weightgoal in KG")));
+                    .set_title(&i18n("Weightgoal in KG"));
                 self.height_spin_button
                     .set_value(f64::from(self.settings.user_height().get::<centimeter>()));
                 self.weightgoal_spin_button
                     .set_value(f64::from(self.settings.user_weightgoal().get::<kilogram>()));
             } else {
-                self.height_actionrow
-                    .set_title(Some(&i18n("Height in inch")));
+                self.height_actionrow.set_title(&i18n("Height in inch"));
                 self.weightgoal_actionrow
-                    .set_title(Some(&i18n("Weightgoal in pounds")));
+                    .set_title(&i18n("Weightgoal in pounds"));
                 self.height_spin_button
                     .set_value(f64::from(self.settings.user_height().get::<inch>()));
                 self.weightgoal_spin_button
@@ -328,6 +326,25 @@ impl PreferencesWindow {
             self_.settings.enable_notifications()
                 && self_.settings.notification_frequency() == NotifyMode::Fixed,
         );
+        if switch_state && ashpd::is_sandboxed() {
+            spawn!(async {
+                if let Err(e) = ashpd::desktop::background::request(
+                    &ashpd::WindowIdentifier::default(),
+                    &i18n("Remind you of your step goals"),
+                    true,
+                    Some(&["dev.Cogitri.Health"]),
+                    false,
+                )
+                .await
+                {
+                    glib::g_warning!(
+                        crate::config::LOG_DOMAIN,
+                        "Couldn't request to stay active in background: {}",
+                        e.to_string()
+                    )
+                }
+            });
+        }
     }
 
     fn handle_export_csv_button_clicked(&self) {
@@ -380,10 +397,10 @@ impl PreferencesWindow {
         if unitsystem == Unitsystem::Metric {
             self_
                 .height_actionrow
-                .set_title(Some(&i18n("Height in centimeters")));
+                .set_title(&i18n("Height in centimeters"));
             self_
                 .weightgoal_actionrow
-                .set_title(Some(&i18n("Weightgoal in KG")));
+                .set_title(&i18n("Weightgoal in KG"));
             self_.height_spin_button.set_value(f64::from(
                 Length::new::<inch>(self_.height_spin_button.raw_value().unwrap_or_default())
                     .get::<centimeter>(),
@@ -393,12 +410,10 @@ impl PreferencesWindow {
                     .get::<kilogram>(),
             ));
         } else {
-            self_
-                .height_actionrow
-                .set_title(Some(&i18n("Height in inch")));
+            self_.height_actionrow.set_title(&i18n("Height in inch"));
             self_
                 .weightgoal_actionrow
-                .set_title(Some(&i18n("Weightgoal in pounds")));
+                .set_title(&i18n("Weightgoal in pounds"));
             self_.height_spin_button.set_value(f64::from(
                 Length::new::<centimeter>(self_.height_spin_button.raw_value().unwrap_or_default())
                     .get::<inch>(),

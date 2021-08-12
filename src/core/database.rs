@@ -859,7 +859,14 @@ impl Database {
             path.push("data");
             path.push("tracker");
             path.push("ontology");
-            path
+            if path.exists() {
+                path
+            } else {
+                let mut ontology_path = ontology_path
+                    .unwrap_or_else(|| Path::new(crate::config::PKGDATADIR).to_path_buf());
+                ontology_path.push("ontology");
+                ontology_path
+            }
         } else {
             let mut ontology_path =
                 ontology_path.unwrap_or_else(|| Path::new(crate::config::PKGDATADIR).to_path_buf());

@@ -17,6 +17,21 @@ desktop_file = i18n.merge_file(
   install_dir: join_paths(get_option('datadir'), 'applications')
 )
 
+configured_daemon_desktop_file = configure_file(
+  input: 'dev.Cogitri.Health.Daemon.desktop.in.in',
+  output: '@BASENAME@',
+  configuration: conf,
+)
+
+desktop_file = i18n.merge_file(
+  input: configured_daemon_desktop_file,
+  output: '@0@.Daemon.desktop'.format(application_id),
+  type: 'desktop',
+  po_dir: '../po',
+  install: true,
+  install_dir: join_paths(get_option('sysconfdir'), 'xdg', 'autostart')
+)
+
 desktop_utils = find_program('desktop-file-validate', required: false)
 if desktop_utils.found()
   test('Validate desktop file', desktop_utils,

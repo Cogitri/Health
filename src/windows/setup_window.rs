@@ -20,9 +20,8 @@ use crate::core::{i18n, utils::prelude::*, Unitsystem};
 use adw::prelude::*;
 use chrono::Local;
 use gtk::{
-    gio::{self, prelude::*},
+    gio,
     glib::{self, clone, subclass::prelude::*},
-    prelude::*,
 };
 use gtk_macros::action;
 use uom::si::{
@@ -421,22 +420,20 @@ impl SetupWindow {
         if unitsystem == Unitsystem::Metric {
             self_
                 .height_actionrow
-                .set_title(Some(&i18n("Height in centimeters")));
+                .set_title(&i18n("Height in centimeters"));
             self_
                 .weightgoal_actionrow
-                .set_title(Some(&i18n("Weightgoal in KG")));
+                .set_title(&i18n("Weightgoal in KG"));
             self_.height_spin_button.set_value(
                 Length::new::<inch>(self_.height_spin_button.value() as f32)
                     .get::<centimeter>()
                     .into(),
             );
         } else {
-            self_
-                .height_actionrow
-                .set_title(Some(&i18n("Height in inch")));
+            self_.height_actionrow.set_title(&i18n("Height in inch"));
             self_
                 .weightgoal_actionrow
-                .set_title(Some(&i18n("Weightgoal in pounds")));
+                .set_title(&i18n("Weightgoal in pounds"));
             self_.height_spin_button.set_value(
                 Length::new::<centimeter>(self_.height_spin_button.value() as f32)
                     .get::<inch>()
