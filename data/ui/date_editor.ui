@@ -37,7 +37,7 @@
       <item translatable="yes">September</item>
       <item translatable="yes">October</item>
       <item translatable="yes">November</item>
-      <item translatable="yes">Decenber</item>
+      <item translatable="yes">December</item>
     </items>
   </object>
   <object class="GtkAdjustment" id="year_adjustment">

@@ -43,7 +43,7 @@ pub fn new_db_receiver() -> glib::Sender<DatabaseValue> {
                             crate::config::LOG_DOMAIN,
                             "{}",
                             i18n_f(
-                                "Couldn't synchronise steps due to error {}",
+                                "Couldn't synchronize steps due to error {}",
                                 &[&e.to_string()]
                             )
                         );
@@ -57,7 +57,7 @@ pub fn new_db_receiver() -> glib::Sender<DatabaseValue> {
                             crate::config::LOG_DOMAIN,
                             "{}",
                             i18n_f(
-                                "Couldn't synchronise weight measurements due to error {}",
+                                "Couldn't synchronize weight measurements due to error {}",
                                 &[&e.to_string()]
                             )
                         );

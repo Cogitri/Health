@@ -59,7 +59,7 @@
     <key name="user-age" type="u">
       <default>0</default>
       <summary>User age</summary>
-      <description>The age of the user (depreacted).</description>
+      <description>The age of the user (deprecated).</description>
     </key>
     <key name="user-birthday" type="s">
       <default>""</default>

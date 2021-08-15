@@ -324,11 +324,11 @@ impl ImportExportDialogBase {
                 }
 
                 if error_text.is_empty() {
-                    self_.end_title_label.set_text(&i18n("Sucess!"));
+                    self_.end_title_label.set_text(&i18n("Success!"));
                     self_.end_icon.set_icon_name(Some("emblem-ok-symbolic"));
                 } else {
                     glib::g_warning!(crate::config::LOG_DOMAIN, "{}", &error_text);
-                    self_.end_title_label.set_text(&i18n("An error occured!"));
+                    self_.end_title_label.set_text(&i18n("An error occurred!"));
                     self_.end_content_label.set_text(&error_text);
                     self_
                         .end_icon

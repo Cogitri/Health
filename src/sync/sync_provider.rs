@@ -106,7 +106,7 @@ pub trait SyncProvider {
                 .exchange_refresh_token(&token)
                 .request(oauth2::ureq::http_client)?),
             Ok(None) => {
-                Err(anyhow::anyhow!("{}", i18n("Can't retrieve OAuth2 token when no refesh token is set! Please re-authenticate with your sync provider.")))
+                Err(anyhow::anyhow!("{}", i18n("Can't retrieve OAuth2 token when no refresh token is set! Please re-authenticate with your sync provider.")))
             }
             Err(e) => {
                 Err(e)
@@ -225,7 +225,7 @@ pub trait SyncProvider {
                     state = CsrfToken::new(value.into_owned());
                 }
 
-                let message = i18n("Sucessfully authenticated, please return to Health.");
+                let message = i18n("Successfully authenticated, please return to Health.");
                 let response = format!(
                     "HTTP/1.1 200 OK\r\ncontent-length: {}\r\n\r\n{}",
                     message.len(),
