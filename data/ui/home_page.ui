@@ -168,6 +168,12 @@
                         <property name="icon-name">walking-thin-symbolic</property>
                       </object>
                     </child>
+                    <child>
+                      <object class="HealthTabButton">
+                        <property name="tab-name">Calories</property>
+                        <property name="icon-name">walking-thin-symbolic</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

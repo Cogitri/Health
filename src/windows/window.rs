@@ -19,7 +19,7 @@
 use crate::{
     core::{i18n_f, Database},
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
-    views::{ViewActivity, ViewHomePage, ViewSteps, ViewWeight},
+    views::{ViewActivity, ViewCalories, ViewHomePage, ViewSteps, ViewWeight},
     windows::DataAddDialog,
 };
 use gtk::{
@@ -35,6 +35,7 @@ pub enum ViewMode {
     Steps,
     Weight,
     Activities,
+    Calories,
     HomePage,
 }
 impl Default for ViewMode {
@@ -298,6 +299,15 @@ impl Window {
                 .map(|s| s.widget_name().to_string())
         {
             self_.inner.borrow_mut().current_view = ViewMode::Weight;
+        } else if child_name
+            == self_
+                .views
+                .get()
+                .unwrap()
+                .get(&ViewMode::Calories)
+                .map(|s| s.widget_name().to_string())
+        {
+            self_.inner.borrow_mut().current_view = ViewMode::Calories;
         }
     }
 
@@ -311,6 +321,7 @@ impl Window {
         let mut views = BTreeMap::new();
         views.insert(ViewMode::HomePage, view_home_page.upcast());
         views.insert(ViewMode::Activities, ViewActivity::new().upcast());
+        views.insert(ViewMode::Calories, ViewCalories::new().upcast());
         views.insert(ViewMode::Weight, ViewWeight::new().upcast());
         views.insert(ViewMode::Steps, ViewSteps::new().upcast());
         self_.views.set(views).unwrap();
@@ -399,6 +410,12 @@ impl Window {
                 }
                 ViewMode::Activities => {
                     let v = view.clone().downcast::<ViewActivity>().unwrap();
+                    glib::MainContext::default().spawn_local(async move {
+                        v.update().await;
+                    });
+                }
+                ViewMode::Calories => {
+                    let v = view.clone().downcast::<ViewCalories>().unwrap();
                     glib::MainContext::default().spawn_local(async move {
                         v.update().await;
                     });

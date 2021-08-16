@@ -22,6 +22,7 @@
     num_derive::FromPrimitive,
     num_derive::ToPrimitive,
     Clone,
+    Hash,
     PartialEq,
     Eq,
     strum::EnumString,

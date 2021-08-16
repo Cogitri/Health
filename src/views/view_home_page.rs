@@ -205,8 +205,10 @@ impl ViewHomePage {
                 ViewMode::Weight
             } else if button_pressed == &self_.button_flow_box.child_at_index(1).unwrap() {
                 ViewMode::Steps
-            } else {
+            } else if button_pressed == &self_.button_flow_box.child_at_index(2).unwrap() {
                 ViewMode::Activities
+            } else {
+                ViewMode::Calories
             };
         self.emit_by_name("view-changed", &[]).unwrap();
     }

@@ -19,6 +19,7 @@
 use crate::{
     config,
     model::{Activity, ActivityType, Steps, Weight},
+    views::SplitBar,
 };
 use anyhow::Result;
 use chrono::{Date, DateTime, Duration, FixedOffset, NaiveDate, SecondsFormat, Utc};
@@ -193,6 +194,97 @@ impl Database {
         Ok(ret)
     }
 
+    /// Get calories.
+    ///
+    /// # Arguments
+    /// * `minimum_date` - Only get calorie data (in SplitBar format) that are more recent than `minimum_date`.
+    ///
+    /// # Returns
+    /// An array of [SplitBar]s that are within the given timeframe or a [glib::Error] if querying the DB goes wrong.
+    pub async fn calories(&self, minimum_date: DateTime<FixedOffset>) -> Result<Vec<SplitBar>> {
+        let connection = {
+            self.imp()
+                .inner
+                .borrow()
+                .as_ref()
+                .unwrap()
+                .connection
+                .clone()
+        };
+
+        let cursor = connection.query_async_future(&format!("SELECT ?date ?id ?calories_burned WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned. FILTER  (?date >= '{}'^^xsd:dateTime) }}", minimum_date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+        let mut hashmap: std::collections::HashMap<
+            DateTime<FixedOffset>,
+            std::collections::HashMap<ActivityType, i64>,
+        > = std::collections::HashMap::new();
+
+        while let Ok(true) = cursor.next_async_future().await {
+            let date = DateTime::parse_from_rfc3339(cursor.string(0).unwrap().as_str()).unwrap();
+            let id = ActivityType::from_i64(cursor.integer(1)).unwrap();
+            let calories = cursor.integer(2);
+            let new_map = |id, calories| {
+                let mut hashmap: std::collections::HashMap<ActivityType, i64> =
+                    std::collections::HashMap::new();
+                hashmap.insert(id, calories);
+                hashmap
+            };
+            hashmap
+                .entry(date)
+                .or_insert_with(|| new_map(id.clone(), calories));
+            if hashmap.contains_key(&date) {
+                let calories_before = *hashmap.get(&date).unwrap().get(&id).unwrap_or(&0);
+                hashmap
+                    .get_mut(&date)
+                    .unwrap()
+                    .insert(id, calories + calories_before);
+            }
+        }
+
+        let mut v: Vec<SplitBar> = hashmap
+            .drain()
+            .map(|(date, bar)| SplitBar {
+                date: date.date(),
+                calorie_split: bar,
+            })
+            .collect();
+
+        v.sort_by(|a, b| a.date.cmp(&b.date));
+
+        Ok(v)
+    }
+
+    /// Get activities.
+    ///
+    /// # Arguments
+    /// * `minimum_date` - most frequent activities in desc order: on or after a`minimum_date`.
+    ///
+    /// # Returns
+    /// An array of most frequent [ActivityType]s that are within the given timeframe, or a [glib::Error] if querying the DB goes wrong.
+
+    pub async fn most_frequent_activities(
+        &self,
+        minimum_date: DateTime<FixedOffset>,
+    ) -> Result<Vec<ActivityType>> {
+        let connection = {
+            self.imp()
+                .inner
+                .borrow()
+                .as_ref()
+                .unwrap()
+                .connection
+                .clone()
+        };
+
+        let mut most_frequent = Vec::new();
+
+        let cursor = connection.query_async_future(&format!("SELECT ?id WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned . FILTER  (?date >= '{}'^^xsd:dateTime) }} GROUP BY ?id ORDER BY DESC (SUM(?calories_burned))", minimum_date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+        while let Ok(true) = cursor.next_async_future().await {
+            most_frequent.push(ActivityType::from_i64(cursor.integer(0)).unwrap());
+        }
+
+        Ok(most_frequent)
+    }
+
     pub async fn num_activities(&self) -> Result<i64> {
         let connection = {
             self.imp()
@@ -252,7 +344,10 @@ impl Database {
         while let Ok(true) = cursor.next_async_future().await {
             hashmap.insert(
                 DateTime::parse_from_rfc3339(cursor.string(0).unwrap().as_str()).unwrap(),
-                hashmap.get(&date).unwrap_or(&0) + u32::try_from(cursor.integer(1)).unwrap(),
+                hashmap
+                    .get(&DateTime::parse_from_rfc3339(cursor.string(0).unwrap().as_str()).unwrap())
+                    .unwrap_or(&0)
+                    + u32::try_from(cursor.integer(1)).unwrap(),
             );
         }
 
@@ -272,7 +367,7 @@ impl Database {
     /// * `date_opt` - If `Some`, only get steps that are more recent than `date_opt`.
     ///
     /// # Returns
-    /// Total number of [Steps] taken on or after the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
+    /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn todays_steps(&self, date: DateTime<FixedOffset>) -> Result<i64> {
         let self_ = self.imp();
 

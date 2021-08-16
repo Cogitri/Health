@@ -20,6 +20,7 @@ use crate::{
     core::i18n,
     model::{ActivityDataPoints, ActivityType},
 };
+use gtk::gdk::RGBA;
 use gtk::glib::{self, GBoxed};
 use std::{convert::TryFrom, str::FromStr};
 
@@ -37,6 +38,7 @@ pub struct ActivityInfo {
     pub id: &'static str,
     /// The localised name of the `ActivityType`.
     pub name: String,
+    pub color: RGBA,
 }
 
 impl Default for ActivityInfo {
@@ -70,6 +72,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE,
                 6,
                 i18n("Basketball"),
+                RGBA {
+                    red: 0.0,
+                    green: 0.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Bicycling => Self::new(
                 ActivityType::Bicycling,
@@ -79,6 +87,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DISTANCE,
                 10,
                 i18n("Bicycling"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Boxing => Self::new(
                 ActivityType::Boxing,
@@ -87,6 +101,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE,
                 7,
                 i18n("Boxing"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Dancing => Self::new(
                 ActivityType::Dancing,
@@ -95,6 +115,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE,
                 8,
                 i18n("Dancing"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Football => Self::new(
                 ActivityType::Football,
@@ -103,12 +129,24 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE,
                 3,
                 i18n("Football"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Golf => Self::new(
                 ActivityType::Golf,
                 ActivityDataPoints::CALORIES_BURNED | ActivityDataPoints::DURATION,
                 4,
                 i18n("Golf"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Hiking => Self::new(
                 ActivityType::Hiking,
@@ -119,6 +157,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DISTANCE,
                 8,
                 i18n("Hiking"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Hockey => Self::new(
                 ActivityType::Hockey,
@@ -127,6 +171,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE,
                 10,
                 i18n("Hockey"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::HorseRiding => Self::new(
                 ActivityType::HorseRiding,
@@ -136,6 +186,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DISTANCE,
                 5,
                 i18n("Horse Riding"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::OtherSports => Self::new(
                 ActivityType::OtherSports,
@@ -144,6 +200,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE,
                 9,
                 i18n("Other Sports"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Rollerblading => Self::new(
                 ActivityType::Rollerblading,
@@ -153,6 +215,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DISTANCE,
                 10,
                 i18n("Rollerblading"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Running => Self::new(
                 ActivityType::Running,
@@ -163,6 +231,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::STEP_COUNT,
                 15,
                 i18n("Running"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Skiing => Self::new(
                 ActivityType::Skiing,
@@ -172,6 +246,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DISTANCE,
                 12,
                 i18n("Skiing"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Soccer => Self::new(
                 ActivityType::Soccer,
@@ -180,6 +260,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE,
                 8,
                 i18n("Soccer"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Softball => Self::new(
                 ActivityType::Softball,
@@ -188,6 +274,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE,
                 5,
                 i18n("Softball"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Swimming => Self::new(
                 ActivityType::Swimming,
@@ -197,6 +289,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DISTANCE,
                 12,
                 i18n("Swimming"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Tennis => Self::new(
                 ActivityType::Tennis,
@@ -205,6 +303,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE,
                 6,
                 i18n("Tennis"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::TrackAndField => Self::new(
                 ActivityType::TrackAndField,
@@ -213,6 +317,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::HEART_RATE,
                 5,
                 i18n("Track And Field"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Volleyball => Self::new(
                 ActivityType::Volleyball,
@@ -223,6 +333,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::STEP_COUNT,
                 5,
                 i18n("Volleyball"),
+                RGBA {
+                    red: 1.0,
+                    green: 1.0,
+                    blue: 1.0,
+                    alpha: 1.0,
+                },
             ),
             ActivityType::Walking => Self::new(
                 ActivityType::Walking,
@@ -233,6 +349,12 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::STEP_COUNT,
                 5,
                 i18n("Walking"),
+                RGBA {
+                    red: 1.0,
+                    green: 0.0,
+                    blue: 0.0,
+                    alpha: 1.0,
+                },
             ),
         }
     }
@@ -270,6 +392,7 @@ impl ActivityInfo {
         available_data_points: ActivityDataPoints,
         average_calories_burned_per_minute: u32,
         name: String,
+        color: RGBA,
     ) -> Self {
         Self {
             id: activity_type.clone().into(),
@@ -277,6 +400,7 @@ impl ActivityInfo {
             available_data_points,
             average_calories_burned_per_minute,
             name,
+            color,
         }
     }
 }

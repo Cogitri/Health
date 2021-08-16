@@ -11,9 +11,13 @@ pub mod bmi_level_bar;
 #[doc(hidden)]
 pub mod circular_progress_bar;
 #[doc(hidden)]
+pub mod color_circle;
+#[doc(hidden)]
 pub mod date_selector;
 #[doc(hidden)]
 pub mod distance_action_row;
+#[doc(hidden)]
+pub mod legend_row;
 #[doc(hidden)]
 pub mod password_entry;
 #[doc(hidden)]
@@ -34,9 +38,13 @@ pub use bmi_level_bar::*;
 #[doc(inline)]
 pub use circular_progress_bar::*;
 #[doc(inline)]
+pub use color_circle::*;
+#[doc(inline)]
 pub use date_selector::*;
 #[doc(inline)]
 pub use distance_action_row::*;
+#[doc(inline)]
+pub use legend_row::*;
 #[doc(inline)]
 pub use password_entry::*;
 #[doc(inline)]
