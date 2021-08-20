@@ -103,23 +103,6 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            if crate::config::APPLICATION_ID.ends_with("Devel") {
-                obj.style_context().add_class("devel");
-
-                // When in devel mode our application ID is different so we have to manually add the icon theme
-                if let Some(icon_theme) = gtk::IconTheme::for_display(&obj.display()) {
-                    icon_theme.add_resource_path("/dev/Cogitri/Health/icons");
-                }
-            }
-
-            let provider = gtk::CssProvider::new();
-            provider.load_from_resource("/dev/Cogitri/Health/custom.css");
-            gtk::StyleContext::add_provider_for_display(
-                &obj.display(),
-                &provider,
-                gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
-            );
-
             obj.connect_handlers();
             obj.setup_actions();
         }

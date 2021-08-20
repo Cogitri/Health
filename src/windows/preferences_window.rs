@@ -328,20 +328,25 @@ impl PreferencesWindow {
         );
         if switch_state && ashpd::is_sandboxed() {
             spawn!(async {
-                if let Err(e) = ashpd::desktop::background::request(
+                match ashpd::desktop::background::request(
                     &ashpd::WindowIdentifier::default(),
                     &i18n("Remind you of your step goals"),
                     true,
-                    Some(&["dev.Cogitri.Health"]),
+                    Some(&["dev.Cogitri.Health.Daemon"]),
                     false,
                 )
                 .await
                 {
-                    glib::g_warning!(
+                    Ok(r) => {
+                        if !r.auto_start() {
+                            glib::g_warning!(crate::config::LOG_DOMAIN, "Permission to be autostarted was denied...")
+                        }
+                    }
+                    Err(e) => glib::g_warning!(
                         crate::config::LOG_DOMAIN,
                         "Couldn't request to stay active in background: {}",
                         e.to_string()
-                    )
+                    ),
                 }
             });
         }

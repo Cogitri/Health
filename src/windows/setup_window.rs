@@ -144,13 +144,6 @@ mod imp {
             self.parent_constructed(obj);
 
             self.stepgoal_spin_button.set_value(10000.0);
-            let provider = gtk::CssProvider::new();
-            provider.load_from_resource("/dev/Cogitri/Health/custom.css");
-            gtk::StyleContext::add_provider_for_display(
-                &obj.display(),
-                &provider,
-                gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
-            );
 
             obj.connect_handlers();
             obj.setup_actions();

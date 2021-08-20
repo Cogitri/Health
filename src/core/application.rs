@@ -35,6 +35,7 @@ mod imp {
         core::Settings,
         windows::{SetupWindow, Window},
     };
+    use adw::subclass::prelude::*;
     use gtk::glib::{self, clone, g_warning};
     use gtk::{prelude::*, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
@@ -48,7 +49,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for Application {
         const NAME: &'static str = "HealthApplication";
-        type ParentType = gtk::Application;
+        type ParentType = adw::Application;
         type Type = super::Application;
 
         fn class_init(_klass: &mut Self::Class) {}
@@ -81,8 +82,9 @@ mod imp {
         }
 
         fn startup(&self, obj: &Self::Type) {
+            obj.set_resource_base_path(Some("/dev/Cogitri/Health"));
+
             self.parent_startup(obj);
-            adw::init();
 
             if let Some(true) = gtk::Settings::default()
                 .and_then(|s| s.gtk_theme_name())
@@ -97,12 +99,13 @@ mod imp {
         }
     }
     impl GtkApplicationImpl for Application {}
+    impl AdwApplicationImpl for Application {}
 }
 
 glib::wrapper! {
     /// [Application] is an implementation of [GtkApplication](gtk::Application) that handles starting & managing the windows etc.
     pub struct Application(ObjectSubclass<imp::Application>)
-        @extends gio::Application, gtk::Application, @implements gio::ActionMap, gio::ActionGroup;
+        @extends gio::Application, gtk::Application, adw::Application, @implements gio::ActionMap, gio::ActionGroup;
 }
 
 impl Application {
