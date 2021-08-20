@@ -105,7 +105,7 @@ mod imp {
                         self.year_spinner.raw_value().unwrap_or(0),
                         // The dropdown starts counting from 0, not 1.
                         self.month_dropdown.selected() + 1,
-                        self.day_spinner.raw_value().unwrap_or(0),
+                        self.day_spinner.raw_value().unwrap_or(1),
                     );
                     match Local.from_local_datetime(&naive_date.and_hms(12, 0, 0)) {
                         LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
