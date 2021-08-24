@@ -1,5 +1,6 @@
 conf = configuration_data ()
 conf.set('APPLICATION_ID', application_id)
+conf.set('DAEMON_APPLICATION_ID', daemon_application_id)
 conf.set('GETTEXT_PACKAGE', gettext_package)
 
 configured_desktop_file = configure_file(
@@ -23,9 +24,9 @@ configured_daemon_desktop_file = configure_file(
   configuration: conf,
 )
 
-desktop_file = i18n.merge_file(
+daemon_desktop_file = i18n.merge_file(
   input: configured_daemon_desktop_file,
-  output: '@0@.Daemon.desktop'.format(application_id),
+  output: '@0@.desktop'.format(daemon_application_id),
   type: 'desktop',
   po_dir: '../po',
   install: true,
@@ -35,7 +36,7 @@ desktop_file = i18n.merge_file(
 desktop_utils = find_program('desktop-file-validate', required: false)
 if desktop_utils.found()
   test('Validate desktop file', desktop_utils,
-    args: [desktop_file]
+    args: [daemon_desktop_file, desktop_file]
   )
 endif
 
