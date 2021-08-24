@@ -8,6 +8,10 @@
   <shortdesc xml:lang="en">A health tracking app for the GNOME desktop.</shortdesc>
   <description>A health tracking app for the GNOME desktop.</description>
   <programming-language>Rust</programming-language>
+  <homepage rdf:resource="https://gitlab.gnome.org/Cogitri/Health/" />
+  <download-page rdf:resource="https://gitlab.gnome.org/Cogitri/Health/-/releases" />
+  <bug-database rdf:resource="https://gitlab.gnome.org/Cogitri/Health/issues/" />
+  <category rdf:resource="http://api.gnome.org/doap-extensions#desktop" />
 
   <maintainer>
     <foaf:Person>
