@@ -2,5 +2,6 @@ pub static PKGDATADIR: &str = @pkgdatadir@;
 pub static VERSION: &str = @VERSION@;
 pub static LOCALEDIR: &str = @localedir@;
 pub static APPLICATION_ID: &str = @application_id@;
+pub static DAEMON_APPLICATION_ID: &str = @daemon_application_id@;
 pub static LOG_DOMAIN: &str = @log_domain@;
 pub static GETTEXT_PACKAGE: &str = @gettext_package@;

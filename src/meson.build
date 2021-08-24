@@ -3,6 +3,7 @@ conf.set_quoted('VERSION', meson.project_version())
 conf.set_quoted('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set_quoted('pkgdatadir', health_data_dir)
 conf.set_quoted('application_id', application_id)
+conf.set_quoted('daemon_application_id', daemon_application_id)
 conf.set_quoted('log_domain', application_id)
 conf.set_quoted('gettext_package', gettext_package)
 
@@ -93,7 +94,7 @@ cargo_release = custom_target(
   'cargo-build',
   build_by_default: true,
   input: sources,
-  output: [application_id, '@0@.Daemon'.format(application_id)],
+  output: [application_id, daemon_application_id],
   console: true,
   install: true,
   install_dir: get_option('bindir'),

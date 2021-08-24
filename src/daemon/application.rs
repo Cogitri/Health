@@ -15,18 +15,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-use gtk::{
-    gio::{self},
-    glib::{self},
-};
+use gtk::{gio, glib};
 
 mod imp {
-    use crate::model::ModelNotification;
+    use crate::{model::ModelNotification, Settings};
     use gtk::subclass::prelude::*;
-    use gtk::{
-        gio,
-        glib::{self},
-    };
+    use gtk::{gio, glib, prelude::*};
 
     #[derive(Debug, Default)]
     pub struct Application {}
@@ -48,6 +42,12 @@ mod imp {
     impl ApplicationImpl for Application {
         fn activate(&self, obj: &Self::Type) {
             self.parent_activate(obj);
+
+            if !Settings::instance().enable_notifications() {
+                obj.release();
+                return;
+            }
+
             let model_notification = ModelNotification::new();
             model_notification.periodic_notify();
         }
@@ -63,10 +63,7 @@ glib::wrapper! {
 impl Application {
     pub fn new() -> Self {
         glib::Object::new(&[
-            (
-                "application-id",
-                &format!("{}.Daemon", &crate::config::APPLICATION_ID),
-            ),
+            ("application-id", &crate::config::DAEMON_APPLICATION_ID),
             ("flags", &gio::ApplicationFlags::FLAGS_NONE),
         ])
         .expect("Failed to create Application")

@@ -44,8 +44,6 @@ mod imp {
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         #[template_child]
-        pub legend_rows: TemplateChild<LegendRow>,
-        #[template_child]
         pub legend_box: TemplateChild<gtk::Grid>,
         pub calories_graph_view: OnceCell<BarGraphView>,
         pub calories_graph_model: RefCell<GraphModelCalories>,
@@ -58,6 +56,7 @@ mod imp {
         type Type = super::ViewCalories;
 
         fn class_init(klass: &mut Self::Class) {
+            LegendRow::static_type();
             Self::bind_template(klass);
         }
 

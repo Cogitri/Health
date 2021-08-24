@@ -28,8 +28,8 @@ fn main() {
         glib::g_warning!(config::LOG_DOMAIN, "Couldn't set textdomain: {}", e)
     }
 
-    glib::set_application_name(&i18n("Health.Daemon"));
-    glib::set_prgname(Some("dev.Cogitri.Health-Daemon"));
+    glib::set_application_name(&i18n("Health Daemon"));
+    glib::set_prgname(Some("dev.Cogitri.Health.Daemon"));
 
     let app = Application::new();
     app.hold();

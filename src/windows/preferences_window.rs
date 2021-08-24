@@ -55,6 +55,7 @@ mod imp {
         pub current_unitsystem: Cell<Unitsystem>,
         pub parent_window: OnceCell<Option<gtk::Window>>,
         pub settings: Settings,
+        pub window_indentifier: OnceCell<ashpd::WindowIdentifier>,
 
         #[template_child]
         pub height_actionrow: TemplateChild<adw::ActionRow>,
@@ -103,6 +104,7 @@ mod imp {
             Self {
                 current_unitsystem: Cell::new(settings.unitsystem()),
                 settings,
+                window_indentifier: OnceCell::new(),
                 height_actionrow: TemplateChild::default(),
                 weightgoal_actionrow: TemplateChild::default(),
                 birthday_selector: TemplateChild::default(),
@@ -326,20 +328,31 @@ impl PreferencesWindow {
             self_.settings.enable_notifications()
                 && self_.settings.notification_frequency() == NotifyMode::Fixed,
         );
-        if switch_state && ashpd::is_sandboxed() {
-            spawn!(async {
+        if switch_state && ashpd::is_sandboxed() && !initializing {
+            spawn!(clone!(@weak self as obj => async move {
+                let self_ = obj.imp();
+                let window_indentifier = if let Some(i) = self_.window_indentifier.get() {
+                    i
+                } else {
+                    let i = ashpd::WindowIdentifier::from_native(obj.upcast_ref::<adw::PreferencesWindow>()).await;
+                    self_.window_indentifier.set(i).unwrap();
+                    self_.window_indentifier.get().unwrap()
+                };
                 match ashpd::desktop::background::request(
-                    &ashpd::WindowIdentifier::default(),
+                    window_indentifier,
                     &i18n("Remind you of your step goals"),
                     true,
-                    Some(&["dev.Cogitri.Health.Daemon"]),
+                    Some(&[crate::config::DAEMON_APPLICATION_ID]),
                     false,
                 )
                 .await
                 {
                     Ok(r) => {
                         if !r.auto_start() {
-                            glib::g_warning!(crate::config::LOG_DOMAIN, "Permission to be autostarted was denied...")
+                            glib::g_warning!(
+                                crate::config::LOG_DOMAIN,
+                                "Permission to be autostarted was denied..."
+                            )
                         }
                     }
                     Err(e) => glib::g_warning!(
@@ -348,7 +361,7 @@ impl PreferencesWindow {
                         e.to_string()
                     ),
                 }
-            });
+            }));
         }
     }
 

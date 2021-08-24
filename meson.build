@@ -22,6 +22,7 @@ else
 endif
 
 application_id = 'dev.Cogitri.Health@0@'.format(profile)
+daemon_application_id = '@0@.Daemon'.format(application_id)
 gettext_package = 'dev.Cogitri.Health'
 health_version = meson.project_version() + version_suffix
 health_data_dir = get_option('prefix') / get_option('datadir') / application_id

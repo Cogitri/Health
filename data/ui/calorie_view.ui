@@ -46,7 +46,7 @@
             <property name="margin-end">40</property>
             <property name="margin-top">5</property>
             <child>
-              <object class="HealthLegendRow" id="legend_rows">
+              <object class="HealthLegendRow">
                 <layout>
                   <property name="column">0</property>
                   <property name="row">0</property>
@@ -54,7 +54,7 @@
               </object>
             </child>
             <child>
-              <object class="HealthLegendRow" id="legend_rows">
+              <object class="HealthLegendRow">
                 <layout>
                   <property name="column">0</property>
                   <property name="row">1</property>
@@ -62,7 +62,7 @@
               </object>
             </child>
             <child>
-              <object class="HealthLegendRow" id="legend_rows">
+              <object class="HealthLegendRow">
                 <layout>
                   <property name="column">0</property>
                   <property name="row">2</property>

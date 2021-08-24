@@ -25,6 +25,7 @@ version = "1.0"
 
 [dependencies.ashpd]
 version = "0.2.0-alpha-3"
+features = ["feature_gtk4"]
 
 [dependencies.bitflags]
 default-features = false
