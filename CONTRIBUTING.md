@@ -11,7 +11,7 @@ Health's documentation [is available here](https://cogitri.pages.gitlab.gnome.or
 
 ### Working on the source
 
-Now that you know how the internals of Health work you can start working on the bugfix or feature you want to implement. The easiest way to get started is using GNOME Builder. Simply open GNOME Builder, click on `Clone Repository...` and enter the repository URL (https://gitlab.gnome.org/Cogitri/Health). Afterwards click on `Clone Project` and you should be all setup. Pressing F5 or pressing the build button in the topbar should build Health for you.
+Now that you know how the internals of Health work you can start working on the bugfix or feature you want to implement. The easiest way to get started is using GNOME Builder. Simply open GNOME Builder, click on `Clone Repository...` and enter the repository URL (https://gitlab.gnome.org/World/Health). Afterwards click on `Clone Project` and you should be all setup. Pressing F5 or pressing the build button in the topbar should build Health for you.
 
 ### Committing your work
 

@@ -6,7 +6,7 @@
 
 A health tracking app for the GNOME desktop.
 
-![screenshot](https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/screenshot_steps.png)
+![screenshot](https://gitlab.gnome.org/World/Health/raw/master/docs/screenshot_steps.png)
 
 ## Building from Source
 
@@ -43,7 +43,7 @@ It's possible to use the flatpak bundles that are built in merge requests and br
 
 To download the flatpak bundle of a merge requests, go to the merge request, click on "View exposed artifact" and afterwards on "Get Flatpak bundle here":
 
-![screenshot](https://gitlab.gnome.org/Cogitri/gnome-health/raw/master/docs/ci-mr-flatpak-bundle.png)
+![screenshot](https://gitlab.gnome.org/World/Health/raw/master/docs/ci-mr-flatpak-bundle.png)
 
 After downloading the file, you can install it with:
 

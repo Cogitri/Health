@@ -123,7 +123,7 @@ no-auth-url-job:
       export PACKAGE_ID=$(curl --header "PRIVATE-TOKEN: ${GITLAB_SECRET_API_KEY}" "https://gitlab.gnome.org/api/v4/projects/${CI_PROJECT_ID}/packages?sort=desc" | jq -c .[0].id)
     -  |
       export PACKAGE_DOWNLOAD_ID=$(curl --header "PRIVATE-TOKEN: ${GITLAB_SECRET_API_KEY}" "https://gitlab.gnome.org/api/v4/projects/${CI_PROJECT_ID}/packages/${PACKAGE_ID}/package_files" | jq -c .[0].id)
-    - echo "https://gitlab.gnome.org/Cogitri/Health/-/package_files/$PACKAGE_DOWNLOAD_ID/download" > download_url
+    - echo "https://gitlab.gnome.org/World/Health/-/package_files/$PACKAGE_DOWNLOAD_ID/download" > download_url
   artifacts:
     paths:
       - download_url
