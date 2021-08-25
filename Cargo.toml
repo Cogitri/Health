@@ -51,7 +51,7 @@ version = "0.6"
 
 [dependencies.easy-ext]
 default-features = false
-version = "0.2"
+version = "1"
 
 [dependencies.gettext-rs]
 version = "0.7"
