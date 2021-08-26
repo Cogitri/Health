@@ -253,29 +253,16 @@ impl SetupWindow {
             }));
     }
 
-    fn setup_actions(&self) {
-        action!(
-            self,
-            "quit",
-            clone!(@weak self as obj => move |_, _| {
-                obj.destroy();
-            })
-        );
-        action!(
-            self,
-            "fullscreen",
-            clone!(@weak self as obj => move |_, _| {
-                if obj.is_fullscreen() {
-                    obj.unfullscreen();
-                } else {
-                    obj.fullscreen();
-                }
-            })
-        );
-    }
-
     fn imp(&self) -> &imp::SetupWindow {
         imp::SetupWindow::from_instance(self)
+    }
+
+    fn handle_fullscreen(&self) {
+        if self.is_fullscreen() {
+            self.unfullscreen();
+        } else {
+            self.fullscreen();
+        }
     }
 
     fn handle_height_spin_button_changed(&self) {
@@ -433,6 +420,22 @@ impl SetupWindow {
                     .into(),
             );
         }
+    }
+    fn setup_actions(&self) {
+        action!(
+            self,
+            "quit",
+            clone!(@weak self as obj => move |_, _| {
+                obj.destroy();
+            })
+        );
+        action!(
+            self,
+            "fullscreen",
+            clone!(@weak self as obj => move |_, _| {
+                obj.handle_fullscreen();
+            })
+        );
     }
 
     fn set_optimal_weightgoal(&self) {

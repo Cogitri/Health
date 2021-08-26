@@ -128,26 +128,6 @@ impl ViewActivity {
         o
     }
 
-    fn setup_actions(&self) {
-        let action_group = gio::SimpleActionGroup::new();
-
-        stateful_action!(
-            action_group,
-            "view_period",
-            Some(&String::static_variant_type()),
-            "week",
-            clone!(@weak self as obj => move |a, p| {
-                let parameter = p.unwrap();
-
-                obj.set_view_period(ViewPeriod::from_str(parameter.get::<String>().unwrap().as_str()).unwrap());
-
-                a.set_state(parameter);
-            })
-        );
-
-        self.insert_action_group("view_activity", Some(&action_group));
-    }
-
     pub fn set_view_period(&self, view_period: ViewPeriod) {
         let downgraded = self.downgrade();
         gtk_macros::spawn!(async move {
@@ -202,7 +182,33 @@ impl ViewActivity {
         }
     }
 
+    fn handle_view_period(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
+        let parameter = parameter.unwrap();
+
+        self.set_view_period(
+            ViewPeriod::from_str(parameter.get::<String>().unwrap().as_str()).unwrap(),
+        );
+
+        action.set_state(parameter);
+    }
+
     fn imp(&self) -> &imp::ViewActivity {
         imp::ViewActivity::from_instance(self)
+    }
+
+    fn setup_actions(&self) {
+        let action_group = gio::SimpleActionGroup::new();
+
+        stateful_action!(
+            action_group,
+            "view_period",
+            Some(&String::static_variant_type()),
+            "week",
+            clone!(@weak self as obj => move |a, p| {
+                obj.handle_view_period(a, p);
+            })
+        );
+
+        self.insert_action_group("view_activity", Some(&action_group));
     }
 }

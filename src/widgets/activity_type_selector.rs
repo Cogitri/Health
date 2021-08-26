@@ -16,11 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{model::ActivityInfo, ActivityInfoBoxed};
+use crate::{model::ActivityInfo, widgets::ActivityTypeRow, ActivityInfoBoxed};
 use gtk::{
     gio::{prelude::*, subclass::prelude::*},
     glib::{self, SignalHandlerId},
+    prelude::*,
 };
+use std::convert::TryFrom;
 
 mod imp {
     use crate::{
@@ -132,27 +134,7 @@ mod imp {
                 .bind_model(Some(&self.activity_types_model), create_list_box_row);
 
             let activated_list_box_row = glib::clone!(@weak obj => move |b: &gtk::ListBox, r: &gtk::ListBoxRow| {
-                let row = r.downcast_ref::<ActivityTypeRow>().unwrap();
-
-                if let Ok(info) = ActivityInfo::try_from(row.id()) {
-                    obj.set_selected_activity(info);
-                    let mut i = 0;
-                    let selected_activity = obj.imp().selected_activity.borrow();
-
-                    while let Some(row) = b.row_at_index(i) {
-                        let cast = row.downcast::<ActivityTypeRow>().unwrap();
-                        cast.set_selected (cast.label() == selected_activity.name);
-                        i += 1;
-                    }
-
-                    obj.popdown();
-                }  else {
-                    g_warning!(
-                        crate::config::LOG_DOMAIN,
-                        "Unknown Activity {}",
-                        row.id()
-                    );
-                }
+                obj.activated_list_box_row(b, r);
             });
 
             self.activity_types_list_box
@@ -238,6 +220,26 @@ impl ActivityTypeSelector {
     /// Create a new [ActivityTypeSelector].
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create ActivityTypeSelector")
+    }
+
+    fn activated_list_box_row(&self, list_box: &gtk::ListBox, row: &gtk::ListBoxRow) {
+        let row = row.downcast_ref::<ActivityTypeRow>().unwrap();
+
+        if let Ok(info) = ActivityInfo::try_from(row.id()) {
+            self.set_selected_activity(info);
+            let mut i = 0;
+            let selected_activity = self.imp().selected_activity.borrow();
+
+            while let Some(row) = list_box.row_at_index(i) {
+                let cast = row.downcast::<ActivityTypeRow>().unwrap();
+                cast.set_selected(cast.label() == selected_activity.name);
+                i += 1;
+            }
+
+            self.popdown();
+        } else {
+            glib::g_warning!(crate::config::LOG_DOMAIN, "Unknown Activity {}", row.id());
+        }
     }
 
     #[allow(dead_code)]

@@ -224,6 +224,14 @@ impl PreferencesWindow {
         o
     }
 
+    fn handle_frequency(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
+        let parameter = parameter.unwrap();
+        self.set_notification_frequency(
+            NotifyMode::from_str(parameter.get::<String>().unwrap().as_str()).unwrap(),
+        );
+        action.set_state(parameter);
+    }
+
     fn setup_actions(&self) {
         let action_group = gtk::gio::SimpleActionGroup::new();
 
@@ -233,11 +241,7 @@ impl PreferencesWindow {
             Some(&String::static_variant_type()),
             "hourly",
             clone!(@weak self as obj => move |a, p| {
-                let parameter = p.unwrap();
-
-                obj.set_notification_frequency(NotifyMode::from_str(parameter.get::<String>().unwrap().as_str()).unwrap());
-
-                a.set_state(parameter);
+                obj.handle_frequency(a, p);
             })
         );
 
@@ -330,37 +334,7 @@ impl PreferencesWindow {
         );
         if switch_state && ashpd::is_sandboxed() && !initializing {
             spawn!(clone!(@weak self as obj => async move {
-                let self_ = obj.imp();
-                let window_indentifier = if let Some(i) = self_.window_indentifier.get() {
-                    i
-                } else {
-                    let i = ashpd::WindowIdentifier::from_native(obj.upcast_ref::<adw::PreferencesWindow>()).await;
-                    self_.window_indentifier.set(i).unwrap();
-                    self_.window_indentifier.get().unwrap()
-                };
-                match ashpd::desktop::background::request(
-                    window_indentifier,
-                    &i18n("Remind you of your step goals"),
-                    true,
-                    Some(&[crate::config::DAEMON_APPLICATION_ID]),
-                    false,
-                )
-                .await
-                {
-                    Ok(r) => {
-                        if !r.auto_start() {
-                            glib::g_warning!(
-                                crate::config::LOG_DOMAIN,
-                                "Permission to be autostarted was denied..."
-                            )
-                        }
-                    }
-                    Err(e) => glib::g_warning!(
-                        crate::config::LOG_DOMAIN,
-                        "Couldn't request to stay active in background: {}",
-                        e.to_string()
-                    ),
-                }
+                obj.handle_sandbox_autostart().await;
             }));
         }
     }
@@ -387,6 +361,42 @@ impl PreferencesWindow {
     fn handle_import_csv_button_clicked(&self) {
         let dialog = ImportDialog::new(self.imp().parent_window.get().unwrap().as_ref());
         dialog.show();
+    }
+
+    async fn handle_sandbox_autostart(&self) {
+        let self_ = self.imp();
+        let window_indentifier = if let Some(i) = self_.window_indentifier.get() {
+            i
+        } else {
+            let i =
+                ashpd::WindowIdentifier::from_native(self.upcast_ref::<adw::PreferencesWindow>())
+                    .await;
+            self_.window_indentifier.set(i).unwrap();
+            self_.window_indentifier.get().unwrap()
+        };
+        match ashpd::desktop::background::request(
+            window_indentifier,
+            &i18n("Remind you of your step goals"),
+            true,
+            Some(&[crate::config::DAEMON_APPLICATION_ID]),
+            false,
+        )
+        .await
+        {
+            Ok(r) => {
+                if !r.auto_start() {
+                    glib::g_warning!(
+                        crate::config::LOG_DOMAIN,
+                        "Permission to be autostarted was denied..."
+                    )
+                }
+            }
+            Err(e) => glib::g_warning!(
+                crate::config::LOG_DOMAIN,
+                "Couldn't request to stay active in background: {}",
+                e.to_string()
+            ),
+        }
     }
 
     fn handle_stepgoal_spin_button_changed(&self) {

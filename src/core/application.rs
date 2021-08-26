@@ -121,6 +121,49 @@ impl Application {
         imp::Application::from_instance(self)
     }
 
+    fn handle_about(&self) {
+        gtk::AboutDialogBuilder::new()
+            .transient_for(
+                &self
+                    .imp()
+                    .window
+                    .get()
+                    .and_then(glib::WeakRef::upgrade)
+                    .unwrap(),
+            )
+            .modal(true)
+            .logo_icon_name(crate::config::APPLICATION_ID)
+            .program_name("Health")
+            .comments(&i18n("A health tracking app for the GNOME desktop."))
+            .authors(vec!["Rasmus Thomsen <oss@cogitri.dev>".to_string()])
+            .translator_credits(&i18n("translator-credits"))
+            .website("https://gitlab.gnome.org/World/Health")
+            .website_label(&i18n("Websites"))
+            .version(crate::config::VERSION)
+            .license_type(gtk::License::Gpl30)
+            .build()
+            .show()
+    }
+
+    fn handle_help(&self) {}
+
+    fn handle_preferences(&self) {
+        PreferencesWindow::new(
+            self.imp()
+                .window
+                .get()
+                .and_then(glib::WeakRef::upgrade)
+                .map(glib::Cast::upcast),
+        )
+        .show()
+    }
+
+    fn handle_quit(&self) {
+        if let Some(window) = self.imp().window.get().and_then(glib::WeakRef::upgrade) {
+            window.destroy();
+        }
+    }
+
     fn handle_setup_window_setup_done(&self) {
         let self_ = self.imp();
         self_.settings.set_did_initial_setup(true);
@@ -130,6 +173,23 @@ impl Application {
             .window
             .set(glib::ObjectExt::downgrade(&window))
             .unwrap();
+    }
+
+    fn handle_shortcuts() {
+        gtk::Builder::from_resource("/dev/Cogitri/Health/ui/shortcuts_window.ui")
+            .object::<gtk::ShortcutsWindow>("shortcuts_window")
+            .unwrap()
+            .show();
+    }
+
+    fn handle_unitsystem(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
+        let parameter = parameter.unwrap();
+
+        self.imp().settings.set_unitsystem(
+            Unitsystem::from_str(parameter.to_string().replace("'", "").as_str()).unwrap(),
+        );
+
+        action.set_state(parameter);
     }
 
     fn migrate_gsettings(&self) {
@@ -154,21 +214,8 @@ impl Application {
         action!(
             self,
             "about",
-            clone!(@weak self as this => move |_, _| {
-                gtk::AboutDialogBuilder::new()
-                    .transient_for(&this.imp().window.get().and_then(glib::WeakRef::upgrade).unwrap())
-                    .modal(true)
-                    .logo_icon_name(crate::config::APPLICATION_ID)
-                    .program_name("Health")
-                    .comments(&i18n("A health tracking app for the GNOME desktop."))
-                    .authors(vec!["Rasmus Thomsen <oss@cogitri.dev>".to_string()])
-                    .translator_credits(&i18n("translator-credits"))
-                    .website("https://gitlab.gnome.org/Cogitri/gnome-health")
-                    .website_label(&i18n("Websites"))
-                    .version(crate::config::VERSION)
-                    .license_type(gtk::License::Gpl30)
-                    .build()
-                    .show()
+            clone!(@weak self as obj => move |_, _| {
+                obj.handle_about();
             })
         );
 
@@ -176,6 +223,7 @@ impl Application {
             self,
             "help",
             clone!(@weak self as obj => move |_, _| {
+                obj.handle_help();
             })
         );
 
@@ -183,9 +231,7 @@ impl Application {
             self,
             "preferences",
             clone!(@weak self as obj => move |_, _| {
-                let self_ = obj.imp();
-                let preferences_window = PreferencesWindow::new(self_.window.get().and_then(glib::WeakRef::upgrade).map(glib::Cast::upcast));
-                preferences_window.show();
+                obj.handle_preferences();
             })
         );
 
@@ -193,17 +239,12 @@ impl Application {
             self,
             "quit",
             clone!(@weak self as obj => move |_, _| {
-                if let Some(window) = obj.imp().window.get().and_then(glib::WeakRef::upgrade) {
-                    window.destroy();
-                }
+                obj.handle_quit();
             })
         );
 
         action!(self, "shortcuts", move |_, _| {
-            gtk::Builder::from_resource("/dev/Cogitri/Health/ui/shortcuts_window.ui")
-                .object::<gtk::ShortcutsWindow>("shortcuts_window")
-                .unwrap()
-                .show();
+            Self::handle_shortcuts();
         });
 
         stateful_action!(
@@ -215,11 +256,7 @@ impl Application {
                 s
             },
             clone!(@weak self as obj => move |a, p| {
-                let parameter = p.unwrap();
-
-                obj.imp().settings.set_unitsystem(Unitsystem::from_str(parameter.to_string().replace("'", "").as_str()).unwrap());
-
-                a.set_state(parameter);
+                obj.handle_unitsystem(a, p);
             })
         );
     }

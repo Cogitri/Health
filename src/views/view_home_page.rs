@@ -176,9 +176,9 @@ impl ViewHomePage {
             .settings_handler_id
             .replace(Some(self_.settings.connect_user_stepgoal_changed(
                 glib::clone!(@weak o as obj => move |_,_| {
-                    glib::MainContext::default().spawn_local(async move {
-                        obj.update_activities().await
-                    })
+                    gtk_macros::spawn!(async move {
+                        obj.update_activities().await;
+                    });
                 }),
             )));
 
@@ -186,9 +186,9 @@ impl ViewHomePage {
             .settings_handler_id2
             .replace(Some(self_.settings.connect_user_weightgoal_changed(
                 glib::clone!(@weak o as obj => move |_,_| {
-                    glib::MainContext::default().spawn_local(async move {
-                        obj.update_weights().await
-                    })
+                    gtk_macros::spawn!(async move {
+                        obj.update_weights().await;
+                    });
                 }),
             )));
 

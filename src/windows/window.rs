@@ -19,7 +19,7 @@
 use crate::{
     core::{i18n_f, Database},
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
-    views::{ViewActivity, ViewCalories, ViewHomePage, ViewSteps, ViewWeight},
+    views::{View, ViewActivity, ViewCalories, ViewHomePage, ViewSteps, ViewWeight},
     windows::DataAddDialog,
 };
 use gtk::{
@@ -212,11 +212,7 @@ impl Window {
             self,
             "fullscreen",
             clone!(@weak self as obj => move |_, _| {
-                if obj.is_fullscreen() {
-                    obj.unfullscreen();
-                } else {
-                    obj.fullscreen();
-                }
+                obj.handle_fullscreen();
             })
         );
     }
@@ -231,6 +227,7 @@ impl Window {
         self.imp().stack.set_visible_child_name("HomePage");
         self.imp().back_button.set_visible(false);
     }
+
     fn handle_close_request(&self) -> Inhibit {
         let self_ = self.imp();
         let mut inner = self_.inner.borrow_mut();
@@ -249,6 +246,14 @@ impl Window {
     fn handle_error_infobar_response(bar: &gtk::InfoBar, response: gtk::ResponseType) {
         if response == gtk::ResponseType::Close {
             bar.set_revealed(false);
+        }
+    }
+
+    fn handle_fullscreen(&self) {
+        if self.is_fullscreen() {
+            self.unfullscreen();
+        } else {
+            self.fullscreen();
         }
     }
 
@@ -381,35 +386,35 @@ impl Window {
             match mode {
                 ViewMode::Steps => {
                     let v = view.clone().downcast::<ViewSteps>().unwrap();
-                    glib::MainContext::default().spawn_local(async move {
+                    gtk_macros::spawn!(async move {
                         v.update().await;
                     });
                 }
                 ViewMode::Weight => {
                     let v = view.clone().downcast::<ViewWeight>().unwrap();
-                    glib::MainContext::default().spawn_local(async move {
+                    gtk_macros::spawn!(async move {
                         v.update().await;
                     });
                 }
                 ViewMode::Activities => {
                     let v = view.clone().downcast::<ViewActivity>().unwrap();
-                    glib::MainContext::default().spawn_local(async move {
+                    gtk_macros::spawn!(async move {
                         v.update().await;
                     });
                 }
                 ViewMode::Calories => {
                     let v = view.clone().downcast::<ViewCalories>().unwrap();
-                    glib::MainContext::default().spawn_local(async move {
+                    gtk_macros::spawn!(async move {
                         v.update().await;
                     });
                 }
                 ViewMode::HomePage => {
                     let v = view.clone().downcast::<ViewHomePage>().unwrap();
-                    glib::MainContext::default().spawn_local(async move {
+                    gtk_macros::spawn!(async move {
                         v.update_activities().await;
                     });
                     let v = view.clone().downcast::<ViewHomePage>().unwrap();
-                    glib::MainContext::default().spawn_local(async move {
+                    gtk_macros::spawn!(async move {
                         v.update_weights().await;
                     });
                 }

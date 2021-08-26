@@ -173,9 +173,9 @@ impl ViewSteps {
                 .settings_handler_id
                 .replace(Some(self_.settings.connect_user_stepgoal_changed(
                     glib::clone!(@weak self as obj => move |_,_| {
-                        glib::MainContext::default().spawn_local(async move {
-                            obj.update().await
-                        })
+                        gtk_macros::spawn!(async move {
+                            obj.update().await;
+                        });
                     }),
                 )));
         }

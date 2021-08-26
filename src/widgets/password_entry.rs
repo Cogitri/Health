@@ -210,10 +210,7 @@ impl PasswordEntry {
         self_
             .password_entry
             .connect_changed(clone!(@weak self as obj => move |_| {
-                if obj.show_password_strength() {
-                    obj.calculate_password_strength();
-                }
-                obj.notify("password");
+                    obj.handle_password_entry_changed()
             }));
 
         self_
@@ -221,6 +218,13 @@ impl PasswordEntry {
             .connect_changed(clone!(@weak self as obj => move |_| {
                 obj.notify("password");
             }));
+    }
+
+    fn handle_password_entry_changed(&self) {
+        if self.show_password_strength() {
+            self.calculate_password_strength();
+        }
+        self.notify("password");
     }
 
     fn imp(&self) -> &imp::PasswordEntry {
