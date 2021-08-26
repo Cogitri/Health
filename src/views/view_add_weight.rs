@@ -26,10 +26,10 @@ use uom::si::{
 mod imp {
     use crate::{
         core::{Database, Settings},
-        views::View,
+        views::{PinnedResultFuture, View, ViewImpl},
         widgets::DateSelector,
     };
-    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_add_dialog.ui")]
@@ -65,6 +65,14 @@ mod imp {
     }
 
     impl WidgetImpl for ViewAddWeight {}
+
+    impl ViewImpl for ViewAddWeight {
+        fn update(&self, obj: &View) -> PinnedResultFuture {
+            Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
+                send.resolve(Ok(()));
+            }))
+        }
+    }
 }
 
 glib::wrapper! {

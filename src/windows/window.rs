@@ -19,7 +19,7 @@
 use crate::{
     core::{i18n_f, Database},
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
-    views::{View, ViewActivity, ViewCalories, ViewHomePage, ViewSteps, ViewWeight},
+    views::{ViewActivity, ViewCalories, ViewExt, ViewHomePage, ViewSteps, ViewWeight},
     windows::DataAddDialog,
 };
 use gtk::{
@@ -382,43 +382,15 @@ impl Window {
     }
 
     pub fn update(&self) {
-        for (mode, view) in imp::Window::from_instance(self).views.get().unwrap() {
-            match mode {
-                ViewMode::Steps => {
-                    let v = view.clone().downcast::<ViewSteps>().unwrap();
-                    gtk_macros::spawn!(async move {
-                        v.update().await;
-                    });
-                }
-                ViewMode::Weight => {
-                    let v = view.clone().downcast::<ViewWeight>().unwrap();
-                    gtk_macros::spawn!(async move {
-                        v.update().await;
-                    });
-                }
-                ViewMode::Activities => {
-                    let v = view.clone().downcast::<ViewActivity>().unwrap();
-                    gtk_macros::spawn!(async move {
-                        v.update().await;
-                    });
-                }
-                ViewMode::Calories => {
-                    let v = view.clone().downcast::<ViewCalories>().unwrap();
-                    gtk_macros::spawn!(async move {
-                        v.update().await;
-                    });
-                }
-                ViewMode::HomePage => {
-                    let v = view.clone().downcast::<ViewHomePage>().unwrap();
-                    gtk_macros::spawn!(async move {
-                        v.update_activities().await;
-                    });
-                    let v = view.clone().downcast::<ViewHomePage>().unwrap();
-                    gtk_macros::spawn!(async move {
-                        v.update_weights().await;
-                    });
-                }
-            }
+        for view in imp::Window::from_instance(self)
+            .views
+            .get()
+            .unwrap()
+            .values()
+        {
+            gtk_macros::spawn!(clone!(@weak view => async move {
+                view.update().await.unwrap();
+            }));
         }
     }
 

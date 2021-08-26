@@ -17,14 +17,44 @@
  */
 
 use crate::properties_setter_getter;
+use anyhow::Result;
 use gtk::{
     glib::{self, prelude::*},
     subclass::prelude::*,
 };
+use std::{future::Future, pin::Pin};
 
+pub type PinnedResultFuture = Pin<Box<dyn Future<Output = Result<()>> + 'static>>;
 mod imp {
-    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use super::PinnedResultFuture;
+    use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
+
+    pub type ViewInstance = super::View;
+
+    #[repr(C)]
+    pub struct ViewClass {
+        pub parent_class: gtk::ffi::GtkWidgetClass,
+        pub update: Option<unsafe fn(&ViewInstance) -> PinnedResultFuture>,
+    }
+
+    unsafe impl ClassStruct for ViewClass {
+        type Type = View;
+    }
+
+    impl std::ops::Deref for ViewClass {
+        type Target = glib::Class<glib::Object>;
+
+        fn deref(&self) -> &Self::Target {
+            unsafe { &*(self as *const Self).cast::<Self::Target>() }
+        }
+    }
+
+    impl std::ops::DerefMut for ViewClass {
+        fn deref_mut(&mut self) -> &mut glib::Class<glib::Object> {
+            unsafe { &mut *(self as *mut Self).cast::<glib::Class<glib::Object>>() }
+        }
+    }
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/view.ui")]
@@ -46,14 +76,36 @@ mod imp {
         pub view_title: RefCell<String>,
     }
 
+    // Virtual method default implementation trampolines
+    fn update_default_trampoline(this: &ViewInstance) -> PinnedResultFuture {
+        View::from_instance(this).update(this)
+    }
+
+    pub(super) unsafe fn view_update(this: &ViewInstance) -> PinnedResultFuture {
+        let klass = &*(this.class() as *const _ as *const ViewClass);
+
+        (klass.update.unwrap())(this)
+    }
+
+    impl View {
+        fn update(&self, obj: &super::View) -> PinnedResultFuture {
+            Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
+                send.resolve(Ok(()));
+            }))
+        }
+    }
+
     #[glib::object_subclass]
     impl ObjectSubclass for View {
         const NAME: &'static str = "HealthView";
         type ParentType = gtk::Widget;
         type Type = super::View;
+        type Class = ViewClass;
 
         fn class_init(klass: &mut Self::Class) {
+            klass.update = Some(update_default_trampoline);
             klass.set_layout_manager_type::<gtk::BinLayout>();
+
             Self::bind_template(klass);
         }
 
@@ -181,12 +233,59 @@ impl View {
     properties_setter_getter!("view-title", String);
 }
 
-unsafe impl<T: WidgetImpl> IsSubclassable<T> for View {
+pub trait ViewExt {
+    fn update(&self) -> PinnedResultFuture;
+}
+
+impl<O: IsA<View>> ViewExt for O {
+    fn update(&self) -> PinnedResultFuture {
+        unsafe { imp::view_update(self.upcast_ref()) }
+    }
+}
+
+pub trait ViewImpl: WidgetImpl + 'static {
+    fn update(&self, obj: &View) -> PinnedResultFuture {
+        self.parent_update(obj)
+    }
+}
+
+pub trait ViewImplExt: ObjectSubclass {
+    fn parent_update(&self, obj: &View) -> PinnedResultFuture;
+}
+
+impl<T: ViewImpl> ViewImplExt for T {
+    fn parent_update(&self, obj: &View) -> PinnedResultFuture {
+        unsafe {
+            let data = Self::type_data();
+            let parent_class = data.as_ref().parent_class().cast::<imp::ViewClass>();
+            if let Some(ref f) = (*parent_class).update {
+                f(obj)
+            } else {
+                unimplemented!()
+            }
+        }
+    }
+}
+
+unsafe impl<T: ViewImpl> IsSubclassable<T> for View {
     fn class_init(class: &mut glib::Class<Self>) {
         <gtk::Widget as IsSubclassable<T>>::class_init(class);
+
+        let klass = class.as_mut();
+        klass.update = Some(update_trampoline::<T>);
     }
 
     fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
         <gtk::Widget as IsSubclassable<T>>::instance_init(instance);
     }
+}
+
+// Virtual method default implementation trampolines
+unsafe fn update_trampoline<T: ObjectSubclass>(this: &View) -> PinnedResultFuture
+where
+    T: ViewImpl,
+{
+    let instance = &*(this as *const _ as *const T::Instance);
+    let imp = instance.impl_();
+    imp.update(this)
 }

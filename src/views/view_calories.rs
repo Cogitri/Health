@@ -22,16 +22,19 @@ use crate::{
 };
 use crate::{model::ActivityInfo, widgets::LegendRow};
 use chrono::Duration;
-use gtk::glib::{self, subclass::prelude::*, Cast};
-use gtk::prelude::GridExt;
-use gtk::prelude::WidgetExt;
+use gtk::{
+    glib::{self, subclass::prelude::*, Cast},
+    prelude::*,
+};
+
 mod imp {
     use crate::{
         model::GraphModelCalories,
-        views::{BarGraphView, View},
+        views::{BarGraphView, PinnedResultFuture, View, ViewImpl},
         widgets::LegendRow,
     };
     use gtk::{
+        gio,
         glib::{self, Cast},
         {prelude::*, subclass::prelude::*, CompositeTemplate},
     };
@@ -73,6 +76,23 @@ mod imp {
     impl ObjectImpl for ViewCalories {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
+        }
+    }
+
+    impl ViewImpl for ViewCalories {
+        fn update(&self, obj: &View) -> PinnedResultFuture {
+            Box::pin(gio::GioFuture::new(
+                obj,
+                glib::clone!(@weak obj => move |_, _, send| {
+                    gtk_macros::spawn!(async move {
+                        obj.downcast_ref::<super::ViewCalories>()
+                            .unwrap()
+                            .update()
+                            .await;
+                        send.resolve(Ok(()));
+                    });
+                }),
+            ))
         }
     }
 }

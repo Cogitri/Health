@@ -33,11 +33,11 @@ mod imp {
     use crate::{
         core::Settings,
         model::{Activity, ModelActivity, ViewPeriod},
-        views::View,
+        views::{PinnedResultFuture, View, ViewImpl},
         widgets::ActivityRow,
     };
     use gtk::{
-        self,
+        self, gio,
         glib::{self, Cast},
         prelude::*,
         subclass::prelude::*,
@@ -104,6 +104,23 @@ mod imp {
                     row.upcast()
                 });
             obj.setup_actions();
+        }
+    }
+
+    impl ViewImpl for ViewActivity {
+        fn update(&self, obj: &View) -> PinnedResultFuture {
+            Box::pin(gio::GioFuture::new(
+                obj,
+                glib::clone!(@weak obj => move |_, _, send| {
+                    gtk_macros::spawn!(async move {
+                        obj.downcast_ref::<super::ViewActivity>()
+                            .unwrap()
+                            .update()
+                            .await;
+                        send.resolve(Ok(()));
+                    });
+                }),
+            ))
         }
     }
 }

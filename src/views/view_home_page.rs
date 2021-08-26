@@ -29,12 +29,13 @@ use uom::si::mass::{kilogram, pound};
 
 mod imp {
     use crate::{
-        views::View,
+        views::{PinnedResultFuture, View, ViewImpl},
         widgets::{Arrows, CircularProgressBar, TabButton},
         windows::ViewMode,
         Settings,
     };
     use gtk::{
+        gio,
         glib::{self, subclass::Signal, Cast},
         {prelude::*, subclass::prelude::*, CompositeTemplate},
     };
@@ -112,6 +113,23 @@ mod imp {
             if let Some(id) = self.settings_handler_id2.borrow_mut().take() {
                 self.settings.disconnect(id);
             }
+        }
+    }
+
+    impl ViewImpl for ViewHomePage {
+        fn update(&self, obj: &View) -> PinnedResultFuture {
+            Box::pin(gio::GioFuture::new(
+                obj,
+                glib::clone!(@weak obj => move |_, _, send| {
+                    gtk_macros::spawn!(async move {
+                        obj.downcast_ref::<super::ViewHomePage>()
+                            .unwrap()
+                            .update()
+                            .await;
+                        send.resolve(Ok(()));
+                    });
+                }),
+            ))
         }
     }
 }
@@ -208,6 +226,11 @@ impl ViewHomePage {
                 ViewMode::Calories
             };
         self.emit_by_name("view-changed", &[]).unwrap();
+    }
+
+    pub async fn update(&self) {
+        self.update_activities().await;
+        self.update_weights().await;
     }
 
     pub async fn update_activities(&self) {

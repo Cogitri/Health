@@ -21,6 +21,7 @@ use crate::i18n::i18n;
 use gtk::{
     glib::{self, clone, prelude::*, subclass::prelude::*},
     prelude::*,
+    subclass::prelude::*,
 };
 
 mod imp {
@@ -360,7 +361,7 @@ impl<O: IsA<ImportExportDialogBase>> ImportExportDialogBaseExt for O {
     }
 }
 
-pub trait ImportExportDialogBaseImpl: ObjectImpl + 'static {
+pub trait ImportExportDialogBaseImpl: DialogImpl + 'static {
     fn on_activities(
         &self,
         obj: &ImportExportDialogBase,
@@ -433,7 +434,7 @@ impl<T: ImportExportDialogBaseImpl> ImportExportDialogBaseImplExt for T {
 
 unsafe impl<T: ImportExportDialogBaseImpl> IsSubclassable<T> for ImportExportDialogBase {
     fn class_init(class: &mut glib::Class<Self>) {
-        <glib::Object as IsSubclassable<T>>::class_init(class);
+        <gtk::Dialog as IsSubclassable<T>>::class_init(class.upcast_ref_mut());
 
         let klass = class.as_mut();
         klass.on_activities = Some(on_activities_trampoline::<T>);
@@ -441,7 +442,7 @@ unsafe impl<T: ImportExportDialogBaseImpl> IsSubclassable<T> for ImportExportDia
     }
 
     fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
-        <glib::Object as IsSubclassable<T>>::instance_init(instance);
+        <gtk::Dialog as IsSubclassable<T>>::instance_init(instance);
     }
 }
 

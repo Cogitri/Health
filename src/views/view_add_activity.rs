@@ -35,7 +35,7 @@ mod imp {
     use crate::{
         core::{utils::prelude::*, Database, Settings},
         model::{Activity, ActivityDataPoints, ActivityInfo, ActivityType},
-        views::View,
+        views::{PinnedResultFuture, View, ViewImpl},
         widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
     };
     use gtk::{
@@ -179,6 +179,14 @@ mod imp {
     }
 
     impl WidgetImpl for ViewAddActivity {}
+
+    impl ViewImpl for ViewAddActivity {
+        fn update(&self, obj: &View) -> PinnedResultFuture {
+            Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
+                send.resolve(Ok(()));
+            }))
+        }
+    }
 }
 
 glib::wrapper! {
