@@ -232,9 +232,7 @@ mod imp {
             */
             cr.save().unwrap();
 
-            let graph_color = style_context
-                .lookup_color("theme_selected_bg_color")
-                .unwrap();
+            let graph_color = style_context.lookup_color("accent_bg_color").unwrap();
             GdkCairoContextExt::set_source_rgba(&cr, &graph_color);
             cr.set_line_width(4.0);
             for (i, point) in inner.points.iter().enumerate() {
