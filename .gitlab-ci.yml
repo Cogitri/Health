@@ -49,6 +49,12 @@ clippy:
     paths:
       - target
 
+clone:
+  image: alpine:latest
+  stage: qa
+  script:
+    - build-aux/run-clone-warn.sh
+
 coverage:
   image: cogitri/health-ci-docker
   stage: build
