@@ -32,7 +32,7 @@ mod imp {
     #[template(resource = "/dev/Cogitri/Health/ui/data_add_dialog.ui")]
     pub struct DataAddDialog {
         #[template_child]
-        pub stack: TemplateChild<gtk::Stack>,
+        pub stack: TemplateChild<adw::ViewStack>,
     }
 
     #[glib::object_subclass]
@@ -93,7 +93,8 @@ impl DataAddDialog {
                     Some(stack_page.widget_name().as_str()),
                     &stack_page.view_title().unwrap(),
                 )
-                .set_icon_name(&stack_page.icon_name().unwrap());
+                .unwrap()
+                .set_icon_name(stack_page.icon_name().as_deref());
         }
         if view_mode == ViewMode::Weight {
             self_.stack.set_visible_child_name("Add Weight Data");
