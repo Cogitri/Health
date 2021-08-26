@@ -50,7 +50,7 @@ macro_rules! settings_getter_setter {
             }
             #[doc = "Connect to value changes of this key. Keep in mind that the key has to be read once before connecting or this won't do anything!"]
             pub fn [< connect_ $name _changed >]<F: Fn(&gtk::gio::Settings, &str) + 'static>(&self, f: F) -> gtk::glib::SignalHandlerId {
-                self.connect_changed(Some(stringify!($name)), move |s, name| {
+                self.connect_changed(Some($key), move |s, name| {
                     f(s, name);
                 })
             }
