@@ -49,6 +49,19 @@ clippy:
     paths:
       - target
 
+coverage:
+  image: cogitri/health-ci-docker
+  stage: build
+  before_script:
+    - source $HOME/.cargo/env
+  script:
+    - meson build
+    - xvfb-run -a -s "-screen 0 1024x768x24" cargo llvm-cov -- --test-threads=1
+  cache:
+    key: coverage
+    paths:
+      - target
+
 flatpak:
   extends: ".flatpak"
   stage: build
