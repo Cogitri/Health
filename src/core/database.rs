@@ -213,6 +213,7 @@ impl Database {
         };
 
         let cursor = connection.query_async_future(&format!("SELECT ?date ?id ?calories_burned WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned. FILTER  (?date >= '{}'^^xsd:dateTime) }}", minimum_date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+
         let mut hashmap: std::collections::HashMap<
             DateTime<FixedOffset>,
             std::collections::HashMap<ActivityType, i64>,
@@ -228,16 +229,14 @@ impl Database {
                 hashmap.insert(id, calories);
                 hashmap
             };
-            hashmap
-                .entry(date)
-                .or_insert_with(|| new_map(id.clone(), calories));
             if hashmap.contains_key(&date) {
                 let calories_before = *hashmap.get(&date).unwrap().get(&id).unwrap_or(&0);
                 hashmap
                     .get_mut(&date)
                     .unwrap()
-                    .insert(id, calories + calories_before);
+                    .insert(id.clone(), calories + calories_before);
             }
+            hashmap.entry(date).or_insert_with(|| new_map(id, calories));
         }
 
         let mut v: Vec<SplitBar> = hashmap
@@ -897,6 +896,8 @@ impl Database {
 
 #[cfg(test)]
 mod test {
+    use std::{cell::Cell, rc::Rc};
+
     use super::*;
     use crate::{core::utils::prelude::*, model::ActivityType};
     use chrono::{Duration, Local};
@@ -1101,5 +1102,79 @@ mod test {
             expected_weight.date.date().and_hms(0, 0, 0).to_rfc3339(),
             weight.date.with_timezone(&chrono::Utc).to_rfc3339()
         );
+    }
+
+    #[test]
+    fn test_connect_activities_updated() {
+        let data_dir = tempdir().unwrap();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        let was_called = Rc::new(Cell::new(false));
+        let activity = Activity::new();
+
+        db.connect_activities_updated(glib::clone!(@weak was_called => move || {
+            was_called.set(true);
+        }));
+        async move {
+            db.save_activity(activity).await.unwrap();
+        }
+        .block();
+        assert!(was_called.get());
+    }
+
+    #[test]
+    fn test_connect_weights_updated() {
+        let data_dir = tempdir().unwrap();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        let was_called = Rc::new(Cell::new(false));
+        let date = Local::now();
+        let weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
+
+        db.connect_weights_updated(glib::clone!(@weak was_called => move || {
+            was_called.set(true);
+        }));
+        async move {
+            db.save_weight(weight).await.unwrap();
+        }
+        .block();
+        assert!(was_called.get());
+    }
+
+    #[test]
+    fn test_calories() {
+        let data_dir = tempdir().unwrap();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        let activity = Activity::new();
+        let date = activity.date() - Duration::days(1);
+
+        activity.set_calories_burned(Some(500));
+        glib::clone!(@weak db, @weak activity => async move {
+                db.save_activity(activity).await.unwrap();
+            }
+        )
+        .block();
+        let cloned = db.clone();
+        let calories = async move { cloned.calories(date).await.unwrap() }.block();
+        assert_eq!(*calories[0].calorie_split.values().next().unwrap(), 500);
+
+        glib::clone!(@weak db, @weak activity => async move {
+                db.save_activity(activity).await.unwrap();
+            }
+        )
+        .block();
+        let cloned = db.clone();
+        let calories = async move { cloned.calories(date).await.unwrap() }.block();
+        assert_eq!(*calories[0].calorie_split.values().next().unwrap(), 1000);
+
+        activity.set_date(date);
+        glib::clone!(@weak db, @weak activity => async move {
+                db.save_activity(activity).await.unwrap();
+            }
+        )
+        .block();
+        let cloned = db.clone();
+        let calories = async move { cloned.calories(date).await.unwrap() }.block();
+        assert_eq!(calories.len(), 2);
+        assert_eq!(*calories[0].calorie_split.values().next().unwrap(), 500);
+        assert_eq!(*calories[1].calorie_split.values().next().unwrap(), 1000);
     }
 }
