@@ -147,6 +147,7 @@ mod imp {
 
             obj.connect_handlers();
             obj.setup_actions();
+            obj.setup_unitsystem_text(self.settings.unitsystem());
         }
 
         fn signals() -> &'static [Signal] {
@@ -397,6 +398,27 @@ impl SetupWindow {
 
         self_.current_unitsystem.set(unitsystem);
 
+        self.setup_unitsystem_text(unitsystem);
+    }
+    fn setup_actions(&self) {
+        action!(
+            self,
+            "quit",
+            clone!(@weak self as obj => move |_, _| {
+                obj.destroy();
+            })
+        );
+        action!(
+            self,
+            "fullscreen",
+            clone!(@weak self as obj => move |_, _| {
+                obj.handle_fullscreen();
+            })
+        );
+    }
+
+    fn setup_unitsystem_text(&self, unitsystem: Unitsystem) {
+        let self_ = self.imp();
         if unitsystem == Unitsystem::Metric {
             self_
                 .height_actionrow
@@ -420,22 +442,6 @@ impl SetupWindow {
                     .into(),
             );
         }
-    }
-    fn setup_actions(&self) {
-        action!(
-            self,
-            "quit",
-            clone!(@weak self as obj => move |_, _| {
-                obj.destroy();
-            })
-        );
-        action!(
-            self,
-            "fullscreen",
-            clone!(@weak self as obj => move |_, _| {
-                obj.handle_fullscreen();
-            })
-        );
     }
 
     fn set_optimal_weightgoal(&self) {
