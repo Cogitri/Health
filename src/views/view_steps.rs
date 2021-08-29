@@ -155,7 +155,7 @@ impl ViewSteps {
                 } else {
                     goal_label.set_text(&ni18n_f(
                         "You're on a streak for {} day. Reach your step goal today to continue it!",
-                        "You're on a streak for {} days. Reach your ste pgoal today to continue it!",
+                        "You're on a streak for {} days. Reach your step goal today to continue it!",
                         previous_streak,
                         &[&previous_streak.to_string()],
                     ));

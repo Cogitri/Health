@@ -248,9 +248,9 @@ impl ViewWeight {
 
             let goal_label_text = if unitsystem == Unitsystem::Imperial {
                 ni18n_f(
-                    "{} pound left to reach your weightgoal of {} pounds",
-                    "{} pounds left to reach your weightgoal of {} pounds",
-                    diff as u32,
+                    "Your weight goal is {} pound, you have {} left to reach it",
+                    "Your weight goal is {} pounds, you have {} left to reach it",
+                    weight_value as u32,
                     &[
                         &format!("{diff:.1}", diff = diff.round_decimal_places(1)),
                         &format!("{weight_value:.1}", weight_value = weight_value),
@@ -258,9 +258,9 @@ impl ViewWeight {
                 )
             } else {
                 ni18n_f(
-                    "{} kilogram left to reach your weightgoal of {} kilogram",
-                    "{} kilograms left to reach your weightgoal of {} kilogram",
-                    diff as u32,
+                    "Your weight goal is {} kilogram, you have {} left to reach it",
+                    "Your weight goal is {} kilograms, you have {} left to reach it",
+                    weight_value as u32,
                     &[
                         &format!("{diff:.1}", diff = diff.round_decimal_places(1)),
                         &format!("{weight_value:.1}", weight_value = weight_value),
