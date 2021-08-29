@@ -167,7 +167,7 @@ impl ViewActivity {
         });
     }
 
-    /// Reload the [ModelActivity]'s data and refresh the list of activities
+    /// Reload the [ModelActivity](crate::model::ModelActivity)'s data and refresh the list of activities
     pub async fn update(&self) {
         let activity_model = &self.imp().activity_model;
         let new_period = self.imp().inner.borrow().period;

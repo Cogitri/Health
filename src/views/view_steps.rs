@@ -119,7 +119,7 @@ impl ViewSteps {
         o
     }
 
-    /// Reload the [GraphModelSteps]'s data and refresh labels & the [GraphView].
+    /// Reload the [GraphModelSteps](crate::model::GraphModelSteps)'s data and refresh labels & the [GraphView].
     pub async fn update(&self) {
         let self_ = self.imp();
 

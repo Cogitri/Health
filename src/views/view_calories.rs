@@ -120,7 +120,7 @@ impl ViewCalories {
         o
     }
 
-    /// Reload the [GraphModelcalories]'s data and refresh labels & the [GraphView].
+    /// Reload the [GraphModelcalories](crate::model::GraphModelCalories)'s data and refresh labels & the [BarGraphView](crate::views::BarGraphView).
     pub async fn update(&self) {
         let self_ = self.imp();
 
