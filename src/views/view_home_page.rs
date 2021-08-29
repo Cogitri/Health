@@ -19,6 +19,7 @@
 use crate::{
     core::{i18n, i18n_f, utils::prelude::*, Database, Unitsystem},
     model::{GraphModelSteps, GraphModelWeight},
+    ni18n_f,
     views::View,
     windows::ViewMode,
 };
@@ -250,9 +251,12 @@ impl ViewHomePage {
         self_
             .circular_progress_bar
             .set_step_count(i64::from(step_count));
-        self_
-            .steps_actionrow
-            .set_subtitle(&i18n_f("{} steps taken today", &[&step_count.to_string()]));
+        self_.steps_actionrow.set_subtitle(&ni18n_f(
+            "{} step taken today",
+            "{} steps taken today",
+            step_count,
+            &[&step_count.to_string()],
+        ));
         self_.steps_percentage.set_label(&i18n_f(
             "{}%",
             &[&(100 * step_count / self_.settings.user_stepgoal() as u32).to_string()],
@@ -287,28 +291,58 @@ impl ViewHomePage {
             self_.arrow.set_weight_difference(difference);
             let subtitle = if self_.settings.unitsystem() == Unitsystem::Imperial {
                 // TRANSLATORS: Current user weight
-                i18n_f("{} pounds", &[&last_weight_round.to_string()])
+                ni18n_f(
+                    "{} pound",
+                    "{} pounds",
+                    last_weight_round as u32,
+                    &[&last_weight_round.to_string()],
+                )
             } else {
                 // TRANSLATORS: Current user weight
-                i18n_f("{} kilogram", &[&last_weight_round.to_string()])
+                ni18n_f(
+                    "{} kilogram",
+                    "{} kilograms",
+                    last_weight_round as u32,
+                    &[&last_weight_round.to_string()],
+                )
             };
             self_.weight_actionrow.set_subtitle(&subtitle);
             if difference > 0.0 {
                 let label = if self_.settings.unitsystem() == Unitsystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement
-                    i18n_f("+ {} pounds", &[&difference.to_string()])
+                    ni18n_f(
+                        "+ {} pound",
+                        "+ {} pounds",
+                        difference as u32,
+                        &[&difference.to_string()],
+                    )
                 } else {
                     // TRANSLATORS: Difference to last weight measurement
-                    i18n_f("+ {} kilogram", &[&difference.to_string()])
+                    ni18n_f(
+                        "+ {} kilogram",
+                        "+ {} kilograms",
+                        difference as u32,
+                        &[&difference.to_string()],
+                    )
                 };
                 self_.weight_change.set_label(&label)
             } else if difference < 0.0 {
                 let label = if self_.settings.unitsystem() == Unitsystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement
-                    i18n_f("{} pounds", &[&difference.to_string()])
+                    ni18n_f(
+                        "{} pound",
+                        "{} pounds",
+                        difference as u32,
+                        &[&difference.to_string()],
+                    )
                 } else {
                     // TRANSLATORS: Difference to last weight measurement
-                    i18n_f("{} kilogram", &[&difference.to_string()])
+                    ni18n_f(
+                        "{} kilogram",
+                        "{} kilograms",
+                        difference as u32,
+                        &[&difference.to_string()],
+                    )
                 };
                 self_.weight_change.set_label(&label)
             } else {

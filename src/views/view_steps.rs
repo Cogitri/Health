@@ -18,6 +18,7 @@
 
 use crate::{
     core::{date::prelude::*, i18n, i18n_f, Database},
+    ni18n_f,
     views::{GraphView, View},
 };
 use chrono::Duration;
@@ -152,8 +153,10 @@ impl ViewSteps {
                         "No streak yet. Reach your stepgoal for multiple days to start a streak!",
                     ));
                 } else {
-                    goal_label.set_text(&i18n_f(
+                    goal_label.set_text(&ni18n_f(
+                        "You're on a streak for {} day. Reach your stepgoal today to continue it!",
                         "You're on a streak for {} days. Reach your stepgoal today to continue it!",
+                        previous_streak,
                         &[&previous_streak.to_string()],
                     ));
                 }
@@ -161,8 +164,10 @@ impl ViewSteps {
             1 => goal_label.set_text(&i18n(
                 "You've reached your stepgoal today. Keep going to start a streak!",
             )),
-            _ => goal_label.set_text(&i18n_f(
+            _ => goal_label.set_text(&ni18n_f(
+                "You're on a streak for {} day. Good job!",
                 "You're on a streak for {} days. Good job!",
+                streak_count,
                 &[&streak_count.to_string()],
             )),
         }
@@ -174,8 +179,11 @@ impl ViewSteps {
             steps_graph_view.set_points(steps_graph_model.to_points());
             steps_graph_view.set_x_lines_interval(500.0);
             steps_graph_view.set_hover_func(Some(Box::new(|p| {
-                i18n_f(
+                // TRANSLATORS: X step(s) on DATE
+                ni18n_f(
+                    "{} step on {}",
                     "{} steps on {}",
+                    p.value as u32,
                     &[&p.value.to_string(), &p.date.format_local()],
                 )
             })));

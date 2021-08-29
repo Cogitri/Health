@@ -16,8 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use std::convert::TryInto;
+
 use crate::{
-    core::{i18n_f, Database},
+    core::Database,
+    ni18n_f,
     views::{BarGraphView, View},
 };
 use crate::{model::ActivityInfo, widgets::LegendRow};
@@ -161,8 +164,10 @@ impl ViewCalories {
             calories_graph_view.set_x_lines_interval(100.0);
             calories_graph_view.set_rmr(calories_graph_model.rmr);
             calories_graph_view.set_hover_func(Some(Box::new(|p| {
-                i18n_f(
+                ni18n_f(
+                    "{}:\n{} calorie\n{}",
                     "{}:\n{} calories\n{}",
+                    p.calories.try_into().unwrap_or(0),
                     &[&p.activity_name, &p.calories.to_string(), &p.message],
                 )
             })));

@@ -16,12 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::i18n_f, i18n};
+use crate::{i18n, ni18n_f};
 use chrono::{Local, NaiveTime, Timelike};
 use glib::source::timeout_add_seconds_local;
 use gtk::{gio::subclass::prelude::*, glib};
 use notify_rust::{Notification, Timeout, Urgency};
-use std::string::ToString;
+use std::{convert::TryInto, string::ToString};
 
 #[derive(
     PartialEq,
@@ -141,8 +141,10 @@ impl ModelNotification {
             .todays_steps(chrono::Local::today().and_hms(0, 0, 0).into())
             .await
             .unwrap();
-        let message_pool = vec![i18n_f(
+        let message_pool = vec![ni18n_f(
+            "{} step remaining to complete your daily stepgoal of {} steps",
             "{} steps remaining to complete your daily stepgoal of {} steps",
+            (stepgoal - stepcount).try_into().unwrap_or(0),
             &[&(stepgoal - stepcount).to_string(), &stepgoal.to_string()],
         )];
         message_pool[0].clone()

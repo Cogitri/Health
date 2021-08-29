@@ -16,9 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use std::convert::TryInto;
+
 use crate::{
-    core::{date::prelude::*, i18n_f, Unitsystem},
+    core::{date::prelude::*, Unitsystem},
     model::{Activity, ActivityDataPoints, ActivityInfo},
+    ni18n_f,
 };
 use gtk::{
     glib::{self, subclass::prelude::*},
@@ -122,9 +125,12 @@ impl ActivityRow {
 
         let activity_info = ActivityInfo::from(activity.activity_type());
 
-        self_.active_minutes_label.set_label(&i18n_f(
+        let minutes = activity.duration().num_minutes();
+        self_.active_minutes_label.set_label(&ni18n_f(
+            "{} Minute",
             "{} Minutes",
-            &[&activity.duration().num_minutes().to_string()],
+            minutes.try_into().unwrap_or(0),
+            &[&minutes.to_string()],
         ));
         self_
             .activity_date_label
@@ -136,9 +142,12 @@ impl ActivityRow {
             .contains(ActivityDataPoints::CALORIES_BURNED)
         {
             if let Some(calories_burned) = activity.calories_burned() {
-                self_
-                    .calories_burned_label
-                    .set_label(&i18n_f("{} Calories", &[&calories_burned.to_string()]));
+                self_.calories_burned_label.set_label(&ni18n_f(
+                    "{} Calorie",
+                    "{} Calories",
+                    calories_burned,
+                    &[&calories_burned.to_string()],
+                ));
             }
         }
 
@@ -198,7 +207,7 @@ impl ActivityRow {
 #[cfg(test)]
 mod test {
     use super::ActivityRow;
-    use crate::{core::i18n_f, model::Activity};
+    use crate::{core::ni18n_f, model::Activity};
     use gtk::prelude::WidgetExt;
     use uom::si::{f32::Length, length::kilometer};
 
@@ -216,7 +225,7 @@ mod test {
 
         assert_eq!(
             row_priv.calories_burned_label.label().as_str(),
-            i18n_f("{} Calories", &[&100.to_string()]).as_str()
+            ni18n_f("{} Calorie", "{} Calories", 100, &[&100.to_string()]).as_str()
         );
         assert_eq!(
             row_priv.heart_rate_average_label.label().as_str(),

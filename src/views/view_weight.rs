@@ -19,6 +19,7 @@
 use crate::{
     core::{date::prelude::*, i18n, i18n_f, utils::prelude::*, Database, Unitsystem},
     model::GraphModelWeight,
+    ni18n_f,
     views::{GraphView, View},
 };
 use chrono::Duration;
@@ -152,14 +153,18 @@ impl ViewWeight {
             weight_graph_view.set_hover_func(Some(Box::new(move |p| {
                 if settings.unitsystem() == Unitsystem::Imperial {
                     // TRANSLATORS: Weight X on date Y
-                    i18n_f(
+                    ni18n_f(
+                        "{} pound on {}",
                         "{} pounds on {}",
+                        p.value as u32,
                         &[&p.value.to_string(), &p.date.format_local()],
                     )
                 } else {
                     // TRANSLATORS: Weight X on date Y
-                    i18n_f(
+                    ni18n_f(
                         "{} kilogram on {}",
+                        "{} kilograms on {}",
+                        p.value as u32,
                         &[&p.value.to_string(), &p.date.format_local()],
                     )
                 }
@@ -242,16 +247,20 @@ impl ViewWeight {
             }
 
             let goal_label_text = if unitsystem == Unitsystem::Imperial {
-                i18n_f(
+                ni18n_f(
+                    "{} pound left to reach your weightgoal of {} pounds",
                     "{} pounds left to reach your weightgoal of {} pounds",
+                    diff as u32,
                     &[
                         &format!("{diff:.1}", diff = diff.round_decimal_places(1)),
                         &format!("{weight_value:.1}", weight_value = weight_value),
                     ],
                 )
             } else {
-                i18n_f(
+                ni18n_f(
                     "{} kilogram left to reach your weightgoal of {} kilogram",
+                    "{} kilograms left to reach your weightgoal of {} kilogram",
+                    diff as u32,
                     &[
                         &format!("{diff:.1}", diff = diff.round_decimal_places(1)),
                         &format!("{weight_value:.1}", weight_value = weight_value),
