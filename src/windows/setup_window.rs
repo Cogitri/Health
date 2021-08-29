@@ -425,7 +425,7 @@ impl SetupWindow {
                 .set_title(&i18n("Height in centimeters"));
             self_
                 .weightgoal_actionrow
-                .set_title(&i18n("Weightgoal in KG"));
+                .set_title(&i18n("Weight goal in KG"));
             self_.height_spin_button.set_value(
                 Length::new::<inch>(self_.height_spin_button.value() as f32)
                     .get::<centimeter>()
@@ -435,7 +435,7 @@ impl SetupWindow {
             self_.height_actionrow.set_title(&i18n("Height in inch"));
             self_
                 .weightgoal_actionrow
-                .set_title(&i18n("Weightgoal in pounds"));
+                .set_title(&i18n("Weight goal in pounds"));
             self_.height_spin_button.set_value(
                 Length::new::<centimeter>(self_.height_spin_button.value() as f32)
                     .get::<inch>()

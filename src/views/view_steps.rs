@@ -150,19 +150,19 @@ impl ViewSteps {
                     steps_graph_model.streak_count_yesterday(self_.settings.user_stepgoal());
                 if previous_streak == 0 {
                     goal_label.set_text(&i18n(
-                        "No streak yet. Reach your stepgoal for multiple days to start a streak!",
+                        "No streak yet. Reach your step goal for multiple days to start a streak!",
                     ));
                 } else {
                     goal_label.set_text(&ni18n_f(
-                        "You're on a streak for {} day. Reach your stepgoal today to continue it!",
-                        "You're on a streak for {} days. Reach your stepgoal today to continue it!",
+                        "You're on a streak for {} day. Reach your step goal today to continue it!",
+                        "You're on a streak for {} days. Reach your ste pgoal today to continue it!",
                         previous_streak,
                         &[&previous_streak.to_string()],
                     ));
                 }
             }
             1 => goal_label.set_text(&i18n(
-                "You've reached your stepgoal today. Keep going to start a streak!",
+                "You've reached your step goal today. Keep going to start a streak!",
             )),
             _ => goal_label.set_text(&ni18n_f(
                 "You're on a streak for {} day. Good job!",
@@ -188,7 +188,7 @@ impl ViewSteps {
                 )
             })));
             steps_graph_view.set_limit(Some(self_.settings.user_stepgoal() as f32));
-            steps_graph_view.set_limit_label(Some(i18n("Stepgoal")));
+            steps_graph_view.set_limit_label(Some(i18n("Step goal")));
 
             self_.scrolled_window.set_child(Some(&steps_graph_view));
             view.stack().set_visible_child_name("data_page");

@@ -143,7 +143,7 @@ mod imp {
                 self.height_actionrow
                     .set_title(&i18n("Height in centimeters"));
                 self.weightgoal_actionrow
-                    .set_title(&i18n("Weightgoal in KG"));
+                    .set_title(&i18n("Weight goal in KG"));
                 self.height_spin_button
                     .set_value(f64::from(self.settings.user_height().get::<centimeter>()));
                 self.weightgoal_spin_button
@@ -151,7 +151,7 @@ mod imp {
             } else {
                 self.height_actionrow.set_title(&i18n("Height in inch"));
                 self.weightgoal_actionrow
-                    .set_title(&i18n("Weightgoal in pounds"));
+                    .set_title(&i18n("Weight goal in pounds"));
                 self.height_spin_button
                     .set_value(f64::from(self.settings.user_height().get::<inch>()));
                 self.weightgoal_spin_button
@@ -428,7 +428,7 @@ impl PreferencesWindow {
                 .set_title(&i18n("Height in centimeters"));
             self_
                 .weightgoal_actionrow
-                .set_title(&i18n("Weightgoal in KG"));
+                .set_title(&i18n("Weight goal in KG"));
             self_.height_spin_button.set_value(f64::from(
                 Length::new::<inch>(self_.height_spin_button.raw_value().unwrap_or_default())
                     .get::<centimeter>(),
@@ -441,7 +441,7 @@ impl PreferencesWindow {
             self_.height_actionrow.set_title(&i18n("Height in inch"));
             self_
                 .weightgoal_actionrow
-                .set_title(&i18n("Weightgoal in pounds"));
+                .set_title(&i18n("Weight goal in pounds"));
             self_.height_spin_button.set_value(f64::from(
                 Length::new::<centimeter>(self_.height_spin_button.raw_value().unwrap_or_default())
                     .get::<inch>(),

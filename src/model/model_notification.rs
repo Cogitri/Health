@@ -142,8 +142,8 @@ impl ModelNotification {
             .await
             .unwrap();
         let message_pool = vec![ni18n_f(
-            "{} step remaining to complete your daily stepgoal of {} steps",
-            "{} steps remaining to complete your daily stepgoal of {} steps",
+            "{} step remaining to complete your daily step goal of {} steps",
+            "{} steps remaining to complete your daily step goal of {} steps",
             (stepgoal - stepcount).try_into().unwrap_or(0),
             &[&(stepgoal - stepcount).to_string(), &stepgoal.to_string()],
         )];
