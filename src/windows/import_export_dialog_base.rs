@@ -249,7 +249,8 @@ pub enum DialogState {
 glib::wrapper! {
     /// A dialog for exporting data
     pub struct ImportExportDialogBase(ObjectSubclass<imp::ImportExportDialogBase>)
-        @extends gtk::Widget, gtk::Window, gtk::Dialog;
+        @extends gtk::Widget, gtk::Window, gtk::Dialog,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
 impl ImportExportDialogBase {

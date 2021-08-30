@@ -103,7 +103,8 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [View] visualizes calorie Spent records.
     pub struct ViewCalories(ObjectSubclass<imp::ViewCalories>)
-        @extends View;
+        @extends gtk::Widget, View,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl ViewCalories {

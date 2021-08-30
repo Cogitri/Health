@@ -110,7 +110,8 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [gtk::ListBox] that displays infos about an [Activity].
     pub struct ActivityRow(ObjectSubclass<imp::ActivityRow>)
-        @extends gtk::Widget, gtk::ListBoxRow;
+        @extends gtk::Widget, gtk::ListBoxRow,
+        @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl ActivityRow {

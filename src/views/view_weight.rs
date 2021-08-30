@@ -110,7 +110,8 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [View] visualizes BMI and weight development.
     pub struct ViewWeight(ObjectSubclass<imp::ViewWeight>)
-        @extends View;
+        @extends gtk::Widget, View,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl ViewWeight {

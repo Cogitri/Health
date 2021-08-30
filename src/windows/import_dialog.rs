@@ -108,7 +108,8 @@ mod imp {
 glib::wrapper! {
     /// A dialog for exporting data
     pub struct ImportDialog(ObjectSubclass<imp::ImportDialog>)
-        @extends gtk::Widget, gtk::Window, gtk::Dialog, crate::windows::import_export_dialog_base::ImportExportDialogBase;
+        @extends gtk::Widget, gtk::Window, gtk::Dialog, crate::windows::import_export_dialog_base::ImportExportDialogBase,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
 impl ImportDialog {

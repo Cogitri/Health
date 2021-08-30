@@ -122,7 +122,8 @@ glib::wrapper! {
     /// An implementation [adw::ActionRow] that contains a [gtk::SpinButton] and also allows switching
     /// between small&big units (e.g. kilometer vs meter) via a [gtk::ToggleButton].
     pub struct DistanceActionRow(ObjectSubclass<imp::DistanceActionRow>)
-        @extends gtk::Widget, gtk::ListBoxRow, adw::ActionRow;
+        @extends gtk::Widget, gtk::ListBoxRow, adw::PreferencesRow, adw::ActionRow,
+        @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl DistanceActionRow {

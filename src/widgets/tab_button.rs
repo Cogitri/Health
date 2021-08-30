@@ -98,7 +98,8 @@ mod imp {
 glib::wrapper! {
     /// [TabButton] is a toplevel container that is implemented by all other views of Health.
     pub struct TabButton(ObjectSubclass<imp::TabButton>)
-        @extends gtk::Widget;
+        @extends gtk::Widget,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl TabButton {

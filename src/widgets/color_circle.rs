@@ -92,7 +92,8 @@ mod imp {
 glib::wrapper! {
     /// A Widget for visualizing the color in legend table.
     pub struct ColorCircle(ObjectSubclass<imp::ColorCircle>)
-        @extends gtk::Widget;
+        @extends gtk::Widget,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl ColorCircle {

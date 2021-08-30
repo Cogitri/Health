@@ -63,7 +63,8 @@ mod imp {
 glib::wrapper! {
     /// [LegendRow] is a Widget that shows a colored circle next to the activity name.
     pub struct LegendRow(ObjectSubclass<imp::LegendRow>)
-        @extends gtk::Widget;
+        @extends gtk::Widget,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl LegendRow {

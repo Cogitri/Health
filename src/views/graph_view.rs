@@ -419,7 +419,8 @@ mod imp {
 glib::wrapper! {
     /// A View for visualizing the development of data over time.
     pub struct GraphView(ObjectSubclass<imp::GraphView>)
-        @extends gtk::Widget;
+        @extends gtk::Widget,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl GraphView {

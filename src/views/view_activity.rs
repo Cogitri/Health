@@ -128,7 +128,8 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [View] visualizes activities the user recently did.
     pub struct ViewActivity(ObjectSubclass<imp::ViewActivity>)
-        @extends View, gtk::Widget;
+        @extends gtk::Widget, View,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl ViewActivity {

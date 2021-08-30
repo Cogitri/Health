@@ -63,7 +63,8 @@ mod imp {
 glib::wrapper! {
     /// popup dialog box that adds activity/weight/water intake data .
     pub struct DataAddDialog(ObjectSubclass<imp::DataAddDialog>)
-        @extends gtk::Widget, gtk::Window, gtk::Dialog;
+        @extends gtk::Widget, gtk::Window, gtk::Dialog,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
 impl DataAddDialog {

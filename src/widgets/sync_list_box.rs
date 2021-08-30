@@ -121,7 +121,9 @@ mod imp {
 
 glib::wrapper! {
     /// The [SyncListBox] is a [gtk::ListBox] where users can initialise synching with a third-party provider.
-    pub struct SyncListBox(ObjectSubclass<imp::SyncListBox>) @extends gtk::Widget, gtk::ListBoxRow;
+    pub struct SyncListBox(ObjectSubclass<imp::SyncListBox>)
+        @extends gtk::Widget, gtk::ListBoxRow,
+        @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl SyncListBox {

@@ -57,7 +57,8 @@ mod imp {
 glib::wrapper! {
     /// [Application] is an implementation of [GioApplication](gio::Application) that handles displaying of notifications.
     pub struct Application(ObjectSubclass<imp::Application>)
-        @extends gio::Application;
+        @extends gio::Application,
+        @implements gio::ActionGroup, gio::ActionMap;
 }
 
 impl Application {

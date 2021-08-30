@@ -183,7 +183,8 @@ glib::wrapper! {
     /// The [PreferencesWindow] is presented to the user to set certain settings
     /// in the application.
     pub struct PreferencesWindow(ObjectSubclass<imp::PreferencesWindow>)
-        @extends gtk::Widget, gtk::Window, adw::PreferencesWindow;
+        @extends gtk::Widget, gtk::Window, adw::Window, adw::PreferencesWindow,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
 impl PreferencesWindow {

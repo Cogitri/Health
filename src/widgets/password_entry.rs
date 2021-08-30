@@ -143,7 +143,9 @@ mod imp {
 
 glib::wrapper! {
     /// The [PasswordEntry] is a [adw::Bin] where users enter passwords.
-    pub struct PasswordEntry(ObjectSubclass<imp::PasswordEntry>) @extends gtk::Widget, adw::Bin;
+    pub struct PasswordEntry(ObjectSubclass<imp::PasswordEntry>)
+        @extends gtk::Widget,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl PasswordEntry {

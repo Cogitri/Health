@@ -113,7 +113,8 @@ mod imp {
 glib::wrapper! {
     /// A View for visualizing the development of data over time.
     pub struct Arrows(ObjectSubclass<imp::Arrows>)
-        @extends gtk::Widget;
+        @extends gtk::Widget,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl Arrows {

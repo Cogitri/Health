@@ -192,7 +192,8 @@ mod imp {
 glib::wrapper! {
     /// A few widgets for adding a new activity record.
     pub struct ViewAddActivity(ObjectSubclass<imp::ViewAddActivity>)
-        @extends gtk::Widget, View;
+        @extends gtk::Widget, View,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl ViewAddActivity {

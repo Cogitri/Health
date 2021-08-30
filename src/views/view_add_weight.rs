@@ -78,7 +78,8 @@ mod imp {
 glib::wrapper! {
     /// A few widgets for adding a new weight record.
     pub struct ViewAddWeight(ObjectSubclass<imp::ViewAddWeight>)
-        @extends gtk::Widget, View;
+        @extends gtk::Widget, View,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl ViewAddWeight {

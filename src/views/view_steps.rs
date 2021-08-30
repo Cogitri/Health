@@ -102,7 +102,8 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [View] visualizes streak counts and daily step records.
     pub struct ViewSteps(ObjectSubclass<imp::ViewSteps>)
-        @extends View;
+        @extends gtk::Widget, View,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl ViewSteps {
