@@ -126,7 +126,8 @@ impl ViewWeight {
 
         o
     }
-
+    // TRANSLATORS notes have to be on the same line, so we cant split them
+    #[rustfmt::skip]
     /// Reload the [GraphModelWeight]'s data and refresh labels & reload the [GraphView].
     pub async fn update(&self) {
         let self_ = self.imp();
@@ -153,20 +154,10 @@ impl ViewWeight {
             weight_graph_view.set_hover_func(Some(Box::new(move |p| {
                 if settings.unitsystem() == Unitsystem::Imperial {
                     // TRANSLATORS: Weight X on date Y
-                    ni18n_f(
-                        "{} pound on {}",
-                        "{} pounds on {}",
-                        p.value as u32,
-                        &[&p.value.to_string(), &p.date.format_local()],
-                    )
+                    ni18n_f("{} pound on {}",  "{} pounds on {}", p.value as u32, &[&p.value.to_string(), &p.date.format_local()])
                 } else {
                     // TRANSLATORS: Weight X on date Y
-                    ni18n_f(
-                        "{} kilogram on {}",
-                        "{} kilograms on {}",
-                        p.value as u32,
-                        &[&p.value.to_string(), &p.date.format_local()],
-                    )
+                    ni18n_f("{} kilogram on {}", "{} kilograms on {}", p.value as u32, &[&p.value.to_string(), &p.date.format_local()])
                 }
             })));
             let unitgoal = self_.settings.user_weightgoal();
@@ -212,6 +203,8 @@ impl ViewWeight {
         imp::ViewWeight::from_instance(self)
     }
 
+    // TRANSLATORS notes have to be on the same line, so we cant split them
+    #[rustfmt::skip]
     fn update_weightgoal_label(&self, model: &GraphModelWeight) {
         let self_ = self.imp();
         let weightgoal = self_.settings.user_weightgoal();
@@ -225,9 +218,19 @@ impl ViewWeight {
 
         if weight_value > 0.1 && model.is_empty() {
             let goal_label_text = if unitsystem == Unitsystem::Imperial {
-                i18n_f("Your weight goal is {} pounds. Add a first weight measurement to see how close you are to reaching it.",&[&weight_value.to_string()])
+                ni18n_f(
+                    "Your weight goal is {} pound. Add a first weight measurement to see how close you are to reaching it.",
+                    "Your weight goal is {} pounds. Add a first weight measurement to see how close you are to reaching it.",
+                    weight_value as u32,
+                    &[&weight_value.to_string()],
+                )
             } else {
-                i18n_f("Your weight goal is {} kilogram. Add a first weight measurement to see how close you are to reaching it.",&[&weight_value.to_string()])
+                ni18n_f(
+                    "Your weight goal is {} kilogram. Add a first weight measurement to see how close you are to reaching it.",
+                    "Your weight goal is {} kilograms. Add a first weight measurement to see how close you are to reaching it.",
+                    weight_value as u32,
+                    &[&weight_value.to_string()],
+                )
             };
             goal_label.set_text(&goal_label_text);
         } else if weight_value > 0.1 && !model.is_empty() {
@@ -247,24 +250,30 @@ impl ViewWeight {
             }
 
             let goal_label_text = if unitsystem == Unitsystem::Imperial {
-                ni18n_f(
-                    "Your weight goal is {} pound, you have {} left to reach it",
-                    "Your weight goal is {} pounds, you have {} left to reach it",
-                    weight_value as u32,
-                    &[
-                        &format!("{diff:.1}", diff = diff.round_decimal_places(1)),
-                        &format!("{weight_value:.1}", weight_value = weight_value),
-                    ],
+                // TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
+                ni18n_f("Your weight goal is {} pound,",
+                    "Your weight goal is {} pounds,",
+                    weight_value as u32, &[&format!("{weight_value:.1}",
+                    weight_value = weight_value)],
+                ) +
+                // TRANSLATORS: Second (final) part of message, see previous source string.
+                &ni18n_f( "you have {} pound left to reach it",
+                    "you have {} pounds left to reach it",
+                    diff as u32, &[&format!("{diff:.1}",
+                    diff = diff.round_decimal_places(1))],
                 )
             } else {
-                ni18n_f(
-                    "Your weight goal is {} kilogram, you have {} left to reach it",
-                    "Your weight goal is {} kilograms, you have {} left to reach it",
+                // TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
+                ni18n_f("Your weight goal is {} kilogram,",
+                    "Your weight goal is {} kilograms,",
                     weight_value as u32,
-                    &[
-                        &format!("{diff:.1}", diff = diff.round_decimal_places(1)),
-                        &format!("{weight_value:.1}", weight_value = weight_value),
-                    ],
+                    &[&format!("{weight_value:.1}", weight_value = weight_value)],
+                ) +
+                // TRANSLATORS: Second (final) part of message, see previous source string.
+                &ni18n_f("you have {} kilogram left to reach it",
+                    "you have {} kilograms left to reach it",
+                    diff as u32,
+                    &[&format!("{diff:.1}", diff = diff.round_decimal_places(1))],
                 )
             };
             goal_label.set_text(&goal_label_text);

@@ -263,6 +263,8 @@ impl ViewHomePage {
         ));
     }
 
+    // TRANSLATORS notes have to be on the same line, so we cant split them
+    #[rustfmt::skip]
     pub async fn update_weights(&self) {
         let self_ = self.imp();
         let mut weight_model = GraphModelWeight::new();
@@ -291,16 +293,14 @@ impl ViewHomePage {
             self_.arrow.set_weight_difference(difference);
             let subtitle = if self_.settings.unitsystem() == Unitsystem::Imperial {
                 // TRANSLATORS: Current user weight
-                ni18n_f(
-                    "{} pound",
+                ni18n_f("{} pound",
                     "{} pounds",
                     last_weight_round as u32,
                     &[&last_weight_round.to_string()],
                 )
             } else {
                 // TRANSLATORS: Current user weight
-                ni18n_f(
-                    "{} kilogram",
+                ni18n_f("{} kilogram",
                     "{} kilograms",
                     last_weight_round as u32,
                     &[&last_weight_round.to_string()],
@@ -310,16 +310,14 @@ impl ViewHomePage {
             if difference > 0.0 {
                 let label = if self_.settings.unitsystem() == Unitsystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement
-                    ni18n_f(
-                        "+ {} pound",
+                    ni18n_f("+ {} pound",
                         "+ {} pounds",
                         difference as u32,
                         &[&difference.to_string()],
                     )
                 } else {
                     // TRANSLATORS: Difference to last weight measurement
-                    ni18n_f(
-                        "+ {} kilogram",
+                    ni18n_f( "+ {} kilogram",
                         "+ {} kilograms",
                         difference as u32,
                         &[&difference.to_string()],
@@ -329,16 +327,14 @@ impl ViewHomePage {
             } else if difference < 0.0 {
                 let label = if self_.settings.unitsystem() == Unitsystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement
-                    ni18n_f(
-                        "{} pound",
-                        "{} pounds",
-                        difference as u32,
-                        &[&difference.to_string()],
-                    )
+                    ni18n_f("{} pound",
+                            "{} pounds",
+                            difference as u32,
+                            &[&difference.to_string()],
+                        )
                 } else {
                     // TRANSLATORS: Difference to last weight measurement
-                    ni18n_f(
-                        "{} kilogram",
+                    ni18n_f("{} kilogram",
                         "{} kilograms",
                         difference as u32,
                         &[&difference.to_string()],

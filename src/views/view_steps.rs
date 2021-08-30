@@ -119,6 +119,8 @@ impl ViewSteps {
         o
     }
 
+    // TRANSLATORS notes have to be on the same line, so we cant split them
+    #[rustfmt::skip]
     /// Reload the [GraphModelSteps](crate::model::GraphModelSteps)'s data and refresh labels & the [GraphView].
     pub async fn update(&self) {
         let self_ = self.imp();
@@ -180,8 +182,7 @@ impl ViewSteps {
             steps_graph_view.set_x_lines_interval(500.0);
             steps_graph_view.set_hover_func(Some(Box::new(|p| {
                 // TRANSLATORS: X step(s) on DATE
-                ni18n_f(
-                    "{} step on {}",
+                ni18n_f( "{} step on {}",
                     "{} steps on {}",
                     p.value as u32,
                     &[&p.value.to_string(), &p.date.format_local()],
