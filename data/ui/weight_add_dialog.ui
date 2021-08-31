@@ -60,12 +60,12 @@
                   <object class="AdwActionRow">
                     <property name="title" translatable="yes">Weight</property>
                     <child>
-                      <object class="GtkSpinButton" id="weight_spin_button">
+                      <object class="HealthUnitSpinButton" id="weight_spin_button">
+                        <property name="unit-kind">weight_big</property>
                         <property name="width-chars">5</property>
                         <property name="text">0</property>
                         <property name="adjustment">weight_adjustment</property>
                         <property name="digits">1</property>
-                        <property name="numeric">1</property>
                         <property name="valign">center</property>
                       </object>
                     </child>

@@ -24,6 +24,8 @@ pub mod password_entry;
 pub mod sync_list_box;
 #[doc(hidden)]
 pub mod tab_button;
+#[doc(hidden)]
+pub mod unit_spinbutton;
 
 #[doc(inline)]
 pub use activity_row::*;
@@ -51,3 +53,5 @@ pub use password_entry::*;
 pub use sync_list_box::*;
 #[doc(inline)]
 pub use tab_button::*;
+#[doc(inline)]
+pub use unit_spinbutton::*;

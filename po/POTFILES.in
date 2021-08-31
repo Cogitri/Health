@@ -42,6 +42,7 @@ src/widgets/activity_row.rs
 src/widgets/bmi_level_bar.rs
 src/widgets/date_selector.rs
 src/widgets/distance_action_row.rs
+src/widgets/unit_spinbutton.rs
 src/windows/export_dialog.rs
 src/windows/import_dialog.rs
 src/windows/import_export_dialog_base.rs

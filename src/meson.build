@@ -80,6 +80,7 @@ sources = files(
   'widgets/password_entry.rs',
   'widgets/sync_list_box.rs',
   'widgets/tab_button.rs',
+  'widgets/unit_spinbutton.rs',
   'windows/data_add_dialog.rs',
   'windows/export_dialog.rs',
   'windows/import_dialog.rs',

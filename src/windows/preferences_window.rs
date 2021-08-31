@@ -37,8 +37,8 @@ use uom::si::{
 
 mod imp {
     use crate::{
-        core::{i18n, Settings, Unitsystem},
-        widgets::{BmiLevelBar, DateSelector, SyncListBox},
+        core::{Settings, Unitsystem},
+        widgets::{BmiLevelBar, DateSelector, SyncListBox, UnitSpinButton},
     };
     use adw::prelude::*;
     use gtk::{glib, subclass::prelude::*, CompositeTemplate};
@@ -64,11 +64,11 @@ mod imp {
         #[template_child]
         pub birthday_selector: TemplateChild<DateSelector>,
         #[template_child]
-        pub height_spin_button: TemplateChild<gtk::SpinButton>,
+        pub height_spin_button: TemplateChild<UnitSpinButton>,
         #[template_child]
         pub stepgoal_spin_button: TemplateChild<gtk::SpinButton>,
         #[template_child]
-        pub weightgoal_spin_button: TemplateChild<gtk::SpinButton>,
+        pub weightgoal_spin_button: TemplateChild<UnitSpinButton>,
         #[template_child]
         pub bmi_levelbar: TemplateChild<BmiLevelBar>,
         #[template_child]
@@ -127,6 +127,7 @@ mod imp {
         }
 
         fn class_init(klass: &mut Self::Class) {
+            UnitSpinButton::static_type();
             Self::bind_template(klass);
         }
 
@@ -140,18 +141,11 @@ mod imp {
             self.parent_constructed(obj);
 
             if self.current_unitsystem.get() == Unitsystem::Metric {
-                self.height_actionrow
-                    .set_title(&i18n("Height in centimeters"));
-                self.weightgoal_actionrow
-                    .set_title(&i18n("Weight goal in KG"));
                 self.height_spin_button
                     .set_value(f64::from(self.settings.user_height().get::<centimeter>()));
                 self.weightgoal_spin_button
                     .set_value(f64::from(self.settings.user_weightgoal().get::<kilogram>()));
             } else {
-                self.height_actionrow.set_title(&i18n("Height in inch"));
-                self.weightgoal_actionrow
-                    .set_title(&i18n("Weight goal in pounds"));
                 self.height_spin_button
                     .set_value(f64::from(self.settings.user_height().get::<inch>()));
                 self.weightgoal_spin_button
@@ -424,12 +418,6 @@ impl PreferencesWindow {
         self_.current_unitsystem.set(unitsystem);
 
         if unitsystem == Unitsystem::Metric {
-            self_
-                .height_actionrow
-                .set_title(&i18n("Height in centimeters"));
-            self_
-                .weightgoal_actionrow
-                .set_title(&i18n("Weight goal in KG"));
             self_.height_spin_button.set_value(f64::from(
                 Length::new::<inch>(self_.height_spin_button.raw_value().unwrap_or_default())
                     .get::<centimeter>(),
@@ -439,10 +427,6 @@ impl PreferencesWindow {
                     .get::<kilogram>(),
             ));
         } else {
-            self_.height_actionrow.set_title(&i18n("Height in inch"));
-            self_
-                .weightgoal_actionrow
-                .set_title(&i18n("Weight goal in pounds"));
             self_.height_spin_button.set_value(f64::from(
                 Length::new::<centimeter>(self_.height_spin_button.raw_value().unwrap_or_default())
                     .get::<inch>(),

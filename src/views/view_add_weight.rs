@@ -27,7 +27,7 @@ mod imp {
     use crate::{
         core::{Database, Settings},
         views::{PinnedResultFuture, View, ViewImpl},
-        widgets::DateSelector,
+        widgets::{DateSelector, UnitSpinButton},
     };
     use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
@@ -40,7 +40,7 @@ mod imp {
         #[template_child]
         pub date_selector: TemplateChild<DateSelector>,
         #[template_child]
-        pub weight_spin_button: TemplateChild<gtk::SpinButton>,
+        pub weight_spin_button: TemplateChild<UnitSpinButton>,
     }
 
     #[glib::object_subclass]
@@ -50,6 +50,7 @@ mod imp {
         type Type = super::ViewAddWeight;
 
         fn class_init(klass: &mut Self::Class) {
+            UnitSpinButton::static_type();
             Self::bind_template(klass);
         }
 

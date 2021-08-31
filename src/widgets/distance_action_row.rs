@@ -17,17 +17,17 @@
  */
 
 use crate::{
-    core::{i18n, utils::prelude::*, Unitsystem},
+    core::{i18n, utils::prelude::*, UnitKind, Unitsystem},
     model::Unitsize,
 };
 use gtk::{gio::subclass::prelude::*, glib, prelude::*};
 use uom::si::{
     f32::Length,
-    length::{kilometer, meter, mile, yard},
+    length::{foot, kilometer, meter, mile},
 };
 
 mod imp {
-    use crate::{core::Settings, model::Unitsize};
+    use crate::{core::Settings, model::Unitsize, widgets::UnitSpinButton};
     use adw::subclass::prelude::*;
     use gtk::{
         glib::{self, clone, subclass::Signal},
@@ -53,7 +53,7 @@ mod imp {
         #[template_child]
         pub distance_adjustment: TemplateChild<gtk::Adjustment>,
         #[template_child]
-        pub distance_spin_button: TemplateChild<gtk::SpinButton>,
+        pub distance_spin_button: TemplateChild<UnitSpinButton>,
         #[template_child]
         pub big_unit_togglebutton: TemplateChild<gtk::ToggleButton>,
         #[template_child]
@@ -67,6 +67,7 @@ mod imp {
         type Type = super::DistanceActionRow;
 
         fn class_init(klass: &mut Self::Class) {
+            UnitSpinButton::static_type();
             Self::bind_template(klass);
         }
 
@@ -92,7 +93,7 @@ mod imp {
 
             self.distance_spin_button
                 .connect_input(clone!(@weak obj => @default-panic, move |_| {
-                    obj.handle_distance_spin_button_input()
+                    obj.emit_by_name("input", &[]).unwrap();
                 }));
         }
 
@@ -171,9 +172,15 @@ impl DistanceActionRow {
         if unitsize == Unitsize::Small {
             adjustment.set_step_increment(100.0);
             adjustment.set_page_increment(1000.0);
+            self_
+                .distance_spin_button
+                .set_unit_kind(UnitKind::LengthSmall);
         } else {
             adjustment.set_step_increment(1.0);
             adjustment.set_page_increment(5.0);
+            self_
+                .distance_spin_button
+                .set_unit_kind(UnitKind::LengthBig);
         }
 
         if unitsize == Unitsize::Big && !self_.big_unit_togglebutton.is_active() {
@@ -208,7 +215,7 @@ impl DistanceActionRow {
         } else if unitsize == Unitsize::Small {
             self_
                 .distance_spin_button
-                .set_value(value.get::<yard>().into())
+                .set_value(value.get::<foot>().into())
         } else if unitsize == Unitsize::Big {
             self_
                 .distance_spin_button
@@ -234,16 +241,11 @@ impl DistanceActionRow {
                 self_.inner.borrow_mut().value = Length::new::<kilometer>(value);
             }
         } else if unitsize == Unitsize::Small {
-            self_.inner.borrow_mut().value = Length::new::<yard>(value);
+            self_.inner.borrow_mut().value = Length::new::<foot>(value);
         } else {
             self_.inner.borrow_mut().value = Length::new::<mile>(value);
         }
         self.emit_by_name("changed", &[]).unwrap();
-    }
-
-    fn handle_distance_spin_button_input(&self) -> Option<Result<f64, ()>> {
-        self.emit_by_name("input", &[]).unwrap();
-        None
     }
 
     fn set_togglebutton_text(&self) {
@@ -253,7 +255,7 @@ impl DistanceActionRow {
             self_.small_unit_togglebutton.set_label(&i18n("Meters"));
         } else {
             self_.big_unit_togglebutton.set_label(&i18n("Miles"));
-            self_.small_unit_togglebutton.set_label(&i18n("Yards"));
+            self_.small_unit_togglebutton.set_label(&i18n("Feet"));
         }
     }
 }

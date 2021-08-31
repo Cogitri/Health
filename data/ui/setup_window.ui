@@ -210,13 +210,13 @@
                         </child>
                         <child>
                           <object class="AdwActionRow" id="height_actionrow">
-                            <property name="title" translatable="yes">Height in centimeters</property>
+                            <property name="title" translatable="yes">Height</property>
                             <child>
-                              <object class="GtkSpinButton" id="height_spin_button">
+                              <object class="HealthUnitSpinButton" id="height_spin_button">
+                                <property name="unit-kind">length_small</property>
                                 <property name="width-chars">5</property>
                                 <property name="text">0</property>
                                 <property name="adjustment">height_adjustment</property>
-                                <property name="numeric">1</property>
                                 <property name="valign">center</property>
                               </object>
                             </child>
@@ -348,7 +348,8 @@
                               <object class="AdwActionRow" id="weightgoal_actionrow">
                                 <property name="title" translatable="yes">Weightgoal</property>
                                 <child>
-                                  <object class="GtkSpinButton" id="weightgoal_spin_button">
+                                  <object class="HealthUnitSpinButton" id="weightgoal_spin_button">
+                                    <property name="unit-kind">weight_big</property>
                                     <property name="digits">1</property>
                                     <property name="width-chars">5</property>
                                     <property name="adjustment">weightgoal_adjustment</property>

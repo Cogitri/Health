@@ -10,6 +10,8 @@ pub mod macros;
 #[doc(hidden)]
 pub mod settings;
 #[doc(hidden)]
+pub mod unit_kind;
+#[doc(hidden)]
 pub mod unitsystem;
 pub mod utils;
 
@@ -21,5 +23,7 @@ pub use i18n::*;
 pub use macros::*;
 #[doc(inline)]
 pub use settings::Settings;
+#[doc(inline)]
+pub use unit_kind::*;
 #[doc(inline)]
 pub use unitsystem::*;

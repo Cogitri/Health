@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::{i18n, utils::prelude::*, Unitsystem};
+use crate::core::{utils::prelude::*, Unitsystem};
 use adw::prelude::*;
 use chrono::Local;
 use gtk::{
@@ -35,7 +35,7 @@ static OPTIMAL_BMI: f32 = 22.5;
 mod imp {
     use crate::{
         core::{Settings, Unitsystem},
-        widgets::{BmiLevelBar, DateSelector, SyncListBox},
+        widgets::{BmiLevelBar, DateSelector, SyncListBox, UnitSpinButton},
     };
     use gtk::{
         glib::{self, subclass::Signal},
@@ -76,11 +76,11 @@ mod imp {
         #[template_child]
         pub birthday_selector: TemplateChild<DateSelector>,
         #[template_child]
-        pub height_spin_button: TemplateChild<gtk::SpinButton>,
+        pub height_spin_button: TemplateChild<UnitSpinButton>,
         #[template_child]
         pub stepgoal_spin_button: TemplateChild<gtk::SpinButton>,
         #[template_child]
-        pub weightgoal_spin_button: TemplateChild<gtk::SpinButton>,
+        pub weightgoal_spin_button: TemplateChild<UnitSpinButton>,
         #[template_child]
         pub unit_imperial_togglebutton: TemplateChild<gtk::ToggleButton>,
         #[template_child]
@@ -131,6 +131,7 @@ mod imp {
         }
 
         fn class_init(klass: &mut Self::Class) {
+            UnitSpinButton::static_type();
             Self::bind_template(klass);
         }
 
@@ -421,22 +422,12 @@ impl SetupWindow {
     fn setup_unitsystem_text(&self, unitsystem: Unitsystem) {
         let self_ = self.imp();
         if unitsystem == Unitsystem::Metric {
-            self_
-                .height_actionrow
-                .set_title(&i18n("Height in centimeters"));
-            self_
-                .weightgoal_actionrow
-                .set_title(&i18n("Weight goal in KG"));
             self_.height_spin_button.set_value(
                 Length::new::<inch>(self_.height_spin_button.value() as f32)
                     .get::<centimeter>()
                     .into(),
             );
         } else {
-            self_.height_actionrow.set_title(&i18n("Height in inch"));
-            self_
-                .weightgoal_actionrow
-                .set_title(&i18n("Weight goal in pounds"));
             self_.height_spin_button.set_value(
                 Length::new::<centimeter>(self_.height_spin_button.value() as f32)
                     .get::<inch>()
