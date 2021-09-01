@@ -30,10 +30,12 @@
 
     <file preprocess="xml-stripblanks">icons/symbolic/apps/steps-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/symbolic/apps/walking-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/symbolic/apps/calories-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/symbolic/apps/weight-scale-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/symbolic/apps/emblem-synchronizing-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/symbolic/apps/steps-thin-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/symbolic/apps/walking-thin-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/symbolic/apps/calories-thin-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/symbolic/apps/weight-scale-thin-symbolic.svg</file>
   </gresource>
 </gresources>
