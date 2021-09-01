@@ -16,13 +16,18 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::{i18n, UnitKind, UnitSystem};
+use crate::core::{i18n, utils::prelude::*, UnitKind, UnitSystem};
 use gtk::{
     glib::{
         subclass::prelude::*,
         {self, clone},
     },
     prelude::*,
+};
+use uom::si::{
+    f32::{Length, Mass},
+    length::{centimeter, foot, inch, kilometer, meter, mile},
+    mass::{kilogram, pound},
 };
 
 mod imp {
@@ -57,7 +62,7 @@ mod imp {
         fn new() -> Self {
             Self {
                 inner: Default::default(),
-                spin_button: gtk::SpinButton::new(None::<&gtk::Adjustment>, 0.0, 0),
+                spin_button: gtk::SpinButton::new(None::<&gtk::Adjustment>, 10.0, 2),
             }
         }
     }
@@ -68,7 +73,6 @@ mod imp {
             self.spin_button.init_delegate();
 
             obj.set_property("child", &self.spin_button).unwrap();
-            obj.set_property("auto-update-unit-system", true).unwrap();
             obj.connect_handlers();
         }
 
@@ -85,14 +89,14 @@ mod imp {
                         "adjustment",
                         "adjustment",
                         gtk::Adjustment::static_type(),
-                        glib::ParamFlags::READWRITE,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
                     ),
                     glib::ParamSpec::new_boolean(
                         "auto-update-unit-system",
                         "auto-update-unit-system",
                         "auto-update-unit-system",
                         true,
-                        glib::ParamFlags::READWRITE,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
                     ),
                     glib::ParamSpec::new_uint(
                         "digits",
@@ -100,15 +104,15 @@ mod imp {
                         "digits",
                         0,
                         20,
-                        0,
-                        glib::ParamFlags::READWRITE,
+                        1,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
                     ),
                     glib::ParamSpec::new_string(
                         "unit-kind",
                         "unit-kind",
                         "unit-kind",
                         None,
-                        glib::ParamFlags::READWRITE,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
                     ),
                     glib::ParamSpec::new_string(
                         "unit-system",
@@ -237,6 +241,20 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::CellEditable, gtk::ConstraintTarget, gtk::Editable, gtk::Orientable;
 }
 
+enum Value {
+    Length(Length),
+    Mass(Mass),
+}
+
+macro_rules! get_value {
+    ($name:expr, $type:path, $unit:ty) => {
+        match $name {
+            $type(v) => v.get::<$unit>().into(),
+            _ => unimplemented!(),
+        }
+    };
+}
+
 impl UnitSpinButton {
     /// Connect to a new value being entered (this is only emitted once the user is done editing!).
     ///
@@ -282,8 +300,19 @@ impl UnitSpinButton {
         .unwrap()
     }
 
-    pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create UnitSpinButton")
+    pub fn new(
+        adjustment: &gtk::Adjustment,
+        auto_update_unit_system: bool,
+        unit_kind: UnitKind,
+    ) -> Self {
+        let unit_str: &str = unit_kind.into();
+
+        glib::Object::new(&[
+            ("adjustment", adjustment),
+            ("auto-update-unit-system", &auto_update_unit_system),
+            ("unit-kind", &unit_str),
+        ])
+        .expect("Failed to create UnitSpinButton")
     }
 
     pub fn set_unit_kind(&self, unit: UnitKind) {
@@ -327,20 +356,77 @@ impl UnitSpinButton {
 
     fn handle_settings_unit_system_changed(&self, unit_system: UnitSystem) {
         let self_ = self.imp();
+        let (current_unit_system, current_unit) = {
+            let inner = self_.inner.borrow();
+            (inner.current_unit_system, inner.current_unit)
+        };
         self_.inner.borrow_mut().current_unit_system = Some(unit_system);
+
+        if let Some(value) = self.raw_value() {
+            if let Some(old_value) = match (current_unit_system, current_unit) {
+                (Some(UnitSystem::Metric), Some(UnitKind::LengthSmall)) => {
+                    Some(Value::Length(Length::new::<centimeter>(value)))
+                }
+                (Some(UnitSystem::Metric), Some(UnitKind::LengthBig)) => {
+                    Some(Value::Length(Length::new::<meter>(value)))
+                }
+                (Some(UnitSystem::Metric), Some(UnitKind::LengthVeryBig)) => {
+                    Some(Value::Length(Length::new::<kilometer>(value)))
+                }
+                (Some(UnitSystem::Metric), Some(UnitKind::WeightBig)) => {
+                    Some(Value::Mass(Mass::new::<kilogram>(value)))
+                }
+                (Some(UnitSystem::Imperial), Some(UnitKind::LengthSmall)) => {
+                    Some(Value::Length(Length::new::<inch>(value)))
+                }
+                (Some(UnitSystem::Imperial), Some(UnitKind::LengthBig)) => {
+                    Some(Value::Length(Length::new::<foot>(value)))
+                }
+                (Some(UnitSystem::Imperial), Some(UnitKind::LengthVeryBig)) => {
+                    Some(Value::Length(Length::new::<mile>(value)))
+                }
+                (Some(UnitSystem::Imperial), Some(UnitKind::WeightBig)) => {
+                    Some(Value::Mass(Mass::new::<pound>(value)))
+                }
+                _ => None,
+            } {
+                match (unit_system, current_unit.unwrap()) {
+                    (UnitSystem::Metric, UnitKind::LengthSmall) => {
+                        self.set_value(get_value!(old_value, Value::Length, centimeter))
+                    }
+                    (UnitSystem::Metric, UnitKind::LengthBig) => {
+                        self.set_value(get_value!(old_value, Value::Length, meter))
+                    }
+                    (UnitSystem::Metric, UnitKind::LengthVeryBig) => {
+                        self.set_value(get_value!(old_value, Value::Length, kilometer))
+                    }
+                    (UnitSystem::Metric, UnitKind::WeightBig) => {
+                        self.set_value(get_value!(old_value, Value::Mass, kilogram))
+                    }
+                    (UnitSystem::Imperial, UnitKind::LengthSmall) => {
+                        self.set_value(get_value!(old_value, Value::Length, inch))
+                    }
+                    (UnitSystem::Imperial, UnitKind::LengthBig) => {
+                        self.set_value(get_value!(old_value, Value::Length, foot))
+                    }
+                    (UnitSystem::Imperial, UnitKind::LengthVeryBig) => {
+                        self.set_value(get_value!(old_value, Value::Length, mile))
+                    }
+                    (UnitSystem::Imperial, UnitKind::WeightBig) => {
+                        self.set_value(get_value!(old_value, Value::Mass, pound))
+                    }
+                }
+                return;
+            }
+        }
+
         self_.spin_button.update();
     }
 
     fn handle_spin_button_input(&self) -> Option<Result<f64, ()>> {
         self.emit_by_name("input", &[]).unwrap();
 
-        self.imp()
-            .spin_button
-            .text()
-            .split(' ')
-            .next()
-            .and_then(|s| s.parse::<f64>().ok())
-            .map(Ok)
+        self.raw_value().map(Ok)
     }
 
     fn handle_spin_button_output(&self) -> gtk::Inhibit {
@@ -352,20 +438,28 @@ impl UnitSpinButton {
             (Some(UnitSystem::Metric), Some(UnitKind::LengthSmall)) => Some(i18n("cm")),
             // TRANSLATORS: Unit abbreviation (meters)
             (Some(UnitSystem::Metric), Some(UnitKind::LengthBig)) => Some(i18n("m")),
+            // TRANSLATORS: Unit abbreviation (kilometers)
+            (Some(UnitSystem::Metric), Some(UnitKind::LengthVeryBig)) => Some(i18n("km")),
             // TRANSLATORS: Unit abbreviation (kilograms)
             (Some(UnitSystem::Metric), Some(UnitKind::WeightBig)) => Some(i18n("kg")),
             // TRANSLATORS: Unit abbreviation (inch)
             (Some(UnitSystem::Imperial), Some(UnitKind::LengthSmall)) => Some(i18n("in")),
             // TRANSLATORS: Unit abbreviation (feet)
             (Some(UnitSystem::Imperial), Some(UnitKind::LengthBig)) => Some(i18n("ft")),
+            // TRANSLATORS: Unit abbreviation (miles)
+            (Some(UnitSystem::Imperial), Some(UnitKind::LengthVeryBig)) => Some(i18n("mi")),
             // TRANSLATORS: Unit abbreviation (pounds)
             (Some(UnitSystem::Imperial), Some(UnitKind::WeightBig)) => Some(i18n("lb")),
             _ => None,
         } {
             let text = format!(
                 "{} {}",
-                self_.spin_button.adjustment().value().to_string(),
-                unit_string
+                self_
+                    .spin_button
+                    .adjustment()
+                    .value()
+                    .round_decimal_places(self_.spin_button.digits()),
+                unit_string,
             );
             if text != self_.spin_button.text() {
                 self_.spin_button.set_text(&text);
@@ -381,8 +475,131 @@ impl UnitSpinButton {
     }
 }
 
-impl Default for UnitSpinButton {
-    fn default() -> Self {
-        Self::new()
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    macro_rules! test_from_to {
+        ($from:expr, $to:expr, $kind:expr, $expected:literal) => {
+            crate::utils::init_gtk();
+
+            let btn = UnitSpinButton::new(
+                &gtk::Adjustment::new(10.0, 0.0, 1000.0, 10.0, 100.0, 0.0),
+                false,
+                $kind,
+            );
+            assert_eq!(btn.value(), 10.0);
+            btn.set_unit_system($from);
+            assert_eq!(
+                btn.value(),
+                10.0,
+                "Changed value when setting initial unit system when it shouldn't"
+            );
+
+            btn.set_unit_system($from);
+            assert_eq!(
+                btn.value(),
+                10.0,
+                "Changed value when setting same unit system when it shouldn't"
+            );
+
+            btn.set_unit_system($to);
+            assert_eq!(btn.value(), $expected);
+        };
+    }
+
+    #[test]
+    fn test_change_unit_system_small() {
+        test_from_to!(
+            UnitSystem::Metric,
+            UnitSystem::Imperial,
+            UnitKind::LengthSmall,
+            3.9370076656341553
+        );
+    }
+
+    #[test]
+    fn test_change_unit_system_big() {
+        test_from_to!(
+            UnitSystem::Metric,
+            UnitSystem::Imperial,
+            UnitKind::LengthBig,
+            32.80839920043945
+        );
+    }
+
+    #[test]
+    fn test_change_unit_system_very_big() {
+        test_from_to!(
+            UnitSystem::Metric,
+            UnitSystem::Imperial,
+            UnitKind::LengthVeryBig,
+            6.213711738586426
+        );
+    }
+
+    #[test]
+    fn test_change_unit_system_mass_big() {
+        test_from_to!(
+            UnitSystem::Metric,
+            UnitSystem::Imperial,
+            UnitKind::WeightBig,
+            22.04622459411621
+        );
+    }
+
+    #[test]
+    fn test_change_unit_system_small_imperal() {
+        test_from_to!(
+            UnitSystem::Imperial,
+            UnitSystem::Metric,
+            UnitKind::LengthSmall,
+            25.400001525878906
+        );
+    }
+
+    #[test]
+    fn test_change_unit_system_big_imperial() {
+        test_from_to!(
+            UnitSystem::Imperial,
+            UnitSystem::Metric,
+            UnitKind::LengthBig,
+            3.0480000972747803
+        );
+    }
+
+    #[test]
+    fn test_change_unit_system_very_big_imperial() {
+        test_from_to!(
+            UnitSystem::Imperial,
+            UnitSystem::Metric,
+            UnitKind::LengthVeryBig,
+            16.09343910217285
+        );
+    }
+
+    #[test]
+    fn test_change_unit_system_mass_big_imperial() {
+        test_from_to!(
+            UnitSystem::Imperial,
+            UnitSystem::Metric,
+            UnitKind::WeightBig,
+            4.535923957824707
+        );
+    }
+
+    #[test]
+    fn test_output() {
+        crate::utils::init_gtk();
+
+        let btn = UnitSpinButton::new(
+            &gtk::Adjustment::new(10.0, 0.0, 1000.0, 10.0, 100.0, 0.0),
+            false,
+            UnitKind::LengthSmall,
+        );
+        btn.set_unit_system(UnitSystem::Metric);
+        assert_eq!(btn.text(), format!("10 {}", i18n("cm")));
+        btn.set_unit_system(UnitSystem::Imperial);
+        assert_eq!(btn.text(), format!("3.9 {}", i18n("in")));
     }
 }

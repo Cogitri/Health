@@ -14,6 +14,8 @@ pub enum UnitKind {
     LengthSmall,
     /// Meters or Feet
     LengthBig,
+    /// Kilometers or Miles
+    LengthVeryBig,
     /// Kilograms or Pounds
     WeightBig,
 }

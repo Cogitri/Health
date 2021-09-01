@@ -38,7 +38,10 @@ pub mod prelude {
             T: std::str::FromStr + Default,
             <T as std::str::FromStr>::Err: std::fmt::Debug,
         {
-            self.text().as_str().parse::<T>().ok()
+            self.text()
+                .split(' ')
+                .next()
+                .and_then(|s| s.parse::<T>().ok())
         }
     }
 
@@ -63,6 +66,31 @@ pub mod prelude {
         /// ```
         pub fn round_decimal_places(self, decimal_places: u32) -> f32 {
             let round_factor = (10_u32).pow(decimal_places) as f32;
+            (self * round_factor).round() / round_factor
+        }
+    }
+
+    #[easy_ext::ext(F64Ext)]
+    impl f64 {
+        /// Round a number to a certain amount of decimal places.
+        ///
+        /// # Arguments
+        /// * `self` - The value to round.
+        /// * `decimal_places` - The amount of decimal places to round this to.
+        ///
+        /// # Returns
+        /// The rounded value.
+        ///
+        /// # Examples
+        /// ```
+        /// use libhealth::utils::prelude::*;
+        ///
+        /// let val: f64 = 13.54231;
+        /// assert_eq!(val.round_decimal_places(1), 13.5);
+        /// assert_eq!(val.round_decimal_places(2), 13.54);
+        /// ```
+        pub fn round_decimal_places(self, decimal_places: u32) -> f64 {
+            let round_factor = f64::from((10_u32).pow(decimal_places));
             (self * round_factor).round() / round_factor
         }
     }
@@ -179,7 +207,8 @@ pub fn init_gschema() -> Option<tempfile::TempDir> {
             .spawn()
             .expect("Failed to run glib-compile-schemas!");
 
-        std::thread::sleep(std::time::Duration::from_secs(1));
+        while !gschema_path.exists() {}
+
         set_var("GSETTINGS_SCHEMA_DIR", gschema_path);
         Some(dir)
     }
