@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, utils::prelude::*, UnitKind, Unitsystem},
+    core::{i18n, utils::prelude::*, UnitKind, UnitSystem},
     model::Unitsize,
 };
 use gtk::{gio::subclass::prelude::*, glib, prelude::*};
@@ -82,7 +82,7 @@ mod imp {
 
             obj.set_togglebutton_text();
             self.settings_handler_id
-                .replace(Some(self.settings.connect_unitsystem_changed(
+                .replace(Some(self.settings.connect_unit_system_changed(
                     clone!(@weak obj => move |_, _| obj.set_togglebutton_text()),
                 )));
 
@@ -202,7 +202,7 @@ impl DistanceActionRow {
         let self_ = self.imp();
         let unitsize = self_.inner.borrow().unitsize;
 
-        if self_.settings.unitsystem() == Unitsystem::Metric {
+        if self_.settings.unit_system() == UnitSystem::Metric {
             if unitsize == Unitsize::Small {
                 self_
                     .distance_spin_button
@@ -234,7 +234,7 @@ impl DistanceActionRow {
         let value = spinbutton.raw_value::<f32>().unwrap_or_default();
         let unitsize = self_.inner.borrow().unitsize;
 
-        if self_.settings.unitsystem() == Unitsystem::Metric {
+        if self_.settings.unit_system() == UnitSystem::Metric {
             if unitsize == Unitsize::Small {
                 self_.inner.borrow_mut().value = Length::new::<meter>(value);
             } else {
@@ -250,7 +250,7 @@ impl DistanceActionRow {
 
     fn set_togglebutton_text(&self) {
         let self_ = self.imp();
-        if self_.settings.unitsystem() == Unitsystem::Metric {
+        if self_.settings.unit_system() == UnitSystem::Metric {
             self_.big_unit_togglebutton.set_label(&i18n("KM"));
             self_.small_unit_togglebutton.set_label(&i18n("Meters"));
         } else {

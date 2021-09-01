@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{Database, Settings, Unitsystem},
+    core::{Database, Settings, UnitSystem},
     model::weight::Weight,
     views::Point,
 };
@@ -84,7 +84,7 @@ impl GraphModelWeight {
             .vec
             .iter()
             .map(|w| {
-                let val = if self.settings.unitsystem() == Unitsystem::Metric {
+                let val = if self.settings.unit_system() == UnitSystem::Metric {
                     w.weight.get::<kilogram>()
                 } else {
                     w.weight.get::<pound>()

@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, i18n_f, utils::prelude::*, Database, Unitsystem},
+    core::{i18n, i18n_f, utils::prelude::*, Database, UnitSystem},
     model::{GraphModelSteps, GraphModelWeight},
     ni18n_f,
     views::View,
@@ -194,7 +194,7 @@ impl ViewHomePage {
 
         self_
             .settings_handler_id
-            .replace(Some(self_.settings.connect_user_stepgoal_changed(
+            .replace(Some(self_.settings.connect_user_step_goal_changed(
                 glib::clone!(@weak o as obj => move |_,_| {
                     gtk_macros::spawn!(async move {
                         obj.update_activities().await;
@@ -204,7 +204,7 @@ impl ViewHomePage {
 
         self_
             .settings_handler_id2
-            .replace(Some(self_.settings.connect_user_weightgoal_changed(
+            .replace(Some(self_.settings.connect_user_weight_goal_changed(
                 glib::clone!(@weak o as obj => move |_,_| {
                     gtk_macros::spawn!(async move {
                         obj.update_weights().await;
@@ -239,7 +239,7 @@ impl ViewHomePage {
         let self_ = self.imp();
         self_
             .circular_progress_bar
-            .set_step_goal(i64::from(self_.settings.user_stepgoal()));
+            .set_step_goal(i64::from(self_.settings.user_step_goal()));
         let mut steps_model = GraphModelSteps::new();
         if let Err(e) = steps_model.reload(Duration::days(30)).await {
             glib::g_warning!(
@@ -260,7 +260,7 @@ impl ViewHomePage {
         ));
         self_.steps_percentage.set_label(&i18n_f(
             "{}%",
-            &[&(100 * step_count / self_.settings.user_stepgoal() as u32).to_string()],
+            &[&(100 * step_count / self_.settings.user_step_goal() as u32).to_string()],
         ));
     }
 
@@ -278,12 +278,12 @@ impl ViewHomePage {
         }
         self_.arrow_box.set_visible(true);
         if !weight_model.is_empty() {
-            let last_weight = if self_.settings.unitsystem() == Unitsystem::Imperial {
+            let last_weight = if self_.settings.unit_system() == UnitSystem::Imperial {
                 weight_model.last_weight().unwrap().get::<pound>()
             } else {
                 weight_model.last_weight().unwrap().get::<kilogram>()
             };
-            let prev_weight = if self_.settings.unitsystem() == Unitsystem::Imperial {
+            let prev_weight = if self_.settings.unit_system() == UnitSystem::Imperial {
                 weight_model.penultimate_weight().unwrap().get::<pound>()
             } else {
                 weight_model.penultimate_weight().unwrap().get::<kilogram>()
@@ -292,7 +292,7 @@ impl ViewHomePage {
             self_.arrow.set_weight(last_weight_round);
             let difference = (last_weight - prev_weight).round_decimal_places(1);
             self_.arrow.set_weight_difference(difference);
-            let subtitle = if self_.settings.unitsystem() == Unitsystem::Imperial {
+            let subtitle = if self_.settings.unit_system() == UnitSystem::Imperial {
                 // TRANSLATORS: Current user weight
                 ni18n_f("{} pound",
                     "{} pounds",
@@ -309,7 +309,7 @@ impl ViewHomePage {
             };
             self_.weight_actionrow.set_subtitle(&subtitle);
             if difference > 0.0 {
-                let label = if self_.settings.unitsystem() == Unitsystem::Imperial {
+                let label = if self_.settings.unit_system() == UnitSystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement
                     ni18n_f("+ {} pound",
                         "+ {} pounds",
@@ -326,7 +326,7 @@ impl ViewHomePage {
                 };
                 self_.weight_change.set_label(&label)
             } else if difference < 0.0 {
-                let label = if self_.settings.unitsystem() == Unitsystem::Imperial {
+                let label = if self_.settings.unit_system() == UnitSystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement
                     ni18n_f("{} pound",
                             "{} pounds",

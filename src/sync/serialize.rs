@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::Settings, model::ActivityType, Unitsystem};
+use crate::{core::Settings, model::ActivityType, UnitSystem};
 use chrono::{DateTime, Duration, FixedOffset, TimeZone};
 use serde::{de, Deserialize, Deserializer, Serializer};
 use std::{convert::TryInto, str::FromStr};
@@ -49,7 +49,7 @@ where
     D: Deserializer<'de>,
 {
     let val = f32::deserialize(deserializer)?;
-    if Settings::instance().unitsystem() == Unitsystem::Metric {
+    if Settings::instance().unit_system() == UnitSystem::Metric {
         if val == 0.0 {
             Ok(None)
         } else {
@@ -76,7 +76,7 @@ where
     D: Deserializer<'de>,
 {
     let val = f32::deserialize(deserializer)?;
-    if Settings::instance().unitsystem() == Unitsystem::Metric {
+    if Settings::instance().unit_system() == UnitSystem::Metric {
         Ok(Mass::new::<kilogram>(val))
     } else {
         Ok(Mass::new::<pound>(val))
@@ -118,7 +118,7 @@ pub fn serialize_distance<S>(l: &Option<Length>, s: S) -> Result<S::Ok, S::Error
 where
     S: Serializer,
 {
-    if Settings::instance().unitsystem() == Unitsystem::Metric {
+    if Settings::instance().unit_system() == UnitSystem::Metric {
         if let Some(length) = l {
             s.serialize_f32(length.get::<meter>())
         } else {
@@ -143,7 +143,7 @@ pub fn serialize_mass<S>(mass: &Mass, s: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
 {
-    if Settings::instance().unitsystem() == Unitsystem::Metric {
+    if Settings::instance().unit_system() == UnitSystem::Metric {
         s.serialize_f32(mass.get::<kilogram>())
     } else {
         s.serialize_f32(mass.get::<pound>())

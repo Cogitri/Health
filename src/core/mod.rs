@@ -12,7 +12,7 @@ pub mod settings;
 #[doc(hidden)]
 pub mod unit_kind;
 #[doc(hidden)]
-pub mod unitsystem;
+pub mod unit_system;
 pub mod utils;
 
 #[doc(inline)]
@@ -26,4 +26,4 @@ pub use settings::Settings;
 #[doc(inline)]
 pub use unit_kind::*;
 #[doc(inline)]
-pub use unitsystem::*;
+pub use unit_system::*;

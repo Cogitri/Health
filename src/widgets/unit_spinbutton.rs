@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::{i18n, UnitKind, Unitsystem};
+use crate::core::{i18n, UnitKind, UnitSystem};
 use gtk::{
     glib::{
         subclass::prelude::*,
@@ -26,7 +26,7 @@ use gtk::{
 };
 
 mod imp {
-    use crate::core::{Settings, UnitKind, Unitsystem};
+    use crate::core::{Settings, UnitKind, UnitSystem};
     use adw::subclass::prelude::*;
     use gtk::{
         glib::{self, clone, subclass::Signal},
@@ -38,7 +38,7 @@ mod imp {
     #[derive(Default)]
     pub struct UnitSpinButtonMut {
         pub current_unit: Option<UnitKind>,
-        pub current_unitsystem: Option<Unitsystem>,
+        pub current_unit_system: Option<UnitSystem>,
         pub settings_handler_id: Option<glib::SignalHandlerId>,
     }
 
@@ -68,7 +68,7 @@ mod imp {
             self.spin_button.init_delegate();
 
             obj.set_property("child", &self.spin_button).unwrap();
-            obj.set_property("auto-update-unitsystem", true).unwrap();
+            obj.set_property("auto-update-unit-system", true).unwrap();
             obj.connect_handlers();
         }
 
@@ -88,9 +88,9 @@ mod imp {
                         glib::ParamFlags::READWRITE,
                     ),
                     glib::ParamSpec::new_boolean(
-                        "auto-update-unitsystem",
-                        "auto-update-unitsystem",
-                        "auto-update-unitsystem",
+                        "auto-update-unit-system",
+                        "auto-update-unit-system",
+                        "auto-update-unit-system",
                         true,
                         glib::ParamFlags::READWRITE,
                     ),
@@ -111,9 +111,9 @@ mod imp {
                         glib::ParamFlags::READWRITE,
                     ),
                     glib::ParamSpec::new_string(
-                        "unitsystem",
-                        "unitsystem",
-                        "unitsystem",
+                        "unit-system",
+                        "unit-system",
+                        "unit-system",
                         None,
                         glib::ParamFlags::READWRITE,
                     ),
@@ -138,7 +138,7 @@ mod imp {
                 "adjustment" => self
                     .spin_button
                     .set_adjustment(&value.get::<gtk::Adjustment>().unwrap()),
-                "auto-update-unitsystem" => {
+                "auto-update-unit-system" => {
                     if value.get::<bool>().unwrap() {
                         if self.inner.borrow().settings_handler_id.is_some() {
                             return;
@@ -146,8 +146,8 @@ mod imp {
 
                         let settings = Settings::instance();
                         self.inner.borrow_mut().settings_handler_id = Some(
-                        settings.connect_unitsystem_changed(clone!(@weak obj => move |_, _| {
-                                obj.handle_settings_unitsystem_changed(Settings::instance().unitsystem())
+                        settings.connect_unit_system_changed(clone!(@weak obj => move |_, _| {
+                                obj.handle_settings_unit_system_changed(Settings::instance().unit_system())
                         })));
                         obj.set_unit_system(settings.unit_system());
                     } else if let Some(id) = self.inner.borrow_mut().settings_handler_id.take() {
@@ -160,8 +160,8 @@ mod imp {
                     self.inner.borrow_mut().current_unit =
                         Some(UnitKind::from_str(value.get().unwrap()).unwrap())
                 }
-                "unitsystem" => obj.handle_settings_unitsystem_changed(
-                    Unitsystem::from_str(value.get().unwrap()).unwrap(),
+                "unit-system" => obj.handle_settings_unit_system_changed(
+                    UnitSystem::from_str(value.get().unwrap()).unwrap(),
                 ),
                 "width-chars" => self.spin_button.set_width_chars(value.get().unwrap()),
                 _ => unimplemented!(),
@@ -175,7 +175,7 @@ mod imp {
 
             match pspec.name() {
                 "adjustment" => self.spin_button.adjustment().to_value(),
-                "auto-update-unitsystem" => {
+                "auto-update-unit-system" => {
                     self.inner.borrow().settings_handler_id.is_some().to_value()
                 }
                 "digits" => self.spin_button.digits().to_value(),
@@ -291,9 +291,9 @@ impl UnitSpinButton {
         self.set_property("unit-kind", str).unwrap();
     }
 
-    pub fn set_unitsystem(&self, unitsystem: Unitsystem) {
-        let str: &'static str = unitsystem.into();
-        self.set_property("unitsystem", str).unwrap();
+    pub fn set_unit_system(&self, unit_system: UnitSystem) {
+        let str: &'static str = unit_system.into();
+        self.set_property("unit-system", str).unwrap();
     }
 
     pub fn set_value(&self, value: f64) {
@@ -325,9 +325,9 @@ impl UnitSpinButton {
             }));
     }
 
-    fn handle_settings_unitsystem_changed(&self, unitsystem: Unitsystem) {
+    fn handle_settings_unit_system_changed(&self, unit_system: UnitSystem) {
         let self_ = self.imp();
-        self_.inner.borrow_mut().current_unitsystem = Some(unitsystem);
+        self_.inner.borrow_mut().current_unit_system = Some(unit_system);
         self_.spin_button.update();
     }
 
@@ -347,19 +347,19 @@ impl UnitSpinButton {
         let self_ = self.imp();
         let inner = self_.inner.borrow();
 
-        if let Some(unit_string) = match (inner.current_unitsystem, inner.current_unit) {
+        if let Some(unit_string) = match (inner.current_unit_system, inner.current_unit) {
             // TRANSLATORS: Unit abbreviation (centimeters)
-            (Some(Unitsystem::Metric), Some(UnitKind::LengthSmall)) => Some(i18n("cm")),
+            (Some(UnitSystem::Metric), Some(UnitKind::LengthSmall)) => Some(i18n("cm")),
             // TRANSLATORS: Unit abbreviation (meters)
-            (Some(Unitsystem::Metric), Some(UnitKind::LengthBig)) => Some(i18n("m")),
+            (Some(UnitSystem::Metric), Some(UnitKind::LengthBig)) => Some(i18n("m")),
             // TRANSLATORS: Unit abbreviation (kilograms)
-            (Some(Unitsystem::Metric), Some(UnitKind::WeightBig)) => Some(i18n("kg")),
+            (Some(UnitSystem::Metric), Some(UnitKind::WeightBig)) => Some(i18n("kg")),
             // TRANSLATORS: Unit abbreviation (inch)
-            (Some(Unitsystem::Imperial), Some(UnitKind::LengthSmall)) => Some(i18n("in")),
+            (Some(UnitSystem::Imperial), Some(UnitKind::LengthSmall)) => Some(i18n("in")),
             // TRANSLATORS: Unit abbreviation (feet)
-            (Some(Unitsystem::Imperial), Some(UnitKind::LengthBig)) => Some(i18n("ft")),
+            (Some(UnitSystem::Imperial), Some(UnitKind::LengthBig)) => Some(i18n("ft")),
             // TRANSLATORS: Unit abbreviation (pounds)
-            (Some(Unitsystem::Imperial), Some(UnitKind::WeightBig)) => Some(i18n("lb")),
+            (Some(UnitSystem::Imperial), Some(UnitKind::WeightBig)) => Some(i18n("lb")),
             _ => None,
         } {
             let text = format!(

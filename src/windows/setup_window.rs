@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::{utils::prelude::*, Unitsystem};
+use crate::core::{utils::prelude::*, UnitSystem};
 use adw::prelude::*;
 use chrono::Local;
 use gtk::{
@@ -34,7 +34,7 @@ static OPTIMAL_BMI: f32 = 22.5;
 
 mod imp {
     use crate::{
-        core::{Settings, Unitsystem},
+        core::{Settings, UnitSystem},
         widgets::{BmiLevelBar, DateSelector, SyncListBox, UnitSpinButton},
     };
     use gtk::{
@@ -48,7 +48,7 @@ mod imp {
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/setup_window.ui")]
     pub struct SetupWindow {
-        pub current_unitsystem: Cell<Unitsystem>,
+        pub current_unit_system: Cell<UnitSystem>,
         pub settings: Settings,
 
         #[template_child]
@@ -78,9 +78,9 @@ mod imp {
         #[template_child]
         pub height_spin_button: TemplateChild<UnitSpinButton>,
         #[template_child]
-        pub stepgoal_spin_button: TemplateChild<gtk::SpinButton>,
+        pub step_goal_spin_button: TemplateChild<gtk::SpinButton>,
         #[template_child]
-        pub weightgoal_spin_button: TemplateChild<UnitSpinButton>,
+        pub weight_goal_spin_button: TemplateChild<UnitSpinButton>,
         #[template_child]
         pub unit_imperial_togglebutton: TemplateChild<gtk::ToggleButton>,
         #[template_child]
@@ -88,7 +88,7 @@ mod imp {
         #[template_child]
         pub height_actionrow: TemplateChild<adw::ActionRow>,
         #[template_child]
-        pub weightgoal_actionrow: TemplateChild<adw::ActionRow>,
+        pub weight_goal_actionrow: TemplateChild<adw::ActionRow>,
         #[template_child]
         pub setup_carousel: TemplateChild<adw::Carousel>,
         #[template_child]
@@ -104,7 +104,7 @@ mod imp {
         fn new() -> Self {
             let settings = Settings::instance();
             Self {
-                current_unitsystem: Cell::new(settings.unitsystem()),
+                current_unit_system: Cell::new(settings.unit_system()),
                 settings,
                 bmi_levelbar: TemplateChild::default(),
                 setup_first_page: TemplateChild::default(),
@@ -119,12 +119,12 @@ mod imp {
                 setup_left_stack: TemplateChild::default(),
                 birthday_selector: TemplateChild::default(),
                 height_spin_button: TemplateChild::default(),
-                stepgoal_spin_button: TemplateChild::default(),
-                weightgoal_spin_button: TemplateChild::default(),
+                step_goal_spin_button: TemplateChild::default(),
+                weight_goal_spin_button: TemplateChild::default(),
                 unit_imperial_togglebutton: TemplateChild::default(),
                 unit_metric_togglebutton: TemplateChild::default(),
                 height_actionrow: TemplateChild::default(),
-                weightgoal_actionrow: TemplateChild::default(),
+                weight_goal_actionrow: TemplateChild::default(),
                 setup_carousel: TemplateChild::default(),
                 sync_list_box: TemplateChild::default(),
             }
@@ -144,11 +144,11 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            self.stepgoal_spin_button.set_value(10000.0);
+            self.step_goal_spin_button.set_value(10000.0);
 
             obj.connect_handlers();
             obj.setup_actions();
-            obj.setup_unitsystem_text(self.settings.unitsystem());
+            obj.setup_unit_system_text(self.settings.unit_system());
         }
 
         fn signals() -> &'static [Signal] {
@@ -245,12 +245,12 @@ impl SetupWindow {
 
         self_
             .settings
-            .connect_unitsystem_changed(clone!(@weak self as obj => move |_, _| {
-                obj.handle_unitsystem_changed();
+            .connect_unit_system_changed(clone!(@weak self as obj => move |_, _| {
+                obj.handle_unit_system_changed();
             }));
 
         self_
-            .weightgoal_spin_button
+            .weight_goal_spin_button
             .connect_changed(clone!(@weak self as obj => move |_| {
                 obj.handle_weight_spin_button_changed();
             }));
@@ -270,11 +270,11 @@ impl SetupWindow {
 
     fn handle_height_spin_button_changed(&self) {
         let self_ = self.imp();
-        self.set_optimal_weightgoal();
+        self.set_optimal_weight_goal();
         self.try_enable_next_button();
 
         let unitless_height = self_.height_spin_button.raw_value().unwrap_or_default();
-        let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
+        let height = if self_.current_unit_system.get() == UnitSystem::Metric {
             Length::new::<centimeter>(unitless_height)
         } else {
             Length::new::<inch>(unitless_height)
@@ -310,11 +310,11 @@ impl SetupWindow {
     fn handle_setup_done_button_clicked(&self) {
         let self_ = self.imp();
         let unitless_height = self_.height_spin_button.raw_value().unwrap_or_default();
-        let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
-            self_.settings.set_unitsystem(Unitsystem::Metric);
+        let height = if self_.current_unit_system.get() == UnitSystem::Metric {
+            self_.settings.set_unit_system(UnitSystem::Metric);
             Length::new::<centimeter>(unitless_height)
         } else {
-            self_.settings.set_unitsystem(Unitsystem::Imperial);
+            self_.settings.set_unit_system(UnitSystem::Imperial);
             Length::new::<inch>(unitless_height)
         };
 
@@ -324,15 +324,18 @@ impl SetupWindow {
         self_.settings.set_user_height(height);
         self_
             .settings
-            .set_user_stepgoal(self_.stepgoal_spin_button.raw_value().unwrap_or_default());
+            .set_user_step_goal(self_.step_goal_spin_button.raw_value().unwrap_or_default());
 
-        let unitless_weight = self_.weightgoal_spin_button.raw_value().unwrap_or_default();
-        let weight = if self_.current_unitsystem.get() == Unitsystem::Metric {
+        let unitless_weight = self_
+            .weight_goal_spin_button
+            .raw_value()
+            .unwrap_or_default();
+        let weight = if self_.current_unit_system.get() == UnitSystem::Metric {
             Mass::new::<kilogram>(unitless_weight)
         } else {
             Mass::new::<pound>(unitless_weight)
         };
-        self_.settings.set_user_weightgoal(weight);
+        self_.settings.set_user_weight_goal(weight);
 
         self.emit_by_name("setup-done", &[]).unwrap();
         self.destroy();
@@ -374,8 +377,11 @@ impl SetupWindow {
 
     fn handle_weight_spin_button_changed(&self) {
         let self_ = self.imp();
-        let unitless_weight = self_.weightgoal_spin_button.raw_value().unwrap_or_default();
-        let weight = if self_.current_unitsystem.get() == Unitsystem::Metric {
+        let unitless_weight = self_
+            .weight_goal_spin_button
+            .raw_value()
+            .unwrap_or_default();
+        let weight = if self_.current_unit_system.get() == UnitSystem::Metric {
             Mass::new::<kilogram>(unitless_weight)
         } else {
             Mass::new::<pound>(unitless_weight)
@@ -384,23 +390,23 @@ impl SetupWindow {
         self_.bmi_levelbar.set_weight(weight);
     }
 
-    fn handle_unitsystem_changed(&self) {
+    fn handle_unit_system_changed(&self) {
         let self_ = self.imp();
-        let unitsystem = self_.settings.unitsystem();
+        let unit_system = self_.settings.unit_system();
 
-        if unitsystem == Unitsystem::Imperial && !self_.unit_imperial_togglebutton.is_active() {
+        if unit_system == UnitSystem::Imperial && !self_.unit_imperial_togglebutton.is_active() {
             self_.unit_imperial_togglebutton.set_active(true);
-        } else if unitsystem == Unitsystem::Metric && !self_.unit_metric_togglebutton.is_active() {
+        } else if unit_system == UnitSystem::Metric && !self_.unit_metric_togglebutton.is_active() {
             self_.unit_metric_togglebutton.set_active(true);
         }
 
-        if self_.current_unitsystem.get() == unitsystem {
+        if self_.current_unit_system.get() == unit_system {
             return;
         }
 
-        self_.current_unitsystem.set(unitsystem);
+        self_.current_unit_system.set(unit_system);
 
-        self.setup_unitsystem_text(unitsystem);
+        self.setup_unit_system_text(unit_system);
     }
     fn setup_actions(&self) {
         action!(
@@ -419,9 +425,9 @@ impl SetupWindow {
         );
     }
 
-    fn setup_unitsystem_text(&self, unitsystem: Unitsystem) {
+    fn setup_unit_system_text(&self, unit_system: UnitSystem) {
         let self_ = self.imp();
-        if unitsystem == Unitsystem::Metric {
+        if unit_system == UnitSystem::Metric {
             self_.height_spin_button.set_value(
                 Length::new::<inch>(self_.height_spin_button.value() as f32)
                     .get::<centimeter>()
@@ -436,11 +442,11 @@ impl SetupWindow {
         }
     }
 
-    fn set_optimal_weightgoal(&self) {
+    fn set_optimal_weight_goal(&self) {
         let self_ = self.imp();
 
         let unitless_height = self_.height_spin_button.raw_value().unwrap_or_default();
-        let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
+        let height = if self_.current_unit_system.get() == UnitSystem::Metric {
             Length::new::<centimeter>(unitless_height)
         } else {
             Length::new::<inch>(unitless_height)
@@ -448,13 +454,13 @@ impl SetupWindow {
         let optimal_value = Mass::new::<kilogram>(
             (OPTIMAL_BMI * height.get::<meter>() * height.get::<meter>()).round_decimal_places(1),
         );
-        if self_.current_unitsystem.get() == Unitsystem::Metric {
+        if self_.current_unit_system.get() == UnitSystem::Metric {
             self_
-                .weightgoal_spin_button
+                .weight_goal_spin_button
                 .set_value(optimal_value.get::<kilogram>().into());
         } else {
             self_
-                .weightgoal_spin_button
+                .weight_goal_spin_button
                 .set_value(optimal_value.get::<pound>().into());
         }
     }

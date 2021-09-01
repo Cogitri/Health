@@ -136,8 +136,8 @@ impl ModelNotification {
     // TRANSLATORS notes have to be on the same line, so we cant split them
     #[rustfmt::skip::attributes(ni18n_f)]
     async fn reminder_text(&self) -> String {
-        let stepgoal = i64::from(self.imp().settings.user_stepgoal());
-        let stepcount = self
+        let step_goal = i64::from(self.imp().settings.user_step_goal());
+        let step_count = self
             .imp()
             .database
             .todays_steps(chrono::Local::today().and_hms(0, 0, 0).into())
@@ -147,14 +147,14 @@ impl ModelNotification {
             // TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
             ni18n_f("{} step remaining to complete your daily step goal",
                 "{} steps remaining to complete your daily step goal",
-                (stepgoal - stepcount).try_into().unwrap_or(0),
-                &[&(stepgoal - stepcount).to_string()],
+                (step_goal - step_count).try_into().unwrap_or(0),
+                &[&(step_goal - step_count).to_string()],
             ) +
             // TRANSLATORS: Second (final) part of message, see previous source string.
             &ni18n_f("of {} step",
                 "of {} steps",
-                stepgoal.try_into().unwrap(),
-                &[&stepgoal.to_string()],
+                step_goal.try_into().unwrap(),
+                &[&step_goal.to_string()],
             )
         }];
         message_pool[0].clone()

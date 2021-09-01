@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, Unitsystem},
+    core::{i18n, UnitSystem},
     windows::{PreferencesWindow, Window},
 };
 use chrono::{DateTime, Duration, FixedOffset, Local};
@@ -183,11 +183,11 @@ impl Application {
             .show();
     }
 
-    fn handle_unitsystem(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
+    fn handle_unit_system(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
         let parameter = parameter.unwrap();
 
-        self.imp().settings.set_unitsystem(
-            Unitsystem::from_str(parameter.to_string().replace("'", "").as_str()).unwrap(),
+        self.imp().settings.set_unit_system(
+            UnitSystem::from_str(parameter.to_string().replace("'", "").as_str()).unwrap(),
         );
 
         action.set_state(parameter);
@@ -250,14 +250,14 @@ impl Application {
 
         stateful_action!(
             self,
-            "unitsystem",
+            "unit-system",
             Some(&String::static_variant_type()),
             {
-                let s: &str = self.imp().settings.unitsystem().into();
+                let s: &str = self.imp().settings.unit_system().into();
                 s
             },
             clone!(@weak self as obj => move |a, p| {
-                obj.handle_unitsystem(a, p);
+                obj.handle_unit_system(a, p);
             })
         );
     }

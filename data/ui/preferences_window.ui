@@ -30,12 +30,12 @@
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
   </object>
-  <object class="GtkAdjustment" id="stepgoal_adjustment">
+  <object class="GtkAdjustment" id="step_goal_adjustment">
     <property name="upper">99999</property>
     <property name="step-increment">100</property>
     <property name="page-increment">1000</property>
   </object>
-  <object class="GtkAdjustment" id="weightgoal_adjustment">
+  <object class="GtkAdjustment" id="weight_goal_adjustment">
     <property name="upper">999</property>
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
@@ -85,7 +85,7 @@
             <property name="title" translatable="yes">User</property>
             <child>
               <object class="AdwActionRow">
-                <property name="title" translatable="yes">Unitsystem</property>
+                <property name="title" translatable="yes">Unit system</property>
                 <child>
                   <object class="GtkBox">
                     <property name="valign">center</property>
@@ -95,14 +95,14 @@
                     <child>
                       <object class="GtkToggleButton" id="unit_imperial_togglebutton">
                         <property name="label" translatable="yes">Imperial</property>
-                        <property name="action-name">app.unitsystem</property>
+                        <property name="action-name">app.unit-system</property>
                         <property name="action-target">"imperial"</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkToggleButton" id="unit_metric_togglebutton">
                         <property name="label" translatable="yes">Metric</property>
-                        <property name="action-name">app.unitsystem</property>
+                        <property name="action-name">app.unit-system</property>
                         <property name="action-target">"metric"</property>
                       </object>
                     </child>
@@ -194,14 +194,14 @@
           <object class="AdwPreferencesGroup">
             <property name="title">Steps</property>
             <child>
-              <object class="AdwActionRow" id="stepgoal_actionrow">
-                <property name="title" translatable="yes">Stepgoal</property>
+              <object class="AdwActionRow" id="step_goal_actionrow">
+                <property name="title" translatable="yes">Step goal</property>
                 <property name="subtitle" translatable="yes">The WHO recommends 10.000 steps per day.</property>
                 <child>
-                  <object class="GtkSpinButton" id="stepgoal_spin_button">
+                  <object class="GtkSpinButton" id="step_goal_spin_button">
                     <property name="width-chars">5</property>
                     <property name="text">10000</property>
-                    <property name="adjustment">stepgoal_adjustment</property>
+                    <property name="adjustment">step_goal_adjustment</property>
                     <property name="numeric">1</property>
                     <property name="valign">center</property>
                   </object>
@@ -214,7 +214,7 @@
           <object class="AdwPreferencesGroup">
             <property name="title">Weight</property>
             <child>
-              <object class="AdwActionRow" id="weightgoal_actionrow">
+              <object class="AdwActionRow" id="weight_goal_actionrow">
                 <property name="title" translatable="yes">Weight</property>
                 <property name="subtitle" translatable="yes">The WHO recommends a BMI of 18.5-24.9.</property>
                 <child>
@@ -227,11 +227,11 @@
                       </object>
                     </child>
                     <child>
-                      <object class="HealthUnitSpinButton" id="weightgoal_spin_button">
+                      <object class="HealthUnitSpinButton" id="weight_goal_spin_button">
                         <property name="unit-kind">weight_big</property>
                         <property name="digits">1</property>
                         <property name="width-chars">5</property>
-                        <property name="adjustment">weightgoal_adjustment</property>
+                        <property name="adjustment">weight_goal_adjustment</property>
                         <property name="valign">center</property>
                       </object>
                     </child>

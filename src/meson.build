@@ -33,7 +33,7 @@ sources = files(
   'core/macros.rs',
   'core/mod.rs',
   'core/settings.rs',
-  'core/unitsystem.rs',
+  'core/unit_system.rs',
   'core/utils.rs',
   'lib.rs',
   'main.rs',

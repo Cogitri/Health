@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::Unitsystem, model::Weight, views::View};
+use crate::{core::UnitSystem, model::Weight, views::View};
 use gtk::glib::{self, subclass::prelude::*};
 use uom::si::{
     f32::Mass,
@@ -97,7 +97,7 @@ impl ViewAddWeight {
     pub async fn handle_response(&self, id: gtk::ResponseType) {
         if id == gtk::ResponseType::Ok {
             let self_ = self.imp();
-            let value = if self_.settings.unitsystem() == Unitsystem::Metric {
+            let value = if self_.settings.unit_system() == UnitSystem::Metric {
                 Mass::new::<kilogram>(self_.weight_spin_button.value() as f32)
             } else {
                 Mass::new::<pound>(self_.weight_spin_button.value() as f32)

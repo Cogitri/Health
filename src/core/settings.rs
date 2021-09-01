@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::Unitsystem, model::NotifyMode, settings_getter_setter};
+use crate::{core::UnitSystem, model::NotifyMode, settings_getter_setter};
 use chrono::{Date, DateTime, FixedOffset};
 use gtk::{
     gio::{self, prelude::*},
@@ -45,7 +45,7 @@ impl Settings {
         "sync-provider-setup-google-fit"
     );
     settings_getter_setter!(u32, user_age, "user-age");
-    settings_getter_setter!(u32, user_stepgoal, "user-stepgoal");
+    settings_getter_setter!(u32, user_step_goal, "user-stepgoal");
     settings_getter_setter!(i32, window_height, "window-height");
     settings_getter_setter!(bool, window_is_maximized, "window-is-maximized");
     settings_getter_setter!(i32, window_width, "window-width");
@@ -132,7 +132,7 @@ impl Settings {
     }
 
     /// Connect to the `unitsystem` key changing. Keep in mind that the key has to be read once before connecting or this won't do anything!
-    pub fn connect_unitsystem_changed<F: Fn(&gio::Settings, &str) + 'static>(
+    pub fn connect_unit_system_changed<F: Fn(&gio::Settings, &str) + 'static>(
         &self,
         f: F,
     ) -> glib::SignalHandlerId {
@@ -152,13 +152,13 @@ impl Settings {
             .unwrap();
     }
 
-    /// Get the current unitsystem.
-    pub fn unitsystem(&self) -> Unitsystem {
-        Unitsystem::from_i32(self.enum_("unitsystem")).unwrap()
+    /// Get the current unit system.
+    pub fn unit_system(&self) -> UnitSystem {
+        UnitSystem::from_i32(self.enum_("unitsystem")).unwrap()
     }
 
-    /// Set the current unitsystem.
-    pub fn set_unitsystem(&self, value: Unitsystem) {
+    /// Set the current unit system.
+    pub fn set_unit_system(&self, value: UnitSystem) {
         self.set_enum("unitsystem", value.to_i32().unwrap())
             .unwrap();
     }
@@ -196,7 +196,7 @@ impl Settings {
     }
 
     /// Connect to the `user-weightgoal` key changing. Keep in mind that the key has to be read once before connecting or this won't do anything!
-    pub fn connect_user_weightgoal_changed<F: Fn(&gio::Settings, &str) + 'static>(
+    pub fn connect_user_weight_goal_changed<F: Fn(&gio::Settings, &str) + 'static>(
         &self,
         f: F,
     ) -> glib::SignalHandlerId {
@@ -206,12 +206,12 @@ impl Settings {
     }
 
     /// Get the user's current weightgoal.
-    pub fn user_weightgoal(&self) -> Mass {
+    pub fn user_weight_goal(&self) -> Mass {
         Mass::new::<kilogram>(self.get::<f64>("user-weightgoal") as f32)
     }
 
     /// Set the user's current weightgoal.
-    pub fn set_user_weightgoal(&self, value: Mass) {
+    pub fn set_user_weight_goal(&self, value: Mass) {
         self.set("user-weightgoal", &f64::from(value.get::<kilogram>()))
             .unwrap();
     }
@@ -270,9 +270,9 @@ mod test {
     }
 
     #[test]
-    fn user_stepgoal() {
+    fn user_step_goal() {
         let (_tmp, settings) = get();
-        settings.set_user_stepgoal(settings.user_stepgoal());
+        settings.set_user_step_goal(settings.user_step_goal());
     }
 
     #[test]
@@ -308,9 +308,9 @@ mod test {
     }
 
     #[test]
-    fn unitsystem() {
+    fn unit_ystem() {
         let (_tmp, settings) = get();
-        settings.set_unitsystem(settings.unitsystem());
+        settings.set_unit_system(settings.unit_system());
     }
 
     #[test]
@@ -327,8 +327,8 @@ mod test {
     }
 
     #[test]
-    fn user_weightgoal() {
+    fn user_weight_goal() {
         let (_tmp, settings) = get();
-        settings.set_user_weightgoal(settings.user_weightgoal());
+        settings.set_user_weight_goal(settings.user_weight_goal());
     }
 }

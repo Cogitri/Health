@@ -36,12 +36,12 @@
       <property name="step-increment">1</property>
       <property name="page-increment">10</property>
     </object>
-    <object class="GtkAdjustment" id="stepgoal_adjustment">
+    <object class="GtkAdjustment" id="step_goal_adjustment">
       <property name="upper">99999</property>
       <property name="step-increment">100</property>
       <property name="page-increment">1000</property>
     </object>
-    <object class="GtkAdjustment" id="weightgoal_adjustment">
+    <object class="GtkAdjustment" id="weight_goal_adjustment">
       <property name="upper">999</property>
       <property name="step-increment">1</property>
       <property name="page-increment">10</property>

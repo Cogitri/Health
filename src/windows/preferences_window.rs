@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, utils::prelude::*, Unitsystem},
+    core::{i18n, utils::prelude::*, UnitSystem},
     model::NotifyMode,
     windows::{ExportDialog, ImportDialog},
 };
@@ -37,7 +37,7 @@ use uom::si::{
 
 mod imp {
     use crate::{
-        core::{Settings, Unitsystem},
+        core::{Settings, UnitSystem},
         widgets::{BmiLevelBar, DateSelector, SyncListBox, UnitSpinButton},
     };
     use adw::prelude::*;
@@ -52,7 +52,7 @@ mod imp {
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/preferences_window.ui")]
     pub struct PreferencesWindow {
-        pub current_unitsystem: Cell<Unitsystem>,
+        pub current_unit_system: Cell<UnitSystem>,
         pub parent_window: OnceCell<Option<gtk::Window>>,
         pub settings: Settings,
         pub window_indentifier: OnceCell<ashpd::WindowIdentifier>,
@@ -60,15 +60,15 @@ mod imp {
         #[template_child]
         pub height_actionrow: TemplateChild<adw::ActionRow>,
         #[template_child]
-        pub weightgoal_actionrow: TemplateChild<adw::ActionRow>,
+        pub weight_goal_actionrow: TemplateChild<adw::ActionRow>,
         #[template_child]
         pub birthday_selector: TemplateChild<DateSelector>,
         #[template_child]
         pub height_spin_button: TemplateChild<UnitSpinButton>,
         #[template_child]
-        pub stepgoal_spin_button: TemplateChild<gtk::SpinButton>,
+        pub step_goal_spin_button: TemplateChild<gtk::SpinButton>,
         #[template_child]
-        pub weightgoal_spin_button: TemplateChild<UnitSpinButton>,
+        pub weight_goal_spin_button: TemplateChild<UnitSpinButton>,
         #[template_child]
         pub bmi_levelbar: TemplateChild<BmiLevelBar>,
         #[template_child]
@@ -102,15 +102,15 @@ mod imp {
         fn new() -> Self {
             let settings = Settings::instance();
             Self {
-                current_unitsystem: Cell::new(settings.unitsystem()),
+                current_unit_system: Cell::new(settings.unit_system()),
                 settings,
                 window_indentifier: OnceCell::new(),
                 height_actionrow: TemplateChild::default(),
-                weightgoal_actionrow: TemplateChild::default(),
+                weight_goal_actionrow: TemplateChild::default(),
                 birthday_selector: TemplateChild::default(),
                 height_spin_button: TemplateChild::default(),
-                stepgoal_spin_button: TemplateChild::default(),
-                weightgoal_spin_button: TemplateChild::default(),
+                step_goal_spin_button: TemplateChild::default(),
+                weight_goal_spin_button: TemplateChild::default(),
                 bmi_levelbar: TemplateChild::default(),
                 parent_window: OnceCell::new(),
                 sync_list_box: TemplateChild::default(),
@@ -140,20 +140,21 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            if self.current_unitsystem.get() == Unitsystem::Metric {
+            if self.current_unit_system.get() == UnitSystem::Metric {
                 self.height_spin_button
                     .set_value(f64::from(self.settings.user_height().get::<centimeter>()));
-                self.weightgoal_spin_button
-                    .set_value(f64::from(self.settings.user_weightgoal().get::<kilogram>()));
+                self.weight_goal_spin_button.set_value(f64::from(
+                    self.settings.user_weight_goal().get::<kilogram>(),
+                ));
             } else {
                 self.height_spin_button
                     .set_value(f64::from(self.settings.user_height().get::<inch>()));
-                self.weightgoal_spin_button
-                    .set_value(f64::from(self.settings.user_weightgoal().get::<pound>()));
+                self.weight_goal_spin_button
+                    .set_value(f64::from(self.settings.user_weight_goal().get::<pound>()));
             }
 
-            self.stepgoal_spin_button
-                .set_value(f64::from(self.settings.user_stepgoal()));
+            self.step_goal_spin_button
+                .set_value(f64::from(self.settings.user_step_goal()));
             if let Some(date) = self.settings.user_birthday() {
                 self.birthday_selector
                     .set_selected_date(date.and_hms(0, 0, 0));
@@ -161,7 +162,7 @@ mod imp {
             self.bmi_levelbar.set_height(self.settings.user_height());
 
             self.bmi_levelbar
-                .set_weight(self.settings.user_weightgoal());
+                .set_weight(self.settings.user_weight_goal());
             obj.setup_actions();
             obj.connect_handlers();
         }
@@ -255,8 +256,8 @@ impl PreferencesWindow {
 
         self_
             .settings
-            .connect_unitsystem_changed(clone!(@weak self as obj => move |_, _| {
-                obj.handle_unitsystem_changed();
+            .connect_unit_system_changed(clone!(@weak self as obj => move |_, _| {
+                obj.handle_unit_system_changed();
             }));
 
         self_.birthday_selector.connect_selected_date_notify(
@@ -290,15 +291,15 @@ impl PreferencesWindow {
             }));
 
         self_
-            .stepgoal_spin_button
+            .step_goal_spin_button
             .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_stepgoal_spin_button_changed();
+                obj.handle_step_goal_spin_button_changed();
             }));
 
         self_
-            .weightgoal_spin_button
+            .weight_goal_spin_button
             .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_weightgoal_spin_button_changed();
+                obj.handle_weight_goal_spin_button_changed();
             }));
     }
 
@@ -342,7 +343,7 @@ impl PreferencesWindow {
     fn handle_height_spin_button_changed(&self) {
         let self_ = self.imp();
         if let Some(val) = self_.height_spin_button.raw_value::<f32>() {
-            let height = if self_.current_unitsystem.get() == Unitsystem::Metric {
+            let height = if self_.current_unit_system.get() == UnitSystem::Metric {
                 Length::new::<centimeter>(val)
             } else {
                 Length::new::<inch>(val)
@@ -394,60 +395,70 @@ impl PreferencesWindow {
         }
     }
 
-    fn handle_stepgoal_spin_button_changed(&self) {
+    fn handle_step_goal_spin_button_changed(&self) {
         let self_ = self.imp();
-        if let Some(val) = self_.stepgoal_spin_button.raw_value::<u32>() {
-            self_.settings.set_user_stepgoal(val);
+        if let Some(val) = self_.step_goal_spin_button.raw_value::<u32>() {
+            self_.settings.set_user_step_goal(val);
         }
     }
 
-    fn handle_unitsystem_changed(&self) {
+    fn handle_unit_system_changed(&self) {
         let self_ = self.imp();
-        let unitsystem = self_.settings.unitsystem();
+        let unit_system = self_.settings.unit_system();
 
-        if unitsystem == Unitsystem::Imperial && !self_.unit_imperial_togglebutton.is_active() {
+        if unit_system == UnitSystem::Imperial && !self_.unit_imperial_togglebutton.is_active() {
             self_.unit_imperial_togglebutton.set_active(true);
-        } else if unitsystem == Unitsystem::Metric && !self_.unit_metric_togglebutton.is_active() {
+        } else if unit_system == UnitSystem::Metric && !self_.unit_metric_togglebutton.is_active() {
             self_.unit_metric_togglebutton.set_active(true);
         }
 
-        if self_.current_unitsystem.get() == unitsystem {
+        if self_.current_unit_system.get() == unit_system {
             return;
         }
 
-        self_.current_unitsystem.set(unitsystem);
+        self_.current_unit_system.set(unit_system);
 
-        if unitsystem == Unitsystem::Metric {
+        if unit_system == UnitSystem::Metric {
             self_.height_spin_button.set_value(f64::from(
                 Length::new::<inch>(self_.height_spin_button.raw_value().unwrap_or_default())
                     .get::<centimeter>(),
             ));
-            self_.weightgoal_spin_button.set_value(f64::from(
-                Mass::new::<pound>(self_.weightgoal_spin_button.raw_value().unwrap_or_default())
-                    .get::<kilogram>(),
+            self_.weight_goal_spin_button.set_value(f64::from(
+                Mass::new::<pound>(
+                    self_
+                        .weight_goal_spin_button
+                        .raw_value()
+                        .unwrap_or_default(),
+                )
+                .get::<kilogram>(),
             ));
         } else {
             self_.height_spin_button.set_value(f64::from(
                 Length::new::<centimeter>(self_.height_spin_button.raw_value().unwrap_or_default())
                     .get::<inch>(),
             ));
-            self_.weightgoal_spin_button.set_value(f64::from(
-                Mass::new::<kilogram>(self_.weightgoal_spin_button.raw_value().unwrap_or_default())
-                    .get::<pound>(),
+            self_.weight_goal_spin_button.set_value(f64::from(
+                Mass::new::<kilogram>(
+                    self_
+                        .weight_goal_spin_button
+                        .raw_value()
+                        .unwrap_or_default(),
+                )
+                .get::<pound>(),
             ));
         }
     }
 
-    fn handle_weightgoal_spin_button_changed(&self) {
+    fn handle_weight_goal_spin_button_changed(&self) {
         let self_ = self.imp();
-        if let Some(val) = self_.weightgoal_spin_button.raw_value::<f32>() {
-            let weight = if self_.current_unitsystem.get() == Unitsystem::Metric {
+        if let Some(val) = self_.weight_goal_spin_button.raw_value::<f32>() {
+            let weight = if self_.current_unit_system.get() == UnitSystem::Metric {
                 Mass::new::<kilogram>(val)
             } else {
                 Mass::new::<pound>(val)
             };
 
-            self_.settings.set_user_weightgoal(weight);
+            self_.settings.set_user_weight_goal(weight);
             self_.bmi_levelbar.set_weight(weight);
         }
     }

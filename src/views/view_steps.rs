@@ -145,12 +145,12 @@ impl ViewSteps {
         ));
 
         let goal_label = view.goal_label();
-        let streak_count = steps_graph_model.streak_count_today(self_.settings.user_stepgoal());
+        let streak_count = steps_graph_model.streak_count_today(self_.settings.user_step_goal());
 
         match streak_count {
             0 => {
                 let previous_streak =
-                    steps_graph_model.streak_count_yesterday(self_.settings.user_stepgoal());
+                    steps_graph_model.streak_count_yesterday(self_.settings.user_step_goal());
                 if previous_streak == 0 {
                     goal_label.set_text(&i18n(
                         "No streak yet. Reach your step goal for multiple days to start a streak!",
@@ -189,7 +189,7 @@ impl ViewSteps {
                     &[&p.value.to_string(), &p.date.format_local()],
                 )
             })));
-            steps_graph_view.set_limit(Some(self_.settings.user_stepgoal() as f32));
+            steps_graph_view.set_limit(Some(self_.settings.user_step_goal() as f32));
             steps_graph_view.set_limit_label(Some(i18n("Step goal")));
 
             self_.scrolled_window.set_child(Some(&steps_graph_view));
@@ -199,7 +199,7 @@ impl ViewSteps {
 
             self_
                 .settings_handler_id
-                .replace(Some(self_.settings.connect_user_stepgoal_changed(
+                .replace(Some(self_.settings.connect_user_step_goal_changed(
                     glib::clone!(@weak self as obj => move |_,_| {
                         gtk_macros::spawn!(async move {
                             obj.update().await;

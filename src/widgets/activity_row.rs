@@ -19,7 +19,7 @@
 use std::convert::TryInto;
 
 use crate::{
-    core::{date::prelude::*, Unitsystem},
+    core::{date::prelude::*, UnitSystem},
     model::{Activity, ActivityDataPoints, ActivityInfo},
     ni18n_f,
 };
@@ -183,7 +183,7 @@ impl ActivityRow {
             if let Some(distance) = activity.distance() {
                 self_.distance_row.set_visible(true);
 
-                if self_.settings.unitsystem() == Unitsystem::Imperial {
+                if self_.settings.unit_system() == UnitSystem::Imperial {
                     self_.distance_label.set_label(&format!(
                         "{}",
                         distance.into_format_args(meter, Abbreviation)

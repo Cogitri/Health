@@ -76,7 +76,7 @@ impl GraphModelSteps {
         }
     }
 
-    /// Get how many days the user has upheld their step streak (as in have reached their stepgoal), including today.
+    /// Get how many days the user has upheld their step streak (as in have reached their step goal), including today.
     ///
     /// # Returns
     /// The number of days.
@@ -85,7 +85,7 @@ impl GraphModelSteps {
         self.streak_count(step_goal, today.into())
     }
 
-    /// Get how many days the user has upheld their step streak (as in have reached their stepgoal), excluding today.
+    /// Get how many days the user has upheld their step streak (as in have reached their step goal), excluding today.
     ///
     /// # Returns
     /// The number of days.

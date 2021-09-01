@@ -53,8 +53,8 @@
     </key>
     <key name="unitsystem" enum="dev.Cogitri.Health.Units">
       <default>'metric'</default>
-      <summary>Unitsystem used</summary>
-      <description>The unitsystem the user chose, e.g. for cm vs inch for height</description>
+      <summary>Unit system used</summary>
+      <description>The unit system the user chose, e.g. for cm vs inch for height</description>
     </key>
     <key name="user-age" type="u">
       <default>0</default>
@@ -73,12 +73,12 @@
     </key>
     <key name="user-stepgoal" type="u">
       <default>10000</default>
-      <summary>User stepgoal</summary>
+      <summary>User step goal</summary>
       <description>The amount of steps the user wants to reach daily.</description>
     </key>
     <key name="user-weightgoal" type="d">
       <default>-1</default>
-      <summary>User weightgoal</summary>
+      <summary>User weight goal</summary>
       <description>The weight the user wants to reach.</description>
     </key>
     <key name="window-height" type="i">
