@@ -138,7 +138,7 @@ pub fn init_gtk() {
             .spawn()
             .expect("Failed to run glib-compile-resources!");
 
-        std::thread::sleep(std::time::Duration::from_secs(1));
+        while !gresource_path.exists() {}
 
         gio::Resource::load(gresource_path)
     };
