@@ -83,7 +83,7 @@ pages:
     - source $HOME/.cargo/env
   script:
     - meson build
-    - cargo doc
+    - cargo makedocs
     - rm -rf public
     - mv target/doc/ public
   cache:
