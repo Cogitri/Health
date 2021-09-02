@@ -112,7 +112,7 @@ mod imp {
                         "unit-kind",
                         "unit-kind",
                         None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
                     ),
                     glib::ParamSpec::new_string(
                         "unit-system",
@@ -160,10 +160,9 @@ mod imp {
                 }
                 "digits" => self.spin_button.set_digits(value.get().unwrap()),
                 "text" => self.spin_button.set_text(value.get().unwrap()),
-                "unit-kind" => {
-                    self.inner.borrow_mut().current_unit_kind =
-                        Some(UnitKind::from_str(value.get().unwrap()).unwrap())
-                }
+                "unit-kind" => obj.handle_settings_unit_kind_changed(
+                    UnitKind::from_str(value.get().unwrap()).unwrap(),
+                ),
                 "unit-system" => obj.handle_settings_unit_system_changed(
                     UnitSystem::from_str(value.get().unwrap()).unwrap(),
                 ),
@@ -354,16 +353,15 @@ impl UnitSpinButton {
             }));
     }
 
-    fn handle_settings_unit_system_changed(&self, unit_system: UnitSystem) {
+    fn handle_conversion(
+        &self,
+        previous_unit_kind: Option<UnitKind>,
+        previous_unit_system: Option<UnitSystem>,
+    ) -> bool {
         let self_ = self.imp();
-        let (current_unit_system, current_unit_kind) = {
-            let inner = self_.inner.borrow();
-            (inner.current_unit_system, inner.current_unit_kind)
-        };
-        self_.inner.borrow_mut().current_unit_system = Some(unit_system);
 
         if let Some(value) = self.raw_value() {
-            if let Some(old_value) = match (current_unit_system, current_unit_kind) {
+            if let Some(old_value) = match (previous_unit_system, previous_unit_kind) {
                 (Some(UnitSystem::Metric), Some(UnitKind::LikeCentimeters)) => {
                     Some(Value::Length(Length::new::<centimeter>(value)))
                 }
@@ -390,37 +388,67 @@ impl UnitSpinButton {
                 }
                 _ => None,
             } {
-                match (unit_system, current_unit_kind.unwrap()) {
-                    (UnitSystem::Metric, UnitKind::LikeCentimeters) => {
+                match (
+                    self_.inner.borrow().current_unit_system,
+                    self_.inner.borrow().current_unit_kind,
+                ) {
+                    (Some(UnitSystem::Metric), Some(UnitKind::LikeCentimeters)) => {
                         self.set_value(get_value!(old_value, Value::Length, centimeter))
                     }
-                    (UnitSystem::Metric, UnitKind::LikeMeters) => {
+                    (Some(UnitSystem::Metric), Some(UnitKind::LikeMeters)) => {
                         self.set_value(get_value!(old_value, Value::Length, meter))
                     }
-                    (UnitSystem::Metric, UnitKind::LikeKilometers) => {
+                    (Some(UnitSystem::Metric), Some(UnitKind::LikeKilometers)) => {
                         self.set_value(get_value!(old_value, Value::Length, kilometer))
                     }
-                    (UnitSystem::Metric, UnitKind::LikeKilogram) => {
+                    (Some(UnitSystem::Metric), Some(UnitKind::LikeKilogram)) => {
                         self.set_value(get_value!(old_value, Value::Mass, kilogram))
                     }
-                    (UnitSystem::Imperial, UnitKind::LikeCentimeters) => {
+                    (Some(UnitSystem::Imperial), Some(UnitKind::LikeCentimeters)) => {
                         self.set_value(get_value!(old_value, Value::Length, inch))
                     }
-                    (UnitSystem::Imperial, UnitKind::LikeMeters) => {
+                    (Some(UnitSystem::Imperial), Some(UnitKind::LikeMeters)) => {
                         self.set_value(get_value!(old_value, Value::Length, foot))
                     }
-                    (UnitSystem::Imperial, UnitKind::LikeKilometers) => {
+                    (Some(UnitSystem::Imperial), Some(UnitKind::LikeKilometers)) => {
                         self.set_value(get_value!(old_value, Value::Length, mile))
                     }
-                    (UnitSystem::Imperial, UnitKind::LikeKilogram) => {
+                    (Some(UnitSystem::Imperial), Some(UnitKind::LikeKilogram)) => {
                         self.set_value(get_value!(old_value, Value::Mass, pound))
                     }
+                    _ => {}
                 }
-                return;
+                return true;
             }
         }
 
-        self_.spin_button.update();
+        false
+    }
+
+    fn handle_settings_unit_kind_changed(&self, unit_kind: UnitKind) {
+        let self_ = self.imp();
+        let (current_unit_kind, current_unit_system) = {
+            let inner = self_.inner.borrow();
+            (inner.current_unit_kind, inner.current_unit_system)
+        };
+        self_.inner.borrow_mut().current_unit_kind = Some(unit_kind);
+
+        if !self.handle_conversion(current_unit_kind, current_unit_system) {
+            self_.spin_button.update();
+        }
+    }
+
+    fn handle_settings_unit_system_changed(&self, unit_system: UnitSystem) {
+        let self_ = self.imp();
+        let (current_unit_system, current_unit_kind) = {
+            let inner = self_.inner.borrow();
+            (inner.current_unit_system, inner.current_unit_kind)
+        };
+        self_.inner.borrow_mut().current_unit_system = Some(unit_system);
+
+        if !self.handle_conversion(current_unit_kind, current_unit_system) {
+            self_.spin_button.update();
+        }
     }
 
     fn handle_spin_button_input(&self) -> Option<Result<f64, ()>> {
@@ -601,5 +629,35 @@ mod test {
         assert_eq!(btn.text(), format!("10 {}", i18n("cm")));
         btn.set_unit_system(UnitSystem::Imperial);
         assert_eq!(btn.text(), format!("3.9 {}", i18n("in")));
+    }
+
+    #[test]
+    fn test_change_unit_kind_small_big() {
+        crate::utils::init_gtk();
+
+        let btn = UnitSpinButton::new(
+            &gtk::Adjustment::new(100.0, 0.0, 1000.0, 10.0, 100.0, 0.0),
+            false,
+            UnitKind::LikeCentimeters,
+        );
+        btn.set_unit_system(UnitSystem::Metric);
+        btn.set_unit_kind(UnitKind::LikeMeters);
+        assert_eq!(btn.value(), 1.0);
+        btn.set_unit_kind(UnitKind::LikeKilometers);
+        assert_eq!(btn.value(), 0.0010000000474974513);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_change_unit_kind_invalid() {
+        crate::utils::init_gtk();
+
+        let btn = UnitSpinButton::new(
+            &gtk::Adjustment::new(100.0, 0.0, 1000.0, 10.0, 100.0, 0.0),
+            false,
+            UnitKind::LikeCentimeters,
+        );
+        btn.set_unit_system(UnitSystem::Metric);
+        btn.set_unit_kind(UnitKind::LikeKilogram);
     }
 }

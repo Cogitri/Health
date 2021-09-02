@@ -169,6 +169,7 @@ impl DistanceActionRow {
     pub fn set_unitsize(&self, unitsize: Unitsize) {
         let self_ = self.imp();
         let adjustment = &self_.distance_adjustment;
+        self_.inner.borrow_mut().unitsize = unitsize;
         if unitsize == Unitsize::Small {
             adjustment.set_step_increment(100.0);
             adjustment.set_page_increment(1000.0);
@@ -188,13 +189,6 @@ impl DistanceActionRow {
         } else if unitsize == Unitsize::Small && !self_.small_unit_togglebutton.is_active() {
             self_.small_unit_togglebutton.set_active(true);
         }
-
-        let val = {
-            let mut inner = self.imp().inner.borrow_mut();
-            inner.unitsize = unitsize;
-            inner.value
-        };
-        self.set_value(val)
     }
 
     pub fn set_value(&self, value: Length) {
