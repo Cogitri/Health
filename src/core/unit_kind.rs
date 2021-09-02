@@ -11,11 +11,11 @@
 #[strum(serialize_all = "snake_case")]
 pub enum UnitKind {
     /// Centimeters or Inch
-    LengthSmall,
+    LikeCentimeters,
     /// Meters or Feet
-    LengthBig,
+    LikeMeters,
     /// Kilometers or Miles
-    LengthVeryBig,
+    LikeKilometers,
     /// Kilograms or Pounds
-    WeightBig,
+    LikeKilogram,
 }

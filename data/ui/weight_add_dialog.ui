@@ -61,7 +61,7 @@
                     <property name="title" translatable="yes">Weight</property>
                     <child>
                       <object class="HealthUnitSpinButton" id="weight_spin_button">
-                        <property name="unit-kind">weight_big</property>
+                        <property name="unit-kind">like_kilogram</property>
                         <property name="width-chars">5</property>
                         <property name="text">0</property>
                         <property name="adjustment">weight_adjustment</property>

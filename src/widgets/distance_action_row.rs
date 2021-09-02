@@ -174,13 +174,13 @@ impl DistanceActionRow {
             adjustment.set_page_increment(1000.0);
             self_
                 .distance_spin_button
-                .set_unit_kind(UnitKind::LengthSmall);
+                .set_unit_kind(UnitKind::LikeMeters);
         } else {
             adjustment.set_step_increment(1.0);
             adjustment.set_page_increment(5.0);
             self_
                 .distance_spin_button
-                .set_unit_kind(UnitKind::LengthBig);
+                .set_unit_kind(UnitKind::LikeKilometers);
         }
 
         if unitsize == Unitsize::Big && !self_.big_unit_togglebutton.is_active() {
