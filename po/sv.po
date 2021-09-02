@@ -1,0 +1,1075 @@
+# Swedish translations for health.
+# Copyright © 2021 health's COPYRIGHT HOLDER
+# This file is distributed under the same license as the health package.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: health master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
+"POT-Creation-Date: 2021-09-01 18:36+0000\n"
+"PO-Revision-Date: 2021-09-02 22:19+0200\n"
+"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
+"Language: sv\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.ui:45
+#: src/main.rs:31
+msgid "Health"
+msgstr "Hälsa"
+
+#: data/dev.Cogitri.Health.desktop.in.in:5
+msgid "@APPLICATION_ID@"
+msgstr "@APPLICATION_ID@"
+
+#: data/dev.Cogitri.Health.gschema.xml:16
+msgid "Last opened view"
+msgstr "Senast öppnade vy"
+
+#: data/dev.Cogitri.Health.gschema.xml:17
+msgid "The last view the user had opened, for restoring it on start"
+msgstr ""
+"Den senaste vyn som användaren har öppnat, för att återställa den vid "
+"uppstart"
+
+#: data/dev.Cogitri.Health.gschema.xml:21
+msgid "First time setup done"
+msgstr "Förstagångskonfigurationen är färdig"
+
+#: data/dev.Cogitri.Health.gschema.xml:22
+msgid "Whether the user has completed the setup wizard"
+msgstr "Huruvida användaren har slutfört konfigurationsguiden"
+
+#: data/dev.Cogitri.Health.gschema.xml:26
+msgid "Toggle notifications"
+msgstr "Växla aviseringar"
+
+#: data/dev.Cogitri.Health.gschema.xml:27
+msgid "Whether to enable notifications."
+msgstr "Huruvida aviseringar ska aktiveras."
+
+#: data/dev.Cogitri.Health.gschema.xml:31
+msgid "Notification time"
+msgstr "Aviseringstid"
+
+#: data/dev.Cogitri.Health.gschema.xml:32
+msgid "The time at which Health should remind the user of their step goal"
+msgstr "Tiden vid vilken Hälsa ska påminna användaren om sitt stegmål"
+
+#: data/dev.Cogitri.Health.gschema.xml:36
+msgid "notification frequency"
+msgstr "aviseringsfrekvens"
+
+#: data/dev.Cogitri.Health.gschema.xml:37
+msgid ""
+"How frequent should the user be notified to complete their daily step-goal."
+msgstr ""
+"Hur ofta användaren ska aviseras om att slutföra sitt dagliga stegmål."
+
+#: data/dev.Cogitri.Health.gschema.xml:41
+msgid "List of recent activity types"
+msgstr "Lista över senaste aktivitetstyper"
+
+#: data/dev.Cogitri.Health.gschema.xml:42
+msgid ""
+"Activity types the user used recently, to be shown first in the activity "
+"types selector's list"
+msgstr ""
+"Aktivitetstyper som användaren senast använt, för att visas först i "
+"vallistan för aktivitetstyper"
+
+#: data/dev.Cogitri.Health.gschema.xml:46
+msgid "Google Fit Sync-Provider setup"
+msgstr "Konfiguration av Google Fit-synkroniseringsleverantör"
+
+#: data/dev.Cogitri.Health.gschema.xml:47
+msgid "Whether Google Fit has been setup as sync provider"
+msgstr "Huruvida Google Fit har konfigurerats som synkroniseringsleverantör"
+
+#: data/dev.Cogitri.Health.gschema.xml:51
+msgid "Last sync with Google Fit"
+msgstr "Senaste synkronisering med Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:52
+msgid "The last time we synched steps, weight etc. with Google Fit"
+msgstr "Senast vi synkroniserade steg, vikt o.s.v. med Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:56
+msgid "Unitsystem used"
+msgstr "Använt enhetssystem"
+
+#: data/dev.Cogitri.Health.gschema.xml:57
+msgid "The unitsystem the user chose, e.g. for cm vs inch for height"
+msgstr "Enhetssystemet som användaren valde, t.ex. cm eller tum för höjd"
+
+#: data/dev.Cogitri.Health.gschema.xml:61
+msgid "User age"
+msgstr "Användarens ålder"
+
+#: data/dev.Cogitri.Health.gschema.xml:62
+msgid "The age of the user (deprecated)."
+msgstr "Användarens ålder (föråldrat)."
+
+#: data/dev.Cogitri.Health.gschema.xml:66
+msgid "Absolute user age"
+msgstr "Absolut användarålder"
+
+#: data/dev.Cogitri.Health.gschema.xml:67
+msgid "The age of the user in absolute terms (like 01/01/1970)"
+msgstr "Användarens ålder i form av födelsedatum (som 1970-01-01)"
+
+#: data/dev.Cogitri.Health.gschema.xml:71
+msgid "User height"
+msgstr "Användarens längd"
+
+#: data/dev.Cogitri.Health.gschema.xml:72
+msgid "The height of the user."
+msgstr "Användarens längd."
+
+#: data/dev.Cogitri.Health.gschema.xml:76
+msgid "User stepgoal"
+msgstr "Användarens stegmål"
+
+#: data/dev.Cogitri.Health.gschema.xml:77
+msgid "The amount of steps the user wants to reach daily."
+msgstr "Antalet steg som användaren vill nå dagligen."
+
+#: data/dev.Cogitri.Health.gschema.xml:81
+msgid "User weightgoal"
+msgstr "Användarens målvikt"
+
+#: data/dev.Cogitri.Health.gschema.xml:82
+msgid "The weight the user wants to reach."
+msgstr "Vikten som användaren vill nå."
+
+#: data/dev.Cogitri.Health.gschema.xml:86
+msgid "Window height"
+msgstr "Fönsterhöjd"
+
+#: data/dev.Cogitri.Health.gschema.xml:87
+msgid "The height of the window."
+msgstr "Höjden på fönstret."
+
+#: data/dev.Cogitri.Health.gschema.xml:91
+msgid "Window maximized"
+msgstr "Fönster maximerat"
+
+#: data/dev.Cogitri.Health.gschema.xml:92
+msgid "Whether the window is maximized."
+msgstr "Huruvida fönstret är maximerat."
+
+#: data/dev.Cogitri.Health.gschema.xml:96
+msgid "Window width"
+msgstr "Fönsterbredd"
+
+#: data/dev.Cogitri.Health.gschema.xml:97
+msgid "The width of the window."
+msgstr "Bredden på fönstret."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:137
+msgid "A health tracking app for the GNOME desktop."
+msgstr "Ett hälsoobservationsprogram för GNOME-skrivbordet."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+msgid ""
+"A health tracking app for the GNOME desktop. Health can visualize how many "
+"steps you've made daily, your weight development over time and your daily "
+"activities."
+msgstr ""
+"Ett hälsoobservationsprogram för GNOME-skrivbordet. Hälsa kan visualisera "
+"hur många steg du tagit dagligen, din viktutveckling över tid och dina "
+"dagliga aktiviteter."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:31
+msgid "Rasmus “Cogitri” Thomsen"
+msgstr "Rasmus ”Cogitri” Thomsen"
+
+#: data/ui/activity_add_dialog.ui:64
+msgid "Add An Activity"
+msgstr "Lägg till en aktivitet"
+
+#: data/ui/activity_add_dialog.ui:93 data/ui/weight_add_dialog.ui:51
+msgid "Date"
+msgstr "Datum"
+
+#: data/ui/activity_add_dialog.ui:102
+msgid "Activity Type"
+msgstr "Typ av aktivitet"
+
+#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:75
+msgid "Calories Burned"
+msgstr "Förbrända kalorier"
+
+#: data/ui/activity_add_dialog.ui:124
+msgid "Active Minutes"
+msgstr "Aktiva minuter"
+
+#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:102
+msgid "Average Heart Rate"
+msgstr "Genomsnittlig hjärtfrekvens"
+
+#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:111
+msgid "Minimum Heart Rate"
+msgstr "Minsta hjärtfrekvens"
+
+#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:120
+msgid "Maximum Heart Rate"
+msgstr "Högsta hjärtfrekvens"
+
+#: data/ui/activity_add_dialog.ui:172
+msgid "Stepcount"
+msgstr "Stegantal"
+
+#: data/ui/activity_row.ui:84
+msgid "Distance in Meters"
+msgstr "Avstånd i meter"
+
+#: data/ui/activity_row.ui:93 data/ui/home_page.ui:69 data/ui/step_view.ui:26
+#: data/ui/step_view.ui:27
+msgid "Steps"
+msgstr "Steg"
+
+#: data/ui/activity_view.ui:24 data/ui/calorie_view.ui:23
+#: data/ui/home_page.ui:24 data/ui/step_view.ui:23
+msgid "You can use the <b>+</b> button to add a new activity."
+msgstr "Du kan använda knappen <b>+</b> för att lägga till en ny aktivitet."
+
+#: data/ui/activity_view.ui:27 data/ui/home_page.ui:27
+msgid "Recent Activities"
+msgstr "Senaste aktiviteter"
+
+#: data/ui/activity_view.ui:28
+msgid "Activities"
+msgstr "Aktiviteter"
+
+#: data/ui/calorie_view.ui:26 data/ui/calorie_view.ui:27
+msgid "Calories"
+msgstr "Kalorier"
+
+#: data/ui/data_add_dialog.ui:26 data/ui/preferences_window.ui:72
+msgid "Health Preferences"
+msgstr "Inställningar för Hälsa"
+
+#: data/ui/data_add_dialog.ui:31 data/ui/import_export_dialog_base.ui:29
+#: src/windows/export_dialog.rs:56 src/windows/export_dialog.rs:92
+#: src/windows/import_dialog.rs:56 src/windows/import_dialog.rs:85
+msgid "_Cancel"
+msgstr "A_vbryt"
+
+#: data/ui/data_add_dialog.ui:37 src/windows/export_dialog.rs:55
+#: src/windows/export_dialog.rs:91
+msgid "_Save"
+msgstr "_Spara"
+
+#: data/ui/date_editor.ui:29
+msgid "January"
+msgstr "Januari"
+
+#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:243
+msgid "February"
+msgstr "Februari"
+
+#: data/ui/date_editor.ui:31
+msgid "March"
+msgstr "Mars"
+
+#: data/ui/date_editor.ui:32
+msgid "April"
+msgstr "April"
+
+#: data/ui/date_editor.ui:33
+msgid "May"
+msgstr "Maj"
+
+#: data/ui/date_editor.ui:34
+msgid "June"
+msgstr "Juni"
+
+#: data/ui/date_editor.ui:35
+msgid "July"
+msgstr "Juli"
+
+#: data/ui/date_editor.ui:36
+msgid "August"
+msgstr "Augusti"
+
+#: data/ui/date_editor.ui:37
+msgid "September"
+msgstr "September"
+
+#: data/ui/date_editor.ui:38
+msgid "October"
+msgstr "Oktober"
+
+#: data/ui/date_editor.ui:39
+msgid "November"
+msgstr "November"
+
+#: data/ui/date_editor.ui:40
+msgid "December"
+msgstr "December"
+
+#: data/ui/date_editor.ui:51
+msgid "Day"
+msgstr "Dag"
+
+#: data/ui/date_editor.ui:76
+msgid "Month"
+msgstr "Månad"
+
+#: data/ui/date_editor.ui:98
+msgid "Year"
+msgstr "År"
+
+#: data/ui/distance_action_row.ui:29
+msgid "Distance"
+msgstr "Avstånd"
+
+#: data/ui/home_page.ui:28
+msgid "Home Page"
+msgstr "Webbsida"
+
+#: data/ui/home_page.ui:63 data/ui/preferences_window.ui:82
+#: data/ui/shortcuts_window.ui:30
+msgid "General"
+msgstr "Allmänt"
+
+#: data/ui/home_page.ui:66
+msgid "Today"
+msgstr "Idag"
+
+#. TRANSLATORS: This is displayed via two strings: x% and then this label. E.g. 100% of daily step goal
+#: data/ui/home_page.ui:90
+msgid "of daily step goal"
+msgstr "av dagligt stegmål"
+
+#: data/ui/home_page.ui:103 data/ui/weight_add_dialog.ui:61
+#: data/ui/weight_view.ui:27
+msgid "Weight"
+msgstr "Vikt"
+
+#: data/ui/import_export_dialog_base.ui:35
+msgid "_Export"
+msgstr "_Exportera"
+
+#: data/ui/password_entry.ui:28
+msgid "_Password"
+msgstr "_Lösenord"
+
+#: data/ui/password_entry.ui:58
+msgid "_Confirm password"
+msgstr "_Bekräfta lösenord"
+
+#: data/ui/preferences_window.ui:55
+msgid "_Every 1 hour"
+msgstr "_Varje timme"
+
+#: data/ui/preferences_window.ui:60
+msgid "_Every 4 hours"
+msgstr "_Var 4:e timme"
+
+#: data/ui/preferences_window.ui:65
+msgid "_Fixed Time"
+msgstr "_Fast tid"
+
+#: data/ui/preferences_window.ui:85
+msgid "User"
+msgstr "Användare"
+
+#: data/ui/preferences_window.ui:88 data/ui/setup_window.ui:176
+msgid "Unitsystem"
+msgstr "Enhetssystem"
+
+#: data/ui/preferences_window.ui:97 data/ui/setup_window.ui:185
+msgid "Imperial"
+msgstr "Brittiskt"
+
+#: data/ui/preferences_window.ui:104 data/ui/setup_window.ui:192
+msgid "Metric"
+msgstr "Metriskt"
+
+#: data/ui/preferences_window.ui:115 data/ui/setup_window.ui:203
+msgid "Birthday"
+msgstr "Födelsedag"
+
+#: data/ui/preferences_window.ui:140
+msgid "Notifications"
+msgstr "Aviseringar"
+
+#: data/ui/preferences_window.ui:143
+msgid "Enable notifications"
+msgstr "Aktivera aviseringar"
+
+#: data/ui/preferences_window.ui:156
+msgid "Frequency"
+msgstr "Frekvens"
+
+#: data/ui/preferences_window.ui:173
+msgid "Daily reminder time"
+msgstr "Daglig påminnelsetid"
+
+#: data/ui/preferences_window.ui:197 data/ui/setup_window.ui:279
+msgid "Stepgoal"
+msgstr "Stegmål"
+
+#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:256
+msgid "The WHO recommends 10.000 steps per day."
+msgstr "WHO rekommenderar 10 000 steg per dag."
+
+#: data/ui/preferences_window.ui:217 data/ui/setup_window.ui:321
+msgid "The WHO recommends a BMI of 18.5-24.9."
+msgstr "WHO rekommenderar ett BMI på 18,5-24,9."
+
+#: data/ui/preferences_window.ui:245
+msgid "Sync"
+msgstr "Synkronisering"
+
+#: data/ui/preferences_window.ui:249
+msgid "Start sync with third-party providers."
+msgstr "Starta synkronisering med tredjepartsleverantörer."
+
+#: data/ui/preferences_window.ui:259
+msgid "Importing and exporting data"
+msgstr "Importera och exportera data"
+
+#: data/ui/preferences_window.ui:262
+msgid "Export data as CSV"
+msgstr "Exportera data som CSV"
+
+#: data/ui/preferences_window.ui:265
+msgid "Export…"
+msgstr "Exportera…"
+
+#: data/ui/preferences_window.ui:273
+msgid "Import data from CSV"
+msgstr "Importera data från CSV"
+
+#: data/ui/preferences_window.ui:276
+msgid "Import…"
+msgstr "Importera…"
+
+#: data/ui/setup_window.ui:55
+msgid "Health Setup"
+msgstr "Konfiguration av Hälsa"
+
+#: data/ui/setup_window.ui:70
+msgid "_Quit"
+msgstr "A_vsluta"
+
+#: data/ui/setup_window.ui:82
+msgid "_Previous"
+msgstr "Fö_regående"
+
+#: data/ui/setup_window.ui:99
+msgid "_Next"
+msgstr "_Nästa"
+
+#: data/ui/setup_window.ui:113
+msgid "_Done"
+msgstr "_Färdig"
+
+#: data/ui/setup_window.ui:140
+msgid "Welcome to Health!"
+msgstr "Välkommen till Hälsa!"
+
+#: data/ui/setup_window.ui:153
+msgid "Please enter some information to get setup."
+msgstr "Ange lite information för att konfigurera."
+
+#: data/ui/setup_window.ui:213 src/windows/preferences_window.rs:144
+#: src/windows/preferences_window.rs:428 src/windows/setup_window.rs:425
+msgid "Height in centimeters"
+msgstr "Längd i centimeter"
+
+#: data/ui/setup_window.ui:243
+msgid "Please enter your daily stepgoal."
+msgstr "Ange ditt dagliga stegmål."
+
+#: data/ui/setup_window.ui:308
+msgid "Please enter your weightgoal."
+msgstr "Ange din målvikt."
+
+#: data/ui/setup_window.ui:349 src/views/view_weight.rs:170
+msgid "Weightgoal"
+msgstr "Målvikt"
+
+#: data/ui/setup_window.ui:388
+msgid "Setup sync with third-party providers."
+msgstr "Konfigurera synkronisering med tredjepartsleverantörer."
+
+#: data/ui/setup_window.ui:401
+msgid ""
+"You can sync steps and weight measurements from/to third-party providers."
+msgstr ""
+"Du kan synkronisera steg- och viktmätningar från/till "
+"tredjepartsleverantörer."
+
+#: data/ui/shortcuts_window.ui:34
+msgid "Quit the application"
+msgstr "Avsluta programmet"
+
+#: data/ui/shortcuts_window.ui:40
+msgid "Show this shortcuts window"
+msgstr "Visa detta fönster med kortkommandon"
+
+#: data/ui/shortcuts_window.ui:46
+msgid "Show help"
+msgstr "Visa hjälp"
+
+#: data/ui/shortcuts_window.ui:52
+msgid "Show primary menu"
+msgstr "Visa primär meny"
+
+#: data/ui/shortcuts_window.ui:58
+msgid "Toggle fullscreen mode"
+msgstr "Växla helskärmsläge"
+
+#: data/ui/weight_add_dialog.ui:31 data/ui/weight_view.ui:26
+msgid "Weight Measurements"
+msgstr "Viktmätningar"
+
+#: data/ui/weight_add_dialog.ui:32
+msgid "Add Weight Record"
+msgstr "Lägg till viktpost"
+
+#: data/ui/weight_view.ui:23
+msgid "You can use the <b>+</b> button to add a new weight measurement."
+msgstr "Du kan använda knappen <b>+</b> för att lägga till en ny viktmätning."
+
+#: data/ui/window.ui:27
+msgid "_Preferences"
+msgstr "_Inställningar"
+
+#: data/ui/window.ui:31
+msgid "_Keyboard Shortcuts"
+msgstr "_Tangentbordsgenvägar"
+
+#: data/ui/window.ui:37
+msgid "_About Health"
+msgstr "_Om Hälsa"
+
+#: src/core/application.rs:139
+msgid "translator-credits"
+msgstr ""
+"Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"\n"
+"Skicka synpunkter om översättningen till\n"
+"<tp-sv@listor.tp-sv.se>."
+
+#: src/core/application.rs:141
+msgid "Websites"
+msgstr "Webbplatser"
+
+#: src/daemon/main.rs:31
+msgid "Health Daemon"
+msgstr "Hälsa-demon"
+
+#: src/model/activity_info.rs:74
+msgid "Basketball"
+msgstr "Basket"
+
+#: src/model/activity_info.rs:89
+msgid "Bicycling"
+msgstr "Cykling"
+
+#: src/model/activity_info.rs:103
+msgid "Boxing"
+msgstr "Boxning"
+
+#: src/model/activity_info.rs:117
+msgid "Dancing"
+msgstr "Dans"
+
+#: src/model/activity_info.rs:131
+msgid "Football"
+msgstr "Amerikansk fotboll"
+
+#: src/model/activity_info.rs:143
+msgid "Golf"
+msgstr "Golf"
+
+#: src/model/activity_info.rs:159
+msgid "Hiking"
+msgstr "Vandring"
+
+#: src/model/activity_info.rs:173
+msgid "Hockey"
+msgstr "Hockey"
+
+#: src/model/activity_info.rs:188
+msgid "Horse Riding"
+msgstr "Hästridning"
+
+#: src/model/activity_info.rs:202
+msgid "Other Sports"
+msgstr "Andra sporter"
+
+#: src/model/activity_info.rs:217
+msgid "Rollerblading"
+msgstr "Rullskridskoåkning"
+
+#: src/model/activity_info.rs:233
+msgid "Running"
+msgstr "Löpning"
+
+#: src/model/activity_info.rs:248
+msgid "Skiing"
+msgstr "Skidor"
+
+#: src/model/activity_info.rs:262
+msgid "Soccer"
+msgstr "Fotboll"
+
+#: src/model/activity_info.rs:276
+msgid "Softball"
+msgstr "Softboll"
+
+#: src/model/activity_info.rs:291
+msgid "Swimming"
+msgstr "Simning"
+
+#: src/model/activity_info.rs:305
+msgid "Tennis"
+msgstr "Tennis"
+
+#: src/model/activity_info.rs:319
+msgid "Track And Field"
+msgstr "Friidrott"
+
+#: src/model/activity_info.rs:335
+msgid "Volleyball"
+msgstr "Volleyboll"
+
+#: src/model/activity_info.rs:351
+msgid "Walking"
+msgstr "Promenad"
+
+#: src/model/model_notification.rs:125
+msgid "Health: walking reminder"
+msgstr "Hälsa: promenadpåminnelse"
+
+#. TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
+#: src/model/model_notification.rs:148
+msgid "{} step remaining to complete your daily step goal"
+msgid_plural "{} steps remaining to complete your daily step goal"
+msgstr[0] "{} steg återstår för att nå ditt dagliga stegmål"
+msgstr[1] "{} steg återstår för att nå ditt dagliga stegmål på {} steg"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/model/model_notification.rs:154
+msgid "of {} step"
+msgid_plural "of {} steps"
+msgstr[0] "av {} steg"
+msgstr[1] "av {} steg"
+
+#: src/sync/csv.rs:81 src/sync/csv.rs:360
+msgid "No activities added yet; can't create empty export!"
+msgstr "Inga aktiviteter tillagda ännu, kan inte skapa tom export!"
+
+#: src/sync/csv.rs:111 src/sync/csv.rs:378
+msgid "No weight measurements added yet; can't create empty export!"
+msgstr "Inga viktmätningar tillagda ännu, kan inte skapa tom export!"
+
+#: src/sync/csv.rs:184 src/sync/csv.rs:322
+msgid "Can't parse encrypted backup without encryption key!"
+msgstr "Kan inte tolka krypterad säkerhetskopia utan krypteringsnyckel!"
+
+#: src/sync/csv.rs:195 src/sync/csv.rs:342
+msgid ""
+"Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
+"encrypted one?"
+msgstr ""
+"Kunde inte tolka CSV. Försöker du läsa en okrypterad säkerhetskopia som en "
+"krypterad?"
+
+#: src/sync/csv.rs:208
+msgid "Couldn't decrypt data. Are you sure you're using the right key?"
+msgstr "Kunde inte dekryptera data. Är du säker att du använder rätt nyckel?"
+
+# TODO: ev kolon
+#: src/sync/database_receiver.rs:46
+msgid "Couldn't synchronize steps due to error {}"
+msgstr "Kunde inte synkronisera steg på grund av fel {}"
+
+# TODO: ev kolon
+#: src/sync/database_receiver.rs:60
+msgid "Couldn't synchronize weight measurements due to error {}"
+msgstr "Kunde inte synkronisera viktmätningar på grund av fel {}"
+
+#: src/sync/google_fit.rs:211
+msgid "CRSF Verification failed, got {}, expected {}"
+msgstr "CRSF-verifiering misslyckades, fick {}, förväntade {}"
+
+# TODO: ev kolon
+#: src/sync/google_fit.rs:227
+msgid "Requesting OAuth2 token failed due to error {}"
+msgstr "Begäran av OAuth2-token misslyckades på grund av fel {}"
+
+#: src/sync/sync_provider.rs:109
+msgid ""
+"Can't retrieve OAuth2 token when no refresh token is set! Please re-"
+"authenticate with your sync provider."
+msgstr ""
+"Kan inte erhålla OAuth2-token då ingen uppdateringstoken har ställts in! "
+"Autentisera igen med din synkroniseringsleverantör."
+
+#: src/sync/sync_provider.rs:228
+msgid "Successfully authenticated, please return to Health."
+msgstr "Lyckades autentisera, återvänd till Hälsa."
+
+#: src/sync/sync_provider.rs:240
+msgid "Couldn't parse OAuth2 response"
+msgstr "Kunde inte tolka OAuth2-svar"
+
+# Antagligen https://sv.wikipedia.org/wiki/Basaloms%C3%A4ttning som avses
+#: src/views/bar_graph_view.rs:509
+msgid "Enter weight record to calculate idle calories"
+msgstr "Ange vikt för att beräkna kaloriförbränning i vila"
+
+#: src/views/bar_graph_view.rs:513
+msgid "Idle calories"
+msgstr "Vilokalorier"
+
+#: src/views/view_activity.rs:183
+msgid "No activities on or after {}"
+msgstr "Inga aktiviteter på eller efter {}"
+
+#: src/views/view_calories.rs:168
+msgid ""
+"{}:\n"
+"{} calorie\n"
+"{}"
+msgid_plural ""
+"{}:\n"
+"{} calories\n"
+"{}"
+msgstr[0] ""
+"{}:\n"
+"{} kalori\n"
+"{}"
+msgstr[1] ""
+"{}:\n"
+"{} kalorier\n"
+"{}"
+
+#: src/views/view_home_page.rs:255
+msgid "{} step taken today"
+msgid_plural "{} steps taken today"
+msgstr[0] "{} steg taget idag"
+msgstr[1] "{} steg tagna idag"
+
+#: src/views/view_home_page.rs:261
+msgid "{}%"
+msgstr "{}%"
+
+#. TRANSLATORS: Current user weight
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:296 src/views/view_home_page.rs:330
+msgid "{} pound"
+msgid_plural "{} pounds"
+msgstr[0] "{} pund"
+msgstr[1] "{} pund"
+
+#. TRANSLATORS: Current user weight
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:303 src/views/view_home_page.rs:337
+msgid "{} kilogram"
+msgid_plural "{} kilograms"
+msgstr[0] "{} kilogram"
+msgstr[1] "{} kilogram"
+
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:313
+msgid "+ {} pound"
+msgid_plural "+ {} pounds"
+msgstr[0] "+ {} pund"
+msgstr[1] "+ {} pund"
+
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:320
+msgid "+ {} kilogram"
+msgid_plural "+ {} kilograms"
+msgstr[0] "+ {} kilogram"
+msgstr[1] "+ {} kilogram"
+
+#: src/views/view_home_page.rs:345
+msgid "No change in weight"
+msgstr "Ingen viktförändring"
+
+#: src/views/view_home_page.rs:350
+msgid "compared to previous weight"
+msgstr "jämfört med föregående vikt"
+
+#: src/views/view_home_page.rs:354
+msgid "use + to add a weight record"
+msgstr "använd + för att lägga till en viktpost"
+
+#: src/views/view_steps.rs:139
+msgid "Today's steps: {}"
+msgstr "Steg idag: {}"
+
+#: src/views/view_steps.rs:155
+msgid ""
+"No streak yet. Reach your step goal for multiple days to start a streak!"
+msgstr ""
+"Ingen svit än. Nå ditt stegmål flera dagar i rad för att starta en svit!"
+
+#: src/views/view_steps.rs:159
+msgid ""
+"You're on a streak for {} day. Reach your step goal today to continue it!"
+msgid_plural ""
+"You're on a streak for {} days. Reach your step goal today to continue it!"
+msgstr[0] ""
+"Du har en svit på {} dag. Nå ditt stegmål idag för att fortsätta den!"
+msgstr[1] ""
+"Du har en svit på {} dagar. Nå ditt stegmål idag för att fortsätta den!"
+
+#: src/views/view_steps.rs:167
+msgid "You've reached your step goal today. Keep going to start a streak!"
+msgstr "Du har nått ditt stegmål idag. Fortsätt för att starta en svit!"
+
+#: src/views/view_steps.rs:170
+msgid "You're on a streak for {} day. Good job!"
+msgid_plural "You're on a streak for {} days. Good job!"
+msgstr[0] "Du har en svit på {} dag. Bra jobbat!"
+msgstr[1] "Du har en svit på {} dagar. Bra jobbat!"
+
+#. TRANSLATORS: X step(s) on DATE
+#: src/views/view_steps.rs:185
+msgid "{} step on {}"
+msgid_plural "{} steps on {}"
+msgstr[0] "{} steg {}"
+msgstr[1] "{} steg på {}"
+
+#: src/views/view_steps.rs:192
+msgid "Step goal"
+msgstr "Stegmål"
+
+#: src/views/view_weight.rs:144
+msgid "Current BMI: {}"
+msgstr "Aktuellt BMI: {}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/views/view_weight.rs:157
+msgid "{} pound on {}"
+msgid_plural "{} pounds on {}"
+msgstr[0] "{} pund {}"
+msgstr[1] "{} pund {}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/views/view_weight.rs:160
+msgid "{} kilogram on {}"
+msgid_plural "{} kilograms on {}"
+msgstr[0] "{} kilogram {}"
+msgstr[1] "{} kilogram på {}"
+
+#: src/views/view_weight.rs:198
+msgid "Unknown BMI"
+msgstr "Okänt BMI"
+
+#: src/views/view_weight.rs:222
+msgid ""
+"Your weight goal is {} pound. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} pounds. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Din målvikt är {} pund. Lägg till en första vikt för att se hur nära du är "
+"att nå den."
+msgstr[1] ""
+"Din målvikt är {} pund. Lägg till en första vikt för att se hur nära du är "
+"att nå den."
+
+#: src/views/view_weight.rs:229
+msgid ""
+"Your weight goal is {} kilogram. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} kilograms. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Din målvikt är {} kilogram. Lägg till en första vikt för att se hur nära du "
+"är att nå den."
+msgstr[1] ""
+"Din målvikt är {} kilogram. Lägg till en första vikt för att se hur nära du "
+"är att nå den."
+
+#: src/views/view_weight.rs:238
+msgid "You've reached your weightgoal. Great job!"
+msgstr "Du har nått din målvikt. Bra jobbat!"
+
+#. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
+#: src/views/view_weight.rs:254
+msgid "Your weight goal is {} pound,"
+msgid_plural "Your weight goal is {} pounds,"
+msgstr[0] "Din målvikt är {} pund,"
+msgstr[1] "Din målvikt är {} pund,"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/views/view_weight.rs:260
+msgid "you have {} pound left to reach it"
+msgid_plural "you have {} pounds left to reach it"
+msgstr[0] "du har {} pund kvar för att nå den"
+msgstr[1] "du har {} pund kvar för att nå den"
+
+#. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
+#: src/views/view_weight.rs:267
+msgid "Your weight goal is {} kilogram,"
+msgid_plural "Your weight goal is {} kilograms,"
+msgstr[0] "Din målvikt är {} kilogram,"
+msgstr[1] "Din målvikt är {} kilogram,"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/views/view_weight.rs:273
+msgid "you have {} kilogram left to reach it"
+msgid_plural "you have {} kilograms left to reach it"
+msgstr[0] "du har {} kg kvar för att nå den"
+msgstr[1] "du har {} kg kvar för att nå den"
+
+#: src/views/view_weight.rs:282
+msgid "No weightgoal set yet. You can set it in Health's preferences."
+msgstr ""
+"Ingen målvikt inställd ännu. Du kan ställa in den i inställningarna för "
+"Hälsa."
+
+#: src/widgets/activity_row.rs:130
+msgid "{} Minute"
+msgid_plural "{} Minutes"
+msgstr[0] "{} minut"
+msgstr[1] "{} minuter"
+
+#: src/widgets/activity_row.rs:146 src/widgets/activity_row.rs:228
+msgid "{} Calorie"
+msgid_plural "{} Calories"
+msgstr[0] "{} kalori"
+msgstr[1] "{} kalorier"
+
+#: src/widgets/bmi_level_bar.rs:173 src/widgets/bmi_level_bar.rs:202
+msgid "<small>Current BMI: {}</small>"
+msgstr "<small>Aktuellt BMI: {}</small>"
+
+#: src/widgets/distance_action_row.rs:251
+msgid "KM"
+msgstr "Km"
+
+#: src/widgets/distance_action_row.rs:252
+msgid "Meters"
+msgstr "Meter"
+
+#: src/widgets/distance_action_row.rs:254
+msgid "Miles"
+msgstr "Miles"
+
+#: src/widgets/distance_action_row.rs:255
+msgid "Yards"
+msgstr "Yard"
+
+#: src/windows/export_dialog.rs:54
+msgid "Save Activities"
+msgstr "Spara aktiviteter"
+
+#. TRANSLATORS: Please keep the file extension (.csv.encrypted)
+#: src/windows/export_dialog.rs:63
+msgid "Activities.csv.encrypted"
+msgstr "Aktiviteter.csv.encrypted"
+
+#. TRANSLATORS: Please keep the file extension (.csv)
+#: src/windows/export_dialog.rs:66
+msgid "Activities.csv"
+msgstr "Aktiviteter.csv"
+
+#: src/windows/export_dialog.rs:90
+msgid "Save Weight Measurement"
+msgstr "Spara viktmätning"
+
+#: src/windows/export_dialog.rs:98
+msgid "Weight Measurements.csv.encrypted"
+msgstr "Viktmätningar.csv.encrypted"
+
+#: src/windows/export_dialog.rs:100
+msgid "Weight Measurements.csv"
+msgstr "Viktmätningar.csv"
+
+#: src/windows/export_dialog.rs:134
+msgid "Export data"
+msgstr "Exportera data"
+
+#: src/windows/import_dialog.rs:54
+msgid "Open Activities"
+msgstr "Öppna aktiviteter"
+
+#: src/windows/import_dialog.rs:55 src/windows/import_dialog.rs:84
+msgid "_Open"
+msgstr "Ö_ppna"
+
+#: src/windows/import_dialog.rs:83
+msgid "Open Weight Measurement"
+msgstr "Öppna viktmätning"
+
+#: src/windows/import_dialog.rs:123
+msgid "Import data"
+msgstr "Importera data"
+
+#: src/windows/import_export_dialog_base.rs:227
+msgid "Import activities"
+msgstr "Importera aktiviteter"
+
+#: src/windows/import_export_dialog_base.rs:229
+msgid "Import is encrypted"
+msgstr "Import är krypterad"
+
+#: src/windows/import_export_dialog_base.rs:230
+msgid "Import weights"
+msgstr "Importera vikter"
+
+#: src/windows/import_export_dialog_base.rs:231
+msgid "Import"
+msgstr "Importera"
+
+#: src/windows/import_export_dialog_base.rs:327
+msgid "Success!"
+msgstr "Lyckades!"
+
+#: src/windows/import_export_dialog_base.rs:331
+msgid "An error occurred!"
+msgstr "Ett fel inträffade!"
+
+#: src/windows/import_export_dialog_base.rs:337
+msgid "Close"
+msgstr "Stäng"
+
+#: src/windows/preferences_window.rs:146 src/windows/preferences_window.rs:431
+#: src/windows/setup_window.rs:428
+msgid "Weight goal in KG"
+msgstr "Målvikt i kg"
+
+#: src/windows/preferences_window.rs:152 src/windows/preferences_window.rs:441
+#: src/windows/setup_window.rs:435
+msgid "Height in inch"
+msgstr "Längd i tum"
+
+#: src/windows/preferences_window.rs:154 src/windows/preferences_window.rs:444
+#: src/windows/setup_window.rs:438
+msgid "Weight goal in pounds"
+msgstr "Målvikt i pund"
+
+#: src/windows/preferences_window.rs:379
+msgid "Remind you of your step goals"
+msgstr "Påminn dig om dina stegmål"
+
+# TODO: ev kolon
+#: src/windows/window.rs:135
+msgid "Failed to migrate database to new version due to error {}"
+msgstr ""
+"Misslyckades med att migrera databas till ny version på grund av fel {}"
+
+#: src/windows/window.rs:364
+msgid "Couldn't sync Google Fit data due to error: {}"
+msgstr "Kunde inte synkronisera Google Fit-data på grund av fel: {}"
