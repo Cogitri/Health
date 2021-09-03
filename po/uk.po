@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-09-01 08:26+0000\n"
-"PO-Revision-Date: 2021-09-01 16:00+0300\n"
+"POT-Creation-Date: 2021-09-03 11:35+0000\n"
+"PO-Revision-Date: 2021-09-03 14:43+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -108,11 +108,13 @@ msgstr ""
 "Google Fit"
 
 #: data/dev.Cogitri.Health.gschema.xml:56
-msgid "Unitsystem used"
+#| msgid "Unitsystem used"
+msgid "Unit system used"
 msgstr "Використана система одиниць"
 
 #: data/dev.Cogitri.Health.gschema.xml:57
-msgid "The unitsystem the user chose, e.g. for cm vs inch for height"
+#| msgid "The unitsystem the user chose, e.g. for cm vs inch for height"
+msgid "The unit system the user chose, e.g. for cm vs inch for height"
 msgstr "Система одиниць користувача, наприклад сантиметри або дюйми для зросту"
 
 #: data/dev.Cogitri.Health.gschema.xml:61
@@ -141,7 +143,8 @@ msgid "The height of the user."
 msgstr "Зріст користувача."
 
 #: data/dev.Cogitri.Health.gschema.xml:76
-msgid "User stepgoal"
+#| msgid "User stepgoal"
+msgid "User step goal"
 msgstr "Цільова к-ть кроків користувача"
 
 #: data/dev.Cogitri.Health.gschema.xml:77
@@ -149,7 +152,8 @@ msgid "The amount of steps the user wants to reach daily."
 msgstr "Кількість кроків, які користувач хоче проходити щодня."
 
 #: data/dev.Cogitri.Health.gschema.xml:81
-msgid "User weightgoal"
+#| msgid "User weightgoal"
+msgid "User weight goal"
 msgstr "Цільова вага користувача"
 
 #: data/dev.Cogitri.Health.gschema.xml:82
@@ -180,7 +184,7 @@ msgstr "Ширина вікна"
 msgid "The width of the window."
 msgstr "Ширина вікна."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:137
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:138
 msgid "A health tracking app for the GNOME desktop."
 msgstr "Програма стеження за станом здоров'я для стільниці GNOME."
 
@@ -281,7 +285,7 @@ msgstr "З_берегти"
 msgid "January"
 msgstr "Січень"
 
-#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:243
+#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:244
 msgid "February"
 msgstr "Лютий"
 
@@ -359,8 +363,8 @@ msgstr "Сьогодні"
 msgid "of daily step goal"
 msgstr "від цільової кількості кроків за день"
 
-#: data/ui/home_page.ui:103 data/ui/weight_add_dialog.ui:61
-#: data/ui/weight_view.ui:27
+#: data/ui/home_page.ui:103 data/ui/preferences_window.ui:218
+#: data/ui/weight_add_dialog.ui:61 data/ui/weight_view.ui:27
 msgid "Weight"
 msgstr "Вага"
 
@@ -393,7 +397,8 @@ msgid "User"
 msgstr "Користувач"
 
 #: data/ui/preferences_window.ui:88 data/ui/setup_window.ui:176
-msgid "Unitsystem"
+#| msgid "Unitsystem"
+msgid "Unit system"
 msgstr "Система одиниць"
 
 #: data/ui/preferences_window.ui:97 data/ui/setup_window.ui:185
@@ -408,59 +413,65 @@ msgstr "Метрична"
 msgid "Birthday"
 msgstr "День народження"
 
-#: data/ui/preferences_window.ui:140
+#: data/ui/preferences_window.ui:125 data/ui/setup_window.ui:213
+#| msgid "Weight"
+msgid "Height"
+msgstr "Зріст"
+
+#: data/ui/preferences_window.ui:141
 msgid "Notifications"
 msgstr "Сповіщення"
 
-#: data/ui/preferences_window.ui:143
+#: data/ui/preferences_window.ui:144
 msgid "Enable notifications"
 msgstr "Увімкнути сповіщення"
 
-#: data/ui/preferences_window.ui:156
+#: data/ui/preferences_window.ui:157
 msgid "Frequency"
 msgstr "Частота"
 
-#: data/ui/preferences_window.ui:173
+#: data/ui/preferences_window.ui:174
 msgid "Daily reminder time"
 msgstr "Час щоденного нагадування"
 
-#: data/ui/preferences_window.ui:197 data/ui/setup_window.ui:279
-msgid "Stepgoal"
+#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:279
+#: src/views/view_steps.rs:193
+msgid "Step goal"
 msgstr "Цільова к-ть кроків"
 
-#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:256
+#: data/ui/preferences_window.ui:199 data/ui/setup_window.ui:256
 msgid "The WHO recommends 10.000 steps per day."
 msgstr "ВОЗ рекомендовано виконувати 10000 кроків щодня."
 
-#: data/ui/preferences_window.ui:217 data/ui/setup_window.ui:321
+#: data/ui/preferences_window.ui:219 data/ui/setup_window.ui:321
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "Рекомендованим ВОЗ значенням ІМТ є від 18,5 до 24,9."
 
-#: data/ui/preferences_window.ui:245
+#: data/ui/preferences_window.ui:248
 msgid "Sync"
 msgstr "Синхронізувати"
 
-#: data/ui/preferences_window.ui:249
+#: data/ui/preferences_window.ui:252
 msgid "Start sync with third-party providers."
 msgstr "Почати синхронізацію із даними сторонніх надавачів."
 
-#: data/ui/preferences_window.ui:259
+#: data/ui/preferences_window.ui:262
 msgid "Importing and exporting data"
 msgstr "Імпортування та експортування даних"
 
-#: data/ui/preferences_window.ui:262
+#: data/ui/preferences_window.ui:265
 msgid "Export data as CSV"
 msgstr "Експортувати дані як CSV"
 
-#: data/ui/preferences_window.ui:265
+#: data/ui/preferences_window.ui:268
 msgid "Export…"
 msgstr "Експортувати…"
 
-#: data/ui/preferences_window.ui:273
+#: data/ui/preferences_window.ui:276
 msgid "Import data from CSV"
 msgstr "Імпортувати дані з CSV"
 
-#: data/ui/preferences_window.ui:276
+#: data/ui/preferences_window.ui:279
 msgid "Import…"
 msgstr "Імпортувати…"
 
@@ -492,28 +503,26 @@ msgstr "Вітаємо у «Здоров'ї»!"
 msgid "Please enter some information to get setup."
 msgstr "Будь ласка, надайте певні відомості для налаштовування програми."
 
-#: data/ui/setup_window.ui:213 src/windows/preferences_window.rs:144
-#: src/windows/preferences_window.rs:428 src/windows/setup_window.rs:425
-msgid "Height in centimeters"
-msgstr "Зріст у сантиметрах"
-
 #: data/ui/setup_window.ui:243
-msgid "Please enter your daily stepgoal."
+#| msgid "Please enter your daily stepgoal."
+msgid "Please enter your daily step goal."
 msgstr "Будь ласка, введіть щоденну цільову кількість кроків."
 
 #: data/ui/setup_window.ui:308
-msgid "Please enter your weightgoal."
+#| msgid "Please enter your weightgoal."
+msgid "Please enter your weight goal."
 msgstr "Будь ласка, введіть значення цільової ваги."
 
-#: data/ui/setup_window.ui:349 src/views/view_weight.rs:170
-msgid "Weightgoal"
+#: data/ui/setup_window.ui:349 src/views/view_weight.rs:171
+#| msgid "Weightgoal"
+msgid "Weight goal"
 msgstr "Цільова вага"
 
-#: data/ui/setup_window.ui:388
+#: data/ui/setup_window.ui:389
 msgid "Setup sync with third-party providers."
 msgstr "Налаштуйте синхронізацію із даними сторонніх надавачів."
 
-#: data/ui/setup_window.ui:401
+#: data/ui/setup_window.ui:402
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
@@ -565,11 +574,11 @@ msgstr "_Клавіатурні скорочення"
 msgid "_About Health"
 msgstr "_Про «Здоров'я»"
 
-#: src/core/application.rs:139
+#: src/core/application.rs:140
 msgid "translator-credits"
 msgstr "Юрій Чорноіван <yurchor@ukr.net>, 2021"
 
-#: src/core/application.rs:141
+#: src/core/application.rs:142
 msgid "Websites"
 msgstr "Сайти"
 
@@ -663,30 +672,21 @@ msgstr "Здоров'я: нагадування щодо прогулянки"
 
 #. TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
 #: src/model/model_notification.rs:148
-#| msgid "{} steps remaining to complete your daily stepgoal of {} steps"
 msgid "{} step remaining to complete your daily step goal"
 msgid_plural "{} steps remaining to complete your daily step goal"
-msgstr[0] ""
-"{} крок лишився до виконання щоденної цільової кількості кроків"
-msgstr[1] ""
-"{} кроків лишилося до виконання щоденної цільової кількості кроків"
-msgstr[2] ""
-"{} кроків лишилося до виконання щоденної цільової кількості кроків"
-msgstr[3] ""
-"{} крок лишився до виконання щоденної цільової кількості кроків"
+msgstr[0] "{} крок лишився до виконання щоденної цільової кількості кроків"
+msgstr[1] "{} кроків лишилося до виконання щоденної цільової кількості кроків"
+msgstr[2] "{} кроків лишилося до виконання щоденної цільової кількості кроків"
+msgstr[3] "{} крок лишився до виконання щоденної цільової кількості кроків"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
 #: src/model/model_notification.rs:154
 msgid "of {} step"
 msgid_plural "of {} steps"
-msgstr[0] ""
-"у {} крок"
-msgstr[1] ""
-"у {} кроки"
-msgstr[2] ""
-"у {} кроків"
-msgstr[3] ""
-"у {} крок"
+msgstr[0] "у {} крок"
+msgstr[1] "у {} кроки"
+msgstr[2] "у {} кроків"
+msgstr[3] "у {} крок"
 
 #: src/sync/csv.rs:81 src/sync/csv.rs:360
 msgid "No activities added yet; can't create empty export!"
@@ -748,23 +748,19 @@ msgstr "Розпізнавання пройдено. Будь ласка, пов
 msgid "Couldn't parse OAuth2 response"
 msgstr "Не вдалося обробити відповідь OAuth2"
 
-#: src/views/bar_graph_view.rs:509
+#: src/views/bar_graph_view.rs:510
 msgid "Enter weight record to calculate idle calories"
 msgstr "Введіть запис ваги для обчислення калорій бездіяльності"
 
-#: src/views/bar_graph_view.rs:513
+#: src/views/bar_graph_view.rs:514
 msgid "Idle calories"
 msgstr "Калорії бездіяльності"
 
-#: src/views/view_activity.rs:183
+#: src/views/view_activity.rs:184
 msgid "No activities on or after {}"
 msgstr "Немає фізичної активності після {}"
 
-#: src/views/view_calories.rs:168
-#| msgid ""
-#| "{}:\n"
-#| "{} calories\n"
-#| "{}"
+#: src/views/view_calories.rs:169
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -790,8 +786,7 @@ msgstr[3] ""
 "{} калорія\n"
 "{}"
 
-#: src/views/view_home_page.rs:255
-#| msgid "{} steps taken today"
+#: src/views/view_home_page.rs:256
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} крок сьогодні"
@@ -799,14 +794,13 @@ msgstr[1] "{} кроки сьогодні"
 msgstr[2] "{} кроків сьогодні"
 msgstr[3] "{} крок сьогодні"
 
-#: src/views/view_home_page.rs:261
+#: src/views/view_home_page.rs:262
 msgid "{}%"
 msgstr "{}%"
 
 #. TRANSLATORS: Current user weight
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:296 src/views/view_home_page.rs:330
-#| msgid "{} pounds"
+#: src/views/view_home_page.rs:297 src/views/view_home_page.rs:331
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} фунт"
@@ -816,8 +810,7 @@ msgstr[3] "{} фунт"
 
 #. TRANSLATORS: Current user weight
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:303 src/views/view_home_page.rs:337
-#| msgid "{} kilogram"
+#: src/views/view_home_page.rs:304 src/views/view_home_page.rs:338
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} кілограм"
@@ -826,8 +819,7 @@ msgstr[2] "{} кілограмів"
 msgstr[3] "{} кілограм"
 
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:313
-#| msgid "+ {} pounds"
+#: src/views/view_home_page.rs:314
 msgid "+ {} pound"
 msgid_plural "+ {} pounds"
 msgstr[0] "+ {} фунт"
@@ -836,8 +828,7 @@ msgstr[2] "+ {} фунтів"
 msgstr[3] "+ {} фунт"
 
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:320
-#| msgid "+ {} kilogram"
+#: src/views/view_home_page.rs:321
 msgid "+ {} kilogram"
 msgid_plural "+ {} kilograms"
 msgstr[0] "+ {} кілограм"
@@ -845,34 +836,30 @@ msgstr[1] "+ {} кілограми"
 msgstr[2] "+ {} кілограмів"
 msgstr[3] "+ {} кілограм"
 
-#: src/views/view_home_page.rs:345
+#: src/views/view_home_page.rs:346
 msgid "No change in weight"
 msgstr "Немає зміни ваги"
 
-#: src/views/view_home_page.rs:350
+#: src/views/view_home_page.rs:351
 msgid "compared to previous weight"
 msgstr "порівняно із попередньою вагою"
 
-#: src/views/view_home_page.rs:354
+#: src/views/view_home_page.rs:355
 msgid "use + to add a weight record"
 msgstr "скористайтеся кнопкою + щодо додати запис ваги"
 
-#: src/views/view_steps.rs:139
+#: src/views/view_steps.rs:140
 msgid "Today's steps: {}"
 msgstr "Сьогодні кроків: {}"
 
-#: src/views/view_steps.rs:155
-#| msgid ""
-#| "No streak yet. Reach your stepgoal for multiple days to start a streak!"
+#: src/views/view_steps.rs:156
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
 "Поки не у формі. Виконуйте цільову кількість кроків щодня, щоб повернутися "
 "до форми!"
 
-#: src/views/view_steps.rs:159
-#| msgid ""
-#| "You're on a streak for {} days. Reach your stepgoal today to continue it!"
+#: src/views/view_steps.rs:160
 msgid ""
 "You're on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -890,14 +877,12 @@ msgstr[3] ""
 "Ви у формі протягом {} дня. Виконайте сьогодні щоденну цільову кількість "
 "кроків, щоб продовжити перебувати у формі!"
 
-#: src/views/view_steps.rs:167
-#| msgid "You've reached your stepgoal today. Keep going to start a streak!"
+#: src/views/view_steps.rs:168
 msgid "You've reached your step goal today. Keep going to start a streak!"
 msgstr ""
 "Сьогодні ви досягли цільової кількості кроків. Продовжуйте, щоб бути у формі!"
 
-#: src/views/view_steps.rs:170
-#| msgid "You're on a streak for {} days. Good job!"
+#: src/views/view_steps.rs:171
 msgid "You're on a streak for {} day. Good job!"
 msgid_plural "You're on a streak for {} days. Good job!"
 msgstr[0] "Ви у формі уже {} день. Поздоровляємо!"
@@ -906,8 +891,7 @@ msgstr[2] "Ви у формі уже {} днів. Поздоровляємо!"
 msgstr[3] "Ви у формі уже {} день. Поздоровляємо!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/views/view_steps.rs:185
-#| msgid "{} steps on {}"
+#: src/views/view_steps.rs:186
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} крок на {}"
@@ -915,18 +899,12 @@ msgstr[1] "{} кроки на {}"
 msgstr[2] "{} кроків на {}"
 msgstr[3] "{} крок на {}"
 
-#: src/views/view_steps.rs:192
-#| msgid "Stepgoal"
-msgid "Step goal"
-msgstr "Цільова к-ть кроків"
-
-#: src/views/view_weight.rs:144
+#: src/views/view_weight.rs:145
 msgid "Current BMI: {}"
 msgstr "Поточний ІМТ: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/views/view_weight.rs:157
-#| msgid "{} pounds on {}"
+#: src/views/view_weight.rs:158
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} фунт на {}"
@@ -935,8 +913,7 @@ msgstr[2] "{} фунтів на {}"
 msgstr[3] "{} фунт на {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/views/view_weight.rs:160
-#| msgid "{} kilogram on {}"
+#: src/views/view_weight.rs:161
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} кг на {}"
@@ -944,14 +921,11 @@ msgstr[1] "{} кг на {}"
 msgstr[2] "{} кг на {}"
 msgstr[3] "{} кг на {}"
 
-#: src/views/view_weight.rs:198
+#: src/views/view_weight.rs:199
 msgid "Unknown BMI"
 msgstr "Невідомий ІМТ"
 
-#: src/views/view_weight.rs:222
-#| msgid ""
-#| "Your weight goal is {} pounds. Add a first weight measurement to see how "
-#| "close you are to reaching it."
+#: src/views/view_weight.rs:223
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -971,10 +945,7 @@ msgstr[3] ""
 "Вашою цільовою вагою є {} фунт. Додайте перший вимір ваги, щоб побачити, "
 "наскільки близько ви до досягнення цільової ваги."
 
-#: src/views/view_weight.rs:229
-#| msgid ""
-#| "Your weight goal is {} kilogram. Add a first weight measurement to see "
-#| "how close you are to reaching it."
+#: src/views/view_weight.rs:230
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -994,13 +965,13 @@ msgstr[3] ""
 "Вашою цільовою вагою є {} кг. Додайте перший вимір ваги, щоб побачити, "
 "наскільки близько ви до досягнення цільової ваги."
 
-#: src/views/view_weight.rs:238
-msgid "You've reached your weightgoal. Great job!"
+#: src/views/view_weight.rs:239
+#| msgid "You've reached your weightgoal. Great job!"
+msgid "You've reached your weight goal. Great job!"
 msgstr "Вами досягнуто цільової ваги. Поздоровляємо!"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/views/view_weight.rs:254
-#| msgid "Weightgoal in pounds"
+#: src/views/view_weight.rs:255
 msgid "Your weight goal is {} pound,"
 msgid_plural "Your weight goal is {} pounds,"
 msgstr[0] "Вашою цільова вагою є {} фунт"
@@ -1009,21 +980,16 @@ msgstr[2] "Вашою цільова вагою є {} фунтів"
 msgstr[3] "Вашою цільова вагою є {} фунт"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:260
+#: src/views/view_weight.rs:261
 msgid "you have {} pound left to reach it"
 msgid_plural "you have {} pounds left to reach it"
-msgstr[0] ""
-"вам лишився {} фунт до бажаного результату"
-msgstr[1] ""
-"вам лишилося {} фунти до бажаного результату"
-msgstr[2] ""
-"вам лишилося {} фунтів до бажаного результату"
-msgstr[3] ""
-"вам лишився {} фунт до бажаного результату"
+msgstr[0] "вам лишився {} фунт до бажаного результату"
+msgstr[1] "вам лишилося {} фунти до бажаного результату"
+msgstr[2] "вам лишилося {} фунтів до бажаного результату"
+msgstr[3] "вам лишився {} фунт до бажаного результату"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/views/view_weight.rs:267
-#| msgid "{} kilogram left to reach your weightgoal of {} kilogram"
+#: src/views/view_weight.rs:268
 msgid "Your weight goal is {} kilogram,"
 msgid_plural "Your weight goal is {} kilograms,"
 msgstr[0] "Ваша вага складає {} кілограм,"
@@ -1032,8 +998,7 @@ msgstr[2] "Ваша вага складає {} кілограмів,"
 msgstr[3] "Ваша вага складає {} кілограм,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:273
-#| msgid "{} kilogram left to reach your weightgoal of {} kilogram"
+#: src/views/view_weight.rs:274
 msgid "you have {} kilogram left to reach it"
 msgid_plural "you have {} kilograms left to reach it"
 msgstr[0] "{} кг лишився до досягнення бажаного результату"
@@ -1041,14 +1006,14 @@ msgstr[1] "{} кг лишилося до досягнення бажаного �
 msgstr[2] "{} кг лишилося до досягнення бажаного результату"
 msgstr[3] "{} кг лишився до досягнення бажаного результату"
 
-#: src/views/view_weight.rs:282
-msgid "No weightgoal set yet. You can set it in Health's preferences."
+#: src/views/view_weight.rs:283
+#| msgid "No weightgoal set yet. You can set it in Health's preferences."
+msgid "No weight goal set yet. You can set it in Health's preferences."
 msgstr ""
 "Цільової ваги ще не встановлено. Ви можете встановити її у налаштуваннях "
 "«Здоров'я»."
 
-#: src/widgets/activity_row.rs:130
-#| msgid "{} Minutes"
+#: src/widgets/activity_row.rs:131
 msgid "{} Minute"
 msgid_plural "{} Minutes"
 msgstr[0] "{} хвилина"
@@ -1056,8 +1021,7 @@ msgstr[1] "{} хвилини"
 msgstr[2] "{} хвилин"
 msgstr[3] "{} хвилина"
 
-#: src/widgets/activity_row.rs:146 src/widgets/activity_row.rs:228
-#| msgid "{} Calories"
+#: src/widgets/activity_row.rs:147 src/widgets/activity_row.rs:229
 msgid "{} Calorie"
 msgid_plural "{} Calories"
 msgstr[0] "{} калорія"
@@ -1065,25 +1029,74 @@ msgstr[1] "{} калорії"
 msgstr[2] "{} калорій"
 msgstr[3] "{} калорія"
 
-#: src/widgets/bmi_level_bar.rs:173 src/widgets/bmi_level_bar.rs:202
+#: src/widgets/bmi_level_bar.rs:174 src/widgets/bmi_level_bar.rs:203
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Поточний ІМТ: {}</small>"
 
-#: src/widgets/distance_action_row.rs:251
+#: src/widgets/distance_action_row.rs:248
 msgid "KM"
 msgstr "км"
 
-#: src/widgets/distance_action_row.rs:252
+#: src/widgets/distance_action_row.rs:249
 msgid "Meters"
 msgstr "метри"
 
-#: src/widgets/distance_action_row.rs:254
+#: src/widgets/distance_action_row.rs:251
 msgid "Miles"
 msgstr "милі"
 
-#: src/widgets/distance_action_row.rs:255
-msgid "Yards"
-msgstr "ярди"
+#: src/widgets/distance_action_row.rs:252
+msgid "Feet"
+msgstr ""
+"фути"
+
+#. TRANSLATORS: Unit abbreviation (centimeters)
+#: src/widgets/unit_spinbutton.rs:466 src/widgets/unit_spinbutton.rs:629
+msgid "cm"
+msgstr ""
+"см"
+
+#. TRANSLATORS: Unit abbreviation (meters)
+#: src/widgets/unit_spinbutton.rs:468
+msgid "m"
+msgstr ""
+"м"
+
+#. TRANSLATORS: Unit abbreviation (kilometers)
+#: src/widgets/unit_spinbutton.rs:470
+msgid "km"
+msgstr ""
+"км"
+
+#. TRANSLATORS: Unit abbreviation (kilograms)
+#: src/widgets/unit_spinbutton.rs:472
+msgid "kg"
+msgstr ""
+"кг"
+
+#. TRANSLATORS: Unit abbreviation (inch)
+#: src/widgets/unit_spinbutton.rs:474 src/widgets/unit_spinbutton.rs:631
+msgid "in"
+msgstr ""
+"дюйм"
+
+#. TRANSLATORS: Unit abbreviation (feet)
+#: src/widgets/unit_spinbutton.rs:476
+msgid "ft"
+msgstr ""
+"фут"
+
+#. TRANSLATORS: Unit abbreviation (miles)
+#: src/widgets/unit_spinbutton.rs:478
+msgid "mi"
+msgstr ""
+"миля"
+
+#. TRANSLATORS: Unit abbreviation (pounds)
+#: src/widgets/unit_spinbutton.rs:480
+msgid "lb"
+msgstr ""
+"фунт"
 
 #: src/windows/export_dialog.rs:54
 msgid "Save Activities"
@@ -1111,7 +1124,7 @@ msgstr "Виміри ваги.csv.encrypted"
 msgid "Weight Measurements.csv"
 msgstr "Виміри ваги.csv"
 
-#: src/windows/export_dialog.rs:134
+#: src/windows/export_dialog.rs:135
 msgid "Export data"
 msgstr "Експортувати дані"
 
@@ -1127,7 +1140,7 @@ msgstr "_Відкрити"
 msgid "Open Weight Measurement"
 msgstr "Відкрити вікно вимірів ваги"
 
-#: src/windows/import_dialog.rs:123
+#: src/windows/import_dialog.rs:124
 msgid "Import data"
 msgstr "Імпортувати дані"
 
@@ -1147,46 +1160,49 @@ msgstr "Імпортувати дані щодо ваги"
 msgid "Import"
 msgstr "Імпортувати"
 
-#: src/windows/import_export_dialog_base.rs:327
+#: src/windows/import_export_dialog_base.rs:328
 msgid "Success!"
 msgstr "Успіх!"
 
-#: src/windows/import_export_dialog_base.rs:331
+#: src/windows/import_export_dialog_base.rs:332
 msgid "An error occurred!"
 msgstr "Сталася помилка!"
 
-#: src/windows/import_export_dialog_base.rs:337
+#: src/windows/import_export_dialog_base.rs:338
 msgid "Close"
 msgstr "Закрити"
 
-#: src/windows/preferences_window.rs:146 src/windows/preferences_window.rs:431
-#: src/windows/setup_window.rs:428
-#| msgid "Weightgoal in KG"
-msgid "Weight goal in KG"
-msgstr "Цільова вага у кг"
-
-#: src/windows/preferences_window.rs:152 src/windows/preferences_window.rs:441
-#: src/windows/setup_window.rs:435
-msgid "Height in inch"
-msgstr "Зріст у дюймах"
-
-#: src/windows/preferences_window.rs:154 src/windows/preferences_window.rs:444
-#: src/windows/setup_window.rs:438
-#| msgid "Weightgoal in pounds"
-msgid "Weight goal in pounds"
-msgstr "Цільова вага у фунтах"
-
-#: src/windows/preferences_window.rs:379
+#: src/windows/preferences_window.rs:375
 msgid "Remind you of your step goals"
 msgstr "Нагадувати про цільову кількість кроків"
 
-#: src/windows/window.rs:135
+#: src/windows/window.rs:136
 msgid "Failed to migrate database to new version due to error {}"
 msgstr "Не вдалося перенести базу даних до нової версії через помилку {}"
 
-#: src/windows/window.rs:364
+#: src/windows/window.rs:365
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr "Не вдалося синхронізувати дані із Google Fit через помилку: {}"
+
+#~ msgid "Stepgoal"
+#~ msgstr "Цільова к-ть кроків"
+
+#~ msgid "Height in centimeters"
+#~ msgstr "Зріст у сантиметрах"
+
+#~ msgid "Yards"
+#~ msgstr "ярди"
+
+#~| msgid "Weightgoal in KG"
+#~ msgid "Weight goal in KG"
+#~ msgstr "Цільова вага у кг"
+
+#~ msgid "Height in inch"
+#~ msgstr "Зріст у дюймах"
+
+#~| msgid "Weightgoal in pounds"
+#~ msgid "Weight goal in pounds"
+#~ msgstr "Цільова вага у фунтах"
 
 #~ msgid "{} pounds left to reach your weightgoal of {} pounds"
 #~ msgstr "{} фунтів лишилося до досягнення вами цільової ваги у {} фунтів"
