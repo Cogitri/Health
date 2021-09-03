@@ -159,14 +159,12 @@ mod imp {
                     }
                 }
                 "digits" => self.spin_button.set_digits(value.get().unwrap()),
-                "text" => self.spin_button.set_text(value.get().unwrap()),
                 "unit-kind" => obj.handle_settings_unit_kind_changed(
                     UnitKind::from_str(value.get().unwrap()).unwrap(),
                 ),
                 "unit-system" => obj.handle_settings_unit_system_changed(
                     UnitSystem::from_str(value.get().unwrap()).unwrap(),
                 ),
-                "width-chars" => self.spin_button.set_width_chars(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -182,7 +180,6 @@ mod imp {
                     self.inner.borrow().settings_handler_id.is_some().to_value()
                 }
                 "digits" => self.spin_button.digits().to_value(),
-                "text" => self.spin_button.text().to_value(),
                 "unit-kind" => self.inner.borrow().current_unit_kind.map_or_else(
                     || None::<String>.to_value(),
                     |u| {
@@ -197,7 +194,6 @@ mod imp {
                         unit_system.to_value()
                     },
                 ),
-                "width-chars" => self.spin_button.width_chars().to_value(),
                 _ => unimplemented!(),
             }
         }

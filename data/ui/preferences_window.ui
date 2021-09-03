@@ -126,7 +126,7 @@
                 <child>
                   <object class="HealthUnitSpinButton" id="height_spin_button">
                     <property name="unit-kind">like_centimeters</property>
-                    <property name="width-chars">3</property>
+                    <property name="width-chars">5</property>
                     <property name="text">0</property>
                     <property name="adjustment">height_adjustment</property>
                     <property name="valign">center</property>
