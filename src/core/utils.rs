@@ -153,7 +153,7 @@ pub fn init_gtk() {
         let mut gresource_path = dir.path().to_path_buf();
         gresource_path.push("out.gresource");
 
-        Command::new("glib-compile-resources")
+        let output = Command::new("glib-compile-resources")
             .arg(&format!(
                 "{}/data/dev.Cogitri.Health.gresource.xml",
                 env!("CARGO_MANIFEST_DIR")
@@ -163,10 +163,17 @@ pub fn init_gtk() {
             .arg("--internal")
             .arg("--target")
             .arg(&gresource_path)
-            .spawn()
+            .output()
             .expect("Failed to run glib-compile-resources!");
 
-        while !gresource_path.exists() {}
+        if !output.status.success() {
+            panic!(
+                "Couldn't execute glib-compile-resources! Status: {} Stdout: {}, Stderr: {}",
+                output.status,
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr)
+            );
+        }
 
         gio::Resource::load(gresource_path)
     };
@@ -200,14 +207,21 @@ pub fn init_gschema() -> Option<tempfile::TempDir> {
         let dir = tempdir().unwrap();
         let gschema_path = dir.path().to_path_buf();
 
-        Command::new("glib-compile-schemas")
+        let output = Command::new("glib-compile-schemas")
             .arg(&format!("{}/data", env!("CARGO_MANIFEST_DIR")))
             .arg("--targetdir")
             .arg(&gschema_path)
-            .spawn()
+            .output()
             .expect("Failed to run glib-compile-schemas!");
 
-        while !gschema_path.exists() {}
+        if !output.status.success() {
+            panic!(
+                "Couldn't execute glib-compile-resources! Status: {} Stdout: {}, Stderr: {}",
+                output.status,
+                String::from_utf8_lossy(&output.stdout),
+                String::from_utf8_lossy(&output.stderr)
+            );
+        }
 
         set_var("GSETTINGS_SCHEMA_DIR", gschema_path);
         Some(dir)
