@@ -151,6 +151,35 @@ impl SyncListBox {
         imp::SyncListBox::from_instance(self)
     }
 
+    fn handle_db_receiver_received(&self, res: Result<()>) -> glib::Continue {
+        let self_ = self.imp();
+        if let Err(e) = res {
+            self_
+                .google_fit_selected_image
+                .set_icon_name(Some("network-error-symbolic"));
+            self_.google_fit_selected_image.set_visible(true);
+            self_.google_fit_spinner.set_spinning(false);
+            self_
+                .google_fit_stack
+                .set_visible_child(&self_.google_fit_selected_image.get());
+
+            self.open_sync_error(&e.to_string());
+        } else {
+            let obj = self.clone();
+            spawn!(async move {
+                let self_ = obj.imp();
+                self_.google_fit_selected_image.set_visible(true);
+                self_.google_fit_spinner.set_spinning(false);
+                self_
+                    .google_fit_stack
+                    .set_visible_child(&self_.google_fit_selected_image.get());
+            });
+        }
+
+        self_.google_fit_start_sync_row.set_activatable(false);
+        glib::Continue(false)
+    }
+
     fn handle_row_activated(self, row: &gtk::ListBoxRow) {
         let self_ = self.imp();
         if row == &self_.google_fit_start_sync_row.get() {
@@ -166,28 +195,12 @@ impl SyncListBox {
                 glib::MainContext::channel::<Result<()>>(glib::PRIORITY_DEFAULT);
             let db_sender = new_db_receiver();
 
-            receiver.attach(None, clone!(@weak self as obj => @default-panic, move |res| {
-                let self_ = obj.imp();
-                if let Err(e) = res {
-                    self_.google_fit_selected_image.set_icon_name(Some("network-error-symbolic"));
-                    self_.google_fit_selected_image.set_visible(true);
-                    self_.google_fit_spinner.set_spinning(false);
-                    self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
-
-                    obj.open_sync_error(&e.to_string());
-                } else {
-                    let obj = obj.clone();
-                    spawn!(async move {
-                        let self_ = obj.imp();
-                        self_.google_fit_selected_image.set_visible(true);
-                        self_.google_fit_spinner.set_spinning(false);
-                        self_.google_fit_stack.set_visible_child(&self_.google_fit_selected_image.get());
-                    });
-                }
-
-                self_.google_fit_start_sync_row.set_activatable(false);
-                glib::Continue(false)
-            }));
+            receiver.attach(
+                None,
+                clone!(@weak self as obj => @default-panic, move |res| {
+                    obj.handle_db_receiver_received(res)
+                }),
+            );
 
             std::thread::spawn(move || {
                 let mut sync_provider = GoogleFitSyncProvider::new(db_sender);

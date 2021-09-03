@@ -341,6 +341,17 @@ impl Window {
         );
     }
 
+    fn handle_sync_data_error_received(&self, err_opt: Option<anyhow::Error>) -> glib::Continue {
+        if let Some(e) = err_opt {
+            self.show_error(&i18n_f(
+                "Couldn't sync Google Fit data due to error: {}",
+                &[&e.to_string()],
+            ));
+        }
+
+        glib::Continue(false)
+    }
+
     /// Display an error in a non-intrusive way.
     fn show_error(&self, err_msg: &str) {
         let self_ = self.imp();
@@ -360,14 +371,7 @@ impl Window {
             receiver.attach(
                 None,
                 clone!(@weak self as obj => @default-panic, move |v: Option<anyhow::Error>| {
-                    if let Some(e) = v {
-                        obj.show_error(&i18n_f(
-                            "Couldn't sync Google Fit data due to error: {}",
-                            &[&e.to_string()],
-                        ));
-                    }
-
-                    glib::Continue(false)
+                    obj.handle_sync_data_error_received(v)
                 }),
             );
 

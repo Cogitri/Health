@@ -37,10 +37,10 @@ while IFS= read -r line; do
 			# It would be `2` since 3 is the minimum we want to trigger but
 			# we have to account for the fact that there is an opening line
 			# and a closing line
-			if [ $clonelines -gt 5 ]; then
+			if [ $clonelines -gt 9 ]; then
 				# Easier than adding '>&2' to every single call
 				(
-					printf "clone! in line %s to %s is too long (%s lines)!\\n" \
+					printf "clone! in $1:%s to %s is too long (%s lines)!\\n" \
 						"$clonestartline" $linenum $((clonelines - 2))
 					printf -- '```rust\n' 
 					sed -n "$clonestartline,${linenum}p" "$1"
