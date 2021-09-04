@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-09-01 08:26+0000\n"
-"PO-Revision-Date: 2021-09-02 21:34-0300\n"
-"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
+"POT-Creation-Date: 2021-09-03 11:35+0000\n"
+"PO-Revision-Date: 2021-09-03 21:25-0300\n"
+"Last-Translator: Antonio Fernandes C. Neto <fernandesn@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 40.0\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.0\n"
 
 #: data/dev.Cogitri.Health.desktop.in.in:3
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.ui:45
@@ -100,11 +100,11 @@ msgid "The last time we synched steps, weight etc. with Google Fit"
 msgstr "A última vez que sincronizamos etapas, peso etc. com o Google Fit"
 
 #: data/dev.Cogitri.Health.gschema.xml:56
-msgid "Unitsystem used"
+msgid "Unit system used"
 msgstr "Sistema de unidades usado"
 
 #: data/dev.Cogitri.Health.gschema.xml:57
-msgid "The unitsystem the user chose, e.g. for cm vs inch for height"
+msgid "The unit system the user chose, e.g. for cm vs inch for height"
 msgstr ""
 "O sistema de unidades que o usuário escolhe, por exemplo, para cm vs "
 "polegadas para altura"
@@ -119,7 +119,7 @@ msgstr "A idade do usuário (descontinuado)."
 
 #: data/dev.Cogitri.Health.gschema.xml:66
 msgid "Absolute user age"
-msgstr "Idade absoluta do usuário."
+msgstr "Idade absoluta do usuário"
 
 #: data/dev.Cogitri.Health.gschema.xml:67
 msgid "The age of the user in absolute terms (like 01/01/1970)"
@@ -134,7 +134,7 @@ msgid "The height of the user."
 msgstr "A altura do usuário."
 
 #: data/dev.Cogitri.Health.gschema.xml:76
-msgid "User stepgoal"
+msgid "User step goal"
 msgstr "Meta de passos do usuário"
 
 #: data/dev.Cogitri.Health.gschema.xml:77
@@ -142,7 +142,7 @@ msgid "The amount of steps the user wants to reach daily."
 msgstr "A quantidade de passos que o usuário deseja alcançar diariamente."
 
 #: data/dev.Cogitri.Health.gschema.xml:81
-msgid "User weightgoal"
+msgid "User weight goal"
 msgstr "Meta de peso do usuário"
 
 #: data/dev.Cogitri.Health.gschema.xml:82
@@ -173,7 +173,7 @@ msgstr "Largura da janela"
 msgid "The width of the window."
 msgstr "Largura da janela."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:137
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:138
 msgid "A health tracking app for the GNOME desktop."
 msgstr "Um aplicativo de monitoramento de saúde para o ambiente GNOME."
 
@@ -272,7 +272,7 @@ msgstr "_Salvar"
 msgid "January"
 msgstr "janeiro"
 
-#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:243
+#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:244
 msgid "February"
 msgstr "fevereiro"
 
@@ -318,7 +318,7 @@ msgstr "dezembro"
 
 #: data/ui/date_editor.ui:51
 msgid "Day"
-msgstr "Dia "
+msgstr "Dia"
 
 #: data/ui/date_editor.ui:76
 msgid "Month"
@@ -350,8 +350,8 @@ msgstr "Hoje"
 msgid "of daily step goal"
 msgstr "da meta diária de passos"
 
-#: data/ui/home_page.ui:103 data/ui/weight_add_dialog.ui:61
-#: data/ui/weight_view.ui:27
+#: data/ui/home_page.ui:103 data/ui/preferences_window.ui:218
+#: data/ui/weight_add_dialog.ui:61 data/ui/weight_view.ui:27
 msgid "Weight"
 msgstr "Altura"
 
@@ -384,7 +384,7 @@ msgid "User"
 msgstr "Usuário"
 
 #: data/ui/preferences_window.ui:88 data/ui/setup_window.ui:176
-msgid "Unitsystem"
+msgid "Unit system"
 msgstr "Sistema de unidades"
 
 #: data/ui/preferences_window.ui:97 data/ui/setup_window.ui:185
@@ -399,62 +399,67 @@ msgstr "Metro"
 msgid "Birthday"
 msgstr "Nascimento"
 
-#: data/ui/preferences_window.ui:140
+#: data/ui/preferences_window.ui:125 data/ui/setup_window.ui:213
+msgid "Height"
+msgstr "Altura"
+
+#: data/ui/preferences_window.ui:141
 msgid "Notifications"
 msgstr "Notificações"
 
-#: data/ui/preferences_window.ui:143
+#: data/ui/preferences_window.ui:144
 msgid "Enable notifications"
 msgstr "Habilita notificações"
 
-#: data/ui/preferences_window.ui:156
+#: data/ui/preferences_window.ui:157
 msgid "Frequency"
-msgstr "Frequência "
+msgstr "Frequência"
 
-#: data/ui/preferences_window.ui:173
+#: data/ui/preferences_window.ui:174
 msgid "Daily reminder time"
 msgstr "Hora do lembrete diário"
 
-#: data/ui/preferences_window.ui:197 data/ui/setup_window.ui:279
-msgid "Stepgoal"
+#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:279
+#: src/views/view_steps.rs:193
+msgid "Step goal"
 msgstr "Meta de passos"
 
 # WHO  = OMS = Organização Mundial da Saúde
-#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:256
+#: data/ui/preferences_window.ui:199 data/ui/setup_window.ui:256
 msgid "The WHO recommends 10.000 steps per day."
 msgstr "A OMS recomenda 10.000 passos por dia."
 
 # WHO  = OMS = Organização Mundial da Saúde
 # BMI = IMC = Índice de  Massa Corporal
-#: data/ui/preferences_window.ui:217 data/ui/setup_window.ui:321
+#: data/ui/preferences_window.ui:219 data/ui/setup_window.ui:321
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "A OMS recomenda um IMC de 18,5 – 24,9."
 
-#: data/ui/preferences_window.ui:245
+#: data/ui/preferences_window.ui:248
 msgid "Sync"
 msgstr "Sincronizar"
 
-#: data/ui/preferences_window.ui:249
+#: data/ui/preferences_window.ui:252
 msgid "Start sync with third-party providers."
 msgstr "Inicia a sincronização com provedores de terceiros."
 
-#: data/ui/preferences_window.ui:259
+#: data/ui/preferences_window.ui:262
 msgid "Importing and exporting data"
 msgstr "Importação e exportação de dados"
 
-#: data/ui/preferences_window.ui:262
+#: data/ui/preferences_window.ui:265
 msgid "Export data as CSV"
 msgstr "Exportar dados como CSV"
 
-#: data/ui/preferences_window.ui:265
+#: data/ui/preferences_window.ui:268
 msgid "Export…"
 msgstr "Exportar…"
 
-#: data/ui/preferences_window.ui:273
+#: data/ui/preferences_window.ui:276
 msgid "Import data from CSV"
 msgstr "Importar dados como CSV"
 
-#: data/ui/preferences_window.ui:276
+#: data/ui/preferences_window.ui:279
 msgid "Import…"
 msgstr "Importar…"
 
@@ -486,28 +491,23 @@ msgstr "Seja bem-vindo ao Saúde!"
 msgid "Please enter some information to get setup."
 msgstr "Por favor, insira algumas informações para fazer a configuração."
 
-#: data/ui/setup_window.ui:213 src/windows/preferences_window.rs:144
-#: src/windows/preferences_window.rs:428 src/windows/setup_window.rs:425
-msgid "Height in centimeters"
-msgstr "Altura em centímetros"
-
 #: data/ui/setup_window.ui:243
-msgid "Please enter your daily stepgoal."
+msgid "Please enter your daily step goal."
 msgstr "Por favor, insira sua meta diária de passos."
 
 #: data/ui/setup_window.ui:308
-msgid "Please enter your weightgoal."
+msgid "Please enter your weight goal."
 msgstr "Por favor, insira sua meta de peso."
 
-#: data/ui/setup_window.ui:349 src/views/view_weight.rs:170
-msgid "Weightgoal"
+#: data/ui/setup_window.ui:349 src/views/view_weight.rs:171
+msgid "Weight goal"
 msgstr "Meta de peso"
 
-#: data/ui/setup_window.ui:388
+#: data/ui/setup_window.ui:389
 msgid "Setup sync with third-party providers."
 msgstr "Configure a sincronização com provedores de terceiros."
 
-#: data/ui/setup_window.ui:401
+#: data/ui/setup_window.ui:402
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
@@ -559,11 +559,11 @@ msgstr "A_talhos de teclado"
 msgid "_About Health"
 msgstr "_Sobre o Saúde"
 
-#: src/core/application.rs:139
+#: src/core/application.rs:140
 msgid "translator-credits"
 msgstr "Rafael Fontenelle <rafaelff@gnome.org>"
 
-#: src/core/application.rs:141
+#: src/core/application.rs:142
 msgid "Websites"
 msgstr "Sites"
 
@@ -657,7 +657,6 @@ msgstr "Saúde: lembrete de caminhada"
 
 #. TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
 #: src/model/model_notification.rs:148
-#| msgid "{} steps remaining to complete your daily stepgoal of {} steps"
 msgid "{} step remaining to complete your daily step goal"
 msgid_plural "{} steps remaining to complete your daily step goal"
 msgstr[0] "{} passo restante para concluir sua meta diária"
@@ -733,23 +732,19 @@ msgstr "Autenticado com sucesso, volte para o Saúde."
 msgid "Couldn't parse OAuth2 response"
 msgstr "Não foi possível analisar a resposta OAuth2"
 
-#: src/views/bar_graph_view.rs:509
+#: src/views/bar_graph_view.rs:510
 msgid "Enter weight record to calculate idle calories"
 msgstr "Insira o registro de peso para calcular as calorias em repouso"
 
-#: src/views/bar_graph_view.rs:513
+#: src/views/bar_graph_view.rs:514
 msgid "Idle calories"
-msgstr "calorias em repouso"
+msgstr "Calorias em repouso"
 
-#: src/views/view_activity.rs:183
+#: src/views/view_activity.rs:184
 msgid "No activities on or after {}"
 msgstr "Nenhuma atividade em ou após {}"
 
-#: src/views/view_calories.rs:168
-#| msgid ""
-#| "{}:\n"
-#| "{} calories\n"
-#| "{}"
+#: src/views/view_calories.rs:169
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -767,21 +762,19 @@ msgstr[1] ""
 "{} calorias\n"
 "{}"
 
-#: src/views/view_home_page.rs:255
-#| msgid "{} steps taken today"
+#: src/views/view_home_page.rs:256
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} passo dado hoje"
 msgstr[1] "{} passos dados hoje"
 
-#: src/views/view_home_page.rs:261
+#: src/views/view_home_page.rs:262
 msgid "{}%"
 msgstr "{}%"
 
 #. TRANSLATORS: Current user weight
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:296 src/views/view_home_page.rs:330
-#| msgid "{} pounds"
+#: src/views/view_home_page.rs:297 src/views/view_home_page.rs:331
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} libra"
@@ -789,57 +782,50 @@ msgstr[1] "{} libras"
 
 #. TRANSLATORS: Current user weight
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:303 src/views/view_home_page.rs:337
-#| msgid "{} kilogram"
+#: src/views/view_home_page.rs:304 src/views/view_home_page.rs:338
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} quilograma"
 msgstr[1] "{} quilogramas"
 
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:313
-#| msgid "+ {} pounds"
+#: src/views/view_home_page.rs:314
 msgid "+ {} pound"
 msgid_plural "+ {} pounds"
 msgstr[0] "+ {} libra"
 msgstr[1] "+ {} libras"
 
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:320
-#| msgid "+ {} kilogram"
+#: src/views/view_home_page.rs:321
 msgid "+ {} kilogram"
 msgid_plural "+ {} kilograms"
 msgstr[0] "+ {} quilograma"
 msgstr[1] "+ {} quilogramas"
 
-#: src/views/view_home_page.rs:345
+#: src/views/view_home_page.rs:346
 msgid "No change in weight"
 msgstr "Sem mudança de peso"
 
-#: src/views/view_home_page.rs:350
+#: src/views/view_home_page.rs:351
 msgid "compared to previous weight"
 msgstr "comparado com o peso anterior"
 
-#: src/views/view_home_page.rs:354
+#: src/views/view_home_page.rs:355
 msgid "use + to add a weight record"
 msgstr "use +  para adicionar um registro de peso"
 
-#: src/views/view_steps.rs:139
+#: src/views/view_steps.rs:140
 msgid "Today's steps: {}"
 msgstr "Passos de hoje: {}"
 
-#: src/views/view_steps.rs:155
-#| msgid ""
-#| "No streak yet. Reach your stepgoal for multiple days to start a streak!"
+#: src/views/view_steps.rs:156
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
 "Sem sequência ainda. Alcance sua meta de passos de vários dias para começar "
 "uma sequência!"
 
-#: src/views/view_steps.rs:159
-#| msgid ""
-#| "You're on a streak for {} days. Reach your stepgoal today to continue it!"
+#: src/views/view_steps.rs:160
 msgid ""
 "You're on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -849,60 +835,47 @@ msgstr[0] ""
 msgstr[1] ""
 "Você está em uma sequência de {} dias. Alcance sua meta hoje para continuar!"
 
-#: src/views/view_steps.rs:167
-#| msgid "You've reached your stepgoal today. Keep going to start a streak!"
+#: src/views/view_steps.rs:168
 msgid "You've reached your step goal today. Keep going to start a streak!"
 msgstr ""
 "Você atingiu sua meta de passos hoje. Continue para começar uma sequência!"
 
-#: src/views/view_steps.rs:170
-#| msgid "You're on a streak for {} days. Good job!"
+#: src/views/view_steps.rs:171
 msgid "You're on a streak for {} day. Good job!"
 msgid_plural "You're on a streak for {} days. Good job!"
 msgstr[0] "Você está em uma sequência de {} dia. Bom trabalho!"
 msgstr[1] "Você está em uma sequência de {} dias. Bom trabalho!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/views/view_steps.rs:185
-#| msgid "{} steps on {}"
+#: src/views/view_steps.rs:186
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} passo em {}"
 msgstr[1] "{} passos em {}"
 
-#: src/views/view_steps.rs:192
-#| msgid "Stepgoal"
-msgid "Step goal"
-msgstr "Meta de passos"
-
-#: src/views/view_weight.rs:144
+#: src/views/view_weight.rs:145
 msgid "Current BMI: {}"
 msgstr "IMC atual: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/views/view_weight.rs:157
-#| msgid "{} pounds on {}"
+#: src/views/view_weight.rs:158
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} libra em {}"
 msgstr[1] "{} libras em {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/views/view_weight.rs:160
-#| msgid "{} kilogram on {}"
+#: src/views/view_weight.rs:161
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} quilograma em {}"
 msgstr[1] "{} quilogramas em {}"
 
-#: src/views/view_weight.rs:198
+#: src/views/view_weight.rs:199
 msgid "Unknown BMI"
 msgstr "IMC desconhecido"
 
-#: src/views/view_weight.rs:222
-#| msgid ""
-#| "Your weight goal is {} pounds. Add a first weight measurement to see how "
-#| "close you are to reaching it."
+#: src/views/view_weight.rs:223
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -916,10 +889,7 @@ msgstr[1] ""
 "Sua meta de peso é de {} libras. Adicione uma primeira medida de peso para "
 "ver o quão perto você está de alcançá-la."
 
-#: src/views/view_weight.rs:229
-#| msgid ""
-#| "Your weight goal is {} kilogram. Add a first weight measurement to see "
-#| "how close you are to reaching it."
+#: src/views/view_weight.rs:230
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -933,80 +903,115 @@ msgstr[1] ""
 "Sua meta de peso é de {} quilogramas. Adicione uma primeira medida de peso "
 "para ver o quão perto você está de alcançá-la."
 
-#: src/views/view_weight.rs:238
-msgid "You've reached your weightgoal. Great job!"
+#: src/views/view_weight.rs:239
+msgid "You've reached your weight goal. Great job!"
 msgstr "Você atingiu sua meta de peso. Bom trabalho!"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/views/view_weight.rs:254
-#| msgid "Weightgoal in pounds"
+#: src/views/view_weight.rs:255
 msgid "Your weight goal is {} pound,"
 msgid_plural "Your weight goal is {} pounds,"
 msgstr[0] "Sua meta de peso é de {} libra,"
 msgstr[1] "Sua meta de peso é de {} libras,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:260
+#: src/views/view_weight.rs:261
 msgid "you have {} pound left to reach it"
 msgid_plural "you have {} pounds left to reach it"
 msgstr[0] "faltando {} libra para alcançá-la"
 msgstr[1] "faltando {} libras para alcançá-la"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/views/view_weight.rs:267
-#| msgid "{} kilogram left to reach your weightgoal of {} kilogram"
+#: src/views/view_weight.rs:268
 msgid "Your weight goal is {} kilogram,"
 msgid_plural "Your weight goal is {} kilograms,"
 msgstr[0] "Sua meta de peso é de {} quilograma,"
 msgstr[1] "Sua meta de peso é de {} quilogramas,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:273
-#| msgid "{} kilogram left to reach your weightgoal of {} kilogram"
+#: src/views/view_weight.rs:274
 msgid "you have {} kilogram left to reach it"
 msgid_plural "you have {} kilograms left to reach it"
 msgstr[0] "faltando {} quilograma para alcançá-la"
 msgstr[1] "faltando {} quilogramas para alcançá-la"
 
-#: src/views/view_weight.rs:282
-msgid "No weightgoal set yet. You can set it in Health's preferences."
+#: src/views/view_weight.rs:283
+msgid "No weight goal set yet. You can set it in Health's preferences."
 msgstr ""
 "Nenhuma meta de peso definida ainda. Você pode configurá-lo nas preferências "
 "do Saúde."
 
-#: src/widgets/activity_row.rs:130
-#| msgid "{} Minutes"
+#: src/widgets/activity_row.rs:131
 msgid "{} Minute"
 msgid_plural "{} Minutes"
 msgstr[0] "{} minuto"
 msgstr[1] "{} minutos"
 
-#: src/widgets/activity_row.rs:146 src/widgets/activity_row.rs:228
-#| msgid "{} Calories"
+#: src/widgets/activity_row.rs:147 src/widgets/activity_row.rs:229
 msgid "{} Calorie"
 msgid_plural "{} Calories"
 msgstr[0] "{} caloria"
 msgstr[1] "{} calorias"
 
-#: src/widgets/bmi_level_bar.rs:173 src/widgets/bmi_level_bar.rs:202
+#: src/widgets/bmi_level_bar.rs:174 src/widgets/bmi_level_bar.rs:203
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>IMC atual: {}</small>"
 
-#: src/widgets/distance_action_row.rs:251
+#: src/widgets/distance_action_row.rs:248
 msgid "KM"
 msgstr "KM"
 
-#: src/widgets/distance_action_row.rs:252
+#: src/widgets/distance_action_row.rs:249
 msgid "Meters"
 msgstr "Metros"
 
-#: src/widgets/distance_action_row.rs:254
+#: src/widgets/distance_action_row.rs:251
 msgid "Miles"
 msgstr "Milhas"
 
-#: src/widgets/distance_action_row.rs:255
-msgid "Yards"
-msgstr "Jardas"
+#: src/widgets/distance_action_row.rs:252
+msgid "Feet"
+msgstr "Pés"
+
+#. TRANSLATORS: Unit abbreviation (centimeters)
+#: src/widgets/unit_spinbutton.rs:466 src/widgets/unit_spinbutton.rs:629
+msgid "cm"
+msgstr "cm"
+
+#. TRANSLATORS: Unit abbreviation (meters)
+#: src/widgets/unit_spinbutton.rs:468
+msgid "m"
+msgstr "m"
+
+#. TRANSLATORS: Unit abbreviation (kilometers)
+#: src/widgets/unit_spinbutton.rs:470
+msgid "km"
+msgstr "km"
+
+#. TRANSLATORS: Unit abbreviation (kilograms)
+#: src/widgets/unit_spinbutton.rs:472
+msgid "kg"
+msgstr "kg"
+
+#. TRANSLATORS: Unit abbreviation (inch)
+#: src/widgets/unit_spinbutton.rs:474 src/widgets/unit_spinbutton.rs:631
+msgid "in"
+msgstr "pol"
+
+#. TRANSLATORS: Unit abbreviation (feet)
+#: src/widgets/unit_spinbutton.rs:476
+msgid "ft"
+msgstr "ft"
+
+#. TRANSLATORS: Unit abbreviation (miles)
+#: src/widgets/unit_spinbutton.rs:478
+msgid "mi"
+msgstr "mi"
+
+#. TRANSLATORS: Unit abbreviation (pounds)
+#: src/widgets/unit_spinbutton.rs:480
+msgid "lb"
+msgstr "lb"
 
 #: src/windows/export_dialog.rs:54
 msgid "Save Activities"
@@ -1034,7 +1039,7 @@ msgstr "Medidas de peso.csv.encrypted"
 msgid "Weight Measurements.csv"
 msgstr "Medidas de peso.csv"
 
-#: src/windows/export_dialog.rs:134
+#: src/windows/export_dialog.rs:135
 msgid "Export data"
 msgstr "Exportar dados"
 
@@ -1050,7 +1055,7 @@ msgstr "_Abrir"
 msgid "Open Weight Measurement"
 msgstr "Abrir medida de peso"
 
-#: src/windows/import_dialog.rs:123
+#: src/windows/import_dialog.rs:124
 msgid "Import data"
 msgstr "Importar dados"
 
@@ -1070,47 +1075,50 @@ msgstr "Importar pesos"
 msgid "Import"
 msgstr "Importar"
 
-#: src/windows/import_export_dialog_base.rs:327
+#: src/windows/import_export_dialog_base.rs:328
 msgid "Success!"
 msgstr "Sucesso!"
 
-#: src/windows/import_export_dialog_base.rs:331
+#: src/windows/import_export_dialog_base.rs:332
 msgid "An error occurred!"
 msgstr "Ocorreu um erro!"
 
-#: src/windows/import_export_dialog_base.rs:337
+#: src/windows/import_export_dialog_base.rs:338
 msgid "Close"
 msgstr "Fechar"
 
-#: src/windows/preferences_window.rs:146 src/windows/preferences_window.rs:431
-#: src/windows/setup_window.rs:428
-#| msgid "Weightgoal in KG"
-msgid "Weight goal in KG"
-msgstr "Meta de peso em KG"
-
-#: src/windows/preferences_window.rs:152 src/windows/preferences_window.rs:441
-#: src/windows/setup_window.rs:435
-msgid "Height in inch"
-msgstr "Altura em polegadas"
-
-#: src/windows/preferences_window.rs:154 src/windows/preferences_window.rs:444
-#: src/windows/setup_window.rs:438
-#| msgid "Weightgoal in pounds"
-msgid "Weight goal in pounds"
-msgstr "Meta de peso em libras"
-
-#: src/windows/preferences_window.rs:379
+#: src/windows/preferences_window.rs:375
 msgid "Remind you of your step goals"
 msgstr "Lembrar de suas metas de passos"
 
-#: src/windows/window.rs:135
+#: src/windows/window.rs:136
 msgid "Failed to migrate database to new version due to error {}"
 msgstr "Falha ao migrar o banco de dados para a nova versão devido ao erro {}"
 
-#: src/windows/window.rs:364
+#: src/windows/window.rs:365
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr ""
 "Não foi possível sincronizar os dados do Google Fit devido a um erro: {}u"
+
+#~ msgid "Stepgoal"
+#~ msgstr "Meta de passos"
+
+#~ msgid "Height in centimeters"
+#~ msgstr "Altura em centímetros"
+
+#~ msgid "Yards"
+#~ msgstr "Jardas"
+
+#~| msgid "Weightgoal in KG"
+#~ msgid "Weight goal in KG"
+#~ msgstr "Meta de peso em KG"
+
+#~ msgid "Height in inch"
+#~ msgstr "Altura em polegadas"
+
+#~| msgid "Weightgoal in pounds"
+#~ msgid "Weight goal in pounds"
+#~ msgstr "Meta de peso em libras"
 
 #~ msgid "{} pounds left to reach your weightgoal of {} pounds"
 #~ msgstr "{} libras restantes para atingir sua meta de peso de {} libras"
