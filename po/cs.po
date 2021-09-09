@@ -1,0 +1,1128 @@
+# Czech translation for health.
+# Copyright (C) 2021 health's COPYRIGHT HOLDER
+# This file is distributed under the same license as the health package.
+# Marek Černocký <marek@manet.cz>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: health\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
+"POT-Creation-Date: 2021-09-06 22:34+0000\n"
+"PO-Revision-Date: 2021-09-09 13:52+0200\n"
+"Last-Translator: Marek Černocký <marek@manet.cz>\n"
+"Language-Team: Czech <gnome-cs-list@gnome.org>\n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2\n"
+"X-Generator: Gtranslator 3.38.0\n"
+
+#: data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.ui:45
+#: src/main.rs:31
+msgid "Health"
+msgstr "Zdraví"
+
+#: data/dev.Cogitri.Health.desktop.in.in:5
+msgid "@APPLICATION_ID@"
+msgstr "@APPLICATION_ID@"
+
+#: data/dev.Cogitri.Health.gschema.xml:16
+msgid "Last opened view"
+msgstr "Poslední otevřené zobrazení"
+
+#: data/dev.Cogitri.Health.gschema.xml:17
+msgid "The last view the user had opened, for restoring it on start"
+msgstr ""
+"Zobrazení, které měl uživatel otevřené při posledním ukončení aplikace. Po "
+"spuštění bude obnoveno právě do tohoto zobrazení."
+
+#: data/dev.Cogitri.Health.gschema.xml:21
+msgid "First time setup done"
+msgstr "Prvotní nastavení bylo provedeno"
+
+#: data/dev.Cogitri.Health.gschema.xml:22
+msgid "Whether the user has completed the setup wizard"
+msgstr "Zda uživatel dokončil průvodce nastavením."
+
+#: data/dev.Cogitri.Health.gschema.xml:26
+msgid "Toggle notifications"
+msgstr "Zapnout upozornění"
+
+#: data/dev.Cogitri.Health.gschema.xml:27
+msgid "Whether to enable notifications."
+msgstr "Zda povolit upozorňování."
+
+#: data/dev.Cogitri.Health.gschema.xml:31
+msgid "Notification time"
+msgstr "Čas upozornění"
+
+#: data/dev.Cogitri.Health.gschema.xml:32
+msgid "The time at which Health should remind the user of their step goal"
+msgstr ""
+"Čas, kdy by Zdraví mělo uživateli připomínat jeho předsevzatý počet kroků."
+
+#: data/dev.Cogitri.Health.gschema.xml:36
+msgid "notification frequency"
+msgstr "Četnost upozornění"
+
+#: data/dev.Cogitri.Health.gschema.xml:37
+msgid ""
+"How frequent should the user be notified to complete their daily step-goal."
+msgstr ""
+"Jak často by měl být uživatel upozorňován, že má splnit svůj předsevzatý cíl "
+"v denním počtu kroků."
+
+#: data/dev.Cogitri.Health.gschema.xml:41
+msgid "List of recent activity types"
+msgstr "Seznam typů nedávných aktivit"
+
+#: data/dev.Cogitri.Health.gschema.xml:42
+msgid ""
+"Activity types the user used recently, to be shown first in the activity "
+"types selector's list"
+msgstr ""
+"Typy aktivit, které uživatel nedávno použil; budou zobrazené na prvních "
+"pozicích v seznamu pro výběr typu aktivity."
+
+#: data/dev.Cogitri.Health.gschema.xml:46
+msgid "Google Fit Sync-Provider setup"
+msgstr "Nastaven poskytovatel synchronizace Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:47
+msgid "Whether Google Fit has been setup as sync provider"
+msgstr "Zda byl Google Fit nastaven jako poskytovatel synchronizace."
+
+#: data/dev.Cogitri.Health.gschema.xml:51
+msgid "Last sync with Google Fit"
+msgstr "Poslední synchronizace s Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:52
+msgid "The last time we synched steps, weight etc. with Google Fit"
+msgstr ""
+"Čas, kdy byly naposledy synchronizovány počet kroků, hmotnost atd. s Google "
+"Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:56
+msgid "Unit system used"
+msgstr "Používané jednotky"
+
+#: data/dev.Cogitri.Health.gschema.xml:57
+msgid "The unit system the user chose, e.g. for cm vs inch for height"
+msgstr ""
+"Systém měrných jednotek, které si uživatel zvolil. Podle toho se pak "
+"například určí, jestli pro výšku používat cm nebo palce."
+
+#: data/dev.Cogitri.Health.gschema.xml:61
+msgid "User age"
+msgstr "Věk uživatele"
+
+#: data/dev.Cogitri.Health.gschema.xml:62
+msgid "The age of the user (deprecated)."
+msgstr "Relativní věk uživatele (zavrženo)."
+
+#: data/dev.Cogitri.Health.gschema.xml:66
+msgid "Absolute user age"
+msgstr "Absolutní věk uživatele"
+
+#: data/dev.Cogitri.Health.gschema.xml:67
+msgid "The age of the user in absolute terms (like 01/01/1970)"
+msgstr "Absolutní věk uživatele, tj. datum narození v podobě 01/01/1970."
+
+#: data/dev.Cogitri.Health.gschema.xml:71
+msgid "User height"
+msgstr "Výška uživatele"
+
+#: data/dev.Cogitri.Health.gschema.xml:72
+msgid "The height of the user."
+msgstr "Jak je uživatel vysoký."
+
+#: data/dev.Cogitri.Health.gschema.xml:76
+msgid "User step goal"
+msgstr "Uživatelův předsevzatý počet kroků"
+
+#: data/dev.Cogitri.Health.gschema.xml:77
+msgid "The amount of steps the user wants to reach daily."
+msgstr "Počet kroků, kterého chce uživatel denně dosáhnout."
+
+#: data/dev.Cogitri.Health.gschema.xml:81
+msgid "User weight goal"
+msgstr "Uživatelova předsevzatá hmotnost"
+
+#: data/dev.Cogitri.Health.gschema.xml:82
+msgid "The weight the user wants to reach."
+msgstr "Hmotnost, které chce uživatel dosáhnout."
+
+#: data/dev.Cogitri.Health.gschema.xml:86
+msgid "Window height"
+msgstr "Výška okna"
+
+#: data/dev.Cogitri.Health.gschema.xml:87
+msgid "The height of the window."
+msgstr "Výška okna, když byla aplikace naposledy ukončena."
+
+#: data/dev.Cogitri.Health.gschema.xml:91
+msgid "Window maximized"
+msgstr "Maximalizace okna"
+
+#: data/dev.Cogitri.Health.gschema.xml:92
+msgid "Whether the window is maximized."
+msgstr "Zda bylo okno maximalizováno, když byla aplikace naposledy ukončena."
+
+#: data/dev.Cogitri.Health.gschema.xml:96
+msgid "Window width"
+msgstr "Šířka okna"
+
+#: data/dev.Cogitri.Health.gschema.xml:97
+msgid "The width of the window."
+msgstr "Šířka okna, když byla aplikace naposledy ukončena."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:138
+msgid "A health tracking app for the GNOME desktop."
+msgstr "Aplikace pro sledování zdraví do uživatelského prostředí GNOME"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+msgid ""
+"A health tracking app for the GNOME desktop. Health can visualize how many "
+"steps you've made daily, your weight development over time and your daily "
+"activities."
+msgstr ""
+"Aplikace pro sledování zdraví v uživatelském prostředí GNOME. Umí přehledně "
+"ukázat, kolik kroků denně jste udělali, vývoj vaší hmotnosti v průběhu času "
+"a vaše denní aktivity."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:31
+msgid "Rasmus “Cogitri” Thomsen"
+msgstr "Rasmus „Cogitri“ Thomsen"
+
+#: data/ui/activity_add_dialog.ui:64
+msgid "Add An Activity"
+msgstr "Přidání aktivity"
+
+#: data/ui/activity_add_dialog.ui:93 data/ui/weight_add_dialog.ui:51
+msgid "Date"
+msgstr "Datum"
+
+#: data/ui/activity_add_dialog.ui:102
+msgid "Activity Type"
+msgstr "Typ aktivity"
+
+#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:75
+msgid "Calories Burned"
+msgstr "Spálené kalorie"
+
+#: data/ui/activity_add_dialog.ui:124
+msgid "Active Minutes"
+msgstr "Aktivních minut"
+
+#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:102
+msgid "Average Heart Rate"
+msgstr "Průměrný srdeční tep"
+
+#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:111
+msgid "Minimum Heart Rate"
+msgstr "Minimální srdeční tep"
+
+#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:120
+msgid "Maximum Heart Rate"
+msgstr "Maximální srdeční tep"
+
+#: data/ui/activity_add_dialog.ui:172
+msgid "Stepcount"
+msgstr "Počet kroků"
+
+#: data/ui/activity_row.ui:84
+msgid "Distance in Meters"
+msgstr "Vzdálenost v metrech"
+
+#: data/ui/activity_row.ui:93 data/ui/home_page.ui:69 data/ui/step_view.ui:26
+#: data/ui/step_view.ui:27
+msgid "Steps"
+msgstr "Kroky"
+
+#: data/ui/activity_view.ui:24 data/ui/calorie_view.ui:23
+#: data/ui/home_page.ui:24 data/ui/step_view.ui:23
+msgid "You can use the <b>+</b> button to add a new activity."
+msgstr "Tlačítkem <b>+</b> můžete přidat novou aktivitu."
+
+#: data/ui/activity_view.ui:27 data/ui/home_page.ui:27
+msgid "Recent Activities"
+msgstr "Nedávné aktivity"
+
+#: data/ui/activity_view.ui:28
+msgid "Activities"
+msgstr "Aktivity"
+
+#: data/ui/calorie_view.ui:26 data/ui/calorie_view.ui:27
+msgid "Calories"
+msgstr "Kalorie"
+
+#: data/ui/data_add_dialog.ui:26 data/ui/preferences_window.ui:72
+msgid "Health Preferences"
+msgstr "Předvolby Zdraví"
+
+#: data/ui/data_add_dialog.ui:31 data/ui/import_export_dialog_base.ui:29
+#: src/windows/export_dialog.rs:56 src/windows/export_dialog.rs:92
+#: src/windows/import_dialog.rs:56 src/windows/import_dialog.rs:85
+msgid "_Cancel"
+msgstr "_Zrušit"
+
+#: data/ui/data_add_dialog.ui:37 src/windows/export_dialog.rs:55
+#: src/windows/export_dialog.rs:91
+msgid "_Save"
+msgstr "_Uložit"
+
+#: data/ui/date_editor.ui:29
+msgid "January"
+msgstr "leden"
+
+#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:244
+msgid "February"
+msgstr "únor"
+
+#: data/ui/date_editor.ui:31
+msgid "March"
+msgstr "březen"
+
+#: data/ui/date_editor.ui:32
+msgid "April"
+msgstr "duben"
+
+#: data/ui/date_editor.ui:33
+msgid "May"
+msgstr "květen"
+
+#: data/ui/date_editor.ui:34
+msgid "June"
+msgstr "červen"
+
+#: data/ui/date_editor.ui:35
+msgid "July"
+msgstr "červenec"
+
+#: data/ui/date_editor.ui:36
+msgid "August"
+msgstr "srpen"
+
+#: data/ui/date_editor.ui:37
+msgid "September"
+msgstr "září"
+
+#: data/ui/date_editor.ui:38
+msgid "October"
+msgstr "říjen"
+
+#: data/ui/date_editor.ui:39
+msgid "November"
+msgstr "listopad"
+
+#: data/ui/date_editor.ui:40
+msgid "December"
+msgstr "prosinec"
+
+#: data/ui/date_editor.ui:51
+msgid "Day"
+msgstr "Den"
+
+#: data/ui/date_editor.ui:76
+msgid "Month"
+msgstr "Měsíc"
+
+#: data/ui/date_editor.ui:98
+msgid "Year"
+msgstr "Rok"
+
+#: data/ui/distance_action_row.ui:29
+msgid "Distance"
+msgstr "Vzdálenost"
+
+#: data/ui/home_page.ui:28
+msgid "Home Page"
+msgstr "Domovská stránka"
+
+#: data/ui/home_page.ui:63 data/ui/preferences_window.ui:82
+#: data/ui/shortcuts_window.ui:30
+msgid "General"
+msgstr "Obecné"
+
+#: data/ui/home_page.ui:66
+msgid "Today"
+msgstr "Dnes"
+
+#. TRANSLATORS: This is displayed via two strings: x% and then this label. E.g. 100% of daily step goal
+#: data/ui/home_page.ui:90
+msgid "of daily step goal"
+msgstr "z denního předsevzetí"
+
+#: data/ui/home_page.ui:103 data/ui/preferences_window.ui:218
+#: data/ui/weight_add_dialog.ui:61 data/ui/weight_view.ui:27
+msgid "Weight"
+msgstr "Hmotnost"
+
+#: data/ui/import_export_dialog_base.ui:35
+msgid "_Export"
+msgstr "_Export"
+
+#: data/ui/password_entry.ui:28
+msgid "_Password"
+msgstr "_Heslo"
+
+#: data/ui/password_entry.ui:58
+msgid "_Confirm password"
+msgstr "Po_tvrzení hesla"
+
+#: data/ui/preferences_window.ui:55
+msgid "_Every 1 hour"
+msgstr "_Každou hodinu"
+
+#: data/ui/preferences_window.ui:60
+msgid "_Every 4 hours"
+msgstr "Každé _4 hodiny"
+
+#: data/ui/preferences_window.ui:65
+msgid "_Fixed Time"
+msgstr "V _pevný čas"
+
+#: data/ui/preferences_window.ui:85
+msgid "User"
+msgstr "Uživatel"
+
+#: data/ui/preferences_window.ui:88 data/ui/setup_window.ui:176
+msgid "Unit system"
+msgstr "Jednotky"
+
+#: data/ui/preferences_window.ui:97 data/ui/setup_window.ui:185
+msgid "Imperial"
+msgstr "imperiální"
+
+#: data/ui/preferences_window.ui:104 data/ui/setup_window.ui:192
+msgid "Metric"
+msgstr "metrické"
+
+#: data/ui/preferences_window.ui:115 data/ui/setup_window.ui:203
+msgid "Birthday"
+msgstr "Datum narození"
+
+#: data/ui/preferences_window.ui:125 data/ui/setup_window.ui:213
+msgid "Height"
+msgstr "Výška"
+
+#: data/ui/preferences_window.ui:141
+msgid "Notifications"
+msgstr "Upozornění"
+
+#: data/ui/preferences_window.ui:144
+msgid "Enable notifications"
+msgstr "Povolit upozornění"
+
+#: data/ui/preferences_window.ui:157
+msgid "Frequency"
+msgstr "Četnost"
+
+#: data/ui/preferences_window.ui:174
+msgid "Daily reminder time"
+msgstr "Čas každodenního připomenutí"
+
+#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:279
+#: src/views/view_steps.rs:193
+msgid "Step goal"
+msgstr "Předsevzatý počet kroků"
+
+#: data/ui/preferences_window.ui:199 data/ui/setup_window.ui:256
+msgid "The WHO recommends 10.000 steps per day."
+msgstr "Světová zdravotnická organizace doporučuje 10 000 kroků denně."
+
+#: data/ui/preferences_window.ui:219 data/ui/setup_window.ui:321
+msgid "The WHO recommends a BMI of 18.5-24.9."
+msgstr "Světová zdravotnická organizace doporučuje BMI 18,5 až 24,9."
+
+#: data/ui/preferences_window.ui:248
+msgid "Sync"
+msgstr "Synchronizace"
+
+#: data/ui/preferences_window.ui:252
+msgid "Start sync with third-party providers."
+msgstr "Začít synchronizaci s poskytovatelem třetí strany."
+
+#: data/ui/preferences_window.ui:262
+msgid "Importing and exporting data"
+msgstr "Import a export dat"
+
+#: data/ui/preferences_window.ui:265
+msgid "Export data as CSV"
+msgstr "Export dat do CSV"
+
+#: data/ui/preferences_window.ui:268
+msgid "Export…"
+msgstr "Exportovat…"
+
+#: data/ui/preferences_window.ui:276
+msgid "Import data from CSV"
+msgstr "Import dat z CSV"
+
+#: data/ui/preferences_window.ui:279
+msgid "Import…"
+msgstr "Importovat…"
+
+#: data/ui/setup_window.ui:55
+msgid "Health Setup"
+msgstr "Nastavení Zdraví"
+
+#: data/ui/setup_window.ui:70
+msgid "_Quit"
+msgstr "U_končit"
+
+#: data/ui/setup_window.ui:82
+msgid "_Previous"
+msgstr "_Předchozí"
+
+#: data/ui/setup_window.ui:99
+msgid "_Next"
+msgstr "_Další"
+
+#: data/ui/setup_window.ui:113
+msgid "_Done"
+msgstr "_Hotovo"
+
+#: data/ui/setup_window.ui:140
+msgid "Welcome to Health!"
+msgstr "Vítejte ve Zdraví"
+
+#: data/ui/setup_window.ui:153
+msgid "Please enter some information to get setup."
+msgstr "Vyplňte prosím pár údajů, aby aplikace mohla správně fungovat."
+
+#: data/ui/setup_window.ui:243
+msgid "Please enter your daily step goal."
+msgstr "Zadejte prosím svůj předsevzatý počet kroků."
+
+#: data/ui/setup_window.ui:308
+msgid "Please enter your weight goal."
+msgstr "Zadejte prosím svoji předsevzatou hmotnost."
+
+#: data/ui/setup_window.ui:349 src/views/view_weight.rs:171
+msgid "Weight goal"
+msgstr "Předsevzatá hmotnost"
+
+#: data/ui/setup_window.ui:389
+msgid "Setup sync with third-party providers."
+msgstr "Nastavit synchronizaci s poskytovatelem třetí strany."
+
+#: data/ui/setup_window.ui:402
+msgid ""
+"You can sync steps and weight measurements from/to third-party providers."
+msgstr ""
+"Můžete synchronizovat počet kroků a zváženou hmotnost z/do služby třetí "
+"strany."
+
+#: data/ui/shortcuts_window.ui:34
+msgid "Quit the application"
+msgstr "Ukončit aplikaci"
+
+#: data/ui/shortcuts_window.ui:40
+msgid "Show this shortcuts window"
+msgstr "Zobrazit tyto klávesové zkratky"
+
+#: data/ui/shortcuts_window.ui:46
+msgid "Show help"
+msgstr "Zobrazit nápovědu"
+
+#: data/ui/shortcuts_window.ui:52
+msgid "Show primary menu"
+msgstr "Zobrazit hlavní nabídku"
+
+#: data/ui/shortcuts_window.ui:58
+msgid "Toggle fullscreen mode"
+msgstr "Přepnout režim celé obrazovky"
+
+#: data/ui/weight_add_dialog.ui:31 data/ui/weight_view.ui:26
+msgid "Weight Measurements"
+msgstr "Vážení"
+
+#: data/ui/weight_add_dialog.ui:32
+msgid "Add Weight Record"
+msgstr "Přidání záznamu o hmotnosti"
+
+#: data/ui/weight_view.ui:23
+msgid "You can use the <b>+</b> button to add a new weight measurement."
+msgstr "Tlačítkem <b>+</b> můžete přidat nové vážení."
+
+#: data/ui/window.ui:27
+msgid "_Preferences"
+msgstr "_Předvolby"
+
+#: data/ui/window.ui:31
+msgid "_Keyboard Shortcuts"
+msgstr "_Klávesové zkratky"
+
+#: data/ui/window.ui:37
+msgid "_About Health"
+msgstr "O _aplikaci Zdraví"
+
+#: src/core/application.rs:140
+msgid "translator-credits"
+msgstr "Marek Černocký <marek@manet.cz>"
+
+#: src/core/application.rs:142
+msgid "Websites"
+msgstr "Webové stránky"
+
+#: src/daemon/main.rs:31
+msgid "Health Daemon"
+msgstr "Démon aplikace Zdraví"
+
+#: src/model/activity_info.rs:74
+msgid "Basketball"
+msgstr "Basketbal"
+
+#: src/model/activity_info.rs:89
+msgid "Bicycling"
+msgstr "Cyklistika"
+
+#: src/model/activity_info.rs:103
+msgid "Boxing"
+msgstr "Box"
+
+#: src/model/activity_info.rs:117
+msgid "Dancing"
+msgstr "Tanec"
+
+#: src/model/activity_info.rs:131
+msgid "Football"
+msgstr "Ragby"
+
+#: src/model/activity_info.rs:143
+msgid "Golf"
+msgstr "Golf"
+
+#: src/model/activity_info.rs:159
+msgid "Hiking"
+msgstr "Turistika"
+
+#: src/model/activity_info.rs:173
+msgid "Hockey"
+msgstr "Hokej"
+
+#: src/model/activity_info.rs:188
+msgid "Horse Riding"
+msgstr "Jízda na koni"
+
+#: src/model/activity_info.rs:202
+msgid "Other Sports"
+msgstr "Ostatní sporty"
+
+#: src/model/activity_info.rs:217
+msgid "Rollerblading"
+msgstr "Kolečkové brusle"
+
+#: src/model/activity_info.rs:233
+msgid "Running"
+msgstr "Běh"
+
+#: src/model/activity_info.rs:248
+msgid "Skiing"
+msgstr "Lyžování"
+
+#: src/model/activity_info.rs:262
+msgid "Soccer"
+msgstr "Fotbal"
+
+#: src/model/activity_info.rs:276
+msgid "Softball"
+msgstr "Softbal"
+
+#: src/model/activity_info.rs:291
+msgid "Swimming"
+msgstr "Plavání"
+
+#: src/model/activity_info.rs:305
+msgid "Tennis"
+msgstr "Tenis"
+
+#: src/model/activity_info.rs:319
+msgid "Track And Field"
+msgstr "Lehká atletika"
+
+#: src/model/activity_info.rs:335
+msgid "Volleyball"
+msgstr "Volejbal"
+
+#: src/model/activity_info.rs:351
+msgid "Walking"
+msgstr "Procházka"
+
+#: src/model/model_notification.rs:125
+msgid "Health: walking reminder"
+msgstr "Zdraví: připomenutí procházky"
+
+#. TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
+#: src/model/model_notification.rs:148
+msgid "{} step remaining to complete your daily step goal"
+msgid_plural "{} steps remaining to complete your daily step goal"
+msgstr[0] "Zbývá {} krok ke splnění předsevzatého denního počtu"
+msgstr[1] "Zbývají {} kroky ke splnění předsevzatého denního počtu"
+msgstr[2] "Zbývá {} kroků ke splnění předsevzatého denního počtu"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/model/model_notification.rs:154
+msgid "of {} step"
+msgid_plural "of {} steps"
+msgstr[0] "{} kroku"
+msgstr[1] "{} kroků"
+msgstr[2] "{} kroků"
+
+#: src/sync/csv.rs:81 src/sync/csv.rs:360
+msgid "No activities added yet; can't create empty export!"
+msgstr ""
+"Zatím nebyla přidána žádná aktivita. Není možné vytvořit prázdný export."
+
+#: src/sync/csv.rs:111 src/sync/csv.rs:378
+msgid "No weight measurements added yet; can't create empty export!"
+msgstr "Zatím nebylo přidáno žádné vážení. Není možné vytvořit prázdný export."
+
+#: src/sync/csv.rs:184 src/sync/csv.rs:322
+msgid "Can't parse encrypted backup without encryption key!"
+msgstr "Bez šifrovacího klíče nelze zpracovat šifrovanou zálohu!"
+
+#: src/sync/csv.rs:195 src/sync/csv.rs:342
+msgid ""
+"Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
+"encrypted one?"
+msgstr ""
+"Nezdařilo se zpracovat CSV. Nezkoušíte náhodou číst nešifrovanou zálohu jako "
+"šifrovanou?"
+
+#: src/sync/csv.rs:208
+msgid "Couldn't decrypt data. Are you sure you're using the right key?"
+msgstr "Nezdařilo se dešifrovat data. Opravdu používáte správný klíč?"
+
+#: src/sync/database_receiver.rs:46
+msgid "Couldn't synchronize steps due to error {}"
+msgstr "Nezdařilo se synchronizovat počet kroků kvůli chybě: {}"
+
+#: src/sync/database_receiver.rs:60
+msgid "Couldn't synchronize weight measurements due to error {}"
+msgstr "Nezdařilo se synchronizovat vážení kvůli chybě: {}"
+
+#: src/sync/google_fit.rs:211
+msgid "CRSF Verification failed, got {}, expected {}"
+msgstr "Selhalo ověření CRSF, obdrženo {}, očekáváno {}"
+
+#: src/sync/google_fit.rs:227
+msgid "Requesting OAuth2 token failed due to error {}"
+msgstr "Selhalo vyžádání tiketu OAuth2 kvůli chybě: {}"
+
+#: src/sync/sync_provider.rs:109
+msgid ""
+"Can't retrieve OAuth2 token when no refresh token is set! Please re-"
+"authenticate with your sync provider."
+msgstr ""
+"Nelze získat tiket OAuth2, když není nastaven obnovovací tiket. Proveďte "
+"prosím nové ověření u svého poskytovatele synchronizace."
+
+#: src/sync/sync_provider.rs:228
+msgid "Successfully authenticated, please return to Health."
+msgstr "Úspěšně ověřeno, vraťte se prosím do Zdraví."
+
+#: src/sync/sync_provider.rs:240
+msgid "Couldn't parse OAuth2 response"
+msgstr "Nezdařilo se zpracovat odpověď OAuth2"
+
+#: src/views/bar_graph_view.rs:510
+msgid "Enter weight record to calculate idle calories"
+msgstr "Zadejte záznam z vážení, aby bylo možné spočítat nadbytečné kalorie."
+
+#: src/views/bar_graph_view.rs:514
+msgid "Idle calories"
+msgstr "Nadbytečné kalorie"
+
+#: src/views/view_activity.rs:184
+msgid "No activities on or after {}"
+msgstr "Od data {} není žádná aktivita"
+
+#: src/views/view_calories.rs:169
+msgid ""
+"{}:\n"
+"{} calorie\n"
+"{}"
+msgid_plural ""
+"{}:\n"
+"{} calories\n"
+"{}"
+msgstr[0] ""
+"{}:\n"
+"{} kalorie\n"
+"{}"
+msgstr[1] ""
+"{}:\n"
+"{} kalorie\n"
+"{}"
+msgstr[2] ""
+"{}:\n"
+"{} kalorií\n"
+"{}"
+
+#: src/views/view_home_page.rs:256
+msgid "{} step taken today"
+msgid_plural "{} steps taken today"
+msgstr[0] "Dnes jste udělali {} krok"
+msgstr[1] "Dnes jste udělali {} kroky"
+msgstr[2] "Dnes jste udělali {} kroků"
+
+#: src/views/view_home_page.rs:262
+msgid "{}%"
+msgstr "{} %"
+
+#. TRANSLATORS: Current user weight
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:297 src/views/view_home_page.rs:331
+msgid "{} pound"
+msgid_plural "{} pounds"
+msgstr[0] "{} libra"
+msgstr[1] "{} libry"
+msgstr[2] "{} liber"
+
+#. TRANSLATORS: Current user weight
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:304 src/views/view_home_page.rs:338
+msgid "{} kilogram"
+msgid_plural "{} kilograms"
+msgstr[0] "{} kilogram"
+msgstr[1] "{} kilogramy"
+msgstr[2] "{} kilogramů"
+
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:314
+msgid "+ {} pound"
+msgid_plural "+ {} pounds"
+msgstr[0] "+ {} libra"
+msgstr[1] "+ {} libry"
+msgstr[2] "+ {} liber"
+
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:321
+msgid "+ {} kilogram"
+msgid_plural "+ {} kilograms"
+msgstr[0] "+ {} kilogram"
+msgstr[1] "+ {} kilogramy"
+msgstr[2] "+ {} kilogramů"
+
+#: src/views/view_home_page.rs:346
+msgid "No change in weight"
+msgstr "Žádná změna hmotnosti"
+
+#: src/views/view_home_page.rs:351
+msgid "compared to previous weight"
+msgstr "v porovnání s předchozím vážením"
+
+#: src/views/view_home_page.rs:355
+msgid "use + to add a weight record"
+msgstr "vážení můžete přidat tlačítkem +"
+
+#: src/views/view_steps.rs:140
+msgid "Today's steps: {}"
+msgstr "Dnešní počet kroků: {}"
+
+#: src/views/view_steps.rs:156
+msgid ""
+"No streak yet. Reach your step goal for multiple days to start a streak!"
+msgstr ""
+"Zatím nemáte ucelenou sérii. Zkuste dosáhnout předsevzatého počtu kroků více "
+"dní po sobě."
+
+#: src/views/view_steps.rs:160
+msgid ""
+"You're on a streak for {} day. Reach your step goal today to continue it!"
+msgid_plural ""
+"You're on a streak for {} days. Reach your step goal today to continue it!"
+msgstr[0] ""
+"Plníte své předsevzetí již {} den v řadě. Zkuste jej splnit i dnes, ať řadu "
+"nepřerušíte."
+msgstr[1] ""
+"Plníte své předsevzetí již {} dny v řadě. Zkuste jej splnit i dnes, ať řadu "
+"nepřerušíte."
+msgstr[2] ""
+"Plníte své předsevzetí již {} dní v řadě. Zkuste jej splnit i dnes, ať řadu "
+"nepřerušíte."
+
+#: src/views/view_steps.rs:168
+msgid "You've reached your step goal today. Keep going to start a streak!"
+msgstr ""
+"Dnes jste dosáhli předsevzatého počtu kroků. Zkuste pokračovat, abyste měli "
+"nepřerušenou řadu po několik dní."
+
+#: src/views/view_steps.rs:171
+msgid "You're on a streak for {} day. Good job!"
+msgid_plural "You're on a streak for {} days. Good job!"
+msgstr[0] "Nepřerušili jste řadu již {} den. Dobrá práce!"
+msgstr[1] "Nepřerušili jste řadu již {} dny. Dobrá práce!"
+msgstr[2] "Nepřerušili jste řadu již {} dní. Dobrá práce!"
+
+#. TRANSLATORS: X step(s) on DATE
+#: src/views/view_steps.rs:186
+msgid "{} step on {}"
+msgid_plural "{} steps on {}"
+msgstr[0] "{} krok {}"
+msgstr[1] "{} kroky {}"
+msgstr[2] "{} kroků {}"
+
+#: src/views/view_weight.rs:145
+msgid "Current BMI: {}"
+msgstr "Současný BMI: {}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/views/view_weight.rs:158
+msgid "{} pound on {}"
+msgid_plural "{} pounds on {}"
+msgstr[0] "{} libra {}"
+msgstr[1] "{} libry {}"
+msgstr[2] "{} liber {}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/views/view_weight.rs:161
+msgid "{} kilogram on {}"
+msgid_plural "{} kilograms on {}"
+msgstr[0] "{} kilogram {}"
+msgstr[1] "{} kilogramy {}"
+msgstr[2] "{} kilogramů {}"
+
+#: src/views/view_weight.rs:199
+msgid "Unknown BMI"
+msgstr "Neznámý BMI"
+
+#: src/views/view_weight.rs:223
+msgid ""
+"Your weight goal is {} pound. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} pounds. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Vaše předsevzatá hmotnost je {} libra. Přidejte první vážení, abyste viděli, "
+"jak blízko cíle jste."
+msgstr[1] ""
+"Vaše předsevzatá hmotnost jsou {} libry. Přidejte první vážení, abyste "
+"viděli, jak blízko cíle jste."
+msgstr[2] ""
+"Vaše předsevzatá hmotnost je {} liber. Přidejte první vážení, abyste viděli, "
+"jak blízko cíle jste."
+
+#: src/views/view_weight.rs:230
+msgid ""
+"Your weight goal is {} kilogram. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} kilograms. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Vaše předsevzatá hmotnost je {} kilogram. Přidejte první vážení, abyste "
+"viděli, jak blízko cíle jste."
+msgstr[1] ""
+"Vaše předsevzatá hmotnost jsou {} kilogramy. Přidejte první vážení, abyste "
+"viděli, jak blízko cíle jste."
+msgstr[2] ""
+"Vaše předsevzatá hmotnost je {} kilogramů. Přidejte první vážení, abyste "
+"viděli, jak blízko cíle jste."
+
+#: src/views/view_weight.rs:239
+msgid "You've reached your weight goal. Great job!"
+msgstr "Dostali jste se na svoji předsevzatou hmotnost. Skvělý výkon!"
+
+#. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
+#: src/views/view_weight.rs:255
+msgid "Your weight goal is {} pound,"
+msgid_plural "Your weight goal is {} pounds,"
+msgstr[0] "Vaše předsevzatá hmotnost je {} libra,"
+msgstr[1] "Vaše předsevzatá hmotnost jsou {} libry,"
+msgstr[2] "Vaše předsevzatá hmotnost je {} liber,"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/views/view_weight.rs:261
+msgid "you have {} pound left to reach it"
+msgid_plural "you have {} pounds left to reach it"
+msgstr[0] "abyste ji dosáhli, potřebujte shodit ještě {} libru."
+msgstr[1] "abyste ji dosáhli, potřebujte shodit ještě {} libry."
+msgstr[2] "abyste ji dosáhli, potřebujte shodit ještě {} liber."
+
+#. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
+#: src/views/view_weight.rs:268
+msgid "Your weight goal is {} kilogram,"
+msgid_plural "Your weight goal is {} kilograms,"
+msgstr[0] "Vaše předsevzatá hmotnost je {} kilogram,"
+msgstr[1] "Vaše předsevzatá hmotnost jsou {} kilogramy,"
+msgstr[2] "Vaše předsevzatá hmotnost je {} kilogramů,"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/views/view_weight.rs:274
+msgid "you have {} kilogram left to reach it"
+msgid_plural "you have {} kilograms left to reach it"
+msgstr[0] "abyste ji dosáhli, potřebujte shodit ještě {} kilogram."
+msgstr[1] "abyste ji dosáhli, potřebujte shodit ještě {} kilogramy."
+msgstr[2] "abyste ji dosáhli, potřebujte shodit ještě {} kilogramů."
+
+#: src/views/view_weight.rs:283
+msgid "No weight goal set yet. You can set it in Health's preferences."
+msgstr ""
+"Zatím není nastavená předsevzatá hmotnost. Můžete tak učinit v předvolbách "
+"Zdraví."
+
+#: src/widgets/activity_row.rs:131
+msgid "{} Minute"
+msgid_plural "{} Minutes"
+msgstr[0] "{} minutu"
+msgstr[1] "{} minuty"
+msgstr[2] "{} minut"
+
+#: src/widgets/activity_row.rs:147 src/widgets/activity_row.rs:229
+msgid "{} Calorie"
+msgid_plural "{} Calories"
+msgstr[0] "{} kalorie"
+msgstr[1] "{} kalorie"
+msgstr[2] "{} kalorií"
+
+#: src/widgets/bmi_level_bar.rs:174 src/widgets/bmi_level_bar.rs:203
+msgid "<small>Current BMI: {}</small>"
+msgstr "<small>Současný BMI: {}</small>"
+
+#: src/widgets/distance_action_row.rs:248
+msgid "KM"
+msgstr "km"
+
+#: src/widgets/distance_action_row.rs:249
+msgid "Meters"
+msgstr "metry"
+
+#: src/widgets/distance_action_row.rs:251
+msgid "Miles"
+msgstr "míle"
+
+#: src/widgets/distance_action_row.rs:252
+msgid "Feet"
+msgstr "stopy"
+
+#. TRANSLATORS: Unit abbreviation (centimeters)
+#: src/widgets/unit_spinbutton.rs:462 src/widgets/unit_spinbutton.rs:625
+msgid "cm"
+msgstr "cm"
+
+#. TRANSLATORS: Unit abbreviation (meters)
+#: src/widgets/unit_spinbutton.rs:464
+msgid "m"
+msgstr "m"
+
+#. TRANSLATORS: Unit abbreviation (kilometers)
+#: src/widgets/unit_spinbutton.rs:466
+msgid "km"
+msgstr "km"
+
+#. TRANSLATORS: Unit abbreviation (kilograms)
+#: src/widgets/unit_spinbutton.rs:468
+msgid "kg"
+msgstr "kg"
+
+#. TRANSLATORS: Unit abbreviation (inch)
+#: src/widgets/unit_spinbutton.rs:470 src/widgets/unit_spinbutton.rs:627
+msgid "in"
+msgstr "in"
+
+#. TRANSLATORS: Unit abbreviation (feet)
+#: src/widgets/unit_spinbutton.rs:472
+msgid "ft"
+msgstr "ft"
+
+#. TRANSLATORS: Unit abbreviation (miles)
+#: src/widgets/unit_spinbutton.rs:474
+msgid "mi"
+msgstr "mi"
+
+#. TRANSLATORS: Unit abbreviation (pounds)
+#: src/widgets/unit_spinbutton.rs:476
+msgid "lb"
+msgstr "lb"
+
+#: src/windows/export_dialog.rs:54
+msgid "Save Activities"
+msgstr "Uložení aktivit"
+
+#. TRANSLATORS: Please keep the file extension (.csv.encrypted)
+#: src/windows/export_dialog.rs:63
+msgid "Activities.csv.encrypted"
+msgstr "Activity.csv.encrypted"
+
+#. TRANSLATORS: Please keep the file extension (.csv)
+#: src/windows/export_dialog.rs:66
+msgid "Activities.csv"
+msgstr "Activity.csv"
+
+#: src/windows/export_dialog.rs:90
+msgid "Save Weight Measurement"
+msgstr "Uložení vážení"
+
+#: src/windows/export_dialog.rs:98
+msgid "Weight Measurements.csv.encrypted"
+msgstr "Vážení.csv.encrypted"
+
+#: src/windows/export_dialog.rs:100
+msgid "Weight Measurements.csv"
+msgstr "Vážení.csv"
+
+#: src/windows/export_dialog.rs:135
+msgid "Export data"
+msgstr "Export dat"
+
+#: src/windows/import_dialog.rs:54
+msgid "Open Activities"
+msgstr "Otevření aktivit"
+
+#: src/windows/import_dialog.rs:55 src/windows/import_dialog.rs:84
+msgid "_Open"
+msgstr "_Otevřít"
+
+#: src/windows/import_dialog.rs:83
+msgid "Open Weight Measurement"
+msgstr "Otevření vážení"
+
+#: src/windows/import_dialog.rs:124
+msgid "Import data"
+msgstr "Import dat"
+
+#: src/windows/import_export_dialog_base.rs:227
+msgid "Import activities"
+msgstr "Import aktivit"
+
+#: src/windows/import_export_dialog_base.rs:229
+msgid "Import is encrypted"
+msgstr "Import je šifrovaný"
+
+#: src/windows/import_export_dialog_base.rs:230
+msgid "Import weights"
+msgstr "Import vážení"
+
+#: src/windows/import_export_dialog_base.rs:231
+msgid "Import"
+msgstr "Naimportovat"
+
+#: src/windows/import_export_dialog_base.rs:328
+msgid "Success!"
+msgstr "Úspěch"
+
+#: src/windows/import_export_dialog_base.rs:332
+msgid "An error occurred!"
+msgstr "Vyskytla se chyba!"
+
+#: src/windows/import_export_dialog_base.rs:338
+msgid "Close"
+msgstr "Zavřít"
+
+#: src/windows/preferences_window.rs:375
+msgid "Remind you of your step goals"
+msgstr "Připomínat předsevzatý počet kroků"
+
+#: src/windows/window.rs:136
+msgid "Failed to migrate database to new version due to error {}"
+msgstr "Selhala migrace databáze na novou verzi kvůli chybě: {}"
+
+#: src/windows/window.rs:347
+msgid "Couldn't sync Google Fit data due to error: {}"
+msgstr "Nezdařila se synchronizace dat z Google Fit kvůli chybě: {}"
