@@ -90,7 +90,7 @@ pages:
     - source $HOME/.cargo/env
   script:
     - meson build
-    - cargo makedocs
+    - cargo makedocs -i "health"
     - rm -rf public
     - mv target/doc/ public
   cache:
