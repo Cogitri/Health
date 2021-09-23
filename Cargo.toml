@@ -17,14 +17,14 @@ name = "health-daemon"
 path = "src/daemon/main.rs"
 
 [dependencies.adw]
-version = "0.1.0-alpha-3"
+version = "0.1.0-alpha-5"
 package = "libadwaita"
 
 [dependencies.anyhow]
 version = "1.0"
 
 [dependencies.ashpd]
-version = "0.2.0-alpha-3"
+version = "0.2.0-alpha-4"
 features = ["feature_gtk4"]
 
 [dependencies.bitflags]
@@ -61,7 +61,7 @@ features = ["gettext-system"]
 version = "0.3"
 
 [dependencies.gtk]
-version = "0.2"
+version = "0.3"
 package = "gtk4"
 features = ["v4_2"]
 
