@@ -16,7 +16,15 @@
   <maintainer>
     <foaf:Person>
       <foaf:name>Rasmus Thomsen</foaf:name>
-      <gnome:userid>Cogitri</gnome:userid>
+      <foaf:mbox rdf:resource="mailto:rthomsen@gnome.org" />
+      <gnome:userid>rthomsen</gnome:userid>
+      <foaf:account>
+        <foaf:OnlineAccount>
+          <foaf:accountServiceHomepage rdf:resource="https://gitlab.gnome.org" />
+          <foaf:accountName>Cogitri</foaf:accountName>
+        </foaf:OnlineAccount>
+      </foaf:account>
     </foaf:Person>
   </maintainer>
+
 </Project>
