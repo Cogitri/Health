@@ -1,0 +1,1100 @@
+# Indonesian translation for health.
+# Copyright (C) 2021 health's COPYRIGHT HOLDER
+# This file is distributed under the same license as the health package.
+# Andika Triwidada <atriwidada@gnome.org>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: health master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
+"POT-Creation-Date: 2021-09-09 11:53+0000\n"
+"PO-Revision-Date: 2021-09-23 09:14+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Generator: Poedit 2.4.2\n"
+
+#: data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.ui:45
+#: src/main.rs:31
+msgid "Health"
+msgstr "Kesehatan"
+
+#: data/dev.Cogitri.Health.desktop.in.in:5
+msgid "@APPLICATION_ID@"
+msgstr "@APPLICATION_ID@"
+
+#: data/dev.Cogitri.Health.gschema.xml:16
+msgid "Last opened view"
+msgstr "Tampilan terakhir yang dibuka"
+
+#: data/dev.Cogitri.Health.gschema.xml:17
+msgid "The last view the user had opened, for restoring it on start"
+msgstr ""
+"Tampilan terakhir yang telah dibuka oleh pengguna, untuk memulihkannya di "
+"awal"
+
+#: data/dev.Cogitri.Health.gschema.xml:21
+msgid "First time setup done"
+msgstr "Penyiapan saat pertama selesai"
+
+#: data/dev.Cogitri.Health.gschema.xml:22
+msgid "Whether the user has completed the setup wizard"
+msgstr "Apakah pengguna telah menyelesaikan wahana pandu penyiapan"
+
+#: data/dev.Cogitri.Health.gschema.xml:26
+msgid "Toggle notifications"
+msgstr "Jungkitkan pemberitahuan"
+
+#: data/dev.Cogitri.Health.gschema.xml:27
+msgid "Whether to enable notifications."
+msgstr "Apakah akan memfungsikan pemberitahuan."
+
+#: data/dev.Cogitri.Health.gschema.xml:31
+msgid "Notification time"
+msgstr "Waktu pemberitahuan"
+
+#: data/dev.Cogitri.Health.gschema.xml:32
+msgid "The time at which Health should remind the user of their step goal"
+msgstr ""
+"Waktu di mana Kesehatan harus mengingatkan pengguna tentang sararan langkah "
+"mereka"
+
+#: data/dev.Cogitri.Health.gschema.xml:36
+msgid "notification frequency"
+msgstr "frekuensi pemberitahuan"
+
+#: data/dev.Cogitri.Health.gschema.xml:37
+msgid ""
+"How frequent should the user be notified to complete their daily step-goal."
+msgstr ""
+"Seberapa sering pengguna harus diberitahu untuk menyelesaikan sasaran "
+"langkah harian mereka."
+
+#: data/dev.Cogitri.Health.gschema.xml:41
+msgid "List of recent activity types"
+msgstr "Daftar tipe aktivitas terbaru"
+
+#: data/dev.Cogitri.Health.gschema.xml:42
+msgid ""
+"Activity types the user used recently, to be shown first in the activity "
+"types selector's list"
+msgstr ""
+"Tipe aktivitas yang digunakan pengguna baru-baru ini, untuk ditampilkan "
+"terlebih dahulu dalam daftar pemilih tipe aktivitas"
+
+#: data/dev.Cogitri.Health.gschema.xml:46
+msgid "Google Fit Sync-Provider setup"
+msgstr "Penyiapan Penyedia-Penyelarasan Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:47
+msgid "Whether Google Fit has been setup as sync provider"
+msgstr "Apakah Google Fit telah disiapkan sebagai penyedia penyelarasan"
+
+#: data/dev.Cogitri.Health.gschema.xml:51
+msgid "Last sync with Google Fit"
+msgstr "Penyelarasan terakhir dengan Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:52
+msgid "The last time we synched steps, weight etc. with Google Fit"
+msgstr "Terakhir kali menyelaraskan langkah, berat, dll. dengan Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:56
+msgid "Unit system used"
+msgstr "Sistem satuan yang dipakai"
+
+#: data/dev.Cogitri.Health.gschema.xml:57
+msgid "The unit system the user chose, e.g. for cm vs inch for height"
+msgstr "Sistem satuan yang dipilih pengguna, mis. cm vs inci untuk tinggi"
+
+#: data/dev.Cogitri.Health.gschema.xml:61
+msgid "User age"
+msgstr "Usia pengguna"
+
+#: data/dev.Cogitri.Health.gschema.xml:62
+msgid "The age of the user (deprecated)."
+msgstr "Usia pengguna (tidak dipakai lagi)."
+
+#: data/dev.Cogitri.Health.gschema.xml:66
+msgid "Absolute user age"
+msgstr "Usia absolut pengguna"
+
+#: data/dev.Cogitri.Health.gschema.xml:67
+msgid "The age of the user in absolute terms (like 01/01/1970)"
+msgstr "Usia pengguna dalam satuan absolut (seperti 01/01/1970)"
+
+#: data/dev.Cogitri.Health.gschema.xml:71
+msgid "User height"
+msgstr "Tinggi pengguna"
+
+#: data/dev.Cogitri.Health.gschema.xml:72
+msgid "The height of the user."
+msgstr "Tinggi pengguna."
+
+#: data/dev.Cogitri.Health.gschema.xml:76
+msgid "User step goal"
+msgstr "Sasaran langkah pengguna"
+
+#: data/dev.Cogitri.Health.gschema.xml:77
+msgid "The amount of steps the user wants to reach daily."
+msgstr "Banyaknya langkah yang ingin pengguna capai setiap hari."
+
+#: data/dev.Cogitri.Health.gschema.xml:81
+msgid "User weight goal"
+msgstr "Sasaran berat pengguna"
+
+#: data/dev.Cogitri.Health.gschema.xml:82
+msgid "The weight the user wants to reach."
+msgstr "Berat yang ingin dicapai oleh pengguna."
+
+#: data/dev.Cogitri.Health.gschema.xml:86
+msgid "Window height"
+msgstr "Tinggi jendela"
+
+#: data/dev.Cogitri.Health.gschema.xml:87
+msgid "The height of the window."
+msgstr "Tinggi jendela."
+
+#: data/dev.Cogitri.Health.gschema.xml:91
+msgid "Window maximized"
+msgstr "Jendela dimaksimalkan"
+
+#: data/dev.Cogitri.Health.gschema.xml:92
+msgid "Whether the window is maximized."
+msgstr "Apakah jendela dimaksimalkan."
+
+#: data/dev.Cogitri.Health.gschema.xml:96
+msgid "Window width"
+msgstr "Lebar jendela"
+
+#: data/dev.Cogitri.Health.gschema.xml:97
+msgid "The width of the window."
+msgstr "Lebar jendela."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:138
+msgid "A health tracking app for the GNOME desktop."
+msgstr "Aplikasi pelacakan kesehatan untuk desktop GNOME."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+msgid ""
+"A health tracking app for the GNOME desktop. Health can visualize how many "
+"steps you've made daily, your weight development over time and your daily "
+"activities."
+msgstr ""
+"Aplikasi pelacakan kesehatan untuk desktop GNOME. Kesehatan dapat "
+"memvisualisasikan berapa banyak langkah yang telah Anda lakukan setiap hari, "
+"perkembangan berat badan Anda dari waktu ke waktu, dan aktivitas sehari-hari "
+"Anda."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:31
+msgid "Rasmus “Cogitri” Thomsen"
+msgstr "Rasmus “Cogitri” Thomsen"
+
+#: data/ui/activity_add_dialog.ui:64
+msgid "Add An Activity"
+msgstr "Tambah Aktivitas"
+
+#: data/ui/activity_add_dialog.ui:93 data/ui/weight_add_dialog.ui:51
+msgid "Date"
+msgstr "Tanggal"
+
+#: data/ui/activity_add_dialog.ui:102
+msgid "Activity Type"
+msgstr "Tipe Aktivitas"
+
+#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:75
+msgid "Calories Burned"
+msgstr "Kalori Dibakar"
+
+#: data/ui/activity_add_dialog.ui:124
+msgid "Active Minutes"
+msgstr "Menit Aktif"
+
+#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:102
+msgid "Average Heart Rate"
+msgstr "Detak Jantung Rata-rata"
+
+#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:111
+msgid "Minimum Heart Rate"
+msgstr "Detak Jantung Minimum"
+
+#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:120
+msgid "Maximum Heart Rate"
+msgstr "Detak Jantung Maksimum"
+
+#: data/ui/activity_add_dialog.ui:172
+msgid "Stepcount"
+msgstr "Cacah langkah"
+
+#: data/ui/activity_row.ui:84
+msgid "Distance in Meters"
+msgstr "Jarak dalam Meter"
+
+#: data/ui/activity_row.ui:93 data/ui/home_page.ui:69 data/ui/step_view.ui:26
+#: data/ui/step_view.ui:27
+msgid "Steps"
+msgstr "Langkah"
+
+#: data/ui/activity_view.ui:24 data/ui/calorie_view.ui:23
+#: data/ui/home_page.ui:24 data/ui/step_view.ui:23
+msgid "You can use the <b>+</b> button to add a new activity."
+msgstr "Anda dapat memakai tombol <b>+</b> untuk menambahkan aktivitas baru."
+
+#: data/ui/activity_view.ui:27 data/ui/home_page.ui:27
+msgid "Recent Activities"
+msgstr "Aktivitas Terkini"
+
+#: data/ui/activity_view.ui:28
+msgid "Activities"
+msgstr "Aktivitas"
+
+#: data/ui/calorie_view.ui:26 data/ui/calorie_view.ui:27
+msgid "Calories"
+msgstr "Kalori"
+
+#: data/ui/data_add_dialog.ui:26 data/ui/preferences_window.ui:72
+msgid "Health Preferences"
+msgstr "Preferensi Kesehatan"
+
+#: data/ui/data_add_dialog.ui:31 data/ui/import_export_dialog_base.ui:29
+#: src/windows/export_dialog.rs:56 src/windows/export_dialog.rs:92
+#: src/windows/import_dialog.rs:56 src/windows/import_dialog.rs:85
+msgid "_Cancel"
+msgstr "_Batal"
+
+#: data/ui/data_add_dialog.ui:37 src/windows/export_dialog.rs:55
+#: src/windows/export_dialog.rs:91
+msgid "_Save"
+msgstr "_Simpan"
+
+#: data/ui/date_editor.ui:29
+msgid "January"
+msgstr "Januari"
+
+#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:244
+msgid "February"
+msgstr "Februari"
+
+#: data/ui/date_editor.ui:31
+msgid "March"
+msgstr "Maret"
+
+#: data/ui/date_editor.ui:32
+msgid "April"
+msgstr "April"
+
+#: data/ui/date_editor.ui:33
+msgid "May"
+msgstr "Mei"
+
+#: data/ui/date_editor.ui:34
+msgid "June"
+msgstr "Juni"
+
+#: data/ui/date_editor.ui:35
+msgid "July"
+msgstr "Juli"
+
+#: data/ui/date_editor.ui:36
+msgid "August"
+msgstr "Agustus"
+
+#: data/ui/date_editor.ui:37
+msgid "September"
+msgstr "September"
+
+#: data/ui/date_editor.ui:38
+msgid "October"
+msgstr "Oktober"
+
+#: data/ui/date_editor.ui:39
+msgid "November"
+msgstr "November"
+
+#: data/ui/date_editor.ui:40
+msgid "December"
+msgstr "Desember"
+
+#: data/ui/date_editor.ui:51
+msgid "Day"
+msgstr "Tanggal"
+
+#: data/ui/date_editor.ui:76
+msgid "Month"
+msgstr "Bulan"
+
+#: data/ui/date_editor.ui:98
+msgid "Year"
+msgstr "Tahun"
+
+#: data/ui/distance_action_row.ui:29
+msgid "Distance"
+msgstr "Jarak"
+
+#: data/ui/home_page.ui:28
+msgid "Home Page"
+msgstr "Laman Web"
+
+#: data/ui/home_page.ui:63 data/ui/preferences_window.ui:82
+#: data/ui/shortcuts_window.ui:30
+msgid "General"
+msgstr "Umum"
+
+#: data/ui/home_page.ui:66
+msgid "Today"
+msgstr "Hari Ini"
+
+#. TRANSLATORS: This is displayed via two strings: x% and then this label. E.g. 100% of daily step goal
+#: data/ui/home_page.ui:90
+msgid "of daily step goal"
+msgstr "dari sasaran langkah harian"
+
+#: data/ui/home_page.ui:103 data/ui/preferences_window.ui:218
+#: data/ui/weight_add_dialog.ui:61 data/ui/weight_view.ui:27
+msgid "Weight"
+msgstr "Berat"
+
+#: data/ui/import_export_dialog_base.ui:35
+msgid "_Export"
+msgstr "_Ekspor"
+
+#: data/ui/password_entry.ui:28
+msgid "_Password"
+msgstr "_Kata Sandi"
+
+#: data/ui/password_entry.ui:58
+msgid "_Confirm password"
+msgstr "_Konfirmasi kata sandi"
+
+#: data/ui/preferences_window.ui:55
+msgid "_Every 1 hour"
+msgstr "S_etiap 1 jam"
+
+#: data/ui/preferences_window.ui:60
+msgid "_Every 4 hours"
+msgstr "S_etiap 4 jam"
+
+#: data/ui/preferences_window.ui:65
+msgid "_Fixed Time"
+msgstr "Waktu Teta_p"
+
+#: data/ui/preferences_window.ui:85
+msgid "User"
+msgstr "Pengguna"
+
+#: data/ui/preferences_window.ui:88 data/ui/setup_window.ui:176
+msgid "Unit system"
+msgstr "Sistem satuan"
+
+#: data/ui/preferences_window.ui:97 data/ui/setup_window.ui:185
+msgid "Imperial"
+msgstr "Imperial"
+
+#: data/ui/preferences_window.ui:104 data/ui/setup_window.ui:192
+msgid "Metric"
+msgstr "Metrik"
+
+#: data/ui/preferences_window.ui:115 data/ui/setup_window.ui:203
+msgid "Birthday"
+msgstr "Ulang Tahun"
+
+#: data/ui/preferences_window.ui:125 data/ui/setup_window.ui:213
+msgid "Height"
+msgstr "Tinggi"
+
+#: data/ui/preferences_window.ui:141
+msgid "Notifications"
+msgstr "Pemberitahuan"
+
+#: data/ui/preferences_window.ui:144
+msgid "Enable notifications"
+msgstr "Fungsikan pemberitahuan"
+
+#: data/ui/preferences_window.ui:157
+msgid "Frequency"
+msgstr "Frekuensi"
+
+#: data/ui/preferences_window.ui:174
+msgid "Daily reminder time"
+msgstr "Waktu pengingat harian"
+
+#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:279
+#: src/views/view_steps.rs:193
+msgid "Step goal"
+msgstr "Sasaran langkah"
+
+#: data/ui/preferences_window.ui:199 data/ui/setup_window.ui:256
+msgid "The WHO recommends 10.000 steps per day."
+msgstr "WHO merekomendasikan 10.000 langkah per hari."
+
+#: data/ui/preferences_window.ui:219 data/ui/setup_window.ui:321
+msgid "The WHO recommends a BMI of 18.5-24.9."
+msgstr "WHO merekomendasikan BMI 18,5-24,9."
+
+#: data/ui/preferences_window.ui:248
+msgid "Sync"
+msgstr "Selaraskan"
+
+#: data/ui/preferences_window.ui:252
+msgid "Start sync with third-party providers."
+msgstr "Mulai selaraskan dengan penyedia pihak ke tiga."
+
+#: data/ui/preferences_window.ui:262
+msgid "Importing and exporting data"
+msgstr "Mengimpor dan mengekspor data"
+
+#: data/ui/preferences_window.ui:265
+msgid "Export data as CSV"
+msgstr "Ekspor data sebagai CSV"
+
+#: data/ui/preferences_window.ui:268
+msgid "Export…"
+msgstr "Ekspor…"
+
+#: data/ui/preferences_window.ui:276
+msgid "Import data from CSV"
+msgstr "Impor data dari CSV"
+
+#: data/ui/preferences_window.ui:279
+msgid "Import…"
+msgstr "Impor…"
+
+#: data/ui/setup_window.ui:55
+msgid "Health Setup"
+msgstr "Penyiapan Kesehatan"
+
+#: data/ui/setup_window.ui:70
+msgid "_Quit"
+msgstr "_Keluar"
+
+#: data/ui/setup_window.ui:82
+msgid "_Previous"
+msgstr "Se_belumnya"
+
+#: data/ui/setup_window.ui:99
+msgid "_Next"
+msgstr "Se_lanjutnya"
+
+#: data/ui/setup_window.ui:113
+msgid "_Done"
+msgstr "_Selesai"
+
+#: data/ui/setup_window.ui:140
+msgid "Welcome to Health!"
+msgstr "Selamat datang ke Kesehatan!"
+
+#: data/ui/setup_window.ui:153
+msgid "Please enter some information to get setup."
+msgstr "Harap masukkan informasi untuk menyiapkan."
+
+#: data/ui/setup_window.ui:243
+msgid "Please enter your daily step goal."
+msgstr "Harap masukkan sasaran langkah harian Anda."
+
+#: data/ui/setup_window.ui:308
+msgid "Please enter your weight goal."
+msgstr "Harap masukkan sasaran berat Anda."
+
+#: data/ui/setup_window.ui:349 src/views/view_weight.rs:171
+msgid "Weight goal"
+msgstr "Sasaran berat"
+
+#: data/ui/setup_window.ui:389
+msgid "Setup sync with third-party providers."
+msgstr "Siapkan penyelarasan dengan penyedia pihak ke tiga."
+
+#: data/ui/setup_window.ui:402
+msgid ""
+"You can sync steps and weight measurements from/to third-party providers."
+msgstr ""
+"Anda dapat menyelaraskan pengukuran berat dan langkah dari/ke penyedia pihak "
+"ke tiga."
+
+#: data/ui/shortcuts_window.ui:34
+msgid "Quit the application"
+msgstr "Keluar aplikasi"
+
+#: data/ui/shortcuts_window.ui:40
+msgid "Show this shortcuts window"
+msgstr "Tampilkan jendela pintasan ini"
+
+#: data/ui/shortcuts_window.ui:46
+msgid "Show help"
+msgstr "Tampilkan bantuan"
+
+#: data/ui/shortcuts_window.ui:52
+msgid "Show primary menu"
+msgstr "Tampilkan menu utama"
+
+#: data/ui/shortcuts_window.ui:58
+msgid "Toggle fullscreen mode"
+msgstr "Jungkitkan mode layar penuh"
+
+#: data/ui/weight_add_dialog.ui:31 data/ui/weight_view.ui:26
+msgid "Weight Measurements"
+msgstr "Pengukuran Berat"
+
+#: data/ui/weight_add_dialog.ui:32
+msgid "Add Weight Record"
+msgstr "Tambah Catatan Berat"
+
+#: data/ui/weight_view.ui:23
+msgid "You can use the <b>+</b> button to add a new weight measurement."
+msgstr ""
+"Anda dapat memakai tombol <b>+</b> untuk menambah pengukuran berat baru."
+
+#: data/ui/window.ui:27
+msgid "_Preferences"
+msgstr "_Preferensi"
+
+#: data/ui/window.ui:31
+msgid "_Keyboard Shortcuts"
+msgstr "Pintasan Papan Ti_k"
+
+#: data/ui/window.ui:37
+msgid "_About Health"
+msgstr "Tent_ang Kesehatan"
+
+#: src/core/application.rs:140
+msgid "translator-credits"
+msgstr "Andika Triwidada <andika@gmail.com>, 2021."
+
+#: src/core/application.rs:142
+msgid "Websites"
+msgstr "Situs web"
+
+#: src/daemon/main.rs:31
+msgid "Health Daemon"
+msgstr "Daemon Kesehatan"
+
+#: src/model/activity_info.rs:74
+msgid "Basketball"
+msgstr "Bola basket"
+
+#: src/model/activity_info.rs:89
+msgid "Bicycling"
+msgstr "Bersepeda"
+
+#: src/model/activity_info.rs:103
+msgid "Boxing"
+msgstr "Tinju"
+
+#: src/model/activity_info.rs:117
+msgid "Dancing"
+msgstr "Menari"
+
+#: src/model/activity_info.rs:131
+msgid "Football"
+msgstr "Sepakbola Amerika"
+
+#: src/model/activity_info.rs:143
+msgid "Golf"
+msgstr "Golf"
+
+#: src/model/activity_info.rs:159
+msgid "Hiking"
+msgstr "Hiking"
+
+#: src/model/activity_info.rs:173
+msgid "Hockey"
+msgstr "Hockey"
+
+#: src/model/activity_info.rs:188
+msgid "Horse Riding"
+msgstr "Berkuda"
+
+#: src/model/activity_info.rs:202
+msgid "Other Sports"
+msgstr "Olah raga lain"
+
+#: src/model/activity_info.rs:217
+msgid "Rollerblading"
+msgstr "Rollerblade"
+
+#: src/model/activity_info.rs:233
+msgid "Running"
+msgstr "Lari"
+
+#: src/model/activity_info.rs:248
+msgid "Skiing"
+msgstr "Ski"
+
+#: src/model/activity_info.rs:262
+msgid "Soccer"
+msgstr "Sepak bola"
+
+#: src/model/activity_info.rs:276
+msgid "Softball"
+msgstr "Softball"
+
+#: src/model/activity_info.rs:291
+msgid "Swimming"
+msgstr "Berenang"
+
+#: src/model/activity_info.rs:305
+msgid "Tennis"
+msgstr "Tenis"
+
+#: src/model/activity_info.rs:319
+msgid "Track And Field"
+msgstr "Trek dan Lapangan"
+
+#: src/model/activity_info.rs:335
+msgid "Volleyball"
+msgstr "Voli"
+
+#: src/model/activity_info.rs:351
+msgid "Walking"
+msgstr "Berjalan"
+
+#: src/model/model_notification.rs:125
+msgid "Health: walking reminder"
+msgstr "Kesehatan: pengingat berjalan"
+
+#. TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
+#: src/model/model_notification.rs:148
+msgid "{} step remaining to complete your daily step goal"
+msgid_plural "{} steps remaining to complete your daily step goal"
+msgstr[0] "{} langkah tersisa untuk menyelesaikan sasaran langkah harian Anda"
+msgstr[1] "{} langkah tersisa untuk menyelesaikan sasaran langkah harian Anda"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/model/model_notification.rs:154
+msgid "of {} step"
+msgid_plural "of {} steps"
+msgstr[0] "dari {} langkah"
+msgstr[1] "dari {} langkah"
+
+#: src/sync/csv.rs:81 src/sync/csv.rs:360
+msgid "No activities added yet; can't create empty export!"
+msgstr ""
+"Belum ada aktivitas yang ditambahkan; tidak bisa membuat ekspor kosong!"
+
+#: src/sync/csv.rs:111 src/sync/csv.rs:378
+msgid "No weight measurements added yet; can't create empty export!"
+msgstr ""
+"Belum ada pengukuran berat yang ditambahkan; tidak bisa membuat ekspor "
+"kosong!"
+
+#: src/sync/csv.rs:184 src/sync/csv.rs:322
+msgid "Can't parse encrypted backup without encryption key!"
+msgstr "Tidak dapat mengurai cadangan terenkripsi tanpa kunci enkripsi!"
+
+#: src/sync/csv.rs:195 src/sync/csv.rs:342
+msgid ""
+"Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
+"encrypted one?"
+msgstr ""
+"Tidak bisa mengurai CSV. Apakah Anda mencoba membaca cadangan yang tidak "
+"terenkripsi sebagai yang dienkripsi?"
+
+#: src/sync/csv.rs:208
+msgid "Couldn't decrypt data. Are you sure you're using the right key?"
+msgstr ""
+"Tidak bisa mendekripsi data. Apakah Anda yakin menggunakan kunci yang tepat?"
+
+#: src/sync/database_receiver.rs:46
+msgid "Couldn't synchronize steps due to error {}"
+msgstr "Tidak dapat menyelaraskan langkah karena kesalahan {}"
+
+#: src/sync/database_receiver.rs:60
+msgid "Couldn't synchronize weight measurements due to error {}"
+msgstr "Tidak dapat menyelaraskan pengukuran berat badan karena kesalahan {}"
+
+#: src/sync/google_fit.rs:211
+msgid "CRSF Verification failed, got {}, expected {}"
+msgstr "Verifikasi CRSF gagal, mendapat {}, mengharapkan {}"
+
+#: src/sync/google_fit.rs:227
+msgid "Requesting OAuth2 token failed due to error {}"
+msgstr "Meminta token OAuth2 gagal karena kesalahan {}"
+
+#: src/sync/sync_provider.rs:109
+msgid ""
+"Can't retrieve OAuth2 token when no refresh token is set! Please re-"
+"authenticate with your sync provider."
+msgstr ""
+"Tidak dapat mengambil token OAuth2 ketika tidak ada token penyegaran yang "
+"ditetapkan! Harap diautentikasi ulang dengan penyedia sinkronisasi Anda."
+
+#: src/sync/sync_provider.rs:228
+msgid "Successfully authenticated, please return to Health."
+msgstr "Berhasil diautentikasi, silahkan kembali ke Kesehatan."
+
+#: src/sync/sync_provider.rs:240
+msgid "Couldn't parse OAuth2 response"
+msgstr "Tidak bisa mengurai respons OAuth2"
+
+#: src/views/bar_graph_view.rs:510
+msgid "Enter weight record to calculate idle calories"
+msgstr "Masukkan catatan berat badan untuk menghitung kalori menganggur"
+
+#: src/views/bar_graph_view.rs:514
+msgid "Idle calories"
+msgstr "Kalori menganggur"
+
+#: src/views/view_activity.rs:184
+msgid "No activities on or after {}"
+msgstr "Tidak ada aktivitas pada atau setelah {}"
+
+#: src/views/view_calories.rs:169
+msgid ""
+"{}:\n"
+"{} calorie\n"
+"{}"
+msgid_plural ""
+"{}:\n"
+"{} calories\n"
+"{}"
+msgstr[0] ""
+"{}:\n"
+"{} kalori\n"
+"{}"
+msgstr[1] ""
+"{}:\n"
+"{} kalori\n"
+"{}"
+
+#: src/views/view_home_page.rs:256
+msgid "{} step taken today"
+msgid_plural "{} steps taken today"
+msgstr[0] "{} langkah ditempuh hari ini"
+msgstr[1] "{} langkah ditempuh hari ini"
+
+#: src/views/view_home_page.rs:262
+msgid "{}%"
+msgstr "{}%"
+
+#. TRANSLATORS: Current user weight
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:297 src/views/view_home_page.rs:331
+msgid "{} pound"
+msgid_plural "{} pounds"
+msgstr[0] "{} pon"
+msgstr[1] "{} pon"
+
+#. TRANSLATORS: Current user weight
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:304 src/views/view_home_page.rs:338
+msgid "{} kilogram"
+msgid_plural "{} kilograms"
+msgstr[0] "{} kilogram"
+msgstr[1] "{} kilogram"
+
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:314
+msgid "+ {} pound"
+msgid_plural "+ {} pounds"
+msgstr[0] "+ {} pon"
+msgstr[1] "+ {} pon"
+
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:321
+msgid "+ {} kilogram"
+msgid_plural "+ {} kilograms"
+msgstr[0] "+ {} kilogram"
+msgstr[1] "+ {} kilogram"
+
+#: src/views/view_home_page.rs:346
+msgid "No change in weight"
+msgstr "Tidak ada perubahan berat badan"
+
+#: src/views/view_home_page.rs:351
+msgid "compared to previous weight"
+msgstr "dibandingkan dengan berat sebelumnya"
+
+#: src/views/view_home_page.rs:355
+msgid "use + to add a weight record"
+msgstr "gunakan + untuk menambahkan catatan berat"
+
+#: src/views/view_steps.rs:140
+msgid "Today's steps: {}"
+msgstr "Langkah hari ini: {}"
+
+#: src/views/view_steps.rs:156
+msgid ""
+"No streak yet. Reach your step goal for multiple days to start a streak!"
+msgstr ""
+"Belum ada runtutan. Capailah sasaran langkah Anda selama beberapa hari untuk "
+"memulai beruntun!"
+
+#: src/views/view_steps.rs:160
+msgid ""
+"You're on a streak for {} day. Reach your step goal today to continue it!"
+msgid_plural ""
+"You're on a streak for {} days. Reach your step goal today to continue it!"
+msgstr[0] ""
+"Anda mencapai beruntun selama {} hari. Capailah sasaran langkah Anda hari "
+"ini untuk melanjutkannya!"
+msgstr[1] ""
+"Anda mencapai beruntun selama {} hari. Capailah sasaran langkah Anda hari "
+"ini untuk melanjutkannya!"
+
+#: src/views/view_steps.rs:168
+msgid "You've reached your step goal today. Keep going to start a streak!"
+msgstr ""
+"Anda telah mencapai sasaran langkah Anda hari ini. Teruskan agar memulai "
+"beruntun!"
+
+#: src/views/view_steps.rs:171
+msgid "You're on a streak for {} day. Good job!"
+msgid_plural "You're on a streak for {} days. Good job!"
+msgstr[0] "Anda mencapai beruntun selama {} hari. Kerja yang bagus!"
+msgstr[1] "Anda mencapai beruntun selama {} hari. Kerja yang bagus!"
+
+#. TRANSLATORS: X step(s) on DATE
+#: src/views/view_steps.rs:186
+msgid "{} step on {}"
+msgid_plural "{} steps on {}"
+msgstr[0] "{} langkah pada {}"
+msgstr[1] "{} langkah pada {}"
+
+#: src/views/view_weight.rs:145
+msgid "Current BMI: {}"
+msgstr "BMI kini: {}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/views/view_weight.rs:158
+msgid "{} pound on {}"
+msgid_plural "{} pounds on {}"
+msgstr[0] "{} pon pada {}"
+msgstr[1] "{} pon pada {}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/views/view_weight.rs:161
+msgid "{} kilogram on {}"
+msgid_plural "{} kilograms on {}"
+msgstr[0] "{} kilogram pada {}"
+msgstr[1] "{} kilogram pada {}"
+
+#: src/views/view_weight.rs:199
+msgid "Unknown BMI"
+msgstr "BMI tak diketahui"
+
+#: src/views/view_weight.rs:223
+msgid ""
+"Your weight goal is {} pound. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} pounds. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Sasaran berat badan Anda adalah {} pon. Tambahkan pengukuran berat badan "
+"pertama untuk melihat seberapa dekat Anda untuk mencapainya."
+msgstr[1] ""
+"Sasaran berat badan Anda adalah {} pon. Tambahkan pengukuran berat badan "
+"pertama untuk melihat seberapa dekat Anda untuk mencapainya."
+
+#: src/views/view_weight.rs:230
+msgid ""
+"Your weight goal is {} kilogram. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} kilograms. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Sasaran berat badan Anda adalah {} kilogram. Tambahkan pengukuran berat "
+"badan pertama untuk melihat seberapa dekat Anda untuk mencapainya."
+msgstr[1] ""
+"Sasaran berat badan Anda adalah {} kilogram. Tambahkan pengukuran berat "
+"badan pertama untuk melihat seberapa dekat Anda untuk mencapainya."
+
+#: src/views/view_weight.rs:239
+msgid "You've reached your weight goal. Great job!"
+msgstr "Anda telah mencapai sasaran berat badan Anda. Kerja yang bagus!"
+
+#. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
+#: src/views/view_weight.rs:255
+msgid "Your weight goal is {} pound,"
+msgid_plural "Your weight goal is {} pounds,"
+msgstr[0] "Sasaran berat badan Anda adalah {} pon,"
+msgstr[1] "Sasaran berat badan Anda adalah {} pon,"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/views/view_weight.rs:261
+msgid "you have {} pound left to reach it"
+msgid_plural "you have {} pounds left to reach it"
+msgstr[0] "tersisa {} pon untuk mencapainya"
+msgstr[1] "tersisa {} pon untuk mencapainya"
+
+#. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
+#: src/views/view_weight.rs:268
+msgid "Your weight goal is {} kilogram,"
+msgid_plural "Your weight goal is {} kilograms,"
+msgstr[0] "Sasaran berat Anda adalah {} kilogram,"
+msgstr[1] "Sasaran berat Anda adalah {} kilogram,"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/views/view_weight.rs:274
+msgid "you have {} kilogram left to reach it"
+msgid_plural "you have {} kilograms left to reach it"
+msgstr[0] "tersisa {} kilogram untuk mencapainya"
+msgstr[1] "tersisa {} kilogram untuk mencapainya"
+
+#: src/views/view_weight.rs:283
+msgid "No weight goal set yet. You can set it in Health's preferences."
+msgstr ""
+"Belum ada sasaran berat badan yang ditetapkan. Anda dapat mengaturnya dalam "
+"preferensi Kesehatan."
+
+#: src/widgets/activity_row.rs:131
+msgid "{} Minute"
+msgid_plural "{} Minutes"
+msgstr[0] "{} Menit"
+msgstr[1] "{} Menit"
+
+#: src/widgets/activity_row.rs:147 src/widgets/activity_row.rs:229
+msgid "{} Calorie"
+msgid_plural "{} Calories"
+msgstr[0] "{} Kalori"
+msgstr[1] "{} Kalori"
+
+#: src/widgets/bmi_level_bar.rs:174 src/widgets/bmi_level_bar.rs:203
+msgid "<small>Current BMI: {}</small>"
+msgstr "<small>BMI kini: {}</small>"
+
+#: src/widgets/distance_action_row.rs:248
+msgid "KM"
+msgstr "KM"
+
+#: src/widgets/distance_action_row.rs:249
+msgid "Meters"
+msgstr "Meter"
+
+#: src/widgets/distance_action_row.rs:251
+msgid "Miles"
+msgstr "Mil"
+
+#: src/widgets/distance_action_row.rs:252
+msgid "Feet"
+msgstr "Kaki"
+
+#. TRANSLATORS: Unit abbreviation (centimeters)
+#: src/widgets/unit_spinbutton.rs:462 src/widgets/unit_spinbutton.rs:625
+msgid "cm"
+msgstr "cm"
+
+#. TRANSLATORS: Unit abbreviation (meters)
+#: src/widgets/unit_spinbutton.rs:464
+msgid "m"
+msgstr "m"
+
+#. TRANSLATORS: Unit abbreviation (kilometers)
+#: src/widgets/unit_spinbutton.rs:466
+msgid "km"
+msgstr "km"
+
+#. TRANSLATORS: Unit abbreviation (kilograms)
+#: src/widgets/unit_spinbutton.rs:468
+msgid "kg"
+msgstr "kg"
+
+#. TRANSLATORS: Unit abbreviation (inch)
+#: src/widgets/unit_spinbutton.rs:470 src/widgets/unit_spinbutton.rs:627
+msgid "in"
+msgstr "in"
+
+#. TRANSLATORS: Unit abbreviation (feet)
+#: src/widgets/unit_spinbutton.rs:472
+msgid "ft"
+msgstr "ft"
+
+#. TRANSLATORS: Unit abbreviation (miles)
+#: src/widgets/unit_spinbutton.rs:474
+msgid "mi"
+msgstr "mi"
+
+#. TRANSLATORS: Unit abbreviation (pounds)
+#: src/widgets/unit_spinbutton.rs:476
+msgid "lb"
+msgstr "lb"
+
+#: src/windows/export_dialog.rs:54
+msgid "Save Activities"
+msgstr "Simpan Aktivitas"
+
+#. TRANSLATORS: Please keep the file extension (.csv.encrypted)
+#: src/windows/export_dialog.rs:63
+msgid "Activities.csv.encrypted"
+msgstr "Activities.csv.encrypted"
+
+#. TRANSLATORS: Please keep the file extension (.csv)
+#: src/windows/export_dialog.rs:66
+msgid "Activities.csv"
+msgstr "Activities.csv"
+
+#: src/windows/export_dialog.rs:90
+msgid "Save Weight Measurement"
+msgstr "Simpan Pengukuran Berat Badan"
+
+#: src/windows/export_dialog.rs:98
+msgid "Weight Measurements.csv.encrypted"
+msgstr "Weight Measurements.csv.encrypted"
+
+#: src/windows/export_dialog.rs:100
+msgid "Weight Measurements.csv"
+msgstr "Weight Measurements.csv"
+
+#: src/windows/export_dialog.rs:135
+msgid "Export data"
+msgstr "Ekspor data"
+
+#: src/windows/import_dialog.rs:54
+msgid "Open Activities"
+msgstr "Buka Aktivitas"
+
+#: src/windows/import_dialog.rs:55 src/windows/import_dialog.rs:84
+msgid "_Open"
+msgstr "_Buka"
+
+#: src/windows/import_dialog.rs:83
+msgid "Open Weight Measurement"
+msgstr "Buka Pengukuran Berat"
+
+#: src/windows/import_dialog.rs:124
+msgid "Import data"
+msgstr "Impor data"
+
+#: src/windows/import_export_dialog_base.rs:227
+msgid "Import activities"
+msgstr "Impor aktivitas"
+
+#: src/windows/import_export_dialog_base.rs:229
+msgid "Import is encrypted"
+msgstr "Impor terenkripsi"
+
+#: src/windows/import_export_dialog_base.rs:230
+msgid "Import weights"
+msgstr "Impor berat"
+
+#: src/windows/import_export_dialog_base.rs:231
+msgid "Import"
+msgstr "Impor"
+
+#: src/windows/import_export_dialog_base.rs:328
+msgid "Success!"
+msgstr "Sukses!"
+
+#: src/windows/import_export_dialog_base.rs:332
+msgid "An error occurred!"
+msgstr "Terjadi kesalahan!"
+
+#: src/windows/import_export_dialog_base.rs:338
+msgid "Close"
+msgstr "Tutup"
+
+#: src/windows/preferences_window.rs:375
+msgid "Remind you of your step goals"
+msgstr "Ingatkan Anda tentang sasaran langkah Anda"
+
+#: src/windows/window.rs:136
+msgid "Failed to migrate database to new version due to error {}"
+msgstr "Gagal memigrasikan basis data ke versi baru karena kesalahan {}"
+
+#: src/windows/window.rs:347
+msgid "Couldn't sync Google Fit data due to error: {}"
+msgstr "Tak bisa menyelaraskan data Google Fit karena kesalahan: {}"
