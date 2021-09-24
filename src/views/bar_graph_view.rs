@@ -168,10 +168,13 @@ mod imp {
             for i in 0..4 {
                 let mul = inner.height / 4.0;
                 cr.move_to(
-                    f64::from(inner.width + 4.0 * HALF_X_PADDING),
+                    f64::from(inner.width + 4.0 * HALF_X_PADDING * 2.0),
                     f64::from(mul * i as f32 + HALF_Y_PADDING),
                 );
-                cr.line_to(f64::from(0), f64::from(mul * i as f32 + HALF_Y_PADDING));
+                cr.line_to(
+                    f64::from(HALF_X_PADDING),
+                    f64::from(mul * i as f32 + HALF_Y_PADDING),
+                );
                 let layout = widget.create_pango_layout(Some(
                     &((biggest_value / 4.0 * (4 - i) as f32) as u32).to_string(),
                 ));
@@ -195,7 +198,7 @@ mod imp {
                 let (_, extents) = layout.extents();
 
                 cr.move_to(
-                    f64::from(i as f32 * inner.scale_x + HALF_X_PADDING)
+                    f64::from(i as f32 * inner.scale_x + HALF_X_PADDING * 2.0)
                         - pango::units_to_double(extents.width) / 2.0,
                     f64::from(inner.height + HALF_Y_PADDING * 1.5)
                         - pango::units_to_double(extents.height) / 2.0,
@@ -239,8 +242,8 @@ mod imp {
                         alpha: 1.0,
                     },
                 );
-                cr.move_to(x, bar_top);
-                cr.rectangle(x - 10.0, bar_top, 20.0, height);
+                cr.move_to(x + f64::from(HALF_X_PADDING), bar_top);
+                cr.rectangle(f64::from(HALF_X_PADDING) + x - 10.0, bar_top, 20.0, height);
                 cr.stroke_preserve()
                     .expect("Couldn't stroke on Cairo Context");
                 cr.fill().expect("Couldn't fill on Cairo Context");
@@ -252,8 +255,13 @@ mod imp {
                     );
                     let calories = calories as f32;
                     bar_top -= f64::from(calories * inner.scale_y);
-                    cr.move_to(x, bar_top);
-                    cr.rectangle(x - 10.0, bar_top, 20.0, f64::from(calories * inner.scale_y));
+                    cr.move_to(x + f64::from(HALF_X_PADDING), bar_top);
+                    cr.rectangle(
+                        f64::from(HALF_X_PADDING) + x - 10.0,
+                        bar_top,
+                        20.0,
+                        f64::from(calories * inner.scale_y),
+                    );
                     cr.stroke_preserve()
                         .expect("Couldn't stroke on Cairo Context");
                     cr.fill().expect("Couldn't fill on Cairo Context");
@@ -464,7 +472,7 @@ impl BarGraphView {
 
         // find which bar we are touching, if any
         for i in 0..inner.split_bars.len() {
-            let point_x = i as f32 * inner.scale_x + HALF_X_PADDING;
+            let point_x = i as f32 * inner.scale_x + 2.0 * HALF_X_PADDING;
             if (point_x - x as f32 as f32).abs() <= 10.0 {
                 bar_index = Some(i);
                 break;
