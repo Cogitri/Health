@@ -1,0 +1,1133 @@
+# Russian translation for health.
+# Copyright (C) 2021 health's COPYRIGHT HOLDER
+# This file is distributed under the same license as the health package.
+# Alexey Rubtsov <rushills@gmail.com>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: health master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
+"POT-Creation-Date: 2021-09-28 09:40+0000\n"
+"PO-Revision-Date: 2021-09-28 17:12+0300\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Last-Translator: Alexey Rubtsov <rushills@gmail.com>\n"
+"X-Generator: Poedit 3.0\n"
+
+#: data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.ui:45
+#: src/main.rs:31
+msgid "Health"
+msgstr "Здоровье"
+
+#: data/dev.Cogitri.Health.desktop.in.in:5
+msgid "@APPLICATION_ID@"
+msgstr "@APPLICATION_ID@"
+
+#: data/dev.Cogitri.Health.gschema.xml:16
+msgid "Last opened view"
+msgstr "Последний открытый вид"
+
+#: data/dev.Cogitri.Health.gschema.xml:17
+msgid "The last view the user had opened, for restoring it on start"
+msgstr ""
+"Последнее открытое пользователем представление, для восстановления его при "
+"запуске"
+
+#: data/dev.Cogitri.Health.gschema.xml:21
+msgid "First time setup done"
+msgstr "Первая установка выполнена"
+
+#: data/dev.Cogitri.Health.gschema.xml:22
+msgid "Whether the user has completed the setup wizard"
+msgstr "Завершил ли пользователь работу с мастером настройки"
+
+#: data/dev.Cogitri.Health.gschema.xml:26
+msgid "Toggle notifications"
+msgstr "Переключение уведомлений"
+
+#: data/dev.Cogitri.Health.gschema.xml:27
+msgid "Whether to enable notifications."
+msgstr "Включать ли уведомления."
+
+#: data/dev.Cogitri.Health.gschema.xml:31
+msgid "Notification time"
+msgstr "Время уведомления"
+
+#: data/dev.Cogitri.Health.gschema.xml:32
+msgid "The time at which Health should remind the user of their step goal"
+msgstr ""
+"Время, через которое Здоровье должно напоминать пользователю о цели в шагах"
+
+#: data/dev.Cogitri.Health.gschema.xml:36
+msgid "notification frequency"
+msgstr "частота уведомлений"
+
+#: data/dev.Cogitri.Health.gschema.xml:37
+msgid ""
+"How frequent should the user be notified to complete their daily step-goal."
+msgstr ""
+"Как часто пользователь должен получать уведомления о выполнении ежедневной "
+"цели по шагам."
+
+#: data/dev.Cogitri.Health.gschema.xml:41
+msgid "List of recent activity types"
+msgstr "Список последних видов деятельности"
+
+#: data/dev.Cogitri.Health.gschema.xml:42
+msgid ""
+"Activity types the user used recently, to be shown first in the activity "
+"types selector's list"
+msgstr ""
+"Виды деятельности, которые пользователь использовал в последнее время, "
+"которые будут показаны первыми в списке селектора видов деятельности"
+
+#: data/dev.Cogitri.Health.gschema.xml:46
+msgid "Google Fit Sync-Provider setup"
+msgstr "Настройка синхронизации с провайдером Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:47
+msgid "Whether Google Fit has been setup as sync provider"
+msgstr "Настроен ли Google Fit в качестве поставщика синхронизации"
+
+#: data/dev.Cogitri.Health.gschema.xml:51
+msgid "Last sync with Google Fit"
+msgstr "Последняя синхронизация с Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:52
+msgid "The last time we synched steps, weight etc. with Google Fit"
+msgstr "В последний раз мы синхронизировали шаги, вес и т.д. с Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:56
+msgid "Unit system used"
+msgstr "Используемая система единиц измерения"
+
+#: data/dev.Cogitri.Health.gschema.xml:57
+msgid "The unit system the user chose, e.g. for cm vs inch for height"
+msgstr ""
+"Система единиц измерения, выбранная пользователем, например, для см против "
+"дюйма для роста"
+
+#: data/dev.Cogitri.Health.gschema.xml:61
+msgid "User age"
+msgstr "Возраст пользователя"
+
+#: data/dev.Cogitri.Health.gschema.xml:62
+msgid "The age of the user (deprecated)."
+msgstr "Возраст пользователя (устаревшее)."
+
+#: data/dev.Cogitri.Health.gschema.xml:66
+msgid "Absolute user age"
+msgstr "Абсолютный возраст пользователя"
+
+#: data/dev.Cogitri.Health.gschema.xml:67
+msgid "The age of the user in absolute terms (like 01/01/1970)"
+msgstr "Возраст пользователя в абсолютном выражении (например, 01/01/1970)"
+
+#: data/dev.Cogitri.Health.gschema.xml:71
+msgid "User height"
+msgstr "Рост пользователя"
+
+#: data/dev.Cogitri.Health.gschema.xml:72
+msgid "The height of the user."
+msgstr "Рост пользователя."
+
+#: data/dev.Cogitri.Health.gschema.xml:76
+msgid "User step goal"
+msgstr "Цель пользователя в шагах"
+
+#: data/dev.Cogitri.Health.gschema.xml:77
+msgid "The amount of steps the user wants to reach daily."
+msgstr "Количество шагов, которое пользователь хочет достичь ежедневно."
+
+#: data/dev.Cogitri.Health.gschema.xml:81
+msgid "User weight goal"
+msgstr "Цель пользователя по весу"
+
+#: data/dev.Cogitri.Health.gschema.xml:82
+msgid "The weight the user wants to reach."
+msgstr "Вес, которого пользователь хочет достичь."
+
+#: data/dev.Cogitri.Health.gschema.xml:86
+msgid "Window height"
+msgstr "Высота окна"
+
+#: data/dev.Cogitri.Health.gschema.xml:87
+msgid "The height of the window."
+msgstr "Высота окна."
+
+#: data/dev.Cogitri.Health.gschema.xml:91
+msgid "Window maximized"
+msgstr "Окно развёрнуто"
+
+#: data/dev.Cogitri.Health.gschema.xml:92
+msgid "Whether the window is maximized."
+msgstr "Развёрнуто ли окно"
+
+#: data/dev.Cogitri.Health.gschema.xml:96
+msgid "Window width"
+msgstr "Ширина окна"
+
+#: data/dev.Cogitri.Health.gschema.xml:97
+msgid "The width of the window."
+msgstr "Ширина окна."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:138
+msgid "A health tracking app for the GNOME desktop."
+msgstr ""
+"Приложение для отслеживания состояния здоровья для рабочего стола GNOME."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+msgid ""
+"A health tracking app for the GNOME desktop. Health can visualize how many "
+"steps you've made daily, your weight development over time and your daily "
+"activities."
+msgstr ""
+"Приложение для отслеживания состояния здоровья для рабочего стола GNOME. "
+"Здоровье может визуализировать количество шагов, которые вы делаете "
+"ежедневно, динамику вашего веса с течением времени и вашу ежедневную "
+"активность."
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:31
+msgid "Rasmus “Cogitri” Thomsen"
+msgstr "Расмус \"Когитри\" Томсен (Rasmus “Cogitri” Thomsen)"
+
+#: data/ui/activity_add_dialog.ui:64
+msgid "Add An Activity"
+msgstr "Добавить активность"
+
+#: data/ui/activity_add_dialog.ui:93 data/ui/weight_add_dialog.ui:51
+msgid "Date"
+msgstr "Дата"
+
+#: data/ui/activity_add_dialog.ui:102
+msgid "Activity Type"
+msgstr "Тип активности"
+
+#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:75
+msgid "Calories Burned"
+msgstr "Сожжённые калории"
+
+#: data/ui/activity_add_dialog.ui:124
+msgid "Active Minutes"
+msgstr "Активные минуты"
+
+#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:102
+msgid "Average Heart Rate"
+msgstr "Средний пульс"
+
+#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:111
+msgid "Minimum Heart Rate"
+msgstr "Минимальный пульс"
+
+#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:120
+msgid "Maximum Heart Rate"
+msgstr "Максимальный пульс"
+
+#: data/ui/activity_add_dialog.ui:172
+msgid "Stepcount"
+msgstr "Счётчик шагов"
+
+#: data/ui/activity_row.ui:84
+msgid "Distance in Meters"
+msgstr "Расстояние в метрах"
+
+#: data/ui/activity_row.ui:93 data/ui/home_page.ui:69 data/ui/step_view.ui:26
+#: data/ui/step_view.ui:27
+msgid "Steps"
+msgstr "Шаги"
+
+#: data/ui/activity_view.ui:24 data/ui/calorie_view.ui:23
+#: data/ui/home_page.ui:24 data/ui/step_view.ui:23
+msgid "You can use the <b>+</b> button to add a new activity."
+msgstr ""
+"Вы можете использовать кнопку <b>+</b> для добавления нового вида "
+"деятельности."
+
+#: data/ui/activity_view.ui:27 data/ui/home_page.ui:27
+msgid "Recent Activities"
+msgstr "Последние активности"
+
+#: data/ui/activity_view.ui:28
+msgid "Activities"
+msgstr "Активности"
+
+#: data/ui/calorie_view.ui:26 data/ui/calorie_view.ui:27
+msgid "Calories"
+msgstr "Калории"
+
+#: data/ui/data_add_dialog.ui:26 data/ui/preferences_window.ui:72
+msgid "Health Preferences"
+msgstr "Настройки Здоровья"
+
+#: data/ui/data_add_dialog.ui:31 data/ui/import_export_dialog_base.ui:29
+#: src/windows/export_dialog.rs:56 src/windows/export_dialog.rs:92
+#: src/windows/import_dialog.rs:56 src/windows/import_dialog.rs:85
+msgid "_Cancel"
+msgstr "О_тменить"
+
+#: data/ui/data_add_dialog.ui:37 src/windows/export_dialog.rs:55
+#: src/windows/export_dialog.rs:91
+msgid "_Save"
+msgstr "_Сохранить"
+
+#: data/ui/date_editor.ui:29
+msgid "January"
+msgstr "Январь"
+
+#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:244
+msgid "February"
+msgstr "Февраль"
+
+#: data/ui/date_editor.ui:31
+msgid "March"
+msgstr "Март"
+
+#: data/ui/date_editor.ui:32
+msgid "April"
+msgstr "Апрель"
+
+#: data/ui/date_editor.ui:33
+msgid "May"
+msgstr "Май"
+
+#: data/ui/date_editor.ui:34
+msgid "June"
+msgstr "Июнь"
+
+#: data/ui/date_editor.ui:35
+msgid "July"
+msgstr "Июль"
+
+#: data/ui/date_editor.ui:36
+msgid "August"
+msgstr "Август"
+
+#: data/ui/date_editor.ui:37
+msgid "September"
+msgstr "Сентябрь"
+
+#: data/ui/date_editor.ui:38
+msgid "October"
+msgstr "Октябрь"
+
+#: data/ui/date_editor.ui:39
+msgid "November"
+msgstr "Ноябрь"
+
+#: data/ui/date_editor.ui:40
+msgid "December"
+msgstr "Декабрь"
+
+#: data/ui/date_editor.ui:51
+msgid "Day"
+msgstr "День"
+
+#: data/ui/date_editor.ui:76
+msgid "Month"
+msgstr "Месяц"
+
+#: data/ui/date_editor.ui:98
+msgid "Year"
+msgstr "Год"
+
+#: data/ui/distance_action_row.ui:29
+msgid "Distance"
+msgstr "Расстояние"
+
+#: data/ui/home_page.ui:28
+msgid "Home Page"
+msgstr "Домашняя страница"
+
+#: data/ui/home_page.ui:63 data/ui/preferences_window.ui:82
+#: data/ui/shortcuts_window.ui:30
+msgid "General"
+msgstr "Общие"
+
+#: data/ui/home_page.ui:66
+msgid "Today"
+msgstr "Сегодня"
+
+#. TRANSLATORS: This is displayed via two strings: x% and then this label. E.g. 100% of daily step goal
+#: data/ui/home_page.ui:90
+msgid "of daily step goal"
+msgstr "ежедневной цели по шагам"
+
+#: data/ui/home_page.ui:103 data/ui/preferences_window.ui:218
+#: data/ui/weight_add_dialog.ui:61 data/ui/weight_view.ui:27
+msgid "Weight"
+msgstr "Вес"
+
+#: data/ui/import_export_dialog_base.ui:35
+msgid "_Export"
+msgstr "_Экспортировать"
+
+#: data/ui/password_entry.ui:28
+msgid "_Password"
+msgstr "_Пароль"
+
+#: data/ui/password_entry.ui:58
+msgid "_Confirm password"
+msgstr "_Подтвердить пароль"
+
+#: data/ui/preferences_window.ui:55
+msgid "_Every 1 hour"
+msgstr "Каждый _1 час"
+
+#: data/ui/preferences_window.ui:60
+msgid "_Every 4 hours"
+msgstr "Каждые _4 часа"
+
+#: data/ui/preferences_window.ui:65
+msgid "_Fixed Time"
+msgstr "_Фиксированное время"
+
+#: data/ui/preferences_window.ui:85
+msgid "User"
+msgstr "Пользователь"
+
+#: data/ui/preferences_window.ui:88 data/ui/setup_window.ui:176
+msgid "Unit system"
+msgstr "Система единиц измерения"
+
+#: data/ui/preferences_window.ui:97 data/ui/setup_window.ui:185
+msgid "Imperial"
+msgstr "Имперская"
+
+#: data/ui/preferences_window.ui:104 data/ui/setup_window.ui:192
+msgid "Metric"
+msgstr "Метрическая"
+
+#: data/ui/preferences_window.ui:115 data/ui/setup_window.ui:203
+msgid "Birthday"
+msgstr "День рождения"
+
+#: data/ui/preferences_window.ui:125 data/ui/setup_window.ui:213
+msgid "Height"
+msgstr "Рост"
+
+#: data/ui/preferences_window.ui:141
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: data/ui/preferences_window.ui:144
+msgid "Enable notifications"
+msgstr "Включить уведомления"
+
+#: data/ui/preferences_window.ui:157
+msgid "Frequency"
+msgstr "Частота"
+
+#: data/ui/preferences_window.ui:174
+msgid "Daily reminder time"
+msgstr "Время ежедневного напоминания"
+
+#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:279
+#: src/views/view_steps.rs:193
+msgid "Step goal"
+msgstr "Цель в шагах"
+
+#: data/ui/preferences_window.ui:199 data/ui/setup_window.ui:256
+msgid "The WHO recommends 10.000 steps per day."
+msgstr "ВОЗ рекомендует делать 10 000 шагов в день."
+
+#: data/ui/preferences_window.ui:219 data/ui/setup_window.ui:321
+msgid "The WHO recommends a BMI of 18.5-24.9."
+msgstr "ВОЗ рекомендует ИМТ в пределах 18,5-24,9."
+
+#: data/ui/preferences_window.ui:248
+msgid "Sync"
+msgstr "Синхронизация"
+
+#: data/ui/preferences_window.ui:252
+msgid "Start sync with third-party providers."
+msgstr "Начните синхронизацию со сторонними провайдерами."
+
+#: data/ui/preferences_window.ui:262
+msgid "Importing and exporting data"
+msgstr "Импорт и экспорт данных"
+
+#: data/ui/preferences_window.ui:265
+msgid "Export data as CSV"
+msgstr "Экспорт данных в формате CSV"
+
+#: data/ui/preferences_window.ui:268
+msgid "Export…"
+msgstr "Экспортировать…"
+
+#: data/ui/preferences_window.ui:276
+msgid "Import data from CSV"
+msgstr "Импорт данных из CSV"
+
+#: data/ui/preferences_window.ui:279
+msgid "Import…"
+msgstr "Импортировать…"
+
+#: data/ui/setup_window.ui:55
+msgid "Health Setup"
+msgstr "Настройка Здоровья"
+
+#: data/ui/setup_window.ui:70
+msgid "_Quit"
+msgstr "_Завершить"
+
+#: data/ui/setup_window.ui:82
+msgid "_Previous"
+msgstr "_Предыдущее"
+
+#: data/ui/setup_window.ui:99
+msgid "_Next"
+msgstr "_Следующее"
+
+#: data/ui/setup_window.ui:113
+msgid "_Done"
+msgstr "_Готово"
+
+#: data/ui/setup_window.ui:140
+msgid "Welcome to Health!"
+msgstr "Добро пожаловать в Здоровье!"
+
+#: data/ui/setup_window.ui:153
+msgid "Please enter some information to get setup."
+msgstr "Пожалуйста, введите некоторую информацию для настройки."
+
+#: data/ui/setup_window.ui:243
+msgid "Please enter your daily step goal."
+msgstr "Пожалуйста, введите свою ежедневную цель в шагах."
+
+#: data/ui/setup_window.ui:308
+msgid "Please enter your weight goal."
+msgstr "Пожалуйста, введите свою цель по весу."
+
+#: data/ui/setup_window.ui:349 src/views/view_weight.rs:171
+msgid "Weight goal"
+msgstr "Цель по весу"
+
+#: data/ui/setup_window.ui:389
+msgid "Setup sync with third-party providers."
+msgstr "Настройка синхронизации со сторонними провайдерами."
+
+#: data/ui/setup_window.ui:402
+msgid ""
+"You can sync steps and weight measurements from/to third-party providers."
+msgstr ""
+"Вы можете синхронизировать шаги и измерения веса со сторонними поставщиками."
+
+#: data/ui/shortcuts_window.ui:34
+msgid "Quit the application"
+msgstr "Закрыть приложение"
+
+#: data/ui/shortcuts_window.ui:40
+msgid "Show this shortcuts window"
+msgstr "Показать окно ярлыков"
+
+#: data/ui/shortcuts_window.ui:46
+msgid "Show help"
+msgstr "Показать подсказку"
+
+#: data/ui/shortcuts_window.ui:52
+msgid "Show primary menu"
+msgstr "Показывать основное меню"
+
+#: data/ui/shortcuts_window.ui:58
+msgid "Toggle fullscreen mode"
+msgstr "Переключение полноэкранного режима"
+
+#: data/ui/weight_add_dialog.ui:31 data/ui/weight_view.ui:26
+msgid "Weight Measurements"
+msgstr "Измерения веса"
+
+#: data/ui/weight_add_dialog.ui:32
+msgid "Add Weight Record"
+msgstr "Добавить запись о весе"
+
+#: data/ui/weight_view.ui:23
+msgid "You can use the <b>+</b> button to add a new weight measurement."
+msgstr ""
+"Вы можете использовать кнопку <b>+</b>, чтобы добавить новое измерение веса."
+
+#: data/ui/window.ui:27
+msgid "_Preferences"
+msgstr "_Настройки"
+
+#: data/ui/window.ui:31
+msgid "_Keyboard Shortcuts"
+msgstr "Комбинации _клавиш"
+
+#: data/ui/window.ui:37
+msgid "_About Health"
+msgstr "О _Здоровье"
+
+#: src/core/application.rs:140
+msgid "translator-credits"
+msgstr "Alexey Rubtsov <rushills@gmail.com>, 2021"
+
+#: src/core/application.rs:142
+msgid "Websites"
+msgstr "Вебсайты"
+
+#: src/daemon/main.rs:31
+msgid "Health Daemon"
+msgstr "Сервис Здоровья"
+
+#: src/model/activity_info.rs:74
+msgid "Basketball"
+msgstr "Баскетбол"
+
+#: src/model/activity_info.rs:89
+msgid "Bicycling"
+msgstr "Велосипед"
+
+#: src/model/activity_info.rs:103
+msgid "Boxing"
+msgstr "Бокс"
+
+#: src/model/activity_info.rs:117
+msgid "Dancing"
+msgstr "Танцы"
+
+#: src/model/activity_info.rs:131
+msgid "Football"
+msgstr "Футбол"
+
+#: src/model/activity_info.rs:143
+msgid "Golf"
+msgstr "Гольф"
+
+#: src/model/activity_info.rs:159
+msgid "Hiking"
+msgstr "Пеший туризм"
+
+#: src/model/activity_info.rs:173
+msgid "Hockey"
+msgstr "Хоккей"
+
+#: src/model/activity_info.rs:188
+msgid "Horse Riding"
+msgstr "Верховая езда"
+
+#: src/model/activity_info.rs:202
+msgid "Other Sports"
+msgstr "Другой Спорт"
+
+#: src/model/activity_info.rs:217
+msgid "Rollerblading"
+msgstr "Катание на роликах"
+
+#: src/model/activity_info.rs:233
+msgid "Running"
+msgstr "Бег"
+
+#: src/model/activity_info.rs:248
+msgid "Skiing"
+msgstr "Катание на лыжах"
+
+#: src/model/activity_info.rs:262
+msgid "Soccer"
+msgstr "Футбол"
+
+#: src/model/activity_info.rs:276
+msgid "Softball"
+msgstr "Софтбол"
+
+#: src/model/activity_info.rs:291
+msgid "Swimming"
+msgstr "Плавание"
+
+#: src/model/activity_info.rs:305
+msgid "Tennis"
+msgstr "Теннис"
+
+#: src/model/activity_info.rs:319
+msgid "Track And Field"
+msgstr "Легкая атлетика"
+
+#: src/model/activity_info.rs:335
+msgid "Volleyball"
+msgstr "Волейбол"
+
+#: src/model/activity_info.rs:351
+msgid "Walking"
+msgstr "Ходьба"
+
+#: src/model/model_notification.rs:125
+msgid "Health: walking reminder"
+msgstr "Здоровье: напоминание о ходьбе"
+
+#. TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
+#: src/model/model_notification.rs:148
+msgid "{} step remaining to complete your daily step goal"
+msgid_plural "{} steps remaining to complete your daily step goal"
+msgstr[0] "Остался {} шаг до выполнения ежедневной цели по шагам"
+msgstr[1] "Осталось {} шага до выполнения ежедневной цели по шагам"
+msgstr[2] "Осталось {} шагов до выполнения ежедневной цели по шагам"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/model/model_notification.rs:154
+msgid "of {} step"
+msgid_plural "of {} steps"
+msgstr[0] "из {} шага"
+msgstr[1] "из {} шагов"
+msgstr[2] "из {} шагов"
+
+#: src/sync/csv.rs:81 src/sync/csv.rs:360
+msgid "No activities added yet; can't create empty export!"
+msgstr ""
+"Пока не добавлено ни одной активности; невозможно создать пустой экспорт!"
+
+#: src/sync/csv.rs:111 src/sync/csv.rs:378
+msgid "No weight measurements added yet; can't create empty export!"
+msgstr "Еще не добавлены измерения веса; невозможно создать пустой экспорт!"
+
+#: src/sync/csv.rs:184 src/sync/csv.rs:322
+msgid "Can't parse encrypted backup without encryption key!"
+msgstr ""
+"Невозможно разобрать зашифрованную резервную копию без ключа шифрования!"
+
+#: src/sync/csv.rs:195 src/sync/csv.rs:342
+msgid ""
+"Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
+"encrypted one?"
+msgstr ""
+"Не удалось разобрать CSV. Вы пытаетесь прочитать незашифрованную резервную "
+"копию как зашифрованную?"
+
+#: src/sync/csv.rs:208
+msgid "Couldn't decrypt data. Are you sure you're using the right key?"
+msgstr ""
+"Не удалось расшифровать данные. Вы уверены, что используете правильный ключ?"
+
+#: src/sync/database_receiver.rs:46
+msgid "Couldn't synchronize steps due to error {}"
+msgstr "Не удалось синхронизировать шаги из-за ошибки {}"
+
+#: src/sync/database_receiver.rs:60
+msgid "Couldn't synchronize weight measurements due to error {}"
+msgstr "Не удалось синхронизировать измерения веса из-за ошибки {}"
+
+#: src/sync/google_fit.rs:211
+msgid "CRSF Verification failed, got {}, expected {}"
+msgstr "CRSF Проверка не прошла, получено {}, ожидалось {}"
+
+#: src/sync/google_fit.rs:227
+msgid "Requesting OAuth2 token failed due to error {}"
+msgstr "Запрос токена OAuth2 не удался из-за ошибки {}"
+
+#: src/sync/sync_provider.rs:109
+msgid ""
+"Can't retrieve OAuth2 token when no refresh token is set! Please re-"
+"authenticate with your sync provider."
+msgstr ""
+"Не удается получить токен OAuth2, когда не установлен токен обновления! "
+"Пожалуйста, повторите аутентификацию у поставщика синхронизации."
+
+#: src/sync/sync_provider.rs:228
+msgid "Successfully authenticated, please return to Health."
+msgstr "Успешная аутентификация, пожалуйста, вернитесь в раздел \"Здоровье\"."
+
+#: src/sync/sync_provider.rs:240
+msgid "Couldn't parse OAuth2 response"
+msgstr "Не удалось разобрать ответ OAuth2"
+
+#: src/views/bar_graph_view.rs:518
+msgid "Enter weight record to calculate idle calories"
+msgstr "Введите данные о весе, чтобы рассчитать калории холостого хода"
+
+#: src/views/bar_graph_view.rs:522
+msgid "Idle calories"
+msgstr "Калории покоя"
+
+#: src/views/view_activity.rs:184
+msgid "No activities on or after {}"
+msgstr "Никакой деятельности в день или после {}"
+
+#: src/views/view_calories.rs:169
+msgid ""
+"{}:\n"
+"{} calorie\n"
+"{}"
+msgid_plural ""
+"{}:\n"
+"{} calories\n"
+"{}"
+msgstr[0] ""
+"{}:\n"
+"{} калория\n"
+"{}"
+msgstr[1] ""
+"{}:\n"
+"{} калории\n"
+"{}"
+msgstr[2] ""
+"{}:\n"
+"{} калорий\n"
+"{}"
+
+#: src/views/view_home_page.rs:256
+msgid "{} step taken today"
+msgid_plural "{} steps taken today"
+msgstr[0] "{} шаг сделан сегодня"
+msgstr[1] "{} шага сделано сегодня"
+msgstr[2] "{} шагов сделано сегодня"
+
+#: src/views/view_home_page.rs:262
+msgid "{}%"
+msgstr "{}%"
+
+#. TRANSLATORS: Current user weight
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:297 src/views/view_home_page.rs:331
+msgid "{} pound"
+msgid_plural "{} pounds"
+msgstr[0] "{} фунт"
+msgstr[1] "{} фунта"
+msgstr[2] "{} фунтов"
+
+#. TRANSLATORS: Current user weight
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:304 src/views/view_home_page.rs:338
+msgid "{} kilogram"
+msgid_plural "{} kilograms"
+msgstr[0] "{} килограмм"
+msgstr[1] "{} килограмма"
+msgstr[2] "{} килограммов"
+
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:314
+msgid "+ {} pound"
+msgid_plural "+ {} pounds"
+msgstr[0] "+ {} фунт"
+msgstr[1] "+ {} фунта"
+msgstr[2] "+ {} фунтов"
+
+#. TRANSLATORS: Difference to last weight measurement
+#: src/views/view_home_page.rs:321
+msgid "+ {} kilogram"
+msgid_plural "+ {} kilograms"
+msgstr[0] "+ {} килограмм"
+msgstr[1] "+ {} килограмма"
+msgstr[2] "+ {} килограммов"
+
+#: src/views/view_home_page.rs:346
+msgid "No change in weight"
+msgstr "Без изменения веса"
+
+#: src/views/view_home_page.rs:351
+msgid "compared to previous weight"
+msgstr "по сравнению с предыдущим весом"
+
+#: src/views/view_home_page.rs:355
+msgid "use + to add a weight record"
+msgstr "используйте + для добавления записи о весе"
+
+#: src/views/view_steps.rs:140
+msgid "Today's steps: {}"
+msgstr "Сегодняшние шаги: {}"
+
+#: src/views/view_steps.rs:156
+msgid ""
+"No streak yet. Reach your step goal for multiple days to start a streak!"
+msgstr ""
+"Пока нет непрерывных занятий. Достигайте своей цели по шагам в течение "
+"нескольких дней, чтобы начать полосу!"
+
+#: src/views/view_steps.rs:160
+msgid ""
+"You're on a streak for {} day. Reach your step goal today to continue it!"
+msgid_plural ""
+"You're on a streak for {} days. Reach your step goal today to continue it!"
+msgstr[0] ""
+"Вы находитесь на непрерывной полосе в течение {} дня. Достигните своей цели "
+"по шагам сегодня, чтобы продолжить ее!"
+msgstr[1] ""
+"Вы находитесь на непрерывной полосе в течение {} дней. Достигните своей "
+"цели по шагам сегодня, чтобы продолжить ее!"
+msgstr[2] ""
+"Вы находитесь на непрерывной полосе в течение {} дней. Достигните своей "
+"цели по шагам сегодня, чтобы продолжить ее!"
+
+#: src/views/view_steps.rs:168
+msgid "You've reached your step goal today. Keep going to start a streak!"
+msgstr ""
+"Сегодня вы достигли своей цели по шагам. Продолжайте, чтобы начать "
+"непрерывную полосу!"
+
+#: src/views/view_steps.rs:171
+msgid "You're on a streak for {} day. Good job!"
+msgid_plural "You're on a streak for {} days. Good job!"
+msgstr[0] "У вас непрерывная полоса в {} день. Хорошая работа!"
+msgstr[1] "У вас непрерывная полоса в {} дня. Хорошая работа!"
+msgstr[2] "У вас непрерывная полоса в {} дней. Хорошая работа!"
+
+#. TRANSLATORS: X step(s) on DATE
+#: src/views/view_steps.rs:186
+msgid "{} step on {}"
+msgid_plural "{} steps on {}"
+msgstr[0] "{} шаг на {}"
+msgstr[1] "{} шага на {}"
+msgstr[2] "{} шагов на {}"
+
+#: src/views/view_weight.rs:145
+msgid "Current BMI: {}"
+msgstr "Текущий ИМТ: {}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/views/view_weight.rs:158
+msgid "{} pound on {}"
+msgid_plural "{} pounds on {}"
+msgstr[0] "{} фунт на {}"
+msgstr[1] "{} фунта на {}"
+msgstr[2] "{} фунтов на {}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/views/view_weight.rs:161
+msgid "{} kilogram on {}"
+msgid_plural "{} kilograms on {}"
+msgstr[0] "{} килограмм на {}"
+msgstr[1] "{} килограмма на {}"
+msgstr[2] "{} килограммов на {}"
+
+#: src/views/view_weight.rs:199
+msgid "Unknown BMI"
+msgstr "Неизвестный ИМТ"
+
+#: src/views/view_weight.rs:223
+msgid ""
+"Your weight goal is {} pound. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} pounds. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Ваша цель по весу - {} фунт. Добавьте первое измерение веса, чтобы узнать, "
+"насколько вы близки к ее достижению."
+msgstr[1] ""
+"Ваша цель по весу - {} фунта. Добавьте первое измерение веса, чтобы узнать, "
+"насколько вы близки к ее достижению."
+msgstr[2] ""
+"Ваша цель по весу - {} фунтов. Добавьте первое измерение веса, чтобы "
+"узнать, насколько вы близки к ее достижению."
+
+#: src/views/view_weight.rs:230
+msgid ""
+"Your weight goal is {} kilogram. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} kilograms. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Ваша цель по весу - {} килограмм. Добавьте первое измерение веса, чтобы "
+"узнать, насколько вы близки к ее достижению."
+msgstr[1] ""
+"Ваша цель по весу - {} килограмма. Добавьте первое измерение веса, чтобы "
+"узнать, насколько вы близки к ее достижению."
+msgstr[2] ""
+"Ваша цель по весу - {} килограммов. Добавьте первое измерение веса, чтобы "
+"узнать, насколько вы близки к ее достижению."
+
+#: src/views/view_weight.rs:239
+msgid "You've reached your weight goal. Great job!"
+msgstr "Вы достигли своей цели по весу. Отличная работа!"
+
+#. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
+#: src/views/view_weight.rs:255
+msgid "Your weight goal is {} pound,"
+msgid_plural "Your weight goal is {} pounds,"
+msgstr[0] "Ваша цель по весу - {} фунт,"
+msgstr[1] "Ваша цель по весу - {} фунта,"
+msgstr[2] "Ваша цель по весу - {} фунтов,"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/views/view_weight.rs:261
+msgid "you have {} pound left to reach it"
+msgid_plural "you have {} pounds left to reach it"
+msgstr[0] "вам остался {} фунт, чтобы достичь её"
+msgstr[1] "вам осталось {} фунта, чтобы достичь её"
+msgstr[2] "вам осталось {} фунтов, чтобы достичь её"
+
+#. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
+#: src/views/view_weight.rs:268
+msgid "Your weight goal is {} kilogram,"
+msgid_plural "Your weight goal is {} kilograms,"
+msgstr[0] "Ваша цель по весу - {} килограмм,"
+msgstr[1] "Ваша цель по весу - {} килограмма,"
+msgstr[2] "Ваша цель по весу - {} килограммов,"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/views/view_weight.rs:274
+msgid "you have {} kilogram left to reach it"
+msgid_plural "you have {} kilograms left to reach it"
+msgstr[0] "вам остался {} килограмм, чтобы достичь её"
+msgstr[1] "вам осталось {} килограмма, чтобы достичь её"
+msgstr[2] "вам осталось {} килограммов, чтобы достичь её"
+
+#: src/views/view_weight.rs:283
+msgid "No weight goal set yet. You can set it in Health's preferences."
+msgstr ""
+"Цель по весу пока не установлена. Вы можете установить ее в настройках "
+"Здоровье."
+
+#: src/widgets/activity_row.rs:131
+msgid "{} Minute"
+msgid_plural "{} Minutes"
+msgstr[0] "{} минута"
+msgstr[1] "{} минуты"
+msgstr[2] "{} минут"
+
+#: src/widgets/activity_row.rs:147 src/widgets/activity_row.rs:229
+msgid "{} Calorie"
+msgid_plural "{} Calories"
+msgstr[0] "{} Калория"
+msgstr[1] "{} Калории"
+msgstr[2] "{} Калорий"
+
+#: src/widgets/bmi_level_bar.rs:174 src/widgets/bmi_level_bar.rs:203
+msgid "<small>Current BMI: {}</small>"
+msgstr "<small>Текущий индекс массы тела {}</small>"
+
+#: src/widgets/distance_action_row.rs:248
+msgid "KM"
+msgstr "КМ"
+
+#: src/widgets/distance_action_row.rs:249
+msgid "Meters"
+msgstr "Метры"
+
+#: src/widgets/distance_action_row.rs:251
+msgid "Miles"
+msgstr "Мили"
+
+#: src/widgets/distance_action_row.rs:252
+msgid "Feet"
+msgstr "Футы"
+
+#. TRANSLATORS: Unit abbreviation (centimeters)
+#: src/widgets/unit_spinbutton.rs:462 src/widgets/unit_spinbutton.rs:625
+msgid "cm"
+msgstr "см"
+
+#. TRANSLATORS: Unit abbreviation (meters)
+#: src/widgets/unit_spinbutton.rs:464
+msgid "m"
+msgstr "м"
+
+#. TRANSLATORS: Unit abbreviation (kilometers)
+#: src/widgets/unit_spinbutton.rs:466
+msgid "km"
+msgstr "км"
+
+#. TRANSLATORS: Unit abbreviation (kilograms)
+#: src/widgets/unit_spinbutton.rs:468
+msgid "kg"
+msgstr "кг"
+
+#. TRANSLATORS: Unit abbreviation (inch)
+#: src/widgets/unit_spinbutton.rs:470 src/widgets/unit_spinbutton.rs:627
+msgid "in"
+msgstr "дюйм"
+
+#. TRANSLATORS: Unit abbreviation (feet)
+#: src/widgets/unit_spinbutton.rs:472
+msgid "ft"
+msgstr "фут"
+
+#. TRANSLATORS: Unit abbreviation (miles)
+#: src/widgets/unit_spinbutton.rs:474
+msgid "mi"
+msgstr "мили"
+
+#. TRANSLATORS: Unit abbreviation (pounds)
+#: src/widgets/unit_spinbutton.rs:476
+msgid "lb"
+msgstr "фунт"
+
+#: src/windows/export_dialog.rs:54
+msgid "Save Activities"
+msgstr "Сохранить активности"
+
+#. TRANSLATORS: Please keep the file extension (.csv.encrypted)
+#: src/windows/export_dialog.rs:63
+msgid "Activities.csv.encrypted"
+msgstr "Активности.csv.encrypted"
+
+#. TRANSLATORS: Please keep the file extension (.csv)
+#: src/windows/export_dialog.rs:66
+msgid "Activities.csv"
+msgstr "Активности.csv"
+
+#: src/windows/export_dialog.rs:90
+msgid "Save Weight Measurement"
+msgstr "Сохранить измерение веса"
+
+#: src/windows/export_dialog.rs:98
+msgid "Weight Measurements.csv.encrypted"
+msgstr "Измерения веса.csv.encrypted"
+
+#: src/windows/export_dialog.rs:100
+msgid "Weight Measurements.csv"
+msgstr "Измерения веса.csv"
+
+#: src/windows/export_dialog.rs:135
+msgid "Export data"
+msgstr "Экспорт данных"
+
+#: src/windows/import_dialog.rs:54
+msgid "Open Activities"
+msgstr "Открыть активности"
+
+#: src/windows/import_dialog.rs:55 src/windows/import_dialog.rs:84
+msgid "_Open"
+msgstr "_Открыть"
+
+#: src/windows/import_dialog.rs:83
+msgid "Open Weight Measurement"
+msgstr "Открыть измерения веса"
+
+#: src/windows/import_dialog.rs:124
+msgid "Import data"
+msgstr "Импорт данных"
+
+#: src/windows/import_export_dialog_base.rs:227
+msgid "Import activities"
+msgstr "Импортировать активности"
+
+#: src/windows/import_export_dialog_base.rs:229
+msgid "Import is encrypted"
+msgstr "Импорт зашифрован"
+
+#: src/windows/import_export_dialog_base.rs:230
+msgid "Import weights"
+msgstr "Импортировать измерения веса"
+
+#: src/windows/import_export_dialog_base.rs:231
+msgid "Import"
+msgstr "Импортировать"
+
+#: src/windows/import_export_dialog_base.rs:328
+msgid "Success!"
+msgstr "Успешно!"
+
+#: src/windows/import_export_dialog_base.rs:332
+msgid "An error occurred!"
+msgstr "Произошла ошибка!"
+
+#: src/windows/import_export_dialog_base.rs:338
+msgid "Close"
+msgstr "Закрыть"
+
+#: src/windows/preferences_window.rs:375
+msgid "Remind you of your step goals"
+msgstr "Напоминать вам о целях в шагах"
+
+#: src/windows/window.rs:136
+msgid "Failed to migrate database to new version due to error {}"
+msgstr "Не удалось перенести базу данных на новую версию из-за ошибки {}"
+
+#: src/windows/window.rs:347
+msgid "Couldn't sync Google Fit data due to error: {}"
+msgstr "Не удалось синхронизировать данные Google Fit из-за ошибки: {}"
