@@ -101,7 +101,7 @@ cargo_release = custom_target(
   install_dir: get_option('bindir'),
   command: [
     find_program(meson.source_root() / 'build-aux' / 'cargo.sh'),
-    meson.build_root(),
+    meson.current_build_dir() / '..',
     meson.source_root(),
     '@OUTPUT0@',
     get_option('buildtype'),
@@ -115,7 +115,7 @@ test(
   'cargo-tests',
   find_program(meson.source_root() / 'build-aux' / 'cargo-test.sh'),
   args: [
-    meson.build_root(),
+    meson.current_build_dir() / '..',
     meson.source_root(),
     get_option('buildtype'),
   ],

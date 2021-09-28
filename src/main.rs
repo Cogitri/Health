@@ -16,7 +16,7 @@ use gettextrs::{bindtextdomain, setlocale, textdomain, LocaleCategory};
 use gtk::{gio, glib, prelude::ApplicationExtManual};
 use libhealth::{
     config,
-    core::{i18n, utils, Application},
+    core::{i18n, Application},
 };
 
 fn main() {
@@ -34,17 +34,11 @@ fn main() {
     gtk::init().expect("Failed to initialize GTK.");
     adw::init();
 
-    let res = if config::APPLICATION_ID.ends_with("Devel") {
-        utils::get_file_in_builddir("dev.Cogitri.Health.gresource").map_or_else(
-            || {
-                gio::Resource::load(config::PKGDATADIR.to_owned() + "/dev.Cogitri.Health.gresource")
-                    .expect("Could not load resources")
-            },
-            |s| gio::Resource::load(s).expect("Could not load resources"),
-        )
+    let res = if let Ok(resource_path) = std::env::var("HEALTH_GRESOURCE_DIR") {
+        gio::Resource::load(resource_path + "/dev.Cogitri.Health.gresource").expect("Couldn't find GResource in HEALTH_GRESOURCE_DIR. Did you forget running ninja -C build?")
     } else {
         gio::Resource::load(config::PKGDATADIR.to_owned() + "/dev.Cogitri.Health.gresource")
-            .expect("Could not load resources")
+            .expect("Could not load resources. Did you forget running Health in the shell provided by \"meson devenv -C build\"?")
     };
     gio::resources_register(&res);
 

@@ -1,6 +1,6 @@
 project('Health', 'rust',
           version: '0.92.6',
-    meson_version: '>= 0.54.0',
+    meson_version: '>= 0.58.0',
   default_options: [ 'warning_level=2',
                    ],
 )
@@ -33,3 +33,12 @@ subdir('po')
 
 meson.add_install_script('build-aux/meson/postinstall.py')
 meson.add_dist_script('build-aux/dist.sh', meson.project_name(), meson.project_version())
+
+devenv = environment()
+devenv.set('HEALTH_ONTOLOGY_PATH', meson.current_source_dir() / 'data' / 'tracker' / 'ontology')
+devenv.set('HEALTH_GRESOURCE_DIR', meson.current_build_dir() / 'data')
+meson.add_devenv(devenv)
+
+run_target('run',
+  command : 'build-aux/run.sh')
+

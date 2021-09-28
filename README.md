@@ -8,7 +8,7 @@ A health tracking app for the GNOME desktop.
 
 ![screenshot](https://gitlab.gnome.org/World/Health/raw/master/docs/screenshot_steps.png)
 
-## Building from Source
+## Hacking on Health
 
 ### With GNOME Builder
 
@@ -36,6 +36,23 @@ For development purposes you can also run Health directly via flatpak-builder to
 flatpak-builder --user --force-clean app dev.Cogitri.Health.json
 flatpak-builder --run app dev.Cogitri.Health.json dev.Cogitri.Health
 ```
+
+
+### Building manually
+
+If you don't want to use Flatpak, you can build Health manually like so after installing `rust`, `tracker3-devel` and `libadwaita-devel`:
+
+```
+meson -Dprofile=development build
+ninja -C build
+```
+
+Afterwards, you may launch Health by running:
+
+```
+ninja -C build run
+```
+
 
 ## Using CI Snapshots
 
