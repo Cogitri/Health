@@ -6,7 +6,7 @@
 
 A health tracking app for the GNOME desktop.
 
-![screenshot](https://gitlab.gnome.org/World/Health/raw/master/docs/screenshot_steps.png)
+![screenshot](https://gitlab.gnome.org/World/Health/raw/master/docs/screenshot_main.png)
 
 ## Hacking on Health
 

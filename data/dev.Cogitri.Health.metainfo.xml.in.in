@@ -19,6 +19,9 @@
 	<launchable type="desktop-id">@APPLICATION_ID@.desktop</launchable>
 	<screenshots>
 		<screenshot type="default">
+			<image>https://gitlab.gnome.org/World/Health/raw/master/docs/screenshot_main.png</image>
+		</screenshot>
+		<screenshot>
 			<image>https://gitlab.gnome.org/World/Health/raw/master/docs/screenshot_steps.png</image>
 		</screenshot>
 		<screenshot>
@@ -45,7 +48,7 @@
 			<p>
 				This release fixes multiple regressions introduced during the port to Rust, like steps not being properly
 				displayed when multiple steps have been added at one date.
-				Screenshots have been updateda s well.
+				Screenshots have been updated as well.
 			</p>
 		</release>
 		<release version="0.92.2" date="2021-03-21">
