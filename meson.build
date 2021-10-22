@@ -5,6 +5,9 @@ project('Health', 'rust',
                    ],
 )
 
+dependency('libadwaita-1', version: '>= 1.0.0-alpha.3')
+dependency('gtk4', version: '>= 4.2.0')
+
 i18n = import('i18n')
 gnome = import('gnome')
 
