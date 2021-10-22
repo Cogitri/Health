@@ -35,35 +35,11 @@ fmt:
     - cargo --version
     - cargo fmt --all -- --check
 
-clippy:
-  image: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master"
-  stage: qa
-  script:
-    - meson build
-    - cargo clippy --version
-    - cargo clippy -- -D warnings
-  cache:
-    key: clippy
-    paths:
-      - target
-
 clone:
   image: alpine:latest
   stage: qa
   script:
     - build-aux/run-clone-warn.sh
-
-coverage:
-  image: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master"
-  stage: build
-  script:
-    - meson build
-    - ninja -C build data/dev.Cogitri.Health.gresource
-    - xvfb-run -a -s "-screen 0 1024x768x24" cargo llvm-cov -- --test-threads=1
-  cache:
-    key: coverage
-    paths:
-      - target
 
 flatpak:
   extends: ".flatpak"
@@ -78,24 +54,6 @@ nightly:
   extends: ".publish_nightly"
   dependencies: ["flatpak"]
   needs: ["flatpak"]
-
-pages:
-  image: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master"
-  stage: deploy
-  script:
-    - meson build
-    - cargo makedocs -i "health"
-    - rm -rf public
-    - mv target/doc/ public
-  cache:
-    key: pages
-    paths:
-      - target
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
 
 create-dist-tarball:
   stage: release-tarball
