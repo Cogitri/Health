@@ -60,9 +60,9 @@
             ],
             "sources": [
                 {
-                    "type": "git",
-                    "url": "https://gitlab.gnome.org/GNOME/libadwaita",
-                    "commit": "8442d6097b36c17e87582525ceab3ce3d5bccd48"
+                    "type": "archive",
+                    "url": "https://gitlab.gnome.org/GNOME/libadwaita/-/archive/1.0.0.alpha.3/libadwaita-1.0.0.alpha.3.tar.gz",
+                    "sha256": "dfb7397b9d04580707b57431e9d0991d9216b5aca472f108b21a09bbd29910cd"
                 }
             ]
         },
