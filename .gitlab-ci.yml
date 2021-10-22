@@ -38,8 +38,6 @@ fmt:
 clippy:
   image: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master"
   stage: qa
-  before_script:
-    - source $HOME/.cargo/env
   script:
     - meson build
     - cargo clippy --version
@@ -58,8 +56,6 @@ clone:
 coverage:
   image: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master"
   stage: build
-  before_script:
-    - source $HOME/.cargo/env
   script:
     - meson build
     - ninja -C build data/dev.Cogitri.Health.gresource
@@ -86,8 +82,6 @@ nightly:
 pages:
   image: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master"
   stage: deploy
-  before_script:
-    - source $HOME/.cargo/env
   script:
     - meson build
     - cargo makedocs -i "health"
