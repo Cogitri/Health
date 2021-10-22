@@ -136,11 +136,10 @@ impl Database {
     ) -> Result<Vec<Activity>> {
         let self_ = self.imp();
 
+        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
         let cursor = if let Some(date) = date_opt {
-            let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
             connection.query_async_future(&format!("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY DESC(?date)", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
         } else {
-            let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
             connection.query_async_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?
         };
 
@@ -391,11 +390,10 @@ impl Database {
     pub async fn weights(&self, date_opt: Option<DateTime<FixedOffset>>) -> Result<Vec<Weight>> {
         let self_ = self.imp();
 
+        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
         let cursor = if let Some(date) = date_opt {
-            let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
             connection.query_async_future(&format!("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
         } else {
-            let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
             connection.query_async_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . } ORDER BY ?date").await?
         };
         let mut ret = Vec::new();
