@@ -30,4 +30,4 @@ ninja -C _build test
 git commit -av
 git tag $next
 
-ninja -C _build release
+meson dist --no-tests -C _build
