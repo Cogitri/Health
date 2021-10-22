@@ -44,6 +44,14 @@
 	</kudos>
 
 	<releases>
+		<release version="0.93.0" date="2021-10-22">
+			<p>
+				This release of Health features a reworked main view, a new calories view a daemon
+				to remind users to reach their stepgoal and an updated stylesheet.
+				Additionally, Health's icon have been updated to be thinner and many translations
+				have been added. Thanks to all contributors for making this release possible.
+			</p>
+		</release>
 		<release version="0.92.6" date="2021-03-23">
 			<p>
 				This release fixes multiple regressions introduced during the port to Rust, like steps not being properly
