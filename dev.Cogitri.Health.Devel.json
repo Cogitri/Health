@@ -46,27 +46,6 @@
     },
     "modules": [
         {
-            "name": "libadwaita",
-            "builddir": true,
-            "buildsystem": "meson",
-            "config-opts": [
-                "-Dprofiling=false",
-                "-Dintrospection=enabled",
-                "-Dgtk_doc=false",
-                "-Dtests=false",
-                "-Dexamples=false",
-                "-Dvapi=false",
-                "-Dglade_catalog=disabled"
-            ],
-            "sources": [
-                {
-                    "type": "archive",
-                    "url": "https://gitlab.gnome.org/GNOME/libadwaita/-/archive/1.0.0.alpha.3/libadwaita-1.0.0.alpha.3.tar.gz",
-                    "sha256": "dfb7397b9d04580707b57431e9d0991d9216b5aca472f108b21a09bbd29910cd"
-                }
-            ]
-        },
-        {
             "name": "health",
             "builddir": true,
             "buildsystem": "meson",
