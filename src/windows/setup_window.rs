@@ -468,8 +468,8 @@ impl SetupWindow {
     fn try_enable_next_button(&self) {
         let self_ = self.imp();
         let birthday = self_.birthday_selector.selected_date().date();
-        let height = self_.height_spin_button.text().to_string();
-        let sensitive = birthday != Local::now().date() && !height.is_empty() && height != "0";
+        let sensitive =
+            birthday != Local::now().date() && !self_.height_spin_button.has_default_value();
         self_.setup_next_page_button.set_sensitive(sensitive);
         self_.setup_carousel.set_interactive(sensitive);
     }

@@ -107,6 +107,13 @@ mod imp {
                         1,
                         glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
                     ),
+                    glib::ParamSpec::new_boolean(
+                        "has-default-value",
+                        "has-default-value",
+                        "has-default-value",
+                        true,
+                        glib::ParamFlags::READABLE,
+                    ),
                     glib::ParamSpec::new_string(
                         "unit-kind",
                         "unit-kind",
@@ -180,6 +187,13 @@ mod imp {
                     self.inner.borrow().settings_handler_id.is_some().to_value()
                 }
                 "digits" => self.spin_button.digits().to_value(),
+                "has-default-value" => self
+                    .spin_button
+                    .text()
+                    .split(' ')
+                    .next()
+                    .map_or_else(|| false, |val| (val == "0"))
+                    .to_value(),
                 "unit-kind" => self.inner.borrow().current_unit_kind.map_or_else(
                     || None::<String>.to_value(),
                     |u| {
@@ -308,6 +322,10 @@ impl UnitSpinButton {
             ("unit-kind", &unit_str),
         ])
         .expect("Failed to create UnitSpinButton")
+    }
+
+    pub fn has_default_value(&self) -> bool {
+        self.property("has-default-value").unwrap().get().unwrap()
     }
 
     pub fn set_unit_kind(&self, unit_kind: UnitKind) {
