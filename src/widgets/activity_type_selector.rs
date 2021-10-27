@@ -127,11 +127,11 @@ mod imp {
 
             });
             self.activity_types_list_box.bind_model(
-                Some(&self.recent_activity_types_model),
+                Some(&self.activity_types_model),
                 create_list_box_row.clone(),
             );
             self.recent_activity_types_list_box
-                .bind_model(Some(&self.activity_types_model), create_list_box_row);
+                .bind_model(Some(&self.recent_activity_types_model), create_list_box_row);
 
             let activated_list_box_row = glib::clone!(@weak obj => move |b: &gtk::ListBox, r: &gtk::ListBoxRow| {
                 obj.activated_list_box_row(b, r);
