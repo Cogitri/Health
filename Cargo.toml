@@ -3,6 +3,7 @@ name = "health"
 version = "0.93.2"
 edition = "2018"
 license = "GPL-3.0-or-later"
+default-run = "health"
 
 [lib]
 name = "libhealth"
