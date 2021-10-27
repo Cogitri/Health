@@ -17,38 +17,11 @@
  */
 
 use anyhow::Result;
-use chrono::{Datelike, Duration, TimeZone};
 use gtk::{
     gio::{self, prelude::*},
     glib::{self, subclass::prelude::*},
 };
 use std::convert::TryInto;
-
-#[derive(
-    PartialEq,
-    Debug,
-    Clone,
-    Copy,
-    num_derive::FromPrimitive,
-    num_derive::ToPrimitive,
-    strum::EnumString,
-    strum::IntoStaticStr,
-)]
-#[strum(serialize_all = "snake_case")]
-pub enum ViewPeriod {
-    Week,
-    Month,
-    Quarter,
-    Year,
-    All,
-}
-
-impl Default for ViewPeriod {
-    fn default() -> Self {
-        Self::Week
-    }
-}
-
 mod imp {
     use crate::{
         core::{Database, Settings},
@@ -134,34 +107,11 @@ impl ModelActivity {
     ///
     /// # Returns start date of viewing period (None for ViewPeriod::All)
     /// Returns an error if querying the DB fails.
-    pub async fn reload(&self, choice: ViewPeriod) -> Result<Option<chrono::Date<chrono::Local>>> {
+    pub async fn reload(&self) -> Result<()> {
         let self_ = self.imp();
         let previous_size = { self_.inner.borrow().vec.len() };
-        let start_date = match choice {
-            ViewPeriod::Week => Some(
-                chrono::Local::now().date()
-                    - Duration::days(i64::from(
-                        chrono::Local::now().weekday().num_days_from_monday(),
-                    )),
-            ),
-            ViewPeriod::Month => Some(chrono::Local.ymd(
-                chrono::Local::now().year(),
-                chrono::Local::now().month(),
-                1,
-            )),
-            ViewPeriod::Quarter => Some(chrono::Local.ymd(
-                chrono::Local::now().year(),
-                ((chrono::Local::now().month() - 1) / 3) * 3 + 1,
-                1,
-            )),
-            ViewPeriod::Year => Some(chrono::Local.ymd(chrono::Local::now().year(), 1, 1)),
-            ViewPeriod::All => None,
-        };
 
-        let new_vec = self_
-            .database
-            .activities(start_date.map(|x| x.and_hms_milli(0, 0, 0, 0).into()))
-            .await?;
+        let new_vec = self_.database.activities(None).await?;
         {
             self_.inner.borrow_mut().vec = new_vec;
         }
@@ -170,7 +120,7 @@ impl ModelActivity {
             previous_size.try_into().unwrap(),
             self_.inner.borrow().vec.len().try_into().unwrap(),
         );
-        Ok(start_date)
+        Ok(())
     }
 
     pub async fn activity_present(&self) -> bool {

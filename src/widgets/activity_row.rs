@@ -79,7 +79,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for ActivityRow {
         const NAME: &'static str = "HealthActivityRow";
-        type ParentType = gtk::ListBoxRow;
+        type ParentType = gtk::Box;
         type Type = super::ActivityRow;
 
         fn class_init(klass: &mut Self::Class) {
@@ -104,13 +104,13 @@ mod imp {
     }
 
     impl WidgetImpl for ActivityRow {}
-    impl ListBoxRowImpl for ActivityRow {}
+    impl BoxImpl for ActivityRow {}
 }
 
 glib::wrapper! {
     /// An implementation of [gtk::ListBox] that displays infos about an [Activity].
     pub struct ActivityRow(ObjectSubclass<imp::ActivityRow>)
-        @extends gtk::Widget, gtk::ListBoxRow,
+        @extends gtk::Widget, gtk::Box,
         @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 

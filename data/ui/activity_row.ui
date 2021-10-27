@@ -20,109 +20,102 @@
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="HealthActivityRow" parent="GtkListBoxRow">
+  <template class="HealthActivityRow" parent="GtkBox">
     <property name="height_request">60</property>
-    <style>
-      <class name="row"/>
-    </style>
+    <property name="orientation">vertical</property>
     <child>
       <object class="GtkBox">
-        <property name="orientation">vertical</property>
+        <property name="margin-start">6</property>
+        <property name="margin-end">6</property>
+        <property name="margin-top">6</property>
+        <property name="margin-bottom">6</property>
+        <property name="valign">center</property>
+        <property name="vexpand">1</property>
+        <property name="homogeneous">1</property>
         <child>
-          <object class="GtkBox">
+          <object class="GtkLabel" id="activity_type_label">
+            <property name="halign">start</property>
+            <property name="hexpand">1</property>
             <property name="margin-start">6</property>
-            <property name="margin-end">6</property>
             <property name="margin-top">6</property>
             <property name="margin-bottom">6</property>
-            <property name="valign">center</property>
-            <property name="vexpand">1</property>
-            <property name="homogeneous">1</property>
-            <child>
-              <object class="GtkLabel" id="activity_type_label">
-                <property name="halign">start</property>
-                <property name="hexpand">1</property>
-                <property name="margin-start">6</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="active_minutes_label">
-                <property name="halign">center</property>
-                <property name="hexpand">1</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkLabel" id="activity_date_label">
-                <property name="halign">end</property>
-                <property name="hexpand">1</property>
-                <property name="margin-end">6</property>
-                <property name="margin-top">6</property>
-                <property name="margin-bottom">6</property>
-              </object>
-            </child>
           </object>
         </child>
         <child>
-          <object class="GtkRevealer" id="details_revealer">
+          <object class="GtkLabel" id="active_minutes_label">
+            <property name="halign">center</property>
+            <property name="hexpand">1</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="activity_date_label">
+            <property name="halign">end</property>
+            <property name="hexpand">1</property>
+            <property name="margin-end">6</property>
+            <property name="margin-top">6</property>
+            <property name="margin-bottom">6</property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkRevealer" id="details_revealer">
+        <child>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
             <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
+              <object class="AdwActionRow" id="calories_burned_row">
+                <property name="title" translatable="yes">Calories Burned</property>
+                <property name="visible">0</property>
                 <child>
-                  <object class="AdwActionRow" id="calories_burned_row">
-                    <property name="title" translatable="yes">Calories Burned</property>
-                    <property name="visible">0</property>
-                    <child>
-                      <object class="GtkLabel" id="calories_burned_label"/>
-                    </child>
-                  </object>
+                  <object class="GtkLabel" id="calories_burned_label"/>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow" id="distance_row">
+                <property name="title" translatable="yes">Distance in Meters</property>
+                <property name="visible">0</property>
                 <child>
-                  <object class="AdwActionRow" id="distance_row">
-                    <property name="title" translatable="yes">Distance in Meters</property>
-                    <property name="visible">0</property>
-                    <child>
-                      <object class="GtkLabel" id="distance_label"/>
-                    </child>
-                  </object>
+                  <object class="GtkLabel" id="distance_label"/>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow" id="steps_row">
+                <property name="title" translatable="yes">Steps</property>
+                <property name="visible">0</property>
                 <child>
-                  <object class="AdwActionRow" id="steps_row">
-                    <property name="title" translatable="yes">Steps</property>
-                    <property name="visible">0</property>
-                    <child>
-                      <object class="GtkLabel" id="steps_label"/>
-                    </child>
-                  </object>
+                  <object class="GtkLabel" id="steps_label"/>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow" id="heart_rate_average_row">
+                <property name="title" translatable="yes">Average Heart Rate</property>
+                <property name="visible">0</property>
                 <child>
-                  <object class="AdwActionRow" id="heart_rate_average_row">
-                    <property name="title" translatable="yes">Average Heart Rate</property>
-                    <property name="visible">0</property>
-                    <child>
-                      <object class="GtkLabel" id="heart_rate_average_label"/>
-                    </child>
-                  </object>
+                  <object class="GtkLabel" id="heart_rate_average_label"/>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow" id="heart_rate_minimum_row">
+                <property name="title" translatable="yes">Minimum Heart Rate</property>
+                <property name="visible">0</property>
                 <child>
-                  <object class="AdwActionRow" id="heart_rate_minimum_row">
-                    <property name="title" translatable="yes">Minimum Heart Rate</property>
-                    <property name="visible">0</property>
-                    <child>
-                      <object class="GtkLabel" id="heart_rate_minimum_label"/>
-                    </child>
-                  </object>
+                  <object class="GtkLabel" id="heart_rate_minimum_label"/>
                 </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwActionRow" id="heart_rate_maximum_row">
+                <property name="title" translatable="yes">Maximum Heart Rate</property>
+                <property name="visible">0</property>
                 <child>
-                  <object class="AdwActionRow" id="heart_rate_maximum_row">
-                    <property name="title" translatable="yes">Maximum Heart Rate</property>
-                    <property name="visible">0</property>
-                    <child>
-                      <object class="GtkLabel" id="heart_rate_maximum_label"/>
-                    </child>
-                  </object>
+                  <object class="GtkLabel" id="heart_rate_maximum_label"/>
                 </child>
               </object>
             </child>

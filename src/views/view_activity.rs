@@ -16,23 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{
-    core::{date::prelude::DateExt, i18n_f, Database},
-    model::ViewPeriod,
-    views::View,
-};
-use gtk::{
-    gio,
-    glib::{self, clone, subclass::prelude::*, Cast},
-    prelude::*,
-};
-use gtk_macros::stateful_action;
-use std::str::FromStr;
-
+use crate::{core::Database, views::View};
+use gtk::glib::{self, subclass::prelude::*, Cast};
 mod imp {
     use crate::{
         core::Settings,
-        model::{Activity, ModelActivity, ViewPeriod},
+        model::{Activity, ModelActivity},
         views::{PinnedResultFuture, View, ViewImpl},
         widgets::ActivityRow,
     };
@@ -43,34 +32,18 @@ mod imp {
         subclass::prelude::*,
         CompositeTemplate,
     };
-
-    #[derive(Debug, Default)]
-    pub struct ViewActivityMut {
-        pub period: ViewPeriod,
-    }
+    use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_view.ui")]
     pub struct ViewActivity {
-        pub inner: std::cell::RefCell<ViewActivityMut>,
         settings: Settings,
         pub activity_model: ModelActivity,
+        pub activities_list_view: OnceCell<gtk::ListView>,
         #[template_child]
-        pub activities_list_box: TemplateChild<gtk::ListBox>,
+        pub clamp: TemplateChild<adw::Clamp>,
         #[template_child]
         pub stack_activity: TemplateChild<gtk::Stack>,
-        #[template_child]
-        pub toggle_week: TemplateChild<gtk::ToggleButton>,
-        #[template_child]
-        pub toggle_month: TemplateChild<gtk::ToggleButton>,
-        #[template_child]
-        pub toggle_quarter: TemplateChild<gtk::ToggleButton>,
-        #[template_child]
-        pub toggle_year: TemplateChild<gtk::ToggleButton>,
-        #[template_child]
-        pub toggle_all: TemplateChild<gtk::ToggleButton>,
-        #[template_child]
-        pub since_date: TemplateChild<gtk::Label>,
     }
 
     #[glib::object_subclass]
@@ -97,13 +70,24 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            self.activities_list_box
-                .bind_model(Some(&self.activity_model), |o| {
-                    let row = ActivityRow::new();
-                    row.set_activity(o.clone().downcast::<Activity>().unwrap());
-                    row.upcast()
-                });
-            obj.setup_actions();
+            let factory = gtk::SignalListItemFactory::new();
+            factory.connect_setup(move |_, item| item.set_child(Some(&ActivityRow::new())));
+            factory.connect_bind(move |_, list_item| {
+                let activity = list_item.item().unwrap().downcast::<Activity>().unwrap();
+
+                let child = list_item
+                    .child()
+                    .unwrap()
+                    .downcast::<ActivityRow>()
+                    .unwrap();
+                child.set_activity(activity);
+            });
+            let selection_model = gtk::NoSelection::new(Some(&self.activity_model));
+            let list_view = gtk::ListView::new(Some(&selection_model), Some(&factory));
+            self.clamp
+                .set_child(Some(list_view.upcast_ref::<gtk::Widget>()));
+            list_view.style_context().add_class("content");
+            self.activities_list_view.set(list_view).unwrap();
         }
     }
 
@@ -146,45 +130,17 @@ impl ViewActivity {
         o
     }
 
-    pub fn set_view_period(&self, view_period: ViewPeriod) {
-        let downgraded = self.downgrade();
-        gtk_macros::spawn!(async move {
-            if let Some(obj) = downgraded.upgrade() {
-                obj.imp().inner.borrow_mut().period = view_period;
-                obj.update().await;
-                obj.imp().toggle_week.set_active(false);
-                obj.imp().toggle_month.set_active(false);
-                obj.imp().toggle_quarter.set_active(false);
-                obj.imp().toggle_year.set_active(false);
-                obj.imp().toggle_all.set_active(false);
-                match obj.imp().inner.borrow().period {
-                    ViewPeriod::Week => obj.imp().toggle_week.set_active(true),
-                    ViewPeriod::Month => obj.imp().toggle_month.set_active(true),
-                    ViewPeriod::Quarter => obj.imp().toggle_quarter.set_active(true),
-                    ViewPeriod::Year => obj.imp().toggle_year.set_active(true),
-                    ViewPeriod::All => obj.imp().toggle_all.set_active(true),
-                }
-            }
-        });
-    }
-
     /// Reload the [ModelActivity](crate::model::ModelActivity)'s data and refresh the list of activities
     pub async fn update(&self) {
         let activity_model = &self.imp().activity_model;
-        let new_period = self.imp().inner.borrow().period;
-        let reload_result = activity_model.reload(new_period).await;
+        let reload_result = activity_model.reload().await;
         if let Err(e) = reload_result {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
                 "Failed to reload activity data: {}",
                 e
             );
-        } else if let Ok(Some(date)) = reload_result {
-            self.imp().since_date.set_label(&i18n_f(
-                "No activities on or after {}",
-                &[&date.format_local()],
-            ));
-        }
+        };
 
         if activity_model.activity_present().await {
             self.upcast_ref::<View>()
@@ -200,33 +156,7 @@ impl ViewActivity {
         }
     }
 
-    fn handle_view_period(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
-        let parameter = parameter.unwrap();
-
-        self.set_view_period(
-            ViewPeriod::from_str(parameter.get::<String>().unwrap().as_str()).unwrap(),
-        );
-
-        action.set_state(parameter);
-    }
-
     fn imp(&self) -> &imp::ViewActivity {
         imp::ViewActivity::from_instance(self)
-    }
-
-    fn setup_actions(&self) {
-        let action_group = gio::SimpleActionGroup::new();
-
-        stateful_action!(
-            action_group,
-            "view_period",
-            Some(&String::static_variant_type()),
-            "week",
-            clone!(@weak self as obj => move |a, p| {
-                obj.handle_view_period(a, p);
-            })
-        );
-
-        self.insert_action_group("view_activity", Some(&action_group));
     }
 }
