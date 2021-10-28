@@ -258,10 +258,15 @@ impl ViewHomePage {
             step_count,
             &[&step_count.to_string()],
         ));
-        self_.steps_percentage.set_label(&i18n_f(
-            "{}%",
-            &[&(100 * step_count / self_.settings.user_step_goal() as u32).to_string()],
-        ));
+        let step_goal = self_.settings.user_step_goal();
+        if step_goal == 0 {
+            self_.steps_percentage.set_label(&i18n("No step goal set"));
+        } else {
+            self_.steps_percentage.set_label(&i18n_f(
+                "{}%",
+                &[&(100 * step_count / step_goal).to_string()],
+            ));
+        }
     }
 
     // TRANSLATORS notes have to be on the same line, so we cant split them

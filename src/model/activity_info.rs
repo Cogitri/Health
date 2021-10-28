@@ -91,7 +91,7 @@ impl From<ActivityType> for ActivityInfo {
                     | ActivityDataPoints::DISTANCE,
                 10,
                 i18n("Bicycling"),
-                rgb(46, 194, 126),
+                rgb(246, 211, 45),
             ),
             ActivityType::Boxing => Self::new(
                 ActivityType::Boxing,
@@ -310,6 +310,67 @@ impl ActivityInfo {
             average_calories_burned_per_minute,
             name,
             color,
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    fn get_all_activity_infos() -> Vec<ActivityInfo> {
+        let mut v = Vec::with_capacity(20);
+        for t in [
+            ActivityType::Basketball,
+            ActivityType::Bicycling,
+            ActivityType::Boxing,
+            ActivityType::Dancing,
+            ActivityType::Football,
+            ActivityType::Golf,
+            ActivityType::Hiking,
+            ActivityType::Hockey,
+            ActivityType::HorseRiding,
+            ActivityType::OtherSports,
+            ActivityType::Rollerblading,
+            ActivityType::Running,
+            ActivityType::Skiing,
+            ActivityType::Soccer,
+            ActivityType::Softball,
+            ActivityType::Swimming,
+            ActivityType::Tennis,
+            ActivityType::TrackAndField,
+            ActivityType::Volleyball,
+            ActivityType::Walking,
+        ] {
+            v.push(ActivityInfo::from(t));
+        }
+
+        v
+    }
+
+    #[test]
+    fn non_zero_calories_burned() {
+        for info in get_all_activity_infos() {
+            assert_ne!(
+                info.average_calories_burned_per_minute, 0,
+                "Average calories burned must not be 0 to avoid division by zero!"
+            );
+        }
+    }
+
+    #[test]
+    fn no_same_color() {
+        let all_infos = get_all_activity_infos();
+        for info in &all_infos {
+            for secondary in &all_infos {
+                if info.activity_type != secondary.activity_type {
+                    assert_ne!(
+                        info.color, secondary.color,
+                        "Found duplicate color: {:?} and {:?}",
+                        info, secondary
+                    )
+                }
+            }
         }
     }
 }

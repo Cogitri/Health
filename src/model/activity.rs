@@ -359,7 +359,7 @@ impl<'de> serde::Deserialize<'de> for Activity {
 
 #[cfg(test)]
 mod test {
-    use super::Activity;
+    use super::*;
     use chrono::{DateTime, Duration};
     use serde_test::{assert_ser_tokens, Token};
     use uom::si::{f32::Length, length::kilometer};
@@ -436,5 +436,18 @@ mod test {
         assert_eq!(a.distance(), Some(Length::new::<kilometer>(1.8)));
         assert_eq!(a.steps(), Some(2000));
         assert_eq!(a.duration(), Duration::minutes(20));
+    }
+
+    #[test]
+    fn non_zero() {
+        assert_ne!(BICYCLING_METERS_PER_MINUTE, 0);
+        assert_ne!(HORSE_RIDING_METERS_PER_MINUTE, 0);
+        assert_ne!(ROLLER_BLADING_METERS_PER_MINUTE, 0);
+        assert_ne!(RUNNING_METERS_PER_MINUTE, 0);
+        assert_ne!(SKIING_METERS_PER_MINUTE, 0);
+        assert_ne!(SWIMMING_METERS_PER_MINUTE, 0);
+        assert_ne!(WALKING_METERS_PER_MINUTE, 0);
+        assert_ne!(WALKING_STEPS_PER_MINUTE, 0);
+        assert_ne!(RUNNING_STEPS_PER_MINUTE, 0);
     }
 }

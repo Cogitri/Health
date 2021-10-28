@@ -191,9 +191,11 @@ impl ViewWeight {
 
     fn bmi(&self, model: &GraphModelWeight) -> String {
         if let Some(last_weight) = model.last_weight() {
-            let height = self.imp().settings.user_height().get::<meter>() as f32;
-            let bmi =
-                (last_weight.get::<kilogram>() as f32 / (height * height)).round_decimal_places(1);
+            let height = self.imp().settings.user_height().get::<meter>();
+            if height == 0.0 || last_weight.get::<kilogram>() == 0.0 {
+                return i18n("Unknown BMI");
+            }
+            let bmi = (last_weight.get::<kilogram>() / (height * height)).round_decimal_places(1);
             format!("{bmi:.1}", bmi = bmi)
         } else {
             i18n("Unknown BMI")

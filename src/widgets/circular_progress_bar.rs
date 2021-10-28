@@ -84,16 +84,19 @@ mod imp {
             cr.stroke().expect("Couldn't stroke on Cairo Context");
             let shaded = style_context.lookup_color("blue").unwrap();
             GdkCairoContextExt::set_source_rgba(&cr, &shaded);
-            cr.arc(
-                width / 2.0,
-                height / 2.0,
-                radius,
-                -0.5 * PI,
-                ((self.inner.borrow().step_count as f64) / self.inner.borrow().step_goal as f64)
-                    * 2.0
-                    * PI
-                    - 0.5 * PI,
-            );
+            if self.inner.borrow().step_goal != 0 {
+                cr.arc(
+                    width / 2.0,
+                    height / 2.0,
+                    radius,
+                    -0.5 * PI,
+                    ((self.inner.borrow().step_count as f64)
+                        / self.inner.borrow().step_goal as f64)
+                        * 2.0
+                        * PI
+                        - 0.5 * PI,
+                );
+            }
             cr.stroke().expect("Couldn't stroke on Cairo Context");
             cr.save().unwrap();
         }
