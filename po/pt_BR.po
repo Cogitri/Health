@@ -2,14 +2,14 @@
 # Copyright (C) 2021 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2021.
-#
+# Enrico Nicoletto <liverig@gmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-09-03 11:35+0000\n"
-"PO-Revision-Date: 2021-09-03 21:25-0300\n"
-"Last-Translator: Antonio Fernandes C. Neto <fernandesn@gnome.org>\n"
+"POT-Creation-Date: 2021-10-28 12:06+0000\n"
+"PO-Revision-Date: 2021-10-28 15:11-0300\n"
+"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -187,7 +187,7 @@ msgstr ""
 "visualizar quantos passos você deu diariamente, seu desenvolvimento de peso "
 "ao longo do tempo e suas atividades diárias."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:31
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:34
 msgid "Rasmus “Cogitri” Thomsen"
 msgstr "Rasmus “Cogitri” Thomsen"
 
@@ -203,7 +203,7 @@ msgstr "Data"
 msgid "Activity Type"
 msgstr "Tipo de atividade"
 
-#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:75
+#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:70
 msgid "Calories Burned"
 msgstr "Calorias queimadas"
 
@@ -211,15 +211,15 @@ msgstr "Calorias queimadas"
 msgid "Active Minutes"
 msgstr "Minutos em atividade"
 
-#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:102
+#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:97
 msgid "Average Heart Rate"
 msgstr "Frequência cardíaca média"
 
-#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:111
+#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:106
 msgid "Minimum Heart Rate"
 msgstr "Frequência cardíaca mínima"
 
-#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:120
+#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:115
 msgid "Maximum Heart Rate"
 msgstr "Frequência cardíaca máxima"
 
@@ -227,11 +227,11 @@ msgstr "Frequência cardíaca máxima"
 msgid "Stepcount"
 msgstr "Contagem de passos"
 
-#: data/ui/activity_row.ui:84
+#: data/ui/activity_row.ui:79
 msgid "Distance in Meters"
 msgstr "Distância em metros"
 
-#: data/ui/activity_row.ui:93 data/ui/home_page.ui:69 data/ui/step_view.ui:26
+#: data/ui/activity_row.ui:88 data/ui/home_page.ui:69 data/ui/step_view.ui:26
 #: data/ui/step_view.ui:27
 msgid "Steps"
 msgstr "Passos"
@@ -270,51 +270,51 @@ msgstr "_Salvar"
 
 #: data/ui/date_editor.ui:29
 msgid "January"
-msgstr "janeiro"
+msgstr "Janeiro"
 
 #: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:244
 msgid "February"
-msgstr "fevereiro"
+msgstr "Fevereiro"
 
 #: data/ui/date_editor.ui:31
 msgid "March"
-msgstr "março"
+msgstr "Março"
 
 #: data/ui/date_editor.ui:32
 msgid "April"
-msgstr "abril"
+msgstr "Abril"
 
 #: data/ui/date_editor.ui:33
 msgid "May"
-msgstr "maio"
+msgstr "Maio"
 
 #: data/ui/date_editor.ui:34
 msgid "June"
-msgstr "junho"
+msgstr "Junho"
 
 #: data/ui/date_editor.ui:35
 msgid "July"
-msgstr "julho"
+msgstr "Julho"
 
 #: data/ui/date_editor.ui:36
 msgid "August"
-msgstr "agosto"
+msgstr "Agosto"
 
 #: data/ui/date_editor.ui:37
 msgid "September"
-msgstr "setembro"
+msgstr "Setembro"
 
 #: data/ui/date_editor.ui:38
 msgid "October"
-msgstr "outubro"
+msgstr "Outubro"
 
 #: data/ui/date_editor.ui:39
 msgid "November"
-msgstr "novembro"
+msgstr "Novembro"
 
 #: data/ui/date_editor.ui:40
 msgid "December"
-msgstr "dezembro"
+msgstr "Dezembro"
 
 #: data/ui/date_editor.ui:51
 msgid "Day"
@@ -561,7 +561,9 @@ msgstr "_Sobre o Saúde"
 
 #: src/core/application.rs:140
 msgid "translator-credits"
-msgstr "Rafael Fontenelle <rafaelff@gnome.org>"
+msgstr ""
+"Rafael Fontenelle <rafaelff@gnome.org>\n"
+"Enrico Nicoletto <liverig@gmail.com>"
 
 #: src/core/application.rs:142
 msgid "Websites"
@@ -571,83 +573,83 @@ msgstr "Sites"
 msgid "Health Daemon"
 msgstr "Daemon do Saúde"
 
-#: src/model/activity_info.rs:74
+#: src/model/activity_info.rs:83
 msgid "Basketball"
 msgstr "Basquete"
 
-#: src/model/activity_info.rs:89
+#: src/model/activity_info.rs:93
 msgid "Bicycling"
 msgstr "Ciclismo"
 
-#: src/model/activity_info.rs:103
+#: src/model/activity_info.rs:102
 msgid "Boxing"
 msgstr "Boxe"
 
-#: src/model/activity_info.rs:117
+#: src/model/activity_info.rs:111
 msgid "Dancing"
 msgstr "Dança"
 
-#: src/model/activity_info.rs:131
+#: src/model/activity_info.rs:120
 msgid "Football"
 msgstr "Futebol americano"
 
-#: src/model/activity_info.rs:143
+#: src/model/activity_info.rs:127
 msgid "Golf"
 msgstr "Golfe"
 
-#: src/model/activity_info.rs:159
+#: src/model/activity_info.rs:138
 msgid "Hiking"
 msgstr "Trilha"
 
-#: src/model/activity_info.rs:173
+#: src/model/activity_info.rs:147
 msgid "Hockey"
 msgstr "Hockey"
 
-#: src/model/activity_info.rs:188
+#: src/model/activity_info.rs:157
 msgid "Horse Riding"
 msgstr "Hipismo"
 
-#: src/model/activity_info.rs:202
+#: src/model/activity_info.rs:166
 msgid "Other Sports"
 msgstr "Outros esportes"
 
-#: src/model/activity_info.rs:217
+#: src/model/activity_info.rs:176
 msgid "Rollerblading"
 msgstr "Patins"
 
-#: src/model/activity_info.rs:233
+#: src/model/activity_info.rs:187
 msgid "Running"
 msgstr "Corrida"
 
-#: src/model/activity_info.rs:248
+#: src/model/activity_info.rs:197
 msgid "Skiing"
 msgstr "Esqui"
 
-#: src/model/activity_info.rs:262
+#: src/model/activity_info.rs:206
 msgid "Soccer"
 msgstr "Futebol"
 
-#: src/model/activity_info.rs:276
+#: src/model/activity_info.rs:215
 msgid "Softball"
 msgstr "Softbol"
 
-#: src/model/activity_info.rs:291
+#: src/model/activity_info.rs:225
 msgid "Swimming"
 msgstr "Natação"
 
-#: src/model/activity_info.rs:305
+#: src/model/activity_info.rs:234
 msgid "Tennis"
 msgstr "Tênis"
 
-#: src/model/activity_info.rs:319
+#: src/model/activity_info.rs:243
 msgid "Track And Field"
 msgstr "Atletismo"
 
-#: src/model/activity_info.rs:335
+#: src/model/activity_info.rs:254
 msgid "Volleyball"
 msgstr "Vôlei"
 
-#: src/model/activity_info.rs:351
+#: src/model/activity_info.rs:265
 msgid "Walking"
 msgstr "Caminhada"
 
@@ -732,19 +734,15 @@ msgstr "Autenticado com sucesso, volte para o Saúde."
 msgid "Couldn't parse OAuth2 response"
 msgstr "Não foi possível analisar a resposta OAuth2"
 
-#: src/views/bar_graph_view.rs:510
+#: src/views/bar_graph_view.rs:518
 msgid "Enter weight record to calculate idle calories"
 msgstr "Insira o registro de peso para calcular as calorias em repouso"
 
-#: src/views/bar_graph_view.rs:514
+#: src/views/bar_graph_view.rs:522
 msgid "Idle calories"
 msgstr "Calorias em repouso"
 
-#: src/views/view_activity.rs:184
-msgid "No activities on or after {}"
-msgstr "Nenhuma atividade em ou após {}"
-
-#: src/views/view_calories.rs:169
+#: src/views/view_calories.rs:175
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -768,13 +766,17 @@ msgid_plural "{} steps taken today"
 msgstr[0] "{} passo dado hoje"
 msgstr[1] "{} passos dados hoje"
 
-#: src/views/view_home_page.rs:262
+#: src/views/view_home_page.rs:263
+msgid "No step goal set"
+msgstr "Nenhuma meta de passos definida"
+
+#: src/views/view_home_page.rs:266
 msgid "{}%"
 msgstr "{}%"
 
 #. TRANSLATORS: Current user weight
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:297 src/views/view_home_page.rs:331
+#: src/views/view_home_page.rs:302 src/views/view_home_page.rs:336
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} libra"
@@ -782,37 +784,37 @@ msgstr[1] "{} libras"
 
 #. TRANSLATORS: Current user weight
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:304 src/views/view_home_page.rs:338
+#: src/views/view_home_page.rs:309 src/views/view_home_page.rs:343
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} quilograma"
 msgstr[1] "{} quilogramas"
 
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:314
+#: src/views/view_home_page.rs:319
 msgid "+ {} pound"
 msgid_plural "+ {} pounds"
 msgstr[0] "+ {} libra"
 msgstr[1] "+ {} libras"
 
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:321
+#: src/views/view_home_page.rs:326
 msgid "+ {} kilogram"
 msgid_plural "+ {} kilograms"
 msgstr[0] "+ {} quilograma"
 msgstr[1] "+ {} quilogramas"
 
-#: src/views/view_home_page.rs:346
+#: src/views/view_home_page.rs:351
 msgid "No change in weight"
 msgstr "Sem mudança de peso"
 
-#: src/views/view_home_page.rs:351
+#: src/views/view_home_page.rs:356
 msgid "compared to previous weight"
 msgstr "comparado com o peso anterior"
 
-#: src/views/view_home_page.rs:355
+#: src/views/view_home_page.rs:360
 msgid "use + to add a weight record"
-msgstr "use +  para adicionar um registro de peso"
+msgstr "use + para adicionar um registro de peso"
 
 #: src/views/view_steps.rs:140
 msgid "Today's steps: {}"
@@ -871,11 +873,11 @@ msgid_plural "{} kilograms on {}"
 msgstr[0] "{} quilograma em {}"
 msgstr[1] "{} quilogramas em {}"
 
-#: src/views/view_weight.rs:199
+#: src/views/view_weight.rs:196 src/views/view_weight.rs:201
 msgid "Unknown BMI"
 msgstr "IMC desconhecido"
 
-#: src/views/view_weight.rs:223
+#: src/views/view_weight.rs:225
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -889,7 +891,7 @@ msgstr[1] ""
 "Sua meta de peso é de {} libras. Adicione uma primeira medida de peso para "
 "ver o quão perto você está de alcançá-la."
 
-#: src/views/view_weight.rs:230
+#: src/views/view_weight.rs:232
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -903,42 +905,42 @@ msgstr[1] ""
 "Sua meta de peso é de {} quilogramas. Adicione uma primeira medida de peso "
 "para ver o quão perto você está de alcançá-la."
 
-#: src/views/view_weight.rs:239
+#: src/views/view_weight.rs:241
 msgid "You've reached your weight goal. Great job!"
 msgstr "Você atingiu sua meta de peso. Bom trabalho!"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/views/view_weight.rs:255
+#: src/views/view_weight.rs:257
 msgid "Your weight goal is {} pound,"
 msgid_plural "Your weight goal is {} pounds,"
 msgstr[0] "Sua meta de peso é de {} libra,"
 msgstr[1] "Sua meta de peso é de {} libras,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:261
+#: src/views/view_weight.rs:263
 msgid "you have {} pound left to reach it"
 msgid_plural "you have {} pounds left to reach it"
 msgstr[0] "faltando {} libra para alcançá-la"
 msgstr[1] "faltando {} libras para alcançá-la"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/views/view_weight.rs:268
+#: src/views/view_weight.rs:270
 msgid "Your weight goal is {} kilogram,"
 msgid_plural "Your weight goal is {} kilograms,"
 msgstr[0] "Sua meta de peso é de {} quilograma,"
 msgstr[1] "Sua meta de peso é de {} quilogramas,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:274
+#: src/views/view_weight.rs:276
 msgid "you have {} kilogram left to reach it"
 msgid_plural "you have {} kilograms left to reach it"
 msgstr[0] "faltando {} quilograma para alcançá-la"
 msgstr[1] "faltando {} quilogramas para alcançá-la"
 
-#: src/views/view_weight.rs:283
+#: src/views/view_weight.rs:285
 msgid "No weight goal set yet. You can set it in Health's preferences."
 msgstr ""
-"Nenhuma meta de peso definida ainda. Você pode configurá-lo nas preferências "
+"Nenhuma meta de peso definida ainda. Você pode configurá-la nas preferências "
 "do Saúde."
 
 #: src/widgets/activity_row.rs:131
@@ -974,42 +976,42 @@ msgid "Feet"
 msgstr "Pés"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:466 src/widgets/unit_spinbutton.rs:629
+#: src/widgets/unit_spinbutton.rs:480 src/widgets/unit_spinbutton.rs:643
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:468
+#: src/widgets/unit_spinbutton.rs:482
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:470
+#: src/widgets/unit_spinbutton.rs:484
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:472
+#: src/widgets/unit_spinbutton.rs:486
 msgid "kg"
 msgstr "kg"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:474 src/widgets/unit_spinbutton.rs:631
+#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:645
 msgid "in"
 msgstr "pol"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:476
+#: src/widgets/unit_spinbutton.rs:490
 msgid "ft"
 msgstr "ft"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:478
+#: src/widgets/unit_spinbutton.rs:492
 msgid "mi"
 msgstr "mi"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:480
+#: src/widgets/unit_spinbutton.rs:494
 msgid "lb"
 msgstr "lb"
 
@@ -1095,30 +1097,7 @@ msgstr "Lembrar de suas metas de passos"
 msgid "Failed to migrate database to new version due to error {}"
 msgstr "Falha ao migrar o banco de dados para a nova versão devido ao erro {}"
 
-#: src/windows/window.rs:365
+#: src/windows/window.rs:347
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr ""
-"Não foi possível sincronizar os dados do Google Fit devido a um erro: {}u"
-
-#~ msgid "Stepgoal"
-#~ msgstr "Meta de passos"
-
-#~ msgid "Height in centimeters"
-#~ msgstr "Altura em centímetros"
-
-#~ msgid "Yards"
-#~ msgstr "Jardas"
-
-#~| msgid "Weightgoal in KG"
-#~ msgid "Weight goal in KG"
-#~ msgstr "Meta de peso em KG"
-
-#~ msgid "Height in inch"
-#~ msgstr "Altura em polegadas"
-
-#~| msgid "Weightgoal in pounds"
-#~ msgid "Weight goal in pounds"
-#~ msgstr "Meta de peso em libras"
-
-#~ msgid "{} pounds left to reach your weightgoal of {} pounds"
-#~ msgstr "{} libras restantes para atingir sua meta de peso de {} libras"
+"Não foi possível sincronizar os dados do Google Fit devido a um erro: {}"
