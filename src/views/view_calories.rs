@@ -118,6 +118,12 @@ impl ViewCalories {
             });
         }));
 
+        Database::instance().connect_weights_updated(glib::clone!(@weak o => move || {
+            gtk_macros::spawn!(async move {
+                o.update().await;
+            });
+        }));
+
         o
     }
 
