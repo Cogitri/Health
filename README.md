@@ -12,7 +12,7 @@ A health tracking app for the GNOME desktop.
 
 ### With GNOME Builder
 
-Open GNOME Builder, click on `Clone Repository...` and enter the repository URL. Afterwards click on `Clone Project` and you should be all setup. Pressing `F5` or pressing the build button in the topbar should build Health for you.<>
+Open GNOME Builder, click on `Clone Repository...` and enter the repository URL. Afterwards, click on `Clone Project` and you should be all set up. Pressing `F5` or pressing the build button in the top bar should build Health for you.<>
 
 ### Building in Flatpak
 
@@ -24,13 +24,13 @@ flatpak-builder --user --install --force-clean app dev.Cogitri.Health.json
 
 You can also pass `--system` instead of `--user` to flatpak-builder to install Health system-wide instead of only for your user. However, that requires root permissions.
 
-Afterwards you can run it with:
+Afterwards, you can run it with:
 
 ```sh
 flatpak run dev.Cogitri.Health
 ```
 
-For development purposes you can also run Health directly via flatpak-builder to avoid time cost of packing the flatpak and then installing it like so:
+For development purposes you can also run Health directly via flatpak-builder to avoid the time cost of packing the flatpak and then installing it like so:
 
 ```sh
 flatpak-builder --user --force-clean app dev.Cogitri.Health.json
@@ -56,16 +56,16 @@ ninja -C build run
 
 ## Using CI Snapshots
 
-It's possible to use the flatpak bundles that are built in merge requests and branches of the Health repository. This allows for quick testing of changes without having to build Health yourself.
+It's possible to use the flatpak bundles that are built-in merge requests and branches of the Health repository. This allows for quick testing of changes without having to build Health yourself.
 
-To download the flatpak bundle of a merge requests, go to the merge request, click on "View exposed artifact" and afterwards on "Get Flatpak bundle here":
+To download the flatpak bundle of merge requests, go to the merge request, click on "View exposed artifact" and afterwards on "Get Flatpak bundle here":
 
 ![screenshot](https://gitlab.gnome.org/World/Health/raw/master/docs/ci-mr-flatpak-bundle.png)
 
 After downloading the file, you can install it with:
 
 ```sh
-# The GNOME Nightly Sdk is required for development snapshots of Health
+# The GNOME Nightly SDK is required for development snapshots of Health
 flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
 
 tar xf repo.tar
