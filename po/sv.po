@@ -2,14 +2,15 @@
 # Copyright © 2021 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
 # Anders Jonsson <anders.jonsson@norsjovallen.se>, 2021.
+# Luna Jernberg <droidbittin@gmail.com>, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-09-03 11:35+0000\n"
-"PO-Revision-Date: 2021-09-03 13:41+0200\n"
-"Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"POT-Creation-Date: 2021-10-28 12:35+0000\n"
+"PO-Revision-Date: 2021-10-31 12:40+0100\n"
+"Last-Translator: Luna Jernberg <droidbittin@gmail.com>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
@@ -185,7 +186,7 @@ msgstr ""
 "hur många steg du tagit dagligen, din viktutveckling över tid och dina "
 "dagliga aktiviteter."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:31
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:34
 msgid "Rasmus “Cogitri” Thomsen"
 msgstr "Rasmus ”Cogitri” Thomsen"
 
@@ -201,7 +202,7 @@ msgstr "Datum"
 msgid "Activity Type"
 msgstr "Typ av aktivitet"
 
-#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:75
+#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:70
 msgid "Calories Burned"
 msgstr "Förbrända kalorier"
 
@@ -209,15 +210,15 @@ msgstr "Förbrända kalorier"
 msgid "Active Minutes"
 msgstr "Aktiva minuter"
 
-#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:102
+#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:97
 msgid "Average Heart Rate"
 msgstr "Genomsnittlig hjärtfrekvens"
 
-#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:111
+#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:106
 msgid "Minimum Heart Rate"
 msgstr "Minsta hjärtfrekvens"
 
-#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:120
+#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:115
 msgid "Maximum Heart Rate"
 msgstr "Högsta hjärtfrekvens"
 
@@ -225,11 +226,11 @@ msgstr "Högsta hjärtfrekvens"
 msgid "Stepcount"
 msgstr "Stegantal"
 
-#: data/ui/activity_row.ui:84
+#: data/ui/activity_row.ui:79
 msgid "Distance in Meters"
 msgstr "Avstånd i meter"
 
-#: data/ui/activity_row.ui:93 data/ui/home_page.ui:69 data/ui/step_view.ui:26
+#: data/ui/activity_row.ui:88 data/ui/home_page.ui:69 data/ui/step_view.ui:26
 #: data/ui/step_view.ui:27
 msgid "Steps"
 msgstr "Steg"
@@ -557,6 +558,7 @@ msgstr "_Om Hälsa"
 msgid "translator-credits"
 msgstr ""
 "Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
+"Luna Jernberg <droidbittin@gmail.com>\n"
 "\n"
 "Skicka synpunkter om översättningen till\n"
 "<tp-sv@listor.tp-sv.se>."
@@ -569,83 +571,83 @@ msgstr "Webbplatser"
 msgid "Health Daemon"
 msgstr "Hälsa-demon"
 
-#: src/model/activity_info.rs:74
+#: src/model/activity_info.rs:83
 msgid "Basketball"
 msgstr "Basket"
 
-#: src/model/activity_info.rs:89
+#: src/model/activity_info.rs:93
 msgid "Bicycling"
 msgstr "Cykling"
 
-#: src/model/activity_info.rs:103
+#: src/model/activity_info.rs:102
 msgid "Boxing"
 msgstr "Boxning"
 
-#: src/model/activity_info.rs:117
+#: src/model/activity_info.rs:111
 msgid "Dancing"
 msgstr "Dans"
 
-#: src/model/activity_info.rs:131
+#: src/model/activity_info.rs:120
 msgid "Football"
 msgstr "Amerikansk fotboll"
 
-#: src/model/activity_info.rs:143
+#: src/model/activity_info.rs:127
 msgid "Golf"
 msgstr "Golf"
 
-#: src/model/activity_info.rs:159
+#: src/model/activity_info.rs:138
 msgid "Hiking"
 msgstr "Vandring"
 
-#: src/model/activity_info.rs:173
+#: src/model/activity_info.rs:147
 msgid "Hockey"
 msgstr "Hockey"
 
-#: src/model/activity_info.rs:188
+#: src/model/activity_info.rs:157
 msgid "Horse Riding"
 msgstr "Hästridning"
 
-#: src/model/activity_info.rs:202
+#: src/model/activity_info.rs:166
 msgid "Other Sports"
 msgstr "Andra sporter"
 
-#: src/model/activity_info.rs:217
+#: src/model/activity_info.rs:176
 msgid "Rollerblading"
 msgstr "Rullskridskoåkning"
 
-#: src/model/activity_info.rs:233
+#: src/model/activity_info.rs:187
 msgid "Running"
 msgstr "Löpning"
 
-#: src/model/activity_info.rs:248
+#: src/model/activity_info.rs:197
 msgid "Skiing"
 msgstr "Skidor"
 
-#: src/model/activity_info.rs:262
+#: src/model/activity_info.rs:206
 msgid "Soccer"
 msgstr "Fotboll"
 
-#: src/model/activity_info.rs:276
+#: src/model/activity_info.rs:215
 msgid "Softball"
 msgstr "Softboll"
 
-#: src/model/activity_info.rs:291
+#: src/model/activity_info.rs:225
 msgid "Swimming"
 msgstr "Simning"
 
-#: src/model/activity_info.rs:305
+#: src/model/activity_info.rs:234
 msgid "Tennis"
 msgstr "Tennis"
 
-#: src/model/activity_info.rs:319
+#: src/model/activity_info.rs:243
 msgid "Track And Field"
 msgstr "Friidrott"
 
-#: src/model/activity_info.rs:335
+#: src/model/activity_info.rs:254
 msgid "Volleyball"
 msgstr "Volleyboll"
 
-#: src/model/activity_info.rs:351
+#: src/model/activity_info.rs:265
 msgid "Walking"
 msgstr "Promenad"
 
@@ -727,19 +729,15 @@ msgid "Couldn't parse OAuth2 response"
 msgstr "Kunde inte tolka OAuth2-svar"
 
 # Antagligen https://sv.wikipedia.org/wiki/Basaloms%C3%A4ttning som avses
-#: src/views/bar_graph_view.rs:510
+#: src/views/bar_graph_view.rs:518
 msgid "Enter weight record to calculate idle calories"
 msgstr "Ange vikt för att beräkna kaloriförbränning i vila"
 
-#: src/views/bar_graph_view.rs:514
+#: src/views/bar_graph_view.rs:522
 msgid "Idle calories"
 msgstr "Vilokalorier"
 
-#: src/views/view_activity.rs:184
-msgid "No activities on or after {}"
-msgstr "Inga aktiviteter på eller efter {}"
-
-#: src/views/view_calories.rs:169
+#: src/views/view_calories.rs:175
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -763,13 +761,17 @@ msgid_plural "{} steps taken today"
 msgstr[0] "{} steg taget idag"
 msgstr[1] "{} steg tagna idag"
 
-#: src/views/view_home_page.rs:262
+#: src/views/view_home_page.rs:263
+msgid "No step goal set"
+msgstr "Inget stegmål har ställts in"
+
+#: src/views/view_home_page.rs:266
 msgid "{}%"
 msgstr "{}%"
 
 #. TRANSLATORS: Current user weight
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:297 src/views/view_home_page.rs:331
+#: src/views/view_home_page.rs:302 src/views/view_home_page.rs:336
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} pund"
@@ -777,35 +779,35 @@ msgstr[1] "{} pund"
 
 #. TRANSLATORS: Current user weight
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:304 src/views/view_home_page.rs:338
+#: src/views/view_home_page.rs:309 src/views/view_home_page.rs:343
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} kilogram"
 msgstr[1] "{} kilogram"
 
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:314
+#: src/views/view_home_page.rs:319
 msgid "+ {} pound"
 msgid_plural "+ {} pounds"
 msgstr[0] "+ {} pund"
 msgstr[1] "+ {} pund"
 
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:321
+#: src/views/view_home_page.rs:326
 msgid "+ {} kilogram"
 msgid_plural "+ {} kilograms"
 msgstr[0] "+ {} kilogram"
 msgstr[1] "+ {} kilogram"
 
-#: src/views/view_home_page.rs:346
+#: src/views/view_home_page.rs:351
 msgid "No change in weight"
 msgstr "Ingen viktförändring"
 
-#: src/views/view_home_page.rs:351
+#: src/views/view_home_page.rs:356
 msgid "compared to previous weight"
 msgstr "jämfört med föregående vikt"
 
-#: src/views/view_home_page.rs:355
+#: src/views/view_home_page.rs:360
 msgid "use + to add a weight record"
 msgstr "använd + för att lägga till en viktpost"
 
@@ -864,11 +866,11 @@ msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogram {}"
 msgstr[1] "{} kilogram på {}"
 
-#: src/views/view_weight.rs:199
+#: src/views/view_weight.rs:196 src/views/view_weight.rs:201
 msgid "Unknown BMI"
 msgstr "Okänt BMI"
 
-#: src/views/view_weight.rs:223
+#: src/views/view_weight.rs:225
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -882,7 +884,7 @@ msgstr[1] ""
 "Din målvikt är {} pund. Lägg till en första vikt för att se hur nära du är "
 "att nå den."
 
-#: src/views/view_weight.rs:230
+#: src/views/view_weight.rs:232
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -896,39 +898,39 @@ msgstr[1] ""
 "Din målvikt är {} kilogram. Lägg till en första vikt för att se hur nära du "
 "är att nå den."
 
-#: src/views/view_weight.rs:239
+#: src/views/view_weight.rs:241
 msgid "You've reached your weight goal. Great job!"
 msgstr "Du har nått din målvikt. Bra jobbat!"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/views/view_weight.rs:255
+#: src/views/view_weight.rs:257
 msgid "Your weight goal is {} pound,"
 msgid_plural "Your weight goal is {} pounds,"
 msgstr[0] "Din målvikt är {} pund,"
 msgstr[1] "Din målvikt är {} pund,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:261
+#: src/views/view_weight.rs:263
 msgid "you have {} pound left to reach it"
 msgid_plural "you have {} pounds left to reach it"
 msgstr[0] "du har {} pund kvar för att nå den"
 msgstr[1] "du har {} pund kvar för att nå den"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/views/view_weight.rs:268
+#: src/views/view_weight.rs:270
 msgid "Your weight goal is {} kilogram,"
 msgid_plural "Your weight goal is {} kilograms,"
 msgstr[0] "Din målvikt är {} kilogram,"
 msgstr[1] "Din målvikt är {} kilogram,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:274
+#: src/views/view_weight.rs:276
 msgid "you have {} kilogram left to reach it"
 msgid_plural "you have {} kilograms left to reach it"
 msgstr[0] "du har {} kg kvar för att nå den"
 msgstr[1] "du har {} kg kvar för att nå den"
 
-#: src/views/view_weight.rs:283
+#: src/views/view_weight.rs:285
 msgid "No weight goal set yet. You can set it in Health's preferences."
 msgstr ""
 "Ingen målvikt inställd ännu. Du kan ställa in den i inställningarna för "
@@ -967,42 +969,42 @@ msgid "Feet"
 msgstr "Fot"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:466 src/widgets/unit_spinbutton.rs:629
+#: src/widgets/unit_spinbutton.rs:480 src/widgets/unit_spinbutton.rs:643
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:468
+#: src/widgets/unit_spinbutton.rs:482
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:470
+#: src/widgets/unit_spinbutton.rs:484
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:472
+#: src/widgets/unit_spinbutton.rs:486
 msgid "kg"
 msgstr "kg"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:474 src/widgets/unit_spinbutton.rs:631
+#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:645
 msgid "in"
 msgstr "in"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:476
+#: src/widgets/unit_spinbutton.rs:490
 msgid "ft"
 msgstr "ft"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:478
+#: src/widgets/unit_spinbutton.rs:492
 msgid "mi"
 msgstr "mi"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:480
+#: src/widgets/unit_spinbutton.rs:494
 msgid "lb"
 msgstr "lb"
 
@@ -1090,24 +1092,6 @@ msgid "Failed to migrate database to new version due to error {}"
 msgstr ""
 "Misslyckades med att migrera databas till ny version på grund av fel {}"
 
-#: src/windows/window.rs:365
+#: src/windows/window.rs:347
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr "Kunde inte synkronisera Google Fit-data på grund av fel: {}"
-
-#~ msgid "Stepgoal"
-#~ msgstr "Stegmål"
-
-#~ msgid "Height in centimeters"
-#~ msgstr "Längd i centimeter"
-
-#~ msgid "Yards"
-#~ msgstr "Yard"
-
-#~ msgid "Weight goal in KG"
-#~ msgstr "Målvikt i kg"
-
-#~ msgid "Height in inch"
-#~ msgstr "Längd i tum"
-
-#~ msgid "Weight goal in pounds"
-#~ msgstr "Målvikt i pund"
