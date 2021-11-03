@@ -2,21 +2,22 @@
 # Copyright (C) 2021 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
 # Andika Triwidada <atriwidada@gnome.org>, 2021.
+# Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-09-09 11:53+0000\n"
-"PO-Revision-Date: 2021-09-23 09:14+0700\n"
-"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"POT-Creation-Date: 2021-10-28 12:06+0000\n"
+"PO-Revision-Date: 2021-11-03 16:55+0700\n"
+"Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 
 #: data/dev.Cogitri.Health.desktop.in.in:3
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.ui:45
@@ -190,7 +191,7 @@ msgstr ""
 "perkembangan berat badan Anda dari waktu ke waktu, dan aktivitas sehari-hari "
 "Anda."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:31
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:34
 msgid "Rasmus “Cogitri” Thomsen"
 msgstr "Rasmus “Cogitri” Thomsen"
 
@@ -206,7 +207,7 @@ msgstr "Tanggal"
 msgid "Activity Type"
 msgstr "Tipe Aktivitas"
 
-#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:75
+#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:70
 msgid "Calories Burned"
 msgstr "Kalori Dibakar"
 
@@ -214,15 +215,15 @@ msgstr "Kalori Dibakar"
 msgid "Active Minutes"
 msgstr "Menit Aktif"
 
-#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:102
+#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:97
 msgid "Average Heart Rate"
 msgstr "Detak Jantung Rata-rata"
 
-#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:111
+#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:106
 msgid "Minimum Heart Rate"
 msgstr "Detak Jantung Minimum"
 
-#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:120
+#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:115
 msgid "Maximum Heart Rate"
 msgstr "Detak Jantung Maksimum"
 
@@ -230,11 +231,11 @@ msgstr "Detak Jantung Maksimum"
 msgid "Stepcount"
 msgstr "Cacah langkah"
 
-#: data/ui/activity_row.ui:84
+#: data/ui/activity_row.ui:79
 msgid "Distance in Meters"
 msgstr "Jarak dalam Meter"
 
-#: data/ui/activity_row.ui:93 data/ui/home_page.ui:69 data/ui/step_view.ui:26
+#: data/ui/activity_row.ui:88 data/ui/home_page.ui:69 data/ui/step_view.ui:26
 #: data/ui/step_view.ui:27
 msgid "Steps"
 msgstr "Langkah"
@@ -561,7 +562,9 @@ msgstr "Tent_ang Kesehatan"
 
 #: src/core/application.rs:140
 msgid "translator-credits"
-msgstr "Andika Triwidada <andika@gmail.com>, 2021."
+msgstr ""
+"Andika Triwidada <andika@gmail.com>, 2021.\n"
+"Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2021."
 
 #: src/core/application.rs:142
 msgid "Websites"
@@ -571,83 +574,83 @@ msgstr "Situs web"
 msgid "Health Daemon"
 msgstr "Daemon Kesehatan"
 
-#: src/model/activity_info.rs:74
+#: src/model/activity_info.rs:83
 msgid "Basketball"
 msgstr "Bola basket"
 
-#: src/model/activity_info.rs:89
+#: src/model/activity_info.rs:93
 msgid "Bicycling"
 msgstr "Bersepeda"
 
-#: src/model/activity_info.rs:103
+#: src/model/activity_info.rs:102
 msgid "Boxing"
 msgstr "Tinju"
 
-#: src/model/activity_info.rs:117
+#: src/model/activity_info.rs:111
 msgid "Dancing"
 msgstr "Menari"
 
-#: src/model/activity_info.rs:131
+#: src/model/activity_info.rs:120
 msgid "Football"
 msgstr "Sepakbola Amerika"
 
-#: src/model/activity_info.rs:143
+#: src/model/activity_info.rs:127
 msgid "Golf"
 msgstr "Golf"
 
-#: src/model/activity_info.rs:159
+#: src/model/activity_info.rs:138
 msgid "Hiking"
 msgstr "Hiking"
 
-#: src/model/activity_info.rs:173
+#: src/model/activity_info.rs:147
 msgid "Hockey"
 msgstr "Hockey"
 
-#: src/model/activity_info.rs:188
+#: src/model/activity_info.rs:157
 msgid "Horse Riding"
 msgstr "Berkuda"
 
-#: src/model/activity_info.rs:202
+#: src/model/activity_info.rs:166
 msgid "Other Sports"
 msgstr "Olah raga lain"
 
-#: src/model/activity_info.rs:217
+#: src/model/activity_info.rs:176
 msgid "Rollerblading"
 msgstr "Rollerblade"
 
-#: src/model/activity_info.rs:233
+#: src/model/activity_info.rs:187
 msgid "Running"
 msgstr "Lari"
 
-#: src/model/activity_info.rs:248
+#: src/model/activity_info.rs:197
 msgid "Skiing"
 msgstr "Ski"
 
-#: src/model/activity_info.rs:262
+#: src/model/activity_info.rs:206
 msgid "Soccer"
 msgstr "Sepak bola"
 
-#: src/model/activity_info.rs:276
+#: src/model/activity_info.rs:215
 msgid "Softball"
 msgstr "Softball"
 
-#: src/model/activity_info.rs:291
+#: src/model/activity_info.rs:225
 msgid "Swimming"
 msgstr "Berenang"
 
-#: src/model/activity_info.rs:305
+#: src/model/activity_info.rs:234
 msgid "Tennis"
 msgstr "Tenis"
 
-#: src/model/activity_info.rs:319
+#: src/model/activity_info.rs:243
 msgid "Track And Field"
 msgstr "Trek dan Lapangan"
 
-#: src/model/activity_info.rs:335
+#: src/model/activity_info.rs:254
 msgid "Volleyball"
 msgstr "Voli"
 
-#: src/model/activity_info.rs:351
+#: src/model/activity_info.rs:265
 msgid "Walking"
 msgstr "Berjalan"
 
@@ -729,19 +732,15 @@ msgstr "Berhasil diautentikasi, silahkan kembali ke Kesehatan."
 msgid "Couldn't parse OAuth2 response"
 msgstr "Tidak bisa mengurai respons OAuth2"
 
-#: src/views/bar_graph_view.rs:510
+#: src/views/bar_graph_view.rs:518
 msgid "Enter weight record to calculate idle calories"
 msgstr "Masukkan catatan berat badan untuk menghitung kalori menganggur"
 
-#: src/views/bar_graph_view.rs:514
+#: src/views/bar_graph_view.rs:522
 msgid "Idle calories"
 msgstr "Kalori menganggur"
 
-#: src/views/view_activity.rs:184
-msgid "No activities on or after {}"
-msgstr "Tidak ada aktivitas pada atau setelah {}"
-
-#: src/views/view_calories.rs:169
+#: src/views/view_calories.rs:175
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -765,13 +764,17 @@ msgid_plural "{} steps taken today"
 msgstr[0] "{} langkah ditempuh hari ini"
 msgstr[1] "{} langkah ditempuh hari ini"
 
-#: src/views/view_home_page.rs:262
+#: src/views/view_home_page.rs:263
+msgid "No step goal set"
+msgstr "Tidak ada tujuan langkah yang ditetapkan"
+
+#: src/views/view_home_page.rs:266
 msgid "{}%"
 msgstr "{}%"
 
 #. TRANSLATORS: Current user weight
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:297 src/views/view_home_page.rs:331
+#: src/views/view_home_page.rs:302 src/views/view_home_page.rs:336
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} pon"
@@ -779,35 +782,35 @@ msgstr[1] "{} pon"
 
 #. TRANSLATORS: Current user weight
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:304 src/views/view_home_page.rs:338
+#: src/views/view_home_page.rs:309 src/views/view_home_page.rs:343
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} kilogram"
 msgstr[1] "{} kilogram"
 
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:314
+#: src/views/view_home_page.rs:319
 msgid "+ {} pound"
 msgid_plural "+ {} pounds"
 msgstr[0] "+ {} pon"
 msgstr[1] "+ {} pon"
 
 #. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:321
+#: src/views/view_home_page.rs:326
 msgid "+ {} kilogram"
 msgid_plural "+ {} kilograms"
 msgstr[0] "+ {} kilogram"
 msgstr[1] "+ {} kilogram"
 
-#: src/views/view_home_page.rs:346
+#: src/views/view_home_page.rs:351
 msgid "No change in weight"
 msgstr "Tidak ada perubahan berat badan"
 
-#: src/views/view_home_page.rs:351
+#: src/views/view_home_page.rs:356
 msgid "compared to previous weight"
 msgstr "dibandingkan dengan berat sebelumnya"
 
-#: src/views/view_home_page.rs:355
+#: src/views/view_home_page.rs:360
 msgid "use + to add a weight record"
 msgstr "gunakan + untuk menambahkan catatan berat"
 
@@ -871,11 +874,11 @@ msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogram pada {}"
 msgstr[1] "{} kilogram pada {}"
 
-#: src/views/view_weight.rs:199
+#: src/views/view_weight.rs:196 src/views/view_weight.rs:201
 msgid "Unknown BMI"
 msgstr "BMI tak diketahui"
 
-#: src/views/view_weight.rs:223
+#: src/views/view_weight.rs:225
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -889,7 +892,7 @@ msgstr[1] ""
 "Sasaran berat badan Anda adalah {} pon. Tambahkan pengukuran berat badan "
 "pertama untuk melihat seberapa dekat Anda untuk mencapainya."
 
-#: src/views/view_weight.rs:230
+#: src/views/view_weight.rs:232
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -903,39 +906,39 @@ msgstr[1] ""
 "Sasaran berat badan Anda adalah {} kilogram. Tambahkan pengukuran berat "
 "badan pertama untuk melihat seberapa dekat Anda untuk mencapainya."
 
-#: src/views/view_weight.rs:239
+#: src/views/view_weight.rs:241
 msgid "You've reached your weight goal. Great job!"
 msgstr "Anda telah mencapai sasaran berat badan Anda. Kerja yang bagus!"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/views/view_weight.rs:255
+#: src/views/view_weight.rs:257
 msgid "Your weight goal is {} pound,"
 msgid_plural "Your weight goal is {} pounds,"
 msgstr[0] "Sasaran berat badan Anda adalah {} pon,"
 msgstr[1] "Sasaran berat badan Anda adalah {} pon,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:261
+#: src/views/view_weight.rs:263
 msgid "you have {} pound left to reach it"
 msgid_plural "you have {} pounds left to reach it"
 msgstr[0] "tersisa {} pon untuk mencapainya"
 msgstr[1] "tersisa {} pon untuk mencapainya"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/views/view_weight.rs:268
+#: src/views/view_weight.rs:270
 msgid "Your weight goal is {} kilogram,"
 msgid_plural "Your weight goal is {} kilograms,"
 msgstr[0] "Sasaran berat Anda adalah {} kilogram,"
 msgstr[1] "Sasaran berat Anda adalah {} kilogram,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:274
+#: src/views/view_weight.rs:276
 msgid "you have {} kilogram left to reach it"
 msgid_plural "you have {} kilograms left to reach it"
 msgstr[0] "tersisa {} kilogram untuk mencapainya"
 msgstr[1] "tersisa {} kilogram untuk mencapainya"
 
-#: src/views/view_weight.rs:283
+#: src/views/view_weight.rs:285
 msgid "No weight goal set yet. You can set it in Health's preferences."
 msgstr ""
 "Belum ada sasaran berat badan yang ditetapkan. Anda dapat mengaturnya dalam "
@@ -974,42 +977,42 @@ msgid "Feet"
 msgstr "Kaki"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:462 src/widgets/unit_spinbutton.rs:625
+#: src/widgets/unit_spinbutton.rs:480 src/widgets/unit_spinbutton.rs:643
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:464
+#: src/widgets/unit_spinbutton.rs:482
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:466
+#: src/widgets/unit_spinbutton.rs:484
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:468
+#: src/widgets/unit_spinbutton.rs:486
 msgid "kg"
 msgstr "kg"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:470 src/widgets/unit_spinbutton.rs:627
+#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:645
 msgid "in"
 msgstr "in"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:472
+#: src/widgets/unit_spinbutton.rs:490
 msgid "ft"
 msgstr "ft"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:474
+#: src/widgets/unit_spinbutton.rs:492
 msgid "mi"
 msgstr "mi"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:476
+#: src/widgets/unit_spinbutton.rs:494
 msgid "lb"
 msgstr "lb"
 
@@ -1098,3 +1101,6 @@ msgstr "Gagal memigrasikan basis data ke versi baru karena kesalahan {}"
 #: src/windows/window.rs:347
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr "Tak bisa menyelaraskan data Google Fit karena kesalahan: {}"
+
+#~ msgid "No activities on or after {}"
+#~ msgstr "Tidak ada aktivitas pada atau setelah {}"
