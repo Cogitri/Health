@@ -17,7 +17,7 @@
  */
 
 use crate::core::date::prelude::*;
-use chrono::{DateTime, FixedOffset, Local, NaiveDate};
+use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
 use gtk::{
     glib::{self, SignalHandlerId},
     prelude::*,
@@ -26,7 +26,7 @@ use gtk::{
 
 mod imp {
     use crate::{date::DateTimeBoxed, utils::prelude::*};
-    use chrono::{Datelike, Local, LocalResult, NaiveDate, TimeZone};
+    use chrono::{Datelike, Local, NaiveDate};
     use gtk::{
         glib::{self, clone},
         prelude::*,
@@ -98,21 +98,30 @@ mod imp {
             &PROPERTIES
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "selected-date" => {
-                    let naive_date = NaiveDate::from_ymd(
-                        self.year_spinner.raw_value().unwrap_or(0),
-                        // The dropdown starts counting from 0, not 1.
-                        self.month_dropdown.selected() + 1,
-                        self.day_spinner.raw_value().unwrap_or(1),
-                    );
-                    match Local.from_local_datetime(&naive_date.and_hms(12, 0, 0)) {
-                        LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => {
-                            DateTimeBoxed(d.into()).to_value()
-                        }
-                        LocalResult::None => {
-                            unimplemented!()
+                    let year = self.year_spinner.raw_value().unwrap_or(0);
+                    // The dropdown starts counting from 0, not 1.
+                    let month = (self.month_dropdown.selected() + 1).clamp(1, 12);
+                    let mut day = self.day_spinner.raw_value().unwrap_or(1).clamp(1, 31);
+                    match NaiveDate::from_ymd_opt(year, month, day) {
+                        Some(d) => obj.date_to_datetime_boxed(d).to_value(),
+                        None => {
+                            if day > 28 {
+                                while NaiveDate::from_ymd_opt(year, month, day).is_none() {
+                                    day -= 1;
+                                    if day <= 28 {
+                                        break;
+                                    }
+                                }
+                                if let Some(d) = NaiveDate::from_ymd_opt(year, month, day) {
+                                    let date = obj.date_to_datetime_boxed(d);
+                                    obj.set_property("selected-date", date.clone()).unwrap();
+                                    return date.to_value();
+                                }
+                            }
+                            unimplemented!();
                         }
                     }
                 }
@@ -195,6 +204,15 @@ impl DateSelector {
             .unwrap();
     }
 
+    fn date_to_datetime_boxed(&self, d: NaiveDate) -> DateTimeBoxed {
+        match Local.from_local_datetime(&d.and_hms(12, 0, 0)) {
+            LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => DateTimeBoxed(d.into()),
+            LocalResult::None => {
+                unimplemented!()
+            }
+        }
+    }
+
     fn get_days_from_month(&self, year: i32, month: u32) -> i64 {
         NaiveDate::from_ymd(
             match month {
@@ -265,5 +283,27 @@ mod test {
         assert_eq!(selector_.month_dropdown.selected(), now.date().month() - 1);
         assert_eq!(selector_.year_spinner.value() as i32, now.date().year());
         assert_eq!(selector_.day_adjustment.upper(), 28.0);
+    }
+
+    #[test]
+    fn set_invalid_day() {
+        init_gtk();
+        let selector = DateSelector::new();
+        let selector_ = selector.imp();
+
+        selector_.day_spinner.set_value(30.0);
+        selector_.month_dropdown.set_selected(1);
+        selector_.year_spinner.set_value(2000.0);
+        assert_eq!(
+            selector.selected_date().date().naive_local(),
+            NaiveDate::from_ymd(2000, 2, 29)
+        );
+
+        selector_.day_spinner.set_value(31.0);
+        selector_.year_spinner.set_value(2001.0);
+        assert_eq!(
+            selector.selected_date().date().naive_local(),
+            NaiveDate::from_ymd(2001, 2, 28)
+        );
     }
 }
