@@ -41,7 +41,7 @@ mod imp {
         pub activity_model: ModelActivity,
         pub activities_list_view: OnceCell<gtk::ListView>,
         #[template_child]
-        pub clamp: TemplateChild<adw::Clamp>,
+        pub frame: TemplateChild<gtk::Frame>,
         #[template_child]
         pub stack_activity: TemplateChild<gtk::Stack>,
     }
@@ -84,7 +84,7 @@ mod imp {
             });
             let selection_model = gtk::NoSelection::new(Some(&self.activity_model));
             let list_view = gtk::ListView::new(Some(&selection_model), Some(&factory));
-            self.clamp
+            self.frame
                 .set_child(Some(list_view.upcast_ref::<gtk::Widget>()));
             list_view.style_context().add_class("content");
             self.activities_list_view.set(list_view).unwrap();

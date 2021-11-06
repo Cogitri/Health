@@ -70,6 +70,9 @@
                         <property name="margin-end">6</property>
                         <property name="margin-top">6</property>
                         <property name="margin-bottom">6</property>
+                        <child>
+                          <object class="GtkFrame" id="frame"/>
+                        </child>
                       </object>
                     </child>
                   </object>
