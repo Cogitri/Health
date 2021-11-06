@@ -44,6 +44,17 @@
 	</kudos>
 
 	<releases>
+		<release version="0.93.3" date="2021-11-06">
+			<p>
+				This release includes a number of fixes, including:
+			</p>
+			<ul>
+				<li>Make Health adaptive to smaller screens again</li>
+				<li>Update calories view after adding a new weight record</li>
+				<li>Avoid crashing when setting the step goal to 0</li>
+				<li>Fix some typos</li>
+			</ul>
+		</release>
 		<release version="0.93.2" date="2021-10-23">
 			<p>
 				Brown bad release to fix tarball generation.
