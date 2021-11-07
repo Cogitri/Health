@@ -28,6 +28,4 @@ ${EDITOR:=nano} data/dev.Cogitri.Health.metainfo.xml.in.in
 ninja -C _build test
 
 git commit -av
-git tag $next
-
-meson dist --no-tests -C _build
+git tag $next -m "$next"
