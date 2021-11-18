@@ -112,7 +112,7 @@ version = "1"
 version = "0.9.5"
 
 [dependencies.strum]
-version = "0.22"
+version = "0.23"
 features = ["derive"]
 
 [dependencies.thiserror]
