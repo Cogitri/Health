@@ -1,4 +1,4 @@
-/* graph_view.rs
+/* circular_progress_bar.rs
  *
  * Copyright 2021 Visvesh Subramanian <visveshs.blogspot.com>
  *
@@ -31,7 +31,6 @@ mod imp {
         pub step_goal: i64,
         pub step_count: i64,
     }
-
     pub struct CircularProgressBar {
         pub inner: RefCell<CircularProgressBarMut>,
     }
@@ -55,11 +54,14 @@ mod imp {
             klass.set_layout_manager_type::<gtk::BinLayout>();
         }
     }
+
     impl ObjectImpl for CircularProgressBar {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
+            obj.set_size_request(65, 65);
         }
     }
+
     impl WidgetImpl for CircularProgressBar {
         fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
             let cr = snapshot
@@ -102,6 +104,7 @@ mod imp {
         }
     }
 }
+
 glib::wrapper! {
     /// A View for visualizing the development of data over time.
     pub struct CircularProgressBar(ObjectSubclass<imp::CircularProgressBar>)

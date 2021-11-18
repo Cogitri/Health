@@ -73,11 +73,7 @@
                         <property name="orientation">vertical</property>
                         <property name="margin-end">13</property>
                         <child>
-                          <object class="GtkScrolledWindow">
-                            <child>
-                              <object class="HealthCircularProgressBar" id="circular_progress_bar"/>
-                            </child>
-                          </object>
+                          <object class="HealthCircularProgressBar" id="circular_progress_bar"/>
                         </child>
                         <child>
                           <object class="GtkLabel" id="steps_percentage"/>
