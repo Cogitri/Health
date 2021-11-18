@@ -120,7 +120,7 @@
                           <object class="GtkLabel" id="weight_change">
                             <property name="wrap">1</property>
                             <property name="max-width-chars">8</property>
-                            <property name="label">No weight record added</property>
+                            <property name="label" translatable="yes">No weight record added</property>
                           </object>
                         </child>
                         <child>
@@ -142,7 +142,7 @@
             </child>
             <child>
               <object class="AdwPreferencesGroup">
-                <property name="title">All Data</property>
+                <property name="title" translatable="yes">All Data</property>
                 <child>
                   <object class="GtkFlowBox" id="button_flow_box">
                     <property name="homogeneous">1</property>
@@ -152,25 +152,25 @@
                     <property name="column-spacing">2</property>
                     <child>
                       <object class="HealthTabButton" id="tab_button">
-                        <property name="tab-name">Weight</property>
+                        <property name="tab-name" translatable="yes">Weight</property>
                         <property name="icon-name">weight-scale-thin-symbolic</property>
                       </object>
                     </child>
                     <child>
                       <object class="HealthTabButton">
-                        <property name="tab-name">Steps</property>
+                        <property name="tab-name" translatable="yes">Steps</property>
                         <property name="icon-name">steps-thin-symbolic</property>
                       </object>
                     </child>
                     <child>
                       <object class="HealthTabButton">
-                        <property name="tab-name">Activities</property>
+                        <property name="tab-name" translatable="yes">Activities</property>
                         <property name="icon-name">walking-thin-symbolic</property>
                       </object>
                     </child>
                     <child>
                       <object class="HealthTabButton">
-                        <property name="tab-name">Calories</property>
+                        <property name="tab-name" translatable="yes">Calories</property>
                         <property name="icon-name">calories-thin-symbolic</property>
                       </object>
                     </child>

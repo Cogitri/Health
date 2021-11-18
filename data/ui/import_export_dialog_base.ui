@@ -79,7 +79,7 @@
                     </child>
                     <child>
                       <object class="AdwActionRow" id="weights_action_row">
-                        <property name="title">Export weight measurements</property>
+                        <property name="title" translatable="yes">Export weight measurements</property>
                         <child>
                           <object class="GtkSwitch" id="weight_switch">
                             <property name="active">1</property>
@@ -93,7 +93,7 @@
                     </child>
                     <child>
                       <object class="AdwActionRow" id="encrypt_action_row">
-                        <property name="title">Encrypt export</property>
+                        <property name="title" translatable="yes">Encrypt export</property>
                         <child>
                           <object class="GtkSwitch" id="encrypt_switch">
                             <property name="active">1</property>

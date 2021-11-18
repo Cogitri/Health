@@ -58,7 +58,7 @@
     </widgets>
   </object>
   <template class="HealthViewAddActivity" parent="HealthView">
-    <property name="view-title">Add New Activity</property>
+    <property name="view-title" translatable="yes">Add New Activity</property>
     <property name="icon-name">walking-symbolic</property>
     <property name="name">Add Activity Data</property>
     <property name="title" translatable="yes">Add An Activity</property>
