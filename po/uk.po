@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-10-28 12:06+0000\n"
-"PO-Revision-Date: 2021-10-28 15:34+0300\n"
+"POT-Creation-Date: 2021-11-18 15:12+0000\n"
+"PO-Revision-Date: 2021-11-19 16:31+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -198,6 +198,11 @@ msgstr ""
 msgid "Rasmus “Cogitri” Thomsen"
 msgstr "Rasmus “Cogitri” Thomsen"
 
+#: data/ui/activity_add_dialog.ui:61
+#| msgid "Add An Activity"
+msgid "Add New Activity"
+msgstr "Додати нову фізичну активність"
+
 #: data/ui/activity_add_dialog.ui:64
 msgid "Add An Activity"
 msgstr "Додати фізичну активність"
@@ -238,8 +243,8 @@ msgstr "Кількість кроків"
 msgid "Distance in Meters"
 msgstr "Відстань у метрах"
 
-#: data/ui/activity_row.ui:88 data/ui/home_page.ui:69 data/ui/step_view.ui:26
-#: data/ui/step_view.ui:27
+#: data/ui/activity_row.ui:88 data/ui/home_page.ui:69 data/ui/home_page.ui:161
+#: data/ui/step_view.ui:26 data/ui/step_view.ui:27
 msgid "Steps"
 msgstr "Кроки"
 
@@ -254,11 +259,12 @@ msgstr ""
 msgid "Recent Activities"
 msgstr "Нещодавні фізичні активності"
 
-#: data/ui/activity_view.ui:28
+#: data/ui/activity_view.ui:28 data/ui/home_page.ui:167
 msgid "Activities"
 msgstr "Фізична активність"
 
 #: data/ui/calorie_view.ui:26 data/ui/calorie_view.ui:27
+#: data/ui/home_page.ui:173
 msgid "Calories"
 msgstr "Калорії"
 
@@ -281,7 +287,7 @@ msgstr "З_берегти"
 msgid "January"
 msgstr "Січень"
 
-#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:244
+#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:262
 msgid "February"
 msgstr "Лютий"
 
@@ -359,14 +365,35 @@ msgstr "Сьогодні"
 msgid "of daily step goal"
 msgstr "від цільової кількості кроків за день"
 
-#: data/ui/home_page.ui:103 data/ui/preferences_window.ui:218
-#: data/ui/weight_add_dialog.ui:61 data/ui/weight_view.ui:27
+#: data/ui/home_page.ui:103 data/ui/home_page.ui:155
+#: data/ui/preferences_window.ui:218 data/ui/weight_add_dialog.ui:61
+#: data/ui/weight_view.ui:27
 msgid "Weight"
 msgstr "Вага"
+
+#: data/ui/home_page.ui:123
+#| msgid "Add Weight Record"
+msgid "No weight record added"
+msgstr "Не додано жодного запису ваги"
+
+#: data/ui/home_page.ui:145
+msgid "All Data"
+msgstr ""
+"Усі дані"
 
 #: data/ui/import_export_dialog_base.ui:35
 msgid "_Export"
 msgstr "_Експортувати"
+
+#: data/ui/import_export_dialog_base.ui:82
+#| msgid "Weight Measurements"
+msgid "Export weight measurements"
+msgstr "Експортувати виміри ваги"
+
+#: data/ui/import_export_dialog_base.ui:96
+msgid "Encrypt export"
+msgstr ""
+"Зашифрувати експортоване"
 
 #: data/ui/password_entry.ui:28
 msgid "_Password"
@@ -782,7 +809,6 @@ msgstr[2] "{} кроків сьогодні"
 msgstr[3] "{} крок сьогодні"
 
 #: src/views/view_home_page.rs:263
-#| msgid "User step goal"
 msgid "No step goal set"
 msgstr "Не встановлено цільової кількості кроків"
 
