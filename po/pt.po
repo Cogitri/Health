@@ -1,22 +1,22 @@
 # Portuguese translation for health.
 # Copyright (C) 2021 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
-# Hugo Carvalho <hugokarvalho@hotmail.com>, 2021.
 #
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-11-03 09:56+0000\n"
-"PO-Revision-Date: 2021-11-14 18:44+0000\n"
-"Language-Team: Portuguese <pt@li.org>\n"
+"POT-Creation-Date: 2021-11-18 15:12+0000\n"
+"PO-Revision-Date: 2021-11-19 18:24+0000\n"
+"Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
+"Language-Team: Portuguese <kde-i18n-doc@kde.org>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Lokalize 21.08.3\n"
 
 #: data/dev.Cogitri.Health.desktop.in.in:3
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.ui:45
@@ -83,8 +83,8 @@ msgid ""
 "Activity types the user used recently, to be shown first in the activity "
 "types selector's list"
 msgstr ""
-"Tipos de atividades que o utilizador usou recentemente, para serem "
-"mostrados primeiro na lista do seletor de tipos de atividades"
+"Tipos de atividades que o utilizador usou recentemente, para serem mostrados "
+"primeiro na lista do seletor de tipos de atividades"
 
 #: data/dev.Cogitri.Health.gschema.xml:46
 msgid "Google Fit Sync-Provider setup"
@@ -194,6 +194,11 @@ msgstr ""
 msgid "Rasmus “Cogitri” Thomsen"
 msgstr "Rasmus “Cogitri” Thomsen"
 
+#: data/ui/activity_add_dialog.ui:61
+#| msgid "Add An Activity"
+msgid "Add New Activity"
+msgstr "Adicionar nova atividade"
+
 #: data/ui/activity_add_dialog.ui:64
 msgid "Add An Activity"
 msgstr "Adicionar uma atividade"
@@ -234,8 +239,8 @@ msgstr "Contagem de passos"
 msgid "Distance in Meters"
 msgstr "Distância em metros"
 
-#: data/ui/activity_row.ui:88 data/ui/home_page.ui:69 data/ui/step_view.ui:26
-#: data/ui/step_view.ui:27
+#: data/ui/activity_row.ui:88 data/ui/home_page.ui:69 data/ui/home_page.ui:161
+#: data/ui/step_view.ui:26 data/ui/step_view.ui:27
 msgid "Steps"
 msgstr "Passos"
 
@@ -248,11 +253,12 @@ msgstr "Pode usar o botão <b>+</b> para adicionar uma nova atividade."
 msgid "Recent Activities"
 msgstr "Atividades recentes"
 
-#: data/ui/activity_view.ui:28
+#: data/ui/activity_view.ui:28 data/ui/home_page.ui:167
 msgid "Activities"
 msgstr "Atividades"
 
 #: data/ui/calorie_view.ui:26 data/ui/calorie_view.ui:27
+#: data/ui/home_page.ui:173
 msgid "Calories"
 msgstr "Calorias"
 
@@ -275,7 +281,7 @@ msgstr "_Guardar"
 msgid "January"
 msgstr "Janeiro"
 
-#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:244
+#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:262
 msgid "February"
 msgstr "Fevereiro"
 
@@ -351,16 +357,35 @@ msgstr "Hoje"
 #. TRANSLATORS: This is displayed via two strings: x% and then this label. E.g. 100% of daily step goal
 #: data/ui/home_page.ui:90
 msgid "of daily step goal"
-msgstr "do obetivo diário de passos"
+msgstr "do objetivo diário de passos"
 
-#: data/ui/home_page.ui:103 data/ui/preferences_window.ui:218
-#: data/ui/weight_add_dialog.ui:61 data/ui/weight_view.ui:27
+#: data/ui/home_page.ui:103 data/ui/home_page.ui:155
+#: data/ui/preferences_window.ui:218 data/ui/weight_add_dialog.ui:61
+#: data/ui/weight_view.ui:27
 msgid "Weight"
 msgstr "Peso"
+
+#: data/ui/home_page.ui:123
+#| msgid "Add Weight Record"
+msgid "No weight record added"
+msgstr "Nenhum registo de peso adicionado"
+
+#: data/ui/home_page.ui:145
+msgid "All Data"
+msgstr "Todos os dados"
 
 #: data/ui/import_export_dialog_base.ui:35
 msgid "_Export"
 msgstr "_Exportar"
+
+#: data/ui/import_export_dialog_base.ui:82
+#| msgid "Weight Measurements"
+msgid "Export weight measurements"
+msgstr "Exportar medições de peso"
+
+#: data/ui/import_export_dialog_base.ui:96
+msgid "Encrypt export"
+msgstr "Encriptar exportação"
 
 #: data/ui/password_entry.ui:28
 msgid "_Password"
@@ -511,8 +536,7 @@ msgstr "Configure a sincronização com fornecedores de terceiros."
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
-"Pode sincronizar passos e medições de peso de/para fornecedores de "
-"terceiros."
+"Pode sincronizar passos e medições de peso de/para fornecedores de terceiros."
 
 #: data/ui/shortcuts_window.ui:34
 msgid "Quit the application"
@@ -572,7 +596,7 @@ msgstr "Daemon do Saúde"
 
 #: src/model/activity_info.rs:83
 msgid "Basketball"
-msgstr "Basquetbol"
+msgstr "Basquetebol"
 
 #: src/model/activity_info.rs:93
 msgid "Bicycling"
@@ -677,8 +701,8 @@ msgstr ""
 #: src/sync/csv.rs:111 src/sync/csv.rs:378
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr ""
-"Nenhuma medida de peso adicionada ainda; não é possível criar uma "
-"exportação vazia!"
+"Nenhuma medida de peso adicionada ainda; não é possível criar uma exportação "
+"vazia!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:322
 msgid "Can't parse encrypted backup without encryption key!"
@@ -886,8 +910,8 @@ msgstr[0] ""
 "O seu objetivo de peso é de {} libra. Adicione uma primeira medição de peso "
 "para ver o quão perto está de o atingir."
 msgstr[1] ""
-"O seu objetivo de peso é de {} libras. Adicione uma primeira medição de "
-"peso para ver o quão perto está de o atingir."
+"O seu objetivo de peso é de {} libras. Adicione uma primeira medição de peso "
+"para ver o quão perto está de o atingir."
 
 #: src/views/view_weight.rs:232
 msgid ""
@@ -900,8 +924,8 @@ msgstr[0] ""
 "O seu objetivo de peso é de {} quilograma. Adicione uma primeira medição de "
 "peso para ver o quão perto está de o atingir."
 msgstr[1] ""
-"O seu objetivo de peso é de {} quilogramas. Adicione uma primeira medição "
-"de peso para ver o quão perto está de o atingir."
+"O seu objetivo de peso é de {} quilogramas. Adicione uma primeira medição de "
+"peso para ver o quão perto está de o atingir."
 
 #: src/views/view_weight.rs:241
 msgid "You've reached your weight goal. Great job!"
