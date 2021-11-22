@@ -41,6 +41,18 @@ clone:
   script:
     - build-aux/run-clone-warn.sh
 
+clippy:
+  image: cogitri/health-ci-docker
+  stage: build
+  script:
+    - meson build
+    - cargo clippy --version
+    - cargo clippy -- -D warnings
+  cache:
+    key: clippy
+    paths:
+      - target
+
 flatpak:
   extends: ".flatpak"
   stage: build
