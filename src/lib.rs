@@ -1,6 +1,6 @@
 //! # Health
 //!
-//! Welcome to Heath's docs! Health is a health tracking app for the GNOME desktop.
+//! Welcome to Health's docs! Health is a health tracking app for the GNOME desktop.
 //!
 //! This documentation should help you get started with Health's structs and functions. To make
 //! the start a bit easier, let me explain some basics about Health:
@@ -12,7 +12,7 @@
 //!       holds data about a single activity live here.
 //!     * sync: The code for synching with third party providers (e.g. Google Fit) or exporting/importing data lies here.
 //!     * views: This directory contains Views. These make up a single page in Health, e.g. the [ViewSteps](crate::views::ViewSteps)
-//!       that draws a that draws a graph of the user's step count.
+//!       that draws a graph of the user's step count.
 //!     * widgets: Widgets are smaller, reusable parts of Health's UI, e.g the [BmiLevelBar](crate::widgets::BmiLevelBar)
 //!       is contained in this module.
 //!     * windows: This directory contains actual windows, like the main [Window](crate::windows::Window) or the
@@ -53,7 +53,7 @@
 //!           impl MyStruct {}
 //!       }
 //!       ```
-//!     * Please sure to order functions in the following order to make it easy to find functions:
+//!     * Please order functions in the following order to make it easy to find functions:
 //!          * `pub` functions first, sorted alphabetically
 //!          *  private functions afterwards, also sorted alphabetically
 //!     * Try only having one (public) GObject class per file and name the file after the public class.
