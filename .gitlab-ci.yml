@@ -70,6 +70,25 @@ nightly:
   dependencies: ["flatpak"]
   needs: ["flatpak"]
 
+pages:
+  image: "$CI_IMAGE"
+  stage: deploy
+  script:
+    - source $HOME/.cargo/env
+    - meson build
+    - cargo makedocs -i "health"
+    - rm -rf public
+    - mv target/doc/ public
+  cache:
+    key: pages
+    paths:
+      - target
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
+
 create-dist-tarball:
   stage: release-tarball
   image: "$FLATPAK_IMAGE"
