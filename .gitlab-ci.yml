@@ -5,6 +5,7 @@ variables:
   MANIFEST_PATH: "dev.Cogitri.Health.Devel.json"
   FLATPAK_MODULE: "health"
   FLATPAK_IMAGE: "registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master"
+  CI_IMAGE: "registry.gitlab.gnome.org/cogitri/health-ci-docker/health-ci:latest"
   TARBALL: "Health-${CI_COMMIT_TAG}.tar.xz"
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/release-tarballs/${CI_COMMIT_TAG}"
 
@@ -25,15 +26,16 @@ stages:
   - release-publish
 
 fmt:
-  image: "registry.gitlab.com/alatiera/rustfmt-oci-image/rustfmt:stable"
+  image: "rust:slim"
   stage: qa
   script:
     # Create blank versions of our configured files
     # so rustfmt does not yell about non-existent files or completely empty files
     - echo -e "" >> src/config.rs
+    - rustup component add rustfmt
     - rustc -Vv && cargo -Vv
-    - cargo --version
-    - cargo fmt --all -- --check
+    - cargo fmt --version
+    - cargo fmt --all -- --color=always --check
 
 clone:
   image: alpine:latest
@@ -42,9 +44,10 @@ clone:
     - build-aux/run-clone-warn.sh
 
 clippy:
-  image: cogitri/health-ci-docker
+  image: "$CI_IMAGE"
   stage: build
   script:
+    - source $HOME/.cargo/env
     - meson build
     - cargo clippy --version
     - cargo clippy -- -D warnings
