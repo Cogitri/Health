@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-10-28 12:06+0000\n"
-"PO-Revision-Date: 2021-10-28 15:11-0300\n"
-"Last-Translator: Enrico Nicoletto <liverig@gmail.com>\n"
+"POT-Creation-Date: 2021-11-18 15:12+0000\n"
+"PO-Revision-Date: 2021-11-23 04:41-0300\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
@@ -191,6 +191,10 @@ msgstr ""
 msgid "Rasmus “Cogitri” Thomsen"
 msgstr "Rasmus “Cogitri” Thomsen"
 
+#: data/ui/activity_add_dialog.ui:61
+msgid "Add New Activity"
+msgstr "Adicionar nova atividade"
+
 #: data/ui/activity_add_dialog.ui:64
 msgid "Add An Activity"
 msgstr "Adicionar uma atividade"
@@ -231,8 +235,8 @@ msgstr "Contagem de passos"
 msgid "Distance in Meters"
 msgstr "Distância em metros"
 
-#: data/ui/activity_row.ui:88 data/ui/home_page.ui:69 data/ui/step_view.ui:26
-#: data/ui/step_view.ui:27
+#: data/ui/activity_row.ui:88 data/ui/home_page.ui:69 data/ui/home_page.ui:161
+#: data/ui/step_view.ui:26 data/ui/step_view.ui:27
 msgid "Steps"
 msgstr "Passos"
 
@@ -245,11 +249,12 @@ msgstr "Você pode usar o botão <b>+</b> para adicionar uma nova atividade."
 msgid "Recent Activities"
 msgstr "Atividades recentes"
 
-#: data/ui/activity_view.ui:28
+#: data/ui/activity_view.ui:28 data/ui/home_page.ui:167
 msgid "Activities"
 msgstr "Atividades"
 
 #: data/ui/calorie_view.ui:26 data/ui/calorie_view.ui:27
+#: data/ui/home_page.ui:173
 msgid "Calories"
 msgstr "Calorias"
 
@@ -272,7 +277,7 @@ msgstr "_Salvar"
 msgid "January"
 msgstr "Janeiro"
 
-#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:244
+#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:262
 msgid "February"
 msgstr "Fevereiro"
 
@@ -350,14 +355,31 @@ msgstr "Hoje"
 msgid "of daily step goal"
 msgstr "da meta diária de passos"
 
-#: data/ui/home_page.ui:103 data/ui/preferences_window.ui:218
-#: data/ui/weight_add_dialog.ui:61 data/ui/weight_view.ui:27
+#: data/ui/home_page.ui:103 data/ui/home_page.ui:155
+#: data/ui/preferences_window.ui:218 data/ui/weight_add_dialog.ui:61
+#: data/ui/weight_view.ui:27
 msgid "Weight"
 msgstr "Altura"
+
+#: data/ui/home_page.ui:123
+msgid "No weight record added"
+msgstr "Nenhum registro de peso adicionado"
+
+#: data/ui/home_page.ui:145
+msgid "All Data"
+msgstr "Todos os dados"
 
 #: data/ui/import_export_dialog_base.ui:35
 msgid "_Export"
 msgstr "_Exportar"
+
+#: data/ui/import_export_dialog_base.ui:82
+msgid "Export weight measurements"
+msgstr "Exportar medidas de peso"
+
+#: data/ui/import_export_dialog_base.ui:96
+msgid "Encrypt export"
+msgstr "Criptografar exportação"
 
 #: data/ui/password_entry.ui:28
 msgid "_Password"
