@@ -42,18 +42,10 @@ mod imp {
     #[repr(C)]
     pub struct ImportExportDialogBaseClass {
         pub parent_class: gtk::ffi::GtkDialogClass,
-        pub on_activities: Option<
-            unsafe fn(
-                &ImportExportDialogBaseInstance,
-                password: Option<String>,
-            ) -> PinnedResultFuture,
-        >,
-        pub on_weights: Option<
-            unsafe fn(
-                &ImportExportDialogBaseInstance,
-                password: Option<String>,
-            ) -> PinnedResultFuture,
-        >,
+        pub on_activities:
+            fn(&ImportExportDialogBaseInstance, password: Option<String>) -> PinnedResultFuture,
+        pub on_weights:
+            fn(&ImportExportDialogBaseInstance, password: Option<String>) -> PinnedResultFuture,
     }
 
     unsafe impl ClassStruct for ImportExportDialogBaseClass {
@@ -120,22 +112,22 @@ mod imp {
         ImportExportDialogBase::from_instance(this).on_weights(this, password)
     }
 
-    pub(super) unsafe fn import_export_dialog_base_on_activities(
+    pub(super) fn import_export_dialog_base_on_activities(
         this: &ImportExportDialogBaseInstance,
         password: Option<String>,
     ) -> PinnedResultFuture {
-        let klass = &*(this.class() as *const _ as *const ImportExportDialogBaseClass);
+        let klass = this.class();
 
-        (klass.on_activities.unwrap())(this, password)
+        (klass.as_ref().on_activities)(this, password)
     }
 
-    pub(super) unsafe fn import_export_dialog_base_on_weights(
+    pub(super) fn import_export_dialog_base_on_weights(
         this: &ImportExportDialogBaseInstance,
         password: Option<String>,
     ) -> PinnedResultFuture {
-        let klass = &*(this.class() as *const _ as *const ImportExportDialogBaseClass);
+        let klass = this.class();
 
-        (klass.on_weights.unwrap())(this, password)
+        (klass.as_ref().on_weights)(this, password)
     }
 
     impl ImportExportDialogBase {
@@ -168,8 +160,8 @@ mod imp {
         type Class = ImportExportDialogBaseClass;
 
         fn class_init(klass: &mut Self::Class) {
-            klass.on_activities = Some(on_activities_default_trampoline);
-            klass.on_weights = Some(on_weights_default_trampoline);
+            klass.on_activities = on_activities_default_trampoline;
+            klass.on_weights = on_weights_default_trampoline;
 
             Self::bind_template(klass);
         }
@@ -354,11 +346,11 @@ pub trait ImportExportDialogBaseExt {
 
 impl<O: IsA<ImportExportDialogBase>> ImportExportDialogBaseExt for O {
     fn on_activities(&self, password: Option<String>) -> PinnedResultFuture {
-        unsafe { imp::import_export_dialog_base_on_activities(self.upcast_ref(), password) }
+        imp::import_export_dialog_base_on_activities(self.upcast_ref(), password)
     }
 
     fn on_weights(&self, password: Option<String>) -> PinnedResultFuture {
-        unsafe { imp::import_export_dialog_base_on_weights(self.upcast_ref(), password) }
+        imp::import_export_dialog_base_on_weights(self.upcast_ref(), password)
     }
 }
 
@@ -401,15 +393,9 @@ impl<T: ImportExportDialogBaseImpl> ImportExportDialogBaseImplExt for T {
     ) -> PinnedResultFuture {
         unsafe {
             let data = Self::type_data();
-            let parent_class = data
-                .as_ref()
-                .parent_class()
-                .cast::<imp::ImportExportDialogBaseClass>();
-            if let Some(ref f) = (*parent_class).on_activities {
-                f(obj, password)
-            } else {
-                unimplemented!()
-            }
+            let parent_class =
+                &*(data.as_ref().parent_class() as *mut imp::ImportExportDialogBaseClass);
+            (parent_class.on_activities)(obj, password)
         }
     }
 
@@ -420,15 +406,9 @@ impl<T: ImportExportDialogBaseImpl> ImportExportDialogBaseImplExt for T {
     ) -> PinnedResultFuture {
         unsafe {
             let data = Self::type_data();
-            let parent_class = data
-                .as_ref()
-                .parent_class()
-                .cast::<imp::ImportExportDialogBaseClass>();
-            if let Some(ref f) = (*parent_class).on_weights {
-                f(obj, password)
-            } else {
-                unimplemented!()
-            }
+            let parent_class =
+                &*(data.as_ref().parent_class() as *mut imp::ImportExportDialogBaseClass);
+            (parent_class.on_weights)(obj, password)
         }
     }
 }
@@ -438,8 +418,8 @@ unsafe impl<T: ImportExportDialogBaseImpl> IsSubclassable<T> for ImportExportDia
         <gtk::Dialog as IsSubclassable<T>>::class_init(class.upcast_ref_mut());
 
         let klass = class.as_mut();
-        klass.on_activities = Some(on_activities_trampoline::<T>);
-        klass.on_weights = Some(on_weights_trampoline::<T>);
+        klass.on_activities = on_activities_trampoline::<T>;
+        klass.on_weights = on_weights_trampoline::<T>;
     }
 
     fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
@@ -448,26 +428,24 @@ unsafe impl<T: ImportExportDialogBaseImpl> IsSubclassable<T> for ImportExportDia
 }
 
 // Virtual method default implementation trampolines
-unsafe fn on_activities_trampoline<T: ObjectSubclass>(
+fn on_activities_trampoline<T: ObjectSubclass>(
     this: &imp::ImportExportDialogBaseInstance,
     password: Option<String>,
 ) -> PinnedResultFuture
 where
     T: ImportExportDialogBaseImpl,
 {
-    let instance = &*(this as *const _ as *const T::Instance);
-    let imp = instance.impl_();
+    let imp = T::from_instance(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.on_activities(this, password)
 }
 
-unsafe fn on_weights_trampoline<T: ObjectSubclass>(
+fn on_weights_trampoline<T: ObjectSubclass>(
     this: &imp::ImportExportDialogBaseInstance,
     password: Option<String>,
 ) -> PinnedResultFuture
 where
     T: ImportExportDialogBaseImpl,
 {
-    let instance = &*(this as *const _ as *const T::Instance);
-    let imp = instance.impl_();
+    let imp = T::from_instance(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.on_weights(this, password)
 }

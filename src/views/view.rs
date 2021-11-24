@@ -35,7 +35,7 @@ mod imp {
     #[repr(C)]
     pub struct ViewClass {
         pub parent_class: gtk::ffi::GtkWidgetClass,
-        pub update: Option<unsafe fn(&ViewInstance) -> PinnedResultFuture>,
+        pub update: fn(&ViewInstance) -> PinnedResultFuture,
     }
 
     unsafe impl ClassStruct for ViewClass {
@@ -81,10 +81,10 @@ mod imp {
         View::from_instance(this).update(this)
     }
 
-    pub(super) unsafe fn view_update(this: &ViewInstance) -> PinnedResultFuture {
-        let klass = &*(this.class() as *const _ as *const ViewClass);
+    pub(super) fn view_update(this: &ViewInstance) -> PinnedResultFuture {
+        let klass = this.class();
 
-        (klass.update.unwrap())(this)
+        (klass.as_ref().update)(this)
     }
 
     impl View {
@@ -103,7 +103,7 @@ mod imp {
         type Class = ViewClass;
 
         fn class_init(klass: &mut Self::Class) {
-            klass.update = Some(update_default_trampoline);
+            klass.update = update_default_trampoline;
             klass.set_layout_manager_type::<gtk::BinLayout>();
 
             Self::bind_template(klass);
@@ -240,7 +240,7 @@ pub trait ViewExt {
 
 impl<O: IsA<View>> ViewExt for O {
     fn update(&self) -> PinnedResultFuture {
-        unsafe { imp::view_update(self.upcast_ref()) }
+        imp::view_update(self.upcast_ref())
     }
 }
 
@@ -258,12 +258,8 @@ impl<T: ViewImpl> ViewImplExt for T {
     fn parent_update(&self, obj: &View) -> PinnedResultFuture {
         unsafe {
             let data = Self::type_data();
-            let parent_class = data.as_ref().parent_class().cast::<imp::ViewClass>();
-            if let Some(ref f) = (*parent_class).update {
-                f(obj)
-            } else {
-                unimplemented!()
-            }
+            let parent_class = &*(data.as_ref().parent_class() as *mut imp::ViewClass);
+            (parent_class.update)(obj)
         }
     }
 }
@@ -273,7 +269,7 @@ unsafe impl<T: ViewImpl> IsSubclassable<T> for View {
         <gtk::Widget as IsSubclassable<T>>::class_init(class);
 
         let klass = class.as_mut();
-        klass.update = Some(update_trampoline::<T>);
+        klass.update = update_trampoline::<T>;
     }
 
     fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
@@ -282,11 +278,10 @@ unsafe impl<T: ViewImpl> IsSubclassable<T> for View {
 }
 
 // Virtual method default implementation trampolines
-unsafe fn update_trampoline<T: ObjectSubclass>(this: &View) -> PinnedResultFuture
+fn update_trampoline<T: ObjectSubclass>(this: &View) -> PinnedResultFuture
 where
     T: ViewImpl,
 {
-    let instance = &*(this as *const _ as *const T::Instance);
-    let imp = instance.impl_();
+    let imp = T::from_instance(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.update(this)
 }
