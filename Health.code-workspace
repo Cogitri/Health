@@ -10,6 +10,8 @@
 			"titleBar.activeForeground": "#ffffff",
 			"titleBar.inactiveBackground": "#f0484e",
 			"titleBar.inactiveForeground": "#cccccc"
-		}
+		},
+		"nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix",
+		"editor.formatOnSave": true
 	}
 }
