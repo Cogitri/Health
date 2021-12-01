@@ -11,3 +11,4 @@ vendor
 po/*.pot
 .flatpak
 .idea
+.direnv
