@@ -15,16 +15,17 @@ mesonNew = pkgs.meson.overrideAttrs (oldAttrs: rec {
 
 in pkgs.mkShell {
   buildInputs = [ 
-    pkgs.cargo 
+    mesonNew
+    pkgs.cargo
+    pkgs.cargo-outdated 
+    pkgs.gtk4.dev
+    pkgs.libadwaita.dev
+    pkgs.ninja
+    pkgs.pkg-config
     pkgs.rustc
     pkgs.rustfmt
-    pkgs.gtk4.dev
     pkgs.tracker.dev
-    pkgs.libadwaita.dev
     pkgs.wayland.dev
-    pkgs.pkg-config
-    pkgs.ninja
-    mesonNew
   ];
 
   # Certain Rust tools won't work without this
