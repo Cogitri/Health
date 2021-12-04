@@ -188,7 +188,6 @@ impl PreferencesWindow {
             callback();
             None
         })
-        .unwrap()
     }
 
     /// Create a new [PreferencesWindow].

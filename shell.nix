@@ -1,8 +1,8 @@
 let
-  pkgs = import (fetchTarball("channel:nixpkgs-unstable")) {};
+  moz_overlay = import (builtins.fetchTarball https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz);
+  pkgs = import (fetchTarball("channel:nixpkgs-unstable")) { overlays = [ moz_overlay ]; };
 
-mesonNew = pkgs.meson.overrideAttrs (oldAttrs: rec {
-  pname = "meson";
+mesonNew = pkgs.meson.overrideAttrs (old: rec {
   version = "0.60.2";
   src = pkgs.fetchFromGitHub{
     owner = "mesonbuild";
@@ -10,16 +10,41 @@ mesonNew = pkgs.meson.overrideAttrs (oldAttrs: rec {
     rev = "0.60.2";
     sha256 = "1z68zivpn1c6x34a037ibbp3jzxrhl5a8xz8ihwqc6k6i6nxpq3p";
   };
-  patches = [ ];
+      patches = (pkgs.lib.take 1 old.patches) ++ [ ./build-aux/ldconfig.patch ./build-aux/more-env-vars.patch ./build-aux/gir-fallback-path.patch ]
+        ++ (pkgs.lib.take 2 (pkgs.lib.drop 3 old.patches));
 });
 
-in pkgs.mkShell {
-  buildInputs = [ 
+adwaitaNew = pkgs.libadwaita.overrideAttrs (oldAttrs: rec {
+  version = "1.0.0.alpha.4";
+  nativeBuildInputs = with pkgs; [
+    docbook-xsl-nons
+    gi-docgen
+    gtk-doc
+    libxml2 # for xmllint
     mesonNew
-    pkgs.cargo
+    ninja
+    pkg-config
+    sassc
+    vala
+  ];
+  src = pkgs.fetchFromGitLab {
+    domain = "gitlab.gnome.org";
+    owner = "GNOME";
+    repo = "libadwaita";
+    rev = version;
+    sha256 = "0c4llrzrgnvn5qdg4ng5alxcs28zi767ds027nda95wjl82mx9fx";
+  };
+});
+rustSrc =
+    pkgs.latest.rustChannels.stable.rust.override { extensions = [ "rust-src" ]; };
+
+in pkgs.mkShell {
+  buildInputs = with pkgs; [ 
+    adwaitaNew
+    mesonNew
+    rustSrc
     pkgs.cargo-outdated 
     pkgs.gtk4.dev
-    pkgs.libadwaita.dev
     pkgs.ninja
     pkgs.pkg-config
     pkgs.rustc
@@ -28,8 +53,6 @@ in pkgs.mkShell {
     pkgs.wayland.dev
   ];
 
-  # Certain Rust tools won't work without this
-  # This can also be fixed by using oxalica/rust-overlay and specifying the rust-src extension
-  # See https://discourse.nixos.org/t/rust-src-not-found-and-other-misadventures-of-developing-rust-on-nixos/11570/3?u=samuela. for more details.
-  RUST_SRC_PATH = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
+
+  RUST_SRC_PATH= "${rustSrc}/lib/rustlib/src/rust/src";
 }

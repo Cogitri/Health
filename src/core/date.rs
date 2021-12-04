@@ -1,12 +1,12 @@
 use chrono::{Date, DateTime, FixedOffset, TimeZone};
-use gtk::glib::{self, DateTime as GDateTime, GBoxed};
+use gtk::glib::{self, Boxed, DateTime as GDateTime};
 
 pub mod prelude {
     pub use super::*;
 }
 
-#[derive(Clone, Debug, PartialEq, Eq, GBoxed)]
-#[gboxed(type_name = "DateTimeBoxed")]
+#[derive(Clone, Debug, PartialEq, Eq, Boxed)]
+#[boxed_type(name = "DateTimeBoxed")]
 pub struct DateTimeBoxed(pub DateTime<FixedOffset>);
 
 #[easy_ext::ext(DateTimeExt)]
@@ -57,7 +57,7 @@ mod test {
 
     #[test]
     fn convert_gdatetime_chrono() {
-        let gdate = glib::DateTime::new_now_local().unwrap();
+        let gdate = glib::DateTime::now_local().unwrap();
         let chrono_date: DateTime<FixedOffset> = gdate.to_chrono();
         assert_eq!(gdate.day_of_month() as u32, chrono_date.day());
         assert_eq!(gdate.year(), chrono_date.year());

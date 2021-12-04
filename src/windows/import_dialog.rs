@@ -50,7 +50,7 @@ mod imp {
             obj: &ImportExportDialogBase,
             password: Option<String>,
         ) -> PinnedResultFuture {
-            let file_chooser = gtk::FileChooserNativeBuilder::new()
+            let file_chooser = gtk::FileChooserNative::builder()
                 .title(&i18n("Open Activities"))
                 .accept_label(&i18n("_Open"))
                 .cancel_label(&i18n("_Cancel"))
@@ -79,7 +79,7 @@ mod imp {
             obj: &ImportExportDialogBase,
             password: Option<String>,
         ) -> PinnedResultFuture {
-            let file_chooser = gtk::FileChooserNativeBuilder::new()
+            let file_chooser = gtk::FileChooserNative::builder()
                 .title(&i18n("Open Weight Measurement"))
                 .accept_label(&i18n("_Open"))
                 .cancel_label(&i18n("_Cancel"))

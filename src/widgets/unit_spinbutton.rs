@@ -72,7 +72,7 @@ mod imp {
             self.parent_constructed(obj);
             self.spin_button.init_delegate();
 
-            obj.set_property("child", &self.spin_button).unwrap();
+            obj.set_property("child", &self.spin_button);
             obj.connect_handlers();
         }
 
@@ -84,21 +84,21 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpec::new_object(
+                    glib::ParamSpecObject::new(
                         "adjustment",
                         "adjustment",
                         "adjustment",
                         gtk::Adjustment::static_type(),
                         glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
                     ),
-                    glib::ParamSpec::new_boolean(
+                    glib::ParamSpecBoolean::new(
                         "auto-update-unit-system",
                         "auto-update-unit-system",
                         "auto-update-unit-system",
                         true,
                         glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
                     ),
-                    glib::ParamSpec::new_uint(
+                    glib::ParamSpecUInt::new(
                         "digits",
                         "digits",
                         "digits",
@@ -107,21 +107,21 @@ mod imp {
                         1,
                         glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
                     ),
-                    glib::ParamSpec::new_boolean(
+                    glib::ParamSpecBoolean::new(
                         "has-default-value",
                         "has-default-value",
                         "has-default-value",
                         true,
                         glib::ParamFlags::READABLE,
                     ),
-                    glib::ParamSpec::new_string(
+                    glib::ParamSpecString::new(
                         "unit-kind",
                         "unit-kind",
                         "unit-kind",
                         None,
                         glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
                     ),
-                    glib::ParamSpec::new_string(
+                    glib::ParamSpecString::new(
                         "unit-system",
                         "unit-system",
                         "unit-system",
@@ -284,7 +284,6 @@ impl UnitSpinButton {
                 None
             }),
         )
-        .unwrap()
     }
 
     /// Connect to a new value being entered (this is emitted for every change (e.g. key hit) the user does!).
@@ -306,7 +305,6 @@ impl UnitSpinButton {
                 None
             }),
         )
-        .unwrap()
     }
 
     pub fn new(
@@ -325,17 +323,17 @@ impl UnitSpinButton {
     }
 
     pub fn has_default_value(&self) -> bool {
-        self.property("has-default-value").unwrap().get().unwrap()
+        self.property::<bool>("has-default-value")
     }
 
     pub fn set_unit_kind(&self, unit_kind: UnitKind) {
         let str: &str = unit_kind.into();
-        self.set_property("unit-kind", str).unwrap();
+        self.set_property("unit-kind", str);
     }
 
     pub fn set_unit_system(&self, unit_system: UnitSystem) {
         let str: &str = unit_system.into();
-        self.set_property("unit-system", str).unwrap();
+        self.set_property("unit-system", str);
     }
 
     pub fn set_value(&self, value: f64) {
@@ -351,7 +349,7 @@ impl UnitSpinButton {
         self_
             .spin_button
             .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.emit_by_name("changed", &[]).unwrap();
+                obj.emit_by_name::<()>("changed", &[]);
             }));
 
         self_
@@ -466,7 +464,7 @@ impl UnitSpinButton {
     }
 
     fn handle_spin_button_input(&self) -> Option<Result<f64, ()>> {
-        self.emit_by_name("input", &[]).unwrap();
+        self.emit_by_name::<()>("input", &[]);
 
         self.raw_value().map(Ok)
     }

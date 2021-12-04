@@ -87,7 +87,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpec::new_boxed(
+                vec![glib::ParamSpecBoxed::new(
                     "selected-date",
                     "selected-date",
                     "selected-date",
@@ -117,7 +117,7 @@ mod imp {
                                 }
                                 if let Some(d) = NaiveDate::from_ymd_opt(year, month, day) {
                                     let date = obj.date_to_datetime_boxed(d);
-                                    obj.set_property("selected-date", date.clone()).unwrap();
+                                    obj.set_property("selected-date", date.clone());
                                     return date.to_value();
                                 }
                             }
@@ -175,11 +175,7 @@ impl DateSelector {
 
     /// Get the currently selected date
     pub fn selected_date(&self) -> DateTime<FixedOffset> {
-        self.property("selected-date")
-            .unwrap()
-            .get::<DateTimeBoxed>()
-            .unwrap()
-            .0
+        self.property::<DateTimeBoxed>("selected-date").0
     }
 
     pub fn handle_date_widget_changed(&self) {
@@ -200,8 +196,7 @@ impl DateSelector {
             value
         };
 
-        self.set_property("selected-date", DateTimeBoxed(datetime))
-            .unwrap();
+        self.set_property("selected-date", DateTimeBoxed(datetime));
     }
 
     fn date_to_datetime_boxed(&self, d: NaiveDate) -> DateTimeBoxed {

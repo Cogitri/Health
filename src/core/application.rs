@@ -123,7 +123,7 @@ impl Application {
     }
 
     fn handle_about(&self) {
-        gtk::AboutDialogBuilder::new()
+        gtk::AboutDialog::builder()
             .transient_for(
                 &self
                     .imp()

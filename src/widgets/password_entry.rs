@@ -70,21 +70,21 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpec::new_string(
+                    glib::ParamSpecString::new(
                         "password",
                         "password",
                         "password",
                         None,
                         glib::ParamFlags::READABLE,
                     ),
-                    glib::ParamSpec::new_boolean(
+                    glib::ParamSpecBoolean::new(
                         "show-password-repeat",
                         "show-password-repeat",
                         "show-password-repeat",
                         true,
                         glib::ParamFlags::READWRITE,
                     ),
-                    glib::ParamSpec::new_boolean(
+                    glib::ParamSpecBoolean::new(
                         "show-password-strength",
                         "show-password-strength",
                         "show-password-strength",
@@ -171,29 +171,23 @@ impl PasswordEntry {
 
     /// Get the currently entered password, or `None` if the passwords entered dont match or are empty.
     pub fn password(&self) -> Option<String> {
-        self.property("password").unwrap().get().unwrap()
+        self.property::<Option<String>>("password")
     }
 
     pub fn set_show_password_repeat(&self, value: bool) {
-        self.set_property("show-password-repeat", value).unwrap();
+        self.set_property("show-password-repeat", value);
     }
 
     pub fn set_show_password_strength(&self, value: bool) {
-        self.set_property("show-password-strength", value).unwrap();
+        self.set_property("show-password-strength", value);
     }
 
     pub fn show_password_repeat(&self) -> bool {
-        self.property("show-password-repeat")
-            .unwrap()
-            .get()
-            .unwrap()
+        self.property::<bool>("show-password-repeat")
     }
 
     pub fn show_password_strength(&self) -> bool {
-        self.property("show-password-strength")
-            .unwrap()
-            .get()
-            .unwrap()
+        self.property::<bool>("show-password-strength")
     }
 
     fn calculate_password_strength(&self) {

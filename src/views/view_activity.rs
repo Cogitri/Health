@@ -20,7 +20,6 @@ use crate::{core::Database, views::View};
 use gtk::glib::{self, subclass::prelude::*, Cast};
 mod imp {
     use crate::{
-        core::Settings,
         model::{Activity, ModelActivity},
         views::{PinnedResultFuture, View, ViewImpl},
         widgets::ActivityRow,
@@ -37,7 +36,6 @@ mod imp {
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_view.ui")]
     pub struct ViewActivity {
-        settings: Settings,
         pub activity_model: ModelActivity,
         pub activities_list_view: OnceCell<gtk::ListView>,
         #[template_child]

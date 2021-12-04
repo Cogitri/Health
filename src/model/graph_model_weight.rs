@@ -130,58 +130,60 @@ mod test {
     #[test]
     fn to_points() {
         let ctx = glib::MainContext::new();
-        ctx.push_thread_default();
-        let data_dir = tempdir().unwrap();
-        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        ctx.with_thread_default(|| {
+            let data_dir = tempdir().unwrap();
+            let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
 
-        let mut model = GraphModelWeight::new_with_database(db.clone());
-        ctx.block_on(model.reload(Duration::days(1))).unwrap();
-        assert_eq!(model.to_points(), vec![]);
+            let mut model = GraphModelWeight::new_with_database(db.clone());
+            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            assert_eq!(model.to_points(), vec![]);
 
-        let date = Local::now().into();
-        let weight = Weight::new(date, Mass::new::<kilogram>(42.0));
-        ctx.block_on(db.save_weight(weight)).unwrap();
-        ctx.block_on(model.reload(Duration::days(1))).unwrap();
-        assert_eq!(
-            model.to_points(),
-            vec![Point {
-                date: date.date(),
-                value: 42.0,
-            }]
-        );
-
-        let weight = Weight::new(date - Duration::days(1), Mass::new::<kilogram>(43.0));
-        ctx.block_on(db.save_weight(weight)).unwrap();
-        ctx.block_on(model.reload(Duration::days(1))).unwrap();
-        assert_eq!(
-            model.to_points(),
-            vec![
-                Point {
-                    date: (date - Duration::days(1)).date(),
-                    value: 43.0,
-                },
-                Point {
+            let date = Local::now().into();
+            let weight = Weight::new(date, Mass::new::<kilogram>(42.0));
+            ctx.block_on(db.save_weight(weight)).unwrap();
+            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            assert_eq!(
+                model.to_points(),
+                vec![Point {
                     date: date.date(),
                     value: 42.0,
-                }
-            ]
-        );
+                }]
+            );
 
-        let weight = Weight::new(date, Mass::new::<kilogram>(43.0));
-        ctx.block_on(db.save_weight(weight)).unwrap();
-        ctx.block_on(model.reload(Duration::days(1))).unwrap();
-        assert_eq!(
-            model.to_points(),
-            vec![
-                Point {
-                    date: (date - Duration::days(1)).date(),
-                    value: 43.0,
-                },
-                Point {
-                    date: date.date(),
-                    value: 43.0,
-                }
-            ]
-        );
+            let weight = Weight::new(date - Duration::days(1), Mass::new::<kilogram>(43.0));
+            ctx.block_on(db.save_weight(weight)).unwrap();
+            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            assert_eq!(
+                model.to_points(),
+                vec![
+                    Point {
+                        date: (date - Duration::days(1)).date(),
+                        value: 43.0,
+                    },
+                    Point {
+                        date: date.date(),
+                        value: 42.0,
+                    }
+                ]
+            );
+
+            let weight = Weight::new(date, Mass::new::<kilogram>(43.0));
+            ctx.block_on(db.save_weight(weight)).unwrap();
+            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            assert_eq!(
+                model.to_points(),
+                vec![
+                    Point {
+                        date: (date - Duration::days(1)).date(),
+                        value: 43.0,
+                    },
+                    Point {
+                        date: date.date(),
+                        value: 43.0,
+                    }
+                ]
+            );
+        })
+        .unwrap();
     }
 }

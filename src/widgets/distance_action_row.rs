@@ -93,7 +93,7 @@ mod imp {
 
             self.distance_spin_button
                 .connect_input(clone!(@weak obj => @default-panic, move |_| {
-                    obj.emit_by_name("input", &[]).unwrap();
+                    obj.emit_by_name::<()>("input", &[]);
                 }));
         }
 
@@ -116,6 +116,7 @@ mod imp {
     }
     impl WidgetImpl for DistanceActionRow {}
     impl ListBoxRowImpl for DistanceActionRow {}
+    impl PreferencesRowImpl for DistanceActionRow {}
     impl ActionRowImpl for DistanceActionRow {}
 }
 
@@ -140,7 +141,6 @@ impl DistanceActionRow {
             callback();
             None
         })
-        .unwrap()
     }
 
     /// Connect to a new value being entered (this is emitted for every change (e.g. key hit) the user does!).
@@ -155,7 +155,6 @@ impl DistanceActionRow {
             callback();
             None
         })
-        .unwrap()
     }
 
     pub fn value(&self) -> Length {
@@ -239,7 +238,7 @@ impl DistanceActionRow {
         } else {
             self_.inner.borrow_mut().value = Length::new::<mile>(value);
         }
-        self.emit_by_name("changed", &[]).unwrap();
+        self.emit_by_name::<()>("changed", &[]);
     }
 
     fn set_togglebutton_text(&self) {

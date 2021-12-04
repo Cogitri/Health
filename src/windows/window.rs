@@ -238,7 +238,7 @@ impl Window {
         self_.settings.set_window_width(inner.current_width);
 
         if let Some(source_id) = inner.sync_source_id.take() {
-            glib::source_remove(source_id);
+            source_id.remove();
         }
 
         Inhibit(false)

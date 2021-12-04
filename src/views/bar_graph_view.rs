@@ -50,8 +50,7 @@ mod imp {
         views::SplitBar,
     };
     use gtk::{
-        gdk::prelude::GdkCairoContextExt,
-        gdk::RGBA,
+        gdk::prelude::*,
         glib::{self, clone},
         pango,
         prelude::*,
@@ -180,7 +179,7 @@ mod imp {
                 ));
                 let (_, extents) = layout.extents();
 
-                cr.rel_move_to(0.0, pango::units_to_double(extents.height) * -1.0);
+                cr.rel_move_to(0.0, pango::units_to_double(extents.height()) * -1.0);
                 pangocairo::show_layout(&cr, &layout);
             }
 
@@ -199,9 +198,9 @@ mod imp {
 
                 cr.move_to(
                     f64::from(i as f32 * inner.scale_x + HALF_X_PADDING * 2.0)
-                        - pango::units_to_double(extents.width) / 2.0,
+                        - pango::units_to_double(extents.width()) / 2.0,
                     f64::from(inner.height + HALF_Y_PADDING * 1.5)
-                        - pango::units_to_double(extents.height) / 2.0,
+                        - pango::units_to_double(extents.height()) / 2.0,
                 );
                 pangocairo::show_layout(&cr, &layout);
             }
@@ -235,12 +234,12 @@ mod imp {
                     f64::from(inner.height + HALF_Y_PADDING) - height - scroll_thickness;
                 GdkCairoContextExt::set_source_rgba(
                     &cr,
-                    &RGBA {
-                        red: 0.0,
-                        blue: 0.0,
-                        green: 0.0,
-                        alpha: 1.0,
-                    },
+                    &gtk::gdk::RGBA::builder()
+                        .red(0.0)
+                        .blue(0.0)
+                        .green(0.0)
+                        .alpha(1.0)
+                        .build(),
                 );
                 cr.move_to(x + f64::from(HALF_X_PADDING), bar_top);
                 cr.rectangle(f64::from(HALF_X_PADDING) + x - 10.0, bar_top, 20.0, height);
@@ -279,17 +278,17 @@ mod imp {
                         message: hover_point.data.message.to_string(),
                     })));
                     let (_, extents) = layout.extents();
-                    let radius = pango::units_to_double(extents.height) / 5.0;
+                    let radius = pango::units_to_double(extents.height()) / 5.0;
                     let degrees = PI / 180.0;
                     let padding = 12.0;
 
                     // If the tooltip doesn't fit to the right side of the point, draw it on the left side of the point
                     let x_delta = if (hover_point.x
-                        + pango::units_to_double(extents.width) as f32
+                        + pango::units_to_double(extents.width()) as f32
                         + padding * 2.0)
                         > inner.width
                     {
-                        (pango::units_to_double(extents.width) as f32 + padding * 3.0) * -1.0
+                        (pango::units_to_double(extents.width()) as f32 + padding * 3.0) * -1.0
                     } else {
                         0.0
                     };
@@ -297,10 +296,10 @@ mod imp {
                     cr.new_sub_path();
                     cr.arc(
                         f64::from(hover_point.x + padding * 2.0 + x_delta)
-                            + pango::units_to_double(extents.width)
+                            + pango::units_to_double(extents.width())
                             - radius,
                         f64::from(hover_point.y - padding / 2.0)
-                            - pango::units_to_double(extents.height) / 2.0
+                            - pango::units_to_double(extents.height()) / 2.0
                             + radius,
                         radius,
                         -90.0 * degrees,
@@ -308,10 +307,10 @@ mod imp {
                     );
                     cr.arc(
                         f64::from(hover_point.x + padding * 2.0 + x_delta)
-                            + pango::units_to_double(extents.width)
+                            + pango::units_to_double(extents.width())
                             - radius,
                         f64::from(hover_point.y + padding / 2.0)
-                            + pango::units_to_double(extents.height) / 2.0
+                            + pango::units_to_double(extents.height()) / 2.0
                             - radius,
                         radius,
                         0.0,
@@ -320,7 +319,7 @@ mod imp {
                     cr.arc(
                         f64::from(hover_point.x + padding + x_delta) + radius,
                         f64::from(hover_point.y + padding / 2.0)
-                            + pango::units_to_double(extents.height) / 2.0
+                            + pango::units_to_double(extents.height()) / 2.0
                             - radius,
                         radius,
                         90.0 * degrees,
@@ -329,7 +328,7 @@ mod imp {
                     cr.arc(
                         f64::from(hover_point.x + padding + x_delta) + radius,
                         f64::from(hover_point.y - padding / 2.0)
-                            - pango::units_to_double(extents.height) / 2.0
+                            - pango::units_to_double(extents.height()) / 2.0
                             + radius,
                         radius,
                         180.0 * degrees,
@@ -341,7 +340,7 @@ mod imp {
 
                     cr.move_to(
                         f64::from(hover_point.x + padding * 1.5 + x_delta),
-                        f64::from(hover_point.y) - pango::units_to_double(extents.height) / 2.0,
+                        f64::from(hover_point.y) - pango::units_to_double(extents.height()) / 2.0,
                     );
                     cr.set_source_rgba(1.0, 1.0, 1.0, 1.0);
                     pangocairo::show_layout(&cr, &layout);
@@ -407,7 +406,7 @@ impl BarGraphView {
     pub fn set_split_bars(&self, split_bars: Vec<SplitBar>) {
         let layout = self.create_pango_layout(Some(&Local::now().format_local()));
         let (_, extents) = layout.extents();
-        let datapoint_width = pango::units_to_double(extents.width) + f64::from(HALF_X_PADDING);
+        let datapoint_width = pango::units_to_double(extents.width()) + f64::from(HALF_X_PADDING);
 
         self.set_size_request(
             (datapoint_width as usize * split_bars.len())

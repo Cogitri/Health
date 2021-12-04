@@ -21,11 +21,11 @@ use crate::{
     model::{ActivityDataPoints, ActivityType},
 };
 use gtk::gdk::RGBA;
-use gtk::glib::{self, GBoxed};
+use gtk::glib::{self, Boxed};
 use std::{convert::TryFrom, str::FromStr};
 
-#[derive(Clone, Debug, PartialEq, Eq, GBoxed)]
-#[gboxed(type_name = "ActivityInfo")]
+#[derive(Clone, Debug, PartialEq, Eq, Boxed)]
+#[boxed_type(name = "ActivityInfo")]
 pub struct ActivityInfoBoxed(pub ActivityInfo);
 
 /// A struct containing informations about a certain activity type.
@@ -48,12 +48,12 @@ impl Default for ActivityInfo {
 }
 
 fn rgb(r: u8, g: u8, b: u8) -> RGBA {
-    RGBA {
-        red: f32::from(r) / 255.0,
-        green: f32::from(g) / 255.0,
-        blue: f32::from(b) / 255.0,
-        alpha: 0.9,
-    }
+    gtk::gdk::RGBA::builder()
+        .red(f32::from(r) / 255.0)
+        .blue(f32::from(g) / 255.0)
+        .green(f32::from(b) / 255.0)
+        .alpha(0.9)
+        .build()
 }
 
 impl From<ActivityType> for ActivityInfo {

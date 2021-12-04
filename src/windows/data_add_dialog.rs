@@ -117,8 +117,9 @@ impl DataAddDialog {
                     if let Result::Ok(activity_add_page) =
                         active_stack_page.downcast::<ViewAddActivity>()
                     {
-                        glib::MainContext::default()
-                            .spawn_local(async move { activity_add_page.handle_response(id).await })
+                        glib::MainContext::default().spawn_local(async move {
+                            activity_add_page.handle_response(id).await
+                        });
                     }
                 }
                 "Add Weight Data" => {
@@ -126,7 +127,7 @@ impl DataAddDialog {
                         active_stack_page.downcast::<ViewAddWeight>()
                     {
                         glib::MainContext::default()
-                            .spawn_local(async move { weight_add_page.handle_response(id).await })
+                            .spawn_local(async move { weight_add_page.handle_response(id).await });
                     }
                 }
                 _ => unimplemented!(),

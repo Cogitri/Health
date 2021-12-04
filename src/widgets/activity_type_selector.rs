@@ -146,7 +146,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpec::new_boxed(
+                vec![glib::ParamSpecBoxed::new(
                     "selected-activity",
                     "selected-activity",
                     "selected-activity",
@@ -211,11 +211,7 @@ impl ActivityTypeSelector {
 
     /// Get the currently selected [ActivityInfo].
     pub fn selected_activity(&self) -> ActivityInfo {
-        self.property("selected-activity")
-            .unwrap()
-            .get::<ActivityInfoBoxed>()
-            .unwrap()
-            .0
+        self.property::<ActivityInfoBoxed>("selected-activity").0
     }
 
     /// Create a new [ActivityTypeSelector].
@@ -250,6 +246,5 @@ impl ActivityTypeSelector {
 
     fn set_selected_activity(&self, val: ActivityInfo) {
         self.set_property("selected-activity", ActivityInfoBoxed(val))
-            .unwrap();
     }
 }

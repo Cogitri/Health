@@ -162,7 +162,6 @@ impl ViewHomePage {
             callback(view_mode);
             None
         })
-        .unwrap()
     }
 
     /// Create a new [ViewHomePage] to display previous activities.
@@ -227,7 +226,7 @@ impl ViewHomePage {
             } else {
                 ViewMode::Calories
             };
-        self.emit_by_name("view-changed", &[]).unwrap();
+        self.emit_by_name::<()>("view-changed", &[]);
     }
 
     pub async fn update(&self) {

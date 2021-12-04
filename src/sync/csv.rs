@@ -267,7 +267,7 @@ mod test {
     #[test]
     fn simple_read_write() {
         let ctx = glib::MainContext::new();
-        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let file = gio::File::new_tmp(Some("Health-Test-XXXXXX")).unwrap().0;
         let data_dir = tempdir().unwrap();
         let csv_handler = CsvHandler::new_with_database(
             Database::new_with_store_path(data_dir.path().into()).unwrap(),
@@ -284,7 +284,7 @@ mod test {
     #[test]
     fn en_decrypt() {
         let ctx = glib::MainContext::new();
-        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let file = gio::File::new_tmp(Some("Health-Test-XXXXXX")).unwrap().0;
         let data_dir = tempdir().unwrap();
         let csv_handler = CsvHandler::new_with_database(
             Database::new_with_store_path(data_dir.path().into()).unwrap(),
@@ -305,7 +305,7 @@ mod test {
     #[test]
     fn encrypted_write_try_unecrypted_read() {
         let ctx = glib::MainContext::new();
-        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let file = gio::File::new_tmp(Some("Health-Test-XXXXXX")).unwrap().0;
         let data_dir = tempdir().unwrap();
         let csv_handler = CsvHandler::new_with_database(
             Database::new_with_store_path(data_dir.path().into()).unwrap(),
@@ -327,7 +327,7 @@ mod test {
     #[test]
     fn unencrypt_write_try_unencrypted_read() {
         let ctx = glib::MainContext::new();
-        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let file = gio::File::new_tmp(Some("Health-Test-XXXXXX")).unwrap().0;
         let data_dir = tempdir().unwrap();
         let csv_handler = CsvHandler::new_with_database(
             Database::new_with_store_path(data_dir.path().into()).unwrap(),
@@ -346,7 +346,7 @@ mod test {
     #[test]
     fn empty_activities_export() {
         let ctx = glib::MainContext::new();
-        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let file = gio::File::new_tmp(Some("Health-Test-XXXXXX")).unwrap().0;
         let data_dir = tempdir().unwrap();
         let csv_handler = CsvHandler::new_with_database(
             Database::new_with_store_path(data_dir.path().into()).unwrap(),
@@ -364,7 +364,7 @@ mod test {
     #[test]
     fn empty_weights_export() {
         let ctx = glib::MainContext::new();
-        let file = gio::File::new_tmp("Health-Test-XXXXXX").unwrap().0;
+        let file = gio::File::new_tmp(Some("Health-Test-XXXXXX")).unwrap().0;
         let data_dir = tempdir().unwrap();
         let csv_handler = CsvHandler::new_with_database(
             Database::new_with_store_path(data_dir.path().into()).unwrap(),

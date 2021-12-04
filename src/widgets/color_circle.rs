@@ -46,12 +46,12 @@ mod imp {
         fn new() -> Self {
             Self {
                 inner: RefCell::new(ColorCircleMut {
-                    color: RGBA {
-                        red: 0.0,
-                        blue: 0.0,
-                        green: 0.0,
-                        alpha: 0.0,
-                    },
+                    color: gtk::gdk::RGBA::builder()
+                        .red(0.0)
+                        .green(0.0)
+                        .blue(0.0)
+                        .alpha(0.0)
+                        .build(),
                 }),
             }
         }

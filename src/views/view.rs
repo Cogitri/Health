@@ -127,35 +127,35 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpec::new_object(
+                    glib::ParamSpecObject::new(
                         "content-widget",
                         "content-widget",
                         "content-widget",
                         gtk::Widget::static_type(),
                         glib::ParamFlags::WRITABLE,
                     ),
-                    glib::ParamSpec::new_string(
+                    glib::ParamSpecString::new(
                         "empty-subtitle",
                         "empty-subtitle",
                         "empty-subtitle",
                         None,
                         glib::ParamFlags::READWRITE,
                     ),
-                    glib::ParamSpec::new_string(
+                    glib::ParamSpecString::new(
                         "icon-name",
                         "icon-name",
                         "icon-name",
                         None,
                         glib::ParamFlags::READWRITE,
                     ),
-                    glib::ParamSpec::new_string(
+                    glib::ParamSpecString::new(
                         "title",
                         "title",
                         "title",
                         None,
                         glib::ParamFlags::READWRITE,
                     ),
-                    glib::ParamSpec::new_string(
+                    glib::ParamSpecString::new(
                         "view-title",
                         "view-title",
                         "view-title",

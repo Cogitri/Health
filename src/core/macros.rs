@@ -23,13 +23,13 @@ macro_rules! properties_setter_getter {
         paste::item! {
             #[doc = "Get value of property"]
             pub fn [< $name >] (&self) -> Option<$type> {
-                self.property($name).unwrap().get().unwrap()
+                self.property::<Option<$type>>($name)
             }
         }
         paste::item! {
             #[doc = "Set value of property"]
             pub fn [< set_ $name >] (&self, value: $type) {
-                self.set_property($name, &value).unwrap()
+                self.set_property($name, &value)
             }
         }
     };

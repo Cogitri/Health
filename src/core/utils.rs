@@ -120,14 +120,17 @@ pub mod prelude {
             let ml = glib::MainLoop::new(Some(&context), false);
             let (sender, receiver) = std::sync::mpsc::channel();
 
-            context.push_thread_default();
-            let m = ml.clone();
-            context.spawn_local(async move {
-                sender.send(self.await).unwrap();
-                m.quit();
-            });
+            context
+                .with_thread_default(|| {
+                    let m = ml.clone();
+                    context.spawn_local(async move {
+                        sender.send(self.await).unwrap();
+                        m.quit();
+                    });
 
-            ml.run();
+                    ml.run();
+                })
+                .unwrap();
 
             receiver.recv().unwrap()
         }

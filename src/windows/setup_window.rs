@@ -187,7 +187,6 @@ impl SetupWindow {
             callback();
             None
         })
-        .unwrap()
     }
 
     /// Create a new [SetupWindow].
@@ -337,7 +336,7 @@ impl SetupWindow {
         };
         self_.settings.set_user_weight_goal(weight);
 
-        self.emit_by_name("setup-done", &[]).unwrap();
+        self.emit_by_name::<()>("setup-done", &[]);
         self.destroy();
     }
 

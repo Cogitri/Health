@@ -105,7 +105,6 @@ impl Database {
             callback();
             None
         })
-        .unwrap()
     }
 
     /// Connect to the `weights-updated` signal.
@@ -120,7 +119,6 @@ impl Database {
             callback();
             None
         })
-        .unwrap()
     }
 
     /// Get activities.
@@ -474,7 +472,7 @@ impl Database {
                 .await?;
         }
 
-        self.emit_by_name("activities-updated", &[]).unwrap();
+        self.emit_by_name::<()>("activities-updated", &[]);
         Ok(())
     }
 
@@ -517,7 +515,7 @@ impl Database {
                 .await?;
         }
 
-        self.emit_by_name("weights-updated", &[]).unwrap();
+        self.emit_by_name::<()>("weights-updated", &[]);
         Ok(())
     }
 
@@ -634,7 +632,7 @@ impl Database {
             )
             .await?;
 
-        self.emit_by_name("activities-updated", &[]).unwrap();
+        self.emit_by_name::<()>("activities-updated", &[]);
         Ok(())
     }
 
@@ -685,7 +683,7 @@ impl Database {
             )
             .await?;
 
-        self.emit_by_name("weights-updated", &[]).unwrap();
+        self.emit_by_name::<()>("weights-updated", &[]);
         Ok(())
     }
 
@@ -798,7 +796,7 @@ impl Database {
             )
             .await?;
 
-        self.emit_by_name("activities-updated", &[]).unwrap();
+        self.emit_by_name::<()>("activities-updated", &[]);
         Ok(())
     }
 
@@ -837,7 +835,7 @@ impl Database {
             )
             .await?;
 
-        self.emit_by_name("weights-updated", &[]).unwrap();
+        self.emit_by_name::<()>("weights-updated", &[]);
         Ok(())
     }
 

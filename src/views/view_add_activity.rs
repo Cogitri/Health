@@ -150,15 +150,15 @@ mod imp {
                 0,
                 0,
                 &[
-                    self.date_selector_actionrow.get().upcast(),
-                    self.activity_type_actionrow.get().upcast(),
-                    self.calories_burned_action_row.get().upcast(),
+                    self.date_selector_actionrow.get(),
+                    self.activity_type_actionrow.get(),
+                    self.calories_burned_action_row.get(),
                     self.distance_action_row.get().upcast(),
-                    self.duration_action_row.get().upcast(),
-                    self.heart_rate_average_action_row.get().upcast(),
-                    self.heart_rate_min_action_row.get().upcast(),
-                    self.heart_rate_max_action_row.get().upcast(),
-                    self.stepcount_action_row.get().upcast(),
+                    self.duration_action_row.get(),
+                    self.heart_rate_average_action_row.get(),
+                    self.heart_rate_min_action_row.get(),
+                    self.heart_rate_max_action_row.get(),
+                    self.stepcount_action_row.get(),
                 ],
             );
 
