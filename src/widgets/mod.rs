@@ -9,6 +9,8 @@ pub mod arrows;
 #[doc(hidden)]
 pub mod bmi_level_bar;
 #[doc(hidden)]
+pub mod card;
+#[doc(hidden)]
 pub mod circular_progress_bar;
 #[doc(hidden)]
 pub mod color_circle;
@@ -37,6 +39,8 @@ pub use activity_type_selector::*;
 pub use arrows::*;
 #[doc(inline)]
 pub use bmi_level_bar::*;
+#[doc(inline)]
+pub use card::*;
 #[doc(inline)]
 pub use circular_progress_bar::*;
 #[doc(inline)]

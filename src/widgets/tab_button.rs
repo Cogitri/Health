@@ -16,9 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use super::Card;
 use gtk::glib::{self};
 
 mod imp {
+    use super::Card;
+    use adw::subclass::prelude::*;
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
@@ -33,10 +36,11 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for TabButton {
         const NAME: &'static str = "HealthTabButton";
-        type ParentType = gtk::Widget;
+        type ParentType = Card;
         type Type = super::TabButton;
 
         fn class_init(klass: &mut Self::Class) {
+            Card::static_type();
             klass.set_layout_manager_type::<gtk::BinLayout>();
             Self::bind_template(klass);
         }
@@ -46,6 +50,7 @@ mod imp {
         }
     }
 
+    impl BinImpl for TabButton {}
     impl WidgetImpl for TabButton {}
     impl ObjectImpl for TabButton {
         fn dispose(&self, obj: &Self::Type) {
@@ -98,7 +103,7 @@ mod imp {
 glib::wrapper! {
     /// [TabButton] is a toplevel container that is implemented by all other views of Health.
     pub struct TabButton(ObjectSubclass<imp::TabButton>)
-        @extends gtk::Widget,
+        @extends gtk::Widget, adw::Bin, Card,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

@@ -9,6 +9,7 @@
     <file preprocess="xml-stripblanks">ui/activity_view.ui</file>
     <file preprocess="xml-stripblanks">ui/bmi_level_bar.ui</file>
     <file preprocess="xml-stripblanks">ui/calorie_view.ui</file>
+    <file preprocess="xml-stripblanks">ui/card.ui</file>
     <file preprocess="xml-stripblanks">ui/date_editor.ui</file>
     <file preprocess="xml-stripblanks">ui/distance_action_row.ui</file>
     <file preprocess="xml-stripblanks">ui/home_page.ui</file>
