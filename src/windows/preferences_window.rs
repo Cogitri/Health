@@ -202,7 +202,7 @@ impl PreferencesWindow {
         o.set_application(
             parent_window
                 .as_ref()
-                .and_then(|p| p.application())
+                .and_then(gtk::prelude::GtkWindowExt::application)
                 .as_ref(),
         );
 
