@@ -9,14 +9,6 @@ pub mod activity_type;
 #[doc(hidden)]
 pub mod activity_type_row_data;
 #[doc(hidden)]
-pub mod graph_model_calories;
-#[doc(hidden)]
-pub mod graph_model_steps;
-#[doc(hidden)]
-pub mod graph_model_weight;
-#[doc(hidden)]
-pub mod model_activity;
-#[doc(hidden)]
 pub mod model_notification;
 #[doc(hidden)]
 pub mod steps;
@@ -35,14 +27,6 @@ pub use activity_info::*;
 pub use activity_type::*;
 #[doc(inline)]
 pub use activity_type_row_data::*;
-#[doc(inline)]
-pub use graph_model_calories::*;
-#[doc(inline)]
-pub use graph_model_steps::*;
-#[doc(inline)]
-pub use graph_model_weight::*;
-#[doc(inline)]
-pub use model_activity::*;
 #[doc(inline)]
 pub use model_notification::*;
 #[doc(inline)]

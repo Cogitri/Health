@@ -26,8 +26,7 @@ features = ["gtk_v4_4"]
 version = "1.0"
 
 [dependencies.ashpd]
-git = "https://github.com/Cogitri/ashpd"
-branch = "fix-build"
+git = "https://github.com/bilelmoussaoui/ashpd"
 features = ["feature_gtk4"]
 
 [dependencies.bitflags]
@@ -87,6 +86,9 @@ version = "0.2"
 default-features = false
 version = "4.0.0"
 features = ["ureq"]
+
+[dependencies.dyn-clonable]
+version = "0.9"
 
 [dependencies.once_cell]
 version = "1.5"

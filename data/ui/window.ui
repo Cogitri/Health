@@ -23,6 +23,12 @@
   <menu id="primary_menu">
     <section>
       <item>
+        <attribute name="action">win.disable-current-plugin</attribute>
+        <attribute name="label" translatable="yes">_Disable Current Plugin</attribute>
+      </item>
+    </section>
+    <section>
+      <item>
         <attribute name="action">app.preferences</attribute>
         <attribute name="label" translatable="yes">_Preferences</attribute>
       </item>
@@ -99,13 +105,10 @@
           </object>
         </child>
         <child>
-          <object class="GtkStack" id="stack">
+          <object class="HealthViewHomePage" id="view_home_page">
             <property name="width-request">265</property>
             <property name="height-request">200</property>
             <property name="vexpand">1</property>
-            <child>
-              <placeholder/>
-            </child>
           </object>
         </child>
       </object>

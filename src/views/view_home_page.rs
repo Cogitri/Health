@@ -17,64 +17,41 @@
  */
 
 use crate::{
-    core::{i18n, i18n_f, utils::prelude::*, Database, UnitSystem},
-    model::{GraphModelSteps, GraphModelWeight},
-    ni18n_f,
+    plugins::{Plugin, Registrar},
     views::View,
-    windows::ViewMode,
+    ViewExt,
 };
-use adw::prelude::*;
-use chrono::Duration;
-use gtk::glib::{self, clone, object::ObjectExt, subclass::prelude::*, Cast};
-use uom::si::mass::{kilogram, pound};
+use gtk::{
+    glib::{self, object::ObjectExt, subclass::prelude::*},
+    prelude::*,
+};
 
 mod imp {
     use crate::{
+        plugins::{PluginObject, PluginSummaryRow, Registrar},
         views::{PinnedResultFuture, View, ViewImpl},
-        widgets::{Arrows, CircularProgressBar, TabButton},
-        windows::ViewMode,
-        Settings,
+        Settings, ViewExt,
     };
+    use adw::prelude::*;
     use gtk::{
         gio,
         glib::{self, subclass::Signal, Cast},
-        {prelude::*, subclass::prelude::*, CompositeTemplate},
+        {subclass::prelude::*, CompositeTemplate},
     };
-    use std::cell::RefCell;
-
-    #[derive(Debug, Default)]
-    pub struct ViewHomePageMut {
-        pub view_mode: ViewMode,
-    }
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/home_page.ui")]
     pub struct ViewHomePage {
-        pub inner: RefCell<ViewHomePageMut>,
         pub settings: Settings,
-        pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
-        pub settings_handler_id2: RefCell<Option<glib::SignalHandlerId>>,
 
         #[template_child]
-        pub circular_progress_bar: TemplateChild<CircularProgressBar>,
+        pub user_selected_data: TemplateChild<gtk::ListBox>,
         #[template_child]
-        pub arrow: TemplateChild<Arrows>,
+        pub all_data: TemplateChild<gtk::ListBox>,
         #[template_child]
-        pub button_flow_box: TemplateChild<gtk::FlowBox>,
+        pub all_data_box: TemplateChild<gtk::Box>,
         #[template_child]
-        pub steps_actionrow: TemplateChild<adw::ActionRow>,
-        #[template_child]
-        pub weight_actionrow: TemplateChild<adw::ActionRow>,
-        #[template_child]
-        pub steps_percentage: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub weight_change: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub weight_subtext: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub arrow_box: TemplateChild<gtk::ScrolledWindow>,
-        #[template_child]
-        pub tab_button: TemplateChild<TabButton>,
+        pub size_group: TemplateChild<gtk::SizeGroup>,
     }
 
     #[glib::object_subclass]
@@ -107,13 +84,76 @@ mod imp {
             SIGNALS.as_ref()
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
-            if let Some(id) = self.settings_handler_id.borrow_mut().take() {
-                self.settings.disconnect(id);
+        fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
+            let registrar = Registrar::instance();
+            let disabled_model = registrar.disabled_plugins();
+            let enabled_model = registrar.enabled_plugins();
+            let disabled_filter =
+                gtk::CustomFilter::new(glib::clone!(@weak obj => @default-panic, move |o| {
+                    obj.filter_plugin(o.clone().downcast::<PluginObject>().unwrap().plugin(), true)
+                }));
+            let enabled_filter =
+                gtk::CustomFilter::new(glib::clone!(@weak obj => @default-panic, move |o| {
+                    obj.filter_plugin(o.clone().downcast::<PluginObject>().unwrap().plugin(), true)
+                }));
+            let disabled_filter_model =
+                gtk::FilterListModel::new(Some(&disabled_model), Some(&disabled_filter));
+            let enabled_filter_model =
+                gtk::FilterListModel::new(Some(&enabled_model), Some(&enabled_filter));
+
+            self.user_selected_data.bind_model(
+                Some(&enabled_filter_model),
+                glib::clone!(@strong self.size_group as sg => @default-panic, move |o| {
+                    let summary = o.clone()
+                        .downcast::<PluginObject>()
+                        .unwrap()
+                        .plugin()
+                        .summary();
+
+                        sg.add_widget(&summary);
+
+                        summary.upcast()
+                }),
+            );
+            self.all_data.bind_model(
+                Some(&disabled_filter_model),
+                glib::clone!(@strong self.size_group as sg => @default-panic, move |o| {
+                    let overview = o.clone()
+                        .downcast::<PluginObject>()
+                        .unwrap()
+                        .plugin()
+                        .overview();
+
+                        sg.add_widget(&overview);
+
+                        overview.upcast()
+                }),
+            );
+
+            self.user_selected_data.connect_row_selected(
+                glib::clone!(@weak obj => move |list_box, row| {
+                    if let Some(row) = row {
+                        let summary = row.downcast_ref::<PluginSummaryRow>().unwrap();
+                        let plugin_name = summary.plugin_name().unwrap();
+                        obj.stack().set_visible_child_name(&plugin_name);
+                        obj.emit_by_name::<()>("view-changed", &[]);
+                        list_box.unselect_all();
+                    }
+                }),
+            );
+
+            if disabled_model.is_empty() {
+                self.all_data_box.set_visible(false);
             }
-            if let Some(id) = self.settings_handler_id2.borrow_mut().take() {
-                self.settings.disconnect(id);
+
+            let stack = obj.stack();
+            for plugin in enabled_model.iter() {
+                plugin.update();
+                stack.add_named(&plugin.details(), Some(plugin.name()));
             }
+            stack.set_visible_child_name("add_data_page")
         }
     }
 
@@ -123,10 +163,11 @@ mod imp {
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
                     gtk_macros::spawn!(async move {
-                        obj.downcast_ref::<super::ViewHomePage>()
-                            .unwrap()
-                            .update()
-                            .await;
+                        let registrar = Registrar::instance();
+                        let enabled_model = registrar.enabled_plugins();
+                        for plugin in enabled_model.iter() {
+                            plugin.update();
+                        }
                         send.resolve(Ok(()));
                     });
                 }),
@@ -143,6 +184,10 @@ glib::wrapper! {
 }
 
 impl ViewHomePage {
+    pub fn back(&self) {
+        self.stack().set_visible_child_name("add_data_page");
+    }
+
     /// Connect to the `view-changed` signal.
     ///
     /// # Arguments
@@ -150,214 +195,47 @@ impl ViewHomePage {
     ///
     /// # Returns
     /// A [glib::SignalHandlerId] that can be used for disconnecting the signal if so desired.
-    pub fn connect_view_changed<F: Fn(ViewMode) + 'static>(
-        &self,
-        callback: F,
-    ) -> glib::SignalHandlerId {
-        let downgraded = self.downgrade();
+    pub fn connect_view_changed<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
         self.connect_local("view-changed", false, move |_| {
-            let view_mode = downgraded
-                .upgrade()
-                .map_or(ViewMode::HomePage, |obj| obj.imp().inner.borrow().view_mode);
-            callback(view_mode);
+            callback();
             None
         })
     }
 
+    pub fn current_page(&self) -> String {
+        self.stack().visible_child_name().unwrap().to_string()
+    }
+
+    pub fn disable_current_plugin(&self) {
+        let self_ = self.imp();
+        let registrar = Registrar::instance();
+        let current_plugin = self.current_page();
+
+        registrar.disable_plugin(&current_plugin);
+        self_.all_data_box.set_visible(true);
+        self_.settings.set_enabled_plugins(
+            &self_
+                .settings
+                .enabled_plugins()
+                .iter()
+                .filter(|s| *s != &current_plugin)
+                .map(String::as_str)
+                .collect::<Vec<&str>>()
+                .as_slice(),
+        );
+    }
+
     /// Create a new [ViewHomePage] to display previous activities.
     pub fn new() -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create ViewHomePage");
-        o.upcast_ref::<View>()
-            .stack()
-            .set_visible_child_name("add_data_page");
-
-        Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
-            gtk_macros::spawn!(async move {
-                o.update_activities().await;
-            });
-        }));
-
-        Database::instance().connect_weights_updated(glib::clone!(@weak o => move || {
-            gtk_macros::spawn!(async move {
-                o.update_weights().await;
-            });
-        }));
-
-        let self_ = o.imp();
-
-        self_.button_flow_box.connect_child_activated(
-            clone!(@weak o as obj => move |_,button_pressed| {
-                obj.handle_button_press(button_pressed)
-            }),
-        );
-
-        self_
-            .settings_handler_id
-            .replace(Some(self_.settings.connect_user_step_goal_changed(
-                glib::clone!(@weak o as obj => move |_,_| {
-                    gtk_macros::spawn!(async move {
-                        obj.update_activities().await;
-                    });
-                }),
-            )));
-
-        self_
-            .settings_handler_id2
-            .replace(Some(self_.settings.connect_user_weight_goal_changed(
-                glib::clone!(@weak o as obj => move |_,_| {
-                    gtk_macros::spawn!(async move {
-                        obj.update_weights().await;
-                    });
-                }),
-            )));
-
-        o
+        glib::Object::new(&[]).expect("Failed to create ViewHomePage")
     }
 
-    fn handle_button_press(&self, button_pressed: &gtk::FlowBoxChild) {
-        let self_ = self.imp();
-        self_.inner.borrow_mut().view_mode =
-            if button_pressed == &self_.button_flow_box.child_at_index(0).unwrap() {
-                ViewMode::Weight
-            } else if button_pressed == &self_.button_flow_box.child_at_index(1).unwrap() {
-                ViewMode::Steps
-            } else if button_pressed == &self_.button_flow_box.child_at_index(2).unwrap() {
-                ViewMode::Activities
-            } else {
-                ViewMode::Calories
-            };
-        self.emit_by_name::<()>("view-changed", &[]);
-    }
-
-    pub async fn update(&self) {
-        self.update_activities().await;
-        self.update_weights().await;
-    }
-
-    pub async fn update_activities(&self) {
-        let self_ = self.imp();
-        self_
-            .circular_progress_bar
-            .set_step_goal(i64::from(self_.settings.user_step_goal()));
-        let mut steps_model = GraphModelSteps::new();
-        if let Err(e) = steps_model.reload(Duration::days(30)).await {
-            glib::g_warning!(
-                crate::config::LOG_DOMAIN,
-                "Failed to reload step data: {}",
-                e
-            );
-        }
-        let step_count = steps_model.today_step_count().unwrap_or(0);
-        self_
-            .circular_progress_bar
-            .set_step_count(i64::from(step_count));
-        self_.steps_actionrow.set_subtitle(&ni18n_f(
-            "{} step taken today",
-            "{} steps taken today",
-            step_count,
-            &[&step_count.to_string()],
-        ));
-        let step_goal = self_.settings.user_step_goal();
-        if step_goal == 0 {
-            self_.steps_percentage.set_label(&i18n("No step goal set"));
+    fn filter_plugin(&self, plugin: Box<dyn Plugin>, enabled: bool) -> bool {
+        let registrar = Registrar::instance();
+        if enabled {
+            registrar.enabled_plugins().contains(plugin.name())
         } else {
-            self_.steps_percentage.set_label(&i18n_f(
-                "{}%",
-                &[&(100 * step_count / step_goal).to_string()],
-            ));
-        }
-    }
-
-    // TRANSLATORS notes have to be on the same line, so we cant split them
-    #[rustfmt::skip]
-    pub async fn update_weights(&self) {
-        let self_ = self.imp();
-        let mut weight_model = GraphModelWeight::new();
-        if let Err(e) = weight_model.reload(Duration::days(30)).await {
-            glib::g_warning!(
-                crate::config::LOG_DOMAIN,
-                "Failed to reload step data: {}",
-                e
-            );
-        }
-        self_.arrow_box.set_visible(true);
-        if !weight_model.is_empty() {
-            let last_weight = if self_.settings.unit_system() == UnitSystem::Imperial {
-                weight_model.last_weight().unwrap().get::<pound>()
-            } else {
-                weight_model.last_weight().unwrap().get::<kilogram>()
-            };
-            let prev_weight = if self_.settings.unit_system() == UnitSystem::Imperial {
-                weight_model.penultimate_weight().unwrap().get::<pound>()
-            } else {
-                weight_model.penultimate_weight().unwrap().get::<kilogram>()
-            };
-            let last_weight_round = last_weight.round_decimal_places(1);
-            self_.arrow.set_weight(last_weight_round);
-            let difference = (last_weight - prev_weight).round_decimal_places(1);
-            self_.arrow.set_weight_difference(difference);
-            let subtitle = if self_.settings.unit_system() == UnitSystem::Imperial {
-                // TRANSLATORS: Current user weight
-                ni18n_f("{} pound",
-                    "{} pounds",
-                    last_weight_round as u32,
-                    &[&last_weight_round.to_string()],
-                )
-            } else {
-                // TRANSLATORS: Current user weight
-                ni18n_f("{} kilogram",
-                    "{} kilograms",
-                    last_weight_round as u32,
-                    &[&last_weight_round.to_string()],
-                )
-            };
-            self_.weight_actionrow.set_subtitle(&subtitle);
-            if difference > 0.0 {
-                let label = if self_.settings.unit_system() == UnitSystem::Imperial {
-                    // TRANSLATORS: Difference to last weight measurement
-                    ni18n_f("+ {} pound",
-                        "+ {} pounds",
-                        difference as u32,
-                        &[&difference.to_string()],
-                    )
-                } else {
-                    // TRANSLATORS: Difference to last weight measurement
-                    ni18n_f( "+ {} kilogram",
-                        "+ {} kilograms",
-                        difference as u32,
-                        &[&difference.to_string()],
-                    )
-                };
-                self_.weight_change.set_label(&label)
-            } else if difference < 0.0 {
-                let label = if self_.settings.unit_system() == UnitSystem::Imperial {
-                    // TRANSLATORS: Difference to last weight measurement
-                    ni18n_f("{} pound",
-                            "{} pounds",
-                            difference as u32,
-                            &[&difference.to_string()],
-                        )
-                } else {
-                    // TRANSLATORS: Difference to last weight measurement
-                    ni18n_f("{} kilogram",
-                        "{} kilograms",
-                        difference as u32,
-                        &[&difference.to_string()],
-                    )
-                };
-                self_.weight_change.set_label(&label)
-            } else {
-                self_.weight_change.set_label(&i18n("No change in weight"));
-                self_.arrow_box.set_visible(false);
-            }
-            self_
-                .weight_subtext
-                .set_label(&i18n("compared to previous weight"));
-        } else {
-            self_
-                .weight_subtext
-                .set_label(&i18n("use + to add a weight record"));
-            self_.arrow_box.set_visible(false);
+            registrar.disabled_plugins().contains(plugin.name())
         }
     }
 

@@ -62,7 +62,7 @@
     <property name="icon-name">walking-symbolic</property>
     <property name="name">Add Activity Data</property>
     <property name="title" translatable="yes">Add An Activity</property>
-    <child>
+    <property name="add-content-widget">
       <object class="GtkScrolledWindow">
         <property name="propagate-natural-height">1</property>
         <child>
@@ -87,7 +87,7 @@
           </object>
         </child>
       </object>
-    </child>
+    </property>
   </template>
   <object class="AdwActionRow" id="date_selector_actionrow">
     <property name="title" translatable="yes">Date</property>

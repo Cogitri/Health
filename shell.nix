@@ -44,7 +44,10 @@ in pkgs.mkShell {
     mesonNew
     rustSrc
     pkgs.cargo-outdated 
+    pkgs.clang_13
     pkgs.gtk4.dev
+    pkgs.libxml2
+    pkgs.mold
     pkgs.ninja
     pkgs.pkg-config
     pkgs.rustc
@@ -55,4 +58,5 @@ in pkgs.mkShell {
 
 
   RUST_SRC_PATH= "${rustSrc}/lib/rustlib/src/rust/src";
+  RUSTFLAGS="-C linker=clang -C link-arg=--ld-path=${pkgs.mold}/bin/mold";
 }

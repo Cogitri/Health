@@ -46,7 +46,10 @@
       <property name="step-increment">1</property>
       <property name="page-increment">10</property>
     </object>
-    <child>
+    <object class="GtkSizeGroup" id="size_group">
+      <property name="mode">vertical</property>
+    </object>
+    <property name="add-content-widget">
       <object class="AdwClamp">
         <property name="maximum-size">400</property>
         <property name="tightening-threshold">200</property>
@@ -58,118 +61,61 @@
         <property name="margin-top">6</property>
         <property name="margin-bottom">6</property>
         <child>
-          <object class="AdwPreferencesPage">
-            <property name="icon_name">emblem-system-symbolic</property>
-            <property name="title" translatable="yes">General</property>
+          <object class="GtkBox">
+            <property name="orientation">vertical</property>
             <child>
-              <object class="AdwPreferencesGroup">
-                <property name="title" translatable="yes">Today</property>
+              <object class="GtkBox">
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="AdwActionRow" id="steps_actionrow">
-                    <property name="title" translatable="yes">Steps</property>
-                    <property name="subtitle" translatable="yes"></property>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="margin-end">13</property>
-                        <child>
-                          <object class="HealthCircularProgressBar" id="circular_progress_bar"/>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="steps_percentage"/>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="activity_subtext">
-                            <property name="wrap">1</property>
-                            <property name="max-width-chars">15</property>
-                            <!-- TRANSLATORS: This is displayed via two strings: x% and then this label. E.g. 100% of daily step goal -->
-                            <property translatable="yes" name="label">of daily step goal</property>
-                            <attributes>
-                              <attribute name="font-desc" value="8.0"></attribute>
-                              <attribute name="weight" value="200.0"></attribute>
-                            </attributes>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
+                  <object class="GtkLabel">
+                    <property name="can_focus">False</property>
+                    <property name="ellipsize">end</property>
+                    <property name="use-markup">True</property>
+                    <property name="xalign">0</property>
+                    <property name="label">For you</property>
+                    <property name="margin-bottom">12</property>
+                    <style>
+                      <class name="heading"/>
+                      <!-- Matching elementary class. -->
+                      <class name="h4"/>
+                    </style>
                   </object>
                 </child>
                 <child>
-                  <object class="AdwActionRow" id="weight_actionrow">
-                    <property name="title" translatable="yes">Weight</property>
-                    <property name="subtitle" translatable="yes"></property>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="orientation">vertical</property>
-                        <property name="margin-top">3</property>
-                        <property name="margin-bottom">3</property>
-                        <child>
-                          <object class="GtkScrolledWindow" id="arrow_box">
-                            <property name="visible">0</property>
-                            <child>
-                              <object class="HealthArrows" id="arrow">
-                              </object>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="weight_change">
-                            <property name="wrap">1</property>
-                            <property name="max-width-chars">8</property>
-                            <property name="label" translatable="yes">No weight record added</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="weight_subtext">
-                            <property name="wrap">1</property>
-                            <property name="max-width-chars">15</property>
-                            <property translatable="yes" name="label"></property>
-                            <attributes>
-                              <attribute name="font-desc" value="8.0"></attribute>
-                              <attribute name="weight" value="200.0"></attribute>
-                            </attributes>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
+                  <object class="GtkListBox" id="user_selected_data">
+                    <property name="selection-mode">single</property>
+                    <property name="activate-on-single-click">1</property>
+                    <style>
+                      <class name="content"/>
+                    </style>
                   </object>
                 </child>
               </object>
             </child>
             <child>
-              <object class="AdwPreferencesGroup">
-                <property name="title" translatable="yes">All Data</property>
+              <object class="GtkBox" id="all_data_box">
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkFlowBox" id="button_flow_box">
-                    <property name="homogeneous">1</property>
-                    <property name="max-children-per-line">2</property>
-                    <property name="selection-mode">GTK_SELECTION_NONE</property>
-                    <property name="row-spacing">2</property>
-                    <property name="column-spacing">2</property>
-                    <child>
-                      <object class="HealthTabButton" id="tab_button">
-                        <property name="tab-name" translatable="yes">Weight</property>
-                        <property name="icon-name">weight-scale-thin-symbolic</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="HealthTabButton">
-                        <property name="tab-name" translatable="yes">Steps</property>
-                        <property name="icon-name">steps-thin-symbolic</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="HealthTabButton">
-                        <property name="tab-name" translatable="yes">Activities</property>
-                        <property name="icon-name">walking-thin-symbolic</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="HealthTabButton">
-                        <property name="tab-name" translatable="yes">Calories</property>
-                        <property name="icon-name">calories-thin-symbolic</property>
-                      </object>
-                    </child>
+                  <object class="GtkLabel">
+                    <property name="can_focus">False</property>
+                    <property name="ellipsize">end</property>
+                    <property name="use-markup">True</property>
+                    <property name="xalign">0</property>
+                    <property name="label">All data</property>
+                    <property name="margin-bottom">12</property>
+                    <style>
+                      <class name="heading"/>
+                      <!-- Matching elementary class. -->
+                      <class name="h4"/>
+                    </style>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkListBox" id="all_data">
+                    <property name="selection-mode">single</property>
+                    <style>
+                      <class name="content"/>
+                    </style>
                   </object>
                 </child>
               </object>
@@ -177,6 +123,6 @@
           </object>
         </child>
       </object>
-    </child>
+    </property>
   </template>
 </interface>

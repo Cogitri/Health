@@ -20,7 +20,8 @@ use crate::{core::Database, views::View};
 use gtk::glib::{self, subclass::prelude::*, Cast};
 mod imp {
     use crate::{
-        model::{Activity, ModelActivity},
+        model::Activity,
+        plugins::activities::ModelActivity,
         views::{PinnedResultFuture, View, ViewImpl},
         widgets::ActivityRow,
     };
@@ -34,8 +35,8 @@ mod imp {
     use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/dev/Cogitri/Health/ui/activity_view.ui")]
-    pub struct ViewActivity {
+    #[template(resource = "/dev/Cogitri/Health/ui/plugins/activities/details.ui")]
+    pub struct PluginActivitiesDetails {
         pub activity_model: ModelActivity,
         pub activities_list_view: OnceCell<gtk::ListView>,
         #[template_child]
@@ -45,10 +46,10 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for ViewActivity {
-        const NAME: &'static str = "HealthViewActivity";
+    impl ObjectSubclass for PluginActivitiesDetails {
+        const NAME: &'static str = "HealthPluginActivitiesDetails";
         type ParentType = View;
-        type Type = super::ViewActivity;
+        type Type = super::PluginActivitiesDetails;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -62,9 +63,9 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for ViewActivity {}
+    impl WidgetImpl for PluginActivitiesDetails {}
 
-    impl ObjectImpl for ViewActivity {
+    impl ObjectImpl for PluginActivitiesDetails {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
@@ -89,13 +90,13 @@ mod imp {
         }
     }
 
-    impl ViewImpl for ViewActivity {
+    impl ViewImpl for PluginActivitiesDetails {
         fn update(&self, obj: &View) -> PinnedResultFuture {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
                     gtk_macros::spawn!(async move {
-                        obj.downcast_ref::<super::ViewActivity>()
+                        obj.downcast_ref::<super::PluginActivitiesDetails>()
                             .unwrap()
                             .update()
                             .await;
@@ -109,15 +110,15 @@ mod imp {
 
 glib::wrapper! {
     /// An implementation of [View] visualizes activities the user recently did.
-    pub struct ViewActivity(ObjectSubclass<imp::ViewActivity>)
+    pub struct PluginActivitiesDetails(ObjectSubclass<imp::PluginActivitiesDetails>)
         @extends gtk::Widget, View,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
-impl ViewActivity {
-    /// Create a new [ViewActivity] to display previous activities.
+impl PluginActivitiesDetails {
+    /// Create a new [PluginActivitiesDetails] to display previous activities.
     pub fn new() -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create ViewActivity");
+        let o: Self = glib::Object::new(&[]).expect("Failed to create PluginActivitiesDetails");
 
         Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
@@ -154,7 +155,7 @@ impl ViewActivity {
         }
     }
 
-    fn imp(&self) -> &imp::ViewActivity {
-        imp::ViewActivity::from_instance(self)
+    fn imp(&self) -> &imp::PluginActivitiesDetails {
+        imp::PluginActivitiesDetails::from_instance(self)
     }
 }

@@ -26,6 +26,11 @@
       <summary>Toggle notifications</summary>
       <description>Whether to enable notifications.</description>
     </key>
+    <key name="enabled-plugins" type="as">
+      <default>['activities', 'calories', 'steps', 'weight']</default>
+      <summary>Set enabled plugins</summary>
+      <description>Sets all data source plugins that are enabled in Health.</description>
+    </key>
     <key name="notification-time" type="s">
       <default>"00:00:00"</default>
       <summary>Notification time</summary>

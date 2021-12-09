@@ -72,7 +72,7 @@ checksum = "23b62fc65de8e4e7f52534fb52b0f3ed04746ae267519eef2a83941e8085068b"
 [[package]]
 name = "ashpd"
 version = "0.2.0-alpha-5"
-source = "git+https://github.com/Cogitri/ashpd?branch=fix-build#e8b764bf49ad70440d019ebe0a1ea0785ecbc66a"
+source = "git+https://github.com/bilelmoussaoui/ashpd#ce945894f91e9ba53ec4c5096faace5f0573377f"
 dependencies = [
  "enumflags2",
  "futures",
@@ -615,6 +615,33 @@ dependencies = [
  "num-traits",
  "rust_decimal",
 ]
+
+[[package]]
+name = "dyn-clonable"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4e9232f0e607a262ceb9bd5141a3dfb3e4db6994b31989bbfd845878cba59fd4"
+dependencies = [
+ "dyn-clonable-impl",
+ "dyn-clone",
+]
+
+[[package]]
+name = "dyn-clonable-impl"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "558e40ea573c374cf53507fd240b7ee2f5477df7cfebdb97323ec61c719399c5"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "dyn-clone"
+version = "1.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee2626afccd7561a06cf1367e2950c4718ea04565e20fb5029b6c7d8ad09abcf"
 
 [[package]]
 name = "easy-ext"
@@ -1173,6 +1200,7 @@ dependencies = [
  "csv",
  "delegate",
  "dtparse",
+ "dyn-clonable",
  "easy-ext",
  "gettext-rs",
  "glob",

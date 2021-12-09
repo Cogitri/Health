@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  step_view.ui
+  weight_view.ui
 
   Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
 
@@ -19,12 +19,12 @@
 -->
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
-  <template class="HealthViewSteps" parent="HealthView">
-    <property name="empty-subtitle" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new activity.</property>
-    <property name="icon-name">steps-symbolic</property>
-    <property name="name">Steps</property>
-    <property name="title" translatable="yes">Steps</property>
-    <property name="view-title" translatable="yes">Steps</property>
+  <template class="HealthPluginWeightDetails" parent="HealthView">
+    <property name="empty-subtitle" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new weight measurement.</property>
+    <property name="icon-name">weight-scale-symbolic</property>
+    <property name="name">Weight</property>
+    <property name="title" translatable="yes">Weight Measurements</property>
+    <property name="view-title" translatable="yes">Weight</property>
     <property name="content-widget">
       <object class="GtkFrame">
         <property name="margin-bottom">18</property>

@@ -19,8 +19,8 @@
 use crate::{
     core::{i18n_f, Database},
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
-    views::{ViewActivity, ViewCalories, ViewExt, ViewHomePage, ViewSteps, ViewWeight},
     windows::DataAddDialog,
+    ViewExt,
 };
 use gtk::{
     gio,
@@ -28,38 +28,21 @@ use gtk::{
     prelude::*,
 };
 use gtk_macros::action;
-use std::collections::BTreeMap;
-
-#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum ViewMode {
-    Steps,
-    Weight,
-    Activities,
-    Calories,
-    HomePage,
-}
-impl Default for ViewMode {
-    fn default() -> Self {
-        Self::HomePage
-    }
-}
 
 mod imp {
-    use crate::{core::Settings, views::View, windows::ViewMode};
+    use crate::{core::Settings, views::ViewHomePage};
     use gtk::{
         glib::{self, SourceId},
         prelude::*,
         subclass::prelude::*,
         CompositeTemplate,
     };
-    use once_cell::unsync::OnceCell;
-    use std::{cell::RefCell, collections::BTreeMap};
+    use std::cell::RefCell;
 
     #[derive(Debug, Default)]
     pub struct WindowMut {
         pub current_height: i32,
         pub current_width: i32,
-        pub current_view: ViewMode,
         pub sync_source_id: Option<SourceId>,
     }
 
@@ -68,7 +51,6 @@ mod imp {
     pub struct Window {
         pub inner: RefCell<WindowMut>,
         pub settings: Settings,
-        pub views: OnceCell<BTreeMap<ViewMode, View>>,
 
         #[template_child]
         pub add_data_button: TemplateChild<gtk::Button>,
@@ -81,7 +63,7 @@ mod imp {
         #[template_child]
         pub primary_menu_popover: TemplateChild<gtk::Popover>,
         #[template_child]
-        pub stack: TemplateChild<gtk::Stack>,
+        pub view_home_page: TemplateChild<ViewHomePage>,
     }
 
     #[glib::object_subclass]
@@ -91,6 +73,7 @@ mod imp {
         type Type = super::Window;
 
         fn class_init(klass: &mut Self::Class) {
+            ViewHomePage::static_type();
             Self::bind_template(klass);
         }
 
@@ -137,19 +120,10 @@ impl Window {
                     &[&e.to_string()],
                 ))
             }
-            obj.create_views();
+            obj.setup();
         });
 
         o
-    }
-
-    fn handle_button_press(&self, view_mode: ViewMode) {
-        let self_ = self.imp();
-        self_
-            .stack
-            .set_visible_child(self_.views.get().unwrap().get(&view_mode).unwrap());
-        self_.back_button.set_visible(true);
-        self_.inner.borrow_mut().current_view = view_mode;
     }
 
     pub fn open_hamburger_menu(&self) {
@@ -170,15 +144,14 @@ impl Window {
             .connect_clicked(clone!(@weak self as obj => move |_| {
                 obj.handle_back_button_clicked();
             }));
-
         self_
             .error_infobar
             .connect_response(Self::handle_error_infobar_response);
-
         self_
-            .stack
-            .connect_visible_child_notify(clone!(@weak self as obj => move |_| {
-                obj.handle_stack_property_visible_child_notify();
+            .view_home_page
+            .connect_view_changed(clone!(@weak self as obj => move || {
+                obj.action_set_enabled("win.disable-current-plugin", true);
+                obj.imp().back_button.set_visible(true)
             }));
 
         self.connect_close_request(clone!(@weak self as obj => @default-panic, move |_| {
@@ -216,16 +189,26 @@ impl Window {
                 obj.handle_fullscreen();
             })
         );
+        action!(
+            self,
+            "disable-current-plugin",
+            clone!(@weak self as obj => move |_, _| {
+                obj.handle_disable_current_plugin();
+            })
+        );
+        self.action_set_enabled("win.disable-current-plugin", false);
     }
 
     fn handle_add_data_button_clicked(&self) {
-        let dialog = DataAddDialog::new(self.upcast_ref(), self.imp().inner.borrow().current_view)
-            .upcast::<gtk::Dialog>();
+        let dialog =
+            DataAddDialog::new(self.upcast_ref(), self.imp().view_home_page.current_page())
+                .upcast::<gtk::Dialog>();
         dialog.present();
     }
 
     fn handle_back_button_clicked(&self) {
-        self.imp().stack.set_visible_child_name("HomePage");
+        self.imp().view_home_page.back();
+        self.action_set_enabled("win.disable-current-plugin", false);
         self.imp().back_button.set_visible(false);
     }
 
@@ -242,6 +225,11 @@ impl Window {
         }
 
         Inhibit(false)
+    }
+
+    fn handle_disable_current_plugin(&self) {
+        self.imp().view_home_page.disable_current_plugin();
+        self.imp().view_home_page.back();
     }
 
     fn handle_error_infobar_response(bar: &gtk::InfoBar, response: gtk::ResponseType) {
@@ -266,67 +254,7 @@ impl Window {
         self.imp().inner.borrow_mut().current_height = self.default_height();
     }
 
-    fn handle_stack_property_visible_child_notify(&self) {
-        let self_ = self.imp();
-        let child_name = self_.stack.visible_child_name().map(|s| s.to_string());
-
-        if child_name
-            == self_
-                .views
-                .get()
-                .unwrap()
-                .get(&ViewMode::Steps)
-                .map(|s| s.widget_name().to_string())
-        {
-            self_.inner.borrow_mut().current_view = ViewMode::Steps;
-        } else if child_name
-            == self_
-                .views
-                .get()
-                .unwrap()
-                .get(&ViewMode::Weight)
-                .map(|s| s.widget_name().to_string())
-        {
-            self_.inner.borrow_mut().current_view = ViewMode::Weight;
-        } else if child_name
-            == self_
-                .views
-                .get()
-                .unwrap()
-                .get(&ViewMode::Calories)
-                .map(|s| s.widget_name().to_string())
-        {
-            self_.inner.borrow_mut().current_view = ViewMode::Calories;
-        }
-    }
-
-    fn create_views(&self) {
-        let self_ = self.imp();
-
-        let view_home_page = ViewHomePage::new();
-        view_home_page.connect_view_changed(glib::clone!(@weak self as obj => move |view_mode| {
-            obj.handle_button_press(view_mode);
-        }));
-        let mut views = BTreeMap::new();
-        views.insert(ViewMode::HomePage, view_home_page.upcast());
-        views.insert(ViewMode::Activities, ViewActivity::new().upcast());
-        views.insert(ViewMode::Calories, ViewCalories::new().upcast());
-        views.insert(ViewMode::Weight, ViewWeight::new().upcast());
-        views.insert(ViewMode::Steps, ViewSteps::new().upcast());
-        self_.views.set(views).unwrap();
-
-        for view in self_.views.get().unwrap().values() {
-            let page = self_.stack.add_titled(
-                view,
-                Some(view.widget_name().as_str()),
-                &view.view_title().unwrap(),
-            );
-            page.set_icon_name(&view.icon_name().unwrap());
-        }
-        self_
-            .stack
-            .set_visible_child(self_.views.get().unwrap().get(&ViewMode::HomePage).unwrap());
-
+    fn setup(&self) {
         self.update();
         self.sync_data();
 
@@ -387,16 +315,10 @@ impl Window {
     }
 
     pub fn update(&self) {
-        for view in imp::Window::from_instance(self)
-            .views
-            .get()
-            .unwrap()
-            .values()
-        {
-            gtk_macros::spawn!(clone!(@weak view => async move {
-                view.update().await.unwrap();
-            }));
-        }
+        let view = self.imp().view_home_page.get();
+        gtk_macros::spawn!(clone!(@weak view => async move {
+            view.update().await.unwrap();
+        }));
     }
 
     fn imp(&self) -> &imp::Window {

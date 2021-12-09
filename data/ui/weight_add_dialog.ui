@@ -30,7 +30,7 @@
     <property name="name">Add Weight Data</property>
     <property name="title" translatable="yes">Weight Measurements</property>
     <property name="view-title" translatable="yes">Add Weight Record</property>
-    <child>
+    <property name="add-content-widget">
       <object class="GtkScrolledWindow">
         <property name="propagate-natural-height">1</property>
         <child>
@@ -76,6 +76,6 @@
           </object>
         </child>
       </object>
-    </child>
+    </property>
   </template>
 </interface>

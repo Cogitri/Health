@@ -64,6 +64,8 @@ mod imp {
         #[template_child]
         pub goal_label: TemplateChild<gtk::Label>,
         #[template_child]
+        pub add_box: TemplateChild<gtk::Box>,
+        #[template_child]
         pub main_box: TemplateChild<gtk::Box>,
         #[template_child]
         pub subtitle_empty_view_label: TemplateChild<gtk::Label>,
@@ -128,6 +130,13 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecObject::new(
+                        "add-content-widget",
+                        "add-content-widget",
+                        "add-content-widget",
+                        gtk::Widget::static_type(),
+                        glib::ParamFlags::WRITABLE,
+                    ),
+                    glib::ParamSpecObject::new(
                         "content-widget",
                         "content-widget",
                         "content-widget",
@@ -176,6 +185,7 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
+                "add-content-widget" => self.add_box.append(&value.get::<gtk::Widget>().unwrap()),
                 "content-widget" => self.main_box.append(&value.get::<gtk::Widget>().unwrap()),
                 "empty-subtitle" => self
                     .subtitle_empty_view_label
@@ -236,9 +246,19 @@ impl View {
 
 pub trait ViewExt {
     fn update(&self) -> PinnedResultFuture;
+    fn goal_label(&self) -> gtk::Label;
+    fn stack(&self) -> gtk::Stack;
 }
 
 impl<O: IsA<View>> ViewExt for O {
+    fn goal_label(&self) -> gtk::Label {
+        self.upcast_ref::<View>().goal_label()
+    }
+
+    fn stack(&self) -> gtk::Stack {
+        self.upcast_ref::<View>().stack()
+    }
+
     fn update(&self) -> PinnedResultFuture {
         imp::view_update(self.upcast_ref())
     }

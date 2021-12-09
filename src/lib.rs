@@ -80,6 +80,7 @@ pub mod core;
 pub mod daemon;
 #[doc(hidden)]
 pub mod model;
+pub mod plugins;
 #[doc(hidden)]
 pub mod sync;
 #[doc(hidden)]

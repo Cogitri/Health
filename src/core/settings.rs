@@ -107,6 +107,19 @@ impl Settings {
     }
 
     /// Get an array of recent activity IDs.
+    pub fn enabled_plugins(&self) -> Vec<String> {
+        self.strv("enabled-plugins")
+            .iter()
+            .map(std::string::ToString::to_string)
+            .collect()
+    }
+
+    /// Set an array of recent activity IDs.
+    pub fn set_enabled_plugins(&self, value: &[&str]) {
+        self.set_strv("enabled-plugins", value).unwrap();
+    }
+
+    /// Get an array of recent activity IDs.
     pub fn recent_activity_types(&self) -> Vec<String> {
         self.strv("recent-activity-types")
             .iter()
@@ -330,5 +343,13 @@ mod test {
     fn user_weight_goal() {
         let (_tmp, settings) = get();
         settings.set_user_weight_goal(settings.user_weight_goal());
+    }
+
+    #[test]
+    fn enabled_plugins() {
+        let (_tmp, settings) = get();
+        let ep = settings.enabled_plugins();
+        let s: Vec<&str> = ep.iter().map(|s| &**s).collect();
+        settings.set_enabled_plugins(&s);
     }
 }

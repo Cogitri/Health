@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  summary.ui
+
+  Copyright 2021 Rasmus Thomsen <oss@cogitri.dev>
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program. If not, see <http://www.gnu.org/licenses/>.
+-->
+<interface domain="dev.Cogitri.Health">
+  <requires lib="gtk" version="4.0"/>
+  <requires lib="libadwaita" version="1.0"/>
+  <template class="HealthPluginWeightSummaryRow" parent="HealthPluginSummaryRow">
+    <property name="title" translatable="yes">Weight</property>
+    <child>
+      <object class="GtkBox">
+        <property name="orientation">vertical</property>
+        <property name="margin-top">3</property>
+        <property name="margin-bottom">3</property>
+        <child>
+          <object class="GtkScrolledWindow" id="arrow_box">
+            <property name="visible">0</property>
+            <child>
+              <object class="HealthArrows" id="arrow">
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="weight_change">
+            <property name="wrap">1</property>
+            <property name="max-width-chars">8</property>
+            <property name="label" translatable="yes">No weight record added</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkLabel" id="weight_subtext">
+            <property name="wrap">1</property>
+            <property name="max-width-chars">15</property>
+            <property translatable="yes" name="label"></property>
+            <attributes>
+              <attribute name="font-desc" value="8.0"></attribute>
+              <attribute name="weight" value="200.0"></attribute>
+            </attributes>
+          </object>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

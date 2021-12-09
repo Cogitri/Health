@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  step_view.ui
+  details.ui
 
   Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
 
@@ -19,7 +19,7 @@
 -->
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
-  <template class="HealthViewCalories" parent="HealthView">
+  <template class="HealthPluginCaloriesDetails" parent="HealthView">
     <property name="empty-subtitle" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new activity.</property>
     <property name="icon-name">steps-symbolic</property>
     <property name="name">Calories</property>

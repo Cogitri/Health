@@ -1,4 +1,4 @@
-/* view_steps.rs
+/* view.rs
  *
  * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
  *
@@ -26,7 +26,7 @@ use gtk::glib::{self, subclass::prelude::*, Cast};
 
 mod imp {
     use crate::{
-        model::GraphModelSteps,
+        plugins::steps::GraphModelSteps,
         views::{GraphView, PinnedResultFuture, View, ViewImpl},
         Settings,
     };
@@ -39,8 +39,8 @@ mod imp {
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/dev/Cogitri/Health/ui/step_view.ui")]
-    pub struct ViewSteps {
+    #[template(resource = "/dev/Cogitri/Health/ui/plugins/steps/details.ui")]
+    pub struct PluginStepsDetails {
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         pub settings: Settings,
@@ -50,10 +50,10 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for ViewSteps {
-        const NAME: &'static str = "HealthViewSteps";
+    impl ObjectSubclass for PluginStepsDetails {
+        const NAME: &'static str = "HealthPluginStepsDetails";
         type ParentType = View;
-        type Type = super::ViewSteps;
+        type Type = super::PluginStepsDetails;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -67,9 +67,9 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for ViewSteps {}
+    impl WidgetImpl for PluginStepsDetails {}
 
-    impl ObjectImpl for ViewSteps {
+    impl ObjectImpl for PluginStepsDetails {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
         }
@@ -81,13 +81,13 @@ mod imp {
         }
     }
 
-    impl ViewImpl for ViewSteps {
+    impl ViewImpl for PluginStepsDetails {
         fn update(&self, obj: &View) -> PinnedResultFuture {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
                     gtk_macros::spawn!(async move {
-                        obj.downcast_ref::<super::ViewSteps>()
+                        obj.downcast_ref::<super::PluginStepsDetails>()
                             .unwrap()
                             .update()
                             .await;
@@ -101,15 +101,15 @@ mod imp {
 
 glib::wrapper! {
     /// An implementation of [View] visualizes streak counts and daily step records.
-    pub struct ViewSteps(ObjectSubclass<imp::ViewSteps>)
+    pub struct PluginStepsDetails(ObjectSubclass<imp::PluginStepsDetails>)
         @extends gtk::Widget, View,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
-impl ViewSteps {
-    /// Create a new [ViewSteps] to display previous step activity.
+impl PluginStepsDetails {
+    /// Create a new [PluginStepsDetails] to display previous step activity.
     pub fn new() -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create ViewSteps");
+        let o: Self = glib::Object::new(&[]).expect("Failed to create PluginStepsDetails");
 
         Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
@@ -211,7 +211,7 @@ impl ViewSteps {
         self_.steps_graph_model.replace(steps_graph_model);
     }
 
-    fn imp(&self) -> &imp::ViewSteps {
-        imp::ViewSteps::from_instance(self)
+    fn imp(&self) -> &imp::PluginStepsDetails {
+        imp::PluginStepsDetails::from_instance(self)
     }
 }

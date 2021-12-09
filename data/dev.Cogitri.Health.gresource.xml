@@ -6,9 +6,7 @@
     <file preprocess="xml-stripblanks">ui/activity_row.ui</file>
     <file preprocess="xml-stripblanks">ui/activity_type_row.ui</file>
     <file preprocess="xml-stripblanks">ui/activity_type_selector.ui</file>
-    <file preprocess="xml-stripblanks">ui/activity_view.ui</file>
     <file preprocess="xml-stripblanks">ui/bmi_level_bar.ui</file>
-    <file preprocess="xml-stripblanks">ui/calorie_view.ui</file>
     <file preprocess="xml-stripblanks">ui/card.ui</file>
     <file preprocess="xml-stripblanks">ui/date_editor.ui</file>
     <file preprocess="xml-stripblanks">ui/distance_action_row.ui</file>
@@ -19,13 +17,21 @@
     <file preprocess="xml-stripblanks">ui/preferences_window.ui</file>
     <file preprocess="xml-stripblanks">ui/setup_window.ui</file>
     <file preprocess="xml-stripblanks">ui/shortcuts_window.ui</file>
-    <file preprocess="xml-stripblanks">ui/step_view.ui</file>
     <file preprocess="xml-stripblanks">ui/sync_list_box.ui</file>
     <file preprocess="xml-stripblanks">ui/tab_button.ui</file>
     <file preprocess="xml-stripblanks">ui/view.ui</file>
     <file preprocess="xml-stripblanks">ui/weight_add_dialog.ui</file>
-    <file preprocess="xml-stripblanks">ui/weight_view.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>
+
+    <file preprocess="xml-stripblanks">ui/plugins/overview.ui</file>
+    <file preprocess="xml-stripblanks">ui/plugins/activities/details.ui</file>
+    <file preprocess="xml-stripblanks">ui/plugins/activities/summary.ui</file>
+    <file preprocess="xml-stripblanks">ui/plugins/calories/details.ui</file>
+    <file preprocess="xml-stripblanks">ui/plugins/calories/summary.ui</file>
+    <file preprocess="xml-stripblanks">ui/plugins/steps/details.ui</file>
+    <file preprocess="xml-stripblanks">ui/plugins/steps/summary.ui</file>
+    <file preprocess="xml-stripblanks">ui/plugins/weight/details.ui</file>
+    <file preprocess="xml-stripblanks">ui/plugins/weight/summary.ui</file>
 
     <file>style.css</file>
 

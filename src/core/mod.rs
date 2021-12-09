@@ -8,6 +8,8 @@ pub mod i18n;
 #[doc(hidden)]
 pub mod macros;
 #[doc(hidden)]
+pub mod ref_iter;
+#[doc(hidden)]
 pub mod settings;
 #[doc(hidden)]
 pub mod unit_kind;
@@ -21,6 +23,8 @@ pub use application::Application;
 pub use database::Database;
 pub use i18n::*;
 pub use macros::*;
+#[doc(inline)]
+pub use ref_iter::*;
 #[doc(inline)]
 pub use settings::Settings;
 #[doc(inline)]

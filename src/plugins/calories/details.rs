@@ -22,6 +22,7 @@ use crate::{
     core::Database,
     ni18n_f,
     views::{BarGraphView, View},
+    ViewExt,
 };
 use crate::{model::ActivityInfo, widgets::LegendRow};
 use chrono::Duration;
@@ -32,7 +33,7 @@ use gtk::{
 
 mod imp {
     use crate::{
-        model::GraphModelCalories,
+        plugins::calories::GraphModelCalories,
         views::{BarGraphView, PinnedResultFuture, View, ViewImpl},
         widgets::LegendRow,
     };
@@ -45,8 +46,8 @@ mod imp {
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/dev/Cogitri/Health/ui/calorie_view.ui")]
-    pub struct ViewCalories {
+    #[template(resource = "/dev/Cogitri/Health/ui/plugins/calories/details.ui")]
+    pub struct PluginCaloriesDetails {
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         #[template_child]
@@ -56,10 +57,10 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for ViewCalories {
-        const NAME: &'static str = "HealthViewCalories";
+    impl ObjectSubclass for PluginCaloriesDetails {
+        const NAME: &'static str = "HealthPluginCaloriesDetails";
         type ParentType = View;
-        type Type = super::ViewCalories;
+        type Type = super::PluginCaloriesDetails;
 
         fn class_init(klass: &mut Self::Class) {
             LegendRow::static_type();
@@ -74,21 +75,21 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for ViewCalories {}
+    impl WidgetImpl for PluginCaloriesDetails {}
 
-    impl ObjectImpl for ViewCalories {
+    impl ObjectImpl for PluginCaloriesDetails {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
         }
     }
 
-    impl ViewImpl for ViewCalories {
+    impl ViewImpl for PluginCaloriesDetails {
         fn update(&self, obj: &View) -> PinnedResultFuture {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
                     gtk_macros::spawn!(async move {
-                        obj.downcast_ref::<super::ViewCalories>()
+                        obj.downcast_ref::<super::PluginCaloriesDetails>()
                             .unwrap()
                             .update()
                             .await;
@@ -102,15 +103,15 @@ mod imp {
 
 glib::wrapper! {
     /// An implementation of [View] visualizes calorie Spent records.
-    pub struct ViewCalories(ObjectSubclass<imp::ViewCalories>)
+    pub struct PluginCaloriesDetails(ObjectSubclass<imp::PluginCaloriesDetails>)
         @extends gtk::Widget, View,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
-impl ViewCalories {
-    /// Create a new [ViewCalories] to display previous calorie data.
+impl PluginCaloriesDetails {
+    /// Create a new [PluginCaloriesDetails] to display previous calorie data.
     pub fn new() -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create ViewCalories");
+        let o: Self = glib::Object::new(&[]).expect("Failed to create PluginCaloriesDetails");
 
         Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
@@ -140,7 +141,6 @@ impl ViewCalories {
             );
         }
 
-        let view = self.upcast_ref::<View>();
         let distinct_activities = calories_graph_model.distinct_activities.clone();
         for i in 0..3 {
             if i < distinct_activities.len() {
@@ -180,13 +180,13 @@ impl ViewCalories {
             })));
 
             self_.scrolled_window.set_child(Some(&calories_graph_view));
-            view.stack().set_visible_child_name("data_page");
+            self.stack().set_visible_child_name("data_page");
         }
 
         self_.calories_graph_model.replace(calories_graph_model);
     }
 
-    fn imp(&self) -> &imp::ViewCalories {
-        imp::ViewCalories::from_instance(self)
+    fn imp(&self) -> &imp::PluginCaloriesDetails {
+        imp::PluginCaloriesDetails::from_instance(self)
     }
 }

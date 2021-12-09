@@ -18,7 +18,7 @@
 
 use crate::{
     core::{Database, Settings},
-    model::{ActivityType, GraphModelWeight},
+    model::ActivityType,
     views::SplitBar,
 };
 use anyhow::Result;
@@ -116,17 +116,20 @@ impl GraphModelCalories {
     }
 
     pub async fn rmr(&self) -> f32 {
-        let mut weight_model = GraphModelWeight::new();
-        if let Err(e) = weight_model.reload(Duration::days(30)).await {
-            glib::g_warning!(
-                crate::config::LOG_DOMAIN,
-                "Failed to reload step data: {}",
-                e
-            );
-        }
-        let weight = weight_model
-            .last_weight()
-            .unwrap_or_else(|| Mass::new::<kilogram>(0.0))
+        let weights = match Database::instance().weights(None).await {
+            Err(e) => {
+                glib::g_warning!(
+                    crate::config::LOG_DOMAIN,
+                    "Failed to load weight data: {}",
+                    e
+                );
+                return 0.0;
+            }
+            Ok(v) => v,
+        };
+        let weight = weights
+            .last()
+            .map_or_else(|| Mass::new::<kilogram>(0.0), |w| w.weight)
             .get::<kilogram>() as f32;
         let height = self.settings.user_height().get::<centimeter>() as f32;
         let age =

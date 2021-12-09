@@ -27,7 +27,7 @@
           <object class="GtkStackPage">
             <property name="name">empty_page</property>
             <property name="child">
-              <object class="GtkBox">
+              <object class="GtkBox" id="empty_box">
                 <property name="halign">center</property>
                 <property name="valign">center</property>
                 <property name="orientation">vertical</property>
@@ -98,8 +98,7 @@
           <object class="GtkStackPage">
             <property name="name">add_data_page</property>
             <property name="child">
-              <object class="GtkBox">
-              </object>
+              <object class="GtkBox" id="add_box"/>
             </property>
           </object>
         </child>

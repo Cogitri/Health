@@ -18,8 +18,8 @@
 
 use crate::{
     core::{date::prelude::*, i18n, i18n_f, utils::prelude::*, Database, UnitSystem},
-    model::GraphModelWeight,
     ni18n_f,
+    plugins::weight::GraphModelWeight,
     views::{GraphView, View},
 };
 use chrono::Duration;
@@ -35,7 +35,7 @@ use uom::si::{
 mod imp {
     use crate::{
         core::Settings,
-        model::GraphModelWeight,
+        plugins::weight::GraphModelWeight,
         views::{GraphView, PinnedResultFuture, View, ViewImpl},
     };
     use gtk::{
@@ -47,8 +47,8 @@ mod imp {
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/dev/Cogitri/Health/ui/weight_view.ui")]
-    pub struct ViewWeight {
+    #[template(resource = "/dev/Cogitri/Health/ui/plugins/weight/details.ui")]
+    pub struct PluginWeightDetails {
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         pub settings: Settings,
@@ -58,10 +58,10 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for ViewWeight {
-        const NAME: &'static str = "HealthViewWeight";
+    impl ObjectSubclass for PluginWeightDetails {
+        const NAME: &'static str = "HealthPluginWeightDetails";
         type ParentType = View;
-        type Type = super::ViewWeight;
+        type Type = super::PluginWeightDetails;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -75,9 +75,9 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for ViewWeight {}
+    impl WidgetImpl for PluginWeightDetails {}
 
-    impl ObjectImpl for ViewWeight {
+    impl ObjectImpl for PluginWeightDetails {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
         }
@@ -89,13 +89,13 @@ mod imp {
         }
     }
 
-    impl ViewImpl for ViewWeight {
+    impl ViewImpl for PluginWeightDetails {
         fn update(&self, obj: &View) -> PinnedResultFuture {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj=> move |_, _, send| {
                     gtk_macros::spawn!(async move {
-                        obj.downcast_ref::<super::ViewWeight>()
+                        obj.downcast_ref::<super::PluginWeightDetails>()
                             .unwrap()
                             .update()
                             .await;
@@ -109,15 +109,15 @@ mod imp {
 
 glib::wrapper! {
     /// An implementation of [View] visualizes BMI and weight development.
-    pub struct ViewWeight(ObjectSubclass<imp::ViewWeight>)
+    pub struct PluginWeightDetails(ObjectSubclass<imp::PluginWeightDetails>)
         @extends gtk::Widget, View,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
-impl ViewWeight {
-    /// Create a new [ViewWeight] to display previous weight measurements.
+impl PluginWeightDetails {
+    /// Create a new [PluginWeightDetails] to display previous weight measurements.
     pub fn new() -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create ViewWeight");
+        let o: Self = glib::Object::new(&[]).expect("Failed to create PluginWeightDetails");
 
         Database::instance().connect_weights_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
@@ -202,8 +202,8 @@ impl ViewWeight {
         }
     }
 
-    fn imp(&self) -> &imp::ViewWeight {
-        imp::ViewWeight::from_instance(self)
+    fn imp(&self) -> &imp::PluginWeightDetails {
+        imp::PluginWeightDetails::from_instance(self)
     }
 
     // TRANSLATORS notes have to be on the same line, so we cant split them
