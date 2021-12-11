@@ -76,7 +76,7 @@ pages:
   script:
     - source $HOME/.cargo/env
     - meson build
-    - cargo makedocs -i "health"
+    - cargo makedocs -i "health" -i "gio" -i "glib"
     - rm -rf public
     - mv target/doc/ public
   cache:
