@@ -4,6 +4,7 @@ let
 
 mesonNew = pkgs.meson.overrideAttrs (old: rec {
   version = "0.60.2";
+
   src = pkgs.fetchFromGitHub{
     owner = "mesonbuild";
     repo = "meson";
@@ -37,26 +38,37 @@ adwaitaNew = pkgs.libadwaita.overrideAttrs (oldAttrs: rec {
 });
 rustSrc =
     pkgs.latest.rustChannels.stable.rust.override { extensions = [ "rust-src" ]; };
+buildInputs = [ 
+  adwaitaNew
+  mesonNew
+  rustSrc
+  pkgs.cairo
+  pkgs.cargo-outdated 
+  pkgs.clang_13
+  pkgs.harfbuzz
+  pkgs.gdk_pixbuf
+  pkgs.glib
+  pkgs.graphene
+  pkgs.gtk4
+  pkgs.gtk4.dev
+  pkgs.libxml2
+  pkgs.mold
+  pkgs.ninja
+  pkgs.pango
+  pkgs.pkg-config
+  pkgs.rustc
+  pkgs.rustfmt
+  pkgs.tracker
+  pkgs.tracker.dev
+  pkgs.wayland
+  pkgs.wayland.dev
+];
 
 in pkgs.mkShell {
-  buildInputs = with pkgs; [ 
-    adwaitaNew
-    mesonNew
-    rustSrc
-    pkgs.cargo-outdated 
-    pkgs.clang_13
-    pkgs.gtk4.dev
-    pkgs.libxml2
-    pkgs.mold
-    pkgs.ninja
-    pkgs.pkg-config
-    pkgs.rustc
-    pkgs.rustfmt
-    pkgs.tracker.dev
-    pkgs.wayland.dev
-  ];
+  buildInputs = buildInputs;
 
 
   RUST_SRC_PATH= "${rustSrc}/lib/rustlib/src/rust/src";
   RUSTFLAGS="-C linker=clang -C link-arg=--ld-path=${pkgs.mold}/bin/mold";
+  LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath buildInputs}";
 }
