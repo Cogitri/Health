@@ -1,5 +1,6 @@
 pub mod activities;
 pub mod calories;
+pub mod details;
 pub mod overview;
 pub mod plugin;
 pub mod plugin_list;
@@ -10,6 +11,7 @@ pub mod weight;
 
 pub use activities::*;
 pub use calories::*;
+pub use details::*;
 pub use overview::*;
 pub use plugin::*;
 pub use plugin_list::*;

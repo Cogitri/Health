@@ -50,6 +50,7 @@ mod imp {
                 if enabled_plugins.contains(&plugin.name().to_string()) {
                     self.enabled_plugins.push(plugin);
                 } else {
+                    plugin.mock();
                     self.disabled_plugins.push(plugin);
                 }
             }
@@ -66,9 +67,9 @@ impl Registrar {
     pub fn disable_plugin(&self, plugin_name: &str) {
         let self_ = self.imp();
         if !self_.disabled_plugins.contains(plugin_name) {
-            self_
-                .disabled_plugins
-                .push(self_.enabled_plugins.remove(plugin_name).unwrap());
+            let plugin = self_.enabled_plugins.remove(plugin_name).unwrap();
+            plugin.mock();
+            self_.disabled_plugins.push(plugin);
 
             self.emit_by_name::<()>("plugins-changed", &[]);
         }
@@ -77,9 +78,9 @@ impl Registrar {
     pub fn enable_plugin(&self, plugin_name: &str) {
         let self_ = self.imp();
         if !self_.enabled_plugins.contains(plugin_name) {
-            self_
-                .enabled_plugins
-                .push(self_.disabled_plugins.remove(plugin_name).unwrap());
+            let plugin = self_.disabled_plugins.remove(plugin_name).unwrap();
+            plugin.unmock();
+            self_.enabled_plugins.push(plugin);
 
             self.emit_by_name::<()>("plugins-changed", &[]);
         }

@@ -16,11 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{
-    plugins::{Plugin, Registrar},
-    views::View,
-    ViewExt,
-};
+use crate::{plugins::Registrar, views::View, ViewExt};
 use gtk::{
     glib::{self, object::ObjectExt, subclass::prelude::*},
     prelude::*,
@@ -28,7 +24,7 @@ use gtk::{
 
 mod imp {
     use crate::{
-        plugins::{PluginObject, PluginSummaryRow, Registrar},
+        plugins::{PluginObject, PluginOverviewRow, PluginSummaryRow, Registrar},
         views::{PinnedResultFuture, View, ViewImpl},
         Settings, ViewExt,
     };
@@ -52,6 +48,8 @@ mod imp {
         pub all_data_box: TemplateChild<gtk::Box>,
         #[template_child]
         pub size_group: TemplateChild<gtk::SizeGroup>,
+        #[template_child]
+        pub enabled_plugins_stack: TemplateChild<gtk::Stack>,
     }
 
     #[glib::object_subclass]
@@ -90,21 +88,9 @@ mod imp {
             let registrar = Registrar::instance();
             let disabled_model = registrar.disabled_plugins();
             let enabled_model = registrar.enabled_plugins();
-            let disabled_filter =
-                gtk::CustomFilter::new(glib::clone!(@weak obj => @default-panic, move |o| {
-                    obj.filter_plugin(o.clone().downcast::<PluginObject>().unwrap().plugin(), true)
-                }));
-            let enabled_filter =
-                gtk::CustomFilter::new(glib::clone!(@weak obj => @default-panic, move |o| {
-                    obj.filter_plugin(o.clone().downcast::<PluginObject>().unwrap().plugin(), true)
-                }));
-            let disabled_filter_model =
-                gtk::FilterListModel::new(Some(&disabled_model), Some(&disabled_filter));
-            let enabled_filter_model =
-                gtk::FilterListModel::new(Some(&enabled_model), Some(&enabled_filter));
 
             self.user_selected_data.bind_model(
-                Some(&enabled_filter_model),
+                Some(&enabled_model),
                 glib::clone!(@strong self.size_group as sg => @default-panic, move |o| {
                     let summary = o.clone()
                         .downcast::<PluginObject>()
@@ -118,7 +104,7 @@ mod imp {
                 }),
             );
             self.all_data.bind_model(
-                Some(&disabled_filter_model),
+                Some(&disabled_model),
                 glib::clone!(@strong self.size_group as sg => @default-panic, move |o| {
                     let overview = o.clone()
                         .downcast::<PluginObject>()
@@ -143,9 +129,24 @@ mod imp {
                     }
                 }),
             );
+            self.all_data
+                .connect_row_selected(glib::clone!(@weak obj => move |list_box, row| {
+                    if let Some(row) = row {
+                        let overview = row.downcast_ref::<PluginOverviewRow>().unwrap();
+                        let plugin_name = overview.plugin_name().unwrap();
+                        obj.stack().set_visible_child_name(&plugin_name);
+                        obj.emit_by_name::<()>("view-changed", &[]);
+                        list_box.unselect_all();
+                    }
+                }));
 
             if disabled_model.is_empty() {
                 self.all_data_box.set_visible(false);
+            }
+
+            if enabled_model.is_empty() {
+                self.enabled_plugins_stack
+                    .set_visible_child_name("no-plugins-enabled");
             }
 
             let stack = obj.stack();
@@ -153,6 +154,11 @@ mod imp {
                 plugin.update();
                 stack.add_named(&plugin.details(), Some(plugin.name()));
             }
+
+            for plugin in disabled_model.iter() {
+                stack.add_named(&plugin.details(), Some(plugin.name()));
+            }
+
             stack.set_visible_child_name("add_data_page")
         }
     }
@@ -206,6 +212,15 @@ impl ViewHomePage {
         self.stack().visible_child_name().unwrap().to_string()
     }
 
+    pub fn is_current_plugin_enabled(&self) -> bool {
+        let registrar = Registrar::instance();
+        let current_page = self.current_page();
+        registrar
+            .enabled_plugins()
+            .iter()
+            .any(|p| p.name() == &current_page)
+    }
+
     pub fn disable_current_plugin(&self) {
         let self_ = self.imp();
         let registrar = Registrar::instance();
@@ -223,20 +238,39 @@ impl ViewHomePage {
                 .collect::<Vec<&str>>()
                 .as_slice(),
         );
+        if registrar.enabled_plugins().is_empty() {
+            self_
+                .enabled_plugins_stack
+                .set_visible_child_name("no-plugins-enabled")
+        }
+    }
+
+    pub fn enable_current_plugin(&self) {
+        let self_ = self.imp();
+        let registrar = Registrar::instance();
+        let current_plugin = self.current_page();
+
+        let mut enabled_plugins = self_.settings.enabled_plugins();
+        enabled_plugins.push(current_plugin.clone());
+        registrar.enable_plugin(&current_plugin);
+        self_.settings.set_enabled_plugins(
+            &enabled_plugins
+                .iter()
+                .map(String::as_str)
+                .collect::<Vec<&str>>()
+                .as_slice(),
+        );
+        self_
+            .enabled_plugins_stack
+            .set_visible_child_name("plugin-list");
+        if registrar.disabled_plugins().is_empty() {
+            self_.all_data_box.set_visible(false);
+        }
     }
 
     /// Create a new [ViewHomePage] to display previous activities.
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create ViewHomePage")
-    }
-
-    fn filter_plugin(&self, plugin: Box<dyn Plugin>, enabled: bool) -> bool {
-        let registrar = Registrar::instance();
-        if enabled {
-            registrar.enabled_plugins().contains(plugin.name())
-        } else {
-            registrar.disabled_plugins().contains(plugin.name())
-        }
     }
 
     fn imp(&self) -> &imp::ViewHomePage {

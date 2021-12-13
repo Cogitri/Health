@@ -16,28 +16,74 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::Database, views::View};
-use gtk::glib::{self, subclass::prelude::*, Cast};
+use crate::{
+    core::Database,
+    plugins::{
+        activities::{ModelActivity, ModelActivityMocked},
+        PluginDetails, PluginDetailsExt,
+    },
+};
+use gtk::glib::{self, subclass::prelude::*};
+use gtk_macros::spawn;
+
+use self::imp::DataProvider;
+
 mod imp {
     use crate::{
         model::Activity,
-        plugins::activities::ModelActivity,
-        views::{PinnedResultFuture, View, ViewImpl},
+        plugins::activities::{ModelActivity, ModelActivityMocked},
+        plugins::{details::PinnedResultFuture, PluginDetails, PluginDetailsImpl},
         widgets::ActivityRow,
     };
+    use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
         self, gio,
         glib::{self, Cast},
-        prelude::*,
         subclass::prelude::*,
         CompositeTemplate,
     };
     use once_cell::unsync::OnceCell;
+    use std::cell::RefCell;
+
+    #[derive(Debug)]
+    pub enum DataProvider {
+        Actual(ModelActivity),
+        Mocked(ModelActivityMocked),
+    }
+
+    impl Default for DataProvider {
+        fn default() -> Self {
+            return Self::Actual(ModelActivity::default());
+        }
+    }
+
+    impl DataProvider {
+        pub fn is_empty(&self) -> bool {
+            match self {
+                Self::Actual(m) => m.is_empty(),
+                Self::Mocked(m) => m.is_empty(),
+            }
+        }
+
+        pub async fn reload(&self) -> anyhow::Result<()> {
+            match self {
+                Self::Actual(m) => m.reload().await,
+                Self::Mocked(m) => m.reload().await,
+            }
+        }
+
+        pub async fn activity_present(&self) -> bool {
+            match self {
+                Self::Actual(m) => m.activity_present().await,
+                Self::Mocked(m) => m.activity_present().await,
+            }
+        }
+    }
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/activities/details.ui")]
     pub struct PluginActivitiesDetails {
-        pub activity_model: ModelActivity,
+        pub activity_model: RefCell<DataProvider>,
         pub activities_list_view: OnceCell<gtk::ListView>,
         #[template_child]
         pub frame: TemplateChild<gtk::Frame>,
@@ -48,7 +94,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for PluginActivitiesDetails {
         const NAME: &'static str = "HealthPluginActivitiesDetails";
-        type ParentType = View;
+        type ParentType = PluginDetails;
         type Type = super::PluginActivitiesDetails;
 
         fn class_init(klass: &mut Self::Class) {
@@ -58,12 +104,10 @@ mod imp {
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             unsafe {
                 // FIXME: This really shouldn't be necessary.
-                obj.as_ref().upcast_ref::<View>().init_template();
+                obj.as_ref().upcast_ref::<PluginDetails>().init_template();
             }
         }
     }
-
-    impl WidgetImpl for PluginActivitiesDetails {}
 
     impl ObjectImpl for PluginActivitiesDetails {
         fn constructed(&self, obj: &Self::Type) {
@@ -81,17 +125,23 @@ mod imp {
                     .unwrap();
                 child.set_activity(activity);
             });
-            let selection_model = gtk::NoSelection::new(Some(&self.activity_model));
-            let list_view = gtk::ListView::new(Some(&selection_model), Some(&factory));
-            self.frame
-                .set_child(Some(list_view.upcast_ref::<gtk::Widget>()));
-            list_view.style_context().add_class("content");
-            self.activities_list_view.set(list_view).unwrap();
+            if let DataProvider::Actual(m) = &*self.activity_model.borrow() {
+                let selection_model = gtk::NoSelection::new(Some(m));
+                let list_view = gtk::ListView::new(Some(&selection_model), Some(&factory));
+                self.frame
+                    .set_child(Some(list_view.upcast_ref::<gtk::Widget>()));
+                list_view.style_context().add_class("content");
+                self.activities_list_view.set(list_view).unwrap();
+            } else {
+                unimplemented!();
+            }
         }
     }
+    impl WidgetImpl for PluginActivitiesDetails {}
+    impl BinImpl for PluginActivitiesDetails {}
 
-    impl ViewImpl for PluginActivitiesDetails {
-        fn update(&self, obj: &View) -> PinnedResultFuture {
+    impl PluginDetailsImpl for PluginActivitiesDetails {
+        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
@@ -111,11 +161,37 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [View] visualizes activities the user recently did.
     pub struct PluginActivitiesDetails(ObjectSubclass<imp::PluginActivitiesDetails>)
-        @extends gtk::Widget, View,
+        @extends gtk::Widget, adw::Bin, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl PluginActivitiesDetails {
+    pub fn mock(&self) {
+        let m = ModelActivityMocked::new();
+        self.imp()
+            .activities_list_view
+            .get()
+            .unwrap()
+            .set_model(Some(&gtk::NoSelection::new(Some(&m))));
+        self.imp().activity_model.replace(DataProvider::Mocked(m));
+        spawn!(glib::clone!(@weak self as obj => async move {
+            obj.update().await;
+        }));
+    }
+
+    pub fn unmock(&self) {
+        let m = ModelActivity::new();
+        self.imp()
+            .activities_list_view
+            .get()
+            .unwrap()
+            .set_model(Some(&gtk::NoSelection::new(Some(&m))));
+        self.imp().activity_model.replace(DataProvider::Actual(m));
+        spawn!(glib::clone!(@weak self as obj => async move {
+            obj.update().await;
+        }));
+    }
+
     /// Create a new [PluginActivitiesDetails] to display previous activities.
     pub fn new() -> Self {
         let o: Self = glib::Object::new(&[]).expect("Failed to create PluginActivitiesDetails");
@@ -131,7 +207,7 @@ impl PluginActivitiesDetails {
 
     /// Reload the [ModelActivity](crate::model::ModelActivity)'s data and refresh the list of activities
     pub async fn update(&self) {
-        let activity_model = &self.imp().activity_model;
+        let activity_model = &self.imp().activity_model.borrow();
         let reload_result = activity_model.reload().await;
         if let Err(e) = reload_result {
             glib::g_warning!(
@@ -142,9 +218,7 @@ impl PluginActivitiesDetails {
         };
 
         if activity_model.activity_present().await {
-            self.upcast_ref::<View>()
-                .stack()
-                .set_visible_child_name("data_page");
+            self.switch_to_data_page();
             self.imp()
                 .stack_activity
                 .set_visible_child_name(if !activity_model.is_empty() {
@@ -152,6 +226,8 @@ impl PluginActivitiesDetails {
                 } else {
                     "no_recent"
                 });
+        } else {
+            self.switch_to_empty_page();
         }
     }
 

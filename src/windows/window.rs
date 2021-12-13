@@ -64,6 +64,8 @@ mod imp {
         pub primary_menu_popover: TemplateChild<gtk::Popover>,
         #[template_child]
         pub view_home_page: TemplateChild<ViewHomePage>,
+        #[template_child]
+        pub enable_plugin_button: TemplateChild<gtk::Button>,
     }
 
     #[glib::object_subclass]
@@ -145,13 +147,22 @@ impl Window {
                 obj.handle_back_button_clicked();
             }));
         self_
+            .enable_plugin_button
+            .connect_clicked(clone!(@weak self as obj => move |_| {
+                obj.handle_enable_plugin_button_clicked();
+            }));
+
+        self_
             .error_infobar
             .connect_response(Self::handle_error_infobar_response);
         self_
             .view_home_page
             .connect_view_changed(clone!(@weak self as obj => move || {
-                obj.action_set_enabled("win.disable-current-plugin", true);
-                obj.imp().back_button.set_visible(true)
+                let self_ = obj.imp();
+                let is_enabled = self_.view_home_page.is_current_plugin_enabled();
+                obj.action_set_enabled("win.disable-current-plugin", is_enabled);
+                self_.enable_plugin_button.set_visible(!is_enabled);
+                self_.back_button.set_visible(true)
             }));
 
         self.connect_close_request(clone!(@weak self as obj => @default-panic, move |_| {
@@ -207,9 +218,11 @@ impl Window {
     }
 
     fn handle_back_button_clicked(&self) {
-        self.imp().view_home_page.back();
+        let self_ = self.imp();
+        self_.view_home_page.back();
         self.action_set_enabled("win.disable-current-plugin", false);
-        self.imp().back_button.set_visible(false);
+        self_.back_button.set_visible(false);
+        self_.enable_plugin_button.set_visible(false);
     }
 
     fn handle_close_request(&self) -> Inhibit {
@@ -230,6 +243,13 @@ impl Window {
     fn handle_disable_current_plugin(&self) {
         self.imp().view_home_page.disable_current_plugin();
         self.imp().view_home_page.back();
+    }
+
+    fn handle_enable_plugin_button_clicked(&self) {
+        let self_ = self.imp();
+        self_.view_home_page.enable_current_plugin();
+        self_.view_home_page.back();
+        self_.enable_plugin_button.set_visible(false);
     }
 
     fn handle_error_infobar_response(bar: &gtk::InfoBar, response: gtk::ResponseType) {

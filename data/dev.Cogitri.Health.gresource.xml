@@ -23,6 +23,7 @@
     <file preprocess="xml-stripblanks">ui/weight_add_dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>
 
+    <file preprocess="xml-stripblanks">ui/plugins/details.ui</file>
     <file preprocess="xml-stripblanks">ui/plugins/overview.ui</file>
     <file preprocess="xml-stripblanks">ui/plugins/activities/details.ui</file>
     <file preprocess="xml-stripblanks">ui/plugins/activities/summary.ui</file>

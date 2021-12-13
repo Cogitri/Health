@@ -29,6 +29,9 @@ version = "1.0"
 git = "https://github.com/bilelmoussaoui/ashpd"
 features = ["feature_gtk4"]
 
+[dependencies.async-trait]
+version = "0.1.52"
+
 [dependencies.bitflags]
 default-features = false
 version = "1.3"

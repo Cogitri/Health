@@ -21,8 +21,11 @@ use std::convert::TryInto;
 use crate::{
     core::Database,
     ni18n_f,
-    views::{BarGraphView, View},
-    ViewExt,
+    plugins::{
+        calories::{GraphModelCalories, GraphModelCaloriesMocked},
+        PluginDetails, PluginDetailsExt,
+    },
+    views::BarGraphView,
 };
 use crate::{model::ActivityInfo, widgets::LegendRow};
 use chrono::Duration;
@@ -30,20 +33,78 @@ use gtk::{
     glib::{self, subclass::prelude::*, Cast},
     prelude::*,
 };
+use gtk_macros::spawn;
+
+use self::imp::DataProvider;
 
 mod imp {
     use crate::{
-        plugins::calories::GraphModelCalories,
-        views::{BarGraphView, PinnedResultFuture, View, ViewImpl},
+        plugins::{
+            calories::{GraphModelCalories, GraphModelCaloriesMocked},
+            PluginDetails, PluginDetailsImpl,
+        },
+        views::{BarGraphView, PinnedResultFuture},
         widgets::LegendRow,
+        ActivityType, SplitBar,
     };
+    use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
         gio,
         glib::{self, Cast},
-        {prelude::*, subclass::prelude::*, CompositeTemplate},
+        {subclass::prelude::*, CompositeTemplate},
     };
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
+
+    #[derive(Debug, Clone)]
+    pub enum DataProvider {
+        Actual(GraphModelCalories),
+        Mocked(GraphModelCaloriesMocked),
+    }
+
+    impl Default for DataProvider {
+        fn default() -> Self {
+            Self::Actual(GraphModelCalories::default())
+        }
+    }
+
+    impl DataProvider {
+        pub async fn reload(&mut self, duration: chrono::Duration) -> anyhow::Result<()> {
+            match self {
+                Self::Actual(m) => m.reload(duration).await,
+                Self::Mocked(m) => m.reload(duration).await,
+            }
+        }
+
+        /// Converts the model's data to an array of `SplitBars` so it can be displayed in a `BarGraphView`.
+        pub fn to_split_bar(&self) -> Vec<SplitBar> {
+            match self {
+                Self::Actual(m) => m.to_split_bar(),
+                Self::Mocked(m) => m.to_split_bar(),
+            }
+        }
+
+        pub async fn rmr(&self) -> f32 {
+            match self {
+                Self::Actual(m) => m.rmr().await,
+                Self::Mocked(m) => m.rmr().await,
+            }
+        }
+
+        pub fn is_empty(&self) -> bool {
+            match self {
+                Self::Actual(m) => m.is_empty(),
+                Self::Mocked(m) => m.is_empty(),
+            }
+        }
+
+        pub fn distinct_activities(&self) -> &[ActivityType] {
+            match self {
+                Self::Actual(m) => m.distinct_activities(),
+                Self::Mocked(m) => m.distinct_activities(),
+            }
+        }
+    }
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/calories/details.ui")]
@@ -53,13 +114,13 @@ mod imp {
         #[template_child]
         pub legend_box: TemplateChild<gtk::Grid>,
         pub calories_graph_view: OnceCell<BarGraphView>,
-        pub calories_graph_model: RefCell<GraphModelCalories>,
+        pub calories_graph_model: RefCell<DataProvider>,
     }
 
     #[glib::object_subclass]
     impl ObjectSubclass for PluginCaloriesDetails {
         const NAME: &'static str = "HealthPluginCaloriesDetails";
-        type ParentType = View;
+        type ParentType = PluginDetails;
         type Type = super::PluginCaloriesDetails;
 
         fn class_init(klass: &mut Self::Class) {
@@ -70,21 +131,16 @@ mod imp {
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             unsafe {
                 // FIXME: This really shouldn't be necessary.
-                obj.as_ref().upcast_ref::<View>().init_template();
+                obj.as_ref().upcast_ref::<PluginDetails>().init_template();
             }
         }
     }
 
+    impl ObjectImpl for PluginCaloriesDetails {}
     impl WidgetImpl for PluginCaloriesDetails {}
-
-    impl ObjectImpl for PluginCaloriesDetails {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-        }
-    }
-
-    impl ViewImpl for PluginCaloriesDetails {
-        fn update(&self, obj: &View) -> PinnedResultFuture {
+    impl BinImpl for PluginCaloriesDetails {}
+    impl PluginDetailsImpl for PluginCaloriesDetails {
+        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
@@ -104,7 +160,7 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [View] visualizes calorie Spent records.
     pub struct PluginCaloriesDetails(ObjectSubclass<imp::PluginCaloriesDetails>)
-        @extends gtk::Widget, View,
+        @extends gtk::Widget, adw::Bin, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
@@ -141,7 +197,7 @@ impl PluginCaloriesDetails {
             );
         }
 
-        let distinct_activities = calories_graph_model.distinct_activities.clone();
+        let distinct_activities = calories_graph_model.distinct_activities();
         for i in 0..3 {
             if i < distinct_activities.len() {
                 self_
@@ -164,12 +220,14 @@ impl PluginCaloriesDetails {
 
         if let Some(view) = self_.calories_graph_view.get() {
             view.set_split_bars(calories_graph_model.to_split_bar());
-        } else if !calories_graph_model.is_empty() {
+        } else if calories_graph_model.is_empty() {
+            self.switch_to_empty_page();
+        } else {
             let calories_graph_view = BarGraphView::new();
-            calories_graph_view.set_rmr(calories_graph_model.rmr);
+            calories_graph_view.set_rmr(calories_graph_model.rmr().await);
             calories_graph_view.set_split_bars(calories_graph_model.to_split_bar());
             calories_graph_view.set_x_lines_interval(100.0);
-            calories_graph_view.set_rmr(calories_graph_model.rmr);
+            calories_graph_view.set_rmr(calories_graph_model.rmr().await);
             calories_graph_view.set_hover_func(Some(Box::new(|p| {
                 ni18n_f(
                     "{}:\n{} calorie\n{}",
@@ -180,10 +238,28 @@ impl PluginCaloriesDetails {
             })));
 
             self_.scrolled_window.set_child(Some(&calories_graph_view));
-            self.stack().set_visible_child_name("data_page");
+            self.switch_to_data_page();
         }
 
         self_.calories_graph_model.replace(calories_graph_model);
+    }
+
+    pub fn mock(&self) {
+        self.imp()
+            .calories_graph_model
+            .replace(DataProvider::Mocked(GraphModelCaloriesMocked::default()));
+        spawn!(glib::clone!(@weak self as obj => async move {
+            obj.update().await;
+        }));
+    }
+
+    pub fn unmock(&self) {
+        self.imp()
+            .calories_graph_model
+            .replace(DataProvider::Actual(GraphModelCalories::default()));
+        spawn!(glib::clone!(@weak self as obj => async move {
+            obj.update().await;
+        }));
     }
 
     fn imp(&self) -> &imp::PluginCaloriesDetails {

@@ -2,7 +2,7 @@ use crate::{core::Database, ni18n_f, plugins::PluginSummaryRow};
 use gtk::{glib, subclass::prelude::*};
 
 mod imp {
-    use crate::plugins::{PinnedResultFuture, PluginSummaryRow, PluginSummaryRowImpl};
+    use crate::plugins::{summary::PinnedResultFuture, PluginSummaryRow, PluginSummaryRowImpl};
     use adw::subclass::prelude::*;
     use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 

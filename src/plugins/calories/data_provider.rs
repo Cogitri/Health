@@ -115,6 +115,10 @@ impl GraphModelCalories {
             .collect::<Vec<SplitBar>>()
     }
 
+    pub fn distinct_activities(&self) -> &[ActivityType] {
+        &self.distinct_activities
+    }
+
     pub async fn rmr(&self) -> f32 {
         let weights = match Database::instance().weights(None).await {
             Err(e) => {

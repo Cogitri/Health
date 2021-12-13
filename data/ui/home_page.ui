@@ -72,7 +72,7 @@
                     <property name="ellipsize">end</property>
                     <property name="use-markup">True</property>
                     <property name="xalign">0</property>
-                    <property name="label">For you</property>
+                    <property name="label" translatable="yes">For you</property>
                     <property name="margin-bottom">12</property>
                     <style>
                       <class name="heading"/>
@@ -82,12 +82,35 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkListBox" id="user_selected_data">
-                    <property name="selection-mode">single</property>
-                    <property name="activate-on-single-click">1</property>
-                    <style>
-                      <class name="content"/>
-                    </style>
+                  <object class="GtkStack" id="enabled_plugins_stack">
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">plugin-list</property>
+                        <property name="child">
+                          <object class="GtkListBox" id="user_selected_data">
+                            <property name="selection-mode">single</property>
+                            <property name="activate-on-single-click">1</property>
+                            <style>
+                              <class name="content"/>
+                            </style>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkStackPage">
+                        <property name="name">no-plugins-enaled</property>
+                        <property name="child">
+                          <object class="GtkLabel">
+                            <property name="label" translatable="yes">No plugins enabled. Enable one from the list below to start using Health.</property>
+                            <style>
+                              <class name="dim-label"/>
+                              <class name="title-1"/>
+                            </style>
+                          </object>
+                        </property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -101,7 +124,7 @@
                     <property name="ellipsize">end</property>
                     <property name="use-markup">True</property>
                     <property name="xalign">0</property>
-                    <property name="label">All data</property>
+                    <property name="label" translatable="yes">All data</property>
                     <property name="margin-bottom">12</property>
                     <style>
                       <class name="heading"/>

@@ -9,7 +9,7 @@ use uom::si::mass::{kilogram, pound};
 
 mod imp {
     use crate::{
-        plugins::{PinnedResultFuture, PluginSummaryRow, PluginSummaryRowImpl},
+        plugins::{summary::PinnedResultFuture, PluginSummaryRow, PluginSummaryRowImpl},
         widgets::Arrows,
     };
     use adw::subclass::prelude::*;

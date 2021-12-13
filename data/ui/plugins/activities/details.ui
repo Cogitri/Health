@@ -20,12 +20,11 @@
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="HealthPluginActivitiesDetails" parent="HealthView">
-    <property name="empty-subtitle" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new activity.</property>
-    <property name="icon-name">walking-symbolic</property>
+  <template class="HealthPluginActivitiesDetails" parent="HealthPluginDetails">
+    <property name="empty-label" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new activity.</property>
+    <property name="empty-icon-name">walking-symbolic</property>
     <property name="name">Activities</property>
-    <property name="title" translatable="yes">Recent Activities</property>
-    <property name="view-title" translatable="yes">Activities</property>
+    <property name="filled-title" translatable="yes">Recent Activities</property>
     <property name="content-widget">
       <object class="GtkStack" id="stack_activity">
         <child>

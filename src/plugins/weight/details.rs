@@ -19,14 +19,16 @@
 use crate::{
     core::{date::prelude::*, i18n, i18n_f, utils::prelude::*, Database, UnitSystem},
     ni18n_f,
-    plugins::weight::GraphModelWeight,
-    views::{GraphView, View},
+    plugins::{
+        weight::{GraphModelWeight, GraphModelWeightMocked},
+        PluginDetails, PluginDetailsExt,
+    },
+    views::GraphView,
 };
 use chrono::Duration;
-use gtk::{
-    gio::subclass::prelude::*,
-    glib::{self, Cast},
-};
+use gtk::{gio::subclass::prelude::*, glib};
+use gtk_macros::spawn;
+use imp::DataProvider;
 use uom::si::{
     length::meter,
     mass::{kilogram, pound},
@@ -35,16 +37,64 @@ use uom::si::{
 mod imp {
     use crate::{
         core::Settings,
-        plugins::weight::GraphModelWeight,
-        views::{GraphView, PinnedResultFuture, View, ViewImpl},
+        plugins::{
+            weight::{GraphModelWeight, GraphModelWeightMocked},
+            PluginDetails, PluginDetailsImpl,
+        },
+        views::{GraphView, PinnedResultFuture},
     };
+    use adw::{prelude::*, subclass::prelude::*};
+    use chrono::Duration;
     use gtk::{
         gio,
         glib::{self, Cast},
-        {prelude::*, subclass::prelude::*, CompositeTemplate},
+        {subclass::prelude::*, CompositeTemplate},
     };
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
+    use uom::si::f32::Mass;
+
+    #[derive(Debug, Clone)]
+    pub enum DataProvider {
+        Actual(GraphModelWeight),
+        Mocked(GraphModelWeightMocked),
+    }
+
+    impl Default for DataProvider {
+        fn default() -> Self {
+            Self::Actual(GraphModelWeight::default())
+        }
+    }
+
+    impl DataProvider {
+        pub async fn reload(&mut self, duration: Duration) -> anyhow::Result<()> {
+            match self {
+                Self::Actual(m) => m.reload(duration).await,
+                Self::Mocked(m) => m.reload(duration).await,
+            }
+        }
+
+        pub fn to_points(&self) -> Vec<crate::views::Point> {
+            match self {
+                Self::Actual(m) => m.to_points(),
+                Self::Mocked(m) => m.to_points(),
+            }
+        }
+
+        pub fn is_empty(&self) -> bool {
+            match self {
+                Self::Actual(m) => m.is_empty(),
+                Self::Mocked(m) => m.is_empty(),
+            }
+        }
+
+        pub fn last_weight(&self) -> Option<Mass> {
+            match self {
+                Self::Actual(m) => m.last_weight(),
+                Self::Mocked(m) => m.last_weight(),
+            }
+        }
+    }
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/weight/details.ui")]
@@ -54,13 +104,13 @@ mod imp {
         pub settings: Settings,
         pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
         pub weight_graph_view: OnceCell<GraphView>,
-        pub weight_graph_model: RefCell<GraphModelWeight>,
+        pub weight_graph_model: RefCell<DataProvider>,
     }
 
     #[glib::object_subclass]
     impl ObjectSubclass for PluginWeightDetails {
         const NAME: &'static str = "HealthPluginWeightDetails";
-        type ParentType = View;
+        type ParentType = PluginDetails;
         type Type = super::PluginWeightDetails;
 
         fn class_init(klass: &mut Self::Class) {
@@ -70,27 +120,22 @@ mod imp {
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             unsafe {
                 // FIXME: This really shouldn't be necessary.
-                obj.as_ref().upcast_ref::<View>().init_template();
+                obj.as_ref().upcast_ref::<PluginDetails>().init_template();
             }
         }
     }
 
-    impl WidgetImpl for PluginWeightDetails {}
-
     impl ObjectImpl for PluginWeightDetails {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-        }
-
         fn dispose(&self, _obj: &Self::Type) {
             if let Some(id) = self.settings_handler_id.borrow_mut().take() {
                 self.settings.disconnect(id);
             }
         }
     }
-
-    impl ViewImpl for PluginWeightDetails {
-        fn update(&self, obj: &View) -> PinnedResultFuture {
+    impl WidgetImpl for PluginWeightDetails {}
+    impl BinImpl for PluginWeightDetails {}
+    impl PluginDetailsImpl for PluginWeightDetails {
+        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj=> move |_, _, send| {
@@ -110,7 +155,7 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [View] visualizes BMI and weight development.
     pub struct PluginWeightDetails(ObjectSubclass<imp::PluginWeightDetails>)
-        @extends gtk::Widget, View,
+        @extends gtk::Widget, adw::Bin, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
@@ -127,6 +172,25 @@ impl PluginWeightDetails {
 
         o
     }
+
+    pub fn mock(&self) {
+        self.imp()
+            .weight_graph_model
+            .replace(DataProvider::Mocked(GraphModelWeightMocked::default()));
+        spawn!(glib::clone!(@weak self as obj => async move {
+            obj.update().await;
+        }));
+    }
+
+    pub fn unmock(&self) {
+        self.imp()
+            .weight_graph_model
+            .replace(DataProvider::Actual(GraphModelWeight::default()));
+        spawn!(glib::clone!(@weak self as obj => async move {
+            obj.update().await;
+        }));
+    }
+
     // TRANSLATORS notes have to be on the same line, so we cant split them
     #[rustfmt::skip]
     /// Reload the [GraphModelWeight]'s data and refresh labels & reload the [GraphView].
@@ -141,13 +205,14 @@ impl PluginWeightDetails {
             );
         }
 
-        let view = self.upcast_ref::<View>();
-        view.set_title(i18n_f("Current BMI: {}", &[&self.bmi(&weight_graph_model)]));
+        self.set_filled_title(&i18n_f("Current BMI: {}", &[&self.bmi(&weight_graph_model)]));
         self.update_weight_goal_label(&weight_graph_model);
 
         if let Some(view) = self_.weight_graph_view.get() {
             view.set_points(weight_graph_model.to_points());
-        } else if !weight_graph_model.is_empty() {
+        } else if weight_graph_model.is_empty() {
+            self.switch_to_empty_page();
+        } else {
             let weight_graph_view = GraphView::new();
             weight_graph_view.set_points(weight_graph_model.to_points());
             weight_graph_view.set_x_lines_interval(10.0);
@@ -171,7 +236,7 @@ impl PluginWeightDetails {
             weight_graph_view.set_limit_label(Some(i18n("Weight goal")));
 
             self_.scrolled_window.set_child(Some(&weight_graph_view));
-            view.stack().set_visible_child_name("data_page");
+            self.switch_to_data_page();
 
             self_.weight_graph_view.set(weight_graph_view).unwrap();
 
@@ -189,7 +254,7 @@ impl PluginWeightDetails {
         self_.weight_graph_model.replace(weight_graph_model);
     }
 
-    fn bmi(&self, model: &GraphModelWeight) -> String {
+    fn bmi(&self, model: &DataProvider) -> String {
         if let Some(last_weight) = model.last_weight() {
             let height = self.imp().settings.user_height().get::<meter>();
             if height == 0.0 || last_weight.get::<kilogram>() == 0.0 {
@@ -208,7 +273,7 @@ impl PluginWeightDetails {
 
     // TRANSLATORS notes have to be on the same line, so we cant split them
     #[rustfmt::skip]
-    fn update_weight_goal_label(&self, model: &GraphModelWeight) {
+    fn update_weight_goal_label(&self, model: &DataProvider) {
         let self_ = self.imp();
         let weight_goal = self_.settings.user_weight_goal();
         let unit_system = self_.settings.unit_system();
@@ -217,7 +282,6 @@ impl PluginWeightDetails {
         } else {
             weight_goal.get::<kilogram>()
         };
-        let goal_label = self.upcast_ref::<View>().goal_label();
 
         if weight_value > 0.1 && model.is_empty() {
             let goal_label_text = if unit_system == UnitSystem::Imperial {
@@ -235,10 +299,10 @@ impl PluginWeightDetails {
                     &[&weight_value.to_string()],
                 )
             };
-            goal_label.set_text(&goal_label_text);
+            self.set_filled_subtitle(&goal_label_text);
         } else if weight_value > 0.1 && !model.is_empty() {
             if model.last_weight().unwrap() == weight_goal {
-                goal_label.set_text(&i18n("You've reached your weight goal. Great job!"));
+                self.set_filled_subtitle(&i18n("You've reached your weight goal. Great job!"));
             }
 
             let unit_diff = model.last_weight().unwrap() - weight_goal;
@@ -279,9 +343,9 @@ impl PluginWeightDetails {
                     &[&format!("{diff:.1}", diff = diff.round_decimal_places(1))],
                 )
             };
-            goal_label.set_text(&goal_label_text);
+            self.set_filled_subtitle(&goal_label_text);
         } else {
-            goal_label.set_text(&i18n(
+            self.set_filled_subtitle(&i18n(
                 "No weight goal set yet. You can set it in Health's preferences.",
             ));
         }

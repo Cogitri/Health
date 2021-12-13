@@ -25,12 +25,14 @@ use gtk::{
 mod imp {
     use adw::subclass::prelude::*;
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/overview.ui")]
     pub struct PluginOverviewRow {
         #[template_child]
         pub icon: TemplateChild<gtk::Image>,
+        pub plugin_name: RefCell<String>,
     }
 
     #[glib::object_subclass]
@@ -52,13 +54,22 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecString::new(
-                    "icon-name",
-                    "icon-name",
-                    "icon-name",
-                    None,
-                    glib::ParamFlags::READWRITE,
-                )]
+                vec![
+                    glib::ParamSpecString::new(
+                        "icon-name",
+                        "icon-name",
+                        "icon-name",
+                        None,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                    ),
+                    glib::ParamSpecString::new(
+                        "plugin-name",
+                        "plugin-name",
+                        "plugin-name",
+                        None,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                    ),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -73,6 +84,9 @@ mod imp {
         ) {
             match pspec.name() {
                 "icon-name" => self.icon.set_icon_name(value.get().unwrap()),
+                "plugin-name" => {
+                    self.plugin_name.replace(value.get::<String>().unwrap());
+                }
                 _ => unimplemented!(),
             }
         }
@@ -80,6 +94,7 @@ mod imp {
         fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "icon-name" => self.icon.icon_name().to_value(),
+                "plugin-name" => self.plugin_name.borrow().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -99,12 +114,17 @@ glib::wrapper! {
 }
 
 impl PluginOverviewRow {
-    pub fn new(icon_name: &str, title: &str) -> Self {
-        glib::Object::new(&[("icon-name", &icon_name), ("title", &title)])
-            .expect("Failed to create PluginOverviewRow")
+    pub fn new(plugin_name: &str, icon_name: &str, title: &str) -> Self {
+        glib::Object::new(&[
+            ("icon-name", &icon_name),
+            ("title", &title),
+            ("plugin-name", &plugin_name),
+        ])
+        .expect("Failed to create PluginOverviewRow")
     }
 
     properties_setter_getter!("icon-name", String);
+    properties_setter_getter!("plugin-name", String);
 }
 
 unsafe impl<T: adw::subclass::action_row::ActionRowImpl> IsSubclassable<T> for PluginOverviewRow {

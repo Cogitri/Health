@@ -19,12 +19,11 @@
 -->
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
-  <template class="HealthPluginStepsDetails" parent="HealthView">
-    <property name="empty-subtitle" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new activity.</property>
-    <property name="icon-name">steps-symbolic</property>
+  <template class="HealthPluginStepsDetails" parent="HealthPluginDetails">
+    <property name="empty-label" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new activity.</property>
+    <property name="empty-icon-name">steps-symbolic</property>
     <property name="name">Steps</property>
-    <property name="title" translatable="yes">Steps</property>
-    <property name="view-title" translatable="yes">Steps</property>
+    <property name="filled-title" translatable="yes">Steps</property>
     <property name="content-widget">
       <object class="GtkFrame">
         <property name="margin-bottom">18</property>

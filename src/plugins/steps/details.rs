@@ -19,24 +19,86 @@
 use crate::{
     core::{date::prelude::*, i18n, i18n_f, Database},
     ni18n_f,
-    views::{GraphView, View},
+    plugins::{
+        steps::{GraphModelSteps, GraphModelStepsMocked},
+        PluginDetails, PluginDetailsExt,
+    },
+    views::GraphView,
 };
 use chrono::Duration;
-use gtk::glib::{self, subclass::prelude::*, Cast};
+use gtk::glib::{self, subclass::prelude::*};
+use gtk_macros::spawn;
+use imp::DataProvider;
 
 mod imp {
     use crate::{
-        plugins::steps::GraphModelSteps,
-        views::{GraphView, PinnedResultFuture, View, ViewImpl},
-        Settings,
+        plugins::{
+            steps::{GraphModelSteps, GraphModelStepsMocked},
+            PluginDetails, PluginDetailsImpl,
+        },
+        views::{GraphView, PinnedResultFuture},
+        Point, Settings,
     };
+    use adw::{prelude::*, subclass::prelude::*};
+    use chrono::Duration;
     use gtk::{
         gio,
         glib::{self, Cast},
-        {prelude::*, subclass::prelude::*, CompositeTemplate},
+        {subclass::prelude::*, CompositeTemplate},
     };
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
+
+    #[derive(Debug, Clone)]
+    pub enum DataProvider {
+        Actual(GraphModelSteps),
+        Mocked(GraphModelStepsMocked),
+    }
+
+    impl Default for DataProvider {
+        fn default() -> Self {
+            Self::Actual(GraphModelSteps::default())
+        }
+    }
+
+    impl DataProvider {
+        pub fn today_step_count(&self) -> Option<u32> {
+            match self {
+                Self::Actual(m) => m.today_step_count(),
+                Self::Mocked(m) => m.today_step_count(),
+            }
+        }
+        pub fn streak_count_today(&self, step_goal: u32) -> u32 {
+            match self {
+                Self::Actual(m) => m.streak_count_today(step_goal),
+                Self::Mocked(m) => m.streak_count_today(step_goal),
+            }
+        }
+        pub fn streak_count_yesterday(&self, step_goal: u32) -> u32 {
+            match self {
+                Self::Actual(m) => m.streak_count_yesterday(step_goal),
+                Self::Mocked(m) => m.streak_count_yesterday(step_goal),
+            }
+        }
+        pub async fn reload(&mut self, duration: Duration) -> anyhow::Result<()> {
+            match self {
+                Self::Actual(m) => m.reload(duration).await,
+                Self::Mocked(m) => m.reload(duration).await,
+            }
+        }
+        pub fn to_points(&self) -> Vec<Point> {
+            match self {
+                Self::Actual(m) => m.to_points(),
+                Self::Mocked(m) => m.to_points(),
+            }
+        }
+        pub fn is_empty(&self) -> bool {
+            match self {
+                Self::Actual(m) => m.is_empty(),
+                Self::Mocked(m) => m.is_empty(),
+            }
+        }
+    }
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/steps/details.ui")]
@@ -46,13 +108,13 @@ mod imp {
         pub settings: Settings,
         pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
         pub steps_graph_view: OnceCell<GraphView>,
-        pub steps_graph_model: RefCell<GraphModelSteps>,
+        pub steps_graph_model: RefCell<DataProvider>,
     }
 
     #[glib::object_subclass]
     impl ObjectSubclass for PluginStepsDetails {
         const NAME: &'static str = "HealthPluginStepsDetails";
-        type ParentType = View;
+        type ParentType = PluginDetails;
         type Type = super::PluginStepsDetails;
 
         fn class_init(klass: &mut Self::Class) {
@@ -62,27 +124,22 @@ mod imp {
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
             unsafe {
                 // FIXME: This really shouldn't be necessary.
-                obj.as_ref().upcast_ref::<View>().init_template();
+                obj.as_ref().upcast_ref::<PluginDetails>().init_template();
             }
         }
     }
 
-    impl WidgetImpl for PluginStepsDetails {}
-
     impl ObjectImpl for PluginStepsDetails {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-        }
-
         fn dispose(&self, _obj: &Self::Type) {
             if let Some(id) = self.settings_handler_id.borrow_mut().take() {
                 self.settings.disconnect(id);
             }
         }
     }
-
-    impl ViewImpl for PluginStepsDetails {
-        fn update(&self, obj: &View) -> PinnedResultFuture {
+    impl WidgetImpl for PluginStepsDetails {}
+    impl BinImpl for PluginStepsDetails {}
+    impl PluginDetailsImpl for PluginStepsDetails {
+        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
@@ -102,7 +159,7 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [View] visualizes streak counts and daily step records.
     pub struct PluginStepsDetails(ObjectSubclass<imp::PluginStepsDetails>)
-        @extends gtk::Widget, View,
+        @extends gtk::Widget, adw::Bin, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
@@ -120,6 +177,24 @@ impl PluginStepsDetails {
         o
     }
 
+    pub fn mock(&self) {
+        self.imp()
+            .steps_graph_model
+            .replace(DataProvider::Mocked(GraphModelStepsMocked::default()));
+        spawn!(glib::clone!(@weak self as obj => async move {
+            obj.update().await;
+        }));
+    }
+
+    pub fn unmock(&self) {
+        self.imp()
+            .steps_graph_model
+            .replace(DataProvider::Actual(GraphModelSteps::default()));
+        spawn!(glib::clone!(@weak self as obj => async move {
+            obj.update().await;
+        }));
+    }
+
     // TRANSLATORS notes have to be on the same line, so we cant split them
     #[rustfmt::skip]
     /// Reload the [GraphModelSteps](crate::model::GraphModelSteps)'s data and refresh labels & the [GraphView].
@@ -135,8 +210,7 @@ impl PluginStepsDetails {
             );
         }
 
-        let view = self.upcast_ref::<View>();
-        view.set_title(i18n_f(
+        self.set_filled_title(&i18n_f(
             "Today's steps: {}",
             &[&steps_graph_model
                 .today_step_count()
@@ -144,7 +218,6 @@ impl PluginStepsDetails {
                 .to_string()],
         ));
 
-        let goal_label = view.goal_label();
         let streak_count = steps_graph_model.streak_count_today(self_.settings.user_step_goal());
 
         match streak_count {
@@ -152,11 +225,11 @@ impl PluginStepsDetails {
                 let previous_streak =
                     steps_graph_model.streak_count_yesterday(self_.settings.user_step_goal());
                 if previous_streak == 0 {
-                    goal_label.set_text(&i18n(
+                    self.set_filled_subtitle(&i18n(
                         "No streak yet. Reach your step goal for multiple days to start a streak!",
                     ));
                 } else {
-                    goal_label.set_text(&ni18n_f(
+                    self.set_filled_subtitle(&ni18n_f(
                         "You're on a streak for {} day. Reach your step goal today to continue it!",
                         "You're on a streak for {} days. Reach your step goal today to continue it!",
                         previous_streak,
@@ -164,10 +237,10 @@ impl PluginStepsDetails {
                     ));
                 }
             }
-            1 => goal_label.set_text(&i18n(
+            1 => self.set_filled_subtitle(&i18n(
                 "You've reached your step goal today. Keep going to start a streak!",
             )),
-            _ => goal_label.set_text(&ni18n_f(
+            _ => self.set_filled_subtitle(&ni18n_f(
                 "You're on a streak for {} day. Good job!",
                 "You're on a streak for {} days. Good job!",
                 streak_count,
@@ -177,7 +250,9 @@ impl PluginStepsDetails {
 
         if let Some(view) = self_.steps_graph_view.get() {
             view.set_points(steps_graph_model.to_points());
-        } else if !steps_graph_model.is_empty() {
+        } else if steps_graph_model.is_empty() {
+            self.switch_to_empty_page();
+        } else {
             let steps_graph_view = GraphView::new();
             steps_graph_view.set_points(steps_graph_model.to_points());
             steps_graph_view.set_x_lines_interval(500.0);
@@ -193,7 +268,7 @@ impl PluginStepsDetails {
             steps_graph_view.set_limit_label(Some(i18n("Step goal")));
 
             self_.scrolled_window.set_child(Some(&steps_graph_view));
-            view.stack().set_visible_child_name("data_page");
+            self.switch_to_data_page();
 
             self_.steps_graph_view.set(steps_graph_view).unwrap();
 

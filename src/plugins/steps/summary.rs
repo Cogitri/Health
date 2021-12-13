@@ -10,7 +10,7 @@ use gtk::{glib, subclass::prelude::*};
 
 mod imp {
     use crate::{
-        plugins::{PinnedResultFuture, PluginSummaryRow, PluginSummaryRowImpl},
+        plugins::{summary::PinnedResultFuture, PluginSummaryRow, PluginSummaryRowImpl},
         widgets::CircularProgressBar,
     };
     use adw::subclass::prelude::*;

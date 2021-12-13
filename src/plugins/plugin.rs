@@ -1,30 +1,32 @@
-use crate::plugins::{PluginSummaryRow, Registrar};
+use crate::plugins::{PluginDetails, PluginOverviewRow, PluginSummaryRow};
 use gtk::{
     glib::{self, Boxed},
     prelude::ObjectExt,
 };
+
+mod private {
+    pub trait PluginPrivate {
+        fn update_actual(&self);
+    }
+}
+
 #[dyn_clonable::clonable]
 pub trait Plugin: Clone + std::fmt::Debug {
     /// Returns a card view with a short overview of the data, e.g 2000/10000 steps done for the home page
     fn summary(&self) -> PluginSummaryRow;
 
     /// Returns an entry for the "browse all" listbox.
-    fn overview(&self) -> adw::ActionRow;
+    fn overview(&self) -> PluginOverviewRow;
 
     /// Returns a card view containing details,e.g. steps over some weeks
-    fn details(&self) -> gtk::Widget;
+    fn details(&self) -> PluginDetails;
+
+    fn mock(&self);
+    fn unmock(&self);
 
     fn name(&self) -> &'static str;
     fn icon_name(&self) -> &'static str;
     fn update(&self);
-
-    fn register(&self, registrar: &Registrar) {
-        registrar.enable_plugin(self.name())
-    }
-
-    fn unregister(&self, registrar: &Registrar) {
-        registrar.disable_plugin(self.name())
-    }
 }
 
 #[derive(Boxed, Clone, Debug)]

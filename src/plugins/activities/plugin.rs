@@ -2,7 +2,7 @@ use crate::{
     i18n,
     plugins::{
         activities::{PluginActivitiesDetails, PluginActivitiesSummaryRow},
-        Plugin, PluginOverviewRow, PluginSummaryRow,
+        Plugin, PluginDetails, PluginOverviewRow, PluginSummaryRow,
     },
 };
 use gtk::{glib, prelude::*};
@@ -22,7 +22,7 @@ impl ActivitiesPlugin {
         Self {
             details: PluginActivitiesDetails::new(),
             summary: PluginActivitiesSummaryRow::new(NAME),
-            overview: PluginOverviewRow::new(ICON_NAME, &i18n("Activities")),
+            overview: PluginOverviewRow::new(NAME, ICON_NAME, &i18n("Activities")),
         }
     }
 }
@@ -32,11 +32,11 @@ impl Plugin for ActivitiesPlugin {
         self.summary.clone().upcast()
     }
 
-    fn overview(&self) -> adw::ActionRow {
-        self.overview.clone().upcast()
+    fn overview(&self) -> PluginOverviewRow {
+        self.overview.clone()
     }
 
-    fn details(&self) -> gtk::Widget {
+    fn details(&self) -> PluginDetails {
         self.details.clone().upcast()
     }
 
@@ -53,5 +53,13 @@ impl Plugin for ActivitiesPlugin {
             obj.details.update().await;
             obj.summary.update().await;
         }));
+    }
+
+    fn mock(&self) {
+        self.details.mock();
+    }
+
+    fn unmock(&self) {
+        self.details.unmock();
     }
 }
