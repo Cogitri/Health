@@ -11,8 +11,13 @@ mesonNew = pkgs.meson.overrideAttrs (old: rec {
     rev = "0.60.2";
     sha256 = "1z68zivpn1c6x34a037ibbp3jzxrhl5a8xz8ihwqc6k6i6nxpq3p";
   };
-      patches = (pkgs.lib.take 1 old.patches) ++ [ ./build-aux/ldconfig.patch ./build-aux/more-env-vars.patch ./build-aux/gir-fallback-path.patch ]
-        ++ (pkgs.lib.take 2 (pkgs.lib.drop 3 old.patches));
+
+  patches = (pkgs.lib.take 1 old.patches) ++ [ ./build-aux/ldconfig.patch ./build-aux/more-env-vars.patch ./build-aux/gir-fallback-path.patch ]
+    ++ (pkgs.lib.take 2 (pkgs.lib.drop 3 old.patches));
+});
+
+gtkPatched = pkgs.gtk4.overrideAttrs (old: rec {
+  patches = [ ./build-aux/4136.patch ];
 });
 
 adwaitaNew = pkgs.libadwaita.overrideAttrs (oldAttrs: rec {
@@ -40,6 +45,7 @@ rustSrc =
     pkgs.latest.rustChannels.stable.rust.override { extensions = [ "rust-src" ]; };
 buildInputs = [ 
   adwaitaNew
+  gtkPatched
   mesonNew
   rustSrc
   pkgs.cairo
@@ -49,7 +55,6 @@ buildInputs = [
   pkgs.gdk_pixbuf
   pkgs.glib
   pkgs.graphene
-  pkgs.gtk4
   pkgs.gtk4.dev
   pkgs.libxml2
   pkgs.mold
