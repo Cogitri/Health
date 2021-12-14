@@ -117,6 +117,7 @@
             </child>
             <child>
               <object class="GtkBox" id="all_data_box">
+                <property name="margin-top">24</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkLabel">
