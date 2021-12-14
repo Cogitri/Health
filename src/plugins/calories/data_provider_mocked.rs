@@ -75,7 +75,7 @@ impl GraphModelCaloriesMocked {
     }
 
     pub async fn rmr(&self) -> f32 {
-        return 1500.0;
+        1500.0
     }
 
     pub fn is_empty(&self) -> bool {

@@ -218,7 +218,7 @@ impl ViewHomePage {
         registrar
             .enabled_plugins()
             .iter()
-            .any(|p| p.name() == &current_page)
+            .any(|p| p.name() == current_page)
     }
 
     pub fn disable_current_plugin(&self) {
@@ -229,7 +229,7 @@ impl ViewHomePage {
         registrar.disable_plugin(&current_plugin);
         self_.all_data_box.set_visible(true);
         self_.settings.set_enabled_plugins(
-            &self_
+            self_
                 .settings
                 .enabled_plugins()
                 .iter()
@@ -254,7 +254,7 @@ impl ViewHomePage {
         enabled_plugins.push(current_plugin.clone());
         registrar.enable_plugin(&current_plugin);
         self_.settings.set_enabled_plugins(
-            &enabled_plugins
+            enabled_plugins
                 .iter()
                 .map(String::as_str)
                 .collect::<Vec<&str>>()

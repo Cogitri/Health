@@ -45,7 +45,7 @@ mod imp {
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
-    #[derive(Debug)]
+    #[derive(Debug, Clone)]
     pub enum DataProvider {
         Actual(ModelActivity),
         Mocked(ModelActivityMocked),
@@ -53,7 +53,7 @@ mod imp {
 
     impl Default for DataProvider {
         fn default() -> Self {
-            return Self::Actual(ModelActivity::default());
+            Self::Actual(ModelActivity::default())
         }
     }
 
@@ -207,7 +207,7 @@ impl PluginActivitiesDetails {
 
     /// Reload the [ModelActivity](crate::model::ModelActivity)'s data and refresh the list of activities
     pub async fn update(&self) {
-        let activity_model = &self.imp().activity_model.borrow();
+        let activity_model = { (*self.imp().activity_model.borrow()).clone() };
         let reload_result = activity_model.reload().await;
         if let Err(e) = reload_result {
             glib::g_warning!(
