@@ -22,7 +22,9 @@
   <requires lib="libadwaita" version="1.0"/>
   <template class="HealthPluginOverviewRow" parent="AdwActionRow">
     <child>
-      <object class="GtkImage" id="icon"/>
+      <object class="GtkImage" id="icon">
+        <property name="icon-size">large</property>
+      </object>
     </child>
   </template>
 </interface>

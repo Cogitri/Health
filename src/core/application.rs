@@ -93,6 +93,10 @@ mod imp {
                 g_warning! (config::LOG_DOMAIN, "Using -dark themes (such as Adwaita-dark) is unsupported. Please use your theme in dark-mode instead (e.g. Adwaita:dark instead of Adwaita-dark)");
             }
 
+            gtk::IconTheme::for_display(&gtk::gdk::Display::default().unwrap())
+                .unwrap()
+                .add_resource_path("/dev/Cogitri/Health/icons");
+
             obj.migrate_gsettings();
             obj.setup_actions();
             obj.setup_accels();

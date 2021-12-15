@@ -21,7 +21,7 @@
   <requires lib="gtk" version="4.0"/>
   <template class="HealthPluginCaloriesDetails" parent="HealthPluginDetails">
     <property name="empty-label" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new activity.</property>
-    <property name="empty-icon-name">steps-symbolic</property>
+    <property name="empty-icon-name">calories-symbolic</property>
     <property name="name">Calories</property>
     <property name="filled-title" translatable="yes">Calories</property>
     <property name="content-widget">

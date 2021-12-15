@@ -99,7 +99,7 @@
                     </child>
                     <child>
                       <object class="GtkStackPage">
-                        <property name="name">no-plugins-enaled</property>
+                        <property name="name">no-plugins-enabled</property>
                         <property name="child">
                           <object class="GtkLabel">
                             <property name="label" translatable="yes">No plugins enabled. Enable one from the list below to start using Health.</property>

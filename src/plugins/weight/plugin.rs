@@ -8,7 +8,7 @@ use crate::{
 use gtk::{glib, prelude::*};
 
 const NAME: &str = "weight";
-const ICON_NAME: &str = "weight-thin-symbolic";
+const ICON_NAME: &str = "weight-scale-thin-symbolic";
 
 #[derive(Clone, Debug)]
 pub struct WeightPlugin {

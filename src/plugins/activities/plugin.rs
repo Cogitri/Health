@@ -8,7 +8,7 @@ use crate::{
 use gtk::{glib, prelude::*};
 
 const NAME: &str = "activities";
-const ICON_NAME: &str = "activities-thin-symbolic";
+const ICON_NAME: &str = "walking-thin-symbolic";
 
 #[derive(Clone, Debug)]
 pub struct ActivitiesPlugin {
