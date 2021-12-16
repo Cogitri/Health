@@ -89,8 +89,20 @@ mod imp {
             let disabled_model = registrar.disabled_plugins();
             let enabled_model = registrar.enabled_plugins();
 
+            let sorter = gtk::CustomSorter::new(|a, b| {
+                a.downcast_ref::<PluginObject>()
+                    .unwrap()
+                    .plugin()
+                    .name()
+                    .cmp(b.downcast_ref::<PluginObject>().unwrap().plugin().name())
+                    .into()
+            });
+            let enabled_model_sorted = gtk::SortListModel::new(Some(&enabled_model), Some(&sorter));
+            let disabled_model_sorted =
+                gtk::SortListModel::new(Some(&disabled_model), Some(&sorter));
+
             self.user_selected_data.bind_model(
-                Some(&enabled_model),
+                Some(&enabled_model_sorted),
                 glib::clone!(@strong self.size_group as sg => @default-panic, move |o| {
                     let summary = o.clone()
                         .downcast::<PluginObject>()
@@ -104,7 +116,7 @@ mod imp {
                 }),
             );
             self.all_data.bind_model(
-                Some(&disabled_model),
+                Some(&disabled_model_sorted),
                 glib::clone!(@strong self.size_group as sg => @default-panic, move |o| {
                     let overview = o.clone()
                         .downcast::<PluginObject>()
