@@ -50,6 +50,7 @@ buildInputs = with pkgs; [
   cargo-outdated 
   clang_13
   desktop-file-utils
+  gdb
   gdk_pixbuf
   glib
   glib
@@ -69,6 +70,7 @@ buildInputs = with pkgs; [
   tracker.dev
   wayland
   wayland.dev
+  valgrind
 ];
 
 in pkgs.mkShell {
