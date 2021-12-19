@@ -103,3 +103,15 @@ impl PluginStepsSummaryRow {
         ));
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::PluginStepsSummaryRow;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        PluginStepsSummaryRow::new("");
+    }
+}

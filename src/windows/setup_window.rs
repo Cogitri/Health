@@ -429,6 +429,7 @@ impl SetupWindow {
         }
     }
 
+    #[template_callback]
     fn try_enable_next_button(&self) {
         let self_ = self.imp();
         let birthday = self_.birthday_selector.selected_date().date();
@@ -436,5 +437,21 @@ impl SetupWindow {
             birthday != Local::now().date() && !self_.height_spin_button.has_default_value();
         self_.setup_next_page_button.set_sensitive(sensitive);
         self_.setup_carousel.set_interactive(sensitive);
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::SetupWindow;
+    use crate::{core::Application, utils::init_gtk};
+    use gtk::{gio, prelude::*};
+
+    #[test]
+    fn new() {
+        init_gtk();
+        let app = Application::new();
+        app.set_application_id(Some("dev.Cogitri.Health.Tests.SetupWindow.New"));
+        app.register(None::<&gio::Cancellable>).unwrap();
+        SetupWindow::new(&app);
     }
 }

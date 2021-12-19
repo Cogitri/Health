@@ -445,3 +445,16 @@ impl PreferencesWindow {
         false
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::PreferencesWindow;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+
+        PreferencesWindow::new(None);
+    }
+}

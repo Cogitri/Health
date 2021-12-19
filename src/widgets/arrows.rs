@@ -138,3 +138,15 @@ impl Arrows {
         imp::Arrows::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::Arrows;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        Arrows::new();
+    }
+}

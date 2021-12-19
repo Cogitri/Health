@@ -274,6 +274,11 @@ mod test {
     use chrono::{Duration, Local};
 
     #[test]
+    fn new() {
+        Application::new();
+    }
+
+    #[test]
     fn migrate_gsettings() {
         let _tmp = init_gschema();
 

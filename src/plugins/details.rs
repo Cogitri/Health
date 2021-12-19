@@ -341,3 +341,15 @@ where
     let imp = T::from_instance(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.update_actual(this)
 }
+
+#[cfg(test)]
+mod test {
+    use super::PluginDetails;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        PluginDetails::new();
+    }
+}

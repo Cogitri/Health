@@ -112,3 +112,15 @@ impl TabButton {
         glib::Object::new(&[]).expect("Failed to create TabButton")
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::TabButton;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        TabButton::new();
+    }
+}

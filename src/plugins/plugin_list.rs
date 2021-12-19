@@ -148,3 +148,13 @@ impl PluginList {
         imp::PluginList::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::PluginList;
+
+    #[test]
+    fn new() {
+        PluginList::new(Vec::new());
+    }
+}

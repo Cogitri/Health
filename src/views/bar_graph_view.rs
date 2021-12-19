@@ -532,3 +532,15 @@ impl BarGraphView {
         self.queue_draw();
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::BarGraphView;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        BarGraphView::new();
+    }
+}

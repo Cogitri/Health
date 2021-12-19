@@ -136,3 +136,13 @@ impl ModelActivity {
         imp::ModelActivity::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ModelActivity;
+
+    #[test]
+    fn new() {
+        ModelActivity::new();
+    }
+}

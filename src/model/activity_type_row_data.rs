@@ -80,6 +80,11 @@ mod test {
     use super::ActivityTypeRowData;
 
     #[test]
+    fn new() {
+        ActivityTypeRowData::new("id", "label");
+    }
+
+    #[test]
     fn label() {
         let s = ActivityTypeRowData::new("id", "label");
         assert_eq!(s.id(), "id");

@@ -255,12 +255,19 @@ impl DistanceActionRow {
 #[cfg(test)]
 mod test {
     use super::DistanceActionRow;
-    use crate::model::Unitsize;
+    use crate::{model::Unitsize, utils::init_gtk};
     use uom::si::{f32::Length, length::meter};
 
     #[test]
+    fn new() {
+        init_gtk();
+
+        DistanceActionRow::new();
+    }
+
+    #[test]
     pub fn set_unitsize() {
-        crate::utils::init_gtk();
+        init_gtk();
 
         let row = DistanceActionRow::new();
         let row_ = row.imp();

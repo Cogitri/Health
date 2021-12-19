@@ -224,6 +224,13 @@ mod test {
     use crate::{i18n::i18n, utils::init_gtk};
 
     #[test]
+    fn new() {
+        init_gtk();
+
+        DateSelector::new();
+    }
+
+    #[test]
     fn selected_date() {
         init_gtk();
 

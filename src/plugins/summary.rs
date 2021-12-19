@@ -227,3 +227,15 @@ impl From<&str> for PluginSummaryRow {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::PluginSummaryRow;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        PluginSummaryRow::new("");
+    }
+}

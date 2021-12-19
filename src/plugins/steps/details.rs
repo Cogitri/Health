@@ -305,3 +305,15 @@ impl DataProvider {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::{DataProvider, PluginStepsDetails};
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        PluginStepsDetails::new(DataProvider::mocked());
+    }
+}

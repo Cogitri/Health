@@ -127,3 +127,16 @@ impl ImportDialog {
         .expect("Failed to create ImportDialog")
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ImportDialog;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+
+        ImportDialog::new(None);
+    }
+}

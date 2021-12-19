@@ -368,3 +368,15 @@ impl DataProvider {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::{DataProvider, PluginWeightDetails};
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        PluginWeightDetails::new(DataProvider::mocked());
+    }
+}

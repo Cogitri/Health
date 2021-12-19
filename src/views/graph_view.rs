@@ -542,3 +542,15 @@ impl GraphView {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::GraphView;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        GraphView::new();
+    }
+}

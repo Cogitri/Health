@@ -128,3 +128,13 @@ impl Registrar {
         glib::Object::new(&[]).expect("Failed to create Registrar")
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::Registrar;
+
+    #[test]
+    fn new() {
+        Registrar::new();
+    }
+}

@@ -208,13 +208,20 @@ impl ActivityRow {
 #[cfg(test)]
 mod test {
     use super::ActivityRow;
-    use crate::{core::ni18n_f, model::Activity};
+    use crate::{core::ni18n_f, model::Activity, utils::init_gtk};
     use gtk::prelude::WidgetExt;
     use uom::si::{f32::Length, length::kilometer};
 
     #[test]
+    fn new() {
+        init_gtk();
+
+        ActivityRow::new();
+    }
+
+    #[test]
     fn test_set_activity() {
-        crate::utils::init_gtk();
+        init_gtk();
 
         let act = Activity::new();
         act.set_calories_burned(Some(100));

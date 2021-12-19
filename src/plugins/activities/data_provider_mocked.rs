@@ -115,3 +115,13 @@ impl ModelActivityMocked {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ModelActivityMocked;
+
+    #[test]
+    fn new() {
+        ModelActivityMocked::new();
+    }
+}

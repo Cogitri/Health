@@ -93,3 +93,15 @@ impl PluginCaloriesSummaryRow {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::PluginCaloriesSummaryRow;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        PluginCaloriesSummaryRow::new("");
+    }
+}

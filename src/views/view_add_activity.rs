@@ -567,3 +567,15 @@ impl ViewAddActivity {
         self_.inner.borrow_mut().stop_update = false;
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ViewAddActivity;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        ViewAddActivity::new();
+    }
+}

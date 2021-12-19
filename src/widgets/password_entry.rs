@@ -217,3 +217,15 @@ impl PasswordEntry {
         imp::PasswordEntry::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::PasswordEntry;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        PasswordEntry::new(false, false);
+    }
+}

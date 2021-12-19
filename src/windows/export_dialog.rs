@@ -139,3 +139,16 @@ impl ExportDialog {
         .expect("Failed to create ExportDialog")
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ExportDialog;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+
+        ExportDialog::new(None);
+    }
+}

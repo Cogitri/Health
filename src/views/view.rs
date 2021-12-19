@@ -305,3 +305,15 @@ where
     let imp = T::from_instance(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.update(this)
 }
+
+#[cfg(test)]
+mod test {
+    use super::View;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        View::new();
+    }
+}

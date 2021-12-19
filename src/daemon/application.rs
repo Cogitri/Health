@@ -70,3 +70,13 @@ impl Application {
         .expect("Failed to create Application")
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::Application;
+
+    #[test]
+    fn new() {
+        Application::new();
+    }
+}

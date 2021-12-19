@@ -99,3 +99,13 @@ impl PluginObject {
         self.property::<PluginBoxed>("plugin").0
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::PluginObject;
+
+    #[test]
+    fn new() {
+        PluginObject::new(Box::new(crate::plugins::steps::StepsPlugin::new()));
+    }
+}

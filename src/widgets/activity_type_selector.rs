@@ -242,3 +242,15 @@ impl ActivityTypeSelector {
         self.set_property("selected-activity", ActivityInfoBoxed(val))
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ActivityTypeSelector;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        ActivityTypeSelector::new();
+    }
+}

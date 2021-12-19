@@ -111,3 +111,15 @@ impl ColorCircle {
         imp::ColorCircle::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ColorCircle;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        ColorCircle::new();
+    }
+}

@@ -133,3 +133,15 @@ impl CircularProgressBar {
         imp::CircularProgressBar::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::CircularProgressBar;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        CircularProgressBar::new();
+    }
+}

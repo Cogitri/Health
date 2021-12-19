@@ -82,3 +82,15 @@ impl LegendRow {
         imp::LegendRow::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::LegendRow;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        LegendRow::new();
+    }
+}

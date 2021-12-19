@@ -87,3 +87,15 @@ impl PluginActivitiesSummaryRow {
         ))
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::PluginActivitiesSummaryRow;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        PluginActivitiesSummaryRow::new("");
+    }
+}

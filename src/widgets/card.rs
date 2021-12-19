@@ -69,3 +69,15 @@ unsafe impl<T: BinImpl> IsSubclassable<T> for Card {
         <adw::Bin as IsSubclassable<T>>::instance_init(instance);
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::Card;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        Card::new();
+    }
+}

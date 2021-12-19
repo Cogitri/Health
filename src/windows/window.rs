@@ -317,3 +317,20 @@ impl Window {
         imp::Window::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::Window;
+    use crate::{core::Application, utils::init_gtk};
+    use gtk::{gio, prelude::*};
+
+    #[test]
+    fn new() {
+        init_gtk();
+
+        let app = Application::new();
+        app.set_application_id(Some("dev.Cogitri.Health.Tests.Window.New"));
+        app.register(None::<&gio::Cancellable>).unwrap();
+        Window::new(&app);
+    }
+}

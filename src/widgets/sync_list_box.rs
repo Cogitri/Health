@@ -226,3 +226,15 @@ impl SyncListBox {
         dialog.show();
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::SyncListBox;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        SyncListBox::new(None);
+    }
+}

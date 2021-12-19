@@ -116,3 +116,15 @@ impl ViewAddWeight {
         }
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ViewAddWeight;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        ViewAddWeight::new();
+    }
+}

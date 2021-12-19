@@ -181,6 +181,7 @@ impl BmiLevelBar {
 #[cfg(test)]
 mod test {
     use super::BmiLevelBar;
+    use crate::utils::init_gtk;
     use uom::si::{
         f32::{Length, Mass},
         length::meter,
@@ -188,8 +189,14 @@ mod test {
     };
 
     #[test]
+    fn new() {
+        init_gtk();
+        BmiLevelBar::new();
+    }
+
+    #[test]
     fn recalcualte_bmi() {
-        crate::utils::init_gtk();
+        init_gtk();
 
         let bar = BmiLevelBar::new();
         bar.set_height(Length::new::<meter>(1.85));

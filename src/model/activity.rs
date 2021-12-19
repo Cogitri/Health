@@ -365,6 +365,11 @@ mod test {
     use uom::si::{f32::Length, length::kilometer};
 
     #[test]
+    fn new() {
+        Activity::new();
+    }
+
+    #[test]
     fn serialize_default() {
         let a = Activity::new();
         a.set_date(DateTime::parse_from_rfc3339("2021-03-28T20:39:08.315749637+00:00").unwrap());

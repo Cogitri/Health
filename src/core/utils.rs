@@ -184,6 +184,7 @@ pub fn init_gtk() {
     gio::resources_register(&res.unwrap());
 
     gtk::init().unwrap();
+    adw::init();
 }
 
 /// Initialise some environment variables for testing GSchemas and compile the GSchema

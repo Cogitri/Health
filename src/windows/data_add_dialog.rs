@@ -133,3 +133,16 @@ impl DataAddDialog {
         imp::DataAddDialog::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::DataAddDialog;
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+
+        DataAddDialog::new(&gtk::Window::new(), String::new());
+    }
+}

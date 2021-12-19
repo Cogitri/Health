@@ -160,3 +160,13 @@ impl ModelNotification {
         message_pool[0].clone()
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::ModelNotification;
+
+    #[test]
+    fn new() {
+        ModelNotification::new();
+    }
+}

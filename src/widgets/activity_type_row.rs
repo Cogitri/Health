@@ -114,3 +114,15 @@ impl ActivityTypeRow {
         imp::ActivityTypeRow::from_instance(self)
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::{ActivityTypeRow, ActivityTypeRowData};
+    use crate::utils::init_gtk;
+
+    #[test]
+    fn new() {
+        init_gtk();
+        ActivityTypeRow::new(&ActivityTypeRowData::new("", ""), false);
+    }
+}
