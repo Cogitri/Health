@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    plugins::{PluginObject, PluginSummaryRow, PluginSummaryRowExt, Registrar},
+    plugins::{PluginDetailsExt, PluginObject, PluginSummaryRow, PluginSummaryRowExt, Registrar},
     views::View,
     ViewExt,
 };
@@ -303,10 +303,22 @@ impl ViewHomePage {
         } else {
             registrar.disabled_plugin_by_name(plugin_name).unwrap()
         };
-        stack.add_named(&plugin.details(true), Some(plugin_name));
+        let details = plugin.details(enabled);
+
+        stack.add_named(&details, Some(plugin_name));
         stack.set_visible_child_name(plugin_name);
         self.emit_by_name::<()>("view-changed", &[]);
         list_box.unselect_all();
+
+        gtk_macros::spawn!(async move {
+            if let Err(e) = details.update().await {
+                glib::g_warning!(
+                    crate::config::LOG_DOMAIN,
+                    "Couldn't update plugin's details: {}",
+                    e
+                );
+            }
+        });
     }
 
     fn imp(&self) -> &imp::ViewHomePage {
