@@ -1,43 +1,33 @@
 use crate::{
     i18n,
     plugins::{
-        weight::{PluginWeightDetails, PluginWeightSummaryRow},
-        Plugin, PluginDetails, PluginOverviewRow, PluginSummaryRow,
+        weight::{DataProvider, PluginWeightDetails},
+        Plugin, PluginDetails,
     },
 };
-use gtk::{glib, prelude::*};
+use gtk::prelude::*;
 
 const NAME: &str = "weight";
 const ICON_NAME: &str = "weight-scale-thin-symbolic";
 
 #[derive(Clone, Debug)]
-pub struct WeightPlugin {
-    details: PluginWeightDetails,
-    summary: PluginWeightSummaryRow,
-    overview: PluginOverviewRow,
-}
+pub struct WeightPlugin;
 
 impl WeightPlugin {
     pub fn new() -> Self {
-        Self {
-            details: PluginWeightDetails::new(),
-            summary: PluginWeightSummaryRow::new(NAME),
-            overview: PluginOverviewRow::new(NAME, ICON_NAME, &i18n("Weight")),
-        }
+        Self {}
     }
 }
 
 impl Plugin for WeightPlugin {
-    fn summary(&self) -> PluginSummaryRow {
-        self.summary.clone().upcast()
-    }
+    fn details(&self, mocked: bool) -> PluginDetails {
+        let data_provider = if mocked {
+            DataProvider::mocked()
+        } else {
+            DataProvider::actual()
+        };
 
-    fn overview(&self) -> PluginOverviewRow {
-        self.overview.clone()
-    }
-
-    fn details(&self) -> PluginDetails {
-        self.details.clone().upcast()
+        PluginWeightDetails::new(data_provider).upcast()
     }
 
     fn name(&self) -> &'static str {
@@ -48,18 +38,7 @@ impl Plugin for WeightPlugin {
         ICON_NAME
     }
 
-    fn update(&self) {
-        gtk_macros::spawn!(glib::clone!(@strong self as obj => async move {
-            obj.details.update().await;
-            obj.summary.update().await;
-        }));
-    }
-
-    fn mock(&self) {
-        self.details.mock();
-    }
-
-    fn unmock(&self) {
-        self.details.unmock();
+    fn localised_name(&self) -> String {
+        i18n("Weight")
     }
 }

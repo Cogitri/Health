@@ -24,23 +24,19 @@ use crate::{
         PluginDetails, PluginDetailsExt,
     },
     views::GraphView,
+    Point,
 };
 use chrono::Duration;
-use gtk::glib::{self, subclass::prelude::*};
-use gtk_macros::spawn;
-use imp::DataProvider;
+use gtk::glib::{self, subclass::prelude::*, Boxed};
 
 mod imp {
+    use super::{DataProvider, DataProviderBoxed};
     use crate::{
-        plugins::{
-            steps::{GraphModelSteps, GraphModelStepsMocked},
-            PluginDetails, PluginDetailsImpl,
-        },
+        plugins::{PluginDetails, PluginDetailsImpl},
         views::{GraphView, PinnedResultFuture},
-        Point, Settings,
+        Settings,
     };
     use adw::{prelude::*, subclass::prelude::*};
-    use chrono::Duration;
     use gtk::{
         gio,
         glib::{self, Cast},
@@ -48,57 +44,6 @@ mod imp {
     };
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
-
-    #[derive(Debug, Clone)]
-    pub enum DataProvider {
-        Actual(GraphModelSteps),
-        Mocked(GraphModelStepsMocked),
-    }
-
-    impl Default for DataProvider {
-        fn default() -> Self {
-            Self::Actual(GraphModelSteps::default())
-        }
-    }
-
-    impl DataProvider {
-        pub fn today_step_count(&self) -> Option<u32> {
-            match self {
-                Self::Actual(m) => m.today_step_count(),
-                Self::Mocked(m) => m.today_step_count(),
-            }
-        }
-        pub fn streak_count_today(&self, step_goal: u32) -> u32 {
-            match self {
-                Self::Actual(m) => m.streak_count_today(step_goal),
-                Self::Mocked(m) => m.streak_count_today(step_goal),
-            }
-        }
-        pub fn streak_count_yesterday(&self, step_goal: u32) -> u32 {
-            match self {
-                Self::Actual(m) => m.streak_count_yesterday(step_goal),
-                Self::Mocked(m) => m.streak_count_yesterday(step_goal),
-            }
-        }
-        pub async fn reload(&mut self, duration: Duration) -> anyhow::Result<()> {
-            match self {
-                Self::Actual(m) => m.reload(duration).await,
-                Self::Mocked(m) => m.reload(duration).await,
-            }
-        }
-        pub fn to_points(&self) -> Vec<Point> {
-            match self {
-                Self::Actual(m) => m.to_points(),
-                Self::Mocked(m) => m.to_points(),
-            }
-        }
-        pub fn is_empty(&self) -> bool {
-            match self {
-                Self::Actual(m) => m.is_empty(),
-                Self::Mocked(m) => m.is_empty(),
-            }
-        }
-    }
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/steps/details.ui")]
@@ -108,7 +53,7 @@ mod imp {
         pub settings: Settings,
         pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
         pub steps_graph_view: OnceCell<GraphView>,
-        pub steps_graph_model: RefCell<DataProvider>,
+        pub steps_graph_model: RefCell<Option<DataProvider>>,
     }
 
     #[glib::object_subclass]
@@ -133,6 +78,36 @@ mod imp {
         fn dispose(&self, _obj: &Self::Type) {
             if let Some(id) = self.settings_handler_id.borrow_mut().take() {
                 self.settings.disconnect(id);
+            }
+        }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecBoxed::new(
+                    "data-provider",
+                    "data-provider",
+                    "data-provider",
+                    DataProviderBoxed::static_type(),
+                    glib::ParamFlags::CONSTRUCT | glib::ParamFlags::WRITABLE,
+                )]
+            });
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "data-provider" => {
+                    self.steps_graph_model
+                        .replace(Some(value.get::<DataProviderBoxed>().unwrap().0));
+                }
+                _ => unimplemented!(),
             }
         }
     }
@@ -165,8 +140,9 @@ glib::wrapper! {
 
 impl PluginStepsDetails {
     /// Create a new [PluginStepsDetails] to display previous step activity.
-    pub fn new() -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create PluginStepsDetails");
+    pub fn new(data_provider: DataProvider) -> Self {
+        let o: Self = glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
+            .expect("Failed to create PluginStepsDetails");
 
         Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
@@ -177,31 +153,13 @@ impl PluginStepsDetails {
         o
     }
 
-    pub fn mock(&self) {
-        self.imp()
-            .steps_graph_model
-            .replace(DataProvider::Mocked(GraphModelStepsMocked::default()));
-        spawn!(glib::clone!(@weak self as obj => async move {
-            obj.update().await;
-        }));
-    }
-
-    pub fn unmock(&self) {
-        self.imp()
-            .steps_graph_model
-            .replace(DataProvider::Actual(GraphModelSteps::default()));
-        spawn!(glib::clone!(@weak self as obj => async move {
-            obj.update().await;
-        }));
-    }
-
     // TRANSLATORS notes have to be on the same line, so we cant split them
     #[rustfmt::skip]
     /// Reload the [GraphModelSteps](crate::model::GraphModelSteps)'s data and refresh labels & the [GraphView].
     pub async fn update(&self) {
         let self_ = self.imp();
 
-        let mut steps_graph_model = { self_.steps_graph_model.borrow().clone() };
+        let mut steps_graph_model = { self_.steps_graph_model.borrow().clone().unwrap() };
         if let Err(e) = steps_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
@@ -283,10 +241,67 @@ impl PluginStepsDetails {
                 )));
         }
 
-        self_.steps_graph_model.replace(steps_graph_model);
+        self_.steps_graph_model.replace(Some(steps_graph_model));
     }
 
     fn imp(&self) -> &imp::PluginStepsDetails {
         imp::PluginStepsDetails::from_instance(self)
+    }
+}
+
+#[derive(Clone, Boxed)]
+#[boxed_type(name = "HealthDataProviderStepssBoxed")]
+pub struct DataProviderBoxed(DataProvider);
+
+#[derive(Debug, Clone)]
+pub enum DataProvider {
+    Actual(GraphModelSteps),
+    Mocked(GraphModelStepsMocked),
+}
+
+impl DataProvider {
+    pub fn actual() -> Self {
+        Self::Actual(GraphModelSteps::new())
+    }
+
+    pub fn mocked() -> Self {
+        Self::Mocked(GraphModelStepsMocked::new())
+    }
+
+    pub fn today_step_count(&self) -> Option<u32> {
+        match self {
+            Self::Actual(m) => m.today_step_count(),
+            Self::Mocked(m) => m.today_step_count(),
+        }
+    }
+    pub fn streak_count_today(&self, step_goal: u32) -> u32 {
+        match self {
+            Self::Actual(m) => m.streak_count_today(step_goal),
+            Self::Mocked(m) => m.streak_count_today(step_goal),
+        }
+    }
+    pub fn streak_count_yesterday(&self, step_goal: u32) -> u32 {
+        match self {
+            Self::Actual(m) => m.streak_count_yesterday(step_goal),
+            Self::Mocked(m) => m.streak_count_yesterday(step_goal),
+        }
+    }
+    pub async fn reload(&mut self, duration: Duration) -> anyhow::Result<()> {
+        match self {
+            Self::Actual(m) => m.reload(duration).await,
+            Self::Mocked(m) => m.reload(duration).await,
+        }
+    }
+    pub fn to_points(&self) -> Vec<Point> {
+        match self {
+            Self::Actual(m) => m.to_points(),
+            Self::Mocked(m) => m.to_points(),
+        }
+    }
+    pub fn is_empty(&self) -> bool {
+        match self {
+            Self::Actual(m) => m.is_empty(),
+            Self::Mocked(m) => m.is_empty(),
+        }
     }
 }

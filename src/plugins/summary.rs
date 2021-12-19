@@ -16,6 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use super::{
+    PluginActivitiesSummaryRow, PluginCaloriesSummaryRow, PluginStepsSummaryRow,
+    PluginWeightSummaryRow,
+};
 use crate::properties_setter_getter;
 use adw::subclass::prelude::*;
 use anyhow::Result;
@@ -210,4 +214,16 @@ where
     let instance = &*(this as *const _ as *const T::Instance);
     let imp = instance.impl_();
     imp.update(this)
+}
+
+impl From<&str> for PluginSummaryRow {
+    fn from(plugin_name: &str) -> Self {
+        match plugin_name {
+            "activities" => PluginActivitiesSummaryRow::new(plugin_name).upcast(),
+            "calories" => PluginCaloriesSummaryRow::new(plugin_name).upcast(),
+            "weight" => PluginWeightSummaryRow::new(plugin_name).upcast(),
+            "steps" => PluginStepsSummaryRow::new(plugin_name).upcast(),
+            _ => unimplemented!(),
+        }
+    }
 }

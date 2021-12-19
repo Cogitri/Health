@@ -1,43 +1,33 @@
 use crate::{
     i18n,
     plugins::{
-        activities::{PluginActivitiesDetails, PluginActivitiesSummaryRow},
-        Plugin, PluginDetails, PluginOverviewRow, PluginSummaryRow,
+        activities::{DataProvider, PluginActivitiesDetails},
+        Plugin, PluginDetails,
     },
 };
-use gtk::{glib, prelude::*};
+use gtk::prelude::*;
 
 const NAME: &str = "activities";
 const ICON_NAME: &str = "walking-thin-symbolic";
 
 #[derive(Clone, Debug)]
-pub struct ActivitiesPlugin {
-    details: PluginActivitiesDetails,
-    summary: PluginActivitiesSummaryRow,
-    overview: PluginOverviewRow,
-}
+pub struct ActivitiesPlugin;
 
 impl ActivitiesPlugin {
     pub fn new() -> Self {
-        Self {
-            details: PluginActivitiesDetails::new(),
-            summary: PluginActivitiesSummaryRow::new(NAME),
-            overview: PluginOverviewRow::new(NAME, ICON_NAME, &i18n("Activities")),
-        }
+        Self {}
     }
 }
 
 impl Plugin for ActivitiesPlugin {
-    fn summary(&self) -> PluginSummaryRow {
-        self.summary.clone().upcast()
-    }
+    fn details(&self, mocked: bool) -> PluginDetails {
+        let data_provider = if mocked {
+            DataProvider::mocked()
+        } else {
+            DataProvider::actual()
+        };
 
-    fn overview(&self) -> PluginOverviewRow {
-        self.overview.clone()
-    }
-
-    fn details(&self) -> PluginDetails {
-        self.details.clone().upcast()
+        PluginActivitiesDetails::new(data_provider).upcast()
     }
 
     fn name(&self) -> &'static str {
@@ -48,18 +38,7 @@ impl Plugin for ActivitiesPlugin {
         ICON_NAME
     }
 
-    fn update(&self) {
-        gtk_macros::spawn!(glib::clone!(@strong self as obj => async move {
-            obj.details.update().await;
-            obj.summary.update().await;
-        }));
-    }
-
-    fn mock(&self) {
-        self.details.mock();
-    }
-
-    fn unmock(&self) {
-        self.details.unmock();
+    fn localised_name(&self) -> String {
+        i18n("Activities")
     }
 }

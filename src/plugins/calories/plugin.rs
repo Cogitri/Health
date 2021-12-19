@@ -1,43 +1,33 @@
 use crate::{
     i18n,
     plugins::{
-        calories::{PluginCaloriesDetails, PluginCaloriesSummaryRow},
-        Plugin, PluginDetails, PluginOverviewRow, PluginSummaryRow,
+        calories::{DataProvider, PluginCaloriesDetails},
+        Plugin, PluginDetails,
     },
 };
-use gtk::{glib, prelude::*};
+use gtk::prelude::*;
 
 const NAME: &str = "calories";
 const ICON_NAME: &str = "calories-thin-symbolic";
 
 #[derive(Clone, Debug)]
-pub struct CaloriesPlugin {
-    details: PluginCaloriesDetails,
-    summary: PluginCaloriesSummaryRow,
-    overview: PluginOverviewRow,
-}
+pub struct CaloriesPlugin;
 
 impl CaloriesPlugin {
     pub fn new() -> Self {
-        Self {
-            details: PluginCaloriesDetails::new(),
-            summary: PluginCaloriesSummaryRow::new(NAME),
-            overview: PluginOverviewRow::new(NAME, ICON_NAME, &i18n("Calories")),
-        }
+        Self {}
     }
 }
 
 impl Plugin for CaloriesPlugin {
-    fn summary(&self) -> PluginSummaryRow {
-        self.summary.clone().upcast()
-    }
+    fn details(&self, mocked: bool) -> PluginDetails {
+        let data_provider = if mocked {
+            DataProvider::mocked()
+        } else {
+            DataProvider::actual()
+        };
 
-    fn overview(&self) -> PluginOverviewRow {
-        self.overview.clone()
-    }
-
-    fn details(&self) -> PluginDetails {
-        self.details.clone().upcast()
+        PluginCaloriesDetails::new(data_provider).upcast()
     }
 
     fn name(&self) -> &'static str {
@@ -48,18 +38,7 @@ impl Plugin for CaloriesPlugin {
         ICON_NAME
     }
 
-    fn update(&self) {
-        gtk_macros::spawn!(glib::clone!(@strong self as obj => async move {
-            obj.details.update().await;
-            obj.summary.update().await;
-        }));
-    }
-
-    fn mock(&self) {
-        self.details.mock();
-    }
-
-    fn unmock(&self) {
-        self.details.unmock();
+    fn localised_name(&self) -> String {
+        i18n("Calories")
     }
 }

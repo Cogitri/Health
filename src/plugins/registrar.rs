@@ -1,6 +1,6 @@
 static mut REGISTRAR: Option<Registrar> = None;
 
-use crate::plugins::PluginList;
+use crate::plugins::{Plugin, PluginList};
 use gtk::{glib, prelude::*, subclass::prelude::*};
 
 mod imp {
@@ -50,7 +50,6 @@ mod imp {
                 if enabled_plugins.contains(&plugin.name().to_string()) {
                     self.enabled_plugins.push(plugin);
                 } else {
-                    plugin.mock();
                     self.disabled_plugins.push(plugin);
                 }
             }
@@ -68,7 +67,6 @@ impl Registrar {
         let self_ = self.imp();
         if !self_.disabled_plugins.contains(plugin_name) {
             let plugin = self_.enabled_plugins.remove(plugin_name).unwrap();
-            plugin.mock();
             self_.disabled_plugins.push(plugin);
 
             self.emit_by_name::<()>("plugins-changed", &[]);
@@ -79,11 +77,34 @@ impl Registrar {
         let self_ = self.imp();
         if !self_.enabled_plugins.contains(plugin_name) {
             let plugin = self_.disabled_plugins.remove(plugin_name).unwrap();
-            plugin.unmock();
             self_.enabled_plugins.push(plugin);
 
             self.emit_by_name::<()>("plugins-changed", &[]);
         }
+    }
+
+    pub fn disabled_plugins(&self) -> PluginList {
+        self.imp().disabled_plugins.clone()
+    }
+
+    pub fn enabled_plugins(&self) -> PluginList {
+        self.imp().enabled_plugins.clone()
+    }
+
+    pub fn disabled_plugin_by_name(&self, name: &str) -> Option<Box<dyn Plugin>> {
+        self.imp()
+            .disabled_plugins
+            .iter()
+            .find(|x| x.name() == name)
+            .map(|o| o.clone())
+    }
+
+    pub fn enabled_plugin_by_name(&self, name: &str) -> Option<Box<dyn Plugin>> {
+        self.imp()
+            .enabled_plugins
+            .iter()
+            .find(|x| x.name() == name)
+            .map(|o| o.clone())
     }
 
     pub fn instance() -> Self {
@@ -97,14 +118,6 @@ impl Registrar {
                 std::clone::Clone::clone,
             )
         }
-    }
-
-    pub fn disabled_plugins(&self) -> PluginList {
-        self.imp().disabled_plugins.clone()
-    }
-
-    pub fn enabled_plugins(&self) -> PluginList {
-        self.imp().enabled_plugins.clone()
     }
 
     fn imp(&self) -> &imp::Registrar {

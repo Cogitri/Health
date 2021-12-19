@@ -4,29 +4,24 @@ use gtk::{
     prelude::ObjectExt,
 };
 
-mod private {
-    pub trait PluginPrivate {
-        fn update_actual(&self);
-    }
-}
-
 #[dyn_clonable::clonable]
 pub trait Plugin: Clone + std::fmt::Debug {
     /// Returns a card view with a short overview of the data, e.g 2000/10000 steps done for the home page
-    fn summary(&self) -> PluginSummaryRow;
+    fn summary(&self) -> PluginSummaryRow {
+        PluginSummaryRow::from(self.name())
+    }
 
     /// Returns an entry for the "browse all" listbox.
-    fn overview(&self) -> PluginOverviewRow;
+    fn overview(&self) -> PluginOverviewRow {
+        PluginOverviewRow::new(self.name(), self.icon_name(), &self.localised_name())
+    }
 
     /// Returns a card view containing details,e.g. steps over some weeks
-    fn details(&self) -> PluginDetails;
-
-    fn mock(&self);
-    fn unmock(&self);
+    fn details(&self, mocked: bool) -> PluginDetails;
 
     fn name(&self) -> &'static str;
     fn icon_name(&self) -> &'static str;
-    fn update(&self);
+    fn localised_name(&self) -> String;
 }
 
 #[derive(Boxed, Clone, Debug)]

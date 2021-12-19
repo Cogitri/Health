@@ -24,7 +24,9 @@ use gtk::{
 
 mod imp {
     use crate::{
-        plugins::{PluginObject, PluginOverviewRow, PluginSummaryRow, Registrar},
+        plugins::{
+            PluginObject, PluginOverviewRow, PluginSummaryRow, PluginSummaryRowExt, Registrar,
+        },
         views::{PinnedResultFuture, View, ViewImpl},
         Settings, ViewExt,
     };
@@ -104,8 +106,8 @@ mod imp {
             self.user_selected_data.bind_model(
                 Some(&enabled_model_sorted),
                 glib::clone!(@strong self.size_group as sg => @default-panic, move |o| {
-                    let summary = o.clone()
-                        .downcast::<PluginObject>()
+                    let summary = o
+                        .downcast_ref::<PluginObject>()
                         .unwrap()
                         .plugin()
                         .summary();
@@ -118,8 +120,8 @@ mod imp {
             self.all_data.bind_model(
                 Some(&disabled_model_sorted),
                 glib::clone!(@strong self.size_group as sg => @default-panic, move |o| {
-                    let overview = o.clone()
-                        .downcast::<PluginObject>()
+                    let overview = o
+                        .downcast_ref::<PluginObject>()
                         .unwrap()
                         .plugin()
                         .overview();
@@ -135,6 +137,10 @@ mod imp {
                     if let Some(row) = row {
                         let summary = row.downcast_ref::<PluginSummaryRow>().unwrap();
                         let plugin_name = summary.plugin_name().unwrap();
+                        let registrar = Registrar::instance();
+                        let stack = obj.stack();
+                        let plugin = registrar.enabled_plugin_by_name(&plugin_name).unwrap();
+                        stack.add_named(&plugin.details(false), Some(&plugin_name));
                         obj.stack().set_visible_child_name(&plugin_name);
                         obj.emit_by_name::<()>("view-changed", &[]);
                         list_box.unselect_all();
@@ -146,6 +152,10 @@ mod imp {
                     if let Some(row) = row {
                         let overview = row.downcast_ref::<PluginOverviewRow>().unwrap();
                         let plugin_name = overview.plugin_name().unwrap();
+                        let registrar = Registrar::instance();
+                        let stack = obj.stack();
+                        let plugin = registrar.disabled_plugin_by_name(&plugin_name).unwrap();
+                        stack.add_named(&plugin.details(true), Some(&plugin_name));
                         obj.stack().set_visible_child_name(&plugin_name);
                         obj.emit_by_name::<()>("view-changed", &[]);
                         list_box.unselect_all();
@@ -161,17 +171,7 @@ mod imp {
                     .set_visible_child_name("no-plugins-enabled");
             }
 
-            let stack = obj.stack();
-            for plugin in enabled_model.iter() {
-                plugin.update();
-                stack.add_named(&plugin.details(), Some(plugin.name()));
-            }
-
-            for plugin in disabled_model.iter() {
-                stack.add_named(&plugin.details(), Some(plugin.name()));
-            }
-
-            stack.set_visible_child_name("add_data_page")
+            obj.stack().set_visible_child_name("add_data_page")
         }
     }
 
@@ -181,10 +181,13 @@ mod imp {
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
                     gtk_macros::spawn!(async move {
-                        let registrar = Registrar::instance();
-                        let enabled_model = registrar.enabled_plugins();
-                        for plugin in enabled_model.iter() {
-                            plugin.update();
+                        let self_ = Self::from_instance(obj.downcast_ref().unwrap());
+                        let mut i = 0;
+                        while let Some(row) = self_.user_selected_data.row_at_index(i) {
+                            if let Err(e) = row.downcast_ref::<PluginSummaryRow>().unwrap().update().await {
+                                glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't update plugin: {}", e);
+                            }
+                            i += 1;
                         }
                         send.resolve(Ok(()));
                     });
@@ -203,7 +206,9 @@ glib::wrapper! {
 
 impl ViewHomePage {
     pub fn back(&self) {
-        self.stack().set_visible_child_name("add_data_page");
+        let stack = self.stack();
+        stack.remove(&stack.child_by_name(&self.current_page()).unwrap());
+        stack.set_visible_child_name("add_data_page");
     }
 
     /// Connect to the `view-changed` signal.

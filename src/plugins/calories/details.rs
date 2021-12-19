@@ -26,26 +26,21 @@ use crate::{
         PluginDetails, PluginDetailsExt,
     },
     views::BarGraphView,
+    ActivityType, SplitBar,
 };
 use crate::{model::ActivityInfo, widgets::LegendRow};
 use chrono::Duration;
 use gtk::{
-    glib::{self, subclass::prelude::*, Cast},
+    glib::{self, subclass::prelude::*, Boxed, Cast},
     prelude::*,
 };
-use gtk_macros::spawn;
-
-use self::imp::DataProvider;
 
 mod imp {
+    use super::{DataProvider, DataProviderBoxed};
     use crate::{
-        plugins::{
-            calories::{GraphModelCalories, GraphModelCaloriesMocked},
-            PluginDetails, PluginDetailsImpl,
-        },
+        plugins::{PluginDetails, PluginDetailsImpl},
         views::{BarGraphView, PinnedResultFuture},
         widgets::LegendRow,
-        ActivityType, SplitBar,
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
@@ -56,56 +51,6 @@ mod imp {
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
-    #[derive(Debug, Clone)]
-    pub enum DataProvider {
-        Actual(GraphModelCalories),
-        Mocked(GraphModelCaloriesMocked),
-    }
-
-    impl Default for DataProvider {
-        fn default() -> Self {
-            Self::Actual(GraphModelCalories::default())
-        }
-    }
-
-    impl DataProvider {
-        pub async fn reload(&mut self, duration: chrono::Duration) -> anyhow::Result<()> {
-            match self {
-                Self::Actual(m) => m.reload(duration).await,
-                Self::Mocked(m) => m.reload(duration).await,
-            }
-        }
-
-        /// Converts the model's data to an array of `SplitBars` so it can be displayed in a `BarGraphView`.
-        pub fn to_split_bar(&self) -> Vec<SplitBar> {
-            match self {
-                Self::Actual(m) => m.to_split_bar(),
-                Self::Mocked(m) => m.to_split_bar(),
-            }
-        }
-
-        pub async fn rmr(&self) -> f32 {
-            match self {
-                Self::Actual(m) => m.rmr().await,
-                Self::Mocked(m) => m.rmr().await,
-            }
-        }
-
-        pub fn is_empty(&self) -> bool {
-            match self {
-                Self::Actual(m) => m.is_empty(),
-                Self::Mocked(m) => m.is_empty(),
-            }
-        }
-
-        pub fn distinct_activities(&self) -> &[ActivityType] {
-            match self {
-                Self::Actual(m) => m.distinct_activities(),
-                Self::Mocked(m) => m.distinct_activities(),
-            }
-        }
-    }
-
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/calories/details.ui")]
     pub struct PluginCaloriesDetails {
@@ -114,7 +59,7 @@ mod imp {
         #[template_child]
         pub legend_box: TemplateChild<gtk::Grid>,
         pub calories_graph_view: OnceCell<BarGraphView>,
-        pub calories_graph_model: RefCell<DataProvider>,
+        pub calories_graph_model: RefCell<Option<DataProvider>>,
     }
 
     #[glib::object_subclass]
@@ -136,7 +81,37 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for PluginCaloriesDetails {}
+    impl ObjectImpl for PluginCaloriesDetails {
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecBoxed::new(
+                    "data-provider",
+                    "data-provider",
+                    "data-provider",
+                    DataProviderBoxed::static_type(),
+                    glib::ParamFlags::CONSTRUCT | glib::ParamFlags::WRITABLE,
+                )]
+            });
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "data-provider" => {
+                    self.calories_graph_model
+                        .replace(Some(value.get::<DataProviderBoxed>().unwrap().0));
+                }
+                _ => unimplemented!(),
+            }
+        }
+    }
     impl WidgetImpl for PluginCaloriesDetails {}
     impl BinImpl for PluginCaloriesDetails {}
     impl PluginDetailsImpl for PluginCaloriesDetails {
@@ -166,8 +141,9 @@ glib::wrapper! {
 
 impl PluginCaloriesDetails {
     /// Create a new [PluginCaloriesDetails] to display previous calorie data.
-    pub fn new() -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create PluginCaloriesDetails");
+    pub fn new(data_provider: DataProvider) -> Self {
+        let o: Self = glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
+            .expect("Failed to create PluginCaloriesDetails");
 
         Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
@@ -188,7 +164,7 @@ impl PluginCaloriesDetails {
     pub async fn update(&self) {
         let self_ = self.imp();
 
-        let mut calories_graph_model = { self_.calories_graph_model.borrow().clone() };
+        let mut calories_graph_model = { self_.calories_graph_model.borrow().clone().unwrap() };
         if let Err(e) = calories_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
@@ -241,28 +217,68 @@ impl PluginCaloriesDetails {
             self.switch_to_data_page();
         }
 
-        self_.calories_graph_model.replace(calories_graph_model);
-    }
-
-    pub fn mock(&self) {
-        self.imp()
+        self_
             .calories_graph_model
-            .replace(DataProvider::Mocked(GraphModelCaloriesMocked::default()));
-        spawn!(glib::clone!(@weak self as obj => async move {
-            obj.update().await;
-        }));
-    }
-
-    pub fn unmock(&self) {
-        self.imp()
-            .calories_graph_model
-            .replace(DataProvider::Actual(GraphModelCalories::default()));
-        spawn!(glib::clone!(@weak self as obj => async move {
-            obj.update().await;
-        }));
+            .replace(Some(calories_graph_model));
     }
 
     fn imp(&self) -> &imp::PluginCaloriesDetails {
         imp::PluginCaloriesDetails::from_instance(self)
+    }
+}
+
+#[derive(Clone, Boxed)]
+#[boxed_type(name = "HealthDataProviderCaloriesBoxed")]
+pub struct DataProviderBoxed(DataProvider);
+
+#[derive(Debug, Clone)]
+pub enum DataProvider {
+    Actual(GraphModelCalories),
+    Mocked(GraphModelCaloriesMocked),
+}
+
+impl DataProvider {
+    pub fn actual() -> Self {
+        Self::Actual(GraphModelCalories::new())
+    }
+
+    pub fn mocked() -> Self {
+        Self::Mocked(GraphModelCaloriesMocked::new())
+    }
+
+    pub async fn reload(&mut self, duration: chrono::Duration) -> anyhow::Result<()> {
+        match self {
+            Self::Actual(m) => m.reload(duration).await,
+            Self::Mocked(m) => m.reload(duration).await,
+        }
+    }
+
+    /// Converts the model's data to an array of `SplitBars` so it can be displayed in a `BarGraphView`.
+    pub fn to_split_bar(&self) -> Vec<SplitBar> {
+        match self {
+            Self::Actual(m) => m.to_split_bar(),
+            Self::Mocked(m) => m.to_split_bar(),
+        }
+    }
+
+    pub async fn rmr(&self) -> f32 {
+        match self {
+            Self::Actual(m) => m.rmr().await,
+            Self::Mocked(m) => m.rmr().await,
+        }
+    }
+
+    pub fn is_empty(&self) -> bool {
+        match self {
+            Self::Actual(m) => m.is_empty(),
+            Self::Mocked(m) => m.is_empty(),
+        }
+    }
+
+    pub fn distinct_activities(&self) -> &[ActivityType] {
+        match self {
+            Self::Actual(m) => m.distinct_activities(),
+            Self::Mocked(m) => m.distinct_activities(),
+        }
     }
 }

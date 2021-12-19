@@ -23,15 +23,12 @@ use crate::{
         PluginDetails, PluginDetailsExt,
     },
 };
-use gtk::glib::{self, subclass::prelude::*};
-use gtk_macros::spawn;
-
-use self::imp::DataProvider;
+use gtk::glib::{self, subclass::prelude::*, Boxed};
 
 mod imp {
+    use super::{DataProvider, DataProviderBoxed};
     use crate::{
         model::Activity,
-        plugins::activities::{ModelActivity, ModelActivityMocked},
         plugins::{details::PinnedResultFuture, PluginDetails, PluginDetailsImpl},
         widgets::ActivityRow,
     };
@@ -45,45 +42,10 @@ mod imp {
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
-    #[derive(Debug, Clone)]
-    pub enum DataProvider {
-        Actual(ModelActivity),
-        Mocked(ModelActivityMocked),
-    }
-
-    impl Default for DataProvider {
-        fn default() -> Self {
-            Self::Actual(ModelActivity::default())
-        }
-    }
-
-    impl DataProvider {
-        pub fn is_empty(&self) -> bool {
-            match self {
-                Self::Actual(m) => m.is_empty(),
-                Self::Mocked(m) => m.is_empty(),
-            }
-        }
-
-        pub async fn reload(&self) -> anyhow::Result<()> {
-            match self {
-                Self::Actual(m) => m.reload().await,
-                Self::Mocked(m) => m.reload().await,
-            }
-        }
-
-        pub async fn activity_present(&self) -> bool {
-            match self {
-                Self::Actual(m) => m.activity_present().await,
-                Self::Mocked(m) => m.activity_present().await,
-            }
-        }
-    }
-
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/activities/details.ui")]
     pub struct PluginActivitiesDetails {
-        pub activity_model: RefCell<DataProvider>,
+        pub activity_model: RefCell<Option<DataProvider>>,
         pub activities_list_view: OnceCell<gtk::ListView>,
         #[template_child]
         pub frame: TemplateChild<gtk::Frame>,
@@ -125,15 +87,46 @@ mod imp {
                     .unwrap();
                 child.set_activity(activity);
             });
-            if let DataProvider::Actual(m) = &*self.activity_model.borrow() {
-                let selection_model = gtk::NoSelection::new(Some(m));
-                let list_view = gtk::ListView::new(Some(&selection_model), Some(&factory));
-                self.frame
-                    .set_child(Some(list_view.upcast_ref::<gtk::Widget>()));
-                list_view.style_context().add_class("content");
-                self.activities_list_view.set(list_view).unwrap();
-            } else {
-                unimplemented!();
+            let m: gio::ListModel = match &*self.activity_model.borrow() {
+                Some(DataProvider::Actual(m)) => m.clone().upcast(),
+                Some(DataProvider::Mocked(m)) => m.clone().upcast(),
+                None => unimplemented!(),
+            };
+            let selection_model = gtk::NoSelection::new(Some(&m));
+            let list_view = gtk::ListView::new(Some(&selection_model), Some(&factory));
+            self.frame
+                .set_child(Some(list_view.upcast_ref::<gtk::Widget>()));
+            list_view.style_context().add_class("content");
+            self.activities_list_view.set(list_view).unwrap();
+        }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecBoxed::new(
+                    "data-provider",
+                    "data-provider",
+                    "data-provider",
+                    DataProviderBoxed::static_type(),
+                    glib::ParamFlags::CONSTRUCT | glib::ParamFlags::WRITABLE,
+                )]
+            });
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "data-provider" => {
+                    self.activity_model
+                        .replace(Some(value.get::<DataProviderBoxed>().unwrap().0));
+                }
+                _ => unimplemented!(),
             }
         }
     }
@@ -166,35 +159,10 @@ glib::wrapper! {
 }
 
 impl PluginActivitiesDetails {
-    pub fn mock(&self) {
-        let m = ModelActivityMocked::new();
-        self.imp()
-            .activities_list_view
-            .get()
-            .unwrap()
-            .set_model(Some(&gtk::NoSelection::new(Some(&m))));
-        self.imp().activity_model.replace(DataProvider::Mocked(m));
-        spawn!(glib::clone!(@weak self as obj => async move {
-            obj.update().await;
-        }));
-    }
-
-    pub fn unmock(&self) {
-        let m = ModelActivity::new();
-        self.imp()
-            .activities_list_view
-            .get()
-            .unwrap()
-            .set_model(Some(&gtk::NoSelection::new(Some(&m))));
-        self.imp().activity_model.replace(DataProvider::Actual(m));
-        spawn!(glib::clone!(@weak self as obj => async move {
-            obj.update().await;
-        }));
-    }
-
     /// Create a new [PluginActivitiesDetails] to display previous activities.
-    pub fn new() -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create PluginActivitiesDetails");
+    pub fn new(data_provider: DataProvider) -> Self {
+        let o: Self = glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
+            .expect("Failed to create PluginActivitiesDetails");
 
         Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
@@ -207,7 +175,7 @@ impl PluginActivitiesDetails {
 
     /// Reload the [ModelActivity](crate::model::ModelActivity)'s data and refresh the list of activities
     pub async fn update(&self) {
-        let activity_model = { (*self.imp().activity_model.borrow()).clone() };
+        let activity_model = { (*self.imp().activity_model.borrow()).clone().unwrap() };
         let reload_result = activity_model.reload().await;
         if let Err(e) = reload_result {
             glib::g_warning!(
@@ -233,5 +201,46 @@ impl PluginActivitiesDetails {
 
     fn imp(&self) -> &imp::PluginActivitiesDetails {
         imp::PluginActivitiesDetails::from_instance(self)
+    }
+}
+
+#[derive(Clone, Boxed)]
+#[boxed_type(name = "HealthDataProviderActivitiesBoxed")]
+pub struct DataProviderBoxed(DataProvider);
+
+#[derive(Debug, Clone)]
+pub enum DataProvider {
+    Actual(ModelActivity),
+    Mocked(ModelActivityMocked),
+}
+
+impl DataProvider {
+    pub fn actual() -> Self {
+        Self::Actual(ModelActivity::new())
+    }
+
+    pub fn mocked() -> Self {
+        Self::Mocked(ModelActivityMocked::new())
+    }
+
+    pub fn is_empty(&self) -> bool {
+        match self {
+            Self::Actual(m) => m.is_empty(),
+            Self::Mocked(m) => m.is_empty(),
+        }
+    }
+
+    pub async fn reload(&self) -> anyhow::Result<()> {
+        match self {
+            Self::Actual(m) => m.reload().await,
+            Self::Mocked(m) => m.reload().await,
+        }
+    }
+
+    pub async fn activity_present(&self) -> bool {
+        match self {
+            Self::Actual(m) => m.activity_present().await,
+            Self::Mocked(m) => m.activity_present().await,
+        }
     }
 }

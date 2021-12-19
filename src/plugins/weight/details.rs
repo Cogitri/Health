@@ -26,25 +26,24 @@ use crate::{
     views::GraphView,
 };
 use chrono::Duration;
-use gtk::{gio::subclass::prelude::*, glib};
-use gtk_macros::spawn;
-use imp::DataProvider;
+use gtk::{
+    gio::subclass::prelude::*,
+    glib::{self, Boxed},
+};
 use uom::si::{
+    f32::Mass,
     length::meter,
     mass::{kilogram, pound},
 };
 
 mod imp {
+    use super::{DataProvider, DataProviderBoxed};
     use crate::{
         core::Settings,
-        plugins::{
-            weight::{GraphModelWeight, GraphModelWeightMocked},
-            PluginDetails, PluginDetailsImpl,
-        },
+        plugins::{PluginDetails, PluginDetailsImpl},
         views::{GraphView, PinnedResultFuture},
     };
     use adw::{prelude::*, subclass::prelude::*};
-    use chrono::Duration;
     use gtk::{
         gio,
         glib::{self, Cast},
@@ -52,49 +51,6 @@ mod imp {
     };
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
-    use uom::si::f32::Mass;
-
-    #[derive(Debug, Clone)]
-    pub enum DataProvider {
-        Actual(GraphModelWeight),
-        Mocked(GraphModelWeightMocked),
-    }
-
-    impl Default for DataProvider {
-        fn default() -> Self {
-            Self::Actual(GraphModelWeight::default())
-        }
-    }
-
-    impl DataProvider {
-        pub async fn reload(&mut self, duration: Duration) -> anyhow::Result<()> {
-            match self {
-                Self::Actual(m) => m.reload(duration).await,
-                Self::Mocked(m) => m.reload(duration).await,
-            }
-        }
-
-        pub fn to_points(&self) -> Vec<crate::views::Point> {
-            match self {
-                Self::Actual(m) => m.to_points(),
-                Self::Mocked(m) => m.to_points(),
-            }
-        }
-
-        pub fn is_empty(&self) -> bool {
-            match self {
-                Self::Actual(m) => m.is_empty(),
-                Self::Mocked(m) => m.is_empty(),
-            }
-        }
-
-        pub fn last_weight(&self) -> Option<Mass> {
-            match self {
-                Self::Actual(m) => m.last_weight(),
-                Self::Mocked(m) => m.last_weight(),
-            }
-        }
-    }
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/weight/details.ui")]
@@ -104,7 +60,7 @@ mod imp {
         pub settings: Settings,
         pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
         pub weight_graph_view: OnceCell<GraphView>,
-        pub weight_graph_model: RefCell<DataProvider>,
+        pub weight_graph_model: RefCell<Option<DataProvider>>,
     }
 
     #[glib::object_subclass]
@@ -129,6 +85,36 @@ mod imp {
         fn dispose(&self, _obj: &Self::Type) {
             if let Some(id) = self.settings_handler_id.borrow_mut().take() {
                 self.settings.disconnect(id);
+            }
+        }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecBoxed::new(
+                    "data-provider",
+                    "data-provider",
+                    "data-provider",
+                    DataProviderBoxed::static_type(),
+                    glib::ParamFlags::CONSTRUCT | glib::ParamFlags::WRITABLE,
+                )]
+            });
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "data-provider" => {
+                    self.weight_graph_model
+                        .replace(Some(value.get::<DataProviderBoxed>().unwrap().0));
+                }
+                _ => unimplemented!(),
             }
         }
     }
@@ -161,8 +147,9 @@ glib::wrapper! {
 
 impl PluginWeightDetails {
     /// Create a new [PluginWeightDetails] to display previous weight measurements.
-    pub fn new() -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create PluginWeightDetails");
+    pub fn new(data_provider: DataProvider) -> Self {
+        let o: Self = glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
+            .expect("Failed to create PluginWeightDetails");
 
         Database::instance().connect_weights_updated(glib::clone!(@weak o => move || {
             gtk_macros::spawn!(async move {
@@ -173,30 +160,12 @@ impl PluginWeightDetails {
         o
     }
 
-    pub fn mock(&self) {
-        self.imp()
-            .weight_graph_model
-            .replace(DataProvider::Mocked(GraphModelWeightMocked::default()));
-        spawn!(glib::clone!(@weak self as obj => async move {
-            obj.update().await;
-        }));
-    }
-
-    pub fn unmock(&self) {
-        self.imp()
-            .weight_graph_model
-            .replace(DataProvider::Actual(GraphModelWeight::default()));
-        spawn!(glib::clone!(@weak self as obj => async move {
-            obj.update().await;
-        }));
-    }
-
     // TRANSLATORS notes have to be on the same line, so we cant split them
     #[rustfmt::skip]
     /// Reload the [GraphModelWeight]'s data and refresh labels & reload the [GraphView].
     pub async fn update(&self) {
         let self_ = self.imp();
-        let mut weight_graph_model = { self_.weight_graph_model.borrow().clone() };
+        let mut weight_graph_model = { self_.weight_graph_model.borrow().clone().unwrap() };
         if let Err(e) = weight_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
@@ -251,7 +220,7 @@ impl PluginWeightDetails {
             ));
         }
 
-        self_.weight_graph_model.replace(weight_graph_model);
+        self_.weight_graph_model.replace(Some(weight_graph_model));
     }
 
     fn bmi(&self, model: &DataProvider) -> String {
@@ -348,6 +317,54 @@ impl PluginWeightDetails {
             self.set_filled_subtitle(&i18n(
                 "No weight goal set yet. You can set it in Health's preferences.",
             ));
+        }
+    }
+}
+
+#[derive(Clone, Boxed)]
+#[boxed_type(name = "HealthDataProviderWeightsBoxed")]
+pub struct DataProviderBoxed(DataProvider);
+
+#[derive(Debug, Clone)]
+pub enum DataProvider {
+    Actual(GraphModelWeight),
+    Mocked(GraphModelWeightMocked),
+}
+
+impl DataProvider {
+    pub fn actual() -> Self {
+        Self::Actual(GraphModelWeight::new())
+    }
+
+    pub fn mocked() -> Self {
+        Self::Mocked(GraphModelWeightMocked::new())
+    }
+
+    pub async fn reload(&mut self, duration: Duration) -> anyhow::Result<()> {
+        match self {
+            Self::Actual(m) => m.reload(duration).await,
+            Self::Mocked(m) => m.reload(duration).await,
+        }
+    }
+
+    pub fn to_points(&self) -> Vec<crate::views::Point> {
+        match self {
+            Self::Actual(m) => m.to_points(),
+            Self::Mocked(m) => m.to_points(),
+        }
+    }
+
+    pub fn is_empty(&self) -> bool {
+        match self {
+            Self::Actual(m) => m.is_empty(),
+            Self::Mocked(m) => m.is_empty(),
+        }
+    }
+
+    pub fn last_weight(&self) -> Option<Mass> {
+        match self {
+            Self::Actual(m) => m.last_weight(),
+            Self::Mocked(m) => m.last_weight(),
         }
     }
 }
