@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    plugins::{PluginObject, Registrar},
+    plugins::{PluginObject, PluginSummaryRow, PluginSummaryRowExt, Registrar},
     views::View,
     ViewExt,
 };
@@ -28,9 +28,7 @@ use gtk::{
 
 mod imp {
     use crate::{
-        plugins::{
-            PluginObject, PluginOverviewRow, PluginSummaryRow, PluginSummaryRowExt, Registrar,
-        },
+        plugins::{PluginObject, PluginOverviewRow, PluginSummaryRow, Registrar},
         views::{PinnedResultFuture, View, ViewImpl},
         Settings, ViewExt,
     };
@@ -140,20 +138,14 @@ mod imp {
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
                     gtk_macros::spawn!(async move {
-                        let self_ = Self::from_instance(obj.downcast_ref().unwrap());
-                        let mut i = 0;
-                        while let Some(row) = self_.user_selected_data.row_at_index(i) {
-                            if let Err(e) = row.downcast_ref::<PluginSummaryRow>().unwrap().update().await {
-                                glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't update plugin: {}", e);
-                            }
-                            i += 1;
-                        }
+                        obj.downcast_ref::<Self::Type>().unwrap().update().await;
                         send.resolve(Ok(()));
                     });
                 }),
             ))
         }
     }
+
     #[gtk::template_callbacks(subclass)]
     impl ViewHomePage {
         #[template_callback]
@@ -307,18 +299,34 @@ impl ViewHomePage {
         let registrar = Registrar::instance();
         let stack = self.stack();
         let plugin = if enabled {
-            registrar.enabled_plugin_by_name(&plugin_name).unwrap()
+            registrar.enabled_plugin_by_name(plugin_name).unwrap()
         } else {
-            registrar.disabled_plugin_by_name(&plugin_name).unwrap()
+            registrar.disabled_plugin_by_name(plugin_name).unwrap()
         };
-        stack.add_named(&plugin.details(true), Some(&plugin_name));
-        stack.set_visible_child_name(&plugin_name);
+        stack.add_named(&plugin.details(true), Some(plugin_name));
+        stack.set_visible_child_name(plugin_name);
         self.emit_by_name::<()>("view-changed", &[]);
         list_box.unselect_all();
     }
 
     fn imp(&self) -> &imp::ViewHomePage {
         imp::ViewHomePage::from_instance(self)
+    }
+
+    async fn update(&self) {
+        let self_ = self.imp();
+        let mut i = 0;
+        while let Some(row) = self_.user_selected_data.row_at_index(i) {
+            if let Err(e) = row
+                .downcast_ref::<PluginSummaryRow>()
+                .unwrap()
+                .update()
+                .await
+            {
+                glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't update plugin: {}", e);
+            }
+            i += 1;
+        }
     }
 }
 
