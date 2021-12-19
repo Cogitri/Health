@@ -51,6 +51,9 @@
     <property name="title" translatable="yes">Health</property>
     <property name="default-width">600</property>
     <property name="default-height">620</property>
+    <signal name="close-request" handler="handle_close_request" swapped="true"/>
+    <signal name="notify::default-height" handler="handle_property_default_height_notify" swapped="true"/>
+    <signal name="notify::default-width" handler="handle_property_default_width_notify" swapped="true"/>
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
@@ -65,6 +68,7 @@
             <child>
               <object class="GtkButton" id="back_button">
                 <property name="visible">0</property>
+                <signal name="clicked" handler="handle_back_button_clicked" swapped="true"/>
                 <child>
                   <object class="GtkImage">
                     <property name="icon-name">go-previous-symbolic</property>
@@ -74,6 +78,7 @@
             </child>
             <child>
               <object class="GtkButton" id="add_data_button">
+                <signal name="clicked" handler="handle_add_data_button_clicked" swapped="true"/>
                 <child>
                   <object class="GtkImage">
                     <property name="icon-name">list-add-symbolic</property>
@@ -85,6 +90,7 @@
               <object class="GtkButton" id="enable_plugin_button">
                 <property name="visible">0</property>
                 <property name="label" translatable="yes">Enable plugin</property>
+                <signal name="clicked" handler="handle_enable_plugin_button_clicked" swapped="true"/>
                 <style>
                   <class name="suggested-action"/>
                 </style>
@@ -103,6 +109,7 @@
             <property name="revealed">0</property>
             <property name="show-close-button">1</property>
             <property name="message-type">GTK_MESSAGE_ERROR</property>
+            <signal name="response" handler="handle_error_infobar_response" swapped="true"/>
             <child>
               <object class="GtkLabel" id="error_label">
                 <property name="margin-start">6</property>
@@ -118,6 +125,7 @@
             <property name="width-request">265</property>
             <property name="height-request">200</property>
             <property name="vexpand">1</property>
+            <signal name="view-changed" handler="handle_view_changed" swapped="true"/>
           </object>
         </child>
       </object>

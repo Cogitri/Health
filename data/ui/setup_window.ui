@@ -71,6 +71,7 @@
                         <property name="action-name">app.quit</property>
                         <property name="use-underline">1</property>
                         <property name="sensitive">1</property>
+                        <signal name="clicked" handler="handle_setup_quit_button_clicked" swapped="true"/>
                       </object>
                     </property>
                   </object>
@@ -82,6 +83,7 @@
                         <property name="label" translatable="yes">_Previous</property>
                         <property name="use-underline">1</property>
                         <property name="visible">0</property>
+                        <signal name="clicked" handler="handle_setup_previous_page_button_clicked" swapped="true"/>
                       </object>
                     </property>
                   </object>
@@ -99,6 +101,7 @@
                         <property name="label" translatable="yes">_Next</property>
                         <property name="use-underline">1</property>
                         <property name="sensitive">0</property>
+                        <signal name="clicked" handler="handle_setup_next_page_button_clicked" swapped="true"/>
                         <style>
                           <class name="suggested-action"/>
                         </style>
@@ -113,6 +116,7 @@
                         <property name="label" translatable="yes">_Done</property>
                         <property name="use-underline">1</property>
                         <property name="visible">0</property>
+                        <signal name="clicked" handler="handle_setup_done_button_clicked" swapped="true"/>
                         <style>
                           <class name="suggested-action"/>
                         </style>
@@ -129,6 +133,7 @@
             <property name="vexpand">True</property>
             <property name="hexpand">True</property>
             <property name="interactive">0</property>
+            <signal name="page-changed" handler="handle_setup_carousel_page_changed" swapped="true"/>
             <child>
               <object class="GtkBox" id="setup_first_page">
                 <property name="orientation">vertical</property>
@@ -204,6 +209,7 @@
                             <child>
                               <object class="HealthDateSelector" id="birthday_selector">
                                 <property name="valign">center</property>
+                                <signal name="notify::selected-date" handler="try_enable_next_button" swapped="true"/>
                               </object>
                             </child>
                           </object>
@@ -218,6 +224,7 @@
                                 <property name="text">0</property>
                                 <property name="adjustment">height_adjustment</property>
                                 <property name="valign">center</property>
+                                <signal name="changed" handler="handle_height_spin_button_changed" swapped="true"/>
                               </object>
                             </child>
                           </object>
@@ -354,6 +361,7 @@
                                     <property name="width-chars">5</property>
                                     <property name="adjustment">weight_goal_adjustment</property>
                                     <property name="valign">center</property>
+                                    <signal name="changed" handler="handle_weight_spin_button_changed" swapped="true"/>
                                   </object>
                                 </child>
                               </object>

@@ -97,7 +97,9 @@
       </object>
     </child>
   </object>
-  <object class="HealthActivityTypeSelector" id="activity_type_selector"/>
+  <object class="HealthActivityTypeSelector" id="activity_type_selector">
+    <signal name="notify::selected-activity" handler="handle_activity_type_selector_activity_selected" swapped="true"/>
+  </object>
   <object class="AdwActionRow" id="activity_type_actionrow">
     <property name="title" translatable="yes">Activity Type</property>
     <child>
@@ -116,10 +118,14 @@
         <property name="adjustment">calories_burned_adjustment</property>
         <property name="numeric">1</property>
         <property name="valign">center</property>
+        <signal name="changed" handler="handle_calories_burned_spin_button_changed" swapped="true"/>
       </object>
     </child>
   </object>
-  <object class="HealthDistanceActionRow" id="distance_action_row"/>
+  <object class="HealthDistanceActionRow" id="distance_action_row">
+    <signal name="changed" handler="handle_distance_action_row_changed" swapped="true"/>
+    <signal name="input" handler="handle_distance_action_row_input" swapped="true"/>
+  </object>
   <object class="AdwActionRow" id="duration_action_row">
     <property name="title" translatable="yes">Active Minutes</property>
     <child>
@@ -129,6 +135,7 @@
         <property name="adjustment">activity_duration_adjustment</property>
         <property name="numeric">1</property>
         <property name="valign">center</property>
+        <signal name="changed" handler="handle_duration_spin_button_changed" swapped="true"/>
       </object>
     </child>
   </object>
@@ -177,6 +184,7 @@
         <property name="adjustment">steps_adjustment</property>
         <property name="numeric">1</property>
         <property name="valign">center</property>
+        <signal name="changed" handler="handle_steps_spin_button_changed" swapped="true"/>
       </object>
     </child>
   </object>

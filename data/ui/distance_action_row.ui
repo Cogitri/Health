@@ -63,6 +63,8 @@
             <property name="adjustment">distance_adjustment</property>
             <property name="valign">center</property>
             <property name="unit-kind">like_meters</property>
+            <signal name="changed" handler="handle_distance_spin_button_changed" swapped="true"/>
+            <signal name="input" handler="handle_distance_spin_button_input" swapped="true"/>
           </object>
         </child>
       </object>

@@ -8,7 +8,7 @@
     <file preprocess="xml-stripblanks">ui/activity_type_selector.ui</file>
     <file preprocess="xml-stripblanks">ui/bmi_level_bar.ui</file>
     <file preprocess="xml-stripblanks">ui/card.ui</file>
-    <file preprocess="xml-stripblanks">ui/date_editor.ui</file>
+    <file preprocess="xml-stripblanks">ui/date_selector.ui</file>
     <file preprocess="xml-stripblanks">ui/distance_action_row.ui</file>
     <file preprocess="xml-stripblanks">ui/home_page.ui</file>
     <file preprocess="xml-stripblanks">ui/import_export_dialog_base.ui</file>

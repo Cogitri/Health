@@ -76,6 +76,7 @@
       See https://gitlab.gnome.org/Cogitri/gnome-Health/-/issues/48
     -->
     <property name="search-enabled">0</property>
+    <signal name="close-request" handler="handle_close_window" swapped="true"/>
     <child>
       <object class="AdwPreferencesPage">
         <property name="icon_name">emblem-system-symbolic</property>
@@ -116,6 +117,7 @@
                 <child>
                   <object class="HealthDateSelector" id="birthday_selector">
                     <property name="valign">center</property>
+                    <signal name="notify::selected-date" handler="handle_birthday_selector_changed" swapped="true"/>
                   </object>
                 </child>
               </object>
@@ -130,6 +132,7 @@
                     <property name="text">0</property>
                     <property name="adjustment">height_adjustment</property>
                     <property name="valign">center</property>
+                    <signal name="changed" handler="handle_height_spin_button_changed" swapped="true"/>
                   </object>
                 </child>
               </object>
@@ -148,6 +151,7 @@
                     <property name="margin-top">15</property>
                     <property name="margin-bottom">15</property>
                     <property name="margin-end">10</property>
+                    <signal name="notify::activate" handler="handle_enable_notify_changed" swapped="true"/>
                   </object>
                 </child>
               </object>
@@ -204,6 +208,7 @@
                     <property name="adjustment">step_goal_adjustment</property>
                     <property name="numeric">1</property>
                     <property name="valign">center</property>
+                    <signal name="changed" handler="handle_step_goal_spin_button_changed" swapped="true"/>
                   </object>
                 </child>
               </object>
@@ -233,6 +238,7 @@
                         <property name="width-chars">5</property>
                         <property name="adjustment">weight_goal_adjustment</property>
                         <property name="valign">center</property>
+                        <signal name="changed" handler="handle_weight_goal_spin_button_changed" swapped="true"/>
                       </object>
                     </child>
                   </object>
@@ -267,6 +273,7 @@
                   <object class="GtkButton" id="export_csv_button">
                     <property name="label" translatable="yes">Export…</property>
                     <property name="valign">center</property>
+                    <signal name="clicked" handler="handle_export_csv_button_clicked" swapped="true"/>
                   </object>
                 </child>
               </object>
@@ -278,6 +285,7 @@
                   <object class="GtkButton" id="import_csv_button">
                     <property name="label" translatable="yes">Import…</property>
                     <property name="valign">center</property>
+                    <signal name="clicked" handler="handle_import_csv_button_clicked" swapped="true"/>
                   </object>
                 </child>
               </object>

@@ -134,6 +134,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -196,6 +197,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
+#[gtk::template_callbacks(value)]
 impl ViewAddActivity {
     /// Create a new [ViewAddActivity].
     pub fn new() -> Self {
@@ -204,44 +206,11 @@ impl ViewAddActivity {
 
     fn connect_handlers(&self) {
         let self_ = self.imp();
-
-        self_
-            .calories_burned_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_calories_burned_spin_button_changed();
-            }));
-        self_
-            .distance_action_row
-            .connect_changed(clone!(@weak self as obj => move || {
-                obj.handle_distance_action_row_changed();
-            }));
-        self_
-            .duration_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_duration_spin_button_changed();
-            }));
-        self_
-            .steps_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_steps_spin_button_changed();
-            }));
-
-        self_
-            .activity_type_selector
-            .connect_selected_activity_notify(clone!(@weak self as obj => move |_| {
-                obj.handle_activity_type_selector_activity_selected();
-            }));
-
         self_.calories_burned_spin_button.connect_input(
             clone!(@weak self as obj => @default-panic, move |_| {
                 obj.handle_calories_burned_spin_button_input()
             }),
         );
-        self_
-            .distance_action_row
-            .connect_input(clone!(@weak self as obj => move || {
-                obj.handle_distance_action_row_input()
-            }));
         self_.duration_spin_button.connect_input(
             clone!(@weak self as obj => @default-panic, move |_| {
                 obj.handle_duration_spin_button_input()
@@ -313,6 +282,7 @@ impl ViewAddActivity {
         false
     }
 
+    #[template_callback]
     fn handle_activity_type_selector_activity_selected(&self) {
         let self_ = self.imp();
         self.set_selected_activity(self_.activity_type_selector.selected_activity());
@@ -337,6 +307,7 @@ impl ViewAddActivity {
         None
     }
 
+    #[template_callback]
     fn handle_calories_burned_spin_button_changed(&self) {
         let self_ = self.imp();
         {
@@ -352,6 +323,7 @@ impl ViewAddActivity {
         self.set_spin_buttons_from_activity(self_.calories_burned_spin_button.upcast_ref());
     }
 
+    #[template_callback]
     fn handle_distance_action_row_changed(&self) {
         let self_ = self.imp();
         {
@@ -362,6 +334,7 @@ impl ViewAddActivity {
         self.set_spin_buttons_from_activity(self_.distance_action_row.upcast_ref());
     }
 
+    #[template_callback]
     fn handle_distance_action_row_input(&self) {
         self.imp()
             .inner
@@ -370,6 +343,7 @@ impl ViewAddActivity {
             .insert(ActivityDataPoints::DISTANCE);
     }
 
+    #[template_callback]
     fn handle_duration_spin_button_changed(&self) {
         let self_ = self.imp();
         {
@@ -391,6 +365,7 @@ impl ViewAddActivity {
         None
     }
 
+    #[template_callback]
     fn handle_steps_spin_button_changed(&self) {
         let self_ = self.imp();
         {

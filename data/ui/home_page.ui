@@ -89,7 +89,7 @@
                         <property name="child">
                           <object class="GtkListBox" id="user_selected_data">
                             <property name="selection-mode">single</property>
-                            <property name="activate-on-single-click">1</property>
+                            <signal name="row-selected" handler="handle_user_selected_data_row_selected" swapped="true"/>
                             <style>
                               <class name="content"/>
                             </style>
@@ -137,6 +137,7 @@
                 <child>
                   <object class="GtkListBox" id="all_data">
                     <property name="selection-mode">single</property>
+                    <signal name="row-selected" handler="handle_all_data_row_selected" swapped="true"/>
                     <style>
                       <class name="content"/>
                     </style>

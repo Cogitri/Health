@@ -19,6 +19,7 @@
 use crate::{
     core::{i18n, utils::prelude::*, UnitKind, UnitSystem},
     model::Unitsize,
+    widgets::UnitSpinButton,
 };
 use gtk::{gio::subclass::prelude::*, glib, prelude::*};
 use uom::si::{
@@ -69,6 +70,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             UnitSpinButton::static_type();
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -85,16 +87,6 @@ mod imp {
                 .replace(Some(self.settings.connect_unit_system_changed(
                     clone!(@weak obj => move |_, _| obj.set_togglebutton_text()),
                 )));
-
-            self.distance_spin_button
-                .connect_changed(clone!(@weak obj => move |s| {
-                    obj.handle_distance_spin_button_changed(s);
-                }));
-
-            self.distance_spin_button
-                .connect_input(clone!(@weak obj => @default-panic, move |_| {
-                    obj.emit_by_name::<()>("input", &[]);
-                }));
         }
 
         fn signals() -> &'static [Signal] {
@@ -128,6 +120,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 
+#[gtk::template_callbacks(value)]
 impl DistanceActionRow {
     /// Connect to a new value being entered (this is only emitted once the user is done editing!).
     ///
@@ -222,7 +215,8 @@ impl DistanceActionRow {
         imp::DistanceActionRow::from_instance(self)
     }
 
-    fn handle_distance_spin_button_changed(&self, spinbutton: &gtk::SpinButton) {
+    #[template_callback]
+    fn handle_distance_spin_button_changed(&self, spinbutton: UnitSpinButton) {
         let self_ = self.imp();
         let value = spinbutton.raw_value::<f32>().unwrap_or_default();
         let unitsize = self_.inner.borrow().unitsize;
@@ -239,6 +233,11 @@ impl DistanceActionRow {
             self_.inner.borrow_mut().value = Length::new::<mile>(value);
         }
         self.emit_by_name::<()>("changed", &[]);
+    }
+
+    #[template_callback]
+    fn handle_distance_spin_button_input(&self) {
+        self.emit_by_name::<()>("input", &[]);
     }
 
     fn set_togglebutton_text(&self) {

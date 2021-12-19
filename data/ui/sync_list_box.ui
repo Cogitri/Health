@@ -34,6 +34,7 @@
         <style>
           <class name="content"/>
         </style>
+        <signal name="row-activated" handler="handle_row_activated" swapped="true"/>
         <child>
           <object class="GtkListBoxRow" id="google_fit_start_sync_row">
             <child>

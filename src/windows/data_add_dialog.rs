@@ -18,7 +18,7 @@
 
 use crate::views::{View, ViewAddActivity, ViewAddWeight};
 use gtk::{
-    glib::{self, subclass::prelude::*},
+    glib::{self, subclass::prelude::*, translate::FromGlib},
     prelude::*,
 };
 
@@ -40,6 +40,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -50,7 +51,6 @@ mod imp {
     impl ObjectImpl for DataAddDialog {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
-            obj.connect_handlers();
         }
     }
     impl WidgetImpl for DataAddDialog {}
@@ -64,6 +64,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
+#[gtk::template_callbacks(value)]
 impl DataAddDialog {
     /// Create a new [DataAddDialog].
     ///
@@ -98,11 +99,9 @@ impl DataAddDialog {
         o
     }
 
-    fn connect_handlers(&self) {
-        self.connect_response(Self::handle_response);
-    }
-
-    fn handle_response(&self, id: gtk::ResponseType) {
+    #[template_callback]
+    fn handle_response(&self, id: i32) {
+        let id = unsafe { gtk::ResponseType::from_glib(id) };
         let self_ = self.imp();
         let active_stack_page_name = self_.stack.visible_child_name().unwrap().to_string();
         if let Some(active_stack_page) = self_.stack.visible_child() {

@@ -66,7 +66,8 @@ features = ["gettext-system"]
 version = "0.3"
 
 [dependencies.gtk]
-git = "https://github.com/gtk-rs/gtk4-rs"
+git = "https://github.com/jf2048/gtk4-rs"
+branch = "template-callbacks"
 package = "gtk4"
 features = ["v4_4"]
 
@@ -150,6 +151,17 @@ version = "1"
 
 [dev-dependencies.tempfile]
 version = "3"
+
+[patch."https://github.com/gtk-rs/gtk4-rs"]
+gtk4-sys = { git = "https://github.com/jf2048/gtk4-rs", branch="template-callbacks" }
+gdk4-sys = { git = "https://github.com/jf2048/gtk4-rs", branch="template-callbacks" }
+gtk4 =   { git = "https://github.com/jf2048/gtk4-rs", branch="template-callbacks" }
+gdk4-wayland = { git = "https://github.com/jf2048/gtk4-rs", branch="template-callbacks" }
+gdk4-wayland-sys = { git = "https://github.com/jf2048/gtk4-rs", branch="template-callbacks" }
+gdk4-x11 = { git = "https://github.com/jf2048/gtk4-rs", branch="template-callbacks" }
+gdk4-x11-sys = { git = "https://github.com/jf2048/gtk4-rs", branch="template-callbacks" }
+gsk4 = { git = "https://github.com/jf2048/gtk4-rs", branch="template-callbacks" }
+gsk4-sys = { git = "https://github.com/jf2048/gtk4-rs", branch="template-callbacks" }
 
 [profile.release]
 lto = true

@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::glib::{self, clone, subclass::prelude::*, SignalHandlerId};
+use gtk::glib::{self, subclass::prelude::*, SignalHandlerId};
 use gtk::prelude::*;
 
 mod imp {
@@ -45,6 +45,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.set_layout_manager_type::<gtk::BinLayout>();
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -62,8 +63,6 @@ mod imp {
                 .add_offset_value(&gtk::LEVEL_BAR_OFFSET_HIGH, 3.0);
             self.password_strength_bar
                 .add_offset_value(&gtk::LEVEL_BAR_OFFSET_FULL, 4.0);
-
-            obj.connect_handlers();
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -148,6 +147,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
+#[gtk::template_callbacks(value)]
 impl PasswordEntry {
     /// Create a new [PasswordEntry]
     pub fn new(show_password_repeat: bool, show_password_strength: bool) -> Self {
@@ -200,26 +200,16 @@ impl PasswordEntry {
         }
     }
 
-    fn connect_handlers(&self) {
-        let self_ = self.imp();
-
-        self_
-            .password_entry
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                    obj.handle_password_entry_changed()
-            }));
-
-        self_
-            .password_repeat_entry
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.notify("password");
-            }));
-    }
-
+    #[template_callback]
     fn handle_password_entry_changed(&self) {
         if self.show_password_strength() {
             self.calculate_password_strength();
         }
+        self.notify("password");
+    }
+
+    #[template_callback]
+    fn handle_password_repeat_entry_changed(&self) {
         self.notify("password");
     }
 

@@ -43,30 +43,32 @@ adwaitaNew = pkgs.libadwaita.overrideAttrs (oldAttrs: rec {
 });
 rustSrc =
     pkgs.latest.rustChannels.stable.rust.override { extensions = [ "rust-src" ]; };
-buildInputs = [ 
+buildInputs = with pkgs; [ 
   adwaitaNew
+  appstream-glib
+  cairo
+  cargo-outdated 
+  clang_13
+  desktop-file-utils
+  gdk_pixbuf
+  glib
+  glib
+  graphene
+  gtk4.dev
   gtkPatched
+  harfbuzz
+  libxml2
   mesonNew
+  mold
+  ninja
+  pango
+  pkg-config
+  rustfmt
   rustSrc
-  pkgs.cairo
-  pkgs.cargo-outdated 
-  pkgs.clang_13
-  pkgs.harfbuzz
-  pkgs.gdk_pixbuf
-  pkgs.glib
-  pkgs.graphene
-  pkgs.gtk4.dev
-  pkgs.libxml2
-  pkgs.mold
-  pkgs.ninja
-  pkgs.pango
-  pkgs.pkg-config
-  pkgs.rustc
-  pkgs.rustfmt
-  pkgs.tracker
-  pkgs.tracker.dev
-  pkgs.wayland
-  pkgs.wayland.dev
+  tracker
+  tracker.dev
+  wayland
+  wayland.dev
 ];
 
 in pkgs.mkShell {

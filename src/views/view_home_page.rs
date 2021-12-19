@@ -16,7 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{plugins::Registrar, views::View, ViewExt};
+use crate::{
+    plugins::{PluginObject, Registrar},
+    views::View,
+    ViewExt,
+};
 use gtk::{
     glib::{self, object::ObjectExt, subclass::prelude::*},
     prelude::*,
@@ -62,6 +66,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -105,62 +110,16 @@ mod imp {
 
             self.user_selected_data.bind_model(
                 Some(&enabled_model_sorted),
-                glib::clone!(@strong self.size_group as sg => @default-panic, move |o| {
-                    let summary = o
-                        .downcast_ref::<PluginObject>()
-                        .unwrap()
-                        .plugin()
-                        .summary();
-
-                        sg.add_widget(&summary);
-
-                        summary.upcast()
+                glib::clone!(@weak obj => @default-panic, move |o| {
+                    obj.handle_user_selected_data_bind_model(o)
                 }),
             );
             self.all_data.bind_model(
                 Some(&disabled_model_sorted),
-                glib::clone!(@strong self.size_group as sg => @default-panic, move |o| {
-                    let overview = o
-                        .downcast_ref::<PluginObject>()
-                        .unwrap()
-                        .plugin()
-                        .overview();
-
-                        sg.add_widget(&overview);
-
-                        overview.upcast()
+                glib::clone!(@weak obj => @default-panic, move |o| {
+                    obj.handle_all_data_bind_model(o)
                 }),
             );
-
-            self.user_selected_data.connect_row_selected(
-                glib::clone!(@weak obj => move |list_box, row| {
-                    if let Some(row) = row {
-                        let summary = row.downcast_ref::<PluginSummaryRow>().unwrap();
-                        let plugin_name = summary.plugin_name().unwrap();
-                        let registrar = Registrar::instance();
-                        let stack = obj.stack();
-                        let plugin = registrar.enabled_plugin_by_name(&plugin_name).unwrap();
-                        stack.add_named(&plugin.details(false), Some(&plugin_name));
-                        obj.stack().set_visible_child_name(&plugin_name);
-                        obj.emit_by_name::<()>("view-changed", &[]);
-                        list_box.unselect_all();
-                    }
-                }),
-            );
-            self.all_data
-                .connect_row_selected(glib::clone!(@weak obj => move |list_box, row| {
-                    if let Some(row) = row {
-                        let overview = row.downcast_ref::<PluginOverviewRow>().unwrap();
-                        let plugin_name = overview.plugin_name().unwrap();
-                        let registrar = Registrar::instance();
-                        let stack = obj.stack();
-                        let plugin = registrar.disabled_plugin_by_name(&plugin_name).unwrap();
-                        stack.add_named(&plugin.details(true), Some(&plugin_name));
-                        obj.stack().set_visible_child_name(&plugin_name);
-                        obj.emit_by_name::<()>("view-changed", &[]);
-                        list_box.unselect_all();
-                    }
-                }));
 
             if disabled_model.is_empty() {
                 self.all_data_box.set_visible(false);
@@ -193,6 +152,36 @@ mod imp {
                     });
                 }),
             ))
+        }
+    }
+    #[gtk::template_callbacks(subclass)]
+    impl ViewHomePage {
+        #[template_callback]
+        fn handle_user_selected_data_row_selected(
+            &self,
+            row: Option<gtk::ListBoxRow>,
+            list_box: gtk::ListBox,
+        ) {
+            if let Some(row) = row {
+                let summary = row.downcast_ref::<PluginSummaryRow>().unwrap();
+                let plugin_name = summary.plugin_name().unwrap();
+                self.instance()
+                    .open_plugin_details(&list_box, &plugin_name, true);
+            }
+        }
+
+        #[template_callback]
+        fn handle_all_data_row_selected(
+            &self,
+            row: Option<gtk::ListBoxRow>,
+            list_box: gtk::ListBox,
+        ) {
+            if let Some(row) = row {
+                let overview = row.downcast_ref::<PluginOverviewRow>().unwrap();
+                let plugin_name = overview.plugin_name().unwrap();
+                self.instance()
+                    .open_plugin_details(&list_box, &plugin_name, false);
+            }
         }
     }
 }
@@ -288,6 +277,44 @@ impl ViewHomePage {
     /// Create a new [ViewHomePage] to display previous activities.
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create ViewHomePage")
+    }
+
+    fn handle_user_selected_data_bind_model(&self, object: &glib::Object) -> gtk::Widget {
+        let summary = object
+            .downcast_ref::<PluginObject>()
+            .unwrap()
+            .plugin()
+            .summary();
+
+        self.imp().size_group.add_widget(&summary);
+
+        summary.upcast()
+    }
+
+    fn handle_all_data_bind_model(&self, object: &glib::Object) -> gtk::Widget {
+        let overview = object
+            .downcast_ref::<PluginObject>()
+            .unwrap()
+            .plugin()
+            .overview();
+
+        self.imp().size_group.add_widget(&overview);
+
+        overview.upcast()
+    }
+
+    fn open_plugin_details(&self, list_box: &gtk::ListBox, plugin_name: &str, enabled: bool) {
+        let registrar = Registrar::instance();
+        let stack = self.stack();
+        let plugin = if enabled {
+            registrar.enabled_plugin_by_name(&plugin_name).unwrap()
+        } else {
+            registrar.disabled_plugin_by_name(&plugin_name).unwrap()
+        };
+        stack.add_named(&plugin.details(true), Some(&plugin_name));
+        stack.set_visible_child_name(&plugin_name);
+        self.emit_by_name::<()>("view-changed", &[]);
+        list_box.unselect_all();
     }
 
     fn imp(&self) -> &imp::ViewHomePage {

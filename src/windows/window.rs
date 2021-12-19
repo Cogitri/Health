@@ -24,7 +24,7 @@ use crate::{
 };
 use gtk::{
     gio,
-    glib::{self, clone, signal::Inhibit, subclass::prelude::*, Cast},
+    glib::{self, clone, subclass::prelude::*, Cast},
     prelude::*,
 };
 use gtk_macros::action;
@@ -77,6 +77,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             ViewHomePage::static_type();
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -88,7 +89,6 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            obj.connect_handlers();
             obj.setup_actions();
         }
     }
@@ -106,6 +106,7 @@ glib::wrapper! {
         @implements gio::ActionGroup, gio::ActionMap, gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
+#[gtk::template_callbacks(value)]
 impl Window {
     /// Create a new [Window].
     ///
@@ -130,52 +131,6 @@ impl Window {
 
     pub fn open_hamburger_menu(&self) {
         self.imp().primary_menu_popover.popup();
-    }
-
-    fn connect_handlers(&self) {
-        let self_ = self.imp();
-
-        self_
-            .add_data_button
-            .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_add_data_button_clicked();
-            }));
-
-        self_
-            .back_button
-            .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_back_button_clicked();
-            }));
-        self_
-            .enable_plugin_button
-            .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_enable_plugin_button_clicked();
-            }));
-
-        self_
-            .error_infobar
-            .connect_response(Self::handle_error_infobar_response);
-        self_
-            .view_home_page
-            .connect_view_changed(clone!(@weak self as obj => move || {
-                let self_ = obj.imp();
-                let is_enabled = self_.view_home_page.is_current_plugin_enabled();
-                obj.action_set_enabled("win.disable-current-plugin", is_enabled);
-                self_.enable_plugin_button.set_visible(!is_enabled);
-                self_.back_button.set_visible(true)
-            }));
-
-        self.connect_close_request(clone!(@weak self as obj => @default-panic, move |_| {
-            obj.handle_close_request()
-        }));
-
-        self.connect_default_height_notify(clone!(@weak self as obj => move |_| {
-            obj.handle_property_default_height_notify();
-        }));
-
-        self.connect_default_width_notify(clone!(@weak self as obj => move |_| {
-            obj.handle_property_default_width_notify();
-        }));
     }
 
     fn setup_actions(&self) {
@@ -210,6 +165,7 @@ impl Window {
         self.action_set_enabled("win.disable-current-plugin", false);
     }
 
+    #[template_callback]
     fn handle_add_data_button_clicked(&self) {
         let dialog =
             DataAddDialog::new(self.upcast_ref(), self.imp().view_home_page.current_page())
@@ -217,6 +173,7 @@ impl Window {
         dialog.present();
     }
 
+    #[template_callback]
     fn handle_back_button_clicked(&self) {
         let self_ = self.imp();
         self_.view_home_page.back();
@@ -225,7 +182,8 @@ impl Window {
         self_.enable_plugin_button.set_visible(false);
     }
 
-    fn handle_close_request(&self) -> Inhibit {
+    #[template_callback]
+    fn handle_close_request(&self) -> bool {
         let self_ = self.imp();
         let mut inner = self_.inner.borrow_mut();
 
@@ -237,14 +195,16 @@ impl Window {
             source_id.remove();
         }
 
-        Inhibit(false)
+        false
     }
 
+    #[template_callback]
     fn handle_disable_current_plugin(&self) {
         self.imp().view_home_page.disable_current_plugin();
         self.imp().view_home_page.back();
     }
 
+    #[template_callback]
     fn handle_enable_plugin_button_clicked(&self) {
         let self_ = self.imp();
         self_.view_home_page.enable_current_plugin();
@@ -252,6 +212,7 @@ impl Window {
         self_.enable_plugin_button.set_visible(false);
     }
 
+    #[template_callback]
     fn handle_error_infobar_response(bar: &gtk::InfoBar, response: gtk::ResponseType) {
         if response == gtk::ResponseType::Close {
             bar.set_revealed(false);
@@ -266,12 +227,23 @@ impl Window {
         }
     }
 
+    #[template_callback]
     fn handle_property_default_height_notify(&self) {
         self.imp().inner.borrow_mut().current_height = self.default_height();
     }
 
+    #[template_callback]
     fn handle_property_default_width_notify(&self) {
         self.imp().inner.borrow_mut().current_height = self.default_height();
+    }
+
+    #[template_callback]
+    fn handle_view_changed(&self) {
+        let self_ = self.imp();
+        let is_enabled = self_.view_home_page.is_current_plugin_enabled();
+        self.action_set_enabled("win.disable-current-plugin", is_enabled);
+        self_.enable_plugin_button.set_visible(!is_enabled);
+        self_.back_button.set_visible(true)
     }
 
     fn setup(&self) {

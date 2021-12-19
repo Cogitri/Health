@@ -53,7 +53,6 @@ mod imp {
     #[template(resource = "/dev/Cogitri/Health/ui/preferences_window.ui")]
     pub struct PreferencesWindow {
         pub current_unit_system: Cell<UnitSystem>,
-        pub parent_window: OnceCell<Option<gtk::Window>>,
         pub settings: Settings,
         pub window_indentifier: OnceCell<ashpd::WindowIdentifier>,
 
@@ -112,7 +111,6 @@ mod imp {
                 step_goal_spin_button: TemplateChild::default(),
                 weight_goal_spin_button: TemplateChild::default(),
                 bmi_levelbar: TemplateChild::default(),
-                parent_window: OnceCell::new(),
                 sync_list_box: TemplateChild::default(),
                 export_csv_button: TemplateChild::default(),
                 import_csv_button: TemplateChild::default(),
@@ -129,6 +127,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             UnitSpinButton::static_type();
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -165,6 +164,8 @@ mod imp {
                 .set_weight(self.settings.user_weight_goal());
             obj.setup_actions();
             obj.connect_handlers();
+            obj.handle_enable_notify_changed(true);
+            obj.init_time_buttons();
         }
     }
 
@@ -182,6 +183,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
+#[gtk::template_callbacks(value)]
 impl PreferencesWindow {
     pub fn connect_import_done<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
         self.connect_local("import-done", false, move |_| {
@@ -196,27 +198,17 @@ impl PreferencesWindow {
     /// * `parent_window` - The transient parent of the window.
     ///
     pub fn new(parent_window: Option<gtk::Window>) -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create PreferencesWindow");
-
-        o.set_transient_for(parent_window.as_ref());
-        o.set_application(
-            parent_window
-                .as_ref()
-                .and_then(gtk::prelude::GtkWindowExt::application)
-                .as_ref(),
-        );
-
-        let self_ = o.imp();
-        self_.parent_window.set(parent_window).unwrap();
-        o.handle_enable_notify_changed(true);
-        o.init_time_buttons();
-        o.upcast_ref::<gtk::Window>().connect_close_request(
-            clone!(@weak o as obj => @default-return gtk::Inhibit(false), move |_| {
-                obj.handle_close_window()
-            }),
-        );
-
-        o
+        glib::Object::new(&[
+            ("transient-for", &parent_window.as_ref()),
+            (
+                "application",
+                &parent_window
+                    .as_ref()
+                    .and_then(gtk::prelude::GtkWindowExt::application)
+                    .as_ref(),
+            ),
+        ])
+        .expect("Failed to create PreferencesWindow")
     }
 
     fn handle_frequency(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
@@ -258,54 +250,13 @@ impl PreferencesWindow {
             .connect_unit_system_changed(clone!(@weak self as obj => move |_, _| {
                 obj.handle_unit_system_changed();
             }));
-
-        self_.birthday_selector.connect_selected_date_notify(
-            clone!(@weak self as obj => move |_| {
-                obj.handle_birthday_selector_changed();
-            }),
-        );
-
-        self_
-            .enable_notify
-            .connect_active_notify(clone!(@weak self as obj => move |_| {
-                obj.handle_enable_notify_changed(false);
-            }));
-
-        self_
-            .export_csv_button
-            .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_export_csv_button_clicked();
-            }));
-
-        self_
-            .height_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_height_spin_button_changed();
-            }));
-
-        self_
-            .import_csv_button
-            .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_import_csv_button_clicked();
-            }));
-
-        self_
-            .step_goal_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_step_goal_spin_button_changed();
-            }));
-
-        self_
-            .weight_goal_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_weight_goal_spin_button_changed();
-            }));
     }
 
     fn imp(&self) -> &imp::PreferencesWindow {
         imp::PreferencesWindow::from_instance(self)
     }
 
+    #[template_callback]
     fn handle_birthday_selector_changed(&self) {
         let self_ = self.imp();
         self_
@@ -313,6 +264,7 @@ impl PreferencesWindow {
             .set_user_birthday(self_.birthday_selector.selected_date().date());
     }
 
+    #[template_callback]
     fn handle_enable_notify_changed(&self, initializing: bool) {
         let self_ = self.imp();
         let switch_state = if initializing {
@@ -334,11 +286,13 @@ impl PreferencesWindow {
         }
     }
 
+    #[template_callback]
     fn handle_export_csv_button_clicked(&self) {
-        let dialog = ExportDialog::new(self.imp().parent_window.get().unwrap().as_ref());
+        let dialog = ExportDialog::new(self.transient_for().as_ref());
         dialog.show();
     }
 
+    #[template_callback]
     fn handle_height_spin_button_changed(&self) {
         let self_ = self.imp();
         if let Some(val) = self_.height_spin_button.raw_value::<f32>() {
@@ -353,8 +307,9 @@ impl PreferencesWindow {
         }
     }
 
+    #[template_callback]
     fn handle_import_csv_button_clicked(&self) {
-        let dialog = ImportDialog::new(self.imp().parent_window.get().unwrap().as_ref());
+        let dialog = ImportDialog::new(self.transient_for().as_ref());
         dialog.show();
     }
 
@@ -394,6 +349,7 @@ impl PreferencesWindow {
         }
     }
 
+    #[template_callback]
     fn handle_step_goal_spin_button_changed(&self) {
         let self_ = self.imp();
         if let Some(val) = self_.step_goal_spin_button.raw_value::<u32>() {
@@ -448,6 +404,7 @@ impl PreferencesWindow {
         }
     }
 
+    #[template_callback]
     fn handle_weight_goal_spin_button_changed(&self) {
         let self_ = self.imp();
         if let Some(val) = self_.weight_goal_spin_button.raw_value::<f32>() {
@@ -473,7 +430,8 @@ impl PreferencesWindow {
             .set_value(f64::from(notify_time.minute()));
     }
 
-    fn handle_close_window(&self) -> gtk::Inhibit {
+    #[template_callback]
+    fn handle_close_window(&self) -> bool {
         let self_ = self.imp();
         let remind_time = NaiveTime::from_hms_milli(
             self_.reminder_hour.value_as_int() as u32,
@@ -484,6 +442,6 @@ impl PreferencesWindow {
         self_
             .settings
             .set_notification_time(remind_time.to_string());
-        gtk::Inhibit(false)
+        false
     }
 }

@@ -19,7 +19,7 @@
 pub use self::imp::PinnedResultFuture;
 use crate::i18n::i18n;
 use gtk::{
-    glib::{self, clone, prelude::*, subclass::prelude::*},
+    glib::{self, prelude::*, subclass::prelude::*, translate::FromGlib},
     prelude::*,
     subclass::prelude::*,
 };
@@ -164,6 +164,7 @@ mod imp {
             klass.on_weights = on_weights_default_trampoline;
 
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -176,7 +177,6 @@ mod imp {
             self.parent_constructed(obj);
 
             obj.set_response_sensitive(gtk::ResponseType::Ok, false);
-            obj.connect_handlers();
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -245,39 +245,9 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
+#[gtk::template_callbacks(value)]
 impl ImportExportDialogBase {
-    fn connect_handlers(&self) {
-        let self_ = self.imp();
-
-        self.connect_response(|s, id| {
-            let obj = s.clone();
-            gtk_macros::spawn!(async move {
-                obj.on_response(id).await;
-            });
-        });
-        self_
-            .activities_switch
-            .connect_active_notify(clone!(@weak self as obj => move |_| {
-                obj.check_activate_response()
-            }));
-        self_
-            .weight_switch
-            .connect_active_notify(clone!(@weak self as obj => move |_| {
-                obj.check_activate_response()
-            }));
-        self_
-            .encrypt_switch
-            .connect_active_notify(clone!(@weak self as obj => move |s| {
-                obj.check_activate_response();
-                obj.imp().password_entry.set_sensitive(s.is_active());
-            }));
-        self_
-            .password_entry
-            .connect_password_notify(clone!(@weak self as obj => move |_| {
-                obj.check_activate_response();
-            }));
-    }
-
+    #[template_callback]
     fn check_activate_response(&self) {
         let self_ = self.imp();
         let any_option_activated =
@@ -289,6 +259,23 @@ impl ImportExportDialogBase {
         };
 
         self.set_response_sensitive(gtk::ResponseType::Ok, any_option_activated && password_set);
+    }
+
+    #[template_callback]
+    fn handle_encrypt_switch_active_notify(&self) {
+        let self_ = self.imp();
+        self.check_activate_response();
+        self_
+            .password_entry
+            .set_sensitive(self_.encrypt_switch.is_active());
+    }
+
+    #[template_callback]
+    fn handle_response(&self, id: i32) {
+        let id = unsafe { gtk::ResponseType::from_glib(id) };
+        gtk_macros::spawn!(glib::clone!(@weak self as obj => async move {
+            obj.on_response(id).await;
+        }));
     }
 
     fn imp(&self) -> &imp::ImportExportDialogBase {

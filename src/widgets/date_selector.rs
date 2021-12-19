@@ -27,15 +27,10 @@ use gtk::{
 mod imp {
     use crate::{date::DateTimeBoxed, utils::prelude::*};
     use chrono::{Datelike, Local, NaiveDate};
-    use gtk::{
-        glib::{self, clone},
-        prelude::*,
-        subclass::prelude::*,
-        CompositeTemplate,
-    };
+    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/dev/Cogitri/Health/ui/date_editor.ui")]
+    #[template(resource = "/dev/Cogitri/Health/ui/date_selector.ui")]
     pub struct DateSelector {
         #[template_child]
         pub day_adjustment: TemplateChild<gtk::Adjustment>,
@@ -55,6 +50,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -66,18 +62,6 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            self.day_spinner
-                .connect_changed(clone!(@weak obj => move |_| {
-                    obj.handle_date_widget_changed();
-                }));
-            self.month_dropdown
-                .connect_selected_notify(clone!(@weak obj => move |_| {
-                    obj.handle_date_widget_changed();
-                }));
-            self.year_spinner
-                .connect_changed(clone!(@weak obj => move |_| {
-                    obj.handle_date_widget_changed();
-                }));
             let now = Local::now();
             obj.set_selected_date(now.into());
             self.day_adjustment
@@ -161,6 +145,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Orientable;
 }
 
+#[gtk::template_callbacks(value)]
 impl DateSelector {
     /// Connect to a new date being selected.
     ///
@@ -178,6 +163,7 @@ impl DateSelector {
         self.property::<DateTimeBoxed>("selected-date").0
     }
 
+    #[template_callback]
     pub fn handle_date_widget_changed(&self) {
         self.notify("selected-date");
     }

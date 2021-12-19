@@ -864,6 +864,21 @@ dependencies = [
 [[package]]
 name = "gdk4"
 version = "0.3.0"
+source = "git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks#541460ead70f2f7bc1b9d52f09958205cccca7e8"
+dependencies = [
+ "bitflags",
+ "cairo-rs",
+ "gdk-pixbuf",
+ "gdk4-sys",
+ "gio",
+ "glib",
+ "libc",
+ "pango",
+]
+
+[[package]]
+name = "gdk4"
+version = "0.3.0"
 source = "git+https://github.com/gtk-rs/gtk4-rs#5c41f22123680b7387f3acd9c8fae3aeaa805783"
 dependencies = [
  "bitflags",
@@ -879,7 +894,7 @@ dependencies = [
 [[package]]
 name = "gdk4-sys"
 version = "0.3.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5c41f22123680b7387f3acd9c8fae3aeaa805783"
+source = "git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks#541460ead70f2f7bc1b9d52f09958205cccca7e8"
 dependencies = [
  "cairo-sys-rs",
  "gdk-pixbuf-sys",
@@ -894,9 +909,9 @@ dependencies = [
 [[package]]
 name = "gdk4-wayland"
 version = "0.3.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5c41f22123680b7387f3acd9c8fae3aeaa805783"
+source = "git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks#541460ead70f2f7bc1b9d52f09958205cccca7e8"
 dependencies = [
- "gdk4",
+ "gdk4 0.3.0 (git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks)",
  "gdk4-wayland-sys",
  "gio",
  "glib",
@@ -907,7 +922,7 @@ dependencies = [
 [[package]]
 name = "gdk4-wayland-sys"
 version = "0.3.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5c41f22123680b7387f3acd9c8fae3aeaa805783"
+source = "git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks#541460ead70f2f7bc1b9d52f09958205cccca7e8"
 dependencies = [
  "glib-sys",
  "libc",
@@ -917,9 +932,9 @@ dependencies = [
 [[package]]
 name = "gdk4-x11"
 version = "0.3.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5c41f22123680b7387f3acd9c8fae3aeaa805783"
+source = "git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks#541460ead70f2f7bc1b9d52f09958205cccca7e8"
 dependencies = [
- "gdk4",
+ "gdk4 0.3.0 (git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks)",
  "gdk4-x11-sys",
  "gio",
  "glib",
@@ -930,7 +945,7 @@ dependencies = [
 [[package]]
 name = "gdk4-x11-sys"
 version = "0.3.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5c41f22123680b7387f3acd9c8fae3aeaa805783"
+source = "git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks#541460ead70f2f7bc1b9d52f09958205cccca7e8"
 dependencies = [
  "gdk4-sys",
  "glib-sys",
@@ -1102,11 +1117,11 @@ dependencies = [
 [[package]]
 name = "gsk4"
 version = "0.3.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5c41f22123680b7387f3acd9c8fae3aeaa805783"
+source = "git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks#541460ead70f2f7bc1b9d52f09958205cccca7e8"
 dependencies = [
  "bitflags",
  "cairo-rs",
- "gdk4",
+ "gdk4 0.3.0 (git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks)",
  "glib",
  "graphene-rs",
  "gsk4-sys",
@@ -1117,7 +1132,7 @@ dependencies = [
 [[package]]
 name = "gsk4-sys"
 version = "0.3.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5c41f22123680b7387f3acd9c8fae3aeaa805783"
+source = "git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks#541460ead70f2f7bc1b9d52f09958205cccca7e8"
 dependencies = [
  "cairo-sys-rs",
  "gdk4-sys",
@@ -1138,14 +1153,14 @@ checksum = "da5bf7748fd4cd0b2490df8debcc911809dbcbee4ece9531b96c29a9c729de5a"
 [[package]]
 name = "gtk4"
 version = "0.3.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5c41f22123680b7387f3acd9c8fae3aeaa805783"
+source = "git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks#541460ead70f2f7bc1b9d52f09958205cccca7e8"
 dependencies = [
  "bitflags",
  "cairo-rs",
  "field-offset",
  "futures-channel",
  "gdk-pixbuf",
- "gdk4",
+ "gdk4 0.3.0 (git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks)",
  "gio",
  "glib",
  "graphene-rs",
@@ -1160,7 +1175,7 @@ dependencies = [
 [[package]]
 name = "gtk4-macros"
 version = "0.3.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5c41f22123680b7387f3acd9c8fae3aeaa805783"
+source = "git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks#541460ead70f2f7bc1b9d52f09958205cccca7e8"
 dependencies = [
  "anyhow",
  "proc-macro-crate 1.1.0",
@@ -1173,7 +1188,7 @@ dependencies = [
 [[package]]
 name = "gtk4-sys"
 version = "0.3.0"
-source = "git+https://github.com/gtk-rs/gtk4-rs#5c41f22123680b7387f3acd9c8fae3aeaa805783"
+source = "git+https://github.com/jf2048/gtk4-rs?branch=template-callbacks#541460ead70f2f7bc1b9d52f09958205cccca7e8"
 dependencies = [
  "cairo-sys-rs",
  "gdk-pixbuf-sys",
@@ -1340,7 +1355,7 @@ version = "0.1.0-alpha-6"
 source = "git+https://gitlab.gnome.org/World/Rust/libadwaita-rs#9d79ff698629594c0da1a15049519aa52f7429df"
 dependencies = [
  "gdk-pixbuf",
- "gdk4",
+ "gdk4 0.3.0 (git+https://github.com/gtk-rs/gtk4-rs)",
  "gio",
  "glib",
  "gtk4",

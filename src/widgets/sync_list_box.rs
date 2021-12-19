@@ -57,6 +57,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             klass.set_layout_manager_type::<gtk::BinLayout>();
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -74,8 +75,6 @@ mod imp {
                     .set_visible_child(&self.google_fit_selected_image.get());
                 self.google_fit_stack.set_visible(true);
             }
-
-            obj.connect_handlers();
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -126,6 +125,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 
+#[gtk::template_callbacks(value)]
 impl SyncListBox {
     /// Create a new [SyncListBox]
     ///
@@ -137,14 +137,6 @@ impl SyncListBox {
         o.imp().parent_window.replace(parent_window);
 
         o
-    }
-
-    fn connect_handlers(&self) {
-        self.imp().sync_list_box.connect_row_activated(
-            glib::clone!(@weak self as obj => move |_, row| {
-                obj.handle_row_activated(row);
-            }),
-        );
     }
 
     fn imp(&self) -> &imp::SyncListBox {
@@ -180,9 +172,10 @@ impl SyncListBox {
         glib::Continue(false)
     }
 
-    fn handle_row_activated(self, row: &gtk::ListBoxRow) {
+    #[template_callback]
+    fn handle_row_activated(&self, row: gtk::ListBoxRow) {
         let self_ = self.imp();
-        if row == &self_.google_fit_start_sync_row.get() {
+        if row == self_.google_fit_start_sync_row.get() {
             self_.google_fit_stack.set_visible(true);
             self_.google_fit_spinner.set_visible(true);
             self_.google_fit_spinner.set_spinning(true);

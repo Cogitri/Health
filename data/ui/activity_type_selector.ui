@@ -41,6 +41,7 @@
                 <child>
                   <object class="GtkListBox" id="recent_activity_types_list_box">
                     <property name="selection-mode">none</property>
+                    <signal name="row-activated" handler="activated_list_box_row" swapped="true"/>
                   </object>
                 </child>
                 <child>
@@ -53,6 +54,7 @@
             <child>
               <object class="GtkListBox" id="activity_types_list_box">
                 <property name="selection-mode">none</property>
+                <signal name="row-activated" handler="activated_list_box_row" swapped="true"/>
               </object>
             </child>
           </object>

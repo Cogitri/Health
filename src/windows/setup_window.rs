@@ -133,6 +133,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             UnitSpinButton::static_type();
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -174,6 +175,7 @@ glib::wrapper! {
         @implements gio::ActionGroup, gio::ActionMap, gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
+#[gtk::template_callbacks(value)]
 impl SetupWindow {
     /// Connect to the setup being completed by the user.
     ///
@@ -200,58 +202,10 @@ impl SetupWindow {
     fn connect_handlers(&self) {
         let self_ = self.imp();
 
-        self_.birthday_selector.connect_selected_date_notify(
-            clone!(@weak self as obj => move |_| {
-                obj.try_enable_next_button();
-            }),
-        );
-
-        self_
-            .height_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_height_spin_button_changed();
-            }));
-
-        self_.setup_carousel.connect_page_changed(
-            clone!(@weak self as obj => move|carousel, index| {
-                obj.handle_setup_carousel_page_changed(carousel, index);
-            }),
-        );
-
-        self_
-            .setup_done_button
-            .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_setup_done_button_clicked();
-            }));
-
-        self_
-            .setup_next_page_button
-            .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_setup_next_page_button_clicked();
-            }));
-
-        self_
-            .setup_previous_page_button
-            .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.handle_setup_previous_page_button_clicked();
-            }));
-
-        self_
-            .setup_quit_button
-            .connect_clicked(clone!(@weak self as obj => move |_| {
-                obj.destroy();
-            }));
-
         self_
             .settings
             .connect_unit_system_changed(clone!(@weak self as obj => move |_, _| {
                 obj.handle_unit_system_changed();
-            }));
-
-        self_
-            .weight_goal_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_weight_spin_button_changed();
             }));
     }
 
@@ -267,6 +221,7 @@ impl SetupWindow {
         }
     }
 
+    #[template_callback]
     fn handle_height_spin_button_changed(&self) {
         let self_ = self.imp();
         self.set_optimal_weight_goal();
@@ -281,7 +236,8 @@ impl SetupWindow {
         self_.bmi_levelbar.set_height(height);
     }
 
-    fn handle_setup_carousel_page_changed(&self, carousel: &adw::Carousel, index: u32) {
+    #[template_callback]
+    fn handle_setup_carousel_page_changed(&self, index: u32, carousel: adw::Carousel) {
         let self_ = self.imp();
 
         if carousel.n_pages() - 1 == index {
@@ -306,6 +262,7 @@ impl SetupWindow {
         }
     }
 
+    #[template_callback]
     fn handle_setup_done_button_clicked(&self) {
         let self_ = self.imp();
         let unitless_height = self_.height_spin_button.raw_value().unwrap_or_default();
@@ -340,6 +297,7 @@ impl SetupWindow {
         self.destroy();
     }
 
+    #[template_callback]
     fn handle_setup_next_page_button_clicked(&self) {
         let self_ = self.imp();
         match self_.setup_carousel.position() as u32 {
@@ -357,6 +315,7 @@ impl SetupWindow {
         }
     }
 
+    #[template_callback]
     fn handle_setup_previous_page_button_clicked(&self) {
         let self_ = self.imp();
         match self_.setup_carousel.position() as u32 {
@@ -374,6 +333,12 @@ impl SetupWindow {
         }
     }
 
+    #[template_callback]
+    fn handle_setup_quit_button_clicked(&self) {
+        self.destroy();
+    }
+
+    #[template_callback]
     fn handle_weight_spin_button_changed(&self) {
         let self_ = self.imp();
         let unitless_weight = self_

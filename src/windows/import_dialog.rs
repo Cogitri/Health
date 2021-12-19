@@ -17,7 +17,7 @@
  */
 
 use crate::i18n::i18n;
-use gtk::{glib, prelude::*};
+use gtk::glib;
 
 mod imp {
     use crate::{
@@ -118,15 +118,12 @@ impl ImportDialog {
     /// # Arguments
     /// * `parent` - The [GtkWindow](gtk::Window) which is the transient parent of this dialog.
     pub fn new(parent: Option<&gtk::Window>) -> Self {
-        let o: Self = glib::Object::new(&[
+        glib::Object::new(&[
             ("use-header-bar", &1),
             ("is-import", &true),
             ("title", &i18n("Import data")),
+            ("transient-for", &parent),
         ])
-        .expect("Failed to create ImportDialog");
-
-        o.set_transient_for(parent);
-
-        o
+        .expect("Failed to create ImportDialog")
     }
 }

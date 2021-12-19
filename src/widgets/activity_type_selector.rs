@@ -72,6 +72,7 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -132,15 +133,6 @@ mod imp {
             );
             self.recent_activity_types_list_box
                 .bind_model(Some(&self.recent_activity_types_model), create_list_box_row);
-
-            let activated_list_box_row = glib::clone!(@weak obj => move |b: &gtk::ListBox, r: &gtk::ListBoxRow| {
-                obj.activated_list_box_row(b, r);
-            });
-
-            self.activity_types_list_box
-                .connect_row_activated(activated_list_box_row.clone());
-            self.recent_activity_types_list_box
-                .connect_row_activated(activated_list_box_row);
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -194,6 +186,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::ShortcutManager;
 }
 
+#[gtk::template_callbacks(value)]
 impl ActivityTypeSelector {
     /// Connect to a new activity being selected.
     ///
@@ -219,7 +212,8 @@ impl ActivityTypeSelector {
         glib::Object::new(&[]).expect("Failed to create ActivityTypeSelector")
     }
 
-    fn activated_list_box_row(&self, list_box: &gtk::ListBox, row: &gtk::ListBoxRow) {
+    #[template_callback]
+    fn activated_list_box_row(&self, row: gtk::ListBoxRow, list_box: gtk::ListBox) {
         let row = row.downcast_ref::<ActivityTypeRow>().unwrap();
 
         if let Ok(info) = ActivityInfo::try_from(row.id()) {
