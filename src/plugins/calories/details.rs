@@ -18,8 +18,8 @@
 
 use std::convert::TryInto;
 
+use crate::{model::ActivityInfo, widgets::LegendRow};
 use crate::{
-    core::Database,
     ni18n_f,
     plugins::{
         calories::{GraphModelCalories, GraphModelCaloriesMocked},
@@ -28,7 +28,6 @@ use crate::{
     views::BarGraphView,
     ActivityType, SplitBar,
 };
-use crate::{model::ActivityInfo, widgets::LegendRow};
 use chrono::Duration;
 use gtk::{
     glib::{self, subclass::prelude::*, Boxed, Cast},
@@ -41,6 +40,7 @@ mod imp {
         plugins::{PluginDetails, PluginDetailsImpl},
         views::{BarGraphView, PinnedResultFuture},
         widgets::LegendRow,
+        Database,
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
@@ -82,6 +82,22 @@ mod imp {
     }
 
     impl ObjectImpl for PluginCaloriesDetails {
+        fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
+            Database::instance().connect_activities_updated(glib::clone!(@weak obj => move || {
+                gtk_macros::spawn!(async move {
+                    obj.update().await;
+                });
+            }));
+
+            Database::instance().connect_weights_updated(glib::clone!(@weak obj => move || {
+                gtk_macros::spawn!(async move {
+                    obj.update().await;
+                });
+            }));
+        }
+
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
@@ -142,22 +158,8 @@ glib::wrapper! {
 impl PluginCaloriesDetails {
     /// Create a new [PluginCaloriesDetails] to display previous calorie data.
     pub fn new(data_provider: DataProvider) -> Self {
-        let o: Self = glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
-            .expect("Failed to create PluginCaloriesDetails");
-
-        Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
-            gtk_macros::spawn!(async move {
-                o.update().await;
-            });
-        }));
-
-        Database::instance().connect_weights_updated(glib::clone!(@weak o => move || {
-            gtk_macros::spawn!(async move {
-                o.update().await;
-            });
-        }));
-
-        o
+        glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
+            .expect("Failed to create PluginCaloriesDetails")
     }
 
     /// Reload the [GraphModelcalories](crate::model::GraphModelCalories)'s data and refresh labels & the [BarGraphView](crate::views::BarGraphView).

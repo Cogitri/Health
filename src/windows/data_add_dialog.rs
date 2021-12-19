@@ -16,18 +16,21 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::views::{View, ViewAddActivity, ViewAddWeight};
+use crate::views::{ViewAddActivity, ViewAddWeight};
 use gtk::{
     glib::{self, subclass::prelude::*, translate::FromGlib},
     prelude::*,
 };
 
 mod imp {
+    use crate::views::{View, ViewAddActivity, ViewAddWeight};
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/data_add_dialog.ui")]
     pub struct DataAddDialog {
+        pub current_plugin: OnceCell<String>,
         #[template_child]
         pub stack: TemplateChild<adw::ViewStack>,
     }
@@ -51,6 +54,58 @@ mod imp {
     impl ObjectImpl for DataAddDialog {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
+
+            for stack_page in &[
+                ViewAddActivity::new().upcast::<View>(),
+                ViewAddWeight::new().upcast::<View>(),
+            ] {
+                stack_page.stack().set_visible_child_name("add_data_page");
+                self.stack
+                    .add_titled(
+                        stack_page,
+                        Some(stack_page.widget_name().as_str()),
+                        &stack_page.view_title().unwrap(),
+                    )
+                    .unwrap()
+                    .set_icon_name(stack_page.icon_name().as_deref());
+            }
+            if &obj.property::<String>("current-plugin") == "weight" {
+                self.stack.set_visible_child_name("Add Weight Data");
+            }
+        }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecString::new(
+                    "current-plugin",
+                    "current-plugin",
+                    "current-plugin",
+                    None,
+                    glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE,
+                )]
+            });
+            PROPERTIES.as_ref()
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "current-plugin" => self.current_plugin.get().unwrap().to_value(),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "current-plugin" => self.current_plugin.set(value.get().unwrap()).unwrap(),
+                _ => unimplemented!(),
+            }
         }
     }
     impl WidgetImpl for DataAddDialog {}
@@ -71,32 +126,12 @@ impl DataAddDialog {
     /// # Arguments
     /// * `parent` - The [GtkWindow](gtk::Window) who is the transient parent of this dialog.
     pub fn new(parent: &gtk::Window, current_plugin: String) -> Self {
-        let o: Self =
-            glib::Object::new(&[("use-header-bar", &1)]).expect("Failed to create DataAddDialog");
-
-        o.set_transient_for(Some(parent));
-
-        let self_ = o.imp();
-        for stack_page in &[
-            ViewAddActivity::new().upcast::<View>(),
-            ViewAddWeight::new().upcast::<View>(),
-        ] {
-            stack_page.stack().set_visible_child_name("add_data_page");
-            self_
-                .stack
-                .add_titled(
-                    stack_page,
-                    Some(stack_page.widget_name().as_str()),
-                    &stack_page.view_title().unwrap(),
-                )
-                .unwrap()
-                .set_icon_name(stack_page.icon_name().as_deref());
-        }
-        if current_plugin == "weight" {
-            self_.stack.set_visible_child_name("Add Weight Data");
-        }
-
-        o
+        glib::Object::new(&[
+            ("use-header-bar", &1),
+            ("transient-for", &Some(parent)),
+            ("current-plugin", &current_plugin),
+        ])
+        .expect("Failed to create DataAddDialog")
     }
 
     #[template_callback]

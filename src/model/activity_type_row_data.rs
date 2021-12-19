@@ -16,21 +16,16 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::{gio::subclass::prelude::*, glib};
+use gtk::{glib, prelude::*};
 
 mod imp {
-    use gtk::{glib, subclass::prelude::*};
-    use std::cell::RefCell;
-
-    #[derive(Debug)]
-    pub struct ActivityTypeRowDataMut {
-        pub id: &'static str,
-        pub label: String,
-    }
+    use gtk::{glib, prelude::*, subclass::prelude::*};
+    use once_cell::unsync::OnceCell;
 
     #[derive(Debug, Default)]
     pub struct ActivityTypeRowData {
-        pub inner: RefCell<Option<ActivityTypeRowDataMut>>,
+        pub id: OnceCell<String>,
+        pub label: OnceCell<String>,
     }
 
     #[glib::object_subclass]
@@ -40,7 +35,52 @@ mod imp {
         type Type = super::ActivityTypeRowData;
     }
 
-    impl ObjectImpl for ActivityTypeRowData {}
+    impl ObjectImpl for ActivityTypeRowData {
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![
+                    glib::ParamSpecString::new(
+                        "id",
+                        "id",
+                        "id",
+                        None,
+                        glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecString::new(
+                        "label",
+                        "label",
+                        "label",
+                        None,
+                        glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE,
+                    ),
+                ]
+            });
+            PROPERTIES.as_ref()
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "id" => self.id.get().unwrap().to_value(),
+                "label" => self.label.get().unwrap().to_value(),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "id" => self.id.set(value.get().unwrap()).unwrap(),
+                "label" => self.label.set(value.get().unwrap()).unwrap(),
+                _ => unimplemented!(),
+            }
+        }
+    }
 }
 
 glib::wrapper! {
@@ -51,27 +91,17 @@ glib::wrapper! {
 }
 
 impl ActivityTypeRowData {
-    pub fn new(id: &'static str, label: &str) -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create ActivityTypeRowData");
-
-        o.imp().inner.replace(Some(imp::ActivityTypeRowDataMut {
-            id,
-            label: label.to_string(),
-        }));
-
-        o
+    pub fn new(id: &str, label: &str) -> Self {
+        glib::Object::new(&[("id", &id), ("label", &label)])
+            .expect("Failed to create ActivityTypeRowData")
     }
 
-    pub fn id(&self) -> &'static str {
-        self.imp().inner.borrow().as_ref().unwrap().id
+    pub fn id(&self) -> String {
+        self.property("id")
     }
 
     pub fn label(&self) -> String {
-        self.imp().inner.borrow().as_ref().unwrap().label.clone()
-    }
-
-    fn imp(&self) -> &imp::ActivityTypeRowData {
-        imp::ActivityTypeRowData::from_instance(self)
+        self.property("label")
     }
 }
 

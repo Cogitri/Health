@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{date::prelude::*, i18n, i18n_f, utils::prelude::*, Database, UnitSystem},
+    core::{date::prelude::*, i18n, i18n_f, utils::prelude::*, UnitSystem},
     ni18n_f,
     plugins::{
         weight::{GraphModelWeight, GraphModelWeightMocked},
@@ -39,7 +39,7 @@ use uom::si::{
 mod imp {
     use super::{DataProvider, DataProviderBoxed};
     use crate::{
-        core::Settings,
+        core::{Database, Settings},
         plugins::{PluginDetails, PluginDetailsImpl},
         views::{GraphView, PinnedResultFuture},
     };
@@ -82,6 +82,16 @@ mod imp {
     }
 
     impl ObjectImpl for PluginWeightDetails {
+        fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
+            Database::instance().connect_weights_updated(glib::clone!(@weak obj => move || {
+                gtk_macros::spawn!(async move {
+                    obj.update().await;
+                });
+            }));
+        }
+
         fn dispose(&self, _obj: &Self::Type) {
             if let Some(id) = self.settings_handler_id.borrow_mut().take() {
                 self.settings.disconnect(id);
@@ -148,16 +158,8 @@ glib::wrapper! {
 impl PluginWeightDetails {
     /// Create a new [PluginWeightDetails] to display previous weight measurements.
     pub fn new(data_provider: DataProvider) -> Self {
-        let o: Self = glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
-            .expect("Failed to create PluginWeightDetails");
-
-        Database::instance().connect_weights_updated(glib::clone!(@weak o => move || {
-            gtk_macros::spawn!(async move {
-                o.update().await;
-            });
-        }));
-
-        o
+        glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
+            .expect("Failed to create PluginWeightDetails")
     }
 
     // TRANSLATORS notes have to be on the same line, so we cant split them

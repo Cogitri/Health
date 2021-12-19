@@ -216,7 +216,7 @@ impl ActivityTypeSelector {
     fn activated_list_box_row(&self, row: gtk::ListBoxRow, list_box: gtk::ListBox) {
         let row = row.downcast_ref::<ActivityTypeRow>().unwrap();
 
-        if let Ok(info) = ActivityInfo::try_from(row.id()) {
+        if let Ok(info) = ActivityInfo::try_from(row.id().as_str()) {
             self.set_selected_activity(info);
             let mut i = 0;
             let selected_activity = self.imp().selected_activity.borrow();

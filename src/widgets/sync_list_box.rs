@@ -86,7 +86,7 @@ mod imp {
                     "parent-window",
                     "parent-window",
                     gtk::Window::static_type(),
-                    glib::ParamFlags::READWRITE,
+                    glib::ParamFlags::CONSTRUCT | glib::ParamFlags::READWRITE,
                 )]
             });
 
@@ -133,11 +133,8 @@ impl SyncListBox {
     /// # Arguments
     /// * `parent_window` - The [GtkWindow](gtk::Window) that should be the transient parent for error dialogs (or none).
     pub fn new(parent_window: Option<gtk::Window>) -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create SyncListBox");
-
-        o.imp().parent_window.replace(parent_window);
-
-        o
+        glib::Object::new(&[("parent-window", &parent_window)])
+            .expect("Failed to create SyncListBox")
     }
 
     fn imp(&self) -> &imp::SyncListBox {

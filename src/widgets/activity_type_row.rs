@@ -18,18 +18,18 @@
 
 use crate::model::ActivityTypeRowData;
 use gtk::{
-    glib::{self, subclass::prelude::*},
+    glib::{self},
     prelude::*,
 };
 
 mod imp {
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
-    use std::cell::RefCell;
+    use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_type_row.ui")]
     pub struct ActivityTypeRow {
-        pub activity_type_id: RefCell<&'static str>,
+        pub activity_type_id: OnceCell<String>,
         #[template_child]
         pub activity_type_label: TemplateChild<gtk::Label>,
         #[template_child]
@@ -51,7 +51,61 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for ActivityTypeRow {}
+    impl ObjectImpl for ActivityTypeRow {
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![
+                    glib::ParamSpecString::new(
+                        "id",
+                        "id",
+                        "id",
+                        None,
+                        glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecString::new(
+                        "label",
+                        "label",
+                        "label",
+                        None,
+                        glib::ParamFlags::CONSTRUCT | glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecBoolean::new(
+                        "selected",
+                        "selected",
+                        "selected",
+                        false,
+                        glib::ParamFlags::CONSTRUCT | glib::ParamFlags::READWRITE,
+                    ),
+                ]
+            });
+            PROPERTIES.as_ref()
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "id" => self.activity_type_id.get().unwrap().to_value(),
+                "label" => self.activity_type_label.label().to_string().to_value(),
+                "selected" => self.selected_image.is_visible().to_value(),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "id" => self.activity_type_id.set(value.get().unwrap()).unwrap(),
+                "label" => self.activity_type_label.set_label(value.get().unwrap()),
+                "selected" => self.selected_image.set_visible(value.get().unwrap()),
+                _ => unimplemented!(),
+            }
+        }
+    }
     impl WidgetImpl for ActivityTypeRow {}
     impl ListBoxRowImpl for ActivityTypeRow {}
 }
@@ -66,18 +120,18 @@ glib::wrapper! {
 
 impl ActivityTypeRow {
     /// Get the ID of the [ActivityType](crate::model::ActivityType)
-    pub fn id(&self) -> &'static str {
-        *self.imp().activity_type_id.borrow()
+    pub fn id(&self) -> String {
+        self.property("id")
     }
 
     /// Get the user visible name of the [ActivityType](crate::model::ActivityType)
     pub fn label(&self) -> String {
-        self.imp().activity_type_label.text().to_string()
+        self.property("label")
     }
 
     /// Get whether or not the row is selected.
     pub fn selected(&self) -> bool {
-        self.imp().selected_image.get_visible()
+        self.property("selected")
     }
 
     /// Create a new [ActivityTypeRow].
@@ -86,32 +140,16 @@ impl ActivityTypeRow {
     /// * `data` - The [ActivityTypeRowData] to populate the [ActivityTypeRow] from.
     /// * `selected` - Whether or not the row is elected.
     pub fn new(data: &ActivityTypeRowData, selected: bool) -> Self {
-        let s: Self = glib::Object::new(&[]).expect("Failed to create ActivityTypeRow");
-
-        s.set_id(data.id());
-        s.set_label(&data.label());
-        s.set_selected(selected);
-
-        s
+        glib::Object::new(&[
+            ("id", &data.id()),
+            ("label", &data.label()),
+            ("selected", &selected),
+        ])
+        .expect("Failed to create ActivityTypeRow")
     }
 
-    /// Set the ID of the [ActivityType](crate::model::ActivityType)
-    pub fn set_id(&self, value: &'static str) {
-        self.imp().activity_type_id.replace(value);
-    }
-
-    /// Set the user visible name of the [ActivityType](crate::model::ActivityType)
-    pub fn set_label(&self, value: &str) {
-        self.imp().activity_type_label.set_text(value)
-    }
-
-    /// Set whether or not the row is selected.
-    pub fn set_selected(&self, value: bool) {
-        self.imp().selected_image.set_visible(value)
-    }
-
-    fn imp(&self) -> &imp::ActivityTypeRow {
-        imp::ActivityTypeRow::from_instance(self)
+    pub fn set_selected(&self, selected: bool) {
+        self.set_property("selected", selected);
     }
 }
 

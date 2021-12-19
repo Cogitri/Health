@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{date::prelude::*, i18n, i18n_f, Database},
+    core::{date::prelude::*, i18n, i18n_f},
     ni18n_f,
     plugins::{
         steps::{GraphModelSteps, GraphModelStepsMocked},
@@ -32,6 +32,7 @@ use gtk::glib::{self, subclass::prelude::*, Boxed};
 mod imp {
     use super::{DataProvider, DataProviderBoxed};
     use crate::{
+        core::Database,
         plugins::{PluginDetails, PluginDetailsImpl},
         views::{GraphView, PinnedResultFuture},
         Settings,
@@ -75,6 +76,16 @@ mod imp {
     }
 
     impl ObjectImpl for PluginStepsDetails {
+        fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
+            Database::instance().connect_activities_updated(glib::clone!(@weak obj => move || {
+                gtk_macros::spawn!(async move {
+                    obj.update().await;
+                });
+            }));
+        }
+
         fn dispose(&self, _obj: &Self::Type) {
             if let Some(id) = self.settings_handler_id.borrow_mut().take() {
                 self.settings.disconnect(id);
@@ -141,16 +152,8 @@ glib::wrapper! {
 impl PluginStepsDetails {
     /// Create a new [PluginStepsDetails] to display previous step activity.
     pub fn new(data_provider: DataProvider) -> Self {
-        let o: Self = glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
-            .expect("Failed to create PluginStepsDetails");
-
-        Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
-            gtk_macros::spawn!(async move {
-                o.update().await;
-            });
-        }));
-
-        o
+        glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
+            .expect("Failed to create PluginStepsDetails")
     }
 
     // TRANSLATORS notes have to be on the same line, so we cant split them

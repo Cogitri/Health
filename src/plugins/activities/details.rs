@@ -16,12 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{
-    core::Database,
-    plugins::{
-        activities::{ModelActivity, ModelActivityMocked},
-        PluginDetails, PluginDetailsExt,
-    },
+use crate::plugins::{
+    activities::{ModelActivity, ModelActivityMocked},
+    PluginDetails, PluginDetailsExt,
 };
 use gtk::glib::{self, subclass::prelude::*, Boxed};
 
@@ -31,6 +28,7 @@ mod imp {
         model::Activity,
         plugins::{details::PinnedResultFuture, PluginDetails, PluginDetailsImpl},
         widgets::ActivityRow,
+        Database,
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
@@ -98,6 +96,12 @@ mod imp {
                 .set_child(Some(list_view.upcast_ref::<gtk::Widget>()));
             list_view.style_context().add_class("content");
             self.activities_list_view.set(list_view).unwrap();
+
+            Database::instance().connect_activities_updated(glib::clone!(@weak obj => move || {
+                gtk_macros::spawn!(async move {
+                    obj.update().await;
+                });
+            }));
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -161,16 +165,8 @@ glib::wrapper! {
 impl PluginActivitiesDetails {
     /// Create a new [PluginActivitiesDetails] to display previous activities.
     pub fn new(data_provider: DataProvider) -> Self {
-        let o: Self = glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
-            .expect("Failed to create PluginActivitiesDetails");
-
-        Database::instance().connect_activities_updated(glib::clone!(@weak o => move || {
-            gtk_macros::spawn!(async move {
-                o.update().await;
-            });
-        }));
-
-        o
+        glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
+            .expect("Failed to create PluginActivitiesDetails")
     }
 
     /// Reload the [ModelActivity](crate::model::ModelActivity)'s data and refresh the list of activities

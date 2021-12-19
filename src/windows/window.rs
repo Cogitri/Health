@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n_f, Database},
+    core::i18n_f,
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
     windows::DataAddDialog,
     ViewExt,
@@ -30,7 +30,10 @@ use gtk::{
 use gtk_macros::action;
 
 mod imp {
-    use crate::{core::Settings, views::ViewHomePage};
+    use crate::{
+        core::{Database, Settings},
+        views::ViewHomePage,
+    };
     use gtk::{
         glib::{self, SourceId},
         prelude::*,
@@ -89,6 +92,16 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
+            gtk_macros::spawn!(glib::clone!(@weak obj => async move {
+                if let Err(e) = Database::instance().migrate().await {
+                    obj.show_error(&crate::core::i18n_f(
+                        "Failed to migrate database to new version due to error {}",
+                        &[&e.to_string()],
+                    ))
+                }
+                obj.setup();
+            }));
+
             obj.setup_actions();
         }
     }
@@ -113,20 +126,7 @@ impl Window {
     /// # Arguments
     /// * `app` - The application to use.
     pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
-        let o: Self = glib::Object::new(&[("application", app)]).expect("Failed to create Window");
-
-        let obj = o.clone();
-        gtk_macros::spawn!(async move {
-            if let Err(e) = Database::instance().migrate().await {
-                obj.show_error(&crate::core::i18n_f(
-                    "Failed to migrate database to new version due to error {}",
-                    &[&e.to_string()],
-                ))
-            }
-            obj.setup();
-        });
-
-        o
+        glib::Object::new(&[("application", app)]).expect("Failed to create Window")
     }
 
     pub fn open_hamburger_menu(&self) {
