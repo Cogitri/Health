@@ -50,15 +50,7 @@ mod imp {
         }
     }
 
-    impl BinImpl for TabButton {}
-    impl WidgetImpl for TabButton {}
     impl ObjectImpl for TabButton {
-        fn dispose(&self, obj: &Self::Type) {
-            while let Some(child) = obj.first_child() {
-                child.unparent();
-            }
-        }
-
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
@@ -98,6 +90,8 @@ mod imp {
             }
         }
     }
+    impl WidgetImpl for TabButton {}
+    impl BinImpl for TabButton {}
 }
 
 glib::wrapper! {

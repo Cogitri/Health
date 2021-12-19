@@ -16,15 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::gio::subclass::prelude::*;
-use gtk::glib::{self};
-use gtk::prelude::*;
+use gtk::{gio::subclass::prelude::*, glib, prelude::*};
 
 mod imp {
-    use gtk::gdk::prelude::GdkCairoContextExt;
-    use gtk::glib::{self};
-    use gtk::prelude::*;
-    use gtk::subclass::prelude::*;
+    use adw::{prelude::*, subclass::prelude::*};
+    use gtk::{glib, subclass::prelude::*};
     use std::{cell::RefCell, f64::consts::PI};
 
     pub struct CircularProgressBarMut {
@@ -38,7 +34,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for CircularProgressBar {
         const NAME: &'static str = "HealthCircularProgressBar";
-        type ParentType = gtk::Widget;
+        type ParentType = adw::Bin;
         type Type = super::CircularProgressBar;
 
         fn new() -> Self {
@@ -103,12 +99,13 @@ mod imp {
             cr.save().unwrap();
         }
     }
+    impl BinImpl for CircularProgressBar {}
 }
 
 glib::wrapper! {
     /// A View for visualizing the development of data over time.
     pub struct CircularProgressBar(ObjectSubclass<imp::CircularProgressBar>)
-        @extends gtk::Widget,
+        @extends gtk::Widget, adw::Bin,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

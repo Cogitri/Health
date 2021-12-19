@@ -16,13 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::gdk::RGBA;
-use gtk::glib::{self};
-use gtk::subclass::prelude::*;
+use gtk::{gdk::RGBA, glib, subclass::prelude::*};
 
 mod imp {
     use crate::widgets::ColorCircle;
-    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use adw::{prelude::*, subclass::prelude::*};
+    use gtk::{glib, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/legend_row.ui")]
@@ -36,11 +35,10 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for LegendRow {
         const NAME: &'static str = "HealthLegendRow";
-        type ParentType = gtk::Widget;
+        type ParentType = adw::Bin;
         type Type = super::LegendRow;
 
         fn class_init(klass: &mut Self::Class) {
-            klass.set_layout_manager_type::<gtk::BinLayout>();
             Self::bind_template(klass);
         }
 
@@ -49,21 +47,15 @@ mod imp {
         }
     }
 
+    impl ObjectImpl for LegendRow {}
     impl WidgetImpl for LegendRow {}
-    impl BoxImpl for LegendRow {}
-    impl ObjectImpl for LegendRow {
-        fn dispose(&self, obj: &Self::Type) {
-            while let Some(child) = obj.first_child() {
-                child.unparent();
-            }
-        }
-    }
+    impl BinImpl for LegendRow {}
 }
 
 glib::wrapper! {
     /// [LegendRow] is a Widget that shows a colored circle next to the activity name.
     pub struct LegendRow(ObjectSubclass<imp::LegendRow>)
-        @extends gtk::Widget,
+        @extends gtk::Widget, adw::Bin,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

@@ -16,14 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::glib::{self};
-use gtk::{gio::subclass::prelude::*, prelude::*};
+use gtk::{gio::subclass::prelude::*, glib, prelude::*};
 
 mod imp {
-    use gtk::gdk::prelude::GdkCairoContextExt;
-    use gtk::glib::{self};
-    use gtk::prelude::*;
-    use gtk::subclass::prelude::*;
+    use adw::{prelude::*, subclass::prelude::*};
+    use gtk::{glib, subclass::prelude::*};
     use std::cell::RefCell;
 
     #[derive(Debug)]
@@ -39,7 +36,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for Arrows {
         const NAME: &'static str = "HealthArrows";
-        type ParentType = gtk::Widget;
+        type ParentType = adw::Bin;
         type Type = super::Arrows;
 
         fn new() -> Self {
@@ -50,16 +47,10 @@ mod imp {
                 }),
             }
         }
+    }
 
-        fn class_init(klass: &mut Self::Class) {
-            klass.set_layout_manager_type::<gtk::BinLayout>();
-        }
-    }
-    impl ObjectImpl for Arrows {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-        }
-    }
+    impl ObjectImpl for Arrows {}
+
     impl WidgetImpl for Arrows {
         fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
             if self.inner.borrow().difference != 0.0 {
@@ -109,11 +100,13 @@ mod imp {
             }
         }
     }
+    impl BinImpl for Arrows {}
 }
+
 glib::wrapper! {
     /// A View for visualizing the development of data over time.
     pub struct Arrows(ObjectSubclass<imp::Arrows>)
-        @extends gtk::Widget,
+        @extends gtk::Widget, adw::Bin,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

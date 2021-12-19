@@ -27,7 +27,7 @@
       <widget name="google_fit_selected_image"/>
     </widgets>
   </object>
-  <template class="HealthSyncListBox" parent="GtkWidget">
+  <template class="HealthSyncListBox" parent="AdwBin">
     <child>
       <object class="GtkListBox" id="sync_list_box">
         <property name="selection-mode">none</property>

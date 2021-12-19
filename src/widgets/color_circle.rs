@@ -16,17 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::gdk::RGBA;
-use gtk::gio::subclass::prelude::*;
-use gtk::glib::{self};
-use gtk::prelude::*;
+use gtk::{gdk::RGBA, gio::subclass::prelude::*, glib, prelude::*};
 
 mod imp {
-    use gtk::gdk::prelude::GdkCairoContextExt;
-    use gtk::gdk::RGBA;
-    use gtk::glib::{self};
-    use gtk::prelude::*;
-    use gtk::subclass::prelude::*;
+    use adw::{prelude::*, subclass::prelude::*};
+    use gtk::{gdk::RGBA, glib, subclass::prelude::*};
     use std::{cell::RefCell, f64::consts::PI};
 
     pub struct ColorCircleMut {
@@ -40,7 +34,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for ColorCircle {
         const NAME: &'static str = "HealthColorCircle";
-        type ParentType = gtk::Widget;
+        type ParentType = adw::Bin;
         type Type = super::ColorCircle;
 
         fn new() -> Self {
@@ -55,16 +49,9 @@ mod imp {
                 }),
             }
         }
+    }
 
-        fn class_init(klass: &mut Self::Class) {
-            klass.set_layout_manager_type::<gtk::BinLayout>();
-        }
-    }
-    impl ObjectImpl for ColorCircle {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-        }
-    }
+    impl ObjectImpl for ColorCircle {}
     impl WidgetImpl for ColorCircle {
         fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
             let cr = snapshot
@@ -88,11 +75,13 @@ mod imp {
             cr.save().unwrap();
         }
     }
+    impl BinImpl for ColorCircle {}
 }
+
 glib::wrapper! {
     /// A Widget for visualizing the color in legend table.
     pub struct ColorCircle(ObjectSubclass<imp::ColorCircle>)
-        @extends gtk::Widget,
+        @extends gtk::Widget, adw::Bin,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

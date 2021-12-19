@@ -54,12 +54,10 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for BmiLevelBar {
         const NAME: &'static str = "HealthBMILevelBar";
-        type ParentType = gtk::Widget;
+        type ParentType = gtk::Box;
         type Type = super::BmiLevelBar;
 
         fn class_init(klass: &mut Self::Class) {
-            klass.set_layout_manager_type::<gtk::BoxLayout>();
-            klass.set_accessible_role(gtk::AccessibleRole::Meter);
             Self::bind_template(klass);
         }
 
@@ -103,20 +101,15 @@ mod imp {
             );
             self.level_bar.add_offset_value("obese-bmi", 1.0);
         }
-
-        fn dispose(&self, obj: &Self::Type) {
-            while let Some(child) = obj.first_child() {
-                child.unparent();
-            }
-        }
     }
     impl WidgetImpl for BmiLevelBar {}
+    impl BoxImpl for BmiLevelBar {}
 }
 
 glib::wrapper! {
     /// A widget to visualise the BMI of the user.
     pub struct BmiLevelBar(ObjectSubclass<imp::BmiLevelBar>)
-        @extends gtk::Widget,
+        @extends gtk::Widget, gtk::Box,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

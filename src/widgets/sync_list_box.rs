@@ -28,7 +28,8 @@ use gtk_macros::spawn;
 
 mod imp {
     use crate::core::Settings;
-    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use adw::{prelude::*, subclass::prelude::*};
+    use gtk::{glib, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
@@ -51,7 +52,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for SyncListBox {
         const NAME: &'static str = "HealthSyncListBox";
-        type ParentType = gtk::Widget;
+        type ParentType = adw::Bin;
         type Type = super::SyncListBox;
 
         fn class_init(klass: &mut Self::Class) {
@@ -115,13 +116,13 @@ mod imp {
         }
     }
     impl WidgetImpl for SyncListBox {}
-    impl ListBoxRowImpl for SyncListBox {}
+    impl BinImpl for SyncListBox {}
 }
 
 glib::wrapper! {
     /// The [SyncListBox] is a [gtk::ListBox] where users can initialise synching with a third-party provider.
     pub struct SyncListBox(ObjectSubclass<imp::SyncListBox>)
-        @extends gtk::Widget, gtk::ListBoxRow,
+        @extends gtk::Widget, adw::Bin,
         @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 

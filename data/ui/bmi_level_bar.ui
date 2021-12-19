@@ -19,7 +19,7 @@
 -->
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
-  <template class="HealthBMILevelBar" parent="GtkWidget">
+  <template class="HealthBMILevelBar" parent="GtkBox">
     <child>
       <object class="GtkLabel" id="bmi_label"/>
     </child>
