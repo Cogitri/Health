@@ -262,12 +262,10 @@ impl ImportExportDialogBase {
     }
 
     #[template_callback]
-    fn handle_encrypt_switch_active_notify(&self) {
+    fn handle_encrypt_switch_active_notify(&self, _pspec: glib::ParamSpec, btn: gtk::Switch) {
         let self_ = self.imp();
         self.check_activate_response();
-        self_
-            .password_entry
-            .set_sensitive(self_.encrypt_switch.is_active());
+        self_.password_entry.set_sensitive(btn.is_active());
     }
 
     #[template_callback]
