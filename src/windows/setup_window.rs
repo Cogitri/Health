@@ -303,13 +303,13 @@ impl SetupWindow {
         match self_.setup_carousel.position() as u32 {
             0 => self_
                 .setup_carousel
-                .scroll_to(&self_.setup_second_page.get()),
+                .scroll_to(&self_.setup_second_page.get(), true),
             1 => self_
                 .setup_carousel
-                .scroll_to(&self_.setup_third_page.get()),
+                .scroll_to(&self_.setup_third_page.get(), true),
             2 => self_
                 .setup_carousel
-                .scroll_to(&self_.setup_fourth_page.get()),
+                .scroll_to(&self_.setup_fourth_page.get(), true),
             3 => self_.setup_done_button.emit_clicked(),
             _ => unimplemented!(),
         }
@@ -322,13 +322,13 @@ impl SetupWindow {
             0 => self.destroy(),
             1 => self_
                 .setup_carousel
-                .scroll_to(&self_.setup_first_page.get()),
+                .scroll_to(&self_.setup_first_page.get(), true),
             2 => self_
                 .setup_carousel
-                .scroll_to(&self_.setup_second_page.get()),
+                .scroll_to(&self_.setup_second_page.get(), true),
             3 => self_
                 .setup_carousel
-                .scroll_to(&self_.setup_third_page.get()),
+                .scroll_to(&self_.setup_third_page.get(), true),
             _ => unimplemented!(),
         }
     }

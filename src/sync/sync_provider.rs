@@ -182,11 +182,8 @@ pub trait SyncProvider {
     /// to what you sent to the provider to make sure the request went through fine.
     #[allow(clippy::manual_flatten)]
     fn start_listen_server(authorize_url: &str) -> Result<(AuthorizationCode, CsrfToken)> {
-        gio::AppInfo::launch_default_for_uri_async_future(
-            authorize_url,
-            None::<&gio::AppLaunchContext>,
-        )
-        .block()?;
+        gio::AppInfo::launch_default_for_uri_future(authorize_url, None::<&gio::AppLaunchContext>)
+            .block()?;
 
         let listener = TcpListener::bind("127.0.0.1:34981")?;
         for s in listener.incoming() {

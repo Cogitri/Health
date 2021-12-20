@@ -177,7 +177,7 @@ impl CsvHandler {
     }
 
     async fn read_csv(&self, file: &gio::File) -> Result<Vec<u8>> {
-        let data = file.load_contents_async_future().await?.0;
+        let data = file.load_contents_future().await?.0;
 
         if serde_json::from_slice::<EncryptedValue>(&data).is_ok() {
             Err(EncryptionError::EncryptedAsUnencrypted(i18n(
@@ -190,7 +190,7 @@ impl CsvHandler {
     }
 
     async fn read_csv_encrypted(&self, file: &gio::File, key: &str) -> Result<Vec<u8>> {
-        let raw_contents = file.load_contents_async_future().await?.0;
+        let raw_contents = file.load_contents_future().await?.0;
         let encrypted_value: EncryptedValue = serde_json::from_slice(&raw_contents)
             .map_err(|_| EncryptionError::UnencryptedAsEncrypted(i18n("Couldn't parse CSV. Are you trying to read an unencrypted backup as an encrypted one?")))?;
         let mut hasher = Sha256::new();
@@ -212,7 +212,7 @@ impl CsvHandler {
 
     async fn write_csv(&self, file: &gio::File, data: &[u8]) -> Result<()> {
         let stream = file
-            .replace_async_future(
+            .replace_future(
                 None,
                 false,
                 gio::FileCreateFlags::REPLACE_DESTINATION,
