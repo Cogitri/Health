@@ -18,8 +18,7 @@
 
 use crate::{
     plugins::{PluginDetailsExt, PluginObject, PluginSummaryRow, PluginSummaryRowExt, Registrar},
-    views::View,
-    ViewExt,
+    views::{View, ViewExt},
 };
 use gtk::{
     glib::{self, object::ObjectExt, subclass::prelude::*},
@@ -28,9 +27,9 @@ use gtk::{
 
 mod imp {
     use crate::{
+        core::Settings,
         plugins::{PluginObject, PluginOverviewRow, PluginSummaryRow, Registrar},
-        views::{PinnedResultFuture, View, ViewImpl},
-        Settings, ViewExt,
+        views::{PinnedResultFuture, View, ViewExt, ViewImpl},
     };
     use adw::prelude::*;
     use gtk::{

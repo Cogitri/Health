@@ -19,9 +19,8 @@
 use std::convert::TryInto;
 
 use crate::{
-    core::{date::prelude::*, UnitSystem},
+    core::{date::prelude::*, ni18n_f, UnitSystem},
     model::{Activity, ActivityDataPoints, ActivityInfo},
-    ni18n_f,
 };
 use gtk::{
     glib::{self, subclass::prelude::*},

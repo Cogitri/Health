@@ -1,8 +1,7 @@
 use std::convert::TryInto;
 
 use crate::{
-    core::{Database, Settings},
-    ni18n_f,
+    core::{ni18n_f, Database, Settings},
     plugins::PluginSummaryRow,
 };
 use adw::prelude::*;

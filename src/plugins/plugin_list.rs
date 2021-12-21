@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{plugins::Plugin, RefIter};
+use crate::{core::RefIter, plugins::Plugin};
 use gtk::{
     gio::{self, prelude::*},
     glib::{self, subclass::prelude::*},

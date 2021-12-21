@@ -16,12 +16,12 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::i18n;
+use crate::core::i18n;
 use gtk::glib;
 
 mod imp {
     use crate::{
-        i18n::i18n,
+        core::i18n,
         sync::csv::CsvHandler,
         windows::import_export_dialog_base::{
             ImportExportDialogBase, ImportExportDialogBaseImpl, PinnedResultFuture,

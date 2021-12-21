@@ -17,8 +17,7 @@
  */
 
 use crate::{
-    core::date::prelude::*,
-    i18n,
+    core::{date::prelude::*, i18n},
     model::{ActivityInfo, ActivityType},
 };
 use chrono::{Date, FixedOffset, Local};

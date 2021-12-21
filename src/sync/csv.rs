@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::Database, i18n::i18n};
+use crate::{core::i18n, core::Database};
 use anyhow::Result;
 use chacha20poly1305::aead::{Aead, NewAead};
 use chacha20poly1305::{Key, XChaCha20Poly1305, XNonce};
@@ -260,7 +260,10 @@ impl CsvHandler {
 #[cfg(test)]
 mod test {
     use super::CsvHandler;
-    use crate::{core::Database, i18n, sync::csv::EncryptionError};
+    use crate::{
+        core::{i18n, Database},
+        sync::csv::EncryptionError,
+    };
     use gtk::{gio, glib};
     use tempfile::tempdir;
 

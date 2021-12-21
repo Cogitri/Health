@@ -1,4 +1,4 @@
-use crate::{core::Database, ni18n_f, plugins::PluginSummaryRow};
+use crate::{core::ni18n_f, core::Database, plugins::PluginSummaryRow};
 use gtk::{glib, subclass::prelude::*};
 
 mod imp {

@@ -17,7 +17,7 @@
  */
 
 pub use self::imp::PinnedResultFuture;
-use crate::i18n::i18n;
+use crate::core::i18n;
 use gtk::{
     glib::{self, prelude::*, subclass::prelude::*, translate::FromGlib},
     prelude::*,
@@ -27,7 +27,7 @@ use gtk::{
 mod imp {
     use std::{future::Future, pin::Pin};
 
-    use crate::{i18n, widgets::PasswordEntry};
+    use crate::{core::i18n, widgets::PasswordEntry};
     use adw::prelude::*;
     use anyhow::Result;
     use gtk::{

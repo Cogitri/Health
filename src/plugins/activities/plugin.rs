@@ -1,5 +1,5 @@
 use crate::{
-    i18n,
+    core::i18n,
     plugins::{
         activities::{DataProvider, PluginActivitiesDetails},
         Plugin, PluginDetails,

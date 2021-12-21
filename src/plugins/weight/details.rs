@@ -17,8 +17,7 @@
  */
 
 use crate::{
-    core::{date::prelude::*, i18n, i18n_f, utils::prelude::*, UnitSystem},
-    ni18n_f,
+    core::{date::prelude::*, i18n, i18n_f, ni18n_f, utils::prelude::*, UnitSystem},
     plugins::{
         weight::{GraphModelWeight, GraphModelWeightMocked},
         PluginDetails, PluginDetailsExt,

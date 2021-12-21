@@ -16,7 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{model::ActivityInfo, widgets::ActivityTypeRow, ActivityInfoBoxed};
+use crate::{
+    model::{ActivityInfo, ActivityInfoBoxed},
+    widgets::ActivityTypeRow,
+};
 use gtk::{
     gio::{prelude::*, subclass::prelude::*},
     glib::{self, SignalHandlerId},
@@ -27,9 +30,8 @@ use std::convert::TryFrom;
 mod imp {
     use crate::{
         core::Settings,
-        model::{ActivityInfo, ActivityType, ActivityTypeRowData},
+        model::{ActivityInfo, ActivityInfoBoxed, ActivityType, ActivityTypeRowData},
         widgets::ActivityTypeRow,
-        ActivityInfoBoxed,
     };
     use gtk::{
         gio,

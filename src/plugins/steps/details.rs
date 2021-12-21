@@ -17,14 +17,13 @@
  */
 
 use crate::{
+    core::ni18n_f,
     core::{date::prelude::*, i18n, i18n_f},
-    ni18n_f,
     plugins::{
         steps::{GraphModelSteps, GraphModelStepsMocked},
         PluginDetails, PluginDetailsExt,
     },
-    views::GraphView,
-    Point,
+    views::{GraphView, Point},
 };
 use chrono::Duration;
 use gtk::glib::{self, subclass::prelude::*, Boxed};
@@ -32,10 +31,9 @@ use gtk::glib::{self, subclass::prelude::*, Boxed};
 mod imp {
     use super::{DataProvider, DataProviderBoxed};
     use crate::{
-        core::Database,
+        core::{Database, Settings},
         plugins::{PluginDetails, PluginDetailsImpl},
         views::{GraphView, PinnedResultFuture},
-        Settings,
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{

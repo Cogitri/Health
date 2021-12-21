@@ -19,8 +19,8 @@
 use crate::{
     core::i18n_f,
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
+    views::ViewExt,
     windows::DataAddDialog,
-    ViewExt,
 };
 use gtk::{
     gio,

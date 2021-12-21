@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{i18n, ni18n_f};
+use crate::core::{i18n, ni18n_f};
 use chrono::{Local, NaiveTime, Timelike};
 use glib::source::timeout_add_seconds_local;
 use gtk::{gio::subclass::prelude::*, glib};

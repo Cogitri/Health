@@ -18,7 +18,7 @@
 use gtk::{gio, glib};
 
 mod imp {
-    use crate::{model::ModelNotification, Settings};
+    use crate::{core::Settings, model::ModelNotification};
     use gtk::subclass::prelude::*;
     use gtk::{gio, glib, prelude::*};
 

@@ -1,6 +1,8 @@
 use crate::{
-    core::utils::prelude::*, i18n, ni18n_f, plugins::weight::GraphModelWeight,
-    plugins::PluginSummaryRow, Settings, UnitSystem,
+    core::{i18n, ni18n_f, Settings, UnitSystem},
+    plugins::weight::GraphModelWeight,
+    plugins::PluginSummaryRow,
+    utils::prelude::*,
 };
 use adw::prelude::*;
 use chrono::Duration;

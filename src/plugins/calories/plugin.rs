@@ -1,5 +1,5 @@
 use crate::{
-    i18n,
+    core::i18n,
     plugins::{
         calories::{DataProvider, PluginCaloriesDetails},
         Plugin, PluginDetails,

@@ -5,10 +5,10 @@ use gtk::{glib, prelude::*, subclass::prelude::*};
 
 mod imp {
     use crate::{
+        core::Settings,
         plugins::{
             ActivitiesPlugin, CaloriesPlugin, Plugin, PluginList, StepsPlugin, WeightPlugin,
         },
-        Settings,
     };
     use gtk::glib::{
         self,

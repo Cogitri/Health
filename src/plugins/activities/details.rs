@@ -25,10 +25,10 @@ use gtk::glib::{self, subclass::prelude::*, Boxed};
 mod imp {
     use super::{DataProvider, DataProviderBoxed};
     use crate::{
+        core::Database,
         model::Activity,
         plugins::{details::PinnedResultFuture, PluginDetails, PluginDetailsImpl},
         widgets::ActivityRow,
-        Database,
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{

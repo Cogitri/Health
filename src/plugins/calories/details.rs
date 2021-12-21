@@ -18,16 +18,16 @@
 
 use std::convert::TryInto;
 
-use crate::{model::ActivityInfo, widgets::LegendRow};
 use crate::{
-    ni18n_f,
+    core::ni18n_f,
+    model::ActivityType,
     plugins::{
         calories::{GraphModelCalories, GraphModelCaloriesMocked},
         PluginDetails, PluginDetailsExt,
     },
-    views::BarGraphView,
-    ActivityType, SplitBar,
+    views::{BarGraphView, SplitBar},
 };
+use crate::{model::ActivityInfo, widgets::LegendRow};
 use chrono::Duration;
 use gtk::{
     glib::{self, subclass::prelude::*, Boxed, Cast},
@@ -37,10 +37,10 @@ use gtk::{
 mod imp {
     use super::{DataProvider, DataProviderBoxed};
     use crate::{
+        core::Database,
         plugins::{PluginDetails, PluginDetailsImpl},
         views::{BarGraphView, PinnedResultFuture},
         widgets::LegendRow,
-        Database,
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{

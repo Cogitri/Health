@@ -25,7 +25,7 @@ use gtk::{
 };
 
 mod imp {
-    use crate::{date::DateTimeBoxed, utils::prelude::*};
+    use crate::{core::date::DateTimeBoxed, utils::prelude::*};
     use chrono::{Datelike, Local, NaiveDate};
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
@@ -221,7 +221,7 @@ mod test {
     use chrono::Datelike;
 
     use super::*;
-    use crate::{i18n::i18n, utils::init_gtk};
+    use crate::{core::i18n, utils::init_gtk};
 
     #[test]
     fn new() {

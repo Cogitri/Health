@@ -92,14 +92,4 @@ pub mod widgets;
 pub mod windows;
 
 #[doc(inline)]
-pub use crate::core::*;
-#[doc(inline)]
-pub use crate::daemon::*;
-#[doc(inline)]
-pub use crate::model::*;
-#[doc(inline)]
-pub use crate::views::*;
-#[doc(inline)]
-pub use crate::widgets::*;
-#[doc(inline)]
-pub use crate::windows::*;
+pub use crate::core::utils;

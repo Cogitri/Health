@@ -19,7 +19,7 @@
 use anyhow::Result;
 use gtk::{gio, glib};
 mod imp {
-    use crate::{model::Activity, ActivityType};
+    use crate::model::{Activity, ActivityType};
     use chrono::{DateTime, Duration, FixedOffset, Local};
     use gtk::subclass::prelude::*;
     use gtk::{

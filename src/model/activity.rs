@@ -110,7 +110,7 @@ impl Activity {
     ///
     /// # Examples
     /// ```
-    /// use libhealth::{Activity, ActivityType};
+    /// use libhealth::model::{Activity, ActivityType};
     ///
     /// let activity = Activity::new();
     /// activity.set_activity_type(ActivityType::Walking);
@@ -145,7 +145,7 @@ impl Activity {
     ///
     /// # Examples
     /// ```
-    /// use libhealth::{Activity, ActivityType};
+    /// use libhealth::model::{Activity, ActivityType};
     /// use uom::si::{f32::Length, length::kilometer};
     ///
     /// let activity = Activity::new();
@@ -212,7 +212,7 @@ impl Activity {
     ///
     /// # Examples
     /// ```
-    /// use libhealth::{Activity, ActivityType};
+    /// use libhealth::model::{Activity, ActivityType};
     /// use chrono::Duration;
     ///
     /// let activity = Activity::new();
@@ -268,7 +268,7 @@ impl Activity {
     ///
     /// # Examples
     /// ```
-    /// use libhealth::{Activity, ActivityType};
+    /// use libhealth::model::{Activity, ActivityType};
     ///
     /// let activity = Activity::new();
     /// activity.set_activity_type(ActivityType::Walking);

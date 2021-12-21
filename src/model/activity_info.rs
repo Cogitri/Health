@@ -64,7 +64,7 @@ impl From<ActivityType> for ActivityInfo {
     ///
     /// # Examples
     /// ```
-    /// use libhealth::{ActivityInfo, ActivityType, ActivityDataPoints};
+    /// use libhealth::model::{ActivityInfo, ActivityType, ActivityDataPoints};
     ///
     /// let info = ActivityInfo::from(ActivityType::Basketball);
     /// assert_eq!(info.activity_type, ActivityType::Basketball);
@@ -276,7 +276,7 @@ impl TryFrom<&str> for ActivityInfo {
     ///
     /// # Examples
     /// ```
-    /// use libhealth::{ActivityInfo, ActivityType, ActivityDataPoints};
+    /// use libhealth::model::{ActivityInfo, ActivityType, ActivityDataPoints};
     /// use std::convert::TryFrom;
     ///
     /// let info = ActivityInfo::try_from("basketball").unwrap();
