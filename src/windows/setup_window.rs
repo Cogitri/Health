@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::{utils::prelude::*, UnitSystem};
+use crate::{core::UnitSystem, prelude::*};
 use adw::prelude::*;
 use chrono::Local;
 use gtk::{

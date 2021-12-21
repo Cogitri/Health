@@ -883,7 +883,7 @@ mod test {
     use std::{cell::Cell, rc::Rc};
 
     use super::*;
-    use crate::{core::utils::prelude::*, model::ActivityType};
+    use crate::{model::ActivityType, prelude::*};
     use chrono::{Duration, Local};
     use num_traits::cast::ToPrimitive;
     use tempfile::tempdir;

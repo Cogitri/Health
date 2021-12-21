@@ -17,12 +17,12 @@
  */
 
 use crate::{
-    core::ni18n_f,
-    core::{date::prelude::*, i18n, i18n_f},
+    core::{i18n, i18n_f, ni18n_f},
     plugins::{
         steps::{GraphModelSteps, GraphModelStepsMocked},
-        PluginDetails, PluginDetailsExt,
+        PluginDetails,
     },
+    prelude::*,
     views::{GraphView, Point},
 };
 use chrono::Duration;
@@ -32,8 +32,9 @@ mod imp {
     use super::{DataProvider, DataProviderBoxed};
     use crate::{
         core::{Database, Settings},
-        plugins::{PluginDetails, PluginDetailsImpl},
-        views::{GraphView, PinnedResultFuture},
+        plugins::PluginDetails,
+        prelude::*,
+        views::GraphView,
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
@@ -123,7 +124,7 @@ mod imp {
     impl WidgetImpl for PluginStepsDetails {}
     impl BinImpl for PluginStepsDetails {}
     impl PluginDetailsImpl for PluginStepsDetails {
-        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture {
+        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {

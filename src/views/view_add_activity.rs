@@ -17,8 +17,8 @@
  */
 
 use crate::{
-    core::utils::prelude::*,
     model::{Activity, ActivityDataPoints, ActivityInfo, Unitsize},
+    prelude::*,
     views::View,
 };
 use chrono::Duration;
@@ -33,9 +33,10 @@ use std::str::FromStr;
 
 mod imp {
     use crate::{
-        core::{utils::prelude::*, Database, Settings},
+        core::{Database, Settings},
         model::{Activity, ActivityDataPoints, ActivityInfo, ActivityType},
-        views::{PinnedResultFuture, View, ViewImpl},
+        prelude::*,
+        views::View,
         widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
     };
     use gtk::{
@@ -182,7 +183,7 @@ mod imp {
     impl WidgetImpl for ViewAddActivity {}
 
     impl ViewImpl for ViewAddActivity {
-        fn update(&self, obj: &View) -> PinnedResultFuture {
+        fn update(&self, obj: &View) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
                 send.resolve(Ok(()));
             }))

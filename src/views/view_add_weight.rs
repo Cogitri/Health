@@ -26,7 +26,8 @@ use uom::si::{
 mod imp {
     use crate::{
         core::{Database, Settings},
-        views::{PinnedResultFuture, View, ViewImpl},
+        prelude::*,
+        views::View,
         widgets::{DateSelector, UnitSpinButton},
     };
     use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
@@ -68,7 +69,7 @@ mod imp {
     impl WidgetImpl for ViewAddWeight {}
 
     impl ViewImpl for ViewAddWeight {
-        fn update(&self, obj: &View) -> PinnedResultFuture {
+        fn update(&self, obj: &View) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
                 send.resolve(Ok(()));
             }))

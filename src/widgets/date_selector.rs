@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::date::prelude::*;
+use crate::prelude::*;
 use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
 use gtk::{
     glib::{self, SignalHandlerId},
@@ -25,7 +25,7 @@ use gtk::{
 };
 
 mod imp {
-    use crate::{core::date::DateTimeBoxed, utils::prelude::*};
+    use crate::prelude::*;
     use chrono::{Datelike, Local, NaiveDate};
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 

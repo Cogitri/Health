@@ -16,7 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::{i18n, utils::prelude::*, UnitKind, UnitSystem};
+use crate::{
+    core::{i18n, UnitKind, UnitSystem},
+    prelude::*,
+};
 use gtk::{
     glib::{
         subclass::prelude::*,

@@ -16,26 +16,20 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::properties_setter_getter;
-use anyhow::Result;
+use crate::{prelude::*, properties_setter_getter};
 use gtk::{
     glib::{self, prelude::*},
     subclass::prelude::*,
 };
-use std::{future::Future, pin::Pin};
-
-pub type PinnedResultFuture = Pin<Box<dyn Future<Output = Result<()>> + 'static>>;
 mod imp {
-    use super::PinnedResultFuture;
+    use crate::prelude::*;
     use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::cell::RefCell;
-
-    pub type ViewInstance = super::View;
 
     #[repr(C)]
     pub struct ViewClass {
         pub parent_class: gtk::ffi::GtkWidgetClass,
-        pub update: fn(&ViewInstance) -> PinnedResultFuture,
+        pub update: fn(&super::View) -> PinnedResultFuture<()>,
     }
 
     unsafe impl ClassStruct for ViewClass {
@@ -79,18 +73,18 @@ mod imp {
     }
 
     // Virtual method default implementation trampolines
-    fn update_default_trampoline(this: &ViewInstance) -> PinnedResultFuture {
+    fn update_default_trampoline(this: &super::View) -> PinnedResultFuture<()> {
         View::from_instance(this).update(this)
     }
 
-    pub(super) fn view_update(this: &ViewInstance) -> PinnedResultFuture {
+    pub(super) fn view_update(this: &super::View) -> PinnedResultFuture<()> {
         let klass = this.class();
 
         (klass.as_ref().update)(this)
     }
 
     impl View {
-        fn update(&self, obj: &super::View) -> PinnedResultFuture {
+        fn update(&self, obj: &super::View) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
                 send.resolve(Ok(()));
             }))
@@ -245,7 +239,7 @@ impl View {
 }
 
 pub trait ViewExt {
-    fn update(&self) -> PinnedResultFuture;
+    fn update(&self) -> PinnedResultFuture<()>;
     fn goal_label(&self) -> gtk::Label;
     fn stack(&self) -> gtk::Stack;
 }
@@ -259,23 +253,23 @@ impl<O: IsA<View>> ViewExt for O {
         self.upcast_ref::<View>().stack()
     }
 
-    fn update(&self) -> PinnedResultFuture {
+    fn update(&self) -> PinnedResultFuture<()> {
         imp::view_update(self.upcast_ref())
     }
 }
 
 pub trait ViewImpl: WidgetImpl + 'static {
-    fn update(&self, obj: &View) -> PinnedResultFuture {
+    fn update(&self, obj: &View) -> PinnedResultFuture<()> {
         self.parent_update(obj)
     }
 }
 
 pub trait ViewImplExt: ObjectSubclass {
-    fn parent_update(&self, obj: &View) -> PinnedResultFuture;
+    fn parent_update(&self, obj: &View) -> PinnedResultFuture<()>;
 }
 
 impl<T: ViewImpl> ViewImplExt for T {
-    fn parent_update(&self, obj: &View) -> PinnedResultFuture {
+    fn parent_update(&self, obj: &View) -> PinnedResultFuture<()> {
         unsafe {
             let data = Self::type_data();
             let parent_class = &*(data.as_ref().parent_class() as *mut imp::ViewClass);
@@ -298,7 +292,7 @@ unsafe impl<T: ViewImpl> IsSubclassable<T> for View {
 }
 
 // Virtual method default implementation trampolines
-fn update_trampoline<T: ObjectSubclass>(this: &View) -> PinnedResultFuture
+fn update_trampoline<T: ObjectSubclass>(this: &View) -> PinnedResultFuture<()>
 where
     T: ViewImpl,
 {

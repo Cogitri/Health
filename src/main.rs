@@ -13,7 +13,7 @@
 #![warn(clippy::option_if_let_else)]
 
 use gettextrs::{bindtextdomain, setlocale, textdomain, LocaleCategory};
-use gtk::{gio, glib, prelude::ApplicationExtManual};
+use gtk::{gio, glib, prelude::*};
 use libhealth::{
     config,
     core::{i18n, Application},

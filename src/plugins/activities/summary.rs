@@ -2,7 +2,7 @@ use crate::{core::ni18n_f, core::Database, plugins::PluginSummaryRow};
 use gtk::{glib, subclass::prelude::*};
 
 mod imp {
-    use crate::plugins::{summary::PinnedResultFuture, PluginSummaryRow, PluginSummaryRowImpl};
+    use crate::{plugins::PluginSummaryRow, prelude::*};
     use adw::subclass::prelude::*;
     use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
@@ -34,7 +34,7 @@ mod imp {
     impl PreferencesRowImpl for PluginActivitiesSummaryRow {}
     impl ActionRowImpl for PluginActivitiesSummaryRow {}
     impl PluginSummaryRowImpl for PluginActivitiesSummaryRow {
-        fn update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture {
+        fn update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {

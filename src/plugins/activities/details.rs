@@ -16,19 +16,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::plugins::{
-    activities::{ModelActivity, ModelActivityMocked},
-    PluginDetails, PluginDetailsExt,
+use crate::{
+    plugins::{
+        activities::{ModelActivity, ModelActivityMocked},
+        PluginDetails,
+    },
+    prelude::*,
 };
 use gtk::glib::{self, subclass::prelude::*, Boxed};
 
 mod imp {
     use super::{DataProvider, DataProviderBoxed};
     use crate::{
-        core::Database,
-        model::Activity,
-        plugins::{details::PinnedResultFuture, PluginDetails, PluginDetailsImpl},
-        widgets::ActivityRow,
+        core::Database, model::Activity, plugins::PluginDetails, prelude::*, widgets::ActivityRow,
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
@@ -138,7 +138,7 @@ mod imp {
     impl BinImpl for PluginActivitiesDetails {}
 
     impl PluginDetailsImpl for PluginActivitiesDetails {
-        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture {
+        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {

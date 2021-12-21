@@ -17,11 +17,12 @@
  */
 
 use crate::{
-    plugins::{PluginDetailsExt, PluginObject, PluginSummaryRow, PluginSummaryRowExt, Registrar},
-    views::{View, ViewExt},
+    plugins::{PluginObject, PluginSummaryRow, Registrar},
+    prelude::*,
+    views::View,
 };
 use gtk::{
-    glib::{self, object::ObjectExt, subclass::prelude::*},
+    glib::{self, prelude::*, subclass::prelude::*},
     prelude::*,
 };
 
@@ -29,7 +30,8 @@ mod imp {
     use crate::{
         core::Settings,
         plugins::{PluginObject, PluginOverviewRow, PluginSummaryRow, Registrar},
-        views::{PinnedResultFuture, View, ViewExt, ViewImpl},
+        prelude::*,
+        views::View,
     };
     use adw::prelude::*;
     use gtk::{
@@ -132,7 +134,7 @@ mod imp {
     }
 
     impl ViewImpl for ViewHomePage {
-        fn update(&self, obj: &View) -> PinnedResultFuture {
+        fn update(&self, obj: &View) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {

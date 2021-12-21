@@ -1,7 +1,7 @@
 use crate::plugins::{PluginDetails, PluginOverviewRow, PluginSummaryRow};
 use gtk::{
     glib::{self, Boxed},
-    prelude::ObjectExt,
+    prelude::*,
 };
 
 /// The [Plugin] trait should be implemented for additional data sources of Health.

@@ -6,17 +6,17 @@
 //! the start a bit easier, let me explain some basics about Health:
 //!
 //! * Health's source is split into multiple directories to make working with the many source files a bit easier:
-//!     * core: This directory contains core modules of Health that are used throughout the application, like the
+//!     * [core](crate::core): This directory contains core modules of Health that are used throughout the application, like the
 //!       [Settings](crate::core::Settings) struct that's used for retrieving `GSettings` values.
-//!     * model: This directory contains the data types of Health. Things like [Activity](crate::model::Activity), which
+//!     * [model](crate::model): This directory contains the data types of Health. Things like [Activity](crate::model::Activity), which
 //!       holds data about a single activity live here.
-//!     * plugins: This directory contains plugins, which provide additional views and data sources for Health. See the [Plugin](crate::plugins::Plugin)
+//!     * [plugins](crate::plugins): This directory contains plugins, which provide additional views and data sources for Health. See the [Plugin](crate::plugins::Plugin)
 //!       trait for more information on how to implement your own [Plugin](crate::plugins::Plugin)
-//!     * sync: The code for synching with third party providers (e.g. Google Fit) or exporting/importing data lies here.
-//!     * views: This directory contains views. These are complete views containing multiple widgets, like a [ViewAddActivity](crate::views::ViewAddActivity).
-//!     * widgets: Widgets are smaller, reusable parts of Health's UI, e.g the [BmiLevelBar](crate::widgets::BmiLevelBar)
+//!     * [sync](crate::sync): The code for synching with third party providers (e.g. Google Fit) or exporting/importing data lies here.
+//!     * [views}(crate::views): This directory contains views. These are complete views containing multiple widgets, like a [ViewAddActivity](crate::views::ViewAddActivity).
+//!     * [widgets}(crate::widgets): Widgets are smaller, reusable parts of Health's UI, e.g the [BmiLevelBar](crate::widgets::BmiLevelBar)
 //!       is contained in this module.
-//!     * windows: This directory contains actual windows, like the main [Window](crate::windows::Window) or the
+//!     * (windows)[crate::windows]: This directory contains actual windows, like the main [Window](crate::windows::Window) or the
 //!       [PreferencesWindow](crate::windows::PreferencesWindow).
 //! * Health has a rather strict code style to make sure working with the sourcecode is easy:
 //!     * Please make sure `cargo fmt` and `cargo clippy` are happy with any changes you do.
@@ -73,23 +73,31 @@
 #![warn(clippy::wildcard_imports)]
 #![warn(clippy::trivially_copy_pass_by_ref)]
 
-#[doc(hidden)]
 pub mod config;
-#[doc(hidden)]
 pub mod core;
-#[doc(hidden)]
 pub mod daemon;
-#[doc(hidden)]
 pub mod model;
 pub mod plugins;
-#[doc(hidden)]
 pub mod sync;
-#[doc(hidden)]
 pub mod views;
-#[doc(hidden)]
 pub mod widgets;
-#[doc(hidden)]
 pub mod windows;
 
 #[doc(inline)]
 pub use crate::core::utils;
+
+pub mod prelude {
+    use anyhow::Result;
+    use std::{future::Future, pin::Pin};
+
+    pub type PinnedResultFuture<T> = Pin<Box<dyn Future<Output = Result<T>> + 'static>>;
+    pub use crate::core::date::prelude::*;
+    pub use crate::core::utils::prelude::*;
+    pub use crate::plugins::{
+        PluginDetailsExt, PluginDetailsImpl, PluginSummaryRowExt, PluginSummaryRowImpl,
+    };
+    pub use crate::views::{ViewExt, ViewImpl};
+    pub use crate::windows::import_export_dialog_base::{
+        ImportExportDialogBaseExt, ImportExportDialogBaseImpl,
+    };
+}

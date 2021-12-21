@@ -17,8 +17,9 @@
  */
 
 use crate::{
-    core::{date::prelude::*, i18n},
+    core::i18n,
     model::{ActivityInfo, ActivityType},
+    prelude::*,
 };
 use chrono::{Date, FixedOffset, Local};
 use gtk::{gdk, gio::subclass::prelude::*, glib, pango, prelude::*};
@@ -44,8 +45,8 @@ static HALF_Y_PADDING: f32 = 30.0;
 mod imp {
     use super::{Tuple, HALF_X_PADDING, HALF_Y_PADDING};
     use crate::{
-        core::date::prelude::*,
         model::{ActivityInfo, ActivityType},
+        prelude::*,
         views::SplitBar,
     };
     use gtk::{

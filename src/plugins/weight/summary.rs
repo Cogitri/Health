@@ -2,7 +2,7 @@ use crate::{
     core::{i18n, ni18n_f, Settings, UnitSystem},
     plugins::weight::GraphModelWeight,
     plugins::PluginSummaryRow,
-    utils::prelude::*,
+    prelude::*,
 };
 use adw::prelude::*;
 use chrono::Duration;
@@ -10,10 +10,7 @@ use gtk::{glib, subclass::prelude::*};
 use uom::si::mass::{kilogram, pound};
 
 mod imp {
-    use crate::{
-        plugins::{summary::PinnedResultFuture, PluginSummaryRow, PluginSummaryRowImpl},
-        widgets::Arrows,
-    };
+    use crate::{plugins::PluginSummaryRow, prelude::*, widgets::Arrows};
     use adw::subclass::prelude::*;
     use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
@@ -51,7 +48,7 @@ mod imp {
     impl PreferencesRowImpl for PluginWeightSummaryRow {}
     impl ActionRowImpl for PluginWeightSummaryRow {}
     impl PluginSummaryRowImpl for PluginWeightSummaryRow {
-        fn update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture {
+        fn update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {

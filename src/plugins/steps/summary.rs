@@ -8,10 +8,7 @@ use adw::prelude::*;
 use gtk::{glib, subclass::prelude::*};
 
 mod imp {
-    use crate::{
-        plugins::{summary::PinnedResultFuture, PluginSummaryRow, PluginSummaryRowImpl},
-        widgets::CircularProgressBar,
-    };
+    use crate::{plugins::PluginSummaryRow, prelude::*, widgets::CircularProgressBar};
     use adw::subclass::prelude::*;
     use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
@@ -45,7 +42,7 @@ mod imp {
     impl PreferencesRowImpl for PluginStepsSummaryRow {}
     impl ActionRowImpl for PluginStepsSummaryRow {}
     impl PluginSummaryRowImpl for PluginStepsSummaryRow {
-        fn update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture {
+        fn update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {

@@ -18,8 +18,8 @@
 
 use crate::{
     core::i18n_f,
+    prelude::*,
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
-    views::ViewExt,
     windows::DataAddDialog,
 };
 use gtk::{

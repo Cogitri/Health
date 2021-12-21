@@ -17,8 +17,9 @@
  */
 
 use crate::{
-    core::{i18n, utils::prelude::*, UnitSystem},
+    core::{i18n, UnitSystem},
     model::NotifyMode,
+    prelude::*,
     windows::{ExportDialog, ImportDialog},
 };
 use adw::prelude::*;

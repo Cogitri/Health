@@ -21,11 +21,8 @@ use gtk::glib;
 
 mod imp {
     use crate::{
-        core::i18n,
-        sync::csv::CsvHandler,
-        windows::import_export_dialog_base::{
-            ImportExportDialogBase, ImportExportDialogBaseImpl, PinnedResultFuture,
-        },
+        core::i18n, prelude::*, sync::csv::CsvHandler,
+        windows::import_export_dialog_base::ImportExportDialogBase,
     };
     use gtk::{gio, glib, prelude::*, subclass::prelude::*};
     use gtk_macros::spawn;
@@ -49,7 +46,7 @@ mod imp {
             &self,
             obj: &ImportExportDialogBase,
             password: Option<String>,
-        ) -> PinnedResultFuture {
+        ) -> PinnedResultFuture<()> {
             let file_chooser = gtk::FileChooserNative::builder()
                 .title(&i18n("Open Activities"))
                 .accept_label(&i18n("_Open"))
@@ -78,7 +75,7 @@ mod imp {
             &self,
             obj: &ImportExportDialogBase,
             password: Option<String>,
-        ) -> PinnedResultFuture {
+        ) -> PinnedResultFuture<()> {
             let file_chooser = gtk::FileChooserNative::builder()
                 .title(&i18n("Open Weight Measurement"))
                 .accept_label(&i18n("_Open"))

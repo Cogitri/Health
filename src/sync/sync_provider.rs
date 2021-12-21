@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::i18n, utils::prelude::*};
+use crate::{core::i18n, prelude::*};
 use anyhow::Result;
 use gtk::gio;
 use oauth2::{

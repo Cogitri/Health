@@ -19,8 +19,9 @@
 use std::convert::TryInto;
 
 use crate::{
-    core::{date::prelude::*, ni18n_f, UnitSystem},
+    core::{ni18n_f, UnitSystem},
     model::{Activity, ActivityDataPoints, ActivityInfo},
+    prelude::*,
 };
 use gtk::{
     glib::{self, subclass::prelude::*},
@@ -208,7 +209,7 @@ impl ActivityRow {
 mod test {
     use super::ActivityRow;
     use crate::{core::ni18n_f, model::Activity, utils::init_gtk};
-    use gtk::prelude::WidgetExt;
+    use gtk::prelude::*;
     use uom::si::{f32::Length, length::kilometer};
 
     #[test]

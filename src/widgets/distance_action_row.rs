@@ -17,8 +17,9 @@
  */
 
 use crate::{
-    core::{i18n, utils::prelude::*, UnitKind, UnitSystem},
+    core::{i18n, UnitKind, UnitSystem},
     model::Unitsize,
+    prelude::*,
     widgets::UnitSpinButton,
 };
 use gtk::{gio::subclass::prelude::*, glib, prelude::*};

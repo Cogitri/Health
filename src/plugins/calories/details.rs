@@ -23,8 +23,9 @@ use crate::{
     model::ActivityType,
     plugins::{
         calories::{GraphModelCalories, GraphModelCaloriesMocked},
-        PluginDetails, PluginDetailsExt,
+        PluginDetails,
     },
+    prelude::*,
     views::{BarGraphView, SplitBar},
 };
 use crate::{model::ActivityInfo, widgets::LegendRow};
@@ -37,10 +38,7 @@ use gtk::{
 mod imp {
     use super::{DataProvider, DataProviderBoxed};
     use crate::{
-        core::Database,
-        plugins::{PluginDetails, PluginDetailsImpl},
-        views::{BarGraphView, PinnedResultFuture},
-        widgets::LegendRow,
+        core::Database, plugins::PluginDetails, prelude::*, views::BarGraphView, widgets::LegendRow,
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
@@ -131,7 +129,7 @@ mod imp {
     impl WidgetImpl for PluginCaloriesDetails {}
     impl BinImpl for PluginCaloriesDetails {}
     impl PluginDetailsImpl for PluginCaloriesDetails {
-        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture {
+        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {

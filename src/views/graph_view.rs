@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::date::prelude::*;
+use crate::prelude::*;
 use chrono::{Date, FixedOffset, Local};
 use gtk::{gdk, gio::subclass::prelude::*, glib, pango, prelude::*};
 use std::convert::TryInto;
@@ -33,9 +33,9 @@ static HALF_Y_PADDING: f32 = 30.0;
 
 mod imp {
     use super::{Point, HALF_X_PADDING, HALF_Y_PADDING};
-    use crate::core::date::prelude::*;
+    use crate::prelude::*;
     use gtk::{
-        gdk::prelude::GdkCairoContextExt,
+        gdk::prelude::*,
         glib::{self, clone},
         pango,
         prelude::*,

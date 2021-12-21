@@ -20,26 +20,20 @@ use super::{
     PluginActivitiesSummaryRow, PluginCaloriesSummaryRow, PluginStepsSummaryRow,
     PluginWeightSummaryRow,
 };
-use crate::properties_setter_getter;
+use crate::{prelude::*, properties_setter_getter};
 use adw::subclass::prelude::*;
-use anyhow::Result;
 use gtk::glib::{self, prelude::*};
-use std::{future::Future, pin::Pin};
-
-pub type PinnedResultFuture = Pin<Box<dyn Future<Output = Result<()>> + 'static>>;
 
 mod imp {
-    use super::PinnedResultFuture;
+    use crate::prelude::*;
     use adw::subclass::prelude::*;
     use gtk::{gio, glib, prelude::*, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
 
-    pub type PluginSummaryRowInstance = super::PluginSummaryRow;
-
     #[repr(C)]
     pub struct PluginSummaryRowClass {
         pub parent_class: adw::ffi::AdwActionRowClass,
-        pub update: Option<unsafe fn(&PluginSummaryRowInstance) -> PinnedResultFuture>,
+        pub update: Option<unsafe fn(&super::PluginSummaryRow) -> PinnedResultFuture<()>>,
     }
 
     unsafe impl ClassStruct for PluginSummaryRowClass {
@@ -66,20 +60,20 @@ mod imp {
     }
 
     // Virtual method default implementation trampolines
-    fn update_default_trampoline(this: &PluginSummaryRowInstance) -> PinnedResultFuture {
+    fn update_default_trampoline(this: &super::PluginSummaryRow) -> PinnedResultFuture<()> {
         PluginSummaryRow::from_instance(this).update(this)
     }
 
     pub(super) unsafe fn plugin_summary_row_update(
-        this: &PluginSummaryRowInstance,
-    ) -> PinnedResultFuture {
+        this: &super::PluginSummaryRow,
+    ) -> PinnedResultFuture<()> {
         let klass = &*(this.class() as *const _ as *const PluginSummaryRowClass);
 
         (klass.update.unwrap())(this)
     }
 
     impl PluginSummaryRow {
-        fn update(&self, obj: &super::PluginSummaryRow) -> PinnedResultFuture {
+        fn update(&self, obj: &super::PluginSummaryRow) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
                 send.resolve(Ok(()));
             }))
@@ -162,27 +156,27 @@ impl PluginSummaryRow {
 /// [PluginSummaryRowExt] is implemented by all subclasses of [PluginSummaryRow].
 pub trait PluginSummaryRowExt {
     /// Update the [PluginSummaryRow]'s data
-    fn update(&self) -> PinnedResultFuture;
+    fn update(&self) -> PinnedResultFuture<()>;
 }
 
 impl<O: IsA<PluginSummaryRow>> PluginSummaryRowExt for O {
-    fn update(&self) -> PinnedResultFuture {
+    fn update(&self) -> PinnedResultFuture<()> {
         unsafe { imp::plugin_summary_row_update(self.upcast_ref()) }
     }
 }
 
 pub trait PluginSummaryRowImpl: ActionRowImpl + 'static {
-    fn update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture {
+    fn update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture<()> {
         self.parent_update(obj)
     }
 }
 
 pub trait PluginSummaryRowImplExt: ObjectSubclass {
-    fn parent_update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture;
+    fn parent_update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture<()>;
 }
 
 impl<T: PluginSummaryRowImpl> PluginSummaryRowImplExt for T {
-    fn parent_update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture {
+    fn parent_update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture<()> {
         unsafe {
             let data = Self::type_data();
             let parent_class = data
@@ -212,7 +206,7 @@ unsafe impl<T: PluginSummaryRowImpl> IsSubclassable<T> for PluginSummaryRow {
 }
 
 // Virtual method default implementation trampolines
-unsafe fn update_trampoline<T: ObjectSubclass>(this: &PluginSummaryRow) -> PinnedResultFuture
+unsafe fn update_trampoline<T: ObjectSubclass>(this: &PluginSummaryRow) -> PinnedResultFuture<()>
 where
     T: PluginSummaryRowImpl,
 {
