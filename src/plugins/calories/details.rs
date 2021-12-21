@@ -149,7 +149,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// An implementation of [View] visualizes calorie Spent records.
+    /// An implementation of [PluginDetails] that visualizes calorie spent records.
     pub struct PluginCaloriesDetails(ObjectSubclass<imp::PluginCaloriesDetails>)
         @extends gtk::Widget, adw::Bin, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
@@ -162,7 +162,7 @@ impl PluginCaloriesDetails {
             .expect("Failed to create PluginCaloriesDetails")
     }
 
-    /// Reload the [GraphModelcalories](crate::model::GraphModelCalories)'s data and refresh labels & the [BarGraphView](crate::views::BarGraphView).
+    /// Reload the [GraphModelcalories](crate::plugins::calories::GraphModelCalories)'s data and refresh labels & the [BarGraphView](crate::views::BarGraphView).
     pub async fn update(&self) {
         let self_ = self.imp();
 

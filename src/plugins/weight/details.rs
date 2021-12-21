@@ -149,7 +149,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// An implementation of [View] visualizes BMI and weight development.
+    /// An implementation of [PluginDetails] that visualizes BMI and weight development.
     pub struct PluginWeightDetails(ObjectSubclass<imp::PluginWeightDetails>)
         @extends gtk::Widget, adw::Bin, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;

@@ -67,7 +67,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// An implementation of [View] visualizes streak counts and daily step records.
+    /// An implementation of [PluginSummaryRow] giving the user a quick glance over their weight history.
     pub struct PluginWeightSummaryRow(ObjectSubclass<imp::PluginWeightSummaryRow>)
     @extends gtk::Widget, gtk::ListBoxRow, adw::PreferencesRow, adw::ActionRow, PluginSummaryRow,
     @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;

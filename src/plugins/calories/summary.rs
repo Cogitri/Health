@@ -52,7 +52,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// An implementation of [View] visualizes streak counts and daily step records.
+    /// An implementation of [PluginSummaryRow] giving the user a quick glance over calorie burn rate.
     pub struct PluginCaloriesSummaryRow(ObjectSubclass<imp::PluginCaloriesSummaryRow>)
     @extends gtk::Widget, gtk::ListBoxRow, adw::PreferencesRow, adw::ActionRow, PluginSummaryRow,
     @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;

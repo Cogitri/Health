@@ -156,7 +156,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// An implementation of [View] visualizes activities the user recently did.
+    /// An implementation of [PluginDetails] that visualizes activities the user recently did.
     pub struct PluginActivitiesDetails(ObjectSubclass<imp::PluginActivitiesDetails>)
         @extends gtk::Widget, adw::Bin, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
@@ -169,7 +169,7 @@ impl PluginActivitiesDetails {
             .expect("Failed to create PluginActivitiesDetails")
     }
 
-    /// Reload the [ModelActivity](crate::model::ModelActivity)'s data and refresh the list of activities
+    /// Reload the [ModelActivity](crate::plugins::activities::ModelActivity)'s data and refresh the list of activities
     pub async fn update(&self) {
         let activity_model = { (*self.imp().activity_model.borrow()).clone().unwrap() };
         let reload_result = activity_model.reload().await;

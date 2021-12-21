@@ -107,7 +107,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// [PluginOverviewRow] is a toplevel container that is implemented by all other views of Health.
+    /// The [PluginOverviewRow] displays the title of a plugin and its icon so they can enable currently disabled plugins.
     pub struct PluginOverviewRow(ObjectSubclass<imp::PluginOverviewRow>)
     @extends gtk::Widget, gtk::ListBoxRow, adw::PreferencesRow, adw::ActionRow,
     @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;

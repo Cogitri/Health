@@ -58,11 +58,14 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// An implementation of [View] visualizes streak counts and daily step records.
+    /// The Registrar is a static class, holding information about enabled and disabled plugins.
     pub struct Registrar(ObjectSubclass<imp::Registrar>);
 }
 
 impl Registrar {
+    /// Disable a currently enabled [Plugin], if it's currently enabled.
+    ///
+    /// This emits `plugin-changed` if the list of plugins was changed.
     pub fn disable_plugin(&self, plugin_name: &str) {
         let self_ = self.imp();
         if !self_.disabled_plugins.contains(plugin_name) {
@@ -73,6 +76,9 @@ impl Registrar {
         }
     }
 
+    /// Enable a currently disabled [Plugin], if it's current disabled.
+    ///
+    /// This emits `plugin-changed` if the list of plugins was changed.
     pub fn enable_plugin(&self, plugin_name: &str) {
         let self_ = self.imp();
         if !self_.enabled_plugins.contains(plugin_name) {
@@ -83,14 +89,17 @@ impl Registrar {
         }
     }
 
+    /// Get a list of disabled [Plugin]s
     pub fn disabled_plugins(&self) -> PluginList {
         self.imp().disabled_plugins.clone()
     }
 
+    /// Get a list of enabled [Plugin]s
     pub fn enabled_plugins(&self) -> PluginList {
         self.imp().enabled_plugins.clone()
     }
 
+    /// Get a plugin from the list of disabled [Plugin]s by the plugin's unlocalised name (ID)
     pub fn disabled_plugin_by_name(&self, name: &str) -> Option<Box<dyn Plugin>> {
         self.imp()
             .disabled_plugins
@@ -99,6 +108,7 @@ impl Registrar {
             .map(|o| o.clone())
     }
 
+    /// Get a plugin from the list of enabled [Plugin]s by the plugin's unlocalised name (ID)
     pub fn enabled_plugin_by_name(&self, name: &str) -> Option<Box<dyn Plugin>> {
         self.imp()
             .enabled_plugins
@@ -107,6 +117,7 @@ impl Registrar {
             .map(|o| o.clone())
     }
 
+    /// Get an instance of the [Registrar]
     pub fn instance() -> Self {
         unsafe {
             REGISTRAR.as_ref().map_or_else(

@@ -203,7 +203,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// [PluginDetails] is a toplevel container that is implemented by all other PluginDetailss of Health.
+    /// [PluginDetails] is a toplevel container that is implemented by all other PluginDetailss of Health. See [PluginExt] for all the methods exposed by [PluginDetails].
     pub struct PluginDetails(ObjectSubclass<imp::PluginDetails>)
         @extends gtk::Widget, adw::Bin,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
@@ -220,22 +220,56 @@ impl PluginDetails {
 }
 
 pub trait PluginDetailsExt {
+    /// Get the name of the icon that's displayed when the view is empty (has no data to display).
     fn empty_icon_name(&self) -> String;
+    /// Get the label that's displayed when the view is empty (has to data to display).
     fn empty_label(&self) -> String;
+    /// Get the subtitle that's displayed when the view is filled (has data to display).
+    ///
+    /// This could be a label displaying how many days in a row the user has archived their step goal.
     fn filled_subtitle(&self) -> String;
+    /// Get the title that's displayed when the view is filled (has data to display).
     fn filled_title(&self) -> String;
+    /// Get whether the view is mocked.
+    ///
+    /// This is used to show the user a demo-version of how the view looks when they activate the plugin.
+    /// If this is enabled, we display some static data to the user.
     fn is_mocked(&self) -> bool;
 
+    /// Set the name of the icon that's displayed when the view is empty (has no data to display).
     fn set_empty_icon_name(&self, val: &str);
+    /// Get the label that's displayed when the view is empty (has to data to display).
     fn set_empty_label(&self, val: &str);
+    /// Set the subtitle that's displayed when the view is filled (has data to display).
+    ///
+    /// This could be a label displaying how many days in a row the user has archived their step goal.
     fn set_filled_subtitle(&self, val: &str);
+    /// Set the title that's displayed when the view is filled (has data to display).
     fn set_filled_title(&self, val: &str);
+    /// Set whether the view is mocked.
+    ///
+    /// This is used to show the user a demo-version of how the view looks when they activate the plugin.
+    /// If this is enabled, we display some static data to the user.
     fn set_is_mocked(&self, val: bool);
 
+    /// Switch to the [gtk::StackPage] that shows the data.
+    ///
+    /// Call this if your view previously was empty and now has data to display.
     fn switch_to_data_page(&self);
+    /// Switch to the [gtk::StackPage] that shows the empty-icon and empty-label
+    ///
+    /// Call this if your view previously was filled and is empty now.
     fn switch_to_empty_page(&self);
 
+    /// Public function to refresh the view's data.
+    ///
+    /// The default implementation of [PluginDetailsExt::update()] only calls [PluginDetailsExt::update_actual()] if `is-mocked` is false.
+    /// As such, most [PluginDetails] implementations should only implement [PluginDetailsExt::update_actual()].
     fn update(&self) -> PinnedResultFuture;
+    /// Private function to refresh the view's data.
+    ///
+    /// This is only called if `is-mocked` is false, since mocked data is static and doesn't need to be updated. See [PluginDetailsExt::update()]
+    /// for more info.
     fn update_actual(&self) -> PinnedResultFuture;
 }
 

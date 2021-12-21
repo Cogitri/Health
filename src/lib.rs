@@ -5,14 +5,15 @@
 //! This documentation should help you get started with Health's structs and functions. To make
 //! the start a bit easier, let me explain some basics about Health:
 //!
-//! * Health's source is split into multiple directiories to make working with the many source files a bit easier:
+//! * Health's source is split into multiple directories to make working with the many source files a bit easier:
 //!     * core: This directory contains core modules of Health that are used throughout the application, like the
 //!       [Settings](crate::core::Settings) struct that's used for retrieving `GSettings` values.
 //!     * model: This directory contains the data types of Health. Things like [Activity](crate::model::Activity), which
 //!       holds data about a single activity live here.
+//!     * plugins: This directory contains plugins, which provide additional views and data sources for Health. See the [Plugin](crate::plugins::Plugin)
+//!       trait for more information on how to implement your own [Plugin](crate::plugins::Plugin)
 //!     * sync: The code for synching with third party providers (e.g. Google Fit) or exporting/importing data lies here.
-//!     * views: This directory contains Views. These make up a single page in Health, e.g. the [ViewSteps](crate::views::ViewSteps)
-//!       that draws a graph of the user's step count.
+//!     * views: This directory contains views. These are complete views containing multiple widgets, like a [ViewAddActivity](crate::views::ViewAddActivity).
 //!     * widgets: Widgets are smaller, reusable parts of Health's UI, e.g the [BmiLevelBar](crate::widgets::BmiLevelBar)
 //!       is contained in this module.
 //!     * windows: This directory contains actual windows, like the main [Window](crate::windows::Window) or the

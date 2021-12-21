@@ -143,7 +143,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// An implementation of [View] visualizes streak counts and daily step records.
+    /// An implementation of [PluginDetails] that visualizes streak counts and daily step records.
     pub struct PluginStepsDetails(ObjectSubclass<imp::PluginStepsDetails>)
         @extends gtk::Widget, adw::Bin, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
@@ -158,7 +158,7 @@ impl PluginStepsDetails {
 
     // TRANSLATORS notes have to be on the same line, so we cant split them
     #[rustfmt::skip]
-    /// Reload the [GraphModelSteps](crate::model::GraphModelSteps)'s data and refresh labels & the [GraphView].
+    /// Reload the [GraphModelSteps](crate::plugins::steps::GraphModelSteps)'s data and refresh labels & the [GraphView].
     pub async fn update(&self) {
         let self_ = self.imp();
 

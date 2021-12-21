@@ -141,13 +141,16 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// [PluginSummaryRow] is a toplevel container that is implemented by all other PluginSummaryRows of Health.
+    /// A [PluginSummaryRow] displays a quick glance of info for the user (e.g. "X/Y steps done today").
+    ///
+    /// See [PluginSummaryExt] for what methods this exposes.
     pub struct PluginSummaryRow(ObjectSubclass<imp::PluginSummaryRow>)
     @extends gtk::Widget, gtk::ListBoxRow, adw::PreferencesRow, adw::ActionRow,
     @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl PluginSummaryRow {
+    /// Create a new [PluginSummaryRow]
     pub fn new(plugin_name: &str) -> Self {
         glib::Object::new(&[("plugin-name", &plugin_name)])
             .expect("Failed to create PluginSummaryRow")
@@ -156,7 +159,9 @@ impl PluginSummaryRow {
     properties_setter_getter!("plugin-name", String);
 }
 
+/// [PluginSummaryRowExt] is implemented by all subclasses of [PluginSummaryRow].
 pub trait PluginSummaryRowExt {
+    /// Update the [PluginSummaryRow]'s data
     fn update(&self) -> PinnedResultFuture;
 }
 

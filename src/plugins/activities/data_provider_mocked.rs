@@ -87,7 +87,7 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// An implementation of [gio::ListModel] that stores [Activity](crate::model::Activity)s.
+    /// An implementation of [gio::ListModel] that stores a few static, mocked [Activity](crate::model::Activity)s.
     /// Can be used with [ActivityView](crate::views::ViewActivity) to display past activities.
     pub struct ModelActivityMocked(ObjectSubclass<imp::ModelActivityMocked>) @implements gio::ListModel;
 }
