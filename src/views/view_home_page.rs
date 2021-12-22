@@ -19,7 +19,6 @@
 use crate::{
     plugins::{PluginObject, PluginSummaryRow, Registrar},
     prelude::*,
-    views::View,
 };
 use gtk::{
     glib::{self, prelude::*, subclass::prelude::*},
@@ -30,12 +29,9 @@ mod imp {
     use crate::{
         core::Settings,
         plugins::{PluginObject, PluginOverviewRow, PluginSummaryRow, Registrar},
-        prelude::*,
-        views::View,
     };
-    use adw::prelude::*;
+    use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
-        gio,
         glib::{self, subclass::Signal, Cast},
         {subclass::prelude::*, CompositeTemplate},
     };
@@ -45,6 +41,8 @@ mod imp {
     pub struct ViewHomePage {
         pub settings: Settings,
 
+        #[template_child]
+        pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
         pub user_selected_data: TemplateChild<gtk::ListBox>,
         #[template_child]
@@ -60,7 +58,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for ViewHomePage {
         const NAME: &'static str = "HealthViewHomePage";
-        type ParentType = View;
+        type ParentType = adw::Bin;
         type Type = super::ViewHomePage;
 
         fn class_init(klass: &mut Self::Class) {
@@ -69,10 +67,7 @@ mod imp {
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
-            unsafe {
-                // FIXME: This really shouldn't be necessary.
-                obj.as_ref().upcast_ref::<View>().init_template();
-            }
+            obj.init_template();
         }
     }
 
@@ -128,24 +123,10 @@ mod imp {
                 self.enabled_plugins_stack
                     .set_visible_child_name("no-plugins-enabled");
             }
-
-            obj.stack().set_visible_child_name("add_data_page")
         }
     }
 
-    impl ViewImpl for ViewHomePage {
-        fn update(&self, obj: &View) -> PinnedResultFuture<()> {
-            Box::pin(gio::GioFuture::new(
-                obj,
-                glib::clone!(@weak obj => move |_, _, send| {
-                    gtk_macros::spawn!(async move {
-                        obj.downcast_ref::<Self::Type>().unwrap().update().await;
-                        send.resolve(Ok(()));
-                    });
-                }),
-            ))
-        }
-    }
+    impl BinImpl for ViewHomePage {}
 
     #[gtk::template_callbacks(subclass)]
     impl ViewHomePage {
@@ -182,15 +163,17 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [View] visualizes activities the user recently did.
     pub struct ViewHomePage(ObjectSubclass<imp::ViewHomePage>)
-        @extends gtk::Widget, View,
+        @extends gtk::Widget, adw::Bin,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl ViewHomePage {
     pub fn back(&self) {
-        let stack = self.stack();
-        stack.remove(&stack.child_by_name(&self.current_page()).unwrap());
-        stack.set_visible_child_name("add_data_page");
+        let self_ = self.imp();
+        self_
+            .stack
+            .remove(&self_.stack.child_by_name(&self.current_page()).unwrap());
+        self_.stack.set_visible_child_name("home");
     }
 
     /// Connect to the `view-changed` signal.
@@ -208,7 +191,7 @@ impl ViewHomePage {
     }
 
     pub fn current_page(&self) -> String {
-        self.stack().visible_child_name().unwrap().to_string()
+        self.imp().stack.visible_child_name().unwrap().to_string()
     }
 
     pub fn is_current_plugin_enabled(&self) -> bool {
@@ -297,8 +280,8 @@ impl ViewHomePage {
     }
 
     fn open_plugin_details(&self, list_box: &gtk::ListBox, plugin_name: &str, enabled: bool) {
+        let self_ = self.imp();
         let registrar = Registrar::instance();
-        let stack = self.stack();
         let plugin = if enabled {
             registrar.enabled_plugin_by_name(plugin_name).unwrap()
         } else {
@@ -306,8 +289,8 @@ impl ViewHomePage {
         };
         let details = plugin.details(enabled);
 
-        stack.add_named(&details, Some(plugin_name));
-        stack.set_visible_child_name(plugin_name);
+        self_.stack.add_named(&details, Some(plugin_name));
+        self_.stack.set_visible_child_name(plugin_name);
         self.emit_by_name::<()>("view-changed", &[]);
         list_box.unselect_all();
 
@@ -326,7 +309,7 @@ impl ViewHomePage {
         imp::ViewHomePage::from_instance(self)
     }
 
-    async fn update(&self) {
+    pub async fn update(&self) {
         let self_ = self.imp();
         let mut i = 0;
         while let Some(row) = self_.user_selected_data.row_at_index(i) {

@@ -18,7 +18,6 @@
 
 use crate::{
     core::i18n_f,
-    prelude::*,
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
     windows::DataAddDialog,
 };
@@ -309,7 +308,7 @@ impl Window {
     pub fn update(&self) {
         let view = self.imp().view_home_page.get();
         gtk_macros::spawn!(clone!(@weak view => async move {
-            view.update().await.unwrap();
+            view.update().await;
         }));
     }
 

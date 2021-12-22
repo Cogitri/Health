@@ -20,12 +20,7 @@
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="HealthViewHomePage" parent="HealthView">
-    <property name="empty-subtitle" translatable="yes">You can use the &lt;b&gt;+&lt;/b&gt; button to add a new activity.</property>
-    <property name="icon-name">walking-symbolic</property>
-    <property name="name">HomePage</property>
-    <property name="title" translatable="yes">Recent Activities</property>
-    <property name="view-title" translatable="yes">Home Page</property>
+  <template class="HealthViewHomePage" parent="AdwBin">
     <object class="GtkAdjustment" id="age_adjustment">
       <property name="upper">200</property>
       <property name="step-increment">1</property>
@@ -49,105 +44,114 @@
     <object class="GtkSizeGroup" id="size_group">
       <property name="mode">vertical</property>
     </object>
-    <property name="add-content-widget">
-      <object class="AdwClamp">
-        <property name="maximum-size">400</property>
-        <property name="tightening-threshold">200</property>
-        <property name="valign">center</property>
-        <property name="vexpand">True</property>
-        <property name="hexpand">True</property>
-        <property name="margin-start">6</property>
-        <property name="margin-end">6</property>
-        <property name="margin-top">6</property>
-        <property name="margin-bottom">6</property>
+    <child>
+      <object class="GtkStack" id="stack">
         <child>
-          <object class="GtkBox">
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkBox">
-                <property name="orientation">vertical</property>
+          <object class="GtkStackPage">
+            <property name="name">home</property>
+            <property name="child">
+              <object class="AdwClamp">
+                <property name="maximum-size">400</property>
+                <property name="tightening-threshold">200</property>
+                <property name="valign">center</property>
+                <property name="vexpand">True</property>
+                <property name="hexpand">True</property>
+                <property name="margin-start">6</property>
+                <property name="margin-end">6</property>
+                <property name="margin-top">6</property>
+                <property name="margin-bottom">6</property>
                 <child>
-                  <object class="GtkLabel">
-                    <property name="can_focus">False</property>
-                    <property name="ellipsize">end</property>
-                    <property name="use-markup">True</property>
-                    <property name="xalign">0</property>
-                    <property name="label" translatable="yes">For you</property>
-                    <property name="margin-bottom">12</property>
-                    <style>
-                      <class name="heading"/>
-                      <!-- Matching elementary class. -->
-                      <class name="h4"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkStack" id="enabled_plugins_stack">
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkStackPage">
-                        <property name="name">plugin-list</property>
-                        <property name="child">
-                          <object class="GtkListBox" id="user_selected_data">
+                      <object class="GtkBox">
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="can_focus">False</property>
+                            <property name="ellipsize">end</property>
+                            <property name="use-markup">True</property>
+                            <property name="xalign">0</property>
+                            <property name="label" translatable="yes">For you</property>
+                            <property name="margin-bottom">12</property>
+                            <style>
+                              <class name="heading"/>
+                              <!-- Matching elementary class. -->
+                              <class name="h4"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkStack" id="enabled_plugins_stack">
+                            <child>
+                              <object class="GtkStackPage">
+                                <property name="name">plugin-list</property>
+                                <property name="child">
+                                  <object class="GtkListBox" id="user_selected_data">
+                                    <property name="selection-mode">single</property>
+                                    <signal name="row-selected" handler="handle_user_selected_data_row_selected" swapped="true"/>
+                                    <style>
+                                      <class name="content"/>
+                                    </style>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkStackPage">
+                                <property name="name">no-plugins-enabled</property>
+                                <property name="child">
+                                  <object class="GtkLabel">
+                                    <property name="label" translatable="yes">No plugins enabled. Enable one from the list below to start using Health.</property>
+                                    <style>
+                                      <class name="dim-label"/>
+                                      <class name="title-1"/>
+                                    </style>
+                                  </object>
+                                </property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="all_data_box">
+                        <property name="margin-top">24</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="can_focus">False</property>
+                            <property name="ellipsize">end</property>
+                            <property name="use-markup">True</property>
+                            <property name="xalign">0</property>
+                            <property name="label" translatable="yes">All data</property>
+                            <property name="margin-bottom">12</property>
+                            <style>
+                              <class name="heading"/>
+                              <!-- Matching elementary class. -->
+                              <class name="h4"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkListBox" id="all_data">
                             <property name="selection-mode">single</property>
-                            <signal name="row-selected" handler="handle_user_selected_data_row_selected" swapped="true"/>
+                            <signal name="row-selected" handler="handle_all_data_row_selected" swapped="true"/>
                             <style>
                               <class name="content"/>
                             </style>
                           </object>
-                        </property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkStackPage">
-                        <property name="name">no-plugins-enabled</property>
-                        <property name="child">
-                          <object class="GtkLabel">
-                            <property name="label" translatable="yes">No plugins enabled. Enable one from the list below to start using Health.</property>
-                            <style>
-                              <class name="dim-label"/>
-                              <class name="title-1"/>
-                            </style>
-                          </object>
-                        </property>
+                        </child>
                       </object>
                     </child>
                   </object>
                 </child>
               </object>
-            </child>
-            <child>
-              <object class="GtkBox" id="all_data_box">
-                <property name="margin-top">24</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="can_focus">False</property>
-                    <property name="ellipsize">end</property>
-                    <property name="use-markup">True</property>
-                    <property name="xalign">0</property>
-                    <property name="label" translatable="yes">All data</property>
-                    <property name="margin-bottom">12</property>
-                    <style>
-                      <class name="heading"/>
-                      <!-- Matching elementary class. -->
-                      <class name="h4"/>
-                    </style>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkListBox" id="all_data">
-                    <property name="selection-mode">single</property>
-                    <signal name="row-selected" handler="handle_all_data_row_selected" swapped="true"/>
-                    <style>
-                      <class name="content"/>
-                    </style>
-                  </object>
-                </child>
-              </object>
-            </child>
+            </property>
           </object>
         </child>
       </object>
-    </property>
+    </child>
   </template>
 </interface>
