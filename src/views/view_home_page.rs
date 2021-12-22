@@ -37,7 +37,7 @@ mod imp {
     };
 
     #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/dev/Cogitri/Health/ui/home_page.ui")]
+    #[template(resource = "/dev/Cogitri/Health/ui/view_home_page.ui")]
     pub struct ViewHomePage {
         pub settings: Settings,
 

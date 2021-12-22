@@ -25,7 +25,7 @@ mod imp {
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/add_view.ui")]
-    pub struct AddView {
+    pub struct ViewAdd {
         pub icon_name: OnceCell<String>,
         pub view_title: OnceCell<String>,
         #[template_child]
@@ -33,10 +33,10 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for AddView {
-        const NAME: &'static str = "HealthAddView";
+    impl ObjectSubclass for ViewAdd {
+        const NAME: &'static str = "HealthViewAdd";
         type ParentType = adw::Bin;
-        type Type = super::AddView;
+        type Type = super::ViewAdd;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -47,7 +47,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for AddView {
+    impl ObjectImpl for ViewAdd {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
@@ -94,30 +94,30 @@ mod imp {
             }
         }
     }
-    impl WidgetImpl for AddView {}
-    impl BinImpl for AddView {}
+    impl WidgetImpl for ViewAdd {}
+    impl BinImpl for ViewAdd {}
 }
 
 glib::wrapper! {
-    /// [AddView] is a toplevel container that is implemented by all other views of Health.
-    pub struct AddView(ObjectSubclass<imp::AddView>)
+    /// [ViewAdd] is a toplevel container that is implemented by all other views of Health.
+    pub struct ViewAdd(ObjectSubclass<imp::ViewAdd>)
         @extends gtk::Widget, adw::Bin,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
-impl AddView {
+impl ViewAdd {
     pub fn new(icon_name: &str, view_title: &str) -> Self {
         glib::Object::new(&[("icon-name", &icon_name), ("view-title", &view_title)])
-            .expect("Failed to create AddView")
+            .expect("Failed to create ViewAdd")
     }
 }
 
-pub trait AddViewExt {
+pub trait ViewAddExt {
     fn icon_name(&self) -> String;
     fn view_title(&self) -> String;
 }
 
-impl<O: IsA<AddView>> AddViewExt for O {
+impl<O: IsA<ViewAdd>> ViewAddExt for O {
     fn icon_name(&self) -> String {
         self.property("icon-name")
     }
@@ -127,7 +127,7 @@ impl<O: IsA<AddView>> AddViewExt for O {
     }
 }
 
-unsafe impl<T: BinImpl> IsSubclassable<T> for AddView {
+unsafe impl<T: BinImpl> IsSubclassable<T> for ViewAdd {
     fn class_init(class: &mut glib::Class<Self>) {
         <adw::Bin as IsSubclassable<T>>::class_init(class.upcast_ref_mut());
     }
@@ -139,12 +139,12 @@ unsafe impl<T: BinImpl> IsSubclassable<T> for AddView {
 
 #[cfg(test)]
 mod test {
-    use super::AddView;
+    use super::ViewAdd;
     use crate::utils::init_gtk;
 
     #[test]
     fn new() {
         init_gtk();
-        AddView::new("test", "test");
+        ViewAdd::new("test", "test");
     }
 }

@@ -96,7 +96,7 @@ pub mod prelude {
     pub use crate::plugins::{
         PluginDetailsExt, PluginDetailsImpl, PluginSummaryRowExt, PluginSummaryRowImpl,
     };
-    pub use crate::views::AddViewExt;
+    pub use crate::views::ViewAddExt;
     pub use crate::windows::import_export_dialog_base::{
         ImportExportDialogBaseExt, ImportExportDialogBaseImpl,
     };

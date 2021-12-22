@@ -19,7 +19,7 @@
 use crate::{
     core::{i18n, UnitSystem},
     model::Weight,
-    views::AddView,
+    views::ViewAdd,
 };
 use gtk::glib::{self, subclass::prelude::*};
 use uom::si::{
@@ -30,14 +30,14 @@ use uom::si::{
 mod imp {
     use crate::{
         core::{Database, Settings},
-        views::AddView,
+        views::ViewAdd,
         widgets::{DateSelector, UnitSpinButton},
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{glib, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/dev/Cogitri/Health/ui/weight_add_dialog.ui")]
+    #[template(resource = "/dev/Cogitri/Health/ui/view_add_weight.ui")]
     pub struct ViewAddWeight {
         pub database: Database,
         pub settings: Settings,
@@ -51,7 +51,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for ViewAddWeight {
         const NAME: &'static str = "HealthViewAddWeight";
-        type ParentType = AddView;
+        type ParentType = ViewAdd;
         type Type = super::ViewAddWeight;
 
         fn class_init(klass: &mut Self::Class) {
@@ -72,7 +72,7 @@ mod imp {
 glib::wrapper! {
     /// A few widgets for adding a new weight record.
     pub struct ViewAddWeight(ObjectSubclass<imp::ViewAddWeight>)
-        @extends gtk::Widget, adw::Bin, AddView,
+        @extends gtk::Widget, adw::Bin, ViewAdd,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

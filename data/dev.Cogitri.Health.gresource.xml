@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/dev/Cogitri/Health">
-    <file preprocess="xml-stripblanks">ui/activity_add_dialog.ui</file>
-    <file preprocess="xml-stripblanks">ui/add_view.ui</file>
-    <file preprocess="xml-stripblanks">ui/data_add_dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/activity_row.ui</file>
     <file preprocess="xml-stripblanks">ui/activity_type_row.ui</file>
     <file preprocess="xml-stripblanks">ui/activity_type_selector.ui</file>
     <file preprocess="xml-stripblanks">ui/bmi_level_bar.ui</file>
     <file preprocess="xml-stripblanks">ui/card.ui</file>
+    <file preprocess="xml-stripblanks">ui/data_add_dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/date_selector.ui</file>
     <file preprocess="xml-stripblanks">ui/distance_action_row.ui</file>
-    <file preprocess="xml-stripblanks">ui/home_page.ui</file>
     <file preprocess="xml-stripblanks">ui/import_export_dialog_base.ui</file>
     <file preprocess="xml-stripblanks">ui/legend_row.ui</file>
     <file preprocess="xml-stripblanks">ui/password_entry.ui</file>
@@ -20,7 +17,10 @@
     <file preprocess="xml-stripblanks">ui/shortcuts_window.ui</file>
     <file preprocess="xml-stripblanks">ui/sync_list_box.ui</file>
     <file preprocess="xml-stripblanks">ui/tab_button.ui</file>
-    <file preprocess="xml-stripblanks">ui/weight_add_dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/view_add_activity.ui</file>
+    <file preprocess="xml-stripblanks">ui/view_add_weight.ui</file>
+    <file preprocess="xml-stripblanks">ui/view_add.ui</file>
+    <file preprocess="xml-stripblanks">ui/view_home_page.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>
 
     <file preprocess="xml-stripblanks">ui/plugins/details.ui</file>

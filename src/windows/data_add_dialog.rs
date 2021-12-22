@@ -25,7 +25,7 @@ use gtk::{
 mod imp {
     use crate::{
         prelude::*,
-        views::{AddView, ViewAddActivity, ViewAddWeight},
+        views::{ViewAdd, ViewAddActivity, ViewAddWeight},
     };
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
@@ -59,8 +59,8 @@ mod imp {
             self.parent_constructed(obj);
 
             for stack_page in &[
-                ViewAddActivity::new().upcast::<AddView>(),
-                ViewAddWeight::new().upcast::<AddView>(),
+                ViewAddActivity::new().upcast::<ViewAdd>(),
+                ViewAddWeight::new().upcast::<ViewAdd>(),
             ] {
                 self.stack
                     .add_titled(

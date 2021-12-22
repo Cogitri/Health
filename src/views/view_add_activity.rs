@@ -20,7 +20,7 @@ use crate::{
     core::i18n,
     model::{Activity, ActivityDataPoints, ActivityInfo, Unitsize},
     prelude::*,
-    views::AddView,
+    views::ViewAdd,
 };
 use chrono::Duration;
 use gtk::{
@@ -37,7 +37,7 @@ mod imp {
         core::{Database, Settings},
         model::{Activity, ActivityDataPoints, ActivityInfo, ActivityType},
         prelude::*,
-        views::AddView,
+        views::ViewAdd,
         widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
     };
     use adw::{prelude::*, subclass::prelude::*};
@@ -59,7 +59,7 @@ mod imp {
     }
 
     #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/dev/Cogitri/Health/ui/activity_add_dialog.ui")]
+    #[template(resource = "/dev/Cogitri/Health/ui/view_add_activity.ui")]
     pub struct ViewAddActivity {
         pub inner: RefCell<ViewAddActivityMut>,
         pub database: Database,
@@ -131,7 +131,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for ViewAddActivity {
         const NAME: &'static str = "HealthViewAddActivity";
-        type ParentType = AddView;
+        type ParentType = ViewAdd;
         type Type = super::ViewAddActivity;
 
         fn class_init(klass: &mut Self::Class) {
@@ -187,7 +187,7 @@ mod imp {
 glib::wrapper! {
     /// A few widgets for adding a new activity record.
     pub struct ViewAddActivity(ObjectSubclass<imp::ViewAddActivity>)
-        @extends gtk::Widget, adw::Bin, AddView,
+        @extends gtk::Widget, adw::Bin, ViewAdd,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

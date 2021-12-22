@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  add_dialog_activity.ui
+  view_add_activity.ui
 
-  Copyright 2020 Rasmus Thomsen <oss@cogitri.dev>
+  Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@
       <widget name="calories_burned_spin_button"/>
     </widgets>
   </object>
-  <template class="HealthViewAddActivity" parent="HealthAddView">
+  <template class="HealthViewAddActivity" parent="HealthViewAdd">
     <property name="view-title" translatable="yes">Add new activity</property>
     <property name="icon-name">walking-symbolic</property>
     <property name="name">Add Activity Data</property>
