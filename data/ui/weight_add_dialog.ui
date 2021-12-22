@@ -25,12 +25,11 @@
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
   </object>
-  <template class="HealthViewAddWeight" parent="HealthView">
+  <template class="HealthViewAddWeight" parent="HealthAddView">
     <property name="icon-name">weight-scale-symbolic</property>
     <property name="name">Add Weight Data</property>
-    <property name="title" translatable="yes">Weight Measurements</property>
-    <property name="view-title" translatable="yes">Add Weight Record</property>
-    <property name="add-content-widget">
+    <property name="view-title" translatable="yes">Add weight record</property>
+    <child>
       <object class="GtkScrolledWindow">
         <property name="propagate-natural-height">1</property>
         <child>
@@ -76,6 +75,6 @@
           </object>
         </child>
       </object>
-    </property>
+    </child>
   </template>
 </interface>

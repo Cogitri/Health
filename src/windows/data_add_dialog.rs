@@ -23,7 +23,10 @@ use gtk::{
 };
 
 mod imp {
-    use crate::views::{View, ViewAddActivity, ViewAddWeight};
+    use crate::{
+        prelude::*,
+        views::{AddView, ViewAddActivity, ViewAddWeight},
+    };
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
 
@@ -56,18 +59,17 @@ mod imp {
             self.parent_constructed(obj);
 
             for stack_page in &[
-                ViewAddActivity::new().upcast::<View>(),
-                ViewAddWeight::new().upcast::<View>(),
+                ViewAddActivity::new().upcast::<AddView>(),
+                ViewAddWeight::new().upcast::<AddView>(),
             ] {
-                stack_page.stack().set_visible_child_name("add_data_page");
                 self.stack
                     .add_titled(
                         stack_page,
                         Some(stack_page.widget_name().as_str()),
-                        &stack_page.view_title().unwrap(),
+                        &stack_page.view_title(),
                     )
                     .unwrap()
-                    .set_icon_name(stack_page.icon_name().as_deref());
+                    .set_icon_name(Some(&stack_page.icon_name()));
             }
             if &obj.property::<String>("current-plugin") == "weight" {
                 self.stack.set_visible_child_name("Add Weight Data");

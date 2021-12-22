@@ -20,7 +20,7 @@
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
-  <template class="HealthView" parent="GtkWidget">
+  <template class="HealthAddView" parent="AdwBin">
     <child>
       <object class="GtkStack" id="stack">
         <child>

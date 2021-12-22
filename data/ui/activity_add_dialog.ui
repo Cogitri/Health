@@ -57,12 +57,11 @@
       <widget name="calories_burned_spin_button"/>
     </widgets>
   </object>
-  <template class="HealthViewAddActivity" parent="HealthView">
-    <property name="view-title" translatable="yes">Add New Activity</property>
+  <template class="HealthViewAddActivity" parent="HealthAddView">
+    <property name="view-title" translatable="yes">Add new activity</property>
     <property name="icon-name">walking-symbolic</property>
     <property name="name">Add Activity Data</property>
-    <property name="title" translatable="yes">Add An Activity</property>
-    <property name="add-content-widget">
+    <child>
       <object class="GtkScrolledWindow">
         <property name="propagate-natural-height">1</property>
         <child>
@@ -87,7 +86,7 @@
           </object>
         </child>
       </object>
-    </property>
+    </child>
   </template>
   <object class="AdwActionRow" id="date_selector_actionrow">
     <property name="title" translatable="yes">Date</property>

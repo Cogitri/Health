@@ -17,9 +17,10 @@
  */
 
 use crate::{
+    core::i18n,
     model::{Activity, ActivityDataPoints, ActivityInfo, Unitsize},
     prelude::*,
-    views::View,
+    views::AddView,
 };
 use chrono::Duration;
 use gtk::{
@@ -36,13 +37,13 @@ mod imp {
         core::{Database, Settings},
         model::{Activity, ActivityDataPoints, ActivityInfo, ActivityType},
         prelude::*,
-        views::View,
+        views::AddView,
         widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
     };
+    use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
         gio,
         glib::{self, clone},
-        prelude::*,
         subclass::prelude::*,
         CompositeTemplate,
     };
@@ -130,7 +131,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for ViewAddActivity {
         const NAME: &'static str = "HealthViewAddActivity";
-        type ParentType = View;
+        type ParentType = AddView;
         type Type = super::ViewAddActivity;
 
         fn class_init(klass: &mut Self::Class) {
@@ -179,22 +180,14 @@ mod imp {
             obj.setup_actions();
         }
     }
-
     impl WidgetImpl for ViewAddActivity {}
-
-    impl ViewImpl for ViewAddActivity {
-        fn update(&self, obj: &View) -> PinnedResultFuture<()> {
-            Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
-                send.resolve(Ok(()));
-            }))
-        }
-    }
+    impl BinImpl for ViewAddActivity {}
 }
 
 glib::wrapper! {
     /// A few widgets for adding a new activity record.
     pub struct ViewAddActivity(ObjectSubclass<imp::ViewAddActivity>)
-        @extends gtk::Widget, View,
+        @extends gtk::Widget, adw::Bin, AddView,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
@@ -202,7 +195,11 @@ glib::wrapper! {
 impl ViewAddActivity {
     /// Create a new [ViewAddActivity].
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ViewAddActivity")
+        glib::Object::new(&[
+            ("icon-name", &"walking-symbolic"),
+            ("view-title", &i18n("Add new activity")),
+        ])
+        .expect("Failed to create ViewAddActivity")
     }
 
     fn connect_handlers(&self) {

@@ -16,7 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::UnitSystem, model::Weight, views::View};
+use crate::{
+    core::{i18n, UnitSystem},
+    model::Weight,
+    views::AddView,
+};
 use gtk::glib::{self, subclass::prelude::*};
 use uom::si::{
     f32::Mass,
@@ -26,11 +30,11 @@ use uom::si::{
 mod imp {
     use crate::{
         core::{Database, Settings},
-        prelude::*,
-        views::View,
+        views::AddView,
         widgets::{DateSelector, UnitSpinButton},
     };
-    use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use adw::{prelude::*, subclass::prelude::*};
+    use gtk::{glib, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/weight_add_dialog.ui")]
@@ -47,7 +51,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for ViewAddWeight {
         const NAME: &'static str = "HealthViewAddWeight";
-        type ParentType = View;
+        type ParentType = AddView;
         type Type = super::ViewAddWeight;
 
         fn class_init(klass: &mut Self::Class) {
@@ -60,27 +64,15 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for ViewAddWeight {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-        }
-    }
-
+    impl ObjectImpl for ViewAddWeight {}
     impl WidgetImpl for ViewAddWeight {}
-
-    impl ViewImpl for ViewAddWeight {
-        fn update(&self, obj: &View) -> PinnedResultFuture<()> {
-            Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
-                send.resolve(Ok(()));
-            }))
-        }
-    }
+    impl BinImpl for ViewAddWeight {}
 }
 
 glib::wrapper! {
     /// A few widgets for adding a new weight record.
     pub struct ViewAddWeight(ObjectSubclass<imp::ViewAddWeight>)
-        @extends gtk::Widget, View,
+        @extends gtk::Widget, adw::Bin, AddView,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
@@ -88,7 +80,11 @@ impl ViewAddWeight {
     /// Create a new [ViewAddWeight]
 
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ViewAddWeight")
+        glib::Object::new(&[
+            ("icon-name", &"weight-scale-symbolic"),
+            ("view-title", &i18n("Add weight record")),
+        ])
+        .expect("Failed to create ViewAddWeight")
     }
 
     fn imp(&self) -> &imp::ViewAddWeight {

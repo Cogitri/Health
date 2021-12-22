@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/dev/Cogitri/Health">
     <file preprocess="xml-stripblanks">ui/activity_add_dialog.ui</file>
+    <file preprocess="xml-stripblanks">ui/add_view.ui</file>
     <file preprocess="xml-stripblanks">ui/data_add_dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/activity_row.ui</file>
     <file preprocess="xml-stripblanks">ui/activity_type_row.ui</file>
@@ -19,7 +20,6 @@
     <file preprocess="xml-stripblanks">ui/shortcuts_window.ui</file>
     <file preprocess="xml-stripblanks">ui/sync_list_box.ui</file>
     <file preprocess="xml-stripblanks">ui/tab_button.ui</file>
-    <file preprocess="xml-stripblanks">ui/view.ui</file>
     <file preprocess="xml-stripblanks">ui/weight_add_dialog.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>
 
