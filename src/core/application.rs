@@ -268,7 +268,7 @@ impl Application {
 mod test {
     use super::Application;
     use crate::core::{utils::init_gschema, Settings};
-    use chrono::{Duration, Local};
+    use chrono::{Duration, Utc};
 
     #[test]
     fn new() {
@@ -290,7 +290,7 @@ mod test {
                 .unwrap()
                 .format("%Y-%m-%d")
                 .to_string(),
-            (Local::now() - Duration::weeks(50 * 52))
+            (Utc::now() - Duration::weeks(50 * 52))
                 .date()
                 .format("%Y-%m-%d")
                 .to_string(),

@@ -41,9 +41,7 @@ mod test {
 
     #[test]
     fn serialize_unit_system() {
-        let a: &str = UnitSystem::Imperial.into();
-        assert_eq!(a, "imperial");
-        let b: &str = UnitSystem::Metric.into();
-        assert_eq!(b, "metric");
+        assert_eq!(UnitSystem::Imperial.as_ref(), "imperial");
+        assert_eq!(UnitSystem::Metric.as_ref(), "metric");
     }
 }

@@ -27,9 +27,7 @@ mod test {
 
     #[test]
     fn serialize() {
-        let a: &str = Unitsize::Big.into();
-        assert_eq!(a, "big");
-        let b: &str = Unitsize::Small.into();
-        assert_eq!(b, "small");
+        assert_eq!(Unitsize::Big.as_ref(), "big");
+        assert_eq!(Unitsize::Small.as_ref(), "small");
     }
 }
