@@ -16,25 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/// Automatically implement Rust getters and setters for the property `name` of type `type`
-#[macro_export]
-macro_rules! properties_setter_getter {
-    ($name:literal, $type:ty) => {
-        paste::item! {
-            #[doc = "Get value of property"]
-            pub fn [< $name >] (&self) -> Option<$type> {
-                self.property::<Option<$type>>($name)
-            }
-        }
-        paste::item! {
-            #[doc = "Set value of property"]
-            pub fn [< set_ $name >] (&self, value: $type) {
-                self.set_property($name, &value)
-            }
-        }
-    };
-}
-
 /// Automatically generate helper functions for connecting to/getting/setting GSettings key
 #[macro_export]
 macro_rules! settings_getter_setter {
@@ -53,26 +34,6 @@ macro_rules! settings_getter_setter {
                 self.connect_changed(Some($key), move |s, name| {
                     f(s, name);
                 })
-            }
-        }
-    };
-}
-
-/// Automatically generate generate getters&setters for members of the inner struct (where inner is a `RefCell`).
-#[macro_export]
-macro_rules! inner_refcell_getter_setter {
-    ($name:ident, $type:ty) => {
-        paste::item! {
-            #[doc = "Borrow `RefCell` and get value"]
-            pub fn [< $name >] (&self) -> $type {
-                self.inner.borrow().$name.clone()
-            }
-        }
-        paste::item! {
-            #[doc = "Mutably borrow `RefCell` and set value."]
-            pub fn [< set_ $name >] (&self, value: $type) -> &Self {
-                self.inner.borrow_mut().$name = value;
-                self
             }
         }
     };
