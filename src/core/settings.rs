@@ -119,7 +119,10 @@ impl Settings {
     pub fn set_enabled_plugins(&self, value: &[PluginName]) {
         self.set_strv(
             "enabled-plugins",
-            &value.iter().map(std::convert::AsRef::as_ref).collect::<Vec<&str>>(),
+            &value
+                .iter()
+                .map(std::convert::AsRef::as_ref)
+                .collect::<Vec<&str>>(),
         )
         .unwrap();
     }
@@ -353,8 +356,6 @@ mod test {
     #[test]
     fn enabled_plugins() {
         let (_tmp, settings) = get();
-        let ep = settings.enabled_plugins();
-        let s: Vec<&str> = ep.iter().map(|s| &**s).collect();
-        settings.set_enabled_plugins(&s);
+        settings.set_enabled_plugins(&settings.enabled_plugins());
     }
 }

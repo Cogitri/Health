@@ -100,12 +100,12 @@ impl PluginCaloriesSummaryRow {
 
 #[cfg(test)]
 mod test {
-    use super::PluginCaloriesSummaryRow;
+    use super::{PluginCaloriesSummaryRow, PluginName};
     use crate::utils::init_gtk;
 
     #[test]
     fn new() {
         init_gtk();
-        PluginCaloriesSummaryRow::new("");
+        PluginCaloriesSummaryRow::new(PluginName::Calories);
     }
 }

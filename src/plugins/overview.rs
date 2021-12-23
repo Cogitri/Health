@@ -149,12 +149,12 @@ unsafe impl<T: adw::subclass::action_row::ActionRowImpl> IsSubclassable<T> for P
 
 #[cfg(test)]
 mod test {
-    use super::PluginOverviewRow;
+    use super::{PluginName, PluginOverviewRow};
     use crate::utils::init_gtk;
 
     #[test]
     fn new() {
         init_gtk();
-        PluginOverviewRow::new("", "", "");
+        PluginOverviewRow::new(PluginName::Activities, "", "");
     }
 }

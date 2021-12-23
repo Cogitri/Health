@@ -94,12 +94,12 @@ impl PluginActivitiesSummaryRow {
 
 #[cfg(test)]
 mod test {
-    use super::PluginActivitiesSummaryRow;
+    use super::{PluginActivitiesSummaryRow, PluginName};
     use crate::utils::init_gtk;
 
     #[test]
     fn new() {
         init_gtk();
-        PluginActivitiesSummaryRow::new("");
+        PluginActivitiesSummaryRow::new(PluginName::Activities);
     }
 }

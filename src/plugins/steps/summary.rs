@@ -102,12 +102,12 @@ impl PluginStepsSummaryRow {
 
 #[cfg(test)]
 mod test {
-    use super::PluginStepsSummaryRow;
+    use super::{PluginName, PluginStepsSummaryRow};
     use crate::utils::init_gtk;
 
     #[test]
     fn new() {
         init_gtk();
-        PluginStepsSummaryRow::new("");
+        PluginStepsSummaryRow::new(PluginName::Steps);
     }
 }

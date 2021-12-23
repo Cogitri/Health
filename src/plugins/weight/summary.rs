@@ -183,12 +183,12 @@ impl PluginWeightSummaryRow {
 
 #[cfg(test)]
 mod test {
-    use super::PluginWeightSummaryRow;
+    use super::{PluginName, PluginWeightSummaryRow};
     use crate::utils::init_gtk;
 
     #[test]
     fn new() {
         init_gtk();
-        PluginWeightSummaryRow::new("");
+        PluginWeightSummaryRow::new(PluginName::Weight);
     }
 }

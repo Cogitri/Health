@@ -152,7 +152,7 @@ glib::wrapper! {
 
 impl PluginSummaryRow {
     /// Create a new [PluginSummaryRow]
-    pub fn new(plugin_name: &str) -> Self {
+    pub fn new(plugin_name: PluginName) -> Self {
         glib::Object::new(&[("plugin-name", &plugin_name)])
             .expect("Failed to create PluginSummaryRow")
     }
@@ -237,12 +237,12 @@ impl From<PluginName> for PluginSummaryRow {
 
 #[cfg(test)]
 mod test {
-    use super::PluginSummaryRow;
+    use super::{PluginName, PluginSummaryRow};
     use crate::utils::init_gtk;
 
     #[test]
     fn new() {
         init_gtk();
-        PluginSummaryRow::new("");
+        PluginSummaryRow::new(PluginName::Activities);
     }
 }
