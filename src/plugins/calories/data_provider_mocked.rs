@@ -22,7 +22,7 @@ use chrono::{DateTime, Duration, FixedOffset, Local};
 use std::collections::HashMap;
 
 /// A [GraphModelCaloriesMocked] manages calories data for easy consumption in views.
-#[derive(Debug, Default, Clone)]
+#[derive(Debug, Default)]
 pub struct GraphModelCaloriesMocked {
     pub distinct_activities: Vec<ActivityType>,
     pub rmr: f32,

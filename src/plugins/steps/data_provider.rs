@@ -28,17 +28,6 @@ pub struct GraphModelSteps {
     vec: Vec<Steps>,
 }
 
-/// Clone implementation where we don't clone the vec since that'd be expensive. We only
-/// clone in view_weight to avoid holding a `RefCell`s  `Ref` for too long.
-impl Clone for GraphModelSteps {
-    fn clone(&self) -> Self {
-        Self {
-            database: self.database.clone(),
-            vec: Vec::new(),
-        }
-    }
-}
-
 impl GraphModelSteps {
     pub fn new() -> Self {
         Self::default()

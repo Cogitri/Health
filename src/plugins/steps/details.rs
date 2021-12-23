@@ -27,6 +27,7 @@ use crate::{
 };
 use chrono::Duration;
 use gtk::glib::{self, subclass::prelude::*, Boxed};
+use std::{cell::RefCell, rc::Rc};
 
 mod imp {
     use super::{DataProvider, DataProviderBoxed};
@@ -114,8 +115,15 @@ mod imp {
         ) {
             match pspec.name() {
                 "data-provider" => {
-                    self.steps_graph_model
-                        .replace(Some(value.get::<DataProviderBoxed>().unwrap().0));
+                    self.steps_graph_model.replace(Some(
+                        value
+                            .get::<DataProviderBoxed>()
+                            .unwrap()
+                            .0
+                            .borrow_mut()
+                            .take()
+                            .unwrap(),
+                    ));
                 }
                 _ => unimplemented!(),
             }
@@ -151,8 +159,11 @@ glib::wrapper! {
 impl PluginStepsDetails {
     /// Create a new [PluginStepsDetails] to display previous step activity.
     pub fn new(data_provider: DataProvider) -> Self {
-        glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
-            .expect("Failed to create PluginStepsDetails")
+        glib::Object::new(&[(
+            "data-provider",
+            &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
+        )])
+        .expect("Failed to create PluginStepsDetails")
     }
 
     // TRANSLATORS notes have to be on the same line, so we cant split them
@@ -161,7 +172,7 @@ impl PluginStepsDetails {
     pub async fn update(&self) {
         let self_ = self.imp();
 
-        let mut steps_graph_model = { self_.steps_graph_model.borrow().clone().unwrap() };
+        let mut steps_graph_model = { self_.steps_graph_model.borrow_mut().take().unwrap() };
         if let Err(e) = steps_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
@@ -253,9 +264,9 @@ impl PluginStepsDetails {
 
 #[derive(Clone, Boxed)]
 #[boxed_type(name = "HealthDataProviderStepssBoxed")]
-pub struct DataProviderBoxed(DataProvider);
+pub struct DataProviderBoxed(Rc<RefCell<Option<DataProvider>>>);
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum DataProvider {
     Actual(GraphModelSteps),
     Mocked(GraphModelStepsMocked),

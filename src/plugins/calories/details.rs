@@ -16,8 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use std::convert::TryInto;
-
 use crate::{
     core::ni18n_f,
     model::ActivityType,
@@ -34,6 +32,7 @@ use gtk::{
     glib::{self, subclass::prelude::*, Boxed, Cast},
     prelude::*,
 };
+use std::{cell::RefCell, convert::TryInto, rc::Rc};
 
 mod imp {
     use super::{DataProvider, DataProviderBoxed};
@@ -119,8 +118,15 @@ mod imp {
         ) {
             match pspec.name() {
                 "data-provider" => {
-                    self.calories_graph_model
-                        .replace(Some(value.get::<DataProviderBoxed>().unwrap().0));
+                    self.calories_graph_model.replace(Some(
+                        value
+                            .get::<DataProviderBoxed>()
+                            .unwrap()
+                            .0
+                            .borrow_mut()
+                            .take()
+                            .unwrap(),
+                    ));
                 }
                 _ => unimplemented!(),
             }
@@ -156,15 +162,18 @@ glib::wrapper! {
 impl PluginCaloriesDetails {
     /// Create a new [PluginCaloriesDetails] to display previous calorie data.
     pub fn new(data_provider: DataProvider) -> Self {
-        glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
-            .expect("Failed to create PluginCaloriesDetails")
+        glib::Object::new(&[(
+            "data-provider",
+            &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
+        )])
+        .expect("Failed to create PluginCaloriesDetails")
     }
 
     /// Reload the [GraphModelcalories](crate::plugins::calories::GraphModelCalories)'s data and refresh labels & the [BarGraphView](crate::views::BarGraphView).
     pub async fn update(&self) {
         let self_ = self.imp();
 
-        let mut calories_graph_model = { self_.calories_graph_model.borrow().clone().unwrap() };
+        let mut calories_graph_model = { self_.calories_graph_model.borrow_mut().take().unwrap() };
         if let Err(e) = calories_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
@@ -229,9 +238,9 @@ impl PluginCaloriesDetails {
 
 #[derive(Clone, Boxed)]
 #[boxed_type(name = "HealthDataProviderCaloriesBoxed")]
-pub struct DataProviderBoxed(DataProvider);
+pub struct DataProviderBoxed(Rc<RefCell<Option<DataProvider>>>);
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum DataProvider {
     Actual(GraphModelCalories),
     Mocked(GraphModelCaloriesMocked),

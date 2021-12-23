@@ -37,14 +37,6 @@ pub struct GraphModelWeight {
     vec: Vec<Weight>,
 }
 
-/// Clone implementation where we don't clone the vec since that'd be expensive. We only
-/// clone in view_weight to avoid holding a `RefCell`s  `Ref` for too long.
-impl Clone for GraphModelWeight {
-    fn clone(&self) -> Self {
-        Self::default()
-    }
-}
-
 impl GraphModelWeight {
     pub fn new() -> Self {
         Self {

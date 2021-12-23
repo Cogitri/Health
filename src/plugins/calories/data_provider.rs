@@ -37,20 +37,6 @@ pub struct GraphModelCalories {
     split_bar: Vec<SplitBar>,
 }
 
-/// Clone implementation where we don't clone the split_bar vector since that'd be expensive. We only
-/// clone in view_weight to avoid holding a `RefCell`s  `Ref` for too long.
-impl Clone for GraphModelCalories {
-    fn clone(&self) -> Self {
-        Self {
-            database: self.database.clone(),
-            settings: self.settings.clone(),
-            distinct_activities: Vec::new(),
-            rmr: 0.0,
-            split_bar: Vec::new(),
-        }
-    }
-}
-
 impl GraphModelCalories {
     pub fn new() -> Self {
         Self::default()

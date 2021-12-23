@@ -30,6 +30,7 @@ use gtk::{
     gio::subclass::prelude::*,
     glib::{self, Boxed},
 };
+use std::{cell::RefCell, rc::Rc};
 use uom::si::{
     f32::Mass,
     length::meter,
@@ -122,8 +123,15 @@ mod imp {
         ) {
             match pspec.name() {
                 "data-provider" => {
-                    self.weight_graph_model
-                        .replace(Some(value.get::<DataProviderBoxed>().unwrap().0));
+                    self.weight_graph_model.replace(Some(
+                        value
+                            .get::<DataProviderBoxed>()
+                            .unwrap()
+                            .0
+                            .borrow_mut()
+                            .take()
+                            .unwrap(),
+                    ));
                 }
                 _ => unimplemented!(),
             }
@@ -159,8 +167,11 @@ glib::wrapper! {
 impl PluginWeightDetails {
     /// Create a new [PluginWeightDetails] to display previous weight measurements.
     pub fn new(data_provider: DataProvider) -> Self {
-        glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
-            .expect("Failed to create PluginWeightDetails")
+        glib::Object::new(&[(
+            "data-provider",
+            &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
+        )])
+        .expect("Failed to create PluginWeightDetails")
     }
 
     // TRANSLATORS notes have to be on the same line, so we cant split them
@@ -168,7 +179,7 @@ impl PluginWeightDetails {
     /// Reload the [GraphModelWeight]'s data and refresh labels & reload the [GraphView].
     pub async fn update(&self) {
         let self_ = self.imp();
-        let mut weight_graph_model = { self_.weight_graph_model.borrow().clone().unwrap() };
+        let mut weight_graph_model = { self_.weight_graph_model.borrow_mut().take().unwrap() };
         if let Err(e) = weight_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
@@ -326,9 +337,9 @@ impl PluginWeightDetails {
 
 #[derive(Clone, Boxed)]
 #[boxed_type(name = "HealthDataProviderWeightsBoxed")]
-pub struct DataProviderBoxed(DataProvider);
+pub struct DataProviderBoxed(Rc<RefCell<Option<DataProvider>>>);
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 pub enum DataProvider {
     Actual(GraphModelWeight),
     Mocked(GraphModelWeightMocked),
