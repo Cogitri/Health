@@ -24,7 +24,7 @@ mod imp {
     use once_cell::unsync::OnceCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/dev/Cogitri/Health/ui/add_view.ui")]
+    #[template(resource = "/dev/Cogitri/Health/ui/view_add.ui")]
     pub struct ViewAdd {
         pub icon_name: OnceCell<String>,
         pub view_title: OnceCell<String>,

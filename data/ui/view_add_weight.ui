@@ -25,7 +25,7 @@
     <property name="step-increment">1</property>
     <property name="page-increment">10</property>
   </object>
-  <template class="HealtViewAddWeight" parent="HealthViewAdd">
+  <template class="HealthViewAddWeight" parent="HealthViewAdd">
     <property name="icon-name">weight-scale-symbolic</property>
     <property name="name">Add Weight Data</property>
     <property name="view-title" translatable="yes">Add weight record</property>
