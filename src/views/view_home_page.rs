@@ -262,6 +262,12 @@ impl ViewHomePage {
             .plugin()
             .summary();
 
+        gtk_macros::spawn!(glib::clone!(@weak summary => async move {
+            if let Err(e) = summary.update().await {
+                glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't update plugin: {}", e);
+            }
+        }));
+
         self.imp().size_group.add_widget(&summary);
 
         summary.upcast()
