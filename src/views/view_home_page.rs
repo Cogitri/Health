@@ -17,13 +17,14 @@
  */
 
 use crate::{
-    plugins::{PluginObject, PluginSummaryRow, Registrar},
+    plugins::{PluginName, PluginObject, PluginSummaryRow, Registrar},
     prelude::*,
 };
 use gtk::{
     glib::{self, prelude::*, subclass::prelude::*},
     prelude::*,
 };
+use std::str::FromStr;
 
 mod imp {
     use crate::{
@@ -35,6 +36,7 @@ mod imp {
         glib::{self, subclass::Signal, Cast},
         {subclass::prelude::*, CompositeTemplate},
     };
+    use num_traits::cast::ToPrimitive;
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/view_home_page.ui")]
@@ -95,7 +97,16 @@ mod imp {
                     .unwrap()
                     .plugin()
                     .name()
-                    .cmp(b.downcast_ref::<PluginObject>().unwrap().plugin().name())
+                    .to_u8()
+                    .unwrap()
+                    .cmp(
+                        &b.downcast_ref::<PluginObject>()
+                            .unwrap()
+                            .plugin()
+                            .name()
+                            .to_u8()
+                            .unwrap(),
+                    )
                     .into()
             });
             let enabled_model_sorted = gtk::SortListModel::new(Some(&enabled_model), Some(&sorter));
@@ -138,9 +149,9 @@ mod imp {
         ) {
             if let Some(row) = row {
                 let summary = row.downcast_ref::<PluginSummaryRow>().unwrap();
-                let plugin_name = summary.plugin_name().unwrap();
+                let plugin_name = summary.plugin_name();
                 self.instance()
-                    .open_plugin_details(&list_box, &plugin_name, true);
+                    .open_plugin_details(&list_box, plugin_name, true);
             }
         }
 
@@ -152,9 +163,9 @@ mod imp {
         ) {
             if let Some(row) = row {
                 let overview = row.downcast_ref::<PluginOverviewRow>().unwrap();
-                let plugin_name = overview.plugin_name().unwrap();
+                let plugin_name = overview.plugin_name();
                 self.instance()
-                    .open_plugin_details(&list_box, &plugin_name, false);
+                    .open_plugin_details(&list_box, plugin_name, false);
             }
         }
     }
@@ -200,53 +211,48 @@ impl ViewHomePage {
         registrar
             .enabled_plugins()
             .iter()
-            .any(|p| p.name() == current_page)
+            .any(|p| p.name().as_ref() == current_page.as_str())
     }
 
     pub fn disable_current_plugin(&self) {
         let self_ = self.imp();
         let registrar = Registrar::instance();
-        let current_plugin = self.current_page();
 
-        registrar.disable_plugin(&current_plugin);
-        self_.all_data_box.set_visible(true);
-        self_.settings.set_enabled_plugins(
-            self_
-                .settings
-                .enabled_plugins()
-                .iter()
-                .filter(|s| *s != &current_plugin)
-                .map(String::as_str)
-                .collect::<Vec<&str>>()
-                .as_slice(),
-        );
-        if registrar.enabled_plugins().is_empty() {
-            self_
-                .enabled_plugins_stack
-                .set_visible_child_name("no-plugins-enabled")
+        if let Ok(current_plugin) = PluginName::from_str(&self.current_page()) {
+            registrar.disable_plugin(current_plugin);
+            self_.all_data_box.set_visible(true);
+            self_.settings.set_enabled_plugins(
+                self_
+                    .settings
+                    .enabled_plugins()
+                    .drain(..)
+                    .filter(|s| *s != current_plugin)
+                    .collect::<Vec<PluginName>>()
+                    .as_slice(),
+            );
+            if registrar.enabled_plugins().is_empty() {
+                self_
+                    .enabled_plugins_stack
+                    .set_visible_child_name("no-plugins-enabled")
+            }
         }
     }
 
     pub fn enable_current_plugin(&self) {
         let self_ = self.imp();
         let registrar = Registrar::instance();
-        let current_plugin = self.current_page();
 
-        let mut enabled_plugins = self_.settings.enabled_plugins();
-        enabled_plugins.push(current_plugin.clone());
-        registrar.enable_plugin(&current_plugin);
-        self_.settings.set_enabled_plugins(
-            enabled_plugins
-                .iter()
-                .map(String::as_str)
-                .collect::<Vec<&str>>()
-                .as_slice(),
-        );
-        self_
-            .enabled_plugins_stack
-            .set_visible_child_name("plugin-list");
-        if registrar.disabled_plugins().is_empty() {
-            self_.all_data_box.set_visible(false);
+        if let Ok(current_plugin) = PluginName::from_str(&self.current_page()) {
+            let mut enabled_plugins = self_.settings.enabled_plugins();
+            enabled_plugins.push(current_plugin);
+            registrar.enable_plugin(current_plugin);
+            self_.settings.set_enabled_plugins(&enabled_plugins);
+            self_
+                .enabled_plugins_stack
+                .set_visible_child_name("plugin-list");
+            if registrar.disabled_plugins().is_empty() {
+                self_.all_data_box.set_visible(false);
+            }
         }
     }
 
@@ -285,7 +291,7 @@ impl ViewHomePage {
         overview.upcast()
     }
 
-    fn open_plugin_details(&self, list_box: &gtk::ListBox, plugin_name: &str, enabled: bool) {
+    fn open_plugin_details(&self, list_box: &gtk::ListBox, plugin_name: PluginName, enabled: bool) {
         let self_ = self.imp();
         let registrar = Registrar::instance();
         let plugin = if enabled {
@@ -295,8 +301,8 @@ impl ViewHomePage {
         };
         let details = plugin.details(!enabled);
 
-        self_.stack.add_named(&details, Some(plugin_name));
-        self_.stack.set_visible_child_name(plugin_name);
+        self_.stack.add_named(&details, Some(plugin_name.as_ref()));
+        self_.stack.set_visible_child_name(plugin_name.as_ref());
         self.emit_by_name::<()>("view-changed", &[]);
         list_box.unselect_all();
 

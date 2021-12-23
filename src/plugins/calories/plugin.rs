@@ -2,13 +2,10 @@ use crate::{
     core::i18n,
     plugins::{
         calories::{DataProvider, PluginCaloriesDetails},
-        Plugin, PluginDetails,
+        Plugin, PluginDetails, PluginName,
     },
 };
 use gtk::prelude::*;
-
-const NAME: &str = "calories";
-const ICON_NAME: &str = "calories-thin-symbolic";
 
 #[derive(Clone, Debug)]
 pub struct CaloriesPlugin;
@@ -30,12 +27,12 @@ impl Plugin for CaloriesPlugin {
         PluginCaloriesDetails::new(data_provider).upcast()
     }
 
-    fn name(&self) -> &'static str {
-        NAME
+    fn name(&self) -> PluginName {
+        PluginName::Calories
     }
 
     fn icon_name(&self) -> &'static str {
-        ICON_NAME
+        "calories-thin-symbolic"
     }
 
     fn localised_name(&self) -> String {

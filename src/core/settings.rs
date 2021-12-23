@@ -16,13 +16,14 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::UnitSystem, model::NotifyMode, settings_getter_setter};
+use crate::{core::UnitSystem, model::NotifyMode, plugins::PluginName, settings_getter_setter};
 use chrono::{Date, DateTime, FixedOffset};
 use gtk::{
     gio::{self, prelude::*},
     glib,
 };
 use num_traits::{FromPrimitive, ToPrimitive};
+use std::str::FromStr;
 use uom::si::{
     f32::{Length, Mass},
     length::centimeter,
@@ -107,16 +108,20 @@ impl Settings {
     }
 
     /// Get an array of recent activity IDs.
-    pub fn enabled_plugins(&self) -> Vec<String> {
+    pub fn enabled_plugins(&self) -> Vec<PluginName> {
         self.strv("enabled-plugins")
             .iter()
-            .map(std::string::ToString::to_string)
+            .filter_map(|s| PluginName::from_str(s.as_str()).ok())
             .collect()
     }
 
     /// Set an array of recent activity IDs.
-    pub fn set_enabled_plugins(&self, value: &[&str]) {
-        self.set_strv("enabled-plugins", value).unwrap();
+    pub fn set_enabled_plugins(&self, value: &[PluginName]) {
+        self.set_strv(
+            "enabled-plugins",
+            &value.iter().map(std::convert::AsRef::as_ref).collect::<Vec<&str>>(),
+        )
+        .unwrap();
     }
 
     /// Get an array of recent activity IDs.

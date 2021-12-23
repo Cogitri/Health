@@ -16,19 +16,23 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use super::{
-    PluginActivitiesSummaryRow, PluginCaloriesSummaryRow, PluginStepsSummaryRow,
-    PluginWeightSummaryRow,
+use crate::{
+    plugins::{
+        PluginActivitiesSummaryRow, PluginCaloriesSummaryRow, PluginName, PluginStepsSummaryRow,
+        PluginWeightSummaryRow,
+    },
+    prelude::*,
 };
-use crate::{prelude::*, properties_setter_getter};
 use adw::subclass::prelude::*;
 use gtk::glib::{self, prelude::*};
+use std::str::FromStr;
 
 mod imp {
-    use crate::prelude::*;
+    use crate::{plugins::PluginName, prelude::*};
     use adw::subclass::prelude::*;
     use gtk::{gio, glib, prelude::*, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
+    use std::str::FromStr;
 
     #[repr(C)]
     pub struct PluginSummaryRowClass {
@@ -56,7 +60,7 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct PluginSummaryRow {
-        pub plugin_name: OnceCell<String>,
+        pub plugin_name: OnceCell<PluginName>,
     }
 
     // Virtual method default implementation trampolines
@@ -122,7 +126,10 @@ mod imp {
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
-                "plugin-name" => self.plugin_name.set(value.get().unwrap()).unwrap(),
+                "plugin-name" => self
+                    .plugin_name
+                    .set(PluginName::from_str(&value.get::<String>().unwrap()).unwrap())
+                    .unwrap(),
                 _ => unimplemented!(),
             }
         }
@@ -150,7 +157,9 @@ impl PluginSummaryRow {
             .expect("Failed to create PluginSummaryRow")
     }
 
-    properties_setter_getter!("plugin-name", String);
+    pub fn plugin_name(&self) -> PluginName {
+        PluginName::from_str(&self.property::<String>("plugin-name")).unwrap()
+    }
 }
 
 /// [PluginSummaryRowExt] is implemented by all subclasses of [PluginSummaryRow].
@@ -215,14 +224,13 @@ where
     imp.update(this)
 }
 
-impl From<&str> for PluginSummaryRow {
-    fn from(plugin_name: &str) -> Self {
+impl From<PluginName> for PluginSummaryRow {
+    fn from(plugin_name: PluginName) -> Self {
         match plugin_name {
-            "activities" => PluginActivitiesSummaryRow::new(plugin_name).upcast(),
-            "calories" => PluginCaloriesSummaryRow::new(plugin_name).upcast(),
-            "weight" => PluginWeightSummaryRow::new(plugin_name).upcast(),
-            "steps" => PluginStepsSummaryRow::new(plugin_name).upcast(),
-            _ => unimplemented!(),
+            PluginName::Activities => PluginActivitiesSummaryRow::new(plugin_name).upcast(),
+            PluginName::Calories => PluginCaloriesSummaryRow::new(plugin_name).upcast(),
+            PluginName::Steps => PluginStepsSummaryRow::new(plugin_name).upcast(),
+            PluginName::Weight => PluginWeightSummaryRow::new(plugin_name).upcast(),
         }
     }
 }

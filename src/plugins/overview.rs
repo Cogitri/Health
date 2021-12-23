@@ -16,23 +16,26 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::properties_setter_getter;
+use crate::plugins::PluginName;
 use gtk::{
     glib::{self, prelude::*},
     subclass::prelude::*,
 };
+use std::str::FromStr;
 
 mod imp {
+    use crate::plugins::PluginName;
     use adw::subclass::prelude::*;
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
-    use std::cell::RefCell;
+    use once_cell::unsync::OnceCell;
+    use std::str::FromStr;
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/overview.ui")]
     pub struct PluginOverviewRow {
         #[template_child]
         pub icon: TemplateChild<gtk::Image>,
-        pub plugin_name: RefCell<String>,
+        pub plugin_name: OnceCell<PluginName>,
     }
 
     #[glib::object_subclass]
@@ -85,7 +88,9 @@ mod imp {
             match pspec.name() {
                 "icon-name" => self.icon.set_icon_name(value.get().unwrap()),
                 "plugin-name" => {
-                    self.plugin_name.replace(value.get::<String>().unwrap());
+                    self.plugin_name
+                        .set(PluginName::from_str(&value.get::<String>().unwrap()).unwrap())
+                        .unwrap();
                 }
                 _ => unimplemented!(),
             }
@@ -94,7 +99,7 @@ mod imp {
         fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "icon-name" => self.icon.icon_name().to_value(),
-                "plugin-name" => self.plugin_name.borrow().to_value(),
+                "plugin-name" => self.plugin_name.get().unwrap().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -114,7 +119,11 @@ glib::wrapper! {
 }
 
 impl PluginOverviewRow {
-    pub fn new(plugin_name: &str, icon_name: &str, title: &str) -> Self {
+    pub fn icon_name(&self) -> String {
+        self.property("icon-name")
+    }
+
+    pub fn new(plugin_name: PluginName, icon_name: &str, title: &str) -> Self {
         glib::Object::new(&[
             ("icon-name", &icon_name),
             ("title", &title),
@@ -123,8 +132,9 @@ impl PluginOverviewRow {
         .expect("Failed to create PluginOverviewRow")
     }
 
-    properties_setter_getter!("icon-name", String);
-    properties_setter_getter!("plugin-name", String);
+    pub fn plugin_name(&self) -> PluginName {
+        PluginName::from_str(&self.property::<String>("plugin-name")).unwrap()
+    }
 }
 
 unsafe impl<T: adw::subclass::action_row::ActionRowImpl> IsSubclassable<T> for PluginOverviewRow {

@@ -2,7 +2,7 @@ use std::convert::TryInto;
 
 use crate::{
     core::{ni18n_f, Database, Settings},
-    plugins::PluginSummaryRow,
+    plugins::{PluginName, PluginSummaryRow},
 };
 use adw::prelude::*;
 use gtk::{glib, subclass::prelude::*};
@@ -67,7 +67,7 @@ glib::wrapper! {
 }
 
 impl PluginStepsSummaryRow {
-    pub fn new(name: &str) -> Self {
+    pub fn new(name: PluginName) -> Self {
         glib::Object::new(&[("plugin-name", &name)])
             .expect("Failed to create PluginStepsSummaryRow")
     }

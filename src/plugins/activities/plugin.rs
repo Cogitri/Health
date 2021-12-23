@@ -2,13 +2,10 @@ use crate::{
     core::i18n,
     plugins::{
         activities::{DataProvider, PluginActivitiesDetails},
-        Plugin, PluginDetails,
+        Plugin, PluginDetails, PluginName,
     },
 };
 use gtk::prelude::*;
-
-const NAME: &str = "activities";
-const ICON_NAME: &str = "walking-thin-symbolic";
 
 #[derive(Clone, Debug)]
 pub struct ActivitiesPlugin;
@@ -30,12 +27,12 @@ impl Plugin for ActivitiesPlugin {
         PluginActivitiesDetails::new(data_provider).upcast()
     }
 
-    fn name(&self) -> &'static str {
-        NAME
+    fn name(&self) -> PluginName {
+        PluginName::Activities
     }
 
     fn icon_name(&self) -> &'static str {
-        ICON_NAME
+        "walking-thin-symbolic"
     }
 
     fn localised_name(&self) -> String {

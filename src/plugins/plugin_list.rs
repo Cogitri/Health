@@ -16,7 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::RefIter, plugins::Plugin};
+use crate::{
+    core::RefIter,
+    plugins::{Plugin, PluginName},
+};
 use gtk::{
     gio::{self, prelude::*},
     glib::{self, subclass::prelude::*},
@@ -79,7 +82,7 @@ impl Default for PluginList {
 }
 
 impl PluginList {
-    pub fn contains(&self, plugin_name: &str) -> bool {
+    pub fn contains(&self, plugin_name: PluginName) -> bool {
         self.imp()
             .vec
             .borrow()
@@ -126,7 +129,7 @@ impl PluginList {
         self.items_changed(len.try_into().unwrap(), 0, 1);
     }
 
-    pub fn remove(&self, plugin_name: &str) -> Option<Box<dyn Plugin>> {
+    pub fn remove(&self, plugin_name: PluginName) -> Option<Box<dyn Plugin>> {
         let mut changed_position: Option<usize> = None;
         let mut ret: Option<Box<dyn Plugin>> = None;
 

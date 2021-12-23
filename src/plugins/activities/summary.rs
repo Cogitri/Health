@@ -1,4 +1,8 @@
-use crate::{core::ni18n_f, core::Database, plugins::PluginSummaryRow};
+use crate::{
+    core::ni18n_f,
+    core::Database,
+    plugins::{PluginName, PluginSummaryRow},
+};
 use gtk::{glib, subclass::prelude::*};
 
 mod imp {
@@ -59,8 +63,8 @@ glib::wrapper! {
 }
 
 impl PluginActivitiesSummaryRow {
-    pub fn new(name: &str) -> Self {
-        glib::Object::new(&[("plugin-name", &name)])
+    pub fn new(name: PluginName) -> Self {
+        glib::Object::new(&[("plugin-name", &name.as_ref())])
             .expect("Failed to create PluginActivitiesSummaryRow")
     }
 

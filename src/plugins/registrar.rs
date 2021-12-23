@@ -1,6 +1,6 @@
 static mut REGISTRAR: Option<Registrar> = None;
 
-use crate::plugins::{Plugin, PluginList};
+use crate::plugins::{Plugin, PluginList, PluginName};
 use gtk::{glib, prelude::*, subclass::prelude::*};
 
 mod imp {
@@ -47,7 +47,7 @@ mod imp {
                 Box::new(StepsPlugin::new()) as Box<dyn Plugin>,
                 Box::new(WeightPlugin::new()) as Box<dyn Plugin>,
             ] {
-                if enabled_plugins.contains(&plugin.name().to_string()) {
+                if enabled_plugins.contains(&plugin.name()) {
                     self.enabled_plugins.push(plugin);
                 } else {
                     self.disabled_plugins.push(plugin);
@@ -66,7 +66,7 @@ impl Registrar {
     /// Disable a currently enabled [Plugin], if it's currently enabled.
     ///
     /// This emits `plugin-changed` if the list of plugins was changed.
-    pub fn disable_plugin(&self, plugin_name: &str) {
+    pub fn disable_plugin(&self, plugin_name: PluginName) {
         let self_ = self.imp();
         if !self_.disabled_plugins.contains(plugin_name) {
             let plugin = self_.enabled_plugins.remove(plugin_name).unwrap();
@@ -79,7 +79,7 @@ impl Registrar {
     /// Enable a currently disabled [Plugin], if it's current disabled.
     ///
     /// This emits `plugin-changed` if the list of plugins was changed.
-    pub fn enable_plugin(&self, plugin_name: &str) {
+    pub fn enable_plugin(&self, plugin_name: PluginName) {
         let self_ = self.imp();
         if !self_.enabled_plugins.contains(plugin_name) {
             let plugin = self_.disabled_plugins.remove(plugin_name).unwrap();
@@ -100,7 +100,7 @@ impl Registrar {
     }
 
     /// Get a plugin from the list of disabled [Plugin]s by the plugin's unlocalised name (ID)
-    pub fn disabled_plugin_by_name(&self, name: &str) -> Option<Box<dyn Plugin>> {
+    pub fn disabled_plugin_by_name(&self, name: PluginName) -> Option<Box<dyn Plugin>> {
         self.imp()
             .disabled_plugins
             .iter()
@@ -109,7 +109,7 @@ impl Registrar {
     }
 
     /// Get a plugin from the list of enabled [Plugin]s by the plugin's unlocalised name (ID)
-    pub fn enabled_plugin_by_name(&self, name: &str) -> Option<Box<dyn Plugin>> {
+    pub fn enabled_plugin_by_name(&self, name: PluginName) -> Option<Box<dyn Plugin>> {
         self.imp()
             .enabled_plugins
             .iter()

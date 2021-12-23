@@ -2,13 +2,10 @@ use crate::{
     core::i18n,
     plugins::{
         weight::{DataProvider, PluginWeightDetails},
-        Plugin, PluginDetails,
+        Plugin, PluginDetails, PluginName,
     },
 };
 use gtk::prelude::*;
-
-const NAME: &str = "weight";
-const ICON_NAME: &str = "weight-scale-thin-symbolic";
 
 #[derive(Clone, Debug)]
 pub struct WeightPlugin;
@@ -30,12 +27,12 @@ impl Plugin for WeightPlugin {
         PluginWeightDetails::new(data_provider).upcast()
     }
 
-    fn name(&self) -> &'static str {
-        NAME
+    fn name(&self) -> PluginName {
+        PluginName::Weight
     }
 
     fn icon_name(&self) -> &'static str {
-        ICON_NAME
+        "weight-scale-thin-symbolic"
     }
 
     fn localised_name(&self) -> String {

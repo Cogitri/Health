@@ -1,7 +1,7 @@
 use crate::{
     core::{i18n, ni18n_f, Settings, UnitSystem},
     plugins::weight::GraphModelWeight,
-    plugins::PluginSummaryRow,
+    plugins::{PluginName, PluginSummaryRow},
     prelude::*,
 };
 use adw::prelude::*;
@@ -73,7 +73,7 @@ glib::wrapper! {
 }
 
 impl PluginWeightSummaryRow {
-    pub fn new(name: &str) -> Self {
+    pub fn new(name: PluginName) -> Self {
         glib::Object::new(&[("plugin-name", &name)])
             .expect("Failed to create PluginWeightSummaryRow")
     }
