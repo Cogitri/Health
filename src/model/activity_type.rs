@@ -16,6 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use gtk::glib;
+
 /// All supported [ActivityType]s are listed in this enum.
 #[derive(
     Debug,
@@ -27,6 +29,7 @@
     Eq,
     strum::EnumString,
     strum::IntoStaticStr,
+    strum::AsRefStr,
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum ActivityType {
@@ -55,6 +58,16 @@ pub enum ActivityType {
 impl Default for ActivityType {
     fn default() -> Self {
         Self::Walking
+    }
+}
+
+impl glib::ToValue for ActivityType {
+    fn to_value(&self) -> glib::Value {
+        self.as_ref().to_value()
+    }
+
+    fn value_type(&self) -> glib::Type {
+        <String as glib::StaticType>::static_type()
     }
 }
 

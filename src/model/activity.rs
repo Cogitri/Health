@@ -18,11 +18,14 @@
 
 use crate::{
     model::{ActivityDataPoints, ActivityInfo, ActivityType},
-    refcell_getter_setter,
+    prelude::*,
 };
-use chrono::{DateTime, Duration, FixedOffset};
-use gtk::glib::{self, subclass::prelude::*};
-use std::convert::TryFrom;
+use chrono::{DateTime, Duration, FixedOffset, Local};
+use gtk::glib::{self, prelude::*, subclass::prelude::*};
+use std::{
+    convert::{TryFrom, TryInto},
+    str::FromStr,
+};
 use uom::si::{f32::Length, length::meter};
 
 static BICYCLING_METERS_PER_MINUTE: u32 = 300;
@@ -37,11 +40,11 @@ static WALKING_STEPS_PER_MINUTE: u32 = 100;
 static RUNNING_STEPS_PER_MINUTE: u32 = 150;
 
 mod imp {
-    use crate::{model::ActivityType, sync::serialize};
+    use crate::{model::ActivityType, prelude::*, sync::serialize};
     use chrono::{DateTime, Duration, FixedOffset, Utc};
-    use gtk::{glib, subclass::prelude::*};
-    use std::cell::RefCell;
-    use uom::si::f32::Length;
+    use gtk::{glib, prelude::*, subclass::prelude::*};
+    use std::{cell::RefCell, convert::TryInto, str::FromStr};
+    use uom::si::{f32::Length, length::meter};
 
     #[derive(Debug, serde::Deserialize, serde::Serialize, PartialEq)]
     pub struct ActivityMut {
@@ -91,7 +94,170 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for Activity {}
+    impl ObjectImpl for Activity {
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![
+                    glib::ParamSpecString::new(
+                        "activity-type",
+                        "activity-type",
+                        "activity-type",
+                        Some("walking"),
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                    glib::ParamSpecInt64::new(
+                        "calories-burned",
+                        "calories-burned",
+                        "calories-burned",
+                        -1,
+                        u32::MAX.into(),
+                        -1,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                    glib::ParamSpecBoxed::new(
+                        "date",
+                        "date",
+                        "date",
+                        DateTimeBoxed::static_type(),
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                    glib::ParamSpecFloat::new(
+                        "distance-meter",
+                        "distance-meter",
+                        "distance-meter",
+                        -1.0,
+                        f32::MAX,
+                        -1.0,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                    glib::ParamSpecInt64::new(
+                        "duration-seconds",
+                        "duration-seconds",
+                        "duration-seconds",
+                        i64::MIN,
+                        i64::MAX,
+                        0,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                    glib::ParamSpecInt64::new(
+                        "heart-rate-avg",
+                        "heart-rate-avg",
+                        "heart-rate-avg",
+                        -1,
+                        u32::MAX.into(),
+                        -1,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                    glib::ParamSpecInt64::new(
+                        "heart-rate-max",
+                        "heart-rate-max",
+                        "heart-rate-max",
+                        -1,
+                        u32::MAX.into(),
+                        -1,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                    glib::ParamSpecInt64::new(
+                        "heart-rate-min",
+                        "heart-rate-min",
+                        "heart-rate-min",
+                        -1,
+                        u32::MAX.into(),
+                        -1,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                    glib::ParamSpecInt64::new(
+                        "steps",
+                        "steps",
+                        "steps",
+                        -1,
+                        u32::MAX.into(),
+                        -1,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                ]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "activity-type" => {
+                    self.inner.borrow_mut().activity_type =
+                        ActivityType::from_str(&value.get::<String>().unwrap()).unwrap()
+                }
+                "calories-burned" => {
+                    self.inner.borrow_mut().calories_burned =
+                        value.get::<i64>().unwrap().try_into().ok();
+                }
+                "date" => {
+                    self.inner.borrow_mut().date = value.get::<DateTimeBoxed>().unwrap().0;
+                }
+                "distance-meter" => {
+                    let value = value.get::<f32>().unwrap();
+                    if value < 0.0 {
+                        self.inner.borrow_mut().distance = None;
+                    } else {
+                        self.inner.borrow_mut().distance = Some(Length::new::<meter>(value));
+                    }
+                }
+                "duration-seconds" => {
+                    self.inner.borrow_mut().duration = Duration::seconds(value.get().unwrap());
+                }
+                "heart-rate-avg" => {
+                    self.inner.borrow_mut().heart_rate_avg =
+                        value.get::<i64>().unwrap().try_into().ok();
+                }
+                "heart-rate-max" => {
+                    self.inner.borrow_mut().heart_rate_max =
+                        value.get::<i64>().unwrap().try_into().ok();
+                }
+                "heart-rate-min" => {
+                    self.inner.borrow_mut().heart_rate_min =
+                        value.get::<i64>().unwrap().try_into().ok();
+                }
+                "steps" => {
+                    self.inner.borrow_mut().steps = value.get::<i64>().unwrap().try_into().ok();
+                }
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "activity-type" => self.inner.borrow().activity_type.to_value(),
+                "calories-burned" => self
+                    .inner
+                    .borrow()
+                    .calories_burned
+                    .unwrap_ori(-1)
+                    .to_value(),
+                "date" => DateTimeBoxed(self.inner.borrow().date).to_value(),
+                "distance-meter" => self
+                    .inner
+                    .borrow()
+                    .distance
+                    .map(|d| d.get::<meter>())
+                    .unwrap_or(-1.0)
+                    .to_value(),
+                "duration-seconds" => self.inner.borrow().duration.num_seconds().to_value(),
+                "heart-rate-avg" => self.inner.borrow().heart_rate_avg.unwrap_ori(-1).to_value(),
+                "heart-rate-max" => self.inner.borrow().heart_rate_max.unwrap_ori(-1).to_value(),
+                "heart-rate-min" => self.inner.borrow().heart_rate_min.unwrap_ori(-1).to_value(),
+                "steps" => self.inner.borrow().steps.unwrap_ori(-1).to_value(),
+                _ => unimplemented!(),
+            }
+        }
+    }
 }
 
 glib::wrapper! {
@@ -314,22 +480,102 @@ impl Activity {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create Activity")
+        glib::Object::new(&[("date", &DateTimeBoxed(Local::now().into()))])
+            .expect("Failed to create Activity")
     }
 
     fn imp(&self) -> &imp::Activity {
         imp::Activity::from_instance(self)
     }
 
-    refcell_getter_setter!(activity_type, ActivityType);
-    refcell_getter_setter!(calories_burned, Option<u32>);
-    refcell_getter_setter!(date, DateTime<FixedOffset>);
-    refcell_getter_setter!(distance, Option<Length>);
-    refcell_getter_setter!(heart_rate_avg, Option<u32>);
-    refcell_getter_setter!(heart_rate_max, Option<u32>);
-    refcell_getter_setter!(heart_rate_min, Option<u32>);
-    refcell_getter_setter!(duration, Duration);
-    refcell_getter_setter!(steps, Option<u32>);
+    pub fn activity_type(&self) -> ActivityType {
+        ActivityType::from_str(&self.property::<String>("activity-type")).unwrap()
+    }
+
+    pub fn calories_burned(&self) -> Option<u32> {
+        self.property::<i64>("calories-burned").try_into().ok()
+    }
+
+    pub fn date(&self) -> DateTime<FixedOffset> {
+        self.property::<DateTimeBoxed>("date").0
+    }
+
+    pub fn distance(&self) -> Option<Length> {
+        let value = self.property::<f32>("distance-meter");
+        if value < 0.0 {
+            None
+        } else {
+            Some(Length::new::<meter>(value))
+        }
+    }
+
+    pub fn duration(&self) -> Duration {
+        Duration::seconds(self.property("duration-seconds"))
+    }
+
+    pub fn heart_rate_avg(&self) -> Option<u32> {
+        self.property::<i64>("heart-rate-avg").try_into().ok()
+    }
+
+    pub fn heart_rate_max(&self) -> Option<u32> {
+        self.property::<i64>("heart-rate-max").try_into().ok()
+    }
+
+    pub fn heart_rate_min(&self) -> Option<u32> {
+        self.property::<i64>("heart-rate-min").try_into().ok()
+    }
+
+    pub fn steps(&self) -> Option<u32> {
+        self.property::<i64>("steps").try_into().ok()
+    }
+
+    pub fn set_activity_type(&self, value: ActivityType) -> &Self {
+        self.set_property("activity-type", value.as_ref());
+        self
+    }
+
+    pub fn set_calories_burned(&self, value: Option<u32>) -> &Self {
+        self.set_property("calories-burned", value.unwrap_ori(-1));
+        self
+    }
+
+    pub fn set_date(&self, value: DateTime<FixedOffset>) -> &Self {
+        self.set_property("date", DateTimeBoxed(value));
+        self
+    }
+
+    pub fn set_distance(&self, value: Option<Length>) -> &Self {
+        self.set_property(
+            "distance-meter",
+            value.map(|v| v.get::<meter>()).unwrap_or(-1.0),
+        );
+        self
+    }
+
+    pub fn set_duration(&self, value: Duration) -> &Self {
+        self.set_property("duration-seconds", value.num_seconds());
+        self
+    }
+
+    pub fn set_heart_rate_avg(&self, value: Option<u32>) -> &Self {
+        self.set_property("heart-rate-avg", value.unwrap_ori(-1));
+        self
+    }
+
+    pub fn set_heart_rate_max(&self, value: Option<u32>) -> &Self {
+        self.set_property("heart-rate-max", value.unwrap_ori(-1));
+        self
+    }
+
+    pub fn set_heart_rate_min(&self, value: Option<u32>) -> &Self {
+        self.set_property("heart-rate-min", value.unwrap_ori(-1));
+        self
+    }
+
+    pub fn set_steps(&self, value: Option<u32>) -> &Self {
+        self.set_property("steps", value.unwrap_ori(-1));
+        self
+    }
 }
 
 impl serde::Serialize for Activity {

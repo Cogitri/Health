@@ -135,6 +135,35 @@ pub mod prelude {
             receiver.recv().unwrap()
         }
     }
+
+    #[easy_ext::ext(OptionU32Ext)]
+    impl Option<u32> {
+        /// Return the inner value of `self` is Some, or `alternative`
+        ///
+        /// # Arguments
+        /// * `self` - The value to check.
+        /// * `alternative` - The alternative value to return.
+        ///
+        /// # Returns
+        /// One of the two values.
+        ///
+        /// # Examples
+        /// ```
+        /// use libhealth::utils::prelude::*;
+        ///
+        /// let val: Option<u32> = Some(5);
+        /// let none: Option<u32> = None;
+        /// assert_eq!(val.unwrap_ori(-1), 5);
+        /// assert_eq!(none.unwrap_ori(-1), -1);
+        /// ```
+        pub fn unwrap_ori(self, alternative: i64) -> i64 {
+            if let Some(u) = self {
+                u.into()
+            } else {
+                alternative
+            }
+        }
+    }
 }
 
 pub fn get_file_in_builddir(filename: &str) -> Option<std::path::PathBuf> {

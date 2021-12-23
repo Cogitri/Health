@@ -38,23 +38,3 @@ macro_rules! settings_getter_setter {
         }
     };
 }
-
-/// Automatically generate getters&setters for the private struct's inner `RefCell`
-#[macro_export]
-macro_rules! refcell_getter_setter {
-    ($name:ident, $type:ty) => {
-        paste::item! {
-            #[doc = "Borrow `RefCell` and get value"]
-            pub fn [< $name >] (&self) -> $type {
-                self.imp().inner.borrow().$name.clone()
-            }
-        }
-        paste::item! {
-            #[doc = "Borrow `RefCell` and set value"]
-            pub fn [< set_ $name >] (&self, value: $type) -> &Self {
-                self.imp().inner.borrow_mut().$name = value;
-                self
-            }
-        }
-    };
-}
