@@ -287,7 +287,7 @@ impl ViewHomePage {
         } else {
             registrar.disabled_plugin_by_name(plugin_name).unwrap()
         };
-        let details = plugin.details(enabled);
+        let details = plugin.details(!enabled);
 
         self_.stack.add_named(&details, Some(plugin_name));
         self_.stack.set_visible_child_name(plugin_name);
