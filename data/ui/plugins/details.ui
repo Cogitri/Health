@@ -70,16 +70,36 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkLabel" id="filled_subtitle_label">
-                    <property name="margin_top">6</property>
-                    <property name="margin_bottom">15</property>
-                    <property name="margin_start">6</property>
-                    <property name="margin_end">6</property>
-                    <property name="wrap">1</property>
-                    <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
-                    <attributes>
-                      <attribute name="font-desc" value="10.0"></attribute>
-                    </attributes>
+                  <object class="GtkBox">
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkLabel" id="filled_subtitle_label">
+                        <property name="margin_top">6</property>
+                        <property name="margin_bottom">15</property>
+                        <property name="margin_start">6</property>
+                        <property name="margin_end">6</property>
+                        <property name="wrap">1</property>
+                        <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                        <attributes>
+                          <attribute name="font-desc" value="12.0"></attribute>
+                        </attributes>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="is_mocked_label">
+                        <property name="margin_top">6</property>
+                        <property name="margin_bottom">15</property>
+                        <property name="margin_start">6</property>
+                        <property name="margin_end">6</property>
+                        <property name="wrap">1</property>
+                        <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                        <property name="visible">0</property>
+                        <property name="label" translatable="yes">This is a preview of how the plugin presents data. Enable the plugin to see your actual, live data.</property>
+                        <attributes>
+                          <attribute name="font-desc" value="12.0"></attribute>
+                        </attributes>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

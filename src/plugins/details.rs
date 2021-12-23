@@ -66,6 +66,8 @@ mod imp {
         #[template_child]
         pub filled_subtitle_label: TemplateChild<gtk::Label>,
         #[template_child]
+        pub is_mocked_label: TemplateChild<gtk::Label>,
+        #[template_child]
         pub main_box: TemplateChild<gtk::Box>,
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
@@ -156,7 +158,7 @@ mod imp {
                         "is-mocked",
                         "is-mocked",
                         false,
-                        glib::ParamFlags::READWRITE,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
                     ),
                 ]
             });
@@ -181,7 +183,14 @@ mod imp {
                 "filled-subtitle" => self
                     .filled_subtitle_label
                     .set_label(value.get::<&str>().unwrap_or("")),
-                "is-mocked" => self.is_mocked.set(value.get().unwrap()),
+                "is-mocked" => {
+                    let is_mocked = value.get().unwrap();
+                    self.is_mocked.set(is_mocked);
+                    if is_mocked {
+                        self.is_mocked_label.set_visible(true);
+                        self.filled_subtitle_label.set_visible(false);
+                    }
+                }
                 _ => unimplemented!(),
             }
         }

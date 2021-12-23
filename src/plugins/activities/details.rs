@@ -62,10 +62,7 @@ mod imp {
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
-            unsafe {
-                // FIXME: This really shouldn't be necessary.
-                obj.as_ref().upcast_ref::<PluginDetails>().init_template();
-            }
+            obj.init_template();
         }
     }
 
