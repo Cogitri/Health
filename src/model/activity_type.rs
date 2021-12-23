@@ -24,6 +24,7 @@ use gtk::glib;
     num_derive::FromPrimitive,
     num_derive::ToPrimitive,
     Clone,
+    Copy,
     Hash,
     PartialEq,
     Eq,

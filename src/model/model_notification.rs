@@ -31,7 +31,7 @@ use std::{convert::TryInto, string::ToString};
     num_derive::FromPrimitive,
     num_derive::ToPrimitive,
     strum::EnumString,
-    strum::IntoStaticStr,
+    strum::AsRefStr,
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum NotifyMode {

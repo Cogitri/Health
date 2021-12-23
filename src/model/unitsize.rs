@@ -1,15 +1,6 @@
 /// A [Unitsize] is so the user can choose to enter different unit sizes (e.g. km vs meter).
 #[derive(
-    Debug,
-    Copy,
-    Clone,
-    PartialEq,
-    Eq,
-    Hash,
-    PartialOrd,
-    Ord,
-    strum::EnumString,
-    strum::IntoStaticStr,
+    Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, strum::EnumString, strum::AsRefStr,
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum Unitsize {

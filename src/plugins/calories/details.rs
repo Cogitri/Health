@@ -189,8 +189,8 @@ impl PluginCaloriesDetails {
                     .downcast::<LegendRow>()
                     .unwrap()
                     .set_legend_row(
-                        ActivityInfo::from(distinct_activities[i].clone()).color,
-                        ActivityInfo::from(distinct_activities[i].clone()).name,
+                        ActivityInfo::from(distinct_activities[i]).color,
+                        ActivityInfo::from(distinct_activities[i]).name,
                     );
             }
             self_

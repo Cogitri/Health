@@ -246,8 +246,7 @@ mod imp {
                     .inner
                     .borrow()
                     .distance
-                    .map(|d| d.get::<meter>())
-                    .unwrap_or(-1.0)
+                    .map_or(-1.0, |d| d.get::<meter>())
                     .to_value(),
                 "duration-seconds" => self.inner.borrow().duration.num_seconds().to_value(),
                 "heart-rate-avg" => self.inner.borrow().heart_rate_avg.unwrap_ori(-1).to_value(),
@@ -291,7 +290,7 @@ impl Activity {
             let inner = self_.inner.borrow();
             (
                 inner.calories_burned.unwrap_or(0),
-                ActivityInfo::from(inner.activity_type.clone()),
+                ActivityInfo::from(inner.activity_type),
             )
         };
 
@@ -324,7 +323,7 @@ impl Activity {
         let self_ = self.imp();
 
         let mut inner = self_.inner.borrow_mut();
-        let info = ActivityInfo::from(inner.activity_type.clone());
+        let info = ActivityInfo::from(inner.activity_type);
         let distance = inner.distance.map_or(0.0, |l| l.get::<meter>()) as u32;
 
         if distance != 0
@@ -391,7 +390,7 @@ impl Activity {
         let self_ = self.imp();
 
         let mut inner = self_.inner.borrow_mut();
-        let info = ActivityInfo::from(inner.activity_type.clone());
+        let info = ActivityInfo::from(inner.activity_type);
         let minutes = u32::try_from(inner.duration.num_minutes()).unwrap();
 
         if minutes != 0
@@ -446,7 +445,7 @@ impl Activity {
         let self_ = self.imp();
 
         let mut inner = self_.inner.borrow_mut();
-        let info = ActivityInfo::from(inner.activity_type.clone());
+        let info = ActivityInfo::from(inner.activity_type);
         let steps = inner.steps.unwrap_or(0);
 
         if steps != 0
@@ -530,7 +529,7 @@ impl Activity {
     }
 
     pub fn set_activity_type(&self, value: ActivityType) -> &Self {
-        self.set_property("activity-type", value.as_ref());
+        self.set_property("activity-type", value);
         self
     }
 
@@ -545,10 +544,7 @@ impl Activity {
     }
 
     pub fn set_distance(&self, value: Option<Length>) -> &Self {
-        self.set_property(
-            "distance-meter",
-            value.map(|v| v.get::<meter>()).unwrap_or(-1.0),
-        );
+        self.set_property("distance-meter", value.map_or(-1.0, |v| v.get::<meter>()));
         self
     }
 

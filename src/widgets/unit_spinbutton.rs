@@ -197,20 +197,16 @@ mod imp {
                     .next()
                     .map_or_else(|| false, |val| (val == "0"))
                     .to_value(),
-                "unit-kind" => self.inner.borrow().current_unit_kind.map_or_else(
-                    || None::<String>.to_value(),
-                    |u| {
-                        let unit_kind: &str = u.into();
-                        unit_kind.to_value()
-                    },
-                ),
-                "unit-system" => self.inner.borrow().current_unit_system.map_or_else(
-                    || None::<String>.to_value(),
-                    |unit_system| {
-                        let unit_system: &str = unit_system.into();
-                        unit_system.to_value()
-                    },
-                ),
+                "unit-kind" => self
+                    .inner
+                    .borrow()
+                    .current_unit_kind
+                    .map_or_else(|| None::<String>.to_value(), |u| u.to_value()),
+                "unit-system" => self
+                    .inner
+                    .borrow()
+                    .current_unit_system
+                    .map_or_else(|| None::<String>.to_value(), |u| u.to_value()),
                 _ => unimplemented!(),
             }
         }
@@ -315,12 +311,10 @@ impl UnitSpinButton {
         auto_update_unit_system: bool,
         unit_kind: UnitKind,
     ) -> Self {
-        let unit_str: &str = unit_kind.into();
-
         glib::Object::new(&[
             ("adjustment", adjustment),
             ("auto-update-unit-system", &auto_update_unit_system),
-            ("unit-kind", &unit_str),
+            ("unit-kind", &unit_kind),
         ])
         .expect("Failed to create UnitSpinButton")
     }
@@ -330,13 +324,11 @@ impl UnitSpinButton {
     }
 
     pub fn set_unit_kind(&self, unit_kind: UnitKind) {
-        let str: &str = unit_kind.into();
-        self.set_property("unit-kind", str);
+        self.set_property("unit-kind", unit_kind);
     }
 
     pub fn set_unit_system(&self, unit_system: UnitSystem) {
-        let str: &str = unit_system.into();
-        self.set_property("unit-system", str);
+        self.set_property("unit-system", unit_system);
     }
 
     pub fn set_value(&self, value: f64) {

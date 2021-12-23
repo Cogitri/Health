@@ -256,10 +256,7 @@ impl Application {
             self,
             "unit-system",
             Some(&String::static_variant_type()),
-            {
-                let s: &str = self.imp().settings.unit_system().into();
-                s
-            },
+            self.imp().settings.unit_system().as_ref(),
             clone!(@weak self as obj => move |a, p| {
                 obj.handle_unit_system(a, p);
             })

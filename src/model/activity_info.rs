@@ -304,7 +304,7 @@ impl ActivityInfo {
         color: RGBA,
     ) -> Self {
         Self {
-            id: activity_type.clone().into(),
+            id: activity_type.into(),
             activity_type,
             available_data_points,
             average_calories_burned_per_minute,

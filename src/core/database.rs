@@ -230,7 +230,7 @@ impl Database {
                 hashmap
                     .get_mut(&date)
                     .unwrap()
-                    .insert(id.clone(), calories + calories_before);
+                    .insert(id, calories + calories_before);
             }
             hashmap.entry(date).or_insert_with(|| new_map(id, calories));
         }

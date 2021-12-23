@@ -287,7 +287,7 @@ impl ViewAddActivity {
         let inner = self_.inner.borrow_mut();
         inner
             .activity
-            .set_activity_type(inner.selected_activity.activity_type.clone());
+            .set_activity_type(inner.selected_activity.activity_type);
 
         if let Some(model) = &inner.filter_model {
             if let Some(filter) = model.filter() {
@@ -401,7 +401,7 @@ impl ViewAddActivity {
             let activity = Activity::new();
             activity
                 .set_date(self_.date_selector.selected_date())
-                .set_activity_type(selected_activity.activity_type.clone())
+                .set_activity_type(selected_activity.activity_type)
                 .set_calories_burned(spin_button_value_if_datapoint(
                     &self_.calories_burned_spin_button,
                     &selected_activity,

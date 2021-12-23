@@ -105,7 +105,7 @@ pub fn serialize_activity_type<S>(val: &ActivityType, s: S) -> Result<S::Ok, S::
 where
     S: Serializer,
 {
-    s.serialize_str(val.clone().into())
+    s.serialize_str(val.as_ref())
 }
 
 pub fn serialize_date<S>(d: &DateTime<FixedOffset>, s: S) -> Result<S::Ok, S::Error>
