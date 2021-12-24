@@ -43,6 +43,14 @@ clone:
   script:
     - build-aux/run-clone-warn.sh
 
+gettext_check:
+  image: "$CI_IMAGE"
+  stage: qa
+  script:
+    - source $HOME/.cargo/env
+    - meson build
+    - ninja -C build dev.Cogitri.Health-update-po
+
 clippy:
   image: "$CI_IMAGE"
   stage: build
