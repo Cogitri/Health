@@ -33,7 +33,11 @@ buildInputs = with pkgs; [
   adwaitaNew
   appstream-glib
   cairo
-  cargo-outdated 
+  cargo-audit
+  cargo-bloat
+  cargo-dephell
+  cargo-expand
+  cargo-outdated
   clang_13
   desktop-file-utils
   gdb
