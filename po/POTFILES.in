@@ -1,5 +1,5 @@
 # Misc data
-data/dev.Cogitri.Health.Daemon.desktop.in.in
+data/dev.Cogitri.Health.gschema.xml data/dev.Cogitri.Health.Daemon.desktop.in.in
 data/dev.Cogitri.Health.desktop.in.in
 data/dev.Cogitri.Health.metainfo.xml.in.in
 
