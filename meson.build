@@ -45,3 +45,5 @@ meson.add_devenv(devenv)
 run_target('run',
   command : 'build-aux/run.sh')
 
+run_target('potfiles-in',
+  command : 'build-aux/build-potfiles-in.sh')
