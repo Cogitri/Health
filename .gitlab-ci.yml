@@ -49,6 +49,8 @@ gettext_check:
   script:
     - source $HOME/.cargo/env
     - meson build
+    - ninja -C build potfiles-in
+    - git diff --quiet || (echo "Found new source files! Please run ninja -C build potfiles-in to regenerate POTFILES.in! Diff output $(git diff)" && exit 1)
     - ninja -C build dev.Cogitri.Health-update-po
 
 clippy:
