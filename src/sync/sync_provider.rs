@@ -85,7 +85,7 @@ pub trait SyncProvider {
     fn post<T: serde::de::DeserializeOwned>(
         &mut self,
         method: &str,
-        data: ureq::SerdeValue,
+        data: ureq::serde_json::Value,
     ) -> Result<T> {
         Ok(ureq::post(&format!("{}/{}", self.api_url(), method))
             .set(
