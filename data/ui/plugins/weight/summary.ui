@@ -29,7 +29,6 @@
         <property name="margin-bottom">3</property>
         <child>
           <object class="GtkScrolledWindow" id="arrow_box">
-            <property name="visible">0</property>
             <child>
               <object class="HealthArrows" id="arrow">
               </object>
@@ -41,13 +40,6 @@
             <property name="wrap">1</property>
             <property name="max-width-chars">8</property>
             <property name="label" translatable="yes">No weight record added</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkLabel" id="weight_subtext">
-            <property name="wrap">1</property>
-            <property name="max-width-chars">15</property>
-            <property translatable="yes" name="label"></property>
             <style>
               <class name="caption"/>
             </style>

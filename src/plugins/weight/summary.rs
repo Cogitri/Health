@@ -21,8 +21,6 @@ mod imp {
         #[template_child]
         pub weight_change: TemplateChild<gtk::Label>,
         #[template_child]
-        pub weight_subtext: TemplateChild<gtk::Label>,
-        #[template_child]
         pub arrow_box: TemplateChild<gtk::ScrolledWindow>,
         #[template_child]
         pub arrow: TemplateChild<Arrows>,
@@ -104,7 +102,7 @@ impl PluginWeightSummaryRow {
                 e
             );
         }
-        self_.arrow_box.set_visible(true);
+
         if !weight_model.is_empty() {
             let last_weight = if settings.unit_system() == UnitSystem::Imperial {
                 weight_model.last_weight().unwrap().get::<pound>()
@@ -148,16 +146,16 @@ impl PluginWeightSummaryRow {
                 let label = if settings.unit_system() == UnitSystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement
                     ni18n_f(
-                        "+ {} pound",
-                        "+ {} pounds",
+                        "+ {} pound compared to previous measurement",
+                        "+ {} pounds compared to previous measurement",
                         difference as u32,
                         &[&difference.to_string()],
                     )
                 } else {
                     // TRANSLATORS: Difference to last weight measurement
                     ni18n_f(
-                        "+ {} kilogram",
-                        "+ {} kilograms",
+                        "+ {} kilogram compared to previous measurement",
+                        "+ {} kilograms compared to previous measurement",
                         difference as u32,
                         &[&difference.to_string()],
                     )
@@ -167,16 +165,16 @@ impl PluginWeightSummaryRow {
                 let label = if settings.unit_system() == UnitSystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement
                     ni18n_f(
-                        "{} pound",
-                        "{} pounds",
+                        "{} pound compared to previous measurement",
+                        "{} pounds compared to previous measurement",
                         difference as u32,
                         &[&difference.to_string()],
                     )
                 } else {
                     // TRANSLATORS: Difference to last weight measurement
                     ni18n_f(
-                        "{} kilogram",
-                        "{} kilograms",
+                        "{} kilogram compared to previous measurement",
+                        "{} kilograms compared to previous measurement",
                         difference as u32,
                         &[&difference.to_string()],
                     )
@@ -185,14 +183,11 @@ impl PluginWeightSummaryRow {
             } else {
                 self_.weight_change.set_label(&i18n("No change in weight"));
             }
-            self_
-                .weight_subtext
-                .set_label(&i18n("compared to previous weight"));
         } else {
+            self_.arrow.set_weight_change(WeightChange::NoChange);
             self_
-                .weight_subtext
-                .set_label(&i18n("use + to add a weight record"));
-            self_.arrow_box.set_visible(false);
+                .weight_change
+                .set_label(&i18n("No weight data available"));
         }
     }
 }
