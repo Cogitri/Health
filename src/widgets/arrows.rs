@@ -16,21 +16,19 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::{gio::subclass::prelude::*, glib, prelude::*};
+use gtk::{glib, prelude::*};
+
+use crate::model::WeightChange;
 
 mod imp {
+    use crate::model::WeightChange;
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{glib, subclass::prelude::*};
-    use std::cell::RefCell;
+    use std::{cell::Cell, str::FromStr};
 
-    #[derive(Debug)]
-    pub struct ArrowsMut {
-        pub weight: f32,
-        pub difference: f32,
-    }
-
+    #[derive(Debug, Default)]
     pub struct Arrows {
-        pub inner: RefCell<ArrowsMut>,
+        pub weight_change: Cell<WeightChange>,
     }
 
     #[glib::object_subclass]
@@ -38,66 +36,107 @@ mod imp {
         const NAME: &'static str = "HealthArrows";
         type ParentType = adw::Bin;
         type Type = super::Arrows;
+    }
 
-        fn new() -> Self {
-            Self {
-                inner: RefCell::new(ArrowsMut {
-                    weight: 0.0,
-                    difference: 0.0,
-                }),
+    impl ObjectImpl for Arrows {
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecString::new(
+                    "weight-change",
+                    "weight-change",
+                    "weight-change",
+                    Some("no_change"),
+                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                )]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "weight-change" => {
+                    self.weight_change
+                        .set(WeightChange::from_str(&value.get::<String>().unwrap()).unwrap());
+                    obj.queue_draw();
+                }
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "weight-change" => self.weight_change.get().to_value(),
+                _ => unimplemented!(),
             }
         }
     }
 
-    impl ObjectImpl for Arrows {}
-
     impl WidgetImpl for Arrows {
         fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
-            if self.inner.borrow().difference != 0.0 {
-                let cr = snapshot
-                    .append_cairo(&gtk::graphene::Rect::new(
-                        0.0,
-                        0.0,
-                        widget.width() as f32,
-                        widget.height() as f32,
-                    ))
-                    .unwrap();
+            let cr = snapshot
+                .append_cairo(&gtk::graphene::Rect::new(
+                    0.0,
+                    0.0,
+                    widget.width() as f32,
+                    widget.height() as f32,
+                ))
+                .unwrap();
 
-                let width = f64::from(widget.width());
-                let height = f64::from(widget.height());
-                let orientation: bool = self.inner.borrow().difference > 0.0;
+            let width = f64::from(widget.width());
+            let height = f64::from(widget.height());
+            let weight_change = self.weight_change.get();
 
-                cr.set_line_width(2.5);
+            cr.set_line_width(2.5);
 
-                let style_context = widget.style_context();
-                let shaded = style_context.lookup_color("blue").unwrap();
-                GdkCairoContextExt::set_source_rgba(&cr, &shaded);
+            let style_context = widget.style_context();
+            let shaded = style_context.lookup_color("blue").unwrap();
+            GdkCairoContextExt::set_source_rgba(&cr, &shaded);
 
-                let arrowhead_position = if orientation {
-                    height * 0.1
-                } else {
-                    height * 0.85
-                };
-                let arrowhead_size = if orientation {
-                    width / 12.0_f64
-                } else {
-                    -width / 12.0_f64
-                };
-                cr.move_to(width / 2.0, height * 0.1);
-                cr.line_to(width / 2.0, height * 0.85);
-                cr.move_to(width / 2.0, arrowhead_position);
-                cr.line_to(
-                    width / 2.0 - arrowhead_size,
-                    arrowhead_position + arrowhead_size,
-                );
-                cr.move_to(width / 2.0, arrowhead_position);
-                cr.line_to(
-                    width / 2.0 + arrowhead_size,
-                    arrowhead_position + arrowhead_size,
-                );
-                cr.stroke().expect("Couldn't stroke on Cairo Context");
-                cr.save().unwrap();
+            let (arrowhead_position, arrowhead_size) = match weight_change {
+                WeightChange::Down => (height * 0.85, -width / 12.0_f64),
+                WeightChange::Up => (height * 0.1, width / 12.0_f64),
+                WeightChange::NoChange => (width * 0.9, -width / 12.0_f64),
+            };
+            match weight_change {
+                WeightChange::Down | WeightChange::Up => {
+                    cr.move_to(width / 2.0, height * 0.1);
+                    cr.line_to(width / 2.0, height * 0.85);
+                    cr.move_to(width / 2.0, arrowhead_position);
+                    cr.line_to(
+                        width / 2.0 - arrowhead_size,
+                        arrowhead_position + arrowhead_size,
+                    );
+                    cr.move_to(width / 2.0, arrowhead_position);
+                    cr.line_to(
+                        width / 2.0 + arrowhead_size,
+                        arrowhead_position + arrowhead_size,
+                    );
+                }
+                WeightChange::NoChange => {
+                    cr.move_to(width - width * 0.85, height / 2.0);
+                    cr.line_to(width - width * 0.1, height / 2.0);
+                    cr.move_to(arrowhead_position, height / 2.0);
+                    cr.line_to(
+                        arrowhead_size + arrowhead_position,
+                        height / 2.0 - arrowhead_size,
+                    );
+                    cr.move_to(arrowhead_position, height / 2.0);
+                    cr.line_to(
+                        arrowhead_position + arrowhead_size,
+                        height / 2.0 + arrowhead_size,
+                    );
+                }
             }
+            cr.stroke().expect("Couldn't stroke on Cairo Context");
+            cr.save().unwrap();
         }
     }
     impl BinImpl for Arrows {}
@@ -115,20 +154,8 @@ impl Arrows {
         glib::Object::new(&[]).expect("Failed to create Arrows")
     }
 
-    pub fn set_weight(&self, weight: f32) {
-        let self_ = self.imp();
-        self_.inner.borrow_mut().weight = weight;
-        self.queue_draw();
-    }
-
-    pub fn set_weight_difference(&self, weight_difference: f32) {
-        let self_ = self.imp();
-        self_.inner.borrow_mut().difference = weight_difference;
-        self.queue_draw();
-    }
-
-    fn imp(&self) -> &imp::Arrows {
-        imp::Arrows::from_instance(self)
+    pub fn set_weight_change(&self, change: WeightChange) {
+        self.set_property("weight-change", change)
     }
 }
 

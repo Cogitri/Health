@@ -16,6 +16,8 @@ pub mod steps;
 pub mod unitsize;
 #[doc(hidden)]
 pub mod weight;
+#[doc(hidden)]
+pub mod weight_change;
 
 #[doc(inline)]
 pub use activity::*;
@@ -35,3 +37,5 @@ pub use steps::*;
 pub use unitsize::*;
 #[doc(inline)]
 pub use weight::*;
+#[doc(inline)]
+pub use weight_change::*;

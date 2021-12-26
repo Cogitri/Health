@@ -1,5 +1,6 @@
 use crate::{
     core::{i18n, ni18n_f, Settings, UnitSystem},
+    model::WeightChange,
     plugins::weight::GraphModelWeight,
     plugins::{PluginName, PluginSummaryRow},
     prelude::*,
@@ -106,9 +107,15 @@ impl PluginWeightSummaryRow {
                 weight_model.penultimate_weight().unwrap().get::<kilogram>()
             };
             let last_weight_round = last_weight.round_decimal_places(1);
-            self_.arrow.set_weight(last_weight_round);
             let difference = (last_weight - prev_weight).round_decimal_places(1);
-            self_.arrow.set_weight_difference(difference);
+            let change = if difference == 0.0 {
+                WeightChange::NoChange
+            } else if difference > 0.0 {
+                WeightChange::Up
+            } else {
+                WeightChange::Down
+            };
+            self_.arrow.set_weight_change(change);
             let subtitle = if settings.unit_system() == UnitSystem::Imperial {
                 // TRANSLATORS: Current user weight
                 ni18n_f(
@@ -167,7 +174,6 @@ impl PluginWeightSummaryRow {
                 self_.weight_change.set_label(&label)
             } else {
                 self_.weight_change.set_label(&i18n("No change in weight"));
-                self_.arrow_box.set_visible(false);
             }
             self_
                 .weight_subtext
