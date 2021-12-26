@@ -109,17 +109,6 @@ mod imp {
     }
 
     impl ObjectImpl for PluginDetails {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-
-            obj.bind_property("is-mocked", &*self.is_mocked_label, "visible")
-                .flags(glib::BindingFlags::SYNC_CREATE)
-                .build();
-            obj.bind_property("is-mocked", &*self.filled_subtitle_label, "visible")
-                .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::INVERT_BOOLEAN)
-                .build();
-        }
-
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
