@@ -11,7 +11,7 @@ use gtk::{glib, subclass::prelude::*};
 use uom::si::mass::{kilogram, pound};
 
 mod imp {
-    use crate::{plugins::PluginSummaryRow, prelude::*, widgets::Arrows};
+    use crate::{core::Database, plugins::PluginSummaryRow, prelude::*, widgets::Arrows};
     use adw::subclass::prelude::*;
     use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
@@ -43,7 +43,17 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for PluginWeightSummaryRow {}
+    impl ObjectImpl for PluginWeightSummaryRow {
+        fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
+            Database::instance().connect_weights_updated(glib::clone!(@weak obj => move || {
+                gtk_macros::spawn!(async move {
+                    obj.update().await;
+                });
+            }));
+        }
+    }
     impl WidgetImpl for PluginWeightSummaryRow {}
     impl ListBoxRowImpl for PluginWeightSummaryRow {}
     impl PreferencesRowImpl for PluginWeightSummaryRow {}

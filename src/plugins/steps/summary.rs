@@ -8,7 +8,9 @@ use adw::prelude::*;
 use gtk::{glib, subclass::prelude::*};
 
 mod imp {
-    use crate::{plugins::PluginSummaryRow, prelude::*, widgets::CircularProgressBar};
+    use crate::{
+        core::Database, plugins::PluginSummaryRow, prelude::*, widgets::CircularProgressBar,
+    };
     use adw::subclass::prelude::*;
     use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
@@ -36,7 +38,17 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for PluginStepsSummaryRow {}
+    impl ObjectImpl for PluginStepsSummaryRow {
+        fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
+            Database::instance().connect_activities_updated(glib::clone!(@weak obj => move || {
+                gtk_macros::spawn!(async move {
+                    obj.update().await;
+                });
+            }));
+        }
+    }
     impl WidgetImpl for PluginStepsSummaryRow {}
     impl ListBoxRowImpl for PluginStepsSummaryRow {}
     impl PreferencesRowImpl for PluginStepsSummaryRow {}

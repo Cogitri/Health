@@ -6,7 +6,7 @@ use crate::{
 use gtk::{glib, subclass::prelude::*};
 
 mod imp {
-    use crate::{plugins::PluginSummaryRow, prelude::*};
+    use crate::{core::Database, plugins::PluginSummaryRow, prelude::*};
     use adw::subclass::prelude::*;
     use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
@@ -32,7 +32,22 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for PluginCaloriesSummaryRow {}
+    impl ObjectImpl for PluginCaloriesSummaryRow {
+        fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
+            Database::instance().connect_weights_updated(glib::clone!(@weak obj => move || {
+                gtk_macros::spawn!(async move {
+                    obj.update().await;
+                });
+            }));
+            Database::instance().connect_activities_updated(glib::clone!(@weak obj => move || {
+                gtk_macros::spawn!(async move {
+                    obj.update().await;
+                });
+            }));
+        }
+    }
     impl WidgetImpl for PluginCaloriesSummaryRow {}
     impl ListBoxRowImpl for PluginCaloriesSummaryRow {}
     impl PreferencesRowImpl for PluginCaloriesSummaryRow {}
