@@ -20,7 +20,7 @@ mod imp {
         #[template_child]
         pub circular_progress_bar: TemplateChild<CircularProgressBar>,
         #[template_child]
-        pub steps_percentage: TemplateChild<gtk::Label>,
+        pub activity_subtext: TemplateChild<gtk::Label>,
     }
 
     #[glib::object_subclass]
@@ -105,9 +105,12 @@ impl PluginStepsSummaryRow {
         ));
         self_.circular_progress_bar.set_step_goal(step_goal.into());
         self_.circular_progress_bar.set_step_count(step_count);
-        self_.steps_percentage.set_text(&format!(
-            "{}%",
-            &((step_count / i64::from(step_goal.min(1)) * 100) as u32)
+        let steps_percentage = (step_count / i64::from(step_goal.min(1)) * 100) as u32;
+        self_.activity_subtext.set_text(&ni18n_f(
+            "Reached {}% of daily step goal",
+            "Reached {}% of daily step goal",
+            steps_percentage,
+            &[&steps_percentage.to_string()],
         ));
     }
 }
