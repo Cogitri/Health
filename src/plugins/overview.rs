@@ -72,6 +72,13 @@ mod imp {
                         None,
                         glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
                     ),
+                    glib::ParamSpecObject::new(
+                        "icon-widget",
+                        "icon-widget",
+                        "icon-widget",
+                        gtk::Image::static_type(),
+                        glib::ParamFlags::READABLE,
+                    ),
                 ]
             });
 
@@ -100,6 +107,7 @@ mod imp {
             match pspec.name() {
                 "icon-name" => self.icon.icon_name().to_value(),
                 "plugin-name" => self.plugin_name.get().unwrap().to_value(),
+                "icon-widget" => self.icon.to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -119,10 +127,6 @@ glib::wrapper! {
 }
 
 impl PluginOverviewRow {
-    pub fn icon_name(&self) -> String {
-        self.property("icon-name")
-    }
-
     pub fn new(plugin_name: PluginName, icon_name: &str, title: &str) -> Self {
         glib::Object::new(&[
             ("icon-name", &icon_name),
@@ -131,8 +135,24 @@ impl PluginOverviewRow {
         ])
         .expect("Failed to create PluginOverviewRow")
     }
+}
 
-    pub fn plugin_name(&self) -> PluginName {
+pub trait PluginOverviewRowExt {
+    fn icon_name(&self) -> String;
+    fn icon_widget(&self) -> gtk::Image;
+    fn plugin_name(&self) -> PluginName;
+}
+
+impl<O: IsA<PluginOverviewRow>> PluginOverviewRowExt for O {
+    fn icon_name(&self) -> String {
+        self.property("icon-name")
+    }
+
+    fn icon_widget(&self) -> gtk::Image {
+        self.property("icon-widget")
+    }
+
+    fn plugin_name(&self) -> PluginName {
         PluginName::from_str(&self.property::<String>("plugin-name")).unwrap()
     }
 }

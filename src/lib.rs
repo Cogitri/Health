@@ -94,7 +94,8 @@ pub mod prelude {
     pub use crate::core::date::prelude::*;
     pub use crate::core::utils::prelude::*;
     pub use crate::plugins::{
-        PluginDetailsExt, PluginDetailsImpl, PluginSummaryRowExt, PluginSummaryRowImpl,
+        PluginDetailsExt, PluginDetailsImpl, PluginOverviewRowExt, PluginSummaryRowExt,
+        PluginSummaryRowImpl,
     };
     pub use crate::views::ViewAddExt;
     pub use crate::windows::import_export_dialog_base::{

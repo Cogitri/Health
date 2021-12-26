@@ -291,6 +291,9 @@ impl ViewHomePage {
             .overview();
 
         self.imp().size_group.add_widget(&overview);
+        self.imp()
+            .summary_size_group
+            .add_widget(&overview.icon_widget());
 
         overview.upcast()
     }
