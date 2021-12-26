@@ -26,6 +26,7 @@ let
     gtkPatched
     harfbuzz
     libadwaita
+    librsvg
     libxml2
     lld_13
     meson_0_60
