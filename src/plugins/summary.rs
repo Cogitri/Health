@@ -37,7 +37,7 @@ mod imp {
     #[repr(C)]
     pub struct PluginSummaryRowClass {
         pub parent_class: adw::ffi::AdwActionRowClass,
-        pub update: Option<unsafe fn(&super::PluginSummaryRow) -> PinnedResultFuture<()>>,
+        pub update: fn(&super::PluginSummaryRow) -> PinnedResultFuture<()>,
     }
 
     unsafe impl ClassStruct for PluginSummaryRowClass {
@@ -69,12 +69,12 @@ mod imp {
         PluginSummaryRow::from_instance(this).update(this)
     }
 
-    pub(super) unsafe fn plugin_summary_row_update(
+    pub(super) fn plugin_summary_row_update(
         this: &super::PluginSummaryRow,
     ) -> PinnedResultFuture<()> {
-        let klass = &*(this.class() as *const _ as *const PluginSummaryRowClass);
+        let klass = this.class();
 
-        (klass.update.unwrap())(this)
+        (klass.as_ref().update)(this)
     }
 
     impl PluginSummaryRow {
@@ -93,7 +93,7 @@ mod imp {
         type Class = PluginSummaryRowClass;
 
         fn class_init(klass: &mut Self::Class) {
-            klass.update = Some(update_default_trampoline);
+            klass.update = update_default_trampoline;
         }
     }
 
@@ -184,7 +184,7 @@ pub trait PluginSummaryRowExt {
 
 impl<O: IsA<PluginSummaryRow>> PluginSummaryRowExt for O {
     fn update(&self) -> PinnedResultFuture<()> {
-        unsafe { imp::plugin_summary_row_update(self.upcast_ref()) }
+        imp::plugin_summary_row_update(self.upcast_ref())
     }
 
     fn plugin_name(&self) -> PluginName {
@@ -212,15 +212,8 @@ impl<T: PluginSummaryRowImpl> PluginSummaryRowImplExt for T {
     fn parent_update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture<()> {
         unsafe {
             let data = Self::type_data();
-            let parent_class = data
-                .as_ref()
-                .parent_class()
-                .cast::<imp::PluginSummaryRowClass>();
-            if let Some(ref f) = (*parent_class).update {
-                f(obj)
-            } else {
-                unimplemented!()
-            }
+            let parent_class = &*(data.as_ref().parent_class() as *mut imp::PluginSummaryRowClass);
+            (parent_class.update)(obj)
         }
     }
 }
@@ -230,7 +223,7 @@ unsafe impl<T: PluginSummaryRowImpl> IsSubclassable<T> for PluginSummaryRow {
         <adw::ActionRow as IsSubclassable<T>>::class_init(class.upcast_ref_mut());
 
         let klass = class.as_mut();
-        klass.update = Some(update_trampoline::<T>);
+        klass.update = update_trampoline::<T>;
     }
 
     fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
@@ -239,12 +232,11 @@ unsafe impl<T: PluginSummaryRowImpl> IsSubclassable<T> for PluginSummaryRow {
 }
 
 // Virtual method default implementation trampolines
-unsafe fn update_trampoline<T: ObjectSubclass>(this: &PluginSummaryRow) -> PinnedResultFuture<()>
+fn update_trampoline<T: ObjectSubclass>(this: &PluginSummaryRow) -> PinnedResultFuture<()>
 where
     T: PluginSummaryRowImpl,
 {
-    let instance = &*(this as *const _ as *const T::Instance);
-    let imp = instance.impl_();
+    let imp = T::from_instance(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.update(this)
 }
 
