@@ -19,7 +19,6 @@
     <file preprocess="xml-stripblanks">ui/tab_button.ui</file>
     <file preprocess="xml-stripblanks">ui/view_add_activity.ui</file>
     <file preprocess="xml-stripblanks">ui/view_add_weight.ui</file>
-    <file preprocess="xml-stripblanks">ui/view_add.ui</file>
     <file preprocess="xml-stripblanks">ui/view_home_page.ui</file>
     <file preprocess="xml-stripblanks">ui/window.ui</file>
 

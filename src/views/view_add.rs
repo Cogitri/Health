@@ -20,16 +20,13 @@ use adw::subclass::prelude::*;
 use gtk::glib::{self, prelude::*};
 mod imp {
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{glib, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
 
-    #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/dev/Cogitri/Health/ui/view_add.ui")]
+    #[derive(Debug, Default)]
     pub struct ViewAdd {
         pub icon_name: OnceCell<String>,
         pub view_title: OnceCell<String>,
-        #[template_child]
-        pub main_box: TemplateChild<gtk::Box>,
     }
 
     #[glib::object_subclass]
@@ -37,14 +34,6 @@ mod imp {
         const NAME: &'static str = "HealthViewAdd";
         type ParentType = adw::Bin;
         type Type = super::ViewAdd;
-
-        fn class_init(klass: &mut Self::Class) {
-            Self::bind_template(klass);
-        }
-
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
-            obj.init_template();
-        }
     }
 
     impl ObjectImpl for ViewAdd {
