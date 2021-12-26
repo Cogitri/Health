@@ -31,7 +31,6 @@ data/ui/setup_window.ui
 data/ui/shortcuts_window.ui
 data/ui/sync_list_box.ui
 data/ui/tab_button.ui
-data/ui/view_add.ui
 data/ui/view_add_activity.ui
 data/ui/view_add_weight.ui
 data/ui/view_home_page.ui
@@ -64,6 +63,7 @@ src/model/model_notification.rs
 src/model/steps.rs
 src/model/unitsize.rs
 src/model/weight.rs
+src/model/weight_change.rs
 src/plugins/activities/data_provider.rs
 src/plugins/activities/data_provider_mocked.rs
 src/plugins/activities/details.rs
