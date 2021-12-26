@@ -135,7 +135,7 @@ mod imp {
     impl BinImpl for PluginActivitiesDetails {}
 
     impl PluginDetailsImpl for PluginActivitiesDetails {
-        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
+        fn update(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
@@ -162,8 +162,14 @@ glib::wrapper! {
 impl PluginActivitiesDetails {
     /// Create a new [PluginActivitiesDetails] to display previous activities.
     pub fn new(data_provider: DataProvider) -> Self {
-        glib::Object::new(&[("data-provider", &DataProviderBoxed(data_provider))])
-            .expect("Failed to create PluginActivitiesDetails")
+        glib::Object::new(&[
+            (
+                "is-mocked",
+                &matches!(data_provider, DataProvider::Mocked(_)),
+            ),
+            ("data-provider", &DataProviderBoxed(data_provider)),
+        ])
+        .expect("Failed to create PluginActivitiesDetails")
     }
 
     /// Reload the [ModelActivity](crate::plugins::activities::ModelActivity)'s data and refresh the list of activities

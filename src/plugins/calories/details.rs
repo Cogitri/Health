@@ -132,7 +132,7 @@ mod imp {
     impl WidgetImpl for PluginCaloriesDetails {}
     impl BinImpl for PluginCaloriesDetails {}
     impl PluginDetailsImpl for PluginCaloriesDetails {
-        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
+        fn update(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
@@ -159,10 +159,16 @@ glib::wrapper! {
 impl PluginCaloriesDetails {
     /// Create a new [PluginCaloriesDetails] to display previous calorie data.
     pub fn new(data_provider: DataProvider) -> Self {
-        glib::Object::new(&[(
-            "data-provider",
-            &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
-        )])
+        glib::Object::new(&[
+            (
+                "is-mocked",
+                &matches!(data_provider, DataProvider::Mocked(_)),
+            ),
+            (
+                "data-provider",
+                &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
+            ),
+        ])
         .expect("Failed to create PluginCaloriesDetails")
     }
 

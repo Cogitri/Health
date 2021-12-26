@@ -129,7 +129,7 @@ mod imp {
     impl WidgetImpl for PluginStepsDetails {}
     impl BinImpl for PluginStepsDetails {}
     impl PluginDetailsImpl for PluginStepsDetails {
-        fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
+        fn update(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
                 glib::clone!(@weak obj => move |_, _, send| {
@@ -156,10 +156,16 @@ glib::wrapper! {
 impl PluginStepsDetails {
     /// Create a new [PluginStepsDetails] to display previous step activity.
     pub fn new(data_provider: DataProvider) -> Self {
-        glib::Object::new(&[(
-            "data-provider",
-            &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
-        )])
+        glib::Object::new(&[
+            (
+                "is-mocked",
+                &matches!(data_provider, DataProvider::Mocked(_)),
+            ),
+            (
+                "data-provider",
+                &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
+            ),
+        ])
         .expect("Failed to create PluginStepsDetails")
     }
 

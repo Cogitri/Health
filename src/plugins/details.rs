@@ -18,10 +18,7 @@
 
 use crate::prelude::*;
 use adw::subclass::prelude::*;
-use gtk::{
-    gio,
-    glib::{self, prelude::*},
-};
+use gtk::glib::{self, prelude::*};
 
 mod imp {
     use crate::prelude::*;
@@ -32,7 +29,7 @@ mod imp {
     #[repr(C)]
     pub struct PluginDetailsClass {
         pub parent_class: adw::ffi::AdwBinClass,
-        pub update_actual: fn(&super::PluginDetails) -> PinnedResultFuture<()>,
+        pub update: fn(&super::PluginDetails) -> PinnedResultFuture<()>,
     }
 
     unsafe impl ClassStruct for PluginDetailsClass {
@@ -74,20 +71,18 @@ mod imp {
     }
 
     // Virtual method default implementation trampolines
-    fn update_actual_default_trampoline(this: &super::PluginDetails) -> PinnedResultFuture<()> {
-        PluginDetails::from_instance(this).update_actual(this)
+    fn update_default_trampoline(this: &super::PluginDetails) -> PinnedResultFuture<()> {
+        PluginDetails::from_instance(this).update(this)
     }
 
-    pub(super) fn plugin_details_update_actual(
-        this: &super::PluginDetails,
-    ) -> PinnedResultFuture<()> {
+    pub(super) fn plugin_details_update(this: &super::PluginDetails) -> PinnedResultFuture<()> {
         let klass = this.class();
 
-        (klass.as_ref().update_actual)(this)
+        (klass.as_ref().update)(this)
     }
 
     impl PluginDetails {
-        fn update_actual(&self, obj: &super::PluginDetails) -> PinnedResultFuture<()> {
+        fn update(&self, obj: &super::PluginDetails) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
                 send.resolve(Ok(()));
             }))
@@ -102,7 +97,7 @@ mod imp {
         type Class = PluginDetailsClass;
 
         fn class_init(klass: &mut Self::Class) {
-            klass.update_actual = update_actual_default_trampoline;
+            klass.update = update_default_trampoline;
             klass.set_layout_manager_type::<gtk::BinLayout>();
 
             Self::bind_template(klass);
@@ -114,6 +109,17 @@ mod imp {
     }
 
     impl ObjectImpl for PluginDetails {
+        fn constructed(&self, obj: &Self::Type) {
+            self.parent_constructed(obj);
+
+            obj.bind_property("is-mocked", &*self.is_mocked_label, "visible")
+                .flags(glib::BindingFlags::SYNC_CREATE)
+                .build();
+            obj.bind_property("is-mocked", &*self.filled_subtitle_label, "visible")
+                .flags(glib::BindingFlags::SYNC_CREATE | glib::BindingFlags::INVERT_BOOLEAN)
+                .build();
+        }
+
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
@@ -184,12 +190,7 @@ mod imp {
                     .filled_subtitle_label
                     .set_label(value.get::<&str>().unwrap_or("")),
                 "is-mocked" => {
-                    let is_mocked = value.get().unwrap();
-                    self.is_mocked.set(is_mocked);
-                    if is_mocked {
-                        self.is_mocked_label.set_visible(true);
-                        self.filled_subtitle_label.set_visible(false);
-                    }
+                    self.is_mocked.set(value.get().unwrap());
                 }
                 _ => unimplemented!(),
             }
@@ -254,11 +255,6 @@ pub trait PluginDetailsExt {
     fn set_filled_subtitle(&self, val: &str);
     /// Set the title that's displayed when the view is filled (has data to display).
     fn set_filled_title(&self, val: &str);
-    /// Set whether the view is mocked.
-    ///
-    /// This is used to show the user a demo-version of how the view looks when they activate the plugin.
-    /// If this is enabled, we display some static data to the user.
-    fn set_is_mocked(&self, val: bool);
 
     /// Switch to the [gtk::StackPage] that shows the data.
     ///
@@ -269,16 +265,8 @@ pub trait PluginDetailsExt {
     /// Call this if your view previously was filled and is empty now.
     fn switch_to_empty_page(&self);
 
-    /// Public function to refresh the view's data.
-    ///
-    /// The default implementation of [PluginDetailsExt::update()] only calls [PluginDetailsExt::update_actual()] if `is-mocked` is false.
-    /// As such, most [PluginDetails] implementations should only implement [PluginDetailsExt::update_actual()].
+    /// Refresh the view's data.
     fn update(&self) -> PinnedResultFuture<()>;
-    /// Private function to refresh the view's data.
-    ///
-    /// This is only called if `is-mocked` is false, since mocked data is static and doesn't need to be updated. See [PluginDetailsExt::update()]
-    /// for more info.
-    fn update_actual(&self) -> PinnedResultFuture<()>;
 }
 
 impl<O: IsA<PluginDetails>> PluginDetailsExt for O {
@@ -310,10 +298,6 @@ impl<O: IsA<PluginDetails>> PluginDetailsExt for O {
     fn set_filled_title(&self, val: &str) {
         self.set_property("filled-title", val);
     }
-    fn set_is_mocked(&self, val: bool) {
-        self.set_property("is-mocked", val);
-    }
-
     fn switch_to_data_page(&self) {
         self.upcast_ref::<PluginDetails>()
             .imp()
@@ -328,36 +312,26 @@ impl<O: IsA<PluginDetails>> PluginDetailsExt for O {
     }
 
     fn update(&self) -> PinnedResultFuture<()> {
-        if self.is_mocked() {
-            Box::pin(gio::GioFuture::new(self.upcast_ref(), move |_, _, send| {
-                send.resolve(Ok(()));
-            }))
-        } else {
-            self.update_actual()
-        }
-    }
-
-    fn update_actual(&self) -> PinnedResultFuture<()> {
-        imp::plugin_details_update_actual(self.upcast_ref())
+        imp::plugin_details_update(self.upcast_ref())
     }
 }
 
 pub trait PluginDetailsImpl: BinImpl + 'static {
-    fn update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
-        self.parent_update_actual(obj)
+    fn update(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
+        self.parent_update(obj)
     }
 }
 
 pub trait PluginDetailsImplExt: ObjectSubclass {
-    fn parent_update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture<()>;
+    fn parent_update(&self, obj: &PluginDetails) -> PinnedResultFuture<()>;
 }
 
 impl<T: PluginDetailsImpl> PluginDetailsImplExt for T {
-    fn parent_update_actual(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
+    fn parent_update(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
         unsafe {
             let data = Self::type_data();
             let parent_class = &*(data.as_ref().parent_class() as *mut imp::PluginDetailsClass);
-            (parent_class.update_actual)(obj)
+            (parent_class.update)(obj)
         }
     }
 }
@@ -367,7 +341,7 @@ unsafe impl<T: PluginDetailsImpl> IsSubclassable<T> for PluginDetails {
         <adw::Bin as IsSubclassable<T>>::class_init(class.upcast_ref_mut());
 
         let klass = class.as_mut();
-        klass.update_actual = update_actual_trampoline::<T>;
+        klass.update = update_trampoline::<T>;
     }
 
     fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
@@ -376,12 +350,12 @@ unsafe impl<T: PluginDetailsImpl> IsSubclassable<T> for PluginDetails {
 }
 
 // Virtual method default implementation trampolines
-fn update_actual_trampoline<T: ObjectSubclass>(this: &PluginDetails) -> PinnedResultFuture<()>
+fn update_trampoline<T: ObjectSubclass>(this: &PluginDetails) -> PinnedResultFuture<()>
 where
     T: PluginDetailsImpl,
 {
     let imp = T::from_instance(this.dynamic_cast_ref::<T::Type>().unwrap());
-    imp.update_actual(this)
+    imp.update(this)
 }
 
 #[cfg(test)]
