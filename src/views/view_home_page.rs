@@ -20,16 +20,15 @@ use crate::{
     plugins::{PluginName, PluginObject, PluginSummaryRow, Registrar},
     prelude::*,
 };
-use gtk::{
-    glib::{self, prelude::*, subclass::prelude::*},
-    prelude::*,
-};
+use adw::prelude::*;
+use gtk::glib::{self, subclass::prelude::*};
 use std::str::FromStr;
 
 mod imp {
     use crate::{
         core::Settings,
         plugins::{PluginObject, PluginOverviewRow, PluginSummaryRow, Registrar},
+        prelude::*,
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
@@ -53,6 +52,8 @@ mod imp {
         pub all_data_box: TemplateChild<gtk::Box>,
         #[template_child]
         pub size_group: TemplateChild<gtk::SizeGroup>,
+        #[template_child]
+        pub summary_size_group: TemplateChild<gtk::SizeGroup>,
         #[template_child]
         pub enabled_plugins_stack: TemplateChild<gtk::Stack>,
     }
@@ -275,6 +276,9 @@ impl ViewHomePage {
         }));
 
         self.imp().size_group.add_widget(&summary);
+        self.imp()
+            .summary_size_group
+            .add_widget(&summary.summary_widget());
 
         summary.upcast()
     }

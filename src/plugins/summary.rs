@@ -32,7 +32,7 @@ mod imp {
     use adw::subclass::prelude::*;
     use gtk::{gio, glib, prelude::*, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
-    use std::str::FromStr;
+    use std::{cell::RefCell, str::FromStr};
 
     #[repr(C)]
     pub struct PluginSummaryRowClass {
@@ -61,6 +61,7 @@ mod imp {
     #[derive(Debug, Default)]
     pub struct PluginSummaryRow {
         pub plugin_name: OnceCell<PluginName>,
+        pub summary_widget: RefCell<Option<gtk::Widget>>,
     }
 
     // Virtual method default implementation trampolines
@@ -100,13 +101,22 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecString::new(
-                    "plugin-name",
-                    "plugin-name",
-                    "plugin-name",
-                    None,
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![
+                    glib::ParamSpecString::new(
+                        "plugin-name",
+                        "plugin-name",
+                        "plugin-name",
+                        None,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                    ),
+                    glib::ParamSpecObject::new(
+                        "summary-widget",
+                        "summary-widget",
+                        "summary-widget",
+                        gtk::Widget::static_type(),
+                        glib::ParamFlags::READWRITE,
+                    ),
+                ]
             });
             PROPERTIES.as_ref()
         }
@@ -114,6 +124,7 @@ mod imp {
         fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "plugin-name" => self.plugin_name.get().unwrap().to_value(),
+                "summary-widget" => self.summary_widget.borrow().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -130,6 +141,9 @@ mod imp {
                     .plugin_name
                     .set(PluginName::from_str(&value.get::<String>().unwrap()).unwrap())
                     .unwrap(),
+                "summary-widget" => {
+                    self.summary_widget.replace(Some(value.get().unwrap()));
+                }
                 _ => unimplemented!(),
             }
         }
@@ -156,21 +170,31 @@ impl PluginSummaryRow {
         glib::Object::new(&[("plugin-name", &plugin_name)])
             .expect("Failed to create PluginSummaryRow")
     }
-
-    pub fn plugin_name(&self) -> PluginName {
-        PluginName::from_str(&self.property::<String>("plugin-name")).unwrap()
-    }
 }
 
 /// [PluginSummaryRowExt] is implemented by all subclasses of [PluginSummaryRow].
 pub trait PluginSummaryRowExt {
     /// Update the [PluginSummaryRow]'s data
     fn update(&self) -> PinnedResultFuture<()>;
+
+    fn plugin_name(&self) -> PluginName;
+
+    fn summary_widget(&self) -> gtk::Widget;
 }
 
 impl<O: IsA<PluginSummaryRow>> PluginSummaryRowExt for O {
     fn update(&self) -> PinnedResultFuture<()> {
         unsafe { imp::plugin_summary_row_update(self.upcast_ref()) }
+    }
+
+    fn plugin_name(&self) -> PluginName {
+        PluginName::from_str(&self.property::<String>("plugin-name")).unwrap()
+    }
+
+    fn summary_widget(&self) -> gtk::Widget {
+        {
+            self.property("summary-widget")
+        }
     }
 }
 

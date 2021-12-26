@@ -44,6 +44,9 @@
     <object class="GtkSizeGroup" id="size_group">
       <property name="mode">vertical</property>
     </object>
+    <object class="GtkSizeGroup" id="summary_size_group">
+      <property name="mode">horizontal</property>
+    </object>
     <child>
       <object class="GtkStack" id="stack">
         <child>

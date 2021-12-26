@@ -23,6 +23,7 @@
   <requires lib="libadwaita" version="1.0"/>
   <template class="HealthPluginActivitiesSummaryRow" parent="HealthPluginSummaryRow">
     <property name="title" translatable="yes">Active Minutes</property>
+    <property name="summary-widget">label</property>
     <child>
       <object class="GtkLabel" id="label"/>
     </child>

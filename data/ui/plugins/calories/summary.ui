@@ -22,6 +22,7 @@
   <requires lib="libadwaita" version="1.0"/>
   <template class="HealthPluginCaloriesSummaryRow" parent="HealthPluginSummaryRow">
     <property name="title" translatable="yes">Calories Burned</property>
+    <property name="summary-widget">label</property>
     <child>
       <object class="GtkLabel" id="label"/>
     </child>

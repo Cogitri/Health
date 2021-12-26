@@ -22,8 +22,9 @@
   <requires lib="libadwaita" version="1.0"/>
   <template class="HealthPluginStepsSummaryRow" parent="HealthPluginSummaryRow">
     <property name="title" translatable="yes">Steps</property>
+    <property name="summary-widget">main_box</property>
     <child>
-      <object class="GtkBox">
+      <object class="GtkBox" id="main_box">
         <property name="orientation">vertical</property>
         <property name="margin-end">13</property>
         <child>
