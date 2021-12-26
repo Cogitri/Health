@@ -38,10 +38,9 @@
             <property name="max-width-chars">15</property>
             <!-- TRANSLATORS: This is displayed via two strings: x% and then this label. E.g. 100% of daily step goal -->
             <property translatable="yes" name="label">of daily step goal</property>
-            <attributes>
-              <attribute name="font-desc" value="8.0"></attribute>
-              <attribute name="weight" value="200.0"></attribute>
-            </attributes>
+            <style>
+              <class name="caption"/>
+            </style>
           </object>
         </child>
       </object>

@@ -63,10 +63,9 @@
                 <child>
                   <object class="GtkLabel" id="filled_title_label">
                     <property name="margin_top">25</property>
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
-                      <attribute name="font-desc" value="14.0"></attribute>
-                    </attributes>
+                    <style>
+                      <class name="heading"/>
+                    </style>
                   </object>
                 </child>
                 <child>
@@ -80,10 +79,7 @@
                         <property name="margin_end">6</property>
                         <property name="wrap">1</property>
                         <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
-                        <property name="visible" bind-source="HealthPluginDetails" bind-property="is-mocked" bind-flags="sync-create|invert-boolean"/>
-                        <attributes>
-                          <attribute name="font-desc" value="12.0"></attribute>
-                        </attributes>
+                        <property name="visible" bind-source="HealthPluginDetails" bind-property="is-mocked" bind-flags="sync-create|invert-boolean"/>    
                       </object>
                     </child>
                     <child>
@@ -96,9 +92,6 @@
                         <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
                         <property name="label" translatable="yes">This is a preview of how the plugin presents data. Enable the plugin to see your actual, live data.</property>
                         <property name="visible" bind-source="HealthPluginDetails" bind-property="is-mocked" bind-flags="sync-create"/>
-                        <attributes>
-                          <attribute name="font-desc" value="12.0"></attribute>
-                        </attributes>
                       </object>
                     </child>
                   </object>

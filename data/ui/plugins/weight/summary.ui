@@ -48,10 +48,9 @@
             <property name="wrap">1</property>
             <property name="max-width-chars">15</property>
             <property translatable="yes" name="label"></property>
-            <attributes>
-              <attribute name="font-desc" value="8.0"></attribute>
-              <attribute name="weight" value="200.0"></attribute>
-            </attributes>
+            <style>
+              <class name="caption"/>
+            </style>
           </object>
         </child>
       </object>

@@ -147,10 +147,9 @@
                     <property name="margin-bottom">10</property>
                     <property name="wrap">1</property>
                     <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
-                      <attribute name="font-desc" value="20.0"></attribute>
-                    </attributes>
+                    <style>
+                      <class name="title-1"/>
+                    </style>
                   </object>
                 </child>
                 <child>
@@ -158,9 +157,9 @@
                     <property name="label" translatable="yes">Please enter some information to get setup.</property>
                     <property name="wrap">1</property>
                     <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
-                    <attributes>
-                      <attribute name="font-desc" value="16.0"></attribute>
-                    </attributes>
+                    <style>
+                      <class name="title-2"/>
+                    </style>
                   </object>
                 </child>
                 <child>
@@ -252,10 +251,9 @@
                     <property name="margin-bottom">10</property>
                     <property name="wrap">1</property>
                     <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
-                      <attribute name="font-desc" value="20.0"></attribute>
-                    </attributes>
+                    <style>
+                      <class name="title-1"/>
+                    </style>
                   </object>
                 </child>
                 <child>
@@ -263,9 +261,9 @@
                     <property name="label" translatable="yes">The WHO recommends 10.000 steps per day.</property>
                     <property name="wrap">1</property>
                     <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
-                    <attributes>
-                      <attribute name="font-desc" value="16.0"></attribute>
-                    </attributes>
+                    <style>
+                      <class name="title-2"/>
+                    </style>
                   </object>
                 </child>
                 <child>
@@ -317,10 +315,9 @@
                     <property name="margin-bottom">10</property>
                     <property name="wrap">1</property>
                     <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
-                      <attribute name="font-desc" value="20.0"></attribute>
-                    </attributes>
+                    <style>
+                      <class name="title-1"/>
+                    </style>
                   </object>
                 </child>
                 <child>
@@ -328,10 +325,9 @@
                     <property name="label" translatable="yes">The WHO recommends a BMI of 18.5-24.9.</property>
                     <property name="wrap">1</property>
                     <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
-                      <attribute name="font-desc" value="16.0"></attribute>
-                    </attributes>
+                    <style>
+                      <class name="title-2"/>
+                    </style>
                   </object>
                 </child>
                 <child>
@@ -399,10 +395,9 @@
                     <property name="margin-bottom">10</property>
                     <property name="wrap">1</property>
                     <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
-                      <attribute name="font-desc" value="20.0"></attribute>
-                    </attributes>
+                    <style>
+                      <class name="title-1"/>
+                    </style>
                   </object>
                 </child>
                 <child>
@@ -411,10 +406,9 @@
                     <property name="margin-end">6</property>
                     <property name="margin-start">6</property>
                     <property name="wrap">1</property>
-                    <attributes>
-                      <attribute name="weight" value="PANGO_WEIGHT_BOLD"></attribute>
-                      <attribute name="font-desc" value="16.0"></attribute>
-                    </attributes>
+                    <style>
+                      <class name="title-2"/>
+                    </style>
                   </object>
                 </child>
                 <child>
