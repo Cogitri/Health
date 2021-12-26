@@ -188,16 +188,15 @@ impl PluginCaloriesDetails {
         let distinct_activities = calories_graph_model.distinct_activities();
         for i in 0..3 {
             if i < distinct_activities.len() {
-                self_
+                let info = ActivityInfo::from(distinct_activities[i]);
+                let legend_row = self_
                     .legend_box
                     .child_at(0, i as i32)
                     .unwrap()
                     .downcast::<LegendRow>()
-                    .unwrap()
-                    .set_legend_row(
-                        ActivityInfo::from(distinct_activities[i]).color,
-                        ActivityInfo::from(distinct_activities[i]).name,
-                    );
+                    .unwrap();
+                legend_row.set_color(info.color);
+                legend_row.set_activity_name(&info.name);
             }
             self_
                 .legend_box

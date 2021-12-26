@@ -16,19 +16,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::{gdk::RGBA, gio::subclass::prelude::*, glib, prelude::*};
+use gtk::{gdk, glib, prelude::*};
 
 mod imp {
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{gdk::RGBA, glib, subclass::prelude::*};
+    use gtk::{gdk, glib, subclass::prelude::*};
     use std::{cell::RefCell, f64::consts::PI};
 
-    pub struct ColorCircleMut {
-        pub color: RGBA,
-    }
-
     pub struct ColorCircle {
-        pub inner: RefCell<ColorCircleMut>,
+        pub color: RefCell<gdk::RGBA>,
     }
 
     #[glib::object_subclass]
@@ -39,19 +35,58 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                inner: RefCell::new(ColorCircleMut {
-                    color: gtk::gdk::RGBA::builder()
+                color: RefCell::new(
+                    gdk::RGBA::builder()
                         .red(0.0)
                         .green(0.0)
                         .blue(0.0)
                         .alpha(0.0)
                         .build(),
-                }),
+                ),
             }
         }
     }
 
-    impl ObjectImpl for ColorCircle {}
+    impl ObjectImpl for ColorCircle {
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecBoxed::new(
+                    "color",
+                    "color",
+                    "color",
+                    gdk::RGBA::static_type(),
+                    glib::ParamFlags::READWRITE,
+                )]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "color" => {
+                    self.color.replace(value.get().unwrap());
+                    obj.queue_draw();
+                }
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "color" => self.color.borrow().to_value(),
+                _ => unimplemented!(),
+            }
+        }
+    }
+
     impl WidgetImpl for ColorCircle {
         fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
             let cr = snapshot
@@ -66,7 +101,7 @@ mod imp {
             let height = f64::from(widget.height());
             let radius = height * 0.3;
             cr.set_line_width(2.5);
-            GdkCairoContextExt::set_source_rgba(&cr, &self.inner.borrow().color);
+            GdkCairoContextExt::set_source_rgba(&cr, &self.color.borrow());
             cr.arc(width / 2.0, height / 2.0, radius, 0.0, 2.0 * PI);
             cr.stroke_preserve()
                 .expect("Couldn't stroke on Cairo Context");
@@ -75,6 +110,7 @@ mod imp {
             cr.save().unwrap();
         }
     }
+
     impl BinImpl for ColorCircle {}
 }
 
@@ -86,18 +122,15 @@ glib::wrapper! {
 }
 
 impl ColorCircle {
+    pub fn color(&self) -> gdk::RGBA {
+        self.property("color")
+    }
+
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create ColorCircle")
     }
-
-    pub fn set_color(&self, color: RGBA) {
-        let self_ = self.imp();
-        self_.inner.borrow_mut().color = color;
-        self.queue_draw();
-    }
-
-    fn imp(&self) -> &imp::ColorCircle {
-        imp::ColorCircle::from_instance(self)
+    pub fn set_color(&self, color: gdk::RGBA) {
+        self.set_property("color", color);
     }
 }
 

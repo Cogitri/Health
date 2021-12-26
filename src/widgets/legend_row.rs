@@ -16,12 +16,15 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::{gdk::RGBA, glib, subclass::prelude::*};
+use gtk::{
+    gdk,
+    glib::{self, prelude::*},
+};
 
 mod imp {
     use crate::widgets::ColorCircle;
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{glib, subclass::prelude::*, CompositeTemplate};
+    use gtk::{gdk, glib, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/legend_row.ui")]
@@ -47,7 +50,53 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for LegendRow {}
+    impl ObjectImpl for LegendRow {
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![
+                    glib::ParamSpecString::new(
+                        "activity-name",
+                        "activity-name",
+                        "activity-name",
+                        None,
+                        glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecBoxed::new(
+                        "color",
+                        "color",
+                        "color",
+                        gdk::RGBA::static_type(),
+                        glib::ParamFlags::READWRITE,
+                    ),
+                ]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "activity-name" => self.activity_name.set_label(value.get().unwrap()),
+                "color" => self.color_circle.set_color(value.get().unwrap()),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "activity-name" => self.activity_name.label().to_value(),
+                "color" => self.color_circle.color().to_value(),
+                _ => unimplemented!(),
+            }
+        }
+    }
     impl WidgetImpl for LegendRow {}
     impl BinImpl for LegendRow {}
 }
@@ -60,18 +109,24 @@ glib::wrapper! {
 }
 
 impl LegendRow {
+    pub fn activity_name(&self) -> String {
+        self.property("activity-name")
+    }
+
+    pub fn color(&self) -> gdk::RGBA {
+        self.property("color")
+    }
+
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create LegendRow")
     }
 
-    pub fn set_legend_row(&self, color: RGBA, activity_name: String) {
-        let self_ = self.imp();
-        self_.activity_name.set_label(&activity_name);
-        self_.color_circle.set_color(color);
+    pub fn set_activity_name(&self, activity_name: &str) {
+        self.set_property("activity-name", activity_name)
     }
 
-    fn imp(&self) -> &imp::LegendRow {
-        imp::LegendRow::from_instance(self)
+    pub fn set_color(&self, color: gdk::RGBA) {
+        self.set_property("color", color)
     }
 }
 
