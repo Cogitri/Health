@@ -229,8 +229,13 @@ impl Settings {
     }
 
     /// Get the user's current weightgoal.
-    pub fn user_weight_goal(&self) -> Mass {
-        Mass::new::<kilogram>(self.get::<f64>("user-weightgoal") as f32)
+    pub fn user_weight_goal(&self) -> Option<Mass> {
+        let goal = self.get::<f64>("user-weightgoal");
+        if goal < 0.0 {
+            None
+        } else {
+            Some(Mass::new::<kilogram>(goal as f32))
+        }
     }
 
     /// Set the user's current weightgoal.
@@ -245,6 +250,7 @@ mod test {
     use super::Settings;
     use crate::utils::init_gschema;
     use chrono::{DateTime, FixedOffset, Local};
+    use uom::si::{f32::Mass, mass::kilogram};
 
     fn get() -> (Option<tempfile::TempDir>, Settings) {
         (init_gschema(), Settings::instance())
@@ -352,7 +358,11 @@ mod test {
     #[test]
     fn user_weight_goal() {
         let (_tmp, settings) = get();
-        settings.set_user_weight_goal(settings.user_weight_goal());
+        settings.set_user_weight_goal(
+            settings
+                .user_weight_goal()
+                .unwrap_or(Mass::new::<kilogram>(1.0)),
+        );
     }
 
     #[test]

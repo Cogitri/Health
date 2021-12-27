@@ -47,6 +47,7 @@ mod imp {
     use once_cell::unsync::OnceCell;
     use std::{cell::Cell, str::FromStr};
     use uom::si::{
+        f32::Mass,
         length::{centimeter, inch},
         mass::{kilogram, pound},
     };
@@ -145,13 +146,20 @@ mod imp {
                 self.height_spin_button
                     .set_value(f64::from(self.settings.user_height().get::<centimeter>()));
                 self.weight_goal_spin_button.set_value(f64::from(
-                    self.settings.user_weight_goal().get::<kilogram>(),
+                    self.settings
+                        .user_weight_goal()
+                        .unwrap_or_else(|| Mass::new::<kilogram>(-1.0))
+                        .get::<kilogram>(),
                 ));
             } else {
                 self.height_spin_button
                     .set_value(f64::from(self.settings.user_height().get::<inch>()));
-                self.weight_goal_spin_button
-                    .set_value(f64::from(self.settings.user_weight_goal().get::<pound>()));
+                self.weight_goal_spin_button.set_value(f64::from(
+                    self.settings
+                        .user_weight_goal()
+                        .unwrap_or_else(|| Mass::new::<pound>(-1.0))
+                        .get::<pound>(),
+                ));
             }
 
             self.step_goal_spin_button
@@ -162,8 +170,11 @@ mod imp {
             }
             self.bmi_levelbar.set_height(self.settings.user_height());
 
-            self.bmi_levelbar
-                .set_weight(self.settings.user_weight_goal());
+            self.bmi_levelbar.set_weight(
+                self.settings
+                    .user_weight_goal()
+                    .unwrap_or_else(|| Mass::new::<kilogram>(1.0)),
+            );
             obj.setup_actions();
             obj.connect_handlers();
             obj.handle_enable_notify_changed(true);

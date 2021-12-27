@@ -114,19 +114,19 @@ mod imp {
                         "height-meter",
                         "height-meter",
                         "User height in meters",
-                        0.01,
+                        0.0,
                         f32::MAX,
-                        0.01,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                        0.0,
+                        glib::ParamFlags::READWRITE,
                     ),
                     glib::ParamSpecFloat::new(
                         "weight-kilogram",
                         "weight-kilogram",
                         "User weight in kilogram",
-                        0.01,
+                        0.0,
                         f32::MAX,
-                        0.01,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                        0.0,
+                        glib::ParamFlags::READWRITE,
                     ),
                 ]
             });
@@ -196,6 +196,7 @@ impl BmiLevelBar {
 
     /// Set the height of the user.
     pub fn set_weight(&self, value: Mass) {
+        println!("Value {}", value.get::<kilogram>());
         self.set_property("weight-kilogram", value.get::<kilogram>())
     }
 
