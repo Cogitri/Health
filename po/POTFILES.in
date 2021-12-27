@@ -58,6 +58,7 @@ src/model/activity_data_points.rs
 src/model/activity_info.rs
 src/model/activity_type.rs
 src/model/activity_type_row_data.rs
+src/model/fn_boxed.rs
 src/model/mod.rs
 src/model/model_notification.rs
 src/model/steps.rs
