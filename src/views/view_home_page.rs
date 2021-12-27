@@ -80,7 +80,12 @@ mod imp {
         fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("view-changed", &[], glib::Type::UNIT.into()).build()]
+                vec![Signal::builder(
+                    "view-changed",
+                    &[String::static_type().into()],
+                    glib::Type::UNIT.into(),
+                )
+                .build()]
             });
 
             SIGNALS.as_ref()
@@ -195,9 +200,15 @@ impl ViewHomePage {
     ///
     /// # Returns
     /// A [glib::SignalHandlerId] that can be used for disconnecting the signal if so desired.
-    pub fn connect_view_changed<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
-        self.connect_local("view-changed", false, move |_| {
-            callback();
+    pub fn connect_view_changed<F: Fn(&Self, PluginName) + 'static>(
+        &self,
+        callback: F,
+    ) -> glib::SignalHandlerId {
+        self.connect_local("view-changed", false, move |values| {
+            callback(
+                &values[0].get().unwrap(),
+                PluginName::from_str(&values[1].get::<String>().unwrap()).unwrap(),
+            );
             None
         })
     }
@@ -310,7 +321,7 @@ impl ViewHomePage {
 
         self_.stack.add_named(&details, Some(plugin_name.as_ref()));
         self_.stack.set_visible_child_name(plugin_name.as_ref());
-        self.emit_by_name::<()>("view-changed", &[]);
+        self.emit_by_name::<()>("view-changed", &[&plugin_name.as_ref()]);
         list_box.unselect_all();
 
         gtk_macros::spawn!(async move {

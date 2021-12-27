@@ -45,7 +45,7 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            Database::instance().connect_weights_updated(glib::clone!(@weak obj => move || {
+            Database::instance().connect_weights_updated(glib::clone!(@weak obj => move |_| {
                 gtk_macros::spawn!(async move {
                     obj.update().await;
                 });

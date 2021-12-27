@@ -94,7 +94,7 @@ mod imp {
             list_view.style_context().add_class("content");
             self.activities_list_view.set(list_view).unwrap();
 
-            Database::instance().connect_activities_updated(glib::clone!(@weak obj => move || {
+            Database::instance().connect_activities_updated(glib::clone!(@weak obj => move |_| {
                 gtk_macros::spawn!(async move {
                     obj.update().await;
                 });

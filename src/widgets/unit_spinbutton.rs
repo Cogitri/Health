@@ -275,14 +275,11 @@ impl UnitSpinButton {
         &self,
         callback: F,
     ) -> glib::SignalHandlerId {
-        self.connect_local(
-            "changed",
-            false,
-            clone!(@weak self as obj => @default-panic, move |_| {
-                callback(&obj.imp().spin_button);
-                None
-            }),
-        )
+        self.connect_local("changed", false, move |values| {
+            let obj: Self = values[0].get().unwrap();
+            callback(&obj.imp().spin_button);
+            None
+        })
     }
 
     /// Connect to a new value being entered (this is emitted for every change (e.g. key hit) the user does!).
@@ -296,14 +293,11 @@ impl UnitSpinButton {
         &self,
         callback: F,
     ) -> glib::SignalHandlerId {
-        self.connect_local(
-            "input",
-            false,
-            clone!(@weak self as obj => @default-panic, move |_| {
-                callback(&obj.imp().spin_button);
-                None
-            }),
-        )
+        self.connect_local("input", false, move |values| {
+            let obj: Self = values[0].get().unwrap();
+            callback(&obj.imp().spin_button);
+            None
+        })
     }
 
     pub fn new(

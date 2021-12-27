@@ -186,9 +186,12 @@ glib::wrapper! {
 
 #[gtk::template_callbacks(value)]
 impl PreferencesWindow {
-    pub fn connect_import_done<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
-        self.connect_local("import-done", false, move |_| {
-            callback();
+    pub fn connect_import_done<F: Fn(&Self) + 'static>(
+        &self,
+        callback: F,
+    ) -> glib::SignalHandlerId {
+        self.connect_local("import-done", false, move |values| {
+            callback(&values[0].get().unwrap());
             None
         })
     }

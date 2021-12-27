@@ -97,12 +97,12 @@ impl Database {
     ///
     /// # Returns
     /// A [glib::SignalHandlerId] that can be used for disconnecting the signal if so desired.
-    pub fn connect_activities_updated<F: Fn() + 'static>(
+    pub fn connect_activities_updated<F: Fn(&Self) + 'static>(
         &self,
         callback: F,
     ) -> glib::SignalHandlerId {
-        self.connect_local("activities-updated", false, move |_| {
-            callback();
+        self.connect_local("activities-updated", false, move |values| {
+            callback(&values[0].get().unwrap());
             None
         })
     }
@@ -114,9 +114,12 @@ impl Database {
     ///
     /// # Returns
     /// A [glib::SignalHandlerId] that can be used for disconnecting the signal if so desired.
-    pub fn connect_weights_updated<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
-        self.connect_local("weights-updated", false, move |_| {
-            callback();
+    pub fn connect_weights_updated<F: Fn(&Self) + 'static>(
+        &self,
+        callback: F,
+    ) -> glib::SignalHandlerId {
+        self.connect_local("weights-updated", false, move |values| {
+            callback(&values[0].get().unwrap());
             None
         })
     }

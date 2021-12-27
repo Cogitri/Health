@@ -184,9 +184,9 @@ impl SetupWindow {
     ///
     /// # Returns
     /// The [glib::SignalHandlerId] to disconnect the signal later on.
-    pub fn connect_setup_done<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
-        self.connect_local("setup-done", false, move |_| {
-            callback();
+    pub fn connect_setup_done<F: Fn(&Self) + 'static>(&self, callback: F) -> glib::SignalHandlerId {
+        self.connect_local("setup-done", false, move |values| {
+            callback(&values[0].get().unwrap());
             None
         })
     }

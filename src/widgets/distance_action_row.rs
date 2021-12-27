@@ -130,9 +130,9 @@ impl DistanceActionRow {
     ///
     /// # Returns
     /// The [glib::SignalHandlerId] to disconnect the signal later on.
-    pub fn connect_changed<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
-        self.connect_local("changed", false, move |_| {
-            callback();
+    pub fn connect_changed<F: Fn(&Self) + 'static>(&self, callback: F) -> glib::SignalHandlerId {
+        self.connect_local("changed", false, move |values| {
+            callback(&values[0].get().unwrap());
             None
         })
     }
@@ -144,9 +144,9 @@ impl DistanceActionRow {
     ///
     /// # Returns
     /// The [glib::SignalHandlerId] to disconnect the signal later on.
-    pub fn connect_input<F: Fn() + 'static>(&self, callback: F) -> glib::SignalHandlerId {
-        self.connect_local("input", false, move |_| {
-            callback();
+    pub fn connect_input<F: Fn(&Self) + 'static>(&self, callback: F) -> glib::SignalHandlerId {
+        self.connect_local("input", false, move |values| {
+            callback(&values[0].get().unwrap());
             None
         })
     }

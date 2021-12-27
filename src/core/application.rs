@@ -73,7 +73,7 @@ mod imp {
             } else if !has_window {
                 let setup_window = SetupWindow::new(obj);
 
-                setup_window.connect_setup_done(clone!(@weak obj => move || {
+                setup_window.connect_setup_done(clone!(@weak obj => move |_| {
                     obj.handle_setup_window_setup_done();
                 }));
 
