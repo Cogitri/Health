@@ -38,7 +38,6 @@ pub struct Settings(gio::Settings);
 static mut SETTINGS: Option<Settings> = None;
 
 impl Settings {
-    settings_getter_setter!(u32, current_view_id, "current-view-id");
     settings_getter_setter!(bool, did_initial_setup, "did-initial-setup");
     settings_getter_setter!(bool, enable_notifications, "enable-notifications");
     settings_getter_setter!(String, notification_time, "notification-time");
@@ -254,12 +253,6 @@ mod test {
 
     fn get() -> (Option<tempfile::TempDir>, Settings) {
         (init_gschema(), Settings::instance())
-    }
-
-    #[test]
-    fn current_view_id() {
-        let (_tmp, settings) = get();
-        settings.set_current_view_id(settings.current_view_id());
     }
 
     #[test]
