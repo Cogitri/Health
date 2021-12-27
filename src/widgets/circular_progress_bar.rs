@@ -24,8 +24,8 @@ mod imp {
     use std::{cell::RefCell, f64::consts::PI};
 
     pub struct CircularProgressBarMut {
-        pub step_goal: i64,
-        pub step_count: i64,
+        pub step_goal: u32,
+        pub step_count: u32,
     }
     pub struct CircularProgressBar {
         pub inner: RefCell<CircularProgressBarMut>,
@@ -144,8 +144,8 @@ mod imp {
                     height / 2.0,
                     radius,
                     -0.5 * PI,
-                    ((self.inner.borrow().step_count as f64)
-                        / self.inner.borrow().step_goal as f64)
+                    (f64::from(self.inner.borrow().step_count)
+                        / f64::from(self.inner.borrow().step_goal))
                         * 2.0
                         * PI
                         - 0.5 * PI,

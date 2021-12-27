@@ -196,7 +196,6 @@ impl BmiLevelBar {
 
     /// Set the height of the user.
     pub fn set_weight(&self, value: Mass) {
-        println!("Value {}", value.get::<kilogram>());
         self.set_property("weight-kilogram", value.get::<kilogram>())
     }
 
