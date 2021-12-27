@@ -4,6 +4,7 @@ use std::{cell::RefCell, rc::Rc};
 
 #[derive(Clone, glib::Boxed)]
 #[boxed_type(name = "FnBoxedTuple")]
+#[allow(clippy::type_complexity)]
 pub struct FnBoxedTuple(pub Rc<RefCell<Option<Box<dyn Fn(&Tuple) -> String>>>>);
 
 impl FnBoxedTuple {
@@ -14,6 +15,7 @@ impl FnBoxedTuple {
 
 #[derive(Clone, glib::Boxed)]
 #[boxed_type(name = "FnBoxedPoint")]
+#[allow(clippy::type_complexity)]
 pub struct FnBoxedPoint(pub Rc<RefCell<Option<Box<dyn Fn(&Point) -> String>>>>);
 
 impl FnBoxedPoint {

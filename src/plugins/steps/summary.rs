@@ -103,7 +103,7 @@ impl PluginStepsSummaryRow {
             step_count.try_into().unwrap(),
             &[&step_count.to_string()],
         ));
-        self_.circular_progress_bar.set_step_goal(step_goal.into());
+        self_.circular_progress_bar.set_step_goal(step_goal);
         self_
             .circular_progress_bar
             .set_step_count(step_count.try_into().unwrap());
