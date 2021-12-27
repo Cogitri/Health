@@ -40,7 +40,7 @@
           <object class="GtkLabel" id="weight_change">
             <property name="wrap">1</property>
             <property name="max-width-chars">8</property>
-            <property name="label" translatable="yes">No weight record added</property>
+            <property name="justify">center</property>
             <style>
               <class name="caption"/>
             </style>
