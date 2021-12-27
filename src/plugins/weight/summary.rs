@@ -21,8 +21,6 @@ mod imp {
         #[template_child]
         pub weight_change: TemplateChild<gtk::Label>,
         #[template_child]
-        pub arrow_box: TemplateChild<gtk::ScrolledWindow>,
-        #[template_child]
         pub arrow: TemplateChild<Arrows>,
     }
 

@@ -29,11 +29,9 @@
         <property name="margin-top">3</property>
         <property name="margin-bottom">3</property>
         <child>
-          <object class="GtkScrolledWindow" id="arrow_box">
-            <child>
-              <object class="HealthArrows" id="arrow">
-              </object>
-            </child>
+          <object class="HealthArrows" id="arrow">
+            <property name="height-request">50</property>
+            <property name="width-request">50</property>
           </object>
         </child>
         <child>

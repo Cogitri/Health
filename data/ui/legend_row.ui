@@ -24,11 +24,10 @@
     <child>
       <object class="GtkBox">
         <child>
-          <object class="GtkScrolledWindow">
-            <property name="vscrollbar-policy">GTK_POLICY_NEVER</property>
-            <child>
-              <object class="HealthColorCircle" id="color_circle"/>
-            </child>
+          <object class="HealthColorCircle" id="color_circle">
+            <property name="height-request">15</property>
+            <property name="width-request">15</property>
+            <property name="margin-right">6</property>
           </object>
         </child>
         <child>
