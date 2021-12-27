@@ -1098,7 +1098,7 @@ mod test {
         let was_called = Rc::new(Cell::new(false));
         let activity = Activity::new();
 
-        db.connect_activities_updated(glib::clone!(@weak was_called => move || {
+        db.connect_activities_updated(glib::clone!(@weak was_called => move |_| {
             was_called.set(true);
         }));
         async move {
@@ -1116,7 +1116,7 @@ mod test {
         let date = Local::now();
         let weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
 
-        db.connect_weights_updated(glib::clone!(@weak was_called => move || {
+        db.connect_weights_updated(glib::clone!(@weak was_called => move |_| {
             was_called.set(true);
         }));
         async move {

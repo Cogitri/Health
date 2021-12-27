@@ -34,15 +34,25 @@ use std::{convert::TryInto, string::ToString};
     strum::AsRefStr,
 )]
 #[strum(serialize_all = "snake_case")]
-pub enum NotifyMode {
+pub enum NotificationFrequency {
     Hourly,
-    Every4hrs,
+    Every4Hrs,
     Fixed,
 }
 
-impl Default for NotifyMode {
+impl Default for NotificationFrequency {
     fn default() -> Self {
-        Self::Every4hrs
+        Self::Every4Hrs
+    }
+}
+
+impl glib::ToValue for NotificationFrequency {
+    fn to_value(&self) -> glib::Value {
+        self.as_ref().to_value()
+    }
+
+    fn value_type(&self) -> glib::Type {
+        <String as glib::StaticType>::static_type()
     }
 }
 
@@ -111,14 +121,14 @@ impl ModelNotification {
             NaiveTime::parse_from_str(self.imp().settings.notification_time().as_str(), "%H:%M:%S")
                 .unwrap();
         let interval = match self.imp().settings.notification_frequency() {
-            NotifyMode::Hourly => 60,
-            NotifyMode::Every4hrs => 60 * 4,
-            NotifyMode::Fixed => 0,
+            NotificationFrequency::Hourly => 60,
+            NotificationFrequency::Every4Hrs => 60 * 4,
+            NotificationFrequency::Fixed => 0,
         };
         let fixed_time = time_now.hour() == notify_time.hour()
             && time_now.minute() == notify_time.minute()
-            && self.imp().settings.notification_frequency() == NotifyMode::Fixed;
-        let periodic = self.imp().settings.notification_frequency() != NotifyMode::Fixed
+            && self.imp().settings.notification_frequency() == NotificationFrequency::Fixed;
+        let periodic = self.imp().settings.notification_frequency() != NotificationFrequency::Fixed
             && self.imp().inner.borrow().hour_count % interval == 0;
         if (fixed_time || periodic) && self.imp().settings.enable_notifications() {
             Notification::new()

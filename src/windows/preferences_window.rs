@@ -18,7 +18,7 @@
 
 use crate::{
     core::{i18n, UnitSystem},
-    model::NotifyMode,
+    model::NotificationFrequency,
     prelude::*,
     windows::{ExportDialog, ImportDialog},
 };
@@ -39,12 +39,13 @@ use uom::si::{
 mod imp {
     use crate::{
         core::{Settings, UnitSystem},
+        model::NotificationFrequency,
         widgets::{BmiLevelBar, DateSelector, SyncListBox, UnitSpinButton},
     };
     use adw::prelude::*;
     use gtk::{glib, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
-    use std::cell::Cell;
+    use std::{cell::Cell, str::FromStr};
     use uom::si::{
         length::{centimeter, inch},
         mass::{kilogram, pound},
@@ -168,6 +169,40 @@ mod imp {
             obj.handle_enable_notify_changed(true);
             obj.init_time_buttons();
         }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecString::new(
+                    "notification-frequency",
+                    "notification-frequency",
+                    "notification-frequency",
+                    Some("every_4_hrs"),
+                    glib::ParamFlags::WRITABLE,
+                )]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "notification-frequency" => {
+                    let frequency =
+                        NotificationFrequency::from_str(&value.get::<String>().unwrap()).unwrap();
+                    self.settings.set_notification_frequency(frequency);
+                    self.reminder_time
+                        .set_visible(frequency == NotificationFrequency::Fixed);
+                }
+                _ => unimplemented!(),
+            }
+        }
     }
 
     impl WidgetImpl for PreferencesWindow {}
@@ -218,7 +253,7 @@ impl PreferencesWindow {
     fn handle_frequency(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
         let parameter = parameter.unwrap();
         self.set_notification_frequency(
-            NotifyMode::from_str(parameter.get::<String>().unwrap().as_str()).unwrap(),
+            NotificationFrequency::from_str(parameter.get::<String>().unwrap().as_str()).unwrap(),
         );
         action.set_state(parameter);
     }
@@ -239,11 +274,8 @@ impl PreferencesWindow {
         self.insert_action_group("notification", Some(&action_group));
     }
 
-    fn set_notification_frequency(&self, frequency: NotifyMode) {
-        self.imp().settings.set_notification_frequency(frequency);
-        self.imp()
-            .reminder_time
-            .set_visible(frequency == NotifyMode::Fixed);
+    fn set_notification_frequency(&self, frequency: NotificationFrequency) {
+        self.set_property("notification-frequency", frequency)
     }
 
     fn connect_handlers(&self) {
@@ -281,7 +313,7 @@ impl PreferencesWindow {
         self_.periodic_frequency_select.set_visible(switch_state);
         self_.reminder_time.set_visible(
             self_.settings.enable_notifications()
-                && self_.settings.notification_frequency() == NotifyMode::Fixed,
+                && self_.settings.notification_frequency() == NotificationFrequency::Fixed,
         );
         if switch_state && ashpd::is_sandboxed() && !initializing {
             spawn!(clone!(@weak self as obj => async move {

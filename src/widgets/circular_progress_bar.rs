@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::{gio::subclass::prelude::*, glib, prelude::*};
+use gtk::{glib, prelude::*};
 
 mod imp {
     use adw::{prelude::*, subclass::prelude::*};
@@ -55,6 +55,62 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
             obj.set_size_request(65, 65);
+        }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![
+                    glib::ParamSpecUInt::new(
+                        "step-count",
+                        "step-count",
+                        "step-count",
+                        0,
+                        u32::MAX,
+                        0,
+                        glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecUInt::new(
+                        "step-goal",
+                        "step-goal",
+                        "step-goal",
+                        0,
+                        u32::MAX,
+                        0,
+                        glib::ParamFlags::READWRITE,
+                    ),
+                ]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "step-count" => {
+                    self.inner.borrow_mut().step_count = value.get().unwrap();
+                    obj.queue_draw();
+                }
+                "step-goal" => {
+                    self.inner.borrow_mut().step_goal = value.get().unwrap();
+                    obj.queue_draw();
+                }
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "step-count" => self.inner.borrow().step_count.to_value(),
+                "step-goal" => self.inner.borrow().step_goal.to_value(),
+                _ => unimplemented!(),
+            }
         }
     }
 
@@ -114,20 +170,20 @@ impl CircularProgressBar {
         glib::Object::new(&[]).expect("Failed to create CircularProgressBar")
     }
 
-    pub fn set_step_goal(&self, step_goal: i64) {
-        let self_ = self.imp();
-        self_.inner.borrow_mut().step_goal = step_goal;
-        self.queue_draw();
+    pub fn set_step_count(&self, step_count: u32) {
+        self.set_property("step-count", step_count)
     }
 
-    pub fn set_step_count(&self, step_count: i64) {
-        let self_ = self.imp();
-        self_.inner.borrow_mut().step_count = step_count;
-        self.queue_draw();
+    pub fn set_step_goal(&self, step_goal: u32) {
+        self.set_property("step-goal", step_goal)
     }
 
-    fn imp(&self) -> &imp::CircularProgressBar {
-        imp::CircularProgressBar::from_instance(self)
+    pub fn step_count(&self) -> u32 {
+        self.property("step-count")
+    }
+
+    pub fn step_goal(&self) -> u32 {
+        self.property("step-goal")
     }
 }
 

@@ -131,6 +131,15 @@ mod imp {
                         None,
                         glib::ParamFlags::READWRITE,
                     ),
+                    glib::ParamSpecDouble::new(
+                        "value",
+                        "value",
+                        "value",
+                        0.0,
+                        f64::MAX,
+                        0.0,
+                        glib::ParamFlags::READWRITE,
+                    ),
                 ]
             });
 
@@ -175,6 +184,7 @@ mod imp {
                 "unit-system" => obj.handle_settings_unit_system_changed(
                     UnitSystem::from_str(value.get().unwrap()).unwrap(),
                 ),
+                "value" => self.spin_button.set_value(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -207,6 +217,7 @@ mod imp {
                     .borrow()
                     .current_unit_system
                     .map_or_else(|| None::<String>.to_value(), |u| u.to_value()),
+                "value" => self.spin_button.value().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -326,10 +337,10 @@ impl UnitSpinButton {
     }
 
     pub fn set_value(&self, value: f64) {
-        self.imp().spin_button.set_value(value);
+        self.set_property("value", value)
     }
     pub fn value(&self) -> f64 {
-        self.imp().spin_button.value()
+        self.property("value")
     }
 
     fn connect_handlers(&self) {

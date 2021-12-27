@@ -16,7 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::UnitSystem, model::NotifyMode, plugins::PluginName, settings_getter_setter};
+use crate::{
+    core::UnitSystem, model::NotificationFrequency, plugins::PluginName, settings_getter_setter,
+};
 use chrono::{Date, DateTime, FixedOffset};
 use gtk::{
     gio::{self, prelude::*},
@@ -163,12 +165,12 @@ impl Settings {
     }
 
     /// Get the current notification frequency.
-    pub fn notification_frequency(&self) -> NotifyMode {
-        NotifyMode::from_i32(self.enum_("notification-frequency")).unwrap()
+    pub fn notification_frequency(&self) -> NotificationFrequency {
+        NotificationFrequency::from_i32(self.enum_("notification-frequency")).unwrap()
     }
 
     /// Set the current notification frequency.
-    pub fn set_notification_frequency(&self, value: NotifyMode) {
+    pub fn set_notification_frequency(&self, value: NotificationFrequency) {
         self.set_enum("notification-frequency", value.to_i32().unwrap())
             .unwrap();
     }

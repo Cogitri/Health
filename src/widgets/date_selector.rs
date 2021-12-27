@@ -26,7 +26,7 @@ use gtk::{
 
 mod imp {
     use crate::prelude::*;
-    use chrono::{Datelike, Local, NaiveDate};
+    use chrono::{DateTime, Datelike, FixedOffset, Local, NaiveDate};
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
@@ -122,7 +122,15 @@ mod imp {
         ) {
             match pspec.name() {
                 "selected-date" => {
-                    let date = value.get::<DateTimeBoxed>().unwrap().0.date();
+                    let datetime = value.get::<DateTimeBoxed>().unwrap().0;
+
+                    let now: DateTime<FixedOffset> = Local::now().into();
+                    let date = if datetime.date() > now.date() {
+                        now
+                    } else {
+                        datetime
+                    };
+
                     self.day_adjustment
                         .set_upper(obj.get_days_from_month(date.year(), date.month()) as f64);
                     self.day_spinner.set_value(date.day().into());
@@ -175,14 +183,7 @@ impl DateSelector {
 
     /// Set the currently selected date.
     pub fn set_selected_date(&self, value: DateTime<FixedOffset>) {
-        let now: DateTime<FixedOffset> = Local::now().into();
-        let datetime = if value.date() > now.date() {
-            now
-        } else {
-            value
-        };
-
-        self.set_property("selected-date", DateTimeBoxed(datetime));
+        self.set_property("selected-date", DateTimeBoxed(value));
     }
 
     fn date_to_datetime_boxed(&self, d: NaiveDate) -> DateTimeBoxed {

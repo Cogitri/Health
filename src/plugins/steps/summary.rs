@@ -104,7 +104,9 @@ impl PluginStepsSummaryRow {
             &[&step_count.to_string()],
         ));
         self_.circular_progress_bar.set_step_goal(step_goal.into());
-        self_.circular_progress_bar.set_step_count(step_count);
+        self_
+            .circular_progress_bar
+            .set_step_count(step_count.try_into().unwrap());
         let steps_percentage = (step_count / i64::from(step_goal.min(1)) * 100) as u32;
         self_.activity_subtext.set_text(&ni18n_f(
             "Reached {}% of daily step goal",

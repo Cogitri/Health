@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use crate::model::FnBoxedPoint;
 use crate::prelude::*;
 use chrono::{Date, FixedOffset, Local};
 use gtk::{gdk, gio::subclass::prelude::*, glib, pango, prelude::*};
@@ -33,6 +34,7 @@ static HALF_Y_PADDING: f32 = 30.0;
 
 mod imp {
     use super::{Point, HALF_X_PADDING, HALF_Y_PADDING};
+    use crate::model::FnBoxedPoint;
     use crate::prelude::*;
     use gtk::{
         gdk::prelude::*,
@@ -414,6 +416,94 @@ mod imp {
             let mut inner = self.inner.borrow_mut();
             inner.hover_max_pointer_deviation = (8 * obj.scale_factor()).try_into().unwrap();
         }
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![
+                    glib::ParamSpecBoxed::new(
+                        "hover-func",
+                        "hover-func",
+                        "hover-func",
+                        FnBoxedPoint::static_type(),
+                        glib::ParamFlags::WRITABLE,
+                    ),
+                    glib::ParamSpecFloat::new(
+                        "limit",
+                        "limit",
+                        "limit",
+                        -1.0,
+                        f32::MAX,
+                        -1.0,
+                        glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecString::new(
+                        "limit-label",
+                        "limit-label",
+                        "limit-label",
+                        None,
+                        glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecFloat::new(
+                        "x-lines-interval",
+                        "x-lines-interval",
+                        "x-lines-interval",
+                        0.0,
+                        f32::MAX,
+                        0.0,
+                        glib::ParamFlags::READWRITE,
+                    ),
+                ]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "hover-func" => {
+                    self.inner.borrow_mut().hover_func =
+                        value.get::<FnBoxedPoint>().unwrap().0.borrow_mut().take()
+                }
+                "limit" => {
+                    let mut inner = self.inner.borrow_mut();
+                    let val = value.get::<f32>().unwrap();
+                    let limit = if val < 0.0 { None } else { Some(val) };
+
+                    inner.limit = limit;
+
+                    if inner.biggest_value < inner.limit.unwrap_or(0.0) {
+                        inner.biggest_value = inner.limit.unwrap();
+                    }
+
+                    obj.queue_draw();
+                }
+
+                "limit-label" => {
+                    self.inner.borrow_mut().limit_label = value.get().unwrap();
+                    obj.queue_draw();
+                }
+                "x-lines-interval" => {
+                    self.inner.borrow_mut().x_lines_interval = value.get().unwrap();
+                    obj.queue_draw();
+                }
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "limit" => self.inner.borrow().limit.unwrap_or(-1.0).to_value(),
+                "limit-label" => self.inner.borrow().limit_label.to_value(),
+                "x-lines-interval" => self.inner.borrow().x_lines_interval.to_value(),
+                _ => unimplemented!(),
+            }
+        }
     }
 }
 
@@ -429,31 +519,35 @@ impl GraphView {
         glib::Object::new(&[]).expect("Failed to create GraphView")
     }
 
+    pub fn limit(&self) -> Option<f32> {
+        let val = self.property::<f32>("limit");
+        if val < 0.0 {
+            None
+        } else {
+            Some(val)
+        }
+    }
+
+    pub fn limit_label(&self) -> Option<String> {
+        self.property("limit-label")
+    }
+
     /// Set the function that should be called when the user hovers over a point.
     ///
     /// # Arguments
     /// * `hover_func` - A function that takes a `Point` and renders it to a string that is displayed as tooltip on the graph.
     pub fn set_hover_func(&self, hover_func: Option<Box<dyn Fn(&Point) -> String>>) {
-        self.imp().inner.borrow_mut().hover_func = hover_func;
-        self.queue_draw();
+        self.set_property("hover-func", FnBoxedPoint::new(hover_func))
     }
 
     /// Set the limit (e.g. step goal) that is marked in the graph.
     pub fn set_limit(&self, limit: Option<f32>) {
-        let mut inner = self.imp().inner.borrow_mut();
-        inner.limit = limit;
-
-        if inner.biggest_value < inner.limit.unwrap_or(0.0) {
-            inner.biggest_value = inner.limit.unwrap();
-        }
-
-        self.queue_draw();
+        self.set_property("limit", limit.unwrap_or(-1.0))
     }
 
     /// Set the label that should be displayed on the limit label.
     pub fn set_limit_label(&self, limit_label: Option<String>) {
-        self.imp().inner.borrow_mut().limit_label = limit_label;
-        self.queue_draw();
+        self.set_property("limit-label", limit_label)
     }
 
     /// Sets the points that should be rendered in the graph view.
@@ -487,8 +581,11 @@ impl GraphView {
     /// Set the interval factor in which the background lines are drawn in the graph. E.g. if you set this to `10`,
     /// lines will be drawn in `biggest_value` / 4 rounded to the next 10 multiple.
     pub fn set_x_lines_interval(&self, x_lines_interval: f32) {
-        self.imp().inner.borrow_mut().x_lines_interval = x_lines_interval;
-        self.queue_draw();
+        self.set_property("x-lines-interval", x_lines_interval)
+    }
+
+    pub fn x_lines_interval(&self) -> f32 {
+        self.property("x-lines-interval")
     }
 
     fn imp(&self) -> &imp::GraphView {

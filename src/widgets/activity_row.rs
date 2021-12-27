@@ -16,26 +16,22 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use std::convert::TryInto;
-
-use crate::{
-    core::{ni18n_f, UnitSystem},
-    model::{Activity, ActivityDataPoints, ActivityInfo},
-    prelude::*,
-};
-use gtk::{
-    glib::{self, subclass::prelude::*},
-    prelude::*,
-};
-use uom::{
-    fmt::DisplayStyle::Abbreviation,
-    si::length::{meter, yard},
-};
+use crate::model::Activity;
+use gtk::glib::{self, prelude::*, subclass::prelude::*};
 
 mod imp {
-    use crate::{core::Settings, model::Activity};
+    use crate::{
+        core::{ni18n_f, Settings, UnitSystem},
+        model::{Activity, ActivityDataPoints, ActivityInfo},
+        prelude::*,
+    };
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
+    use std::convert::TryInto;
+    use uom::{
+        fmt::DisplayStyle::Abbreviation,
+        si::length::{meter, yard},
+    };
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_row.ui")]
@@ -101,6 +97,108 @@ mod imp {
                 self_.details_revealer.set_reveal_child(!self_.details_revealer.reveals_child());
             }));
         }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecObject::new(
+                    "activity",
+                    "activity",
+                    "activity",
+                    Activity::static_type(),
+                    glib::ParamFlags::READWRITE,
+                )]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "activity" => {
+                    let activity = value.get::<Activity>().unwrap();
+                    let activity_info = ActivityInfo::from(activity.activity_type());
+
+                    let minutes = activity.duration().num_minutes();
+                    self.active_minutes_label.set_label(&ni18n_f(
+                        "{} Minute",
+                        "{} Minutes",
+                        minutes.try_into().unwrap_or(0),
+                        &[&minutes.to_string()],
+                    ));
+                    self.activity_date_label
+                        .set_text(&activity.date().format_local());
+                    self.activity_type_label.set_label(&activity_info.name);
+
+                    if activity_info
+                        .available_data_points
+                        .contains(ActivityDataPoints::CALORIES_BURNED)
+                    {
+                        if let Some(calories_burned) = activity.calories_burned() {
+                            self.calories_burned_label.set_label(&ni18n_f(
+                                "{} Calorie",
+                                "{} Calories",
+                                calories_burned,
+                                &[&calories_burned.to_string()],
+                            ));
+                        }
+                    }
+
+                    if activity_info
+                        .available_data_points
+                        .contains(ActivityDataPoints::HEART_RATE)
+                    {
+                        if activity.heart_rate_avg().unwrap_or(0) != 0 {
+                            self.heart_rate_average_label
+                                .set_text(&activity.heart_rate_avg().unwrap().to_string());
+                            self.heart_rate_average_row.set_visible(true);
+                        }
+                        if activity.heart_rate_max().unwrap_or(0) != 0 {
+                            self.heart_rate_maximum_label
+                                .set_text(&activity.heart_rate_max().unwrap().to_string());
+                            self.heart_rate_maximum_row.set_visible(true);
+                        }
+                        if activity.heart_rate_min().unwrap_or(0) != 0 {
+                            self.heart_rate_minimum_label
+                                .set_text(&activity.heart_rate_min().unwrap().to_string());
+                            self.heart_rate_minimum_row.set_visible(true);
+                        }
+                    }
+
+                    if activity_info
+                        .available_data_points
+                        .contains(ActivityDataPoints::DISTANCE)
+                    {
+                        if let Some(distance) = activity.distance() {
+                            self.distance_row.set_visible(true);
+
+                            let args = if self.settings.unit_system() == UnitSystem::Imperial {
+                                distance.into_format_args(meter, Abbreviation).to_string()
+                            } else {
+                                distance.into_format_args(yard, Abbreviation).to_string()
+                            };
+                            self.distance_label.set_label(&args);
+                        }
+                    }
+
+                    self.activity.set(activity).unwrap();
+                }
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "activity" => self.activity.get().unwrap().to_value(),
+                _ => unimplemented!(),
+            }
+        }
     }
 
     impl WidgetImpl for ActivityRow {}
@@ -120,84 +218,13 @@ impl ActivityRow {
         glib::Object::new(&[]).expect("Failed to create ActivityRow")
     }
 
+    pub fn activity(&self) -> Activity {
+        self.property("activity")
+    }
+
     /// Set which [Activity] to display.
     pub fn set_activity(&self, activity: Activity) {
-        let self_ = self.imp();
-
-        let activity_info = ActivityInfo::from(activity.activity_type());
-
-        let minutes = activity.duration().num_minutes();
-        self_.active_minutes_label.set_label(&ni18n_f(
-            "{} Minute",
-            "{} Minutes",
-            minutes.try_into().unwrap_or(0),
-            &[&minutes.to_string()],
-        ));
-        self_
-            .activity_date_label
-            .set_text(&activity.date().format_local());
-        self_.activity_type_label.set_label(&activity_info.name);
-
-        if activity_info
-            .available_data_points
-            .contains(ActivityDataPoints::CALORIES_BURNED)
-        {
-            if let Some(calories_burned) = activity.calories_burned() {
-                self_.calories_burned_label.set_label(&ni18n_f(
-                    "{} Calorie",
-                    "{} Calories",
-                    calories_burned,
-                    &[&calories_burned.to_string()],
-                ));
-            }
-        }
-
-        if activity_info
-            .available_data_points
-            .contains(ActivityDataPoints::HEART_RATE)
-        {
-            if activity.heart_rate_avg().unwrap_or(0) != 0 {
-                self_
-                    .heart_rate_average_label
-                    .set_text(&activity.heart_rate_avg().unwrap().to_string());
-                self_.heart_rate_average_row.set_visible(true);
-            }
-            if activity.heart_rate_max().unwrap_or(0) != 0 {
-                self_
-                    .heart_rate_maximum_label
-                    .set_text(&activity.heart_rate_max().unwrap().to_string());
-                self_.heart_rate_maximum_row.set_visible(true);
-            }
-            if activity.heart_rate_min().unwrap_or(0) != 0 {
-                self_
-                    .heart_rate_minimum_label
-                    .set_text(&activity.heart_rate_min().unwrap().to_string());
-                self_.heart_rate_minimum_row.set_visible(true);
-            }
-        }
-
-        if activity_info
-            .available_data_points
-            .contains(ActivityDataPoints::DISTANCE)
-        {
-            if let Some(distance) = activity.distance() {
-                self_.distance_row.set_visible(true);
-
-                if self_.settings.unit_system() == UnitSystem::Imperial {
-                    self_.distance_label.set_label(&format!(
-                        "{}",
-                        distance.into_format_args(meter, Abbreviation)
-                    ));
-                } else {
-                    self_.distance_label.set_label(&format!(
-                        "{}",
-                        distance.into_format_args(yard, Abbreviation)
-                    ));
-                };
-            }
-        }
-
-        self_.activity.set(activity).unwrap();
+        self.set_property("activity", activity)
     }
 
     fn imp(&self) -> &imp::ActivityRow {

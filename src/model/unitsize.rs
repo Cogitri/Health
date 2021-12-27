@@ -1,3 +1,5 @@
+use gtk::glib;
+
 /// A [Unitsize] is so the user can choose to enter different unit sizes (e.g. km vs meter).
 #[derive(
     Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, strum::EnumString, strum::AsRefStr,
@@ -11,6 +13,16 @@ pub enum Unitsize {
 impl Default for Unitsize {
     fn default() -> Self {
         Self::Small
+    }
+}
+
+impl glib::ToValue for Unitsize {
+    fn to_value(&self) -> glib::Value {
+        self.as_ref().to_value()
+    }
+
+    fn value_type(&self) -> glib::Type {
+        <String as glib::StaticType>::static_type()
     }
 }
 

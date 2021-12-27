@@ -16,10 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use gtk::{gio::subclass::prelude::*, glib};
+use gtk::{gio::subclass::prelude::*, glib, prelude::ObjectExt};
 use uom::si::{
     f32::{Length, Mass},
-    length::centimeter,
+    length::meter,
     mass::kilogram,
 };
 
@@ -33,7 +33,11 @@ mod imp {
         {prelude::*, subclass::prelude::*, CompositeTemplate},
     };
     use std::cell::RefCell;
-    use uom::si::f32::{Length, Mass};
+    use uom::si::{
+        f32::{Length, Mass},
+        length::meter,
+        mass::kilogram,
+    };
 
     #[derive(Debug, Default)]
     pub struct BmiLevelBarMut {
@@ -101,6 +105,62 @@ mod imp {
             );
             self.level_bar.add_offset_value("obese-bmi", 1.0);
         }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![
+                    glib::ParamSpecFloat::new(
+                        "height-meter",
+                        "height-meter",
+                        "User height in meters",
+                        0.01,
+                        f32::MAX,
+                        0.01,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                    glib::ParamSpecFloat::new(
+                        "weight-kilogram",
+                        "weight-kilogram",
+                        "User weight in kilogram",
+                        0.01,
+                        f32::MAX,
+                        0.01,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                ]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "height-meter" => {
+                    self.inner.borrow_mut().height = Length::new::<meter>(value.get().unwrap());
+                    obj.recalculate_bmi();
+                }
+                "weight-kilogram" => {
+                    self.inner.borrow_mut().weight = Mass::new::<kilogram>(value.get().unwrap());
+                    obj.recalculate_bmi();
+                }
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "height-meter" => self.inner.borrow().height.get::<meter>().to_value(),
+                "weight-kilogram" => self.inner.borrow().weight.get::<kilogram>().to_value(),
+                _ => unimplemented!(),
+            }
+        }
     }
     impl WidgetImpl for BmiLevelBar {}
     impl BoxImpl for BmiLevelBar {}
@@ -116,12 +176,12 @@ glib::wrapper! {
 impl BmiLevelBar {
     /// Get the height of the user.
     pub fn height(&self) -> Length {
-        self.imp().inner.borrow().height
+        Length::new::<meter>(self.property("height-meter"))
     }
 
     /// Get the weight of the user.
     pub fn weight(&self) -> Mass {
-        self.imp().inner.borrow().weight
+        Mass::new::<kilogram>(self.property("weight-kilogram"))
     }
 
     /// Create a new [BmiLevelBar].
@@ -131,27 +191,23 @@ impl BmiLevelBar {
 
     /// Set the height of the user.
     pub fn set_height(&self, value: Length) {
-        let self_ = self.imp();
-        self_.inner.borrow_mut().height = value;
-        self.recalcualte_bmi();
+        self.set_property("height-meter", value.get::<meter>())
     }
 
     /// Set the height of the user.
     pub fn set_weight(&self, value: Mass) {
-        let self_ = self.imp();
-        self_.inner.borrow_mut().weight = value;
-        self.recalcualte_bmi();
+        self.set_property("weight-kilogram", value.get::<kilogram>())
     }
 
     fn imp(&self) -> &imp::BmiLevelBar {
         imp::BmiLevelBar::from_instance(self)
     }
 
-    fn recalcualte_bmi(&self) {
+    fn recalculate_bmi(&self) {
         let self_ = self.imp();
 
-        let height = self_.inner.borrow().height.get::<centimeter>() as f32 / 100.0;
-        let weight = self_.inner.borrow().weight.get::<kilogram>();
+        let height = self.height().get::<meter>();
+        let weight = self.weight().get::<kilogram>();
         if height != 0.0 && weight != 0.0 {
             let current_bmi = weight / (height * height);
             let fraction = (current_bmi - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN);
@@ -188,7 +244,7 @@ mod test {
     }
 
     #[test]
-    fn recalcualte_bmi() {
+    fn recalculate_bmi() {
         init_gtk();
 
         let bar = BmiLevelBar::new();

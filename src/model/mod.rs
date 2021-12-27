@@ -9,6 +9,8 @@ pub mod activity_type;
 #[doc(hidden)]
 pub mod activity_type_row_data;
 #[doc(hidden)]
+pub mod fn_boxed;
+#[doc(hidden)]
 pub mod model_notification;
 #[doc(hidden)]
 pub mod steps;
@@ -29,6 +31,8 @@ pub use activity_info::*;
 pub use activity_type::*;
 #[doc(inline)]
 pub use activity_type_row_data::*;
+#[doc(inline)]
+pub use fn_boxed::*;
 #[doc(inline)]
 pub use model_notification::*;
 #[doc(inline)]

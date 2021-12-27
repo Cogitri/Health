@@ -18,7 +18,7 @@
 
 use crate::{
     core::i18n,
-    model::{Activity, ActivityDataPoints, ActivityInfo, Unitsize},
+    model::{Activity, ActivityDataPoints, Unitsize},
     prelude::*,
     views::ViewAdd,
 };
@@ -176,8 +176,45 @@ mod imp {
 
             self.inner.borrow_mut().filter_model = Some(filter_model);
             obj.connect_handlers();
-            obj.set_selected_activity(ActivityInfo::from(ActivityType::Walking));
+            obj.set_selected_activity_name(&ActivityInfo::from(ActivityType::Walking).name);
             obj.setup_actions();
+        }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpecString::new(
+                    "selected-activity-name",
+                    "selected-activity-name",
+                    "selected-activity-name",
+                    None,
+                    glib::ParamFlags::READWRITE,
+                )]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "selected-activity-name" => self
+                    .activity_type_menu_button
+                    .set_label(&value.get::<String>().unwrap()),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "selected-activity-name" => self.activity_type_menu_button.label().to_value(),
+                _ => unimplemented!(),
+            }
         }
     }
     impl WidgetImpl for ViewAddActivity {}
@@ -245,8 +282,8 @@ impl ViewAddActivity {
         self.insert_action_group("activity_add_dialog", Some(&action_group));
     }
 
-    fn set_selected_activity(&self, val: ActivityInfo) {
-        self.imp().activity_type_menu_button.set_label(&val.name);
+    fn set_selected_activity_name(&self, val: &str) {
+        self.set_property("selected-activity-name", val)
     }
 
     fn filter_activity_entry(&self, o: &glib::Object) -> bool {
@@ -283,7 +320,7 @@ impl ViewAddActivity {
     #[template_callback]
     fn handle_activity_type_selector_activity_selected(&self) {
         let self_ = self.imp();
-        self.set_selected_activity(self_.activity_type_selector.selected_activity());
+        self.set_selected_activity_name(&self_.activity_type_selector.selected_activity().name);
         let inner = self_.inner.borrow_mut();
         inner
             .activity

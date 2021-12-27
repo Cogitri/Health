@@ -17,19 +17,24 @@
  */
 
 use crate::{
-    core::{i18n, UnitKind, UnitSystem},
+    core::{i18n, UnitSystem},
     model::Unitsize,
     prelude::*,
     widgets::UnitSpinButton,
 };
 use gtk::{gio::subclass::prelude::*, glib, prelude::*};
+use std::str::FromStr;
 use uom::si::{
     f32::Length,
     length::{foot, kilometer, meter, mile},
 };
 
 mod imp {
-    use crate::{core::Settings, model::Unitsize, widgets::UnitSpinButton};
+    use crate::{
+        core::{Settings, UnitKind, UnitSystem},
+        model::Unitsize,
+        widgets::UnitSpinButton,
+    };
     use adw::subclass::prelude::*;
     use gtk::{
         glib::{self, clone, subclass::Signal},
@@ -37,8 +42,11 @@ mod imp {
         subclass::prelude::*,
         CompositeTemplate,
     };
-    use std::cell::RefCell;
-    use uom::si::f32::Length;
+    use std::{cell::RefCell, str::FromStr};
+    use uom::si::{
+        f32::Length,
+        length::{foot, kilometer, meter, mile},
+    };
 
     #[derive(Debug, Default)]
     pub struct DistanceActionRowMut {
@@ -106,6 +114,99 @@ mod imp {
             self.settings
                 .disconnect(self.settings_handler_id.borrow_mut().take().unwrap())
         }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![
+                    glib::ParamSpecString::new(
+                        "unitsize",
+                        "unitsize",
+                        "unitsize",
+                        Some("small"),
+                        glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecFloat::new(
+                        "value-meter",
+                        "value-meter",
+                        "value-meter",
+                        0.0,
+                        f32::MAX,
+                        0.0,
+                        glib::ParamFlags::READWRITE,
+                    ),
+                ]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "unitsize" => {
+                    let adjustment = &self.distance_adjustment;
+                    let unitsize = Unitsize::from_str(&value.get::<String>().unwrap()).unwrap();
+                    self.inner.borrow_mut().unitsize = unitsize;
+                    if unitsize == Unitsize::Small {
+                        adjustment.set_step_increment(100.0);
+                        adjustment.set_page_increment(1000.0);
+                        self.distance_spin_button
+                            .set_unit_kind(UnitKind::LikeMeters);
+                    } else {
+                        adjustment.set_step_increment(1.0);
+                        adjustment.set_page_increment(5.0);
+                        self.distance_spin_button
+                            .set_unit_kind(UnitKind::LikeKilometers);
+                    }
+
+                    if unitsize == Unitsize::Big && !self.big_unit_togglebutton.is_active() {
+                        self.big_unit_togglebutton.set_active(true);
+                    } else if unitsize == Unitsize::Small
+                        && !self.small_unit_togglebutton.is_active()
+                    {
+                        self.small_unit_togglebutton.set_active(true);
+                    }
+                }
+                "value-meter" => {
+                    // FIXME: Disallow both buttons being inactive
+                    let unitsize = self.inner.borrow().unitsize;
+                    let val = Length::new::<meter>(value.get().unwrap());
+
+                    if self.settings.unit_system() == UnitSystem::Metric {
+                        if unitsize == Unitsize::Small {
+                            self.distance_spin_button
+                                .set_value(val.get::<meter>().into())
+                        } else if unitsize == Unitsize::Big {
+                            self.distance_spin_button
+                                .set_value(val.get::<kilometer>().into())
+                        }
+                    } else if unitsize == Unitsize::Small {
+                        self.distance_spin_button
+                            .set_value(val.get::<foot>().into())
+                    } else if unitsize == Unitsize::Big {
+                        self.distance_spin_button
+                            .set_value(val.get::<mile>().into())
+                    }
+
+                    self.inner.borrow_mut().value = val;
+                }
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "unitsize" => self.inner.borrow().unitsize.to_value(),
+                "value-meter" => self.inner.borrow().value.get::<meter>().to_value(),
+                _ => unimplemented!(),
+            }
+        }
     }
     impl WidgetImpl for DistanceActionRow {}
     impl ListBoxRowImpl for DistanceActionRow {}
@@ -151,65 +252,24 @@ impl DistanceActionRow {
         })
     }
 
-    pub fn value(&self) -> Length {
-        self.imp().inner.borrow().value
-    }
-
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create DistanceActionRow")
     }
 
     pub fn set_unitsize(&self, unitsize: Unitsize) {
-        let self_ = self.imp();
-        let adjustment = &self_.distance_adjustment;
-        self_.inner.borrow_mut().unitsize = unitsize;
-        if unitsize == Unitsize::Small {
-            adjustment.set_step_increment(100.0);
-            adjustment.set_page_increment(1000.0);
-            self_
-                .distance_spin_button
-                .set_unit_kind(UnitKind::LikeMeters);
-        } else {
-            adjustment.set_step_increment(1.0);
-            adjustment.set_page_increment(5.0);
-            self_
-                .distance_spin_button
-                .set_unit_kind(UnitKind::LikeKilometers);
-        }
-
-        if unitsize == Unitsize::Big && !self_.big_unit_togglebutton.is_active() {
-            self_.big_unit_togglebutton.set_active(true);
-        } else if unitsize == Unitsize::Small && !self_.small_unit_togglebutton.is_active() {
-            self_.small_unit_togglebutton.set_active(true);
-        }
+        self.set_property("unitsize", unitsize)
     }
 
     pub fn set_value(&self, value: Length) {
-        // FIXME: Disallow both buttons being inactive
-        let self_ = self.imp();
-        let unitsize = self_.inner.borrow().unitsize;
+        self.set_property("value-meter", value.get::<meter>())
+    }
 
-        if self_.settings.unit_system() == UnitSystem::Metric {
-            if unitsize == Unitsize::Small {
-                self_
-                    .distance_spin_button
-                    .set_value(value.get::<meter>().into())
-            } else if unitsize == Unitsize::Big {
-                self_
-                    .distance_spin_button
-                    .set_value(value.get::<kilometer>().into())
-            }
-        } else if unitsize == Unitsize::Small {
-            self_
-                .distance_spin_button
-                .set_value(value.get::<foot>().into())
-        } else if unitsize == Unitsize::Big {
-            self_
-                .distance_spin_button
-                .set_value(value.get::<mile>().into())
-        }
+    pub fn unitsize(&self) -> Unitsize {
+        Unitsize::from_str(&self.property::<String>("unitsize")).unwrap()
+    }
 
-        self_.inner.borrow_mut().value = value;
+    pub fn value(&self) -> Length {
+        Length::new::<meter>(self.property("value-meter"))
     }
 
     fn imp(&self) -> &imp::DistanceActionRow {

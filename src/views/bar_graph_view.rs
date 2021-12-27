@@ -18,7 +18,7 @@
 
 use crate::{
     core::i18n,
-    model::{ActivityInfo, ActivityType},
+    model::{ActivityInfo, ActivityType, FnBoxedTuple},
     prelude::*,
 };
 use chrono::{Date, FixedOffset, Local};
@@ -45,7 +45,7 @@ static HALF_Y_PADDING: f32 = 30.0;
 mod imp {
     use super::{Tuple, HALF_X_PADDING, HALF_Y_PADDING};
     use crate::{
-        model::{ActivityInfo, ActivityType},
+        model::{ActivityInfo, ActivityType, FnBoxedTuple},
         prelude::*,
         views::SplitBar,
     };
@@ -375,6 +375,73 @@ mod imp {
             let mut inner = self.inner.borrow_mut();
             inner.hover_max_pointer_deviation = (8 * obj.scale_factor()).try_into().unwrap();
         }
+
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![
+                    glib::ParamSpecBoxed::new(
+                        "hover-func",
+                        "hover-func",
+                        "hover-func",
+                        FnBoxedTuple::static_type(),
+                        glib::ParamFlags::WRITABLE,
+                    ),
+                    glib::ParamSpecFloat::new(
+                        "rmr",
+                        "rmr",
+                        "Resting Metabolic Rate",
+                        0.0,
+                        f32::MAX,
+                        0.0,
+                        glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecFloat::new(
+                        "x-lines-interval",
+                        "x-lines-interval",
+                        "x-lines-interval",
+                        0.0,
+                        f32::MAX,
+                        0.0,
+                        glib::ParamFlags::READWRITE,
+                    ),
+                ]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "hover-func" => {
+                    self.inner.borrow_mut().hover_func =
+                        value.get::<FnBoxedTuple>().unwrap().0.borrow_mut().take()
+                }
+                "rmr" => {
+                    self.inner.borrow_mut().rmr = value.get().unwrap();
+                    obj.queue_draw();
+                }
+                "x-lines-interval" => {
+                    self.inner.borrow_mut().x_lines_interval = value.get().unwrap();
+                    obj.queue_draw();
+                }
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "rmr" => self.inner.borrow().rmr.to_value(),
+                "x-lines-interval" => self.inner.borrow().x_lines_interval.to_value(),
+                _ => unimplemented!(),
+            }
+        }
     }
 }
 
@@ -390,17 +457,20 @@ impl BarGraphView {
         glib::Object::new(&[]).expect("Failed to create BarGraphView")
     }
 
+    pub fn rmr(&self) -> f32 {
+        self.property("rmr")
+    }
+
     /// Set the function that should be called when the user hovers over a point.
     ///
     /// # Arguments
     /// * `hover_func` - A function that takes a `Tuple` and renders it to a string that is displayed as tooltip on the graph.
     pub fn set_hover_func(&self, hover_func: Option<Box<dyn Fn(&Tuple) -> String>>) {
-        self.imp().inner.borrow_mut().hover_func = hover_func;
-        self.queue_draw();
+        self.set_property("hover-func", FnBoxedTuple::new(hover_func))
     }
 
     pub fn set_rmr(&self, rmr: f32) {
-        self.imp().inner.borrow_mut().rmr = rmr;
+        self.set_property("rmr", rmr);
     }
 
     pub fn set_split_bars(&self, split_bars: Vec<SplitBar>) {
@@ -441,8 +511,11 @@ impl BarGraphView {
     /// Set the interval factor in which the background lines are drawn in the graph. E.g. if you set this to `10`,
     /// lines will be drawn in `biggest_value` / 4 rounded to the next 10 multiple.
     pub fn set_x_lines_interval(&self, x_lines_interval: f32) {
-        self.imp().inner.borrow_mut().x_lines_interval = x_lines_interval;
-        self.queue_draw();
+        self.set_property("x-lines-interval", x_lines_interval);
+    }
+
+    pub fn x_lines_interval(&self) -> f32 {
+        self.property("x-lines-interval")
     }
 
     fn imp(&self) -> &imp::BarGraphView {
