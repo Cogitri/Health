@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  tab_button.ui
+  legend_row.ui
 
   Copyright 2021 Visvesh Subramanian <visveshs.blogspot.com>
+  Copyright 2021 Rasmus Thomsen <oss@cogitri.dev>
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -27,7 +28,7 @@
           <object class="HealthColorCircle" id="color_circle">
             <property name="height-request">15</property>
             <property name="width-request">15</property>
-            <property name="margin-right">6</property>
+            <property name="margin-end">6</property>
           </object>
         </child>
         <child>
