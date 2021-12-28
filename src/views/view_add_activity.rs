@@ -228,7 +228,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
-#[gtk::template_callbacks(value)]
+#[gtk::template_callbacks]
 impl ViewAddActivity {
     /// Create a new [ViewAddActivity].
     pub fn new() -> Self {

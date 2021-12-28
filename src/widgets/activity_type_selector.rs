@@ -188,7 +188,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::ShortcutManager;
 }
 
-#[gtk::template_callbacks(value)]
+#[gtk::template_callbacks]
 impl ActivityTypeSelector {
     /// Connect to a new activity being selected.
     ///

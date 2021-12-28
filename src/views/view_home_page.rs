@@ -145,7 +145,7 @@ mod imp {
 
     impl BinImpl for ViewHomePage {}
 
-    #[gtk::template_callbacks(subclass)]
+    #[gtk::template_callbacks]
     impl ViewHomePage {
         #[template_callback]
         fn handle_user_selected_data_row_selected(

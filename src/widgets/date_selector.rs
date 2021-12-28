@@ -153,7 +153,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Orientable;
 }
 
-#[gtk::template_callbacks(value)]
+#[gtk::template_callbacks]
 impl DateSelector {
     /// Connect to a new date being selected.
     ///

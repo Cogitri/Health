@@ -222,7 +222,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 
-#[gtk::template_callbacks(value)]
+#[gtk::template_callbacks]
 impl DistanceActionRow {
     /// Connect to a new value being entered (this is only emitted once the user is done editing!).
     ///

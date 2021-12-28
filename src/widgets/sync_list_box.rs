@@ -126,7 +126,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 
-#[gtk::template_callbacks(value)]
+#[gtk::template_callbacks]
 impl SyncListBox {
     /// Create a new [SyncListBox]
     ///

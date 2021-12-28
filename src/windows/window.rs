@@ -118,7 +118,7 @@ glib::wrapper! {
         @implements gio::ActionGroup, gio::ActionMap, gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
-#[gtk::template_callbacks(value)]
+#[gtk::template_callbacks]
 impl Window {
     /// Create a new [Window].
     ///

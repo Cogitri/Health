@@ -147,7 +147,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
-#[gtk::template_callbacks(value)]
+#[gtk::template_callbacks]
 impl PasswordEntry {
     /// Create a new [PasswordEntry]
     pub fn new(show_password_repeat: bool, show_password_strength: bool) -> Self {

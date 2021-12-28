@@ -230,7 +230,7 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
-#[gtk::template_callbacks(value)]
+#[gtk::template_callbacks]
 impl PreferencesWindow {
     pub fn connect_import_done<F: Fn(&Self) + 'static>(
         &self,
