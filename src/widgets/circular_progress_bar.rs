@@ -54,7 +54,7 @@ mod imp {
     impl ObjectImpl for CircularProgressBar {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
-            obj.set_size_request(65, 65);
+            obj.set_size_request(75, 75);
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
