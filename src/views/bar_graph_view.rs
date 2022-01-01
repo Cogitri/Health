@@ -151,8 +151,7 @@ mod imp {
                     0.0,
                     widget.width() as f32,
                     widget.height() as f32,
-                ))
-                .unwrap();
+                ));
             let style_context = widget.style_context();
             let background_color = style_context.lookup_color("insensitive_fg_color").unwrap();
 

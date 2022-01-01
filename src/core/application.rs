@@ -94,7 +94,6 @@ mod imp {
             }
 
             gtk::IconTheme::for_display(&gtk::gdk::Display::default().unwrap())
-                .unwrap()
                 .add_resource_path("/dev/Cogitri/Health/icons");
 
             obj.migrate_gsettings();

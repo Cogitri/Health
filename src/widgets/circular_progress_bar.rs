@@ -122,8 +122,7 @@ mod imp {
                     0.0,
                     widget.width() as f32,
                     widget.height() as f32,
-                ))
-                .unwrap();
+                ));
 
             let width = f64::from(widget.width());
             let height = f64::from(widget.height());

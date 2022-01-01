@@ -68,7 +68,6 @@ mod imp {
                         Some(stack_page.widget_name().as_str()),
                         &stack_page.view_title(),
                     )
-                    .unwrap()
                     .set_icon_name(Some(&stack_page.icon_name()));
             }
             if &obj.property::<String>("current-plugin") == "weight" {
