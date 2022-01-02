@@ -116,13 +116,12 @@ mod imp {
 
     impl WidgetImpl for CircularProgressBar {
         fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
-            let cr = snapshot
-                .append_cairo(&gtk::graphene::Rect::new(
-                    0.0,
-                    0.0,
-                    widget.width() as f32,
-                    widget.height() as f32,
-                ));
+            let cr = snapshot.append_cairo(&gtk::graphene::Rect::new(
+                0.0,
+                0.0,
+                widget.width() as f32,
+                widget.height() as f32,
+            ));
 
             let width = f64::from(widget.width());
             let height = f64::from(widget.height());

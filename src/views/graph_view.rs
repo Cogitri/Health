@@ -129,13 +129,12 @@ mod imp {
                 biggest_value
             };
 
-            let cr = snapshot
-                .append_cairo(&gtk::graphene::Rect::new(
-                    0.0,
-                    0.0,
-                    widget.width() as f32,
-                    widget.height() as f32,
-                ));
+            let cr = snapshot.append_cairo(&gtk::graphene::Rect::new(
+                0.0,
+                0.0,
+                widget.width() as f32,
+                widget.height() as f32,
+            ));
             let style_context = widget.style_context();
             let background_color = style_context.lookup_color("insensitive_fg_color").unwrap();
 
