@@ -109,8 +109,8 @@ impl PluginStepsSummaryRow {
             .set_step_count(step_count.try_into().unwrap());
         let steps_percentage = (step_count as f32 / step_goal.max(1) as f32 * 100.0) as u32;
         self_.activity_subtext.set_text(&ni18n_f(
-            "Reached {}% of daily step goal",
-            "Reached {}% of daily step goal",
+            "Reached {}%% of daily step goal",
+            "Reached {}%% of daily step goal",
             steps_percentage,
             &[&steps_percentage.to_string()],
         ));
