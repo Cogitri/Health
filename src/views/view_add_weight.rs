@@ -82,7 +82,7 @@ impl ViewAddWeight {
     pub fn new() -> Self {
         glib::Object::new(&[
             ("icon-name", &"weight-scale-symbolic"),
-            ("view-title", &i18n("Add weight record")),
+            ("view-title", &i18n("Weight")),
         ])
         .expect("Failed to create ViewAddWeight")
     }

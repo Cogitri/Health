@@ -234,7 +234,7 @@ impl ViewAddActivity {
     pub fn new() -> Self {
         glib::Object::new(&[
             ("icon-name", &"walking-symbolic"),
-            ("view-title", &i18n("Add new activity")),
+            ("view-title", &i18n("Activity")),
         ])
         .expect("Failed to create ViewAddActivity")
     }

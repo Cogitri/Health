@@ -21,11 +21,7 @@
   <requires lib="gtk" version="4.0"/>
   <requires lib="libadwaita" version="1.0"/>
   <template class="HealthDataAddDialog" parent="GtkDialog">
-    <property name="default-width">600</property>
-    <property name="default-height">300</property>
-    <property name="title" translatable="yes">Health Preferences</property>
     <property name="modal">1</property>
-    <property name="resizable">0</property>
     <signal name="response" handler="handle_response" swapped="true"/>
     <child type="action">
       <object class="GtkButton" id="button_cancel">

@@ -28,7 +28,6 @@
   <template class="HealthViewAddWeight" parent="HealthViewAdd">
     <property name="icon-name">weight-scale-symbolic</property>
     <property name="name">Add Weight Data</property>
-    <property name="view-title" translatable="yes">Add weight record</property>
     <child>
       <object class="GtkScrolledWindow">
         <property name="propagate-natural-height">1</property>
