@@ -54,8 +54,8 @@
             <property name="name">home</property>
             <property name="child">
               <object class="AdwClamp">
-                <property name="maximum-size">400</property>
-                <property name="tightening-threshold">200</property>
+                <property name="maximum-size">800</property>
+                <property name="tightening-threshold">400</property>
                 <property name="valign">center</property>
                 <property name="vexpand">True</property>
                 <property name="hexpand">True</property>
@@ -106,6 +106,7 @@
                                 <property name="child">
                                   <object class="GtkLabel">
                                     <property name="label" translatable="yes">No plugins enabled. Enable one from the list below to start using Health.</property>
+                                    <property name="wrap">1</property>
                                     <style>
                                       <class name="dim-label"/>
                                       <class name="title-1"/>
