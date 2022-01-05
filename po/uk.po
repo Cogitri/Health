@@ -2,13 +2,13 @@
 # Copyright (C) 2021 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2021.
+# Yuri Chornoivan <yurchor@ukr.net>, 2021, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-12-27 11:44+0000\n"
-"PO-Revision-Date: 2021-12-27 16:14+0200\n"
+"POT-Creation-Date: 2022-01-05 14:48+0000\n"
+"PO-Revision-Date: 2022-01-05 21:40+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -182,7 +182,7 @@ msgstr "Здоров'я"
 msgid "@APPLICATION_ID@"
 msgstr "@APPLICATION_ID@"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:142
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:141
 msgid "A health tracking app for the GNOME desktop."
 msgstr "Програма стеження за станом здоров'я для стільниці GNOME."
 
@@ -585,15 +585,15 @@ msgstr "_Клавіатурні скорочення"
 msgid "_About Health"
 msgstr "_Про «Здоров'я»"
 
-#: data/ui/window.ui:92
+#: data/ui/window.ui:84
 msgid "Enable plugin"
 msgstr "Увімкнути додаток"
 
-#: src/core/application.rs:144
+#: src/core/application.rs:143
 msgid "translator-credits"
 msgstr "Юрій Чорноіван <yurchor@ukr.net>, 2021"
 
-#: src/core/application.rs:146
+#: src/core/application.rs:145
 msgid "Websites"
 msgstr "Сайти"
 
@@ -806,12 +806,14 @@ msgstr[3] "{} крок сьогодні"
 
 #: src/plugins/steps/summary.rs:112
 #, c-format
-msgid "Reached {}% of daily step goal"
-msgid_plural "Reached {}% of daily step goal"
-msgstr[0] "Досягнуто {}% oцільової кількості кроків за день"
-msgstr[1] "Досягнуто {}% oцільової кількості кроків за день"
-msgstr[2] "Досягнуто {}% oцільової кількості кроків за день"
-msgstr[3] "Досягнуто {}% oцільової кількості кроків за день"
+#| msgid "Reached {}% of daily step goal"
+#| msgid_plural "Reached {}% of daily step goal"
+msgid "Reached {}%% of daily step goal"
+msgid_plural "Reached {}%% of daily step goal"
+msgstr[0] "Досягнуто {}%% цільової кількості кроків за день"
+msgstr[1] "Досягнуто {}%% цільової кількості кроків за день"
+msgstr[2] "Досягнуто {}%% цільової кількості кроків за день"
+msgstr[3] "Досягнуто {}%% цільової кількості кроків за день"
 
 #: src/plugins/weight/details.rs:194
 msgid "Current BMI: {}"
@@ -925,7 +927,7 @@ msgstr ""
 "Цільової ваги ще не встановлено. Ви можете встановити її у налаштуваннях "
 "«Здоров'я»."
 
-#: src/plugins/weight/summary.rs:130
+#: src/plugins/weight/summary.rs:128
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} фунт"
@@ -933,7 +935,7 @@ msgstr[1] "{} фунти"
 msgstr[2] "{} фунтів"
 msgstr[3] "{} фунт"
 
-#: src/plugins/weight/summary.rs:138
+#: src/plugins/weight/summary.rs:136
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} кілограм"
@@ -941,8 +943,7 @@ msgstr[1] "{} кілограми"
 msgstr[2] "{} кілограмів"
 msgstr[3] "{} кілограм"
 
-#: src/plugins/weight/summary.rs:149
-#| msgid "compared to previous weight"
+#: src/plugins/weight/summary.rs:147
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "+ {} фунт, порівняно із попереднім виміром"
@@ -950,8 +951,7 @@ msgstr[1] "+ {} фунти, порівняно із попереднім вим�
 msgstr[2] "+ {} фунтів, порівняно із попереднім виміром"
 msgstr[3] "+ {} фунт, порівняно із попереднім виміром"
 
-#: src/plugins/weight/summary.rs:157
-#| msgid "compared to previous weight"
+#: src/plugins/weight/summary.rs:155
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "+ {} кілограм, порівняно із попереднім виміром"
@@ -959,8 +959,7 @@ msgstr[1] "+ {} кілограми, порівняно із попереднім
 msgstr[2] "+ {} кілограмів, порівняно із попереднім виміром"
 msgstr[3] "+ {} кілограм, порівняно із попереднім виміром"
 
-#: src/plugins/weight/summary.rs:168
-#| msgid "compared to previous weight"
+#: src/plugins/weight/summary.rs:166
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "{} фунт, порівняно із попереднім виміром"
@@ -968,8 +967,7 @@ msgstr[1] "{} фунти, порівняно із попереднім вимі�
 msgstr[2] "{} фунтів, порівняно із попереднім виміром"
 msgstr[3] "{} фунт, порівняно із попереднім виміром"
 
-#: src/plugins/weight/summary.rs:176
-#| msgid "compared to previous weight"
+#: src/plugins/weight/summary.rs:174
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "{} кілограм, порівняно із попереднім виміром"
@@ -977,12 +975,11 @@ msgstr[1] "{} кілограми, порівняно із попереднім �
 msgstr[2] "{} кілограмів, порівняно із попереднім виміром"
 msgstr[3] "{} кілограм, порівняно із попереднім виміром"
 
-#: src/plugins/weight/summary.rs:184
+#: src/plugins/weight/summary.rs:182
 msgid "No change in weight"
 msgstr "Немає зміни ваги"
 
-#: src/plugins/weight/summary.rs:190
-#| msgid "No weight record added"
+#: src/plugins/weight/summary.rs:188
 msgid "No weight data available"
 msgstr "Немає доступних даних щодо ваги"
 
@@ -1046,11 +1043,11 @@ msgstr "Розпізнавання пройдено. Будь ласка, пов
 msgid "Couldn't parse OAuth2 response"
 msgstr "Не вдалося обробити відповідь OAuth2"
 
-#: src/views/bar_graph_view.rs:590
+#: src/views/bar_graph_view.rs:588
 msgid "Enter weight record to calculate idle calories"
 msgstr "Введіть запис ваги для обчислення калорій бездіяльності"
 
-#: src/views/bar_graph_view.rs:594
+#: src/views/bar_graph_view.rs:592
 msgid "Idle calories"
 msgstr "Калорії бездіяльності"
 
@@ -1070,7 +1067,7 @@ msgstr[1] "{} калорії"
 msgstr[2] "{} калорій"
 msgstr[3] "{} калорія"
 
-#: src/widgets/bmi_level_bar.rs:224 src/widgets/bmi_level_bar.rs:260
+#: src/widgets/bmi_level_bar.rs:223 src/widgets/bmi_level_bar.rs:259
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Поточний ІМТ: {}</small>"
 
