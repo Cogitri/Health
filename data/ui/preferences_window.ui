@@ -71,11 +71,6 @@
   <template class="HealthPreferencesWindow" parent="AdwPreferencesWindow">
     <property name="title" translatable="yes">Health Preferences</property>
     <property name="destroy-with-parent">1</property>
-    <!--
-      FIXME: Known bug in libhandy-4/gtk4 where typing in child widgets (e.g. our SpinButtons) always enables the search.
-      See https://gitlab.gnome.org/Cogitri/gnome-Health/-/issues/48
-    -->
-    <property name="search-enabled">0</property>
     <signal name="close-request" handler="handle_close_window" swapped="true"/>
     <child>
       <object class="AdwPreferencesPage">
