@@ -79,7 +79,7 @@ glib::wrapper! {
 
 impl PluginCaloriesSummaryRow {
     pub fn new(name: PluginName) -> Self {
-        glib::Object::new(&[("plugin-name", &name)])
+        glib::Object::new(&[("plugin-name", &name), ("activatable", &true)])
             .expect("Failed to create PluginCaloriesSummaryRow")
     }
 

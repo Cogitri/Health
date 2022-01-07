@@ -74,7 +74,7 @@ glib::wrapper! {
 
 impl PluginActivitiesSummaryRow {
     pub fn new(name: PluginName) -> Self {
-        glib::Object::new(&[("plugin-name", &name.as_ref())])
+        glib::Object::new(&[("plugin-name", &name.as_ref()), ("activatable", &true)])
             .expect("Failed to create PluginActivitiesSummaryRow")
     }
 

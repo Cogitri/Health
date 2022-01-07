@@ -132,6 +132,7 @@ impl PluginOverviewRow {
             ("icon-name", &icon_name),
             ("title", &title),
             ("plugin-name", &plugin_name),
+            ("activatable", &true),
         ])
         .expect("Failed to create PluginOverviewRow")
     }

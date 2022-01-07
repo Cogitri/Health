@@ -91,10 +91,10 @@
                                 <property name="name">plugin-list</property>
                                 <property name="child">
                                   <object class="GtkListBox" id="user_selected_data">
-                                    <property name="selection-mode">single</property>
-                                    <signal name="row-selected" handler="handle_user_selected_data_row_selected" swapped="true"/>
+                                    <property name="selection-mode">none</property>
+                                    <signal name="row-activated" handler="handle_user_selected_data_row_activated" swapped="true"/>
                                     <style>
-                                      <class name="content"/>
+                                      <class name="boxed-list"/>
                                     </style>
                                   </object>
                                 </property>
@@ -140,10 +140,10 @@
                         </child>
                         <child>
                           <object class="GtkListBox" id="all_data">
-                            <property name="selection-mode">single</property>
-                            <signal name="row-selected" handler="handle_all_data_row_selected" swapped="true"/>
+                            <property name="selection-mode">none</property>
+                            <signal name="row-activated" handler="handle_all_data_row_activated" swapped="true"/>
                             <style>
-                              <class name="content"/>
+                              <class name="boxed-list"/>
                             </style>
                           </object>
                         </child>
