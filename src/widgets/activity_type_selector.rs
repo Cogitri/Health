@@ -217,6 +217,7 @@ impl ActivityTypeSelector {
     #[template_callback]
     fn activated_list_box_row(&self, row: gtk::ListBoxRow, list_box: gtk::ListBox) {
         let row = row.downcast_ref::<ActivityTypeRow>().unwrap();
+        let self_ = self.imp();
 
         if let Ok(info) = ActivityInfo::try_from(row.id().as_str()) {
             self.set_selected_activity(info);
@@ -226,6 +227,18 @@ impl ActivityTypeSelector {
             while let Some(row) = list_box.row_at_index(i) {
                 let cast = row.downcast::<ActivityTypeRow>().unwrap();
                 cast.set_selected(cast.label() == selected_activity.name);
+                i += 1;
+            }
+
+            let other_box = if list_box == self_.recent_activity_types_list_box.get() {
+                self_.activity_types_list_box.get()
+            } else {
+                self_.recent_activity_types_list_box.get()
+            };
+
+            while let Some(row) = other_box.row_at_index(i) {
+                let cast = row.downcast::<ActivityTypeRow>().unwrap();
+                cast.set_selected(false);
                 i += 1;
             }
 
