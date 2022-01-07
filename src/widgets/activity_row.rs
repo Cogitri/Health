@@ -17,15 +17,17 @@
  */
 
 use crate::model::Activity;
-use gtk::glib::{self, prelude::*, subclass::prelude::*};
+use adw::prelude::*;
+use gtk::glib;
 
 mod imp {
     use crate::{
-        core::{ni18n_f, Settings, UnitSystem},
+        core::{i18n, ni18n_f, Settings, UnitSystem},
         model::{Activity, ActivityDataPoints, ActivityInfo},
         prelude::*,
     };
-    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use adw::{prelude::*, subclass::prelude::*};
+    use gtk::{glib, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
     use std::convert::TryInto;
     use uom::{
@@ -33,71 +35,20 @@ mod imp {
         si::length::{meter, yard},
     };
 
-    #[derive(Debug, CompositeTemplate, Default)]
-    #[template(resource = "/dev/Cogitri/Health/ui/activity_row.ui")]
+    #[derive(Debug, Default)]
     pub struct ActivityRow {
         pub activity: OnceCell<Activity>,
         pub settings: Settings,
-        #[template_child]
-        pub active_minutes_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub activity_date_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub activity_type_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub calories_burned_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub distance_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub heart_rate_average_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub heart_rate_maximum_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub heart_rate_minimum_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub steps_label: TemplateChild<gtk::Label>,
-        #[template_child]
-        pub details_revealer: TemplateChild<gtk::Revealer>,
-        #[template_child]
-        pub calories_burned_row: TemplateChild<adw::ActionRow>,
-        #[template_child]
-        pub distance_row: TemplateChild<adw::ActionRow>,
-        #[template_child]
-        pub heart_rate_average_row: TemplateChild<adw::ActionRow>,
-        #[template_child]
-        pub heart_rate_maximum_row: TemplateChild<adw::ActionRow>,
-        #[template_child]
-        pub heart_rate_minimum_row: TemplateChild<adw::ActionRow>,
-        #[template_child]
-        pub steps_row: TemplateChild<adw::ActionRow>,
     }
 
     #[glib::object_subclass]
     impl ObjectSubclass for ActivityRow {
         const NAME: &'static str = "HealthActivityRow";
-        type ParentType = gtk::Box;
+        type ParentType = adw::ExpanderRow;
         type Type = super::ActivityRow;
-
-        fn class_init(klass: &mut Self::Class) {
-            Self::bind_template(klass);
-        }
-
-        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
-            obj.init_template();
-        }
     }
 
     impl ObjectImpl for ActivityRow {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-
-            let gesture_controller = gtk::GestureClick::new();
-            gesture_controller.connect_pressed(glib::clone!(@weak obj => move |_,_,_,_| {
-                let self_ = obj.imp();
-                self_.details_revealer.set_reveal_child(!self_.details_revealer.reveals_child());
-            }));
-        }
-
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
@@ -115,7 +66,7 @@ mod imp {
 
         fn set_property(
             &self,
-            _obj: &Self::Type,
+            obj: &Self::Type,
             _id: usize,
             value: &glib::Value,
             pspec: &glib::ParamSpec,
@@ -126,27 +77,21 @@ mod imp {
                     let activity_info = ActivityInfo::from(activity.activity_type());
 
                     let minutes = activity.duration().num_minutes();
-                    self.active_minutes_label.set_label(&ni18n_f(
-                        "{} Minute",
-                        "{} Minutes",
+                    // TRANSLATORS: activity for x minutes, e.g. "Walking for 10 minutes",
+                    obj.set_title(&ni18n_f(
+                        "{} for {} Minute",
+                        "{} for {} Minutes",
                         minutes.try_into().unwrap_or(0),
-                        &[&minutes.to_string()],
+                        &[&activity_info.name, &minutes.to_string()],
                     ));
-                    self.activity_date_label
-                        .set_text(&activity.date().format_local());
-                    self.activity_type_label.set_label(&activity_info.name);
+                    obj.set_subtitle(&activity.date().format_local());
 
                     if activity_info
                         .available_data_points
                         .contains(ActivityDataPoints::CALORIES_BURNED)
                     {
                         if let Some(calories_burned) = activity.calories_burned() {
-                            self.calories_burned_label.set_label(&ni18n_f(
-                                "{} Calorie",
-                                "{} Calories",
-                                calories_burned,
-                                &[&calories_burned.to_string()],
-                            ));
+                            obj.add_new_row(&i18n("Calories burned"), &calories_burned.to_string());
                         }
                     }
 
@@ -155,19 +100,22 @@ mod imp {
                         .contains(ActivityDataPoints::HEART_RATE)
                     {
                         if activity.heart_rate_avg().unwrap_or(0) != 0 {
-                            self.heart_rate_average_label
-                                .set_text(&activity.heart_rate_avg().unwrap().to_string());
-                            self.heart_rate_average_row.set_visible(true);
+                            obj.add_new_row(
+                                &i18n("Average heart rate"),
+                                &activity.heart_rate_avg().unwrap().to_string(),
+                            );
                         }
                         if activity.heart_rate_max().unwrap_or(0) != 0 {
-                            self.heart_rate_maximum_label
-                                .set_text(&activity.heart_rate_max().unwrap().to_string());
-                            self.heart_rate_maximum_row.set_visible(true);
+                            obj.add_new_row(
+                                &i18n("Maximum heart rate"),
+                                &activity.heart_rate_max().unwrap().to_string(),
+                            );
                         }
                         if activity.heart_rate_min().unwrap_or(0) != 0 {
-                            self.heart_rate_minimum_label
-                                .set_text(&activity.heart_rate_min().unwrap().to_string());
-                            self.heart_rate_minimum_row.set_visible(true);
+                            obj.add_new_row(
+                                &i18n("Minimum heart rate"),
+                                &activity.heart_rate_min().unwrap().to_string(),
+                            );
                         }
                     }
 
@@ -176,14 +124,12 @@ mod imp {
                         .contains(ActivityDataPoints::DISTANCE)
                     {
                         if let Some(distance) = activity.distance() {
-                            self.distance_row.set_visible(true);
-
                             let args = if self.settings.unit_system() == UnitSystem::Imperial {
                                 distance.into_format_args(meter, Abbreviation).to_string()
                             } else {
                                 distance.into_format_args(yard, Abbreviation).to_string()
                             };
-                            self.distance_label.set_label(&args);
+                            obj.add_new_row(&i18n("Distance"), &args);
                         }
                     }
 
@@ -202,20 +148,22 @@ mod imp {
     }
 
     impl WidgetImpl for ActivityRow {}
-    impl BoxImpl for ActivityRow {}
+    impl ListBoxRowImpl for ActivityRow {}
+    impl PreferencesRowImpl for ActivityRow {}
+    impl ExpanderRowImpl for ActivityRow {}
 }
 
 glib::wrapper! {
     /// An implementation of [gtk::ListBox] that displays infos about an [Activity].
     pub struct ActivityRow(ObjectSubclass<imp::ActivityRow>)
-        @extends gtk::Widget, gtk::Box,
+        @extends gtk::Widget, gtk::ListBoxRow, adw::PreferencesRow, adw::ExpanderRow,
         @implements gtk::Accessible, gtk::Actionable, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl ActivityRow {
     /// Create a new [ActivityRow].
-    pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ActivityRow")
+    pub fn new(activity: &Activity) -> Self {
+        glib::Object::new(&[("activity", activity)]).expect("Failed to create ActivityRow")
     }
 
     pub fn activity(&self) -> Activity {
@@ -227,55 +175,30 @@ impl ActivityRow {
         self.set_property("activity", activity)
     }
 
-    fn imp(&self) -> &imp::ActivityRow {
-        imp::ActivityRow::from_instance(self)
+    fn add_new_row(&self, title: &str, data: &str) {
+        self.add_row(
+            &adw::ActionRow::builder()
+                .title(title)
+                .child(&gtk::Label::builder().label(data).build())
+                .build(),
+        );
     }
 }
 
 #[cfg(test)]
 mod test {
     use super::ActivityRow;
-    use crate::{core::ni18n_f, model::Activity, utils::init_gtk};
-    use gtk::prelude::*;
+    use crate::{model::Activity, utils::init_gtk};
     use uom::si::{f32::Length, length::kilometer};
 
     #[test]
     fn new() {
         init_gtk();
 
-        ActivityRow::new();
-    }
-
-    #[test]
-    fn test_set_activity() {
-        init_gtk();
-
         let act = Activity::new();
         act.set_calories_burned(Some(100));
         act.set_heart_rate_avg(Some(75));
         act.set_distance(Some(Length::new::<kilometer>(1.0)));
-        let row = ActivityRow::new();
-        let row_priv = row.imp();
-        row.set_activity(act);
-
-        assert_eq!(
-            row_priv.calories_burned_label.label().as_str(),
-            ni18n_f("{} Calorie", "{} Calories", 100, &[&100.to_string()]).as_str()
-        );
-        assert_eq!(
-            row_priv.heart_rate_average_label.label().as_str(),
-            75.to_string().as_str(),
-        );
-        assert!(row_priv
-            .heart_rate_minimum_label
-            .label()
-            .as_str()
-            .is_empty());
-        assert!(row_priv
-            .heart_rate_maximum_label
-            .label()
-            .as_str()
-            .is_empty());
-        assert!(row_priv.distance_row.get_visible());
+        ActivityRow::new(&act);
     }
 }

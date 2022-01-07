@@ -70,7 +70,12 @@
                         <property name="margin-top">6</property>
                         <property name="margin-bottom">6</property>
                         <child>
-                          <object class="GtkFrame" id="frame"/>
+                          <object class="GtkListBox" id="list_box">
+                            <property name="selection-mode">none</property>
+                            <style>
+                              <class name="boxed-list"/>
+                            </style>
+                          </object>
                         </child>
                       </object>
                     </child>

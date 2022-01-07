@@ -37,16 +37,14 @@ mod imp {
         subclass::prelude::*,
         CompositeTemplate,
     };
-    use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/activities/details.ui")]
     pub struct PluginActivitiesDetails {
         pub activity_model: RefCell<Option<DataProvider>>,
-        pub activities_list_view: OnceCell<gtk::ListView>,
         #[template_child]
-        pub frame: TemplateChild<gtk::Frame>,
+        pub list_box: TemplateChild<gtk::ListBox>,
         #[template_child]
         pub stack_activity: TemplateChild<gtk::Stack>,
     }
@@ -70,29 +68,14 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            let factory = gtk::SignalListItemFactory::new();
-            factory.connect_setup(move |_, item| item.set_child(Some(&ActivityRow::new())));
-            factory.connect_bind(move |_, list_item| {
-                let activity = list_item.item().unwrap().downcast::<Activity>().unwrap();
-
-                let child = list_item
-                    .child()
-                    .unwrap()
-                    .downcast::<ActivityRow>()
-                    .unwrap();
-                child.set_activity(activity);
-            });
             let m: gio::ListModel = match &*self.activity_model.borrow() {
                 Some(DataProvider::Actual(m)) => m.clone().upcast(),
                 Some(DataProvider::Mocked(m)) => m.clone().upcast(),
                 None => unimplemented!(),
             };
-            let selection_model = gtk::NoSelection::new(Some(&m));
-            let list_view = gtk::ListView::new(Some(&selection_model), Some(&factory));
-            self.frame
-                .set_child(Some(list_view.upcast_ref::<gtk::Widget>()));
-            list_view.style_context().add_class("content");
-            self.activities_list_view.set(list_view).unwrap();
+            self.list_box.bind_model(Some(&m), |obj| {
+                ActivityRow::new(&obj.downcast_ref::<Activity>().unwrap()).upcast()
+            });
 
             Database::instance().connect_activities_updated(glib::clone!(@weak obj => move |_| {
                 gtk_macros::spawn!(async move {
