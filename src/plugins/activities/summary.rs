@@ -94,7 +94,7 @@ impl PluginActivitiesSummaryRow {
             .map(|s| s.duration().num_minutes())
             .sum();
         self_.label.set_label(&ni18n_f(
-            "{} active minutes today",
+            "{} active minute today",
             "{} active minutes today",
             active_minutes_today as u32,
             &[&active_minutes_today.to_string()],
