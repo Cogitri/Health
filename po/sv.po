@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-05 14:48+0000\n"
-"PO-Revision-Date: 2022-01-05 19:04+0100\n"
+"POT-Creation-Date: 2022-01-13 14:08+0000\n"
+"PO-Revision-Date: 2022-01-14 00:17+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -697,9 +697,9 @@ msgstr "Aktiviteter"
 # TODO: Verkar sakna singularis-fallet
 # https://gitlab.gnome.org/World/Health/-/commit/31a94a650146c1675d189486182b8339fe7bb52e?page=2#note_1340446
 #: src/plugins/activities/summary.rs:97
-msgid "{} active minutes today"
+msgid "{} active minute today"
 msgid_plural "{} active minutes today"
-msgstr[0] "{} aktiva minuter idag"
+msgstr[0] "{} aktiv minut idag"
 msgstr[1] "{} aktiva minuter idag"
 
 #: src/plugins/calories/details.rs:220
