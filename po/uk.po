@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-05 14:48+0000\n"
-"PO-Revision-Date: 2022-01-05 21:40+0200\n"
+"POT-Creation-Date: 2022-01-13 14:08+0000\n"
+"PO-Revision-Date: 2022-01-13 19:14+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -704,12 +704,14 @@ msgid "Activities"
 msgstr "Фізична активність"
 
 #: src/plugins/activities/summary.rs:97
-msgid "{} active minutes today"
+#| msgid "{} active minutes today"
+#| msgid_plural "{} active minutes today"
+msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "Сьогодні була {} активна хвилина"
 msgstr[1] "Сьогодні було {} активних хвилини"
 msgstr[2] "Сьогодні було {} активних хвилин"
-msgstr[3] "Сьогодні була {} активна хвилина{} крок сьогодні"
+msgstr[3] "Сьогодні була {} активна хвилина"
 
 #: src/plugins/calories/details.rs:220
 msgid ""
@@ -806,8 +808,6 @@ msgstr[3] "{} крок сьогодні"
 
 #: src/plugins/steps/summary.rs:112
 #, c-format
-#| msgid "Reached {}% of daily step goal"
-#| msgid_plural "Reached {}% of daily step goal"
 msgid "Reached {}%% of daily step goal"
 msgid_plural "Reached {}%% of daily step goal"
 msgstr[0] "Досягнуто {}%% цільової кількості кроків за день"
