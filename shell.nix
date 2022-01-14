@@ -1,10 +1,7 @@
 let
   moz_overlay = import (builtins.fetchTarball https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz);
-  pkgs = import (fetchTarball("channel:nixpkgs-unstable")) { overlays = [ moz_overlay ]; };
+  pkgs = import (fetchTarball("https://github.com/nixos/nixpkgs/archive/a6928c74cc64a141051160d1cdbbc3d2c1bbece2.tar.gz")) { overlays = [ moz_overlay ]; };
 
-  gtkPatched = pkgs.gtk4.overrideAttrs (old: rec {
-    patches = [ ./build-aux/4136.patch ];
-  });
   rustSrc =
     pkgs.latest.rustChannels.stable.rust.override { extensions = [ "rust-src" ]; };
   buildInputs = with pkgs; [ 
@@ -23,13 +20,13 @@ let
     glib
     graphene
     gtk4.dev
-    gtkPatched
+    gtk4
     harfbuzz
     libadwaita
     librsvg
     libxml2
     lld_13
-    meson_0_60
+    meson
     ninja
     pango
     pkg-config

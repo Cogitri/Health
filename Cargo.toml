@@ -18,7 +18,7 @@ name = "health-daemon"
 path = "src/daemon/main.rs"
 
 [dependencies.adw]
-git = "https://gitlab.gnome.org/World/Rust/libadwaita-rs"
+version = "0.1.0"
 package = "libadwaita"
 features = ["gtk_v4_4"]
 
@@ -26,7 +26,7 @@ features = ["gtk_v4_4"]
 version = "1.0"
 
 [dependencies.ashpd]
-git = "https://github.com/bilelmoussaoui/ashpd"
+version = "0.2.0-beta-1"
 features = ["feature_gtk4"]
 
 [dependencies.async-trait]
@@ -63,7 +63,7 @@ features = ["gettext-system"]
 version = "0.3"
 
 [dependencies.gtk]
-git = "https://github.com/gtk-rs/gtk4-rs"
+version = "0.4"
 package = "gtk4"
 features = ["v4_4"]
 
@@ -94,7 +94,7 @@ version = "0.9"
 version = "1.5"
 
 [dependencies.pangocairo]
-git = "https://github.com/gtk-rs/gtk-rs-core"
+version = "0.15.1"
 
 [dependencies.paste]
 version = "1.0"
@@ -123,7 +123,7 @@ features = ["derive"]
 version = "1.0"
 
 [dependencies.tracker]
-git = "https://gitlab.gnome.org/World/Rust/tracker-rs"
+version = "0.2"
 package = "tracker-rs"
 
 [dependencies.uom]
@@ -156,4 +156,4 @@ panic = "abort"
 debug = true
 
 [profile.dev]
-debug = true
+debug = 2
