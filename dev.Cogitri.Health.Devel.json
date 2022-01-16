@@ -1,66 +1,54 @@
 {
-    "app-id": "dev.Cogitri.Health.Devel",
-    "runtime": "org.gnome.Platform",
-    "runtime-version": "master",
-    "sdk": "org.gnome.Sdk",
-    "sdk-extensions": [
-        "org.freedesktop.Sdk.Extension.rust-stable"
-    ],
-    "command": "dev.Cogitri.Health.Devel",
-    "finish-args": [
-        "--share=network",
-        "--share=ipc",
-        "--socket=fallback-x11",
-        "--socket=wayland",
-        "--talk-name=org.freedesktop.secrets",
-        "--device=dri"
-    ],
-    "tags": [
-        "devel",
-        "development",
-        "nightly"
-    ],
-    "cleanup": [
-        "/include",
-        "/lib/pkgconfig",
-        "/man",
-        "/share/doc",
-        "/share/gtk-doc",
-        "/share/man",
-        "/share/pkgconfig",
-        "/share/vala",
-        "*.la",
-        "*.a",
-        "/lib/girepository-1.0",
-        "/share/gir-1.0"
-    ],
-    "build-options": {
-        "append-path": "/usr/lib/sdk/rust-stable/bin",
-        "build-args": [
-            "--share=network"
-        ],
-        "env": {
-            "RUST_BACKTRACE": "1",
-            "RUSTFLAGS": ""
-        }
-    },
-    "modules": [
+  "app-id": "dev.Cogitri.Health.Devel",
+  "runtime": "org.gnome.Platform",
+  "runtime-version": "master",
+  "sdk": "org.gnome.Sdk",
+  "sdk-extensions": ["org.freedesktop.Sdk.Extension.rust-stable"],
+  "command": "dev.Cogitri.Health.Devel",
+  "finish-args": [
+    "--share=network",
+    "--share=ipc",
+    "--socket=fallback-x11",
+    "--socket=wayland",
+    "--talk-name=org.freedesktop.secrets",
+    "--device=dri"
+  ],
+  "tags": ["devel", "development", "nightly"],
+  "cleanup": [
+    "/include",
+    "/lib/pkgconfig",
+    "/man",
+    "/share/doc",
+    "/share/gtk-doc",
+    "/share/man",
+    "/share/pkgconfig",
+    "/share/vala",
+    "*.la",
+    "*.a",
+    "/lib/girepository-1.0",
+    "/share/gir-1.0"
+  ],
+  "build-options": {
+    "append-path": "/usr/lib/sdk/rust-stable/bin",
+    "build-args": ["--share=network"],
+    "env": {
+      "RUST_BACKTRACE": "1",
+      "RUSTFLAGS": ""
+    }
+  },
+  "modules": [
+    {
+      "name": "health",
+      "builddir": true,
+      "buildsystem": "meson",
+      "cleanup": ["/usr/"],
+      "config-opts": ["-Dprofile=development", "--buildtype=debug"],
+      "sources": [
         {
-            "name": "health",
-            "builddir": true,
-            "buildsystem": "meson",
-            "cleanup": [
-                "/usr/"
-            ],
-            "config-opts": [
-                "-Dprofile=development"
-            ],
-            "sources": [
-                {
-                    "type": "dir",
-                    "path": "."
-                }
-            ]
+          "type": "dir",
+          "path": "."
         }
-    ]
+      ]
+    }
+  ]
 }
