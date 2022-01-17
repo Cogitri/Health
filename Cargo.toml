@@ -128,7 +128,7 @@ package = "tracker-rs"
 
 [dependencies.uom]
 default-features = false
-version = "0.31"
+version = "0.32"
 features = ["f32", "si"]
 
 [dependencies.ureq]
