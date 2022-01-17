@@ -279,9 +279,6 @@ impl ViewHomePage {
         }));
 
         self.imp().size_group.add_widget(&summary);
-        self.imp()
-            .summary_size_group
-            .add_widget(&summary.summary_widget());
 
         summary.upcast()
     }
