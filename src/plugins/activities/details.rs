@@ -74,7 +74,7 @@ mod imp {
                 None => unimplemented!(),
             };
             self.list_box.bind_model(Some(&m), |obj| {
-                ActivityRow::new(&obj.downcast_ref::<Activity>().unwrap()).upcast()
+                ActivityRow::new(obj.downcast_ref::<Activity>().unwrap()).upcast()
             });
 
             Database::instance().connect_activities_updated(glib::clone!(@weak obj => move |_| {
