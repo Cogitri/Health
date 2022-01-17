@@ -22,25 +22,29 @@
   <requires lib="libadwaita" version="1.0"/>
   <template class="HealthPluginStepsSummaryRow" parent="HealthPluginSummaryRow">
     <property name="title" translatable="yes">Steps</property>
-    <property name="summary-widget">main_box</property>
     <child>
-      <object class="GtkBox" id="main_box">
-        <property name="orientation">vertical</property>
-        <property name="margin-end">13</property>
+      <object class="AdwClamp">
+        <property name="maximum-size">150</property>
         <child>
-          <object class="HealthCircularProgressBar" id="circular_progress_bar"/>
-        </child>
-        <child>
-          <object class="GtkLabel" id="steps_percentage"/>
-        </child>
-        <child>
-          <object class="GtkLabel" id="activity_subtext">
-            <property name="wrap">1</property>
-            <property name="max-width-chars">15</property>
-            <property name="justify">center</property>
-            <style>
-              <class name="caption"/>
-            </style>
+          <object class="GtkBox" id="main_box">
+            <property name="orientation">vertical</property>
+            <property name="margin-end">13</property>
+            <child>
+              <object class="HealthCircularProgressBar" id="circular_progress_bar"/>
+            </child>
+            <child>
+              <object class="GtkLabel" id="steps_percentage"/>
+            </child>
+            <child>
+              <object class="GtkLabel" id="activity_subtext">
+                <property name="wrap">1</property>
+                <property name="max-width-chars">15</property>
+                <property name="justify">center</property>
+                <style>
+                  <class name="caption"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
       </object>

@@ -22,26 +22,30 @@
   <requires lib="libadwaita" version="1.0"/>
   <template class="HealthPluginWeightSummaryRow" parent="HealthPluginSummaryRow">
     <property name="title" translatable="yes">Weight</property>
-    <property name="summary-widget">main_box</property>
     <child>
-      <object class="GtkBox" id="main_box">
-        <property name="orientation">vertical</property>
-        <property name="margin-top">3</property>
-        <property name="margin-bottom">3</property>
+      <object class="AdwClamp">
+        <property name="maximum-size">150</property>
         <child>
-          <object class="HealthArrows" id="arrow">
-            <property name="height-request">50</property>
-            <property name="width-request">50</property>
-          </object>
-        </child>
-        <child>
-          <object class="GtkLabel" id="weight_change">
-            <property name="wrap">1</property>
-            <property name="max-width-chars">8</property>
-            <property name="justify">center</property>
-            <style>
-              <class name="caption"/>
-            </style>
+          <object class="GtkBox" id="main_box">
+            <property name="orientation">vertical</property>
+            <property name="margin-top">3</property>
+            <property name="margin-bottom">3</property>
+            <child>
+              <object class="HealthArrows" id="arrow">
+                <property name="height-request">50</property>
+                <property name="width-request">50</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkLabel" id="weight_change">
+                <property name="wrap">1</property>
+                <property name="max-width-chars">8</property>
+                <property name="justify">center</property>
+                <style>
+                  <class name="caption"/>
+                </style>
+              </object>
+            </child>
           </object>
         </child>
       </object>
