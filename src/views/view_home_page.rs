@@ -156,7 +156,7 @@ mod imp {
             let summary = row.downcast_ref::<PluginSummaryRow>().unwrap();
             let plugin_name = summary.plugin_name();
             self.instance()
-                .open_plugin_details(&list_box, plugin_name, true);
+                .open_plugin_details(list_box, plugin_name, true);
         }
 
         #[template_callback]
@@ -164,7 +164,7 @@ mod imp {
             let overview = row.downcast_ref::<PluginOverviewRow>().unwrap();
             let plugin_name = overview.plugin_name();
             self.instance()
-                .open_plugin_details(&list_box, plugin_name, false);
+                .open_plugin_details(list_box, plugin_name, false);
         }
     }
 }
@@ -298,7 +298,7 @@ impl ViewHomePage {
         overview.upcast()
     }
 
-    fn open_plugin_details(&self, list_box: &gtk::ListBox, plugin_name: PluginName, enabled: bool) {
+    fn open_plugin_details(&self, list_box: gtk::ListBox, plugin_name: PluginName, enabled: bool) {
         let self_ = self.imp();
         let registrar = Registrar::instance();
         let plugin = if enabled {
@@ -309,11 +309,10 @@ impl ViewHomePage {
         let details = plugin.details(!enabled);
 
         self_.stack.add_named(&details, Some(plugin_name.as_ref()));
-        self_.stack.set_visible_child_name(plugin_name.as_ref());
-        self.emit_by_name::<()>("view-changed", &[&plugin_name.as_ref()]);
-        list_box.unselect_all();
 
-        gtk_macros::spawn!(async move {
+        gtk_macros::spawn!(glib::clone!(@weak self as obj => async move {
+            let self_ = obj.imp();
+
             if let Err(e) = details.update().await {
                 glib::g_warning!(
                     crate::config::LOG_DOMAIN,
@@ -321,7 +320,11 @@ impl ViewHomePage {
                     e
                 );
             }
-        });
+
+            self_.stack.set_visible_child_name(plugin_name.as_ref());
+            obj.emit_by_name::<()>("view-changed", &[&plugin_name.as_ref()]);
+            list_box.unselect_all();
+        }));
     }
 
     fn imp(&self) -> &imp::ViewHomePage {
