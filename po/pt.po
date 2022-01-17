@@ -1,14 +1,14 @@
 # Portuguese translation for health.
 # Copyright (C) 2021 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2021, 2022.
 #
-# Hugo Carvalho <hugokarvalho@hotmail.com>, 2021.
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-05 14:48+0000\n"
-"PO-Revision-Date: 2022-01-13 14:17+0000\n"
+"POT-Creation-Date: 2022-01-13 14:18+0000\n"
+"PO-Revision-Date: 2022-01-17 14:01+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <gnome-pt-translation@googlegroups.com>\n"
 "Language: pt\n"
@@ -691,9 +691,9 @@ msgid "Activities"
 msgstr "Atividades"
 
 #: src/plugins/activities/summary.rs:97
-msgid "{} active minutes today"
+msgid "{} active minute today"
 msgid_plural "{} active minutes today"
-msgstr[0] "{} minutos ativos hoje"
+msgstr[0] "{} minuto ativo hoje"
 msgstr[1] "{} minutos ativos hoje"
 
 #: src/plugins/calories/details.rs:220
