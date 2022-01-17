@@ -1,7 +1,7 @@
 conf = configuration_data ()
 conf.set('APPLICATION_ID', application_id)
-conf.set('DAEMON_APPLICATION_ID', daemon_application_id)
 conf.set('GETTEXT_PACKAGE', gettext_package)
+conf.set('BIN_DIR', get_option('prefix') / get_option('bindir'))
 
 configured_desktop_file = configure_file(
   input: 'dev.Cogitri.Health.desktop.in.in',
@@ -18,25 +18,25 @@ desktop_file = i18n.merge_file(
   install_dir: join_paths(get_option('datadir'), 'applications')
 )
 
-configured_daemon_desktop_file = configure_file(
-  input: 'dev.Cogitri.Health.Daemon.desktop.in.in',
+configured_autostart_file = configure_file(
+  input: 'dev.Cogitri.Health.Autostart.desktop.in.in',
   output: '@BASENAME@',
   configuration: conf,
 )
 
-daemon_desktop_file = i18n.merge_file(
-  input: configured_daemon_desktop_file,
-  output: '@0@.desktop'.format(daemon_application_id),
+autostart_desktop_file = i18n.merge_file(
+  input: configured_autostart_file,
+  output: '@BASENAME@',
   type: 'desktop',
   po_dir: '../po',
   install: true,
-  install_dir: join_paths(get_option('sysconfdir'), 'xdg', 'autostart')
+  install_dir: join_paths(get_option('datadir'), 'applications')
 )
 
 desktop_utils = find_program('desktop-file-validate', required: false)
 if desktop_utils.found()
   test('Validate desktop file', desktop_utils,
-    args: [daemon_desktop_file, desktop_file]
+    args: [autostart_desktop_file, desktop_file]
   )
 endif
 
@@ -84,6 +84,14 @@ gnome.compile_resources('dev.Cogitri.Health',
   gresource_bundle: true,
   install: true,
   install_dir: health_data_dir,
+)
+
+configure_file(
+  input: 'dev.Cogitri.Health.service.in',
+  output: '@0@.service'.format(application_id),
+  configuration: conf,
+  install: true,
+  install_dir: get_option('datadir') / 'dbus-1' / 'services',
 )
 
 subdir('icons')

@@ -1,7 +1,9 @@
 [Desktop Entry]
-Name=Health Daemon
-Exec=@DAEMON_APPLICATION_ID@
+Name=Health
+Exec=@APPLICATION_ID@ --gapplication-service
+Icon=@APPLICATION_ID@
 Terminal=false
 Type=Application
 Categories=GNOME;GTK;Utility;MedicalSoftware;
 StartupNotify=false
+NoDisplay=true

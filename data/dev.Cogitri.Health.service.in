@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=@APPLICATION_ID@
+Exec=@BIN_DIR@/@APPLICATION_ID@ --gapplication-service

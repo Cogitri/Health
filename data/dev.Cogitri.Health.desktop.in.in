@@ -6,3 +6,5 @@ Terminal=false
 Type=Application
 Categories=GNOME;GTK;Utility;MedicalSoftware;
 StartupNotify=true
+DBusActivatable=true
+X-GNOME-UsesNotifications=true

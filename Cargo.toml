@@ -13,10 +13,6 @@ path = "src/lib.rs"
 name = "health"
 path = "src/main.rs"
 
-[[bin]]
-name = "health-daemon"
-path = "src/daemon/main.rs"
-
 [dependencies.adw]
 version = "0.1.0"
 package = "libadwaita"
@@ -72,9 +68,6 @@ version = "0.3.0"
 
 [dependencies.http]
 version = "0.2"
-
-[dependencies.notify-rust]
-version = "4"
 
 [dependencies.num-derive]
 version = "0.3"
@@ -137,8 +130,7 @@ version = "2"
 features = ["json"]
 
 [dependencies.secret-service]
-git = "https://github.com/Cogitri/secret-service-rs"
-branch = "zbus-2"
+git = "https://github.com/hwchen/secret-service-rs"
 
 [dependencies.zxcvbn]
 git = "https://github.com/Cogitri/zxcvbn-rs"

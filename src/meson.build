@@ -3,9 +3,9 @@ conf.set_quoted('VERSION', meson.project_version())
 conf.set_quoted('localedir', join_paths(get_option('prefix'), get_option('localedir')))
 conf.set_quoted('pkgdatadir', health_data_dir)
 conf.set_quoted('application_id', application_id)
-conf.set_quoted('daemon_application_id', daemon_application_id)
 conf.set_quoted('log_domain', application_id)
 conf.set_quoted('gettext_package', gettext_package)
+conf.set_quoted('autostart_desktop_file_path', join_paths(get_option('datadir'), 'applications', 'dev.Cogitri.Health.Autostart.desktop'))
 
 configure_file(
     input: 'config.rs.in',
@@ -34,9 +34,6 @@ sources = files(
   'core/unit_kind.rs',
   'core/unit_system.rs',
   'core/utils.rs',
-  'daemon/application.rs',
-  'daemon/main.rs',
-  'daemon/mod.rs',
   'lib.rs',
   'main.rs',
   'model/activity_data_points.rs',
@@ -44,10 +41,12 @@ sources = files(
   'model/activity.rs',
   'model/activity_type_row_data.rs',
   'model/activity_type.rs',
+  'model/fn_boxed.rs',
   'model/model_notification.rs',
   'model/mod.rs',
   'model/steps.rs',
   'model/unitsize.rs',
+  'model/weight_change.rs',
   'model/weight.rs',
   'plugins/activities/data_provider_mocked.rs',
   'plugins/activities/data_provider.rs',
@@ -65,6 +64,8 @@ sources = files(
   'plugins/mod.rs',
   'plugins/overview.rs',
   'plugins/plugin_list.rs',
+  'plugins/plugin_name.rs',
+  'plugins/plugin_object.rs',
   'plugins/plugin.rs',
   'plugins/registrar.rs',
   'plugins/steps/data_provider_mocked.rs',
@@ -123,7 +124,7 @@ cargo_release = custom_target(
   'cargo-build',
   build_by_default: true,
   input: sources,
-  output: [application_id, daemon_application_id],
+  output: [application_id],
   console: true,
   install: true,
   install_dir: get_option('bindir'),
@@ -134,8 +135,6 @@ cargo_release = custom_target(
     '@OUTPUT0@',
     get_option('buildtype'),
     'health',
-    'health-daemon',
-    '@OUTPUT1@',
   ]
 )
 

@@ -1,6 +1,7 @@
 /* model_notification.rs
  *
  * Copyright 2021 Visvesh Subramanian <visveshs.blogspot.com>
+ * Copyright 2022 Rasmus Thomsen <oss@cogitri.dev>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,60 +17,42 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::core::{i18n, ni18n_f};
-use chrono::{Local, NaiveTime, Timelike};
-use glib::source::timeout_add_seconds_local;
-use gtk::{gio::subclass::prelude::*, glib};
-use notify_rust::{Notification, Timeout, Urgency};
+use crate::{
+    core::{i18n, ni18n_f},
+    model::NotificationFrequency,
+    prelude::*,
+};
+use chrono::{Local, Timelike};
+use gtk::{
+    gio::{self, prelude::*, subclass::prelude::*},
+    glib,
+};
 use std::{convert::TryInto, string::ToString};
 
-#[derive(
-    PartialEq,
-    Debug,
-    Clone,
-    Copy,
-    num_derive::FromPrimitive,
-    num_derive::ToPrimitive,
-    strum::EnumString,
-    strum::AsRefStr,
-)]
-#[strum(serialize_all = "snake_case")]
-pub enum NotificationFrequency {
-    Hourly,
-    Every4Hrs,
-    Fixed,
-}
-
-impl Default for NotificationFrequency {
-    fn default() -> Self {
-        Self::Every4Hrs
-    }
-}
-
-impl glib::ToValue for NotificationFrequency {
-    fn to_value(&self) -> glib::Value {
-        self.as_ref().to_value()
-    }
-
-    fn value_type(&self) -> glib::Type {
-        <String as glib::StaticType>::static_type()
-    }
-}
-
 mod imp {
-    use crate::core::{Database, Settings};
-    use gtk::{glib, subclass::prelude::*};
+    use crate::{core::Database, model::NotificationFrequency, prelude::*};
+    use chrono::NaiveTime;
+    use gtk::{
+        gio::{self, prelude::*, subclass::prelude::*},
+        glib,
+    };
+    use once_cell::unsync::OnceCell;
+    use std::{cell::RefCell, str::FromStr};
 
     #[derive(Debug, Default)]
     pub struct ModelNotificationMut {
         pub hour_count: i32,
+        pub notification_frequency: NotificationFrequency,
+        pub notification_time: Option<NaiveTime>,
+        pub step_goal: u32,
+        pub timeout_source_id: Option<glib::SourceId>,
     }
 
     #[derive(Debug, Default)]
     pub struct ModelNotification {
+        pub application: OnceCell<gio::Application>,
         pub database: Database,
-        pub settings: Settings,
-        pub inner: std::cell::RefCell<ModelNotificationMut>,
+        pub inner: RefCell<ModelNotificationMut>,
     }
 
     #[glib::object_subclass]
@@ -79,7 +62,86 @@ mod imp {
         type Type = super::ModelNotification;
     }
 
-    impl ObjectImpl for ModelNotification {}
+    impl ObjectImpl for ModelNotification {
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![
+                    glib::ParamSpecObject::new(
+                        "application",
+                        "application",
+                        "application",
+                        gio::Application::static_type(),
+                        glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecString::new(
+                        "notification-frequency",
+                        "notification-frequency",
+                        "notification-frequency",
+                        Some(NotificationFrequency::default().as_ref()),
+                        glib::ParamFlags::READWRITE,
+                    ),
+                    glib::ParamSpecBoxed::new(
+                        "notification-time",
+                        "notification-time",
+                        "notification-time",
+                        NaiveTimeBoxed::static_type(),
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
+                    glib::ParamSpecUInt::new(
+                        "step-goal",
+                        "step-goal",
+                        "step-goal",
+                        0,
+                        u32::MAX,
+                        0,
+                        glib::ParamFlags::READWRITE,
+                    ),
+                ]
+            });
+
+            PROPERTIES.as_ref()
+        }
+
+        fn set_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            value: &glib::Value,
+            pspec: &glib::ParamSpec,
+        ) {
+            match pspec.name() {
+                "application" => self.application.set(value.get().unwrap()).unwrap(),
+                "notification-frequency" => {
+                    self.inner.borrow_mut().notification_frequency =
+                        NotificationFrequency::from_str(value.get().unwrap()).unwrap()
+                }
+                "notification-time" => {
+                    self.inner.borrow_mut().notification_time =
+                        Some(value.get::<NaiveTimeBoxed>().unwrap().0);
+                }
+                "step-goal" => self.inner.borrow_mut().step_goal = value.get().unwrap(),
+                _ => unimplemented!(),
+            }
+        }
+
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "application" => self.application.get().unwrap().to_value(),
+                "notification-frequency" => self
+                    .inner
+                    .borrow()
+                    .notification_frequency
+                    .as_ref()
+                    .to_value(),
+                "notification-time" => {
+                    NaiveTimeBoxed(self.inner.borrow().notification_time.unwrap()).to_value()
+                }
+                "step-goal" => self.inner.borrow().step_goal.to_value(),
+                _ => unimplemented!(),
+            }
+        }
+    }
 }
 
 glib::wrapper! {
@@ -90,24 +152,56 @@ glib::wrapper! {
 }
 
 impl ModelNotification {
-    pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ModelNotification")
+    pub fn new<T: IsA<gio::Application>>(
+        application: &T,
+        notification_frequency: NotificationFrequency,
+        notification_time: chrono::NaiveTime,
+        step_goal: u32,
+    ) -> Self {
+        glib::Object::new(&[
+            ("application", application),
+            ("notification-frequency", &notification_frequency),
+            ("notification-time", &NaiveTimeBoxed(notification_time)),
+            ("step-goal", &step_goal),
+        ])
+        .expect("Failed to create ModelNotification")
     }
 
-    pub fn periodic_notify(&self) {
-        let periodic = glib::clone!(@strong self as x => move || {
-            glib::clone!(@weak x as obj => move || {
-                gtk_macros::spawn!(
-                    async move {
-                        obj.periodic_callback().await;
-                    }
-                );
-            })();
-        });
-        timeout_add_seconds_local(60, move || {
-            periodic();
-            glib::Continue(true)
-        });
+    pub fn register_periodic_notify(&self) {
+        let source_id = glib::source::timeout_add_seconds_local(
+            60,
+            glib::clone!(@strong self as obj => move || {
+                gtk_macros::spawn!(glib::clone!(@weak obj => async move {
+                    obj.periodic_callback().await;
+                }));
+
+                glib::Continue(true)
+            }),
+        );
+
+        self.imp().inner.borrow_mut().timeout_source_id = Some(source_id);
+    }
+
+    pub fn set_notification_frequency(&self, value: NotificationFrequency) {
+        self.set_property("notification-frequency", value);
+    }
+
+    pub fn set_notification_time(&self, value: chrono::NaiveTime) {
+        self.set_property("notification-time", NaiveTimeBoxed(value));
+    }
+
+    pub fn set_step_goal(&self, value: u32) {
+        self.set_property("step-goal", value);
+    }
+
+    pub fn step_goal(&self) -> u32 {
+        self.property("step-goal")
+    }
+
+    pub fn unregister_periodic_notify(&self) {
+        if let Some(id) = self.imp().inner.borrow_mut().timeout_source_id.take() {
+            id.remove();
+        }
     }
 
     fn imp(&self) -> &imp::ModelNotification {
@@ -115,38 +209,41 @@ impl ModelNotification {
     }
 
     async fn periodic_callback(&self) {
-        self.imp().inner.borrow_mut().hour_count += 1;
+        let self_ = self.imp();
         let time_now = Local::now().time();
-        let notify_time =
-            NaiveTime::parse_from_str(self.imp().settings.notification_time().as_str(), "%H:%M:%S")
-                .unwrap();
-        let interval = match self.imp().settings.notification_frequency() {
+        let notify_time = self_.inner.borrow().notification_time.unwrap();
+        let frequency = self_.inner.borrow().notification_frequency;
+
+        if time_now.minute() == 0 {
+            self_.inner.borrow_mut().hour_count += 1;
+        }
+
+        let interval = match frequency {
             NotificationFrequency::Hourly => 60,
             NotificationFrequency::Every4Hrs => 60 * 4,
             NotificationFrequency::Fixed => 0,
         };
         let fixed_time = time_now.hour() == notify_time.hour()
             && time_now.minute() == notify_time.minute()
-            && self.imp().settings.notification_frequency() == NotificationFrequency::Fixed;
-        let periodic = self.imp().settings.notification_frequency() != NotificationFrequency::Fixed
-            && self.imp().inner.borrow().hour_count % interval == 0;
-        if (fixed_time || periodic) && self.imp().settings.enable_notifications() {
-            Notification::new()
-                .summary(&i18n("Health: walking reminder"))
-                .body(&(self.reminder_text().await))
-                .icon("dev.Cogitri.Health")
-                .appname("Health")
-                .timeout(Timeout::Milliseconds(2000))
-                .urgency(Urgency::Low)
-                .show()
-                .unwrap();
+            && frequency == NotificationFrequency::Fixed;
+        let periodic = frequency != NotificationFrequency::Fixed
+            && self_.inner.borrow().hour_count % interval == 0;
+        if fixed_time || periodic {
+            let notification = gio::Notification::new(&i18n("Health: walking reminder"));
+            notification.set_body(Some(&(self.reminder_text().await)));
+            notification.set_icon(&gio::Icon::for_string(crate::config::APPLICATION_ID).unwrap());
+            self_
+                .application
+                .get()
+                .unwrap()
+                .send_notification(Some("walking-reminder"), &notification);
         }
     }
 
     // TRANSLATORS notes have to be on the same line, so we cant split them
     #[rustfmt::skip::attributes(ni18n_f)]
     async fn reminder_text(&self) -> String {
-        let step_goal = i64::from(self.imp().settings.user_step_goal());
+        let step_goal = i64::from(self.imp().inner.borrow().step_goal);
         let step_count = self
             .imp()
             .database
@@ -173,10 +270,16 @@ impl ModelNotification {
 
 #[cfg(test)]
 mod test {
-    use super::ModelNotification;
+    use super::{ModelNotification, NotificationFrequency};
+    use gtk::gio;
 
     #[test]
     fn new() {
-        ModelNotification::new();
+        ModelNotification::new(
+            &gio::Application::new(None, gio::ApplicationFlags::FLAGS_NONE),
+            NotificationFrequency::Every4Hrs,
+            chrono::NaiveTime::parse_from_str("12:00:00", "%H:%M:%S").unwrap(),
+            1000,
+        );
     }
 }

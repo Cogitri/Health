@@ -75,7 +75,6 @@
 
 pub mod config;
 pub mod core;
-pub mod daemon;
 pub mod model;
 pub mod plugins;
 pub mod sync;

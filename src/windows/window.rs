@@ -135,13 +135,6 @@ impl Window {
     fn setup_actions(&self) {
         action!(
             self,
-            "quit",
-            clone!(@weak self as obj => move |_, _| {
-                obj.destroy();
-            })
-        );
-        action!(
-            self,
             "hamburger-menu",
             clone!(@weak self as obj => move |_, _| {
                 obj.open_hamburger_menu();
@@ -192,6 +185,13 @@ impl Window {
 
         if let Some(source_id) = inner.sync_source_id.take() {
             source_id.remove();
+        }
+
+        if let Some(app) = self
+            .application()
+            .and_then(|a| a.downcast::<crate::core::Application>().ok())
+        {
+            app.handle_shutdown();
         }
 
         false

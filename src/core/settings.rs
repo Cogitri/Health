@@ -19,7 +19,7 @@
 use crate::{
     core::UnitSystem, model::NotificationFrequency, plugins::PluginName, settings_getter_setter,
 };
-use chrono::{Date, DateTime, FixedOffset};
+use chrono::{Date, DateTime, FixedOffset, NaiveTime};
 use gtk::{
     gio::{self, prelude::*},
     glib,
@@ -40,7 +40,6 @@ static mut SETTINGS: Option<Settings> = None;
 impl Settings {
     settings_getter_setter!(bool, did_initial_setup, "did-initial-setup");
     settings_getter_setter!(bool, enable_notifications, "enable-notifications");
-    settings_getter_setter!(String, notification_time, "notification-time");
     settings_getter_setter!(
         bool,
         sync_provider_setup_google_fit,
@@ -172,6 +171,36 @@ impl Settings {
     pub fn set_notification_frequency(&self, value: NotificationFrequency) {
         self.set_enum("notification-frequency", value.to_i32().unwrap())
             .unwrap();
+    }
+
+    /// Connect to the `notification-frequency` key changing. Keep in mind that the key has to be read once before connecting or this won't do anything!
+    pub fn connect_notification_frequency_changed<F: Fn(&gio::Settings, &str) + 'static>(
+        &self,
+        f: F,
+    ) -> glib::SignalHandlerId {
+        self.connect_changed(Some("notification-frequency"), move |s, name| {
+            f(s, name);
+        })
+    }
+
+    pub fn notification_time(&self) -> NaiveTime {
+        NaiveTime::parse_from_str(self.string("notification-time").as_str(), "%H:%M:%S")
+            .expect("Couldn't parse time")
+    }
+
+    pub fn set_notification_time(&self, value: NaiveTime) {
+        self.set_string("notification-time", &value.to_string())
+            .unwrap();
+    }
+
+    /// Connect to the `notification-time` key changing. Keep in mind that the key has to be read once before connecting or this won't do anything!
+    pub fn connect_notification_time_changed<F: Fn(&gio::Settings, &str) + 'static>(
+        &self,
+        f: F,
+    ) -> glib::SignalHandlerId {
+        self.connect_changed(Some("notification-time"), move |s, name| {
+            f(s, name);
+        })
     }
 
     /// Get the current unit system.

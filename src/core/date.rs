@@ -1,4 +1,4 @@
-use chrono::{Date, DateTime, FixedOffset, TimeZone};
+use chrono::{Date, DateTime, FixedOffset, NaiveTime, TimeZone};
 use gtk::glib::{self, Boxed, DateTime as GDateTime};
 
 pub mod prelude {
@@ -8,6 +8,10 @@ pub mod prelude {
 #[derive(Clone, Debug, PartialEq, Eq, Boxed)]
 #[boxed_type(name = "DateTimeBoxed")]
 pub struct DateTimeBoxed(pub DateTime<FixedOffset>);
+
+#[derive(Clone, Debug, PartialEq, Eq, Boxed)]
+#[boxed_type(name = "NaiveTimeBoxed")]
+pub struct NaiveTimeBoxed(pub NaiveTime);
 
 #[easy_ext::ext(DateTimeExt)]
 impl<T> DateTime<T>

@@ -13,6 +13,8 @@ pub mod fn_boxed;
 #[doc(hidden)]
 pub mod model_notification;
 #[doc(hidden)]
+pub mod notification_frequency;
+#[doc(hidden)]
 pub mod steps;
 #[doc(hidden)]
 pub mod unitsize;
@@ -35,6 +37,8 @@ pub use activity_type_row_data::*;
 pub use fn_boxed::*;
 #[doc(inline)]
 pub use model_notification::*;
+#[doc(inline)]
+pub use notification_frequency::*;
 #[doc(inline)]
 pub use steps::*;
 #[doc(inline)]

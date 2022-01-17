@@ -18,8 +18,10 @@
 
 use crate::{
     core::{i18n, UnitSystem},
+    model::ModelNotification,
     windows::{PreferencesWindow, Window},
 };
+use anyhow::Result;
 use chrono::{DateTime, Duration, FixedOffset, Local};
 use gtk::{
     gio::{self, prelude::*},
@@ -27,21 +29,24 @@ use gtk::{
     prelude::*,
 };
 use gtk_macros::{action, stateful_action};
-use std::str::FromStr;
+use std::{path::Path, str::FromStr};
 
 mod imp {
     use crate::{
         config,
         core::Settings,
+        model::ModelNotification,
         windows::{SetupWindow, Window},
     };
     use adw::subclass::prelude::*;
     use gtk::glib::{self, clone, g_warning};
     use gtk::{prelude::*, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
+    use std::cell::RefCell;
 
     #[derive(Debug, Default)]
     pub struct Application {
+        pub notification_model: RefCell<Option<ModelNotification>>,
         pub settings: Settings,
         pub window: OnceCell<glib::WeakRef<Window>>,
     }
@@ -99,8 +104,12 @@ mod imp {
             obj.migrate_gsettings();
             obj.setup_actions();
             obj.setup_accels();
+            obj.setup_notifications();
+            // Hold onto this application to send notifications
+            obj.hold();
         }
     }
+
     impl GtkApplicationImpl for Application {}
     impl AdwApplicationImpl for Application {}
 }
@@ -113,6 +122,29 @@ glib::wrapper! {
 }
 
 impl Application {
+    fn delete_autostart_file(&self) -> Result<()> {
+        let autostart_desktop_file = Path::new(crate::config::AUTOSTART_DESKTOP_FILE_PATH);
+        let desktop_file_name = autostart_desktop_file
+            .file_name()
+            .unwrap()
+            .to_str()
+            .unwrap();
+        let mut autostart_user_file = glib::user_config_dir();
+        autostart_user_file.push("autostart");
+        autostart_user_file.push(&desktop_file_name);
+
+        std::fs::remove_file(autostart_user_file)?;
+
+        Ok(())
+    }
+
+    pub fn handle_shutdown(&self) {
+        // Only actually quit here if background notifications aren't enabled
+        if !self.flags().contains(gio::ApplicationFlags::IS_SERVICE) && self.windows().is_empty() {
+            self.quit();
+        }
+    }
+
     pub fn new() -> Self {
         glib::Object::new(&[
             ("application-id", &crate::config::APPLICATION_ID.to_string()),
@@ -149,6 +181,38 @@ impl Application {
             .show()
     }
 
+    fn handle_enable_notifications_changed(&self) {
+        let self_ = self.imp();
+        if self_.settings.enable_notifications() {
+            let model = ModelNotification::new(
+                self,
+                self_.settings.notification_frequency(),
+                self_.settings.notification_time(),
+                self_.settings.user_step_goal(),
+            );
+            model.register_periodic_notify();
+            self_.notification_model.replace(Some(model));
+            if let Err(e) = self.install_autostart_file() {
+                glib::g_warning!(
+                    crate::config::APPLICATION_ID,
+                    "Couldn't install autostart file due to error {}",
+                    e
+                );
+            }
+        } else {
+            if let Some(model) = self_.notification_model.borrow_mut().take() {
+                model.unregister_periodic_notify();
+            }
+            if let Err(e) = self.delete_autostart_file() {
+                glib::g_debug!(
+                    crate::config::APPLICATION_ID,
+                    "Couldn't remove autostart file due to error {}",
+                    e
+                );
+            }
+        }
+    }
+
     fn handle_help(&self) {}
 
     fn handle_preferences(&self) {
@@ -166,6 +230,8 @@ impl Application {
         if let Some(window) = self.imp().window.get().and_then(glib::WeakRef::upgrade) {
             window.destroy();
         }
+
+        self.handle_shutdown()
     }
 
     fn handle_setup_window_setup_done(&self) {
@@ -196,6 +262,27 @@ impl Application {
         action.set_state(parameter);
     }
 
+    fn install_autostart_file(&self) -> Result<()> {
+        let autostart_desktop_file = Path::new(crate::config::AUTOSTART_DESKTOP_FILE_PATH);
+        let desktop_file_name = autostart_desktop_file
+            .file_name()
+            .unwrap()
+            .to_str()
+            .unwrap();
+        let mut autostart_user_folder = glib::user_config_dir();
+        autostart_user_folder.push("autostart");
+
+        if !autostart_user_folder.exists() {
+            std::fs::create_dir_all(&autostart_user_folder)?;
+        }
+        autostart_user_folder.push(&desktop_file_name);
+        if !autostart_user_folder.exists() {
+            std::fs::copy(autostart_desktop_file, autostart_user_folder)?;
+        }
+
+        Ok(())
+    }
+
     fn migrate_gsettings(&self) {
         let self_ = self.imp();
         if self_.settings.user_birthday().is_none() {
@@ -211,7 +298,7 @@ impl Application {
         self.set_accels_for_action("win.hamburger-menu", &["F10"]);
         self.set_accels_for_action("app.help", &["F1"]);
         self.set_accels_for_action("app.shortcuts", &["<Primary>question"]);
-        self.set_accels_for_action("win.quit", &["<Primary>q"]);
+        self.set_accels_for_action("app.quit", &["<Primary>q"]);
     }
 
     fn setup_actions(&self) {
@@ -260,6 +347,43 @@ impl Application {
                 obj.handle_unit_system(a, p);
             })
         );
+    }
+
+    fn setup_notifications(&self) {
+        let self_ = self.imp();
+
+        self.handle_enable_notifications_changed();
+
+        self_.settings.connect_enable_notifications_changed(
+            clone!(@weak self as obj =>  move |_, _| {
+                obj.handle_enable_notifications_changed();
+            }),
+        );
+
+        self_
+            .settings
+            .connect_user_step_goal_changed(clone!(@weak self as obj => move |_, _| {
+                let self_ = obj.imp();
+                if let Some(model) = &*self_.notification_model.borrow() {
+                    model.set_step_goal(self_.settings.user_step_goal());
+                };
+            }));
+        self_.settings.connect_notification_frequency_changed(
+            clone!(@weak self as obj => move |_, _| {
+                let self_ = obj.imp();
+                if let Some(model) = &*self_.notification_model.borrow() {
+                    model.set_notification_frequency(self_.settings.notification_frequency())
+                };
+            }),
+        );
+        self_
+            .settings
+            .connect_notification_time_changed(clone!(@weak self as obj => move |_, _| {
+                let self_ = obj.imp();
+                if let Some(model) = &*self_.notification_model.borrow() {
+                    model.set_notification_time(self_.settings.notification_time())
+                };
+            }));
     }
 }
 

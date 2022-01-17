@@ -375,7 +375,7 @@ impl PreferencesWindow {
             window_indentifier,
             &i18n("Remind you of your step goals"),
             true,
-            Some(&[crate::config::DAEMON_APPLICATION_ID]),
+            Some(&[crate::config::APPLICATION_ID, "--gapplication-service"]),
             false,
         )
         .await
@@ -468,9 +468,7 @@ impl PreferencesWindow {
 
     fn init_time_buttons(&self) {
         let self_ = self.imp();
-        let notify_time =
-            NaiveTime::parse_from_str(self_.settings.notification_time().as_str(), "%H:%M:%S")
-                .unwrap();
+        let notify_time = self_.settings.notification_time();
         self_.reminder_hour.set_value(f64::from(notify_time.hour()));
         self_
             .reminder_minutes
@@ -486,9 +484,7 @@ impl PreferencesWindow {
             0,
             0,
         );
-        self_
-            .settings
-            .set_notification_time(remind_time.to_string());
+        self_.settings.set_notification_time(remind_time);
         false
     }
 }
