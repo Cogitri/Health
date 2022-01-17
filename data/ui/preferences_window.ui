@@ -146,7 +146,7 @@
                     <property name="margin-top">15</property>
                     <property name="margin-bottom">15</property>
                     <property name="margin-end">10</property>
-                    <signal name="notify::activate" handler="handle_enable_notify_changed" swapped="true"/>
+                    <signal name="notify::active" handler="handle_enable_notify_changed_callback" swapped="true"/>
                   </object>
                 </child>
               </object>

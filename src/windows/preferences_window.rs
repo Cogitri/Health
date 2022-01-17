@@ -311,7 +311,6 @@ impl PreferencesWindow {
             .set_user_birthday(self_.birthday_selector.selected_date().date());
     }
 
-    #[template_callback]
     fn handle_enable_notify_changed(&self, initializing: bool) {
         let self_ = self.imp();
         let switch_state = if initializing {
@@ -319,6 +318,7 @@ impl PreferencesWindow {
         } else {
             self_.enable_notify.is_active()
         };
+        println!("Enabling not: {}", switch_state);
         self_.settings.set_enable_notifications(switch_state);
         self_.enable_notify.set_active(switch_state);
         self_.periodic_frequency_select.set_visible(switch_state);
@@ -331,6 +331,11 @@ impl PreferencesWindow {
                 obj.handle_sandbox_autostart().await;
             }));
         }
+    }
+
+    #[template_callback]
+    fn handle_enable_notify_changed_callback(&self) {
+        self.handle_enable_notify_changed(false);
     }
 
     #[template_callback]
