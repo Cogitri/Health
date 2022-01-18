@@ -56,17 +56,13 @@ mod imp {
         const NAME: &'static str = "HealthApplication";
         type ParentType = adw::Application;
         type Type = super::Application;
-
-        fn class_init(_klass: &mut Self::Class) {}
-
-        fn instance_init(_obj: &glib::subclass::InitializingObject<Self>) {}
     }
 
     impl ObjectImpl for Application {}
-
     impl ApplicationImpl for Application {
         fn activate(&self, obj: &Self::Type) {
             self.parent_activate(obj);
+
             let has_window = self.window.get().and_then(glib::WeakRef::upgrade).is_some();
 
             if !has_window && self.settings.did_initial_setup() {
@@ -138,9 +134,11 @@ impl Application {
         Ok(())
     }
 
-    pub fn handle_shutdown(&self) {
+    pub fn handle_shutdown(&self, check_windows: bool) {
         // Only actually quit here if background notifications aren't enabled
-        if !self.flags().contains(gio::ApplicationFlags::IS_SERVICE) && self.windows().is_empty() {
+        if !self.flags().contains(gio::ApplicationFlags::IS_SERVICE)
+            && (!check_windows || self.windows().is_empty())
+        {
             self.quit();
         }
     }
@@ -225,7 +223,7 @@ impl Application {
             window.destroy();
         }
 
-        self.handle_shutdown()
+        self.handle_shutdown(true)
     }
 
     fn handle_setup_window_setup_done(&self) {

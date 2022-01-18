@@ -191,7 +191,7 @@ impl Window {
             .application()
             .and_then(|a| a.downcast::<crate::core::Application>().ok())
         {
-            app.handle_shutdown();
+            app.handle_shutdown(false);
         }
 
         false
