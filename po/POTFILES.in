@@ -1,11 +1,11 @@
 # Misc data
 data/dev.Cogitri.Health.gschema.xml
-data/dev.Cogitri.Health.Daemon.desktop.in.in
+data/dev.Cogitri.Health.Autostart.desktop.in.in
 data/dev.Cogitri.Health.desktop.in.in
 data/dev.Cogitri.Health.metainfo.xml.in.in
+data/dev.Cogitri.Health.service.in
 
 # UI Files
-data/ui/activity_row.ui
 data/ui/activity_type_row.ui
 data/ui/activity_type_selector.ui
 data/ui/bmi_level_bar.ui
@@ -48,9 +48,6 @@ src/core/settings.rs
 src/core/unit_kind.rs
 src/core/unit_system.rs
 src/core/utils.rs
-src/daemon/application.rs
-src/daemon/main.rs
-src/daemon/mod.rs
 src/lib.rs
 src/main.rs
 src/model/activity.rs
@@ -61,6 +58,7 @@ src/model/activity_type_row_data.rs
 src/model/fn_boxed.rs
 src/model/mod.rs
 src/model/model_notification.rs
+src/model/notification_frequency.rs
 src/model/steps.rs
 src/model/unitsize.rs
 src/model/weight.rs
