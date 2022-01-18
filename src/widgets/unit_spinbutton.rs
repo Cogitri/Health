@@ -344,22 +344,19 @@ impl UnitSpinButton {
     }
 
     fn connect_handlers(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        self_
-            .spin_button
+        imp.spin_button
             .connect_changed(clone!(@weak self as obj => move |_| {
                 obj.emit_by_name::<()>("changed", &[]);
             }));
 
-        self_
-            .spin_button
+        imp.spin_button
             .connect_input(clone!(@weak self as obj => @default-panic, move |_| {
                 obj.handle_spin_button_input()
             }));
 
-        self_
-            .spin_button
+        imp.spin_button
             .connect_output(clone!(@weak self as obj => @default-panic, move |_| {
                 obj.handle_spin_button_output()
             }));
@@ -370,7 +367,7 @@ impl UnitSpinButton {
         previous_unit_kind: Option<UnitKind>,
         previous_unit_system: Option<UnitSystem>,
     ) -> bool {
-        let self_ = self.imp();
+        let imp = self.imp();
 
         if let Some(value) = self.raw_value() {
             if let Some(old_value) = match (previous_unit_system, previous_unit_kind) {
@@ -401,8 +398,8 @@ impl UnitSpinButton {
                 _ => None,
             } {
                 match (
-                    self_.inner.borrow().current_unit_system,
-                    self_.inner.borrow().current_unit_kind,
+                    imp.inner.borrow().current_unit_system,
+                    imp.inner.borrow().current_unit_kind,
                 ) {
                     (Some(UnitSystem::Metric), Some(UnitKind::LikeCentimeters)) => {
                         self.set_value(get_value!(old_value, Value::Length, centimeter))
@@ -438,28 +435,28 @@ impl UnitSpinButton {
     }
 
     fn handle_settings_unit_kind_changed(&self, unit_kind: UnitKind) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let (current_unit_kind, current_unit_system) = {
-            let inner = self_.inner.borrow();
+            let inner = imp.inner.borrow();
             (inner.current_unit_kind, inner.current_unit_system)
         };
-        self_.inner.borrow_mut().current_unit_kind = Some(unit_kind);
+        imp.inner.borrow_mut().current_unit_kind = Some(unit_kind);
 
         if !self.handle_conversion(current_unit_kind, current_unit_system) {
-            self_.spin_button.update();
+            imp.spin_button.update();
         }
     }
 
     fn handle_settings_unit_system_changed(&self, unit_system: UnitSystem) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let (current_unit_system, current_unit_kind) = {
-            let inner = self_.inner.borrow();
+            let inner = imp.inner.borrow();
             (inner.current_unit_system, inner.current_unit_kind)
         };
-        self_.inner.borrow_mut().current_unit_system = Some(unit_system);
+        imp.inner.borrow_mut().current_unit_system = Some(unit_system);
 
         if !self.handle_conversion(current_unit_kind, current_unit_system) {
-            self_.spin_button.update();
+            imp.spin_button.update();
         }
     }
 
@@ -470,8 +467,8 @@ impl UnitSpinButton {
     }
 
     fn handle_spin_button_output(&self) -> gtk::Inhibit {
-        let self_ = self.imp();
-        let inner = self_.inner.borrow();
+        let imp = self.imp();
+        let inner = imp.inner.borrow();
 
         if let Some(unit_string) = match (inner.current_unit_system, inner.current_unit_kind) {
             // TRANSLATORS: Unit abbreviation (centimeters)
@@ -494,14 +491,13 @@ impl UnitSpinButton {
         } {
             let text = format!(
                 "{} {unit_string}",
-                self_
-                    .spin_button
+                imp.spin_button
                     .adjustment()
                     .value()
-                    .round_decimal_places(self_.spin_button.digits()),
+                    .round_decimal_places(imp.spin_button.digits()),
             );
-            if text != self_.spin_button.text() {
-                self_.spin_button.set_text(&text);
+            if text != imp.spin_button.text() {
+                imp.spin_button.set_text(&text);
             }
             gtk::Inhibit(true)
         } else {
@@ -526,15 +522,15 @@ mod test {
             assert_eq!(btn.value(), 10.0);
             btn.set_unit_system($from);
             assert_eq!(
-                btn.value(),
-                10.0,
+                btn.value() as u32,
+                10,
                 "Changed value when setting initial unit system when it shouldn't"
             );
 
             btn.set_unit_system($from);
             assert_eq!(
-                btn.value(),
-                10.0,
+                btn.value() as u32,
+                10,
                 "Changed value when setting same unit system when it shouldn't"
             );
 

@@ -191,9 +191,9 @@ impl PasswordEntry {
     }
 
     fn calculate_password_strength(&self) {
-        let self_ = self.imp();
-        let level_bar = &self_.password_strength_bar;
-        let password = self_.password_entry.text();
+        let imp = self.imp();
+        let level_bar = &imp.password_strength_bar;
+        let password = imp.password_entry.text();
         match zxcvbn::zxcvbn(password.as_str(), &[]) {
             Ok(e) => level_bar.set_value(e.score().into()),
             Err(_) => level_bar.set_value(0.0),

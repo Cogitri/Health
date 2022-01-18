@@ -200,7 +200,7 @@ impl BmiLevelBar {
     }
 
     fn recalculate_bmi(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
         let height = self.height().get::<meter>();
         let weight = self.weight().get::<kilogram>();
@@ -208,14 +208,14 @@ impl BmiLevelBar {
             let current_bmi = weight / (height * height);
             let fraction = (current_bmi - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN);
             if fraction < 0.0 {
-                self_.level_bar.set_value(0.0);
+                imp.level_bar.set_value(0.0);
             } else if fraction > 1.0 {
-                self_.level_bar.set_value(1.0);
+                imp.level_bar.set_value(1.0);
             } else {
-                self_.level_bar.set_value(fraction.into());
+                imp.level_bar.set_value(fraction.into());
             }
 
-            self_.bmi_label.set_markup(&crate::core::i18n_f(
+            imp.bmi_label.set_markup(&crate::core::i18n_f(
                 "<small>Current BMI: {}</small>",
                 &[&format!("{current_bmi:.2}")],
             ));
@@ -227,6 +227,7 @@ impl BmiLevelBar {
 mod test {
     use super::BmiLevelBar;
     use crate::utils::init_gtk;
+    use gtk::subclass::prelude::*;
     use uom::si::{
         f32::{Length, Mass},
         length::meter,
@@ -247,10 +248,10 @@ mod test {
         bar.set_height(Length::new::<meter>(1.85));
         bar.set_weight(Mass::new::<kilogram>(70.0));
 
-        let self_ = bar.imp();
-        assert_eq!(self_.level_bar.value(), 0.4213869571685791);
+        let imp = bar.imp();
+        assert_eq!(imp.level_bar.value(), 0.4213869571685791);
         assert_eq!(
-            self_.bmi_label.label().as_str(),
+            imp.bmi_label.label().as_str(),
             crate::core::i18n_f(
                 "<small>Current BMI: {}</small>",
                 &[&format!("{bmi:.2}", bmi = 20.45)],

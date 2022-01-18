@@ -167,21 +167,21 @@ impl Window {
 
     #[template_callback]
     fn handle_back_button_clicked(&self) {
-        let self_ = self.imp();
-        self_.view_home_page.back();
+        let imp = self.imp();
+        imp.view_home_page.back();
         self.action_set_enabled("win.disable-current-plugin", false);
-        self_.back_button.set_visible(false);
-        self_.enable_plugin_button.set_visible(false);
+        imp.back_button.set_visible(false);
+        imp.enable_plugin_button.set_visible(false);
     }
 
     #[template_callback]
     fn handle_close_request(&self) -> bool {
-        let self_ = self.imp();
-        let mut inner = self_.inner.borrow_mut();
+        let imp = self.imp();
+        let mut inner = imp.inner.borrow_mut();
 
-        self_.settings.set_window_is_maximized(self.is_maximized());
-        self_.settings.set_window_height(inner.current_height);
-        self_.settings.set_window_width(inner.current_width);
+        imp.settings.set_window_is_maximized(self.is_maximized());
+        imp.settings.set_window_height(inner.current_height);
+        imp.settings.set_window_width(inner.current_width);
 
         if let Some(source_id) = inner.sync_source_id.take() {
             source_id.remove();
@@ -205,10 +205,10 @@ impl Window {
 
     #[template_callback]
     fn handle_enable_plugin_button_clicked(&self) {
-        let self_ = self.imp();
-        self_.view_home_page.enable_current_plugin();
-        self_.view_home_page.back();
-        self_.enable_plugin_button.set_visible(false);
+        let imp = self.imp();
+        imp.view_home_page.enable_current_plugin();
+        imp.view_home_page.back();
+        imp.enable_plugin_button.set_visible(false);
     }
 
     #[template_callback]
@@ -238,11 +238,11 @@ impl Window {
 
     #[template_callback]
     fn handle_view_changed(&self) {
-        let self_ = self.imp();
-        let is_enabled = self_.view_home_page.is_current_plugin_enabled();
+        let imp = self.imp();
+        let is_enabled = imp.view_home_page.is_current_plugin_enabled();
         self.action_set_enabled("win.disable-current-plugin", is_enabled);
-        self_.enable_plugin_button.set_visible(!is_enabled);
-        self_.back_button.set_visible(true)
+        imp.enable_plugin_button.set_visible(!is_enabled);
+        imp.back_button.set_visible(true)
     }
 
     fn setup(&self) {
@@ -273,17 +273,17 @@ impl Window {
 
     /// Display an error in a non-intrusive way.
     fn show_error(&self, err_msg: &str) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
         glib::g_warning!(crate::config::LOG_DOMAIN, "{err_msg}");
-        self_.error_label.set_text(err_msg);
-        self_.error_infobar.set_revealed(true);
+        imp.error_label.set_text(err_msg);
+        imp.error_infobar.set_revealed(true);
     }
 
     fn sync_data(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        if self_.settings.sync_provider_setup_google_fit() {
+        if imp.settings.sync_provider_setup_google_fit() {
             let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
             let db_sender = new_db_receiver();
 

@@ -135,9 +135,9 @@ impl Database {
         &self,
         date_opt: Option<DateTime<FixedOffset>>,
     ) -> Result<Vec<Activity>> {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
         let cursor = if let Some(date) = date_opt {
             connection.query_future(&format!("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY DESC(?date)", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
         } else {
@@ -302,8 +302,8 @@ impl Database {
 
     #[cfg(test)]
     pub fn connection(&self) -> tracker::SparqlConnection {
-        let self_ = self.imp();
-        self_.inner.borrow().as_ref().unwrap().connection.clone()
+        let imp = self.imp();
+        imp.inner.borrow().as_ref().unwrap().connection.clone()
     }
 
     pub fn instance() -> Self {
@@ -321,8 +321,8 @@ impl Database {
 
     #[cfg(test)]
     pub fn manager(&self) -> tracker::NamespaceManager {
-        let self_ = self.imp();
-        self_.inner.borrow().as_ref().unwrap().manager.clone()
+        let imp = self.imp();
+        imp.inner.borrow().as_ref().unwrap().manager.clone()
     }
 
     /// Get steps.
@@ -333,9 +333,9 @@ impl Database {
     /// # Returns
     /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn steps(&self, date: DateTime<FixedOffset>) -> Result<Vec<Steps>> {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
         let cursor = connection.query_future(&format!("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}  ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
         let mut hashmap = std::collections::HashMap::new();
 
@@ -367,9 +367,9 @@ impl Database {
     /// # Returns
     /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn todays_steps(&self, date: DateTime<FixedOffset>) -> Result<i64> {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
         let cursor = connection.query_future(&format!("SELECT SUM(?steps) WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
 
         let steps = if let Ok(true) = cursor.next_future().await {
@@ -389,9 +389,9 @@ impl Database {
     /// # Returns
     /// An array of [Weight]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn weights(&self, date_opt: Option<DateTime<FixedOffset>>) -> Result<Vec<Weight>> {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
         let cursor = if let Some(date) = date_opt {
             connection.query_future(&format!("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
         } else {
@@ -420,9 +420,9 @@ impl Database {
     /// # Returns
     /// True if a [Weight] exists on the `date`, or [glib::Error] if querying the DB goes wrong.
     pub async fn weight_exists_on_date(&self, date: Date<FixedOffset>) -> Result<bool> {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
         let cursor = connection.query_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight ?weight . FILTER(?date >= '{}'^^xsd:date && ?date < '{}'^^xsd:date) }}", date.format("%Y-%m-%d"), (date + Duration::days(1)).format("%Y-%m-%d"))).await?;
 
         assert!(cursor.next_future().await?);
@@ -438,14 +438,14 @@ impl Database {
     /// # Returns
     /// An error if querying the DB goes wrong.
     pub async fn import_steps(&self, steps: &[Steps]) -> Result<()> {
-        let self_ = self.imp();
+        let imp = self.imp();
 
         if steps.is_empty() {
             return Ok(());
         }
 
         let (connection, manager) = {
-            let inner_ref = self_.inner.borrow();
+            let inner_ref = imp.inner.borrow();
             let inner = inner_ref.as_ref().unwrap();
             (inner.connection.clone(), inner.manager.clone())
         };
@@ -487,14 +487,14 @@ impl Database {
     /// # Returns
     /// An error if querying the DB goes wrong.
     pub async fn import_weights(&self, weights: &[Weight]) -> Result<()> {
-        let self_ = self.imp();
+        let imp = self.imp();
 
         if weights.is_empty() {
             return Ok(());
         }
 
         let (connection, manager) = {
-            let inner_ref = self_.inner.borrow();
+            let inner_ref = imp.inner.borrow();
             let inner = inner_ref.as_ref().unwrap();
             (inner.connection.clone(), inner.manager.clone())
         };
@@ -538,9 +538,9 @@ impl Database {
     /// # Returns
     /// Am error if querying the DB goes wrong.
     pub async fn migrate_activities_date_datetime(&self) -> Result<()> {
-        let self_ = self.imp();
+        let imp = self.imp();
         let (connection, manager) = {
-            let inner_ref = self_.inner.borrow();
+            let inner_ref = imp.inner.borrow();
             let inner = inner_ref.as_ref().unwrap();
             (inner.connection.clone(), inner.manager.clone())
         };
@@ -644,9 +644,9 @@ impl Database {
     /// # Returns
     /// An error if querying the DB goes wrong.
     pub async fn migrate_weight_date_datetime(&self) -> Result<()> {
-        let self_ = self.imp();
+        let imp = self.imp();
         let (connection, manager) = {
-            let inner_ref = self_.inner.borrow();
+            let inner_ref = imp.inner.borrow();
             let inner = inner_ref.as_ref().unwrap();
             (inner.connection.clone(), inner.manager.clone())
         };
@@ -727,8 +727,8 @@ impl Database {
     /// # Returns
     /// Returns an error if querying the DB goes wrong.
     pub async fn reset(&self) -> Result<()> {
-        let self_ = self.imp();
-        let connection = { self_.inner.borrow().as_ref().unwrap().connection.clone() };
+        let imp = self.imp();
+        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
         connection
             .update_future("DELETE WHERE { ?datapoint a health:WeightMeasurement }")
             .await?;
@@ -747,7 +747,7 @@ impl Database {
     /// # Returns
     /// An error if querying the DB goes wrong.
     pub async fn save_activity(&self, activity: Activity) -> Result<()> {
-        let self_ = self.imp();
+        let imp = self.imp();
         let resource = tracker::Resource::new(None);
         resource.set_uri("rdf:type", "health:Activity");
         resource.set_string(
@@ -785,7 +785,7 @@ impl Database {
         }
 
         let (connection, manager) = {
-            let inner_ref = self_.inner.borrow();
+            let inner_ref = imp.inner.borrow();
             let inner = inner_ref.as_ref().unwrap();
             (inner.connection.clone(), inner.manager.clone())
         };
@@ -811,7 +811,7 @@ impl Database {
     /// # Returns
     /// An error if querying the DB goes wrong.
     pub async fn save_weight(&self, weight: Weight) -> Result<()> {
-        let self_ = self.imp();
+        let imp = self.imp();
         let resource = tracker::Resource::new(None);
         resource.set_uri("rdf:type", "health:WeightMeasurement");
         resource.set_string(
@@ -824,7 +824,7 @@ impl Database {
         );
 
         let (connection, manager) = {
-            let inner_ref = self_.inner.borrow();
+            let inner_ref = imp.inner.borrow();
             let inner = inner_ref.as_ref().unwrap();
             (inner.connection.clone(), inner.manager.clone())
         };

@@ -79,7 +79,7 @@ impl PluginActivitiesSummaryRow {
     }
 
     pub async fn update(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let active_minutes_today: i64 = Database::instance()
             .activities(Some(
                 (chrono::Local::now() - chrono::Duration::days(1)).into(),
@@ -89,7 +89,7 @@ impl PluginActivitiesSummaryRow {
             .iter()
             .map(|s| s.duration().num_minutes())
             .sum();
-        self_.label.set_label(&ni18n_f(
+        imp.label.set_label(&ni18n_f(
             "{} active minute today",
             "{} active minutes today",
             active_minutes_today as u32,

@@ -274,20 +274,20 @@ impl DistanceActionRow {
 
     #[template_callback]
     fn handle_distance_spin_button_changed(&self, spinbutton: UnitSpinButton) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let value = spinbutton.raw_value::<f32>().unwrap_or_default();
-        let unitsize = self_.inner.borrow().unitsize;
+        let unitsize = imp.inner.borrow().unitsize;
 
-        if self_.settings.unit_system() == UnitSystem::Metric {
+        if imp.settings.unit_system() == UnitSystem::Metric {
             if unitsize == Unitsize::Small {
-                self_.inner.borrow_mut().value = Length::new::<meter>(value);
+                imp.inner.borrow_mut().value = Length::new::<meter>(value);
             } else {
-                self_.inner.borrow_mut().value = Length::new::<kilometer>(value);
+                imp.inner.borrow_mut().value = Length::new::<kilometer>(value);
             }
         } else if unitsize == Unitsize::Small {
-            self_.inner.borrow_mut().value = Length::new::<foot>(value);
+            imp.inner.borrow_mut().value = Length::new::<foot>(value);
         } else {
-            self_.inner.borrow_mut().value = Length::new::<mile>(value);
+            imp.inner.borrow_mut().value = Length::new::<mile>(value);
         }
         self.emit_by_name::<()>("changed", &[]);
     }
@@ -298,13 +298,13 @@ impl DistanceActionRow {
     }
 
     fn set_togglebutton_text(&self) {
-        let self_ = self.imp();
-        if self_.settings.unit_system() == UnitSystem::Metric {
-            self_.big_unit_togglebutton.set_label(&i18n("KM"));
-            self_.small_unit_togglebutton.set_label(&i18n("Meters"));
+        let imp = self.imp();
+        if imp.settings.unit_system() == UnitSystem::Metric {
+            imp.big_unit_togglebutton.set_label(&i18n("KM"));
+            imp.small_unit_togglebutton.set_label(&i18n("Meters"));
         } else {
-            self_.big_unit_togglebutton.set_label(&i18n("Miles"));
-            self_.small_unit_togglebutton.set_label(&i18n("Feet"));
+            imp.big_unit_togglebutton.set_label(&i18n("Miles"));
+            imp.small_unit_togglebutton.set_label(&i18n("Feet"));
         }
     }
 }
@@ -313,6 +313,7 @@ impl DistanceActionRow {
 mod test {
     use super::DistanceActionRow;
     use crate::{model::Unitsize, utils::init_gtk};
+    use gtk::subclass::prelude::*;
     use uom::si::{f32::Length, length::meter};
 
     #[test]

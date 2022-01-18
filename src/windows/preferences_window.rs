@@ -290,10 +290,9 @@ impl PreferencesWindow {
     }
 
     fn connect_handlers(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        self_
-            .settings
+        imp.settings
             .connect_unit_system_changed(clone!(@weak self as obj => move |_, _| {
                 obj.handle_unit_system_changed();
             }));
@@ -301,26 +300,25 @@ impl PreferencesWindow {
 
     #[template_callback]
     fn handle_birthday_selector_changed(&self) {
-        let self_ = self.imp();
-        self_
-            .settings
-            .set_user_birthday(self_.birthday_selector.selected_date().date());
+        let imp = self.imp();
+        imp.settings
+            .set_user_birthday(imp.birthday_selector.selected_date().date());
     }
 
     fn handle_enable_notify_changed(&self, initializing: bool) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let switch_state = if initializing {
-            self_.settings.enable_notifications()
+            imp.settings.enable_notifications()
         } else {
-            self_.enable_notify.is_active()
+            imp.enable_notify.is_active()
         };
         println!("Enabling not: {}", switch_state);
-        self_.settings.set_enable_notifications(switch_state);
-        self_.enable_notify.set_active(switch_state);
-        self_.periodic_frequency_select.set_visible(switch_state);
-        self_.reminder_time.set_visible(
-            self_.settings.enable_notifications()
-                && self_.settings.notification_frequency() == NotificationFrequency::Fixed,
+        imp.settings.set_enable_notifications(switch_state);
+        imp.enable_notify.set_active(switch_state);
+        imp.periodic_frequency_select.set_visible(switch_state);
+        imp.reminder_time.set_visible(
+            imp.settings.enable_notifications()
+                && imp.settings.notification_frequency() == NotificationFrequency::Fixed,
         );
         if switch_state && ashpd::is_sandboxed() && !initializing {
             spawn!(clone!(@weak self as obj => async move {
@@ -342,16 +340,16 @@ impl PreferencesWindow {
 
     #[template_callback]
     fn handle_height_spin_button_changed(&self) {
-        let self_ = self.imp();
-        if let Some(val) = self_.height_spin_button.raw_value::<f32>() {
-            let height = if self_.current_unit_system.get() == UnitSystem::Metric {
+        let imp = self.imp();
+        if let Some(val) = imp.height_spin_button.raw_value::<f32>() {
+            let height = if imp.current_unit_system.get() == UnitSystem::Metric {
                 Length::new::<centimeter>(val)
             } else {
                 Length::new::<inch>(val)
             };
 
-            self_.settings.set_user_height(height);
-            self_.bmi_levelbar.set_height(height);
+            imp.settings.set_user_height(height);
+            imp.bmi_levelbar.set_height(height);
         }
     }
 
@@ -362,15 +360,15 @@ impl PreferencesWindow {
     }
 
     async fn handle_sandbox_autostart(&self) {
-        let self_ = self.imp();
-        let window_indentifier = if let Some(i) = self_.window_indentifier.get() {
+        let imp = self.imp();
+        let window_indentifier = if let Some(i) = imp.window_indentifier.get() {
             i
         } else {
             let i =
                 ashpd::WindowIdentifier::from_native(self.upcast_ref::<adw::PreferencesWindow>())
                     .await;
-            self_.window_indentifier.set(i).unwrap();
-            self_.window_indentifier.get().unwrap()
+            imp.window_indentifier.set(i).unwrap();
+            imp.window_indentifier.get().unwrap()
         };
         match ashpd::desktop::background::request(
             window_indentifier,
@@ -398,93 +396,82 @@ impl PreferencesWindow {
 
     #[template_callback]
     fn handle_step_goal_spin_button_changed(&self) {
-        let self_ = self.imp();
-        if let Some(val) = self_.step_goal_spin_button.raw_value::<u32>() {
-            self_.settings.set_user_step_goal(val);
+        let imp = self.imp();
+        if let Some(val) = imp.step_goal_spin_button.raw_value::<u32>() {
+            imp.settings.set_user_step_goal(val);
         }
     }
 
     fn handle_unit_system_changed(&self) {
-        let self_ = self.imp();
-        let unit_system = self_.settings.unit_system();
+        let imp = self.imp();
+        let unit_system = imp.settings.unit_system();
 
-        if unit_system == UnitSystem::Imperial && !self_.unit_imperial_togglebutton.is_active() {
-            self_.unit_imperial_togglebutton.set_active(true);
-        } else if unit_system == UnitSystem::Metric && !self_.unit_metric_togglebutton.is_active() {
-            self_.unit_metric_togglebutton.set_active(true);
+        if unit_system == UnitSystem::Imperial && !imp.unit_imperial_togglebutton.is_active() {
+            imp.unit_imperial_togglebutton.set_active(true);
+        } else if unit_system == UnitSystem::Metric && !imp.unit_metric_togglebutton.is_active() {
+            imp.unit_metric_togglebutton.set_active(true);
         }
 
-        if self_.current_unit_system.get() == unit_system {
+        if imp.current_unit_system.get() == unit_system {
             return;
         }
 
-        self_.current_unit_system.set(unit_system);
+        imp.current_unit_system.set(unit_system);
 
         if unit_system == UnitSystem::Metric {
-            self_.height_spin_button.set_value(f64::from(
-                Length::new::<inch>(self_.height_spin_button.raw_value().unwrap_or_default())
+            imp.height_spin_button.set_value(f64::from(
+                Length::new::<inch>(imp.height_spin_button.raw_value().unwrap_or_default())
                     .get::<centimeter>(),
             ));
-            self_.weight_goal_spin_button.set_value(f64::from(
-                Mass::new::<pound>(
-                    self_
-                        .weight_goal_spin_button
-                        .raw_value()
-                        .unwrap_or_default(),
-                )
-                .get::<kilogram>(),
+            imp.weight_goal_spin_button.set_value(f64::from(
+                Mass::new::<pound>(imp.weight_goal_spin_button.raw_value().unwrap_or_default())
+                    .get::<kilogram>(),
             ));
         } else {
-            self_.height_spin_button.set_value(f64::from(
-                Length::new::<centimeter>(self_.height_spin_button.raw_value().unwrap_or_default())
+            imp.height_spin_button.set_value(f64::from(
+                Length::new::<centimeter>(imp.height_spin_button.raw_value().unwrap_or_default())
                     .get::<inch>(),
             ));
-            self_.weight_goal_spin_button.set_value(f64::from(
-                Mass::new::<kilogram>(
-                    self_
-                        .weight_goal_spin_button
-                        .raw_value()
-                        .unwrap_or_default(),
-                )
-                .get::<pound>(),
+            imp.weight_goal_spin_button.set_value(f64::from(
+                Mass::new::<kilogram>(imp.weight_goal_spin_button.raw_value().unwrap_or_default())
+                    .get::<pound>(),
             ));
         }
     }
 
     #[template_callback]
     fn handle_weight_goal_spin_button_changed(&self) {
-        let self_ = self.imp();
-        if let Some(val) = self_.weight_goal_spin_button.raw_value::<f32>() {
-            let weight = if self_.current_unit_system.get() == UnitSystem::Metric {
+        let imp = self.imp();
+        if let Some(val) = imp.weight_goal_spin_button.raw_value::<f32>() {
+            let weight = if imp.current_unit_system.get() == UnitSystem::Metric {
                 Mass::new::<kilogram>(val)
             } else {
                 Mass::new::<pound>(val)
             };
 
-            self_.settings.set_user_weight_goal(weight);
-            self_.bmi_levelbar.set_weight(weight);
+            imp.settings.set_user_weight_goal(weight);
+            imp.bmi_levelbar.set_weight(weight);
         }
     }
 
     fn init_time_buttons(&self) {
-        let self_ = self.imp();
-        let notify_time = self_.settings.notification_time();
-        self_.reminder_hour.set_value(f64::from(notify_time.hour()));
-        self_
-            .reminder_minutes
+        let imp = self.imp();
+        let notify_time = imp.settings.notification_time();
+        imp.reminder_hour.set_value(f64::from(notify_time.hour()));
+        imp.reminder_minutes
             .set_value(f64::from(notify_time.minute()));
     }
 
     #[template_callback]
     fn handle_close_window(&self) -> bool {
-        let self_ = self.imp();
+        let imp = self.imp();
         let remind_time = NaiveTime::from_hms_milli(
-            self_.reminder_hour.value_as_int() as u32,
-            self_.reminder_minutes.value_as_int() as u32,
+            imp.reminder_hour.value_as_int() as u32,
+            imp.reminder_minutes.value_as_int() as u32,
             0,
             0,
         );
-        self_.settings.set_notification_time(remind_time);
+        imp.settings.set_notification_time(remind_time);
         false
     }
 }

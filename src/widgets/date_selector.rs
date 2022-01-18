@@ -213,10 +213,10 @@ impl DateSelector {
 
 #[cfg(test)]
 mod test {
-    use chrono::Datelike;
-
     use super::*;
     use crate::{core::i18n, utils::init_gtk};
+    use chrono::Datelike;
+    use gtk::subclass::prelude::*;
 
     #[test]
     fn new() {

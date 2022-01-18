@@ -67,10 +67,10 @@ impl Registrar {
     ///
     /// This emits `plugin-changed` if the list of plugins was changed.
     pub fn disable_plugin(&self, plugin_name: PluginName) {
-        let self_ = self.imp();
-        if !self_.disabled_plugins.contains(plugin_name) {
-            let plugin = self_.enabled_plugins.remove(plugin_name).unwrap();
-            self_.disabled_plugins.push(plugin);
+        let imp = self.imp();
+        if !imp.disabled_plugins.contains(plugin_name) {
+            let plugin = imp.enabled_plugins.remove(plugin_name).unwrap();
+            imp.disabled_plugins.push(plugin);
 
             self.emit_by_name::<()>("plugins-changed", &[]);
         }
@@ -80,10 +80,10 @@ impl Registrar {
     ///
     /// This emits `plugin-changed` if the list of plugins was changed.
     pub fn enable_plugin(&self, plugin_name: PluginName) {
-        let self_ = self.imp();
-        if !self_.enabled_plugins.contains(plugin_name) {
-            let plugin = self_.disabled_plugins.remove(plugin_name).unwrap();
-            self_.enabled_plugins.push(plugin);
+        let imp = self.imp();
+        if !imp.enabled_plugins.contains(plugin_name) {
+            let plugin = imp.disabled_plugins.remove(plugin_name).unwrap();
+            imp.enabled_plugins.push(plugin);
 
             self.emit_by_name::<()>("plugins-changed", &[]);
         }

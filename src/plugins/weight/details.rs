@@ -181,8 +181,8 @@ impl PluginWeightDetails {
     #[rustfmt::skip]
     /// Reload the [GraphModelWeight]'s data and refresh labels & reload the [GraphView].
     pub async fn update(&self) {
-        let self_ = self.imp();
-        let mut weight_graph_model = { self_.weight_graph_model.borrow_mut().take().unwrap() };
+        let imp = self.imp();
+        let mut weight_graph_model = { imp.weight_graph_model.borrow_mut().take().unwrap() };
         if let Err(e) = weight_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
@@ -193,7 +193,7 @@ impl PluginWeightDetails {
         self.set_filled_title(&i18n_f("Current BMI: {}", &[&self.bmi(&weight_graph_model)]));
         self.update_weight_goal_label(&weight_graph_model);
 
-        if let Some(view) = self_.weight_graph_view.get() {
+        if let Some(view) = imp.weight_graph_view.get() {
             view.set_points(weight_graph_model.to_points());
         } else if weight_graph_model.is_empty() {
             self.switch_to_empty_page();
@@ -201,7 +201,7 @@ impl PluginWeightDetails {
             let weight_graph_view = GraphView::new();
             weight_graph_view.set_points(weight_graph_model.to_points());
             weight_graph_view.set_x_lines_interval(10.0);
-            let settings = self_.settings.clone();
+            let settings = imp.settings.clone();
             weight_graph_view.set_hover_func(Some(Box::new(move |p| {
                 if settings.unit_system() == UnitSystem::Imperial {
                     // TRANSLATORS: Weight X on date Y
@@ -211,8 +211,8 @@ impl PluginWeightDetails {
                     ni18n_f("{} kilogram on {}", "{} kilograms on {}", p.value as u32, &[&p.value.to_string(), &p.date.format_local()])
                 }
             })));
-            if let Some(unit_goal) = self_.settings.user_weight_goal() {
-                let weight_goal = if self_.settings.unit_system() == UnitSystem::Imperial {
+            if let Some(unit_goal) = imp.settings.user_weight_goal() {
+                let weight_goal = if imp.settings.unit_system() == UnitSystem::Imperial {
                     unit_goal.get::<pound>()
                 } else {
                     unit_goal.get::<kilogram>()
@@ -221,13 +221,13 @@ impl PluginWeightDetails {
                 weight_graph_view.set_limit_label(Some(i18n("Weight goal")));
             }
 
-            self_.scrolled_window.set_child(Some(&weight_graph_view));
+            imp.scrolled_window.set_child(Some(&weight_graph_view));
             self.switch_to_data_page();
 
-            self_.weight_graph_view.set(weight_graph_view).unwrap();
+            imp.weight_graph_view.set(weight_graph_view).unwrap();
 
-            self_.settings_handler_id.replace(Some(
-                self_.settings.connect_user_weight_goal_changed(
+            imp.settings_handler_id.replace(Some(
+                imp.settings.connect_user_weight_goal_changed(
                     glib::clone!(@weak self as obj => move |_,_| {
                         gtk_macros::spawn!(async move {
                             obj.update().await;
@@ -237,7 +237,7 @@ impl PluginWeightDetails {
             ));
         }
 
-        self_.weight_graph_model.replace(Some(weight_graph_model));
+        imp.weight_graph_model.replace(Some(weight_graph_model));
     }
 
     fn bmi(&self, model: &DataProvider) -> String {
@@ -256,9 +256,9 @@ impl PluginWeightDetails {
     // TRANSLATORS notes have to be on the same line, so we cant split them
     #[rustfmt::skip]
     fn update_weight_goal_label(&self, model: &DataProvider) {
-        let self_ = self.imp();
-        if let Some(weight_goal) = self_.settings.user_weight_goal() {
-            let unit_system = self_.settings.unit_system();
+        let imp = self.imp();
+        if let Some(weight_goal) = imp.settings.user_weight_goal() {
+            let unit_system = imp.settings.unit_system();
             let weight_value = if unit_system == UnitSystem::Imperial {
                 weight_goal.get::<pound>()
             } else {

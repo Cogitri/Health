@@ -89,15 +89,15 @@ impl ViewAddWeight {
 
     pub async fn handle_response(&self, id: gtk::ResponseType) {
         if id == gtk::ResponseType::Ok {
-            let self_ = self.imp();
-            let value = if self_.settings.unit_system() == UnitSystem::Metric {
-                Mass::new::<kilogram>(self_.weight_spin_button.value() as f32)
+            let imp = self.imp();
+            let value = if imp.settings.unit_system() == UnitSystem::Metric {
+                Mass::new::<kilogram>(imp.weight_spin_button.value() as f32)
             } else {
-                Mass::new::<pound>(self_.weight_spin_button.value() as f32)
+                Mass::new::<pound>(imp.weight_spin_button.value() as f32)
             };
-            if let Err(e) = self_
+            if let Err(e) = imp
                 .database
-                .save_weight(Weight::new(self_.date_selector.selected_date(), value))
+                .save_weight(Weight::new(imp.date_selector.selected_date(), value))
                 .await
             {
                 glib::g_warning!(

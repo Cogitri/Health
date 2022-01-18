@@ -242,11 +242,11 @@ glib::wrapper! {
 impl ImportExportDialogBase {
     #[template_callback]
     fn check_activate_response(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let any_option_activated =
-            self_.activities_switch.is_active() || self_.weight_switch.is_active();
-        let password_set = if self_.encrypt_switch.is_active() {
-            self_.password_entry.password().is_some()
+            imp.activities_switch.is_active() || imp.weight_switch.is_active();
+        let password_set = if imp.encrypt_switch.is_active() {
+            imp.password_entry.password().is_some()
         } else {
             true
         };
@@ -256,9 +256,9 @@ impl ImportExportDialogBase {
 
     #[template_callback]
     fn handle_encrypt_switch_active_notify(&self, _pspec: glib::ParamSpec, btn: gtk::Switch) {
-        let self_ = self.imp();
+        let imp = self.imp();
         self.check_activate_response();
-        self_.password_entry.set_sensitive(btn.is_active());
+        imp.password_entry.set_sensitive(btn.is_active());
     }
 
     #[template_callback]
@@ -270,18 +270,18 @@ impl ImportExportDialogBase {
     }
 
     async fn on_response(&self, id: gtk::ResponseType) {
-        let self_ = self.imp();
+        let imp = self.imp();
         if id == gtk::ResponseType::Ok {
-            if self_.stack.visible_child_name().unwrap() == "begin" {
-                let password = self_.password_entry.password();
+            if imp.stack.visible_child_name().unwrap() == "begin" {
+                let password = imp.password_entry.password();
                 let mut error_text = String::new();
-                if self_.activities_switch.is_active() {
+                if imp.activities_switch.is_active() {
                     if let Err(e) = self.on_activities(password.clone()).await {
                         error_text.push_str(&e.to_string());
                     }
                 }
 
-                if self_.weight_switch.is_active() {
+                if imp.weight_switch.is_active() {
                     if let Err(e) = self.on_weights(password).await {
                         if !error_text.is_empty() {
                             error_text.push('\n');
@@ -291,19 +291,18 @@ impl ImportExportDialogBase {
                 }
 
                 if error_text.is_empty() {
-                    self_.end_title_label.set_text(&i18n("Success!"));
-                    self_.end_icon.set_icon_name(Some("emblem-ok-symbolic"));
+                    imp.end_title_label.set_text(&i18n("Success!"));
+                    imp.end_icon.set_icon_name(Some("emblem-ok-symbolic"));
                 } else {
                     glib::g_warning!(crate::config::LOG_DOMAIN, "{error_text}");
-                    self_.end_title_label.set_text(&i18n("An error occurred!"));
-                    self_.end_content_label.set_text(&error_text);
-                    self_
-                        .end_icon
+                    imp.end_title_label.set_text(&i18n("An error occurred!"));
+                    imp.end_content_label.set_text(&error_text);
+                    imp.end_icon
                         .set_icon_name(Some("emblem-important-symbolic"));
                 }
-                self_.button_ok.set_label(&i18n("Close"));
+                imp.button_ok.set_label(&i18n("Close"));
                 self.set_response_sensitive(gtk::ResponseType::Cancel, false);
-                self_.stack.set_visible_child_name("end");
+                imp.stack.set_visible_child_name("end");
             } else {
                 self.destroy();
             }

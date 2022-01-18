@@ -108,17 +108,17 @@ impl ModelActivity {
     /// # Returns start date of viewing period (None for ViewPeriod::All)
     /// Returns an error if querying the DB fails.
     pub async fn reload(&self) -> Result<()> {
-        let self_ = self.imp();
-        let previous_size = { self_.inner.borrow().vec.len() };
+        let imp = self.imp();
+        let previous_size = { imp.inner.borrow().vec.len() };
 
-        let new_vec = self_.database.activities(None).await?;
+        let new_vec = imp.database.activities(None).await?;
         {
-            self_.inner.borrow_mut().vec = new_vec;
+            imp.inner.borrow_mut().vec = new_vec;
         }
         self.items_changed(
             0,
             previous_size.try_into().unwrap(),
-            self_.inner.borrow().vec.len().try_into().unwrap(),
+            imp.inner.borrow().vec.len().try_into().unwrap(),
         );
         Ok(())
     }

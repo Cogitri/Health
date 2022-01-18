@@ -205,13 +205,13 @@ impl ModelNotification {
     }
 
     async fn periodic_callback(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let time_now = Local::now().time();
-        let notify_time = self_.inner.borrow().notification_time.unwrap();
-        let frequency = self_.inner.borrow().notification_frequency;
+        let notify_time = imp.inner.borrow().notification_time.unwrap();
+        let frequency = imp.inner.borrow().notification_frequency;
 
         if time_now.minute() == 0 {
-            self_.inner.borrow_mut().hour_count += 1;
+            imp.inner.borrow_mut().hour_count += 1;
         }
 
         let interval = match frequency {
@@ -223,13 +223,12 @@ impl ModelNotification {
             && time_now.minute() == notify_time.minute()
             && frequency == NotificationFrequency::Fixed;
         let periodic = frequency != NotificationFrequency::Fixed
-            && self_.inner.borrow().hour_count % interval == 0;
+            && imp.inner.borrow().hour_count % interval == 0;
         if fixed_time || periodic {
             let notification = gio::Notification::new(&i18n("Health: walking reminder"));
             notification.set_body(Some(&(self.reminder_text().await)));
             notification.set_icon(&gio::Icon::for_string(crate::config::APPLICATION_ID).unwrap());
-            self_
-                .application
+            imp.application
                 .get()
                 .unwrap()
                 .send_notification(Some("walking-reminder"), &notification);

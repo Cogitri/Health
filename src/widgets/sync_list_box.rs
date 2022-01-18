@@ -138,45 +138,41 @@ impl SyncListBox {
     }
 
     fn handle_db_receiver_received(&self, res: Result<()>) -> glib::Continue {
-        let self_ = self.imp();
+        let imp = self.imp();
         if let Err(e) = res {
-            self_
-                .google_fit_selected_image
+            imp.google_fit_selected_image
                 .set_icon_name(Some("network-error-symbolic"));
-            self_.google_fit_selected_image.set_visible(true);
-            self_.google_fit_spinner.set_spinning(false);
-            self_
-                .google_fit_stack
-                .set_visible_child(&self_.google_fit_selected_image.get());
+            imp.google_fit_selected_image.set_visible(true);
+            imp.google_fit_spinner.set_spinning(false);
+            imp.google_fit_stack
+                .set_visible_child(&imp.google_fit_selected_image.get());
 
             self.open_sync_error(&e.to_string());
         } else {
             let obj = self.clone();
             spawn!(async move {
-                let self_ = obj.imp();
-                self_.google_fit_selected_image.set_visible(true);
-                self_.google_fit_spinner.set_spinning(false);
-                self_
-                    .google_fit_stack
-                    .set_visible_child(&self_.google_fit_selected_image.get());
+                let imp = obj.imp();
+                imp.google_fit_selected_image.set_visible(true);
+                imp.google_fit_spinner.set_spinning(false);
+                imp.google_fit_stack
+                    .set_visible_child(&imp.google_fit_selected_image.get());
             });
         }
 
-        self_.google_fit_start_sync_row.set_activatable(false);
+        imp.google_fit_start_sync_row.set_activatable(false);
         glib::Continue(false)
     }
 
     #[template_callback]
     fn handle_row_activated(&self, row: gtk::ListBoxRow) {
-        let self_ = self.imp();
-        if row == self_.google_fit_start_sync_row.get() {
-            self_.google_fit_stack.set_visible(true);
-            self_.google_fit_spinner.set_visible(true);
-            self_.google_fit_spinner.set_spinning(true);
-            self_.google_fit_start_sync_row.set_activatable(false);
-            self_
-                .google_fit_stack
-                .set_visible_child(&self_.google_fit_spinner.get());
+        let imp = self.imp();
+        if row == imp.google_fit_start_sync_row.get() {
+            imp.google_fit_stack.set_visible(true);
+            imp.google_fit_spinner.set_visible(true);
+            imp.google_fit_spinner.set_spinning(true);
+            imp.google_fit_start_sync_row.set_activatable(false);
+            imp.google_fit_stack
+                .set_visible_child(&imp.google_fit_spinner.get());
 
             let (sender, receiver) =
                 glib::MainContext::channel::<Result<()>>(glib::PRIORITY_DEFAULT);

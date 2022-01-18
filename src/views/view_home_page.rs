@@ -178,11 +178,10 @@ glib::wrapper! {
 
 impl ViewHomePage {
     pub fn back(&self) {
-        let self_ = self.imp();
-        self_
-            .stack
-            .remove(&self_.stack.child_by_name(&self.current_page()).unwrap());
-        self_.stack.set_visible_child_name("home");
+        let imp = self.imp();
+        imp.stack
+            .remove(&imp.stack.child_by_name(&self.current_page()).unwrap());
+        imp.stack.set_visible_child_name("home");
     }
 
     /// Connect to the `view-changed` signal.
@@ -219,15 +218,14 @@ impl ViewHomePage {
     }
 
     pub fn disable_current_plugin(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let registrar = Registrar::instance();
 
         if let Ok(current_plugin) = PluginName::from_str(&self.current_page()) {
             registrar.disable_plugin(current_plugin);
-            self_.all_data_box.set_visible(true);
-            self_.settings.set_enabled_plugins(
-                self_
-                    .settings
+            imp.all_data_box.set_visible(true);
+            imp.settings.set_enabled_plugins(
+                imp.settings
                     .enabled_plugins()
                     .drain(..)
                     .filter(|s| *s != current_plugin)
@@ -235,27 +233,25 @@ impl ViewHomePage {
                     .as_slice(),
             );
             if registrar.enabled_plugins().is_empty() {
-                self_
-                    .enabled_plugins_stack
+                imp.enabled_plugins_stack
                     .set_visible_child_name("no-plugins-enabled")
             }
         }
     }
 
     pub fn enable_current_plugin(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let registrar = Registrar::instance();
 
         if let Ok(current_plugin) = PluginName::from_str(&self.current_page()) {
-            let mut enabled_plugins = self_.settings.enabled_plugins();
+            let mut enabled_plugins = imp.settings.enabled_plugins();
             enabled_plugins.push(current_plugin);
             registrar.enable_plugin(current_plugin);
-            self_.settings.set_enabled_plugins(&enabled_plugins);
-            self_
-                .enabled_plugins_stack
+            imp.settings.set_enabled_plugins(&enabled_plugins);
+            imp.enabled_plugins_stack
                 .set_visible_child_name("plugin-list");
             if registrar.disabled_plugins().is_empty() {
-                self_.all_data_box.set_visible(false);
+                imp.all_data_box.set_visible(false);
             }
         }
     }
@@ -299,7 +295,7 @@ impl ViewHomePage {
     }
 
     fn open_plugin_details(&self, list_box: gtk::ListBox, plugin_name: PluginName, enabled: bool) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let registrar = Registrar::instance();
         let plugin = if enabled {
             registrar.enabled_plugin_by_name(plugin_name).unwrap()
@@ -308,7 +304,7 @@ impl ViewHomePage {
         };
         let details = plugin.details(!enabled);
 
-        self_.stack.add_named(&details, Some(plugin_name.as_ref()));
+        imp.stack.add_named(&details, Some(plugin_name.as_ref()));
 
         gtk_macros::spawn!(glib::clone!(@weak self as obj => async move {
             obj.update_view(details, plugin_name, list_box).await;
@@ -316,9 +312,9 @@ impl ViewHomePage {
     }
 
     pub async fn update(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let mut i = 0;
-        while let Some(row) = self_.user_selected_data.row_at_index(i) {
+        while let Some(row) = imp.user_selected_data.row_at_index(i) {
             if let Err(e) = row
                 .downcast_ref::<PluginSummaryRow>()
                 .unwrap()
@@ -337,7 +333,7 @@ impl ViewHomePage {
         plugin_name: PluginName,
         list_box: gtk::ListBox,
     ) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
         if let Err(e) = details.update().await {
             glib::g_warning!(
@@ -346,7 +342,7 @@ impl ViewHomePage {
             );
         }
 
-        self_.stack.set_visible_child_name(plugin_name.as_ref());
+        imp.stack.set_visible_child_name(plugin_name.as_ref());
         self.emit_by_name::<()>("view-changed", &[&plugin_name.as_ref()]);
         list_box.unselect_all();
     }

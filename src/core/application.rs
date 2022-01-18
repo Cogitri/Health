@@ -178,16 +178,16 @@ impl Application {
     }
 
     fn handle_enable_notifications_changed(&self) {
-        let self_ = self.imp();
-        if self_.settings.enable_notifications() {
+        let imp = self.imp();
+        if imp.settings.enable_notifications() {
             let model = ModelNotification::new(
                 self,
-                self_.settings.notification_frequency(),
-                self_.settings.notification_time(),
-                self_.settings.user_step_goal(),
+                imp.settings.notification_frequency(),
+                imp.settings.notification_time(),
+                imp.settings.user_step_goal(),
             );
             model.register_periodic_notify();
-            self_.notification_model.replace(Some(model));
+            imp.notification_model.replace(Some(model));
             if let Err(e) = self.install_autostart_file() {
                 glib::g_warning!(
                     crate::config::APPLICATION_ID,
@@ -195,7 +195,7 @@ impl Application {
                 );
             }
         } else {
-            if let Some(model) = self_.notification_model.borrow_mut().take() {
+            if let Some(model) = imp.notification_model.borrow_mut().take() {
                 model.unregister_periodic_notify();
             }
             if let Err(e) = self.delete_autostart_file() {
@@ -229,14 +229,11 @@ impl Application {
     }
 
     fn handle_setup_window_setup_done(&self) {
-        let self_ = self.imp();
-        self_.settings.set_did_initial_setup(true);
+        let imp = self.imp();
+        imp.settings.set_did_initial_setup(true);
         let window = Window::new(self);
         window.show();
-        self_
-            .window
-            .set(glib::ObjectExt::downgrade(&window))
-            .unwrap();
+        imp.window.set(glib::ObjectExt::downgrade(&window)).unwrap();
     }
 
     fn handle_shortcuts() {
@@ -278,12 +275,12 @@ impl Application {
     }
 
     fn migrate_gsettings(&self) {
-        let self_ = self.imp();
-        if self_.settings.user_birthday().is_none() {
-            let age = self_.settings.user_age();
+        let imp = self.imp();
+        if imp.settings.user_birthday().is_none() {
+            let age = imp.settings.user_age();
             let datetime: DateTime<FixedOffset> =
                 (Local::now() - Duration::weeks((age * 52).into())).into();
-            self_.settings.set_user_birthday(datetime.date());
+            imp.settings.set_user_birthday(datetime.date());
         }
     }
 
@@ -344,38 +341,36 @@ impl Application {
     }
 
     fn setup_notifications(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
         self.handle_enable_notifications_changed();
 
-        self_.settings.connect_enable_notifications_changed(
+        imp.settings.connect_enable_notifications_changed(
             clone!(@weak self as obj =>  move |_, _| {
                 obj.handle_enable_notifications_changed();
             }),
         );
 
-        self_
-            .settings
+        imp.settings
             .connect_user_step_goal_changed(clone!(@weak self as obj => move |_, _| {
-                let self_ = obj.imp();
-                if let Some(model) = &*self_.notification_model.borrow() {
-                    model.set_step_goal(self_.settings.user_step_goal());
+                let imp = obj.imp();
+                if let Some(model) = &*imp.notification_model.borrow() {
+                    model.set_step_goal(imp.settings.user_step_goal());
                 };
             }));
-        self_.settings.connect_notification_frequency_changed(
+        imp.settings.connect_notification_frequency_changed(
             clone!(@weak self as obj => move |_, _| {
-                let self_ = obj.imp();
-                if let Some(model) = &*self_.notification_model.borrow() {
-                    model.set_notification_frequency(self_.settings.notification_frequency())
+                let imp = obj.imp();
+                if let Some(model) = &*imp.notification_model.borrow() {
+                    model.set_notification_frequency(imp.settings.notification_frequency())
                 };
             }),
         );
-        self_
-            .settings
+        imp.settings
             .connect_notification_time_changed(clone!(@weak self as obj => move |_, _| {
-                let self_ = obj.imp();
-                if let Some(model) = &*self_.notification_model.borrow() {
-                    model.set_notification_time(self_.settings.notification_time())
+                let imp = obj.imp();
+                if let Some(model) = &*imp.notification_model.borrow() {
+                    model.set_notification_time(imp.settings.notification_time())
                 };
             }));
     }

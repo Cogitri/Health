@@ -138,9 +138,9 @@ impl DataAddDialog {
     #[template_callback]
     fn handle_response(&self, id: i32) {
         let id = unsafe { gtk::ResponseType::from_glib(id) };
-        let self_ = self.imp();
-        let active_stack_page_name = self_.stack.visible_child_name().unwrap().to_string();
-        if let Some(active_stack_page) = self_.stack.visible_child() {
+        let imp = self.imp();
+        let active_stack_page_name = imp.stack.visible_child_name().unwrap().to_string();
+        if let Some(active_stack_page) = imp.stack.visible_child() {
             match active_stack_page_name.as_ref() {
                 "Add Activity Data" => {
                     if let Result::Ok(activity_add_page) =

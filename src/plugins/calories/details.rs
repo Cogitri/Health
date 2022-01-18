@@ -174,9 +174,9 @@ impl PluginCaloriesDetails {
 
     /// Reload the [GraphModelcalories](crate::plugins::calories::GraphModelCalories)'s data and refresh labels & the [BarGraphView](crate::views::BarGraphView).
     pub async fn update(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        let mut calories_graph_model = { self_.calories_graph_model.borrow_mut().take().unwrap() };
+        let mut calories_graph_model = { imp.calories_graph_model.borrow_mut().take().unwrap() };
         if let Err(e) = calories_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(crate::config::LOG_DOMAIN, "Failed to reload step data: {e}",);
         }
@@ -185,7 +185,7 @@ impl PluginCaloriesDetails {
         for i in 0..3 {
             if i < distinct_activities.len() {
                 let info = ActivityInfo::from(distinct_activities[i]);
-                let legend_row = self_
+                let legend_row = imp
                     .legend_box
                     .child_at(0, i as i32)
                     .unwrap()
@@ -194,14 +194,13 @@ impl PluginCaloriesDetails {
                 legend_row.set_color(info.color);
                 legend_row.set_activity_name(&info.name);
             }
-            self_
-                .legend_box
+            imp.legend_box
                 .child_at(0, i as i32)
                 .unwrap()
                 .set_visible(i < distinct_activities.len());
         }
 
-        if let Some(view) = self_.calories_graph_view.get() {
+        if let Some(view) = imp.calories_graph_view.get() {
             view.set_split_bars(calories_graph_model.to_split_bar());
         } else if calories_graph_model.is_empty() {
             self.switch_to_empty_page();
@@ -220,13 +219,11 @@ impl PluginCaloriesDetails {
                 )
             })));
 
-            self_.scrolled_window.set_child(Some(&calories_graph_view));
+            imp.scrolled_window.set_child(Some(&calories_graph_view));
             self.switch_to_data_page();
         }
 
-        self_
-            .calories_graph_model
-            .replace(Some(calories_graph_model));
+        imp.calories_graph_model.replace(Some(calories_graph_model));
     }
 }
 

@@ -84,7 +84,7 @@ impl PluginCaloriesSummaryRow {
     }
 
     pub async fn update(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
         if let Some(bar) = Database::instance()
             .calories((chrono::Local::now() - chrono::Duration::days(1)).into())
             .await
@@ -92,14 +92,14 @@ impl PluginCaloriesSummaryRow {
             .and_then(|s| s.get(0).cloned())
         {
             let calories_burned_today: i64 = bar.calorie_split.values().sum();
-            self_.label.set_label(&ni18n_f(
+            imp.label.set_label(&ni18n_f(
                 "{} calorie burned today",
                 "{} calories burned today",
                 calories_burned_today as u32,
                 &[&calories_burned_today.to_string()],
             ))
         } else {
-            self_.label.set_label(&ni18n_f(
+            imp.label.set_label(&ni18n_f(
                 "{} calorie burned today",
                 "{} calories burned today",
                 0,

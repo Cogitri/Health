@@ -284,10 +284,10 @@ impl Activity {
     /// assert_eq!(activity.duration().num_minutes(), 20);
     /// ```
     pub fn autofill_from_calories(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
         let (calories, info) = {
-            let inner = self_.inner.borrow();
+            let inner = imp.inner.borrow();
             (
                 inner.calories_burned.unwrap_or(0),
                 ActivityInfo::from(inner.activity_type),
@@ -299,7 +299,7 @@ impl Activity {
                 .available_data_points
                 .contains(ActivityDataPoints::CALORIES_BURNED)
         {
-            self_.inner.borrow_mut().duration =
+            imp.inner.borrow_mut().duration =
                 Duration::minutes((calories / info.average_calories_burned_per_minute).into());
 
             self.autofill_from_minutes();
@@ -320,9 +320,9 @@ impl Activity {
     /// assert_eq!(activity.duration().num_minutes(), 11);
     /// ```
     pub fn autofill_from_distance(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        let mut inner = self_.inner.borrow_mut();
+        let mut inner = imp.inner.borrow_mut();
         let info = ActivityInfo::from(inner.activity_type);
         let distance = inner.distance.map_or(0.0, |l| l.get::<meter>()) as u32;
 
@@ -387,9 +387,9 @@ impl Activity {
     /// assert_eq!(activity.calories_burned(), Some(100));
     /// ```
     pub fn autofill_from_minutes(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        let mut inner = self_.inner.borrow_mut();
+        let mut inner = imp.inner.borrow_mut();
         let info = ActivityInfo::from(inner.activity_type);
         let minutes = u32::try_from(inner.duration.num_minutes()).unwrap();
 
@@ -442,9 +442,9 @@ impl Activity {
     /// assert_eq!(activity.duration().num_minutes(), 1);
     /// ```
     pub fn autofill_from_steps(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
 
-        let mut inner = self_.inner.borrow_mut();
+        let mut inner = imp.inner.borrow_mut();
         let info = ActivityInfo::from(inner.activity_type);
         let steps = inner.steps.unwrap_or(0);
 

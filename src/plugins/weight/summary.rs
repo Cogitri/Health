@@ -86,7 +86,7 @@ impl PluginWeightSummaryRow {
     }
 
     pub async fn update(&self) {
-        let self_ = self.imp();
+        let imp = self.imp();
         let settings = Settings::instance();
         let mut weight_model = GraphModelWeight::new();
         if let Err(e) = weight_model.reload(Duration::days(30)).await {
@@ -113,7 +113,7 @@ impl PluginWeightSummaryRow {
             } else {
                 WeightChange::Down
             };
-            self_.arrow.set_weight_change(change);
+            imp.arrow.set_weight_change(change);
             let subtitle = if settings.unit_system() == UnitSystem::Imperial {
                 // TRANSLATORS: Current user weight
                 ni18n_f(
@@ -150,7 +150,7 @@ impl PluginWeightSummaryRow {
                         &[&difference.to_string()],
                     )
                 };
-                self_.weight_change.set_label(&label)
+                imp.weight_change.set_label(&label)
             } else if difference < 0.0 {
                 let label = if settings.unit_system() == UnitSystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement
@@ -169,14 +169,13 @@ impl PluginWeightSummaryRow {
                         &[&difference.to_string()],
                     )
                 };
-                self_.weight_change.set_label(&label)
+                imp.weight_change.set_label(&label)
             } else {
-                self_.weight_change.set_label(&i18n("No change in weight"));
+                imp.weight_change.set_label(&i18n("No change in weight"));
             }
         } else {
-            self_.arrow.set_weight_change(WeightChange::NoChange);
-            self_
-                .weight_change
+            imp.arrow.set_weight_change(WeightChange::NoChange);
+            imp.weight_change
                 .set_label(&i18n("No weight data available"));
         }
     }
