@@ -644,6 +644,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "float_eq"
+version = "0.7.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c1d53499e94f9a7828e63c574adf62bcade7f358c3738f9ea70d7c2edb61023d"
+
+[[package]]
 name = "fnv"
 version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1137,6 +1143,7 @@ dependencies = [
  "delegate",
  "dyn-clonable",
  "easy-ext",
+ "float_eq",
  "gettext-rs",
  "glob",
  "gtk-macros",

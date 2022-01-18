@@ -509,6 +509,7 @@ impl UnitSpinButton {
 #[cfg(test)]
 mod test {
     use super::*;
+    use float_eq::assert_float_eq;
 
     macro_rules! test_from_to {
         ($from:expr, $to:expr, $kind:expr, $expected:literal) => {
@@ -521,16 +522,18 @@ mod test {
             );
             assert_eq!(btn.value(), 10.0);
             btn.set_unit_system($from);
-            assert_eq!(
-                btn.value() as u32,
-                10,
+            assert_float_eq!(
+                btn.value(),
+                10.0,
+                r2nd <= f64::from(f32::EPSILON),
                 "Changed value when setting initial unit system when it shouldn't"
             );
 
             btn.set_unit_system($from);
-            assert_eq!(
-                btn.value() as u32,
-                10,
+            assert_float_eq!(
+                btn.value(),
+                10.0,
+                r2nd <= f64::from(f32::EPSILON),
                 "Changed value when setting same unit system when it shouldn't"
             );
 

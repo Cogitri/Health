@@ -136,6 +136,9 @@ git = "https://github.com/hwchen/secret-service-rs"
 git = "https://github.com/Cogitri/zxcvbn-rs"
 branch = "chrono-time"
 
+[dev-dependencies.float_eq]
+version = "0.7"
+
 [dev-dependencies.serde_test]
 version = "1"
 
