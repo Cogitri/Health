@@ -30,10 +30,7 @@ mod imp {
     use gtk::{glib, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
     use std::convert::TryInto;
-    use uom::{
-        fmt::DisplayStyle::Abbreviation,
-        si::length::{meter, yard},
-    };
+    use uom::si::length::{meter, yard};
 
     #[derive(Debug, Default)]
     pub struct ActivityRow {
@@ -125,9 +122,11 @@ mod imp {
                     {
                         if let Some(distance) = activity.distance() {
                             let args = if self.settings.unit_system() == UnitSystem::Imperial {
-                                distance.into_format_args(meter, Abbreviation).to_string()
+                                let m = distance.get::<meter>().round_decimal_places(1);
+                                ni18n_f("{} meter", "{} meters", m as u32, &[&m.to_string()])
                             } else {
-                                distance.into_format_args(yard, Abbreviation).to_string()
+                                let yards = distance.get::<yard>().round_decimal_places(1);
+                                ni18n_f("{} yard", "{} yards", yards as u32, &[&yards.to_string()])
                             };
                             obj.add_new_row(&i18n("Distance"), &args);
                         }
@@ -176,12 +175,9 @@ impl ActivityRow {
     }
 
     fn add_new_row(&self, title: &str, data: &str) {
-        self.add_row(
-            &adw::ActionRow::builder()
-                .title(title)
-                .child(&gtk::Label::builder().label(data).build())
-                .build(),
-        );
+        let row = adw::ActionRow::builder().title(title).build();
+        row.add_suffix(&gtk::Label::builder().label(data).build());
+        self.add_row(&row);
     }
 }
 
