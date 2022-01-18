@@ -1,11 +1,11 @@
 conf = configuration_data()
 conf.set_quoted('VERSION', meson.project_version())
-conf.set_quoted('localedir', join_paths(get_option('prefix'), get_option('localedir')))
+conf.set_quoted('localedir', get_option('prefix') / get_option('localedir'))
 conf.set_quoted('pkgdatadir', health_data_dir)
 conf.set_quoted('application_id', application_id)
 conf.set_quoted('log_domain', application_id)
 conf.set_quoted('gettext_package', gettext_package)
-conf.set_quoted('autostart_desktop_file_path', join_paths(get_option('datadir'), 'applications', 'dev.Cogitri.Health.Autostart.desktop'))
+conf.set_quoted('autostart_desktop_file_path', get_option('prefix') / get_option('datadir') / 'applications' / 'dev.Cogitri.Health.Autostart.desktop')
 
 configure_file(
     input: 'config.rs.in',
@@ -16,8 +16,8 @@ configure_file(
 # Copy the config.rs output to the source directory.
 run_command(
   'cp',
-  join_paths(meson.build_root(), 'src', 'config.rs'),
-  join_paths(meson.source_root(), 'src', 'config.rs'),
+  meson.project_build_root() / 'src' / 'config.rs',
+  meson.project_source_root() / 'src' / 'config.rs',
   check: true
 )
 
@@ -129,9 +129,9 @@ cargo_release = custom_target(
   install: true,
   install_dir: get_option('bindir'),
   command: [
-    find_program(meson.source_root() / 'build-aux' / 'cargo.sh'),
+    find_program(meson.project_source_root() / 'build-aux' / 'cargo.sh'),
     meson.current_build_dir() / '..',
-    meson.source_root(),
+    meson.project_source_root(),
     '@OUTPUT0@',
     get_option('buildtype'),
     'health',
@@ -140,10 +140,10 @@ cargo_release = custom_target(
 
 test(
   'cargo-tests',
-  find_program(meson.source_root() / 'build-aux' / 'cargo-test.sh'),
+  find_program(meson.project_source_root() / 'build-aux' / 'cargo-test.sh'),
   args: [
     meson.current_build_dir() / '..',
-    meson.source_root(),
+    meson.project_source_root(),
     get_option('buildtype'),
   ],
   timeout: 3000, # might take a bit longer due to cargo...

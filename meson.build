@@ -5,8 +5,8 @@ project('Health', 'rust',
                    ],
 )
 
-dependency('libadwaita-1', version: '>= 1.0.0-alpha.4')
-dependency('gtk4', version: '>= 4.2.0')
+dependency('libadwaita-1', version: '>= 1.0.1')
+dependency('gtk4', version: '>= 4.6.0')
 
 i18n = import('i18n')
 gnome = import('gnome')
@@ -33,7 +33,7 @@ subdir('data')
 subdir('src')
 subdir('po')
 
-meson.add_install_script('build-aux/meson/postinstall.py')
+gnome.post_install(glib_compile_schemas: true, gtk_update_icon_cache: true)
 meson.add_dist_script('build-aux/dist.sh', meson.project_name(), meson.project_version())
 
 devenv = environment()
