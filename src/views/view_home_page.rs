@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    plugins::{PluginName, PluginObject, PluginSummaryRow, Registrar},
+    plugins::{PluginDetails, PluginName, PluginObject, PluginSummaryRow, Registrar},
     prelude::*,
 };
 use adw::prelude::*;
@@ -311,18 +311,7 @@ impl ViewHomePage {
         self_.stack.add_named(&details, Some(plugin_name.as_ref()));
 
         gtk_macros::spawn!(glib::clone!(@weak self as obj => async move {
-            let self_ = obj.imp();
-
-            if let Err(e) = details.update().await {
-                glib::g_warning!(
-                    crate::config::LOG_DOMAIN,
-                    "Couldn't update plugin's details: {e}",
-                );
-            }
-
-            self_.stack.set_visible_child_name(plugin_name.as_ref());
-            obj.emit_by_name::<()>("view-changed", &[&plugin_name.as_ref()]);
-            list_box.unselect_all();
+            obj.update_view(details, plugin_name, list_box).await;
         }));
     }
 
@@ -344,6 +333,26 @@ impl ViewHomePage {
             }
             i += 1;
         }
+    }
+
+    async fn update_view(
+        &self,
+        details: PluginDetails,
+        plugin_name: PluginName,
+        list_box: gtk::ListBox,
+    ) {
+        let self_ = self.imp();
+
+        if let Err(e) = details.update().await {
+            glib::g_warning!(
+                crate::config::LOG_DOMAIN,
+                "Couldn't update plugin's details: {e}",
+            );
+        }
+
+        self_.stack.set_visible_child_name(plugin_name.as_ref());
+        self.emit_by_name::<()>("view-changed", &[&plugin_name.as_ref()]);
+        list_box.unselect_all();
     }
 }
 
