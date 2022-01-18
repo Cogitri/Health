@@ -94,11 +94,7 @@ impl PluginWeightSummaryRow {
         let settings = Settings::instance();
         let mut weight_model = GraphModelWeight::new();
         if let Err(e) = weight_model.reload(Duration::days(30)).await {
-            glib::g_warning!(
-                crate::config::LOG_DOMAIN,
-                "Failed to reload step data: {}",
-                e
-            );
+            glib::g_warning!(crate::config::LOG_DOMAIN, "Failed to reload step data: {e}",);
         }
 
         if !weight_model.is_empty() {

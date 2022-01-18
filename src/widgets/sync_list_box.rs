@@ -209,7 +209,7 @@ impl SyncListBox {
     }
 
     fn open_sync_error(&self, errmsg: &str) {
-        g_warning!(crate::config::LOG_DOMAIN, "{}", errmsg);
+        g_warning!(crate::config::LOG_DOMAIN, "{errmsg}");
 
         let dialog = gtk::MessageDialog::new(
             self.imp().parent_window.borrow().as_ref(),

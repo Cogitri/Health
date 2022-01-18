@@ -66,7 +66,7 @@ pub trait SyncProvider {
     /// # Returns
     /// The deserialized JSON response
     fn get<T: serde::de::DeserializeOwned>(&mut self, method: &str) -> Result<T> {
-        Ok(ureq::get(&format!("{}/{}", self.api_url(), method))
+        Ok(ureq::get(&format!("{}/{method}", self.api_url()))
             .set(
                 "Authorization",
                 &format!("Bearer {}", self.oauth2_token()?.access_token().secret()),
@@ -87,7 +87,7 @@ pub trait SyncProvider {
         method: &str,
         data: ureq::serde_json::Value,
     ) -> Result<T> {
-        Ok(ureq::post(&format!("{}/{}", self.api_url(), method))
+        Ok(ureq::post(&format!("{}/{method}", self.api_url()))
             .set(
                 "Authorization",
                 &format!("Bearer {}", self.oauth2_token()?.access_token().secret()),
@@ -224,9 +224,8 @@ pub trait SyncProvider {
 
                 let message = i18n("Successfully authenticated, please return to Health.");
                 let response = format!(
-                    "HTTP/1.1 200 OK\r\ncontent-length: {}\r\n\r\n{}",
+                    "HTTP/1.1 200 OK\r\ncontent-length: {}\r\n\r\n{message}",
                     message.len(),
-                    message
                 );
                 stream.write_all(response.as_bytes())?;
 

@@ -395,8 +395,7 @@ impl PreferencesWindow {
             }
             Err(e) => glib::g_warning!(
                 crate::config::LOG_DOMAIN,
-                "Couldn't request to stay active in background: {}",
-                e.to_string()
+                "Couldn't request to stay active in background: {e}",
             ),
         }
     }

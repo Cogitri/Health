@@ -108,11 +108,7 @@ impl GraphModelCalories {
     pub async fn rmr(&self) -> f32 {
         let weights = match Database::instance().weights(None).await {
             Err(e) => {
-                glib::g_warning!(
-                    crate::config::LOG_DOMAIN,
-                    "Failed to load weight data: {}",
-                    e
-                );
+                glib::g_warning!(crate::config::LOG_DOMAIN, "Failed to load weight data: {e}",);
                 return 0.0;
             }
             Ok(v) => v,

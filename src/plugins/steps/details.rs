@@ -179,8 +179,7 @@ impl PluginStepsDetails {
         if let Err(e) = steps_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
-                "Failed to reload step data: {}",
-                e
+                "Failed to reload step data: {e}",
             );
         }
 

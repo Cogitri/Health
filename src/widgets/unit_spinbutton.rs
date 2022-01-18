@@ -493,13 +493,12 @@ impl UnitSpinButton {
             _ => None,
         } {
             let text = format!(
-                "{} {}",
+                "{} {unit_string}",
                 self_
                     .spin_button
                     .adjustment()
                     .value()
                     .round_decimal_places(self_.spin_button.digits()),
-                unit_string,
             );
             if text != self_.spin_button.text() {
                 self_.spin_button.set_text(&text);

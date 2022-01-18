@@ -478,8 +478,7 @@ impl ViewAddActivity {
             if let Err(e) = self_.database.save_activity(activity).await {
                 glib::g_warning!(
                     crate::config::LOG_DOMAIN,
-                    "Failed to save new data due to error {}",
-                    e.to_string()
+                    "Failed to save new data due to error {e}",
                 )
             }
             self.save_recent_activity();

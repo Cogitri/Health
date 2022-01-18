@@ -162,8 +162,7 @@ impl PluginActivitiesDetails {
         if let Err(e) = reload_result {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
-                "Failed to reload activity data: {}",
-                e
+                "Failed to reload activity data: {e}",
             );
         };
 

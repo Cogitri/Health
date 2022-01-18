@@ -22,10 +22,10 @@ use libhealth::{
 fn main() {
     setlocale(LocaleCategory::LcAll, "");
     if let Err(e) = bindtextdomain(config::GETTEXT_PACKAGE, config::LOCALEDIR) {
-        glib::g_warning!(config::LOG_DOMAIN, "Couldn't bind textdomain: {}", e)
+        glib::g_warning!(config::LOG_DOMAIN, "Couldn't bind textdomain: {e}")
     }
     if let Err(e) = textdomain(config::GETTEXT_PACKAGE) {
-        glib::g_warning!(config::LOG_DOMAIN, "Couldn't set textdomain: {}", e)
+        glib::g_warning!(config::LOG_DOMAIN, "Couldn't set textdomain: {e}")
     }
 
     glib::set_application_name(&i18n("Health"));

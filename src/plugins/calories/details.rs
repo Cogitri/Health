@@ -178,11 +178,7 @@ impl PluginCaloriesDetails {
 
         let mut calories_graph_model = { self_.calories_graph_model.borrow_mut().take().unwrap() };
         if let Err(e) = calories_graph_model.reload(Duration::days(30)).await {
-            glib::g_warning!(
-                crate::config::LOG_DOMAIN,
-                "Failed to reload step data: {}",
-                e
-            );
+            glib::g_warning!(crate::config::LOG_DOMAIN, "Failed to reload step data: {e}",);
         }
 
         let distinct_activities = calories_graph_model.distinct_activities();

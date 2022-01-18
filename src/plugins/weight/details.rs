@@ -186,8 +186,7 @@ impl PluginWeightDetails {
         if let Err(e) = weight_graph_model.reload(Duration::days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
-                "Failed to reload weight data: {}",
-                e
+                "Failed to reload weight data: {e}",
             );
         }
 
@@ -248,7 +247,7 @@ impl PluginWeightDetails {
                 return i18n("Unknown BMI");
             }
             let bmi = (last_weight.get::<kilogram>() / (height * height)).round_decimal_places(1);
-            format!("{bmi:.1}", bmi = bmi)
+            format!("{bmi:.1}")
         } else {
             i18n("Unknown BMI")
         }
@@ -307,8 +306,7 @@ impl PluginWeightDetails {
                     // TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
                     ni18n_f("Your weight goal is {} pound,",
                         "Your weight goal is {} pounds,",
-                        weight_value as u32, &[&format!("{weight_value:.1}",
-                        weight_value = weight_value)],
+                        weight_value as u32, &[&format!("{weight_value:.1}")],
                     ) +
                     // TRANSLATORS: Second (final) part of message, see previous source string.
                     &ni18n_f( "you have {} pound left to reach it",
@@ -321,7 +319,7 @@ impl PluginWeightDetails {
                     ni18n_f("Your weight goal is {} kilogram,",
                         "Your weight goal is {} kilograms,",
                         weight_value as u32,
-                        &[&format!("{weight_value:.1}", weight_value = weight_value)],
+                        &[&format!("{weight_value:.1}")],
                     ) +
                     // TRANSLATORS: Second (final) part of message, see previous source string.
                     &ni18n_f("you have {} kilogram left to reach it",

@@ -275,7 +275,7 @@ impl Window {
     fn show_error(&self, err_msg: &str) {
         let self_ = self.imp();
 
-        glib::g_warning!(crate::config::LOG_DOMAIN, "{}", err_msg);
+        glib::g_warning!(crate::config::LOG_DOMAIN, "{err_msg}");
         self_.error_label.set_text(err_msg);
         self_.error_infobar.set_revealed(true);
     }

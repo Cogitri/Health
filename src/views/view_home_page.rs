@@ -274,7 +274,7 @@ impl ViewHomePage {
 
         gtk_macros::spawn!(glib::clone!(@weak summary => async move {
             if let Err(e) = summary.update().await {
-                glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't update plugin: {}", e);
+                glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't update plugin: {e}");
             }
         }));
 
@@ -316,8 +316,7 @@ impl ViewHomePage {
             if let Err(e) = details.update().await {
                 glib::g_warning!(
                     crate::config::LOG_DOMAIN,
-                    "Couldn't update plugin's details: {}",
-                    e
+                    "Couldn't update plugin's details: {e}",
                 );
             }
 
@@ -341,7 +340,7 @@ impl ViewHomePage {
                 .update()
                 .await
             {
-                glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't update plugin: {}", e);
+                glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't update plugin: {e}");
             }
             i += 1;
         }

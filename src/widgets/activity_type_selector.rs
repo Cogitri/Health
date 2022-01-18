@@ -96,7 +96,7 @@ mod imp {
                         self.recent_activity_types_model
                             .append(&ActivityTypeRowData::new(info.id, &info.name));
                     } else {
-                        g_warning!(crate::config::LOG_DOMAIN, "Unknown activity {}!", activity);
+                        g_warning!(crate::config::LOG_DOMAIN, "Unknown activity {activity}!");
                     }
                 }
                 let last_activity = recent_activity_types.last().unwrap().as_str();
@@ -105,8 +105,7 @@ mod imp {
                 } else {
                     g_warning!(
                         crate::config::LOG_DOMAIN,
-                        "Unknown Activity {}, falling back to walking.",
-                        last_activity
+                        "Unknown Activity {last_activity}, falling back to walking.",
                     );
                 }
             }

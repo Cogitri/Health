@@ -195,8 +195,7 @@ impl Application {
             if let Err(e) = self.install_autostart_file() {
                 glib::g_warning!(
                     crate::config::APPLICATION_ID,
-                    "Couldn't install autostart file due to error {}",
-                    e
+                    "Couldn't install autostart file due to error {e}",
                 );
             }
         } else {
@@ -206,8 +205,7 @@ impl Application {
             if let Err(e) = self.delete_autostart_file() {
                 glib::g_debug!(
                     crate::config::APPLICATION_ID,
-                    "Couldn't remove autostart file due to error {}",
-                    e
+                    "Couldn't remove autostart file due to error {e}",
                 );
             }
         }

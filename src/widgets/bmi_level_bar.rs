@@ -221,7 +221,7 @@ impl BmiLevelBar {
 
             self_.bmi_label.set_markup(&crate::core::i18n_f(
                 "<small>Current BMI: {}</small>",
-                &[&format!("{bmi:.2}", bmi = current_bmi)],
+                &[&format!("{current_bmi:.2}")],
             ));
         }
     }

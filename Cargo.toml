@@ -1,9 +1,9 @@
 [package]
 name = "health"
 version = "0.93.3"
-edition = "2018"
+edition = "2021"
 license = "GPL-3.0-or-later"
-default-run = "health"
+rust-version = "1.58"
 
 [lib]
 name = "libhealth"
