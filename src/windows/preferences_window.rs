@@ -312,7 +312,6 @@ impl PreferencesWindow {
         } else {
             imp.enable_notify.is_active()
         };
-        println!("Enabling not: {}", switch_state);
         imp.settings.set_enable_notifications(switch_state);
         imp.enable_notify.set_active(switch_state);
         imp.periodic_frequency_select.set_visible(switch_state);
