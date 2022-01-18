@@ -247,11 +247,6 @@ impl ActivityTypeSelector {
         }
     }
 
-    #[allow(dead_code)]
-    fn imp(&self) -> &imp::ActivityTypeSelector {
-        imp::ActivityTypeSelector::from_instance(self)
-    }
-
     fn set_selected_activity(&self, val: ActivityInfo) {
         self.set_property("selected-activity", ActivityInfoBoxed(val))
     }

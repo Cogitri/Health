@@ -875,10 +875,6 @@ impl Database {
 
         Ok(())
     }
-
-    fn imp(&self) -> &imp::Database {
-        imp::Database::from_instance(self)
-    }
 }
 
 #[cfg(test)]

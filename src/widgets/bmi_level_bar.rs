@@ -199,10 +199,6 @@ impl BmiLevelBar {
         self.set_property("weight-kilogram", value.get::<kilogram>())
     }
 
-    fn imp(&self) -> &imp::BmiLevelBar {
-        imp::BmiLevelBar::from_instance(self)
-    }
-
     fn recalculate_bmi(&self) {
         let self_ = self.imp();
 

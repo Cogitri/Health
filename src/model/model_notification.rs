@@ -204,10 +204,6 @@ impl ModelNotification {
         }
     }
 
-    fn imp(&self) -> &imp::ModelNotification {
-        imp::ModelNotification::from_instance(self)
-    }
-
     async fn periodic_callback(&self) {
         let self_ = self.imp();
         let time_now = Local::now().time();

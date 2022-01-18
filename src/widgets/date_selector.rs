@@ -21,7 +21,6 @@ use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
 use gtk::{
     glib::{self, SignalHandlerId},
     prelude::*,
-    subclass::prelude::*,
 };
 
 mod imp {
@@ -209,11 +208,6 @@ impl DateSelector {
         )
         .signed_duration_since(NaiveDate::from_ymd(year, month, 1))
         .num_days()
-    }
-
-    #[allow(dead_code)]
-    fn imp(&self) -> &imp::DateSelector {
-        imp::DateSelector::from_instance(self)
     }
 }
 

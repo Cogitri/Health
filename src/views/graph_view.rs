@@ -586,10 +586,6 @@ impl GraphView {
         self.property("x-lines-interval")
     }
 
-    fn imp(&self) -> &imp::GraphView {
-        imp::GraphView::from_instance(self)
-    }
-
     fn on_motion_event(
         &self,
         x: f64,

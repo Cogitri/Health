@@ -299,10 +299,6 @@ impl PreferencesWindow {
             }));
     }
 
-    fn imp(&self) -> &imp::PreferencesWindow {
-        imp::PreferencesWindow::from_instance(self)
-    }
-
     #[template_callback]
     fn handle_birthday_selector_changed(&self) {
         let self_ = self.imp();

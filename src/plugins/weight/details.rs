@@ -253,10 +253,6 @@ impl PluginWeightDetails {
         }
     }
 
-    fn imp(&self) -> &imp::PluginWeightDetails {
-        imp::PluginWeightDetails::from_instance(self)
-    }
-
     // TRANSLATORS notes have to be on the same line, so we cant split them
     #[rustfmt::skip]
     fn update_weight_goal_label(&self, model: &DataProvider) {

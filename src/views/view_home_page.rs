@@ -315,10 +315,6 @@ impl ViewHomePage {
         }));
     }
 
-    fn imp(&self) -> &imp::ViewHomePage {
-        imp::ViewHomePage::from_instance(self)
-    }
-
     pub async fn update(&self) {
         let self_ = self.imp();
         let mut i = 0;

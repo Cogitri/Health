@@ -131,10 +131,6 @@ impl ModelActivity {
             .map(|x| x != 0)
             .unwrap_or(false)
     }
-
-    fn imp(&self) -> &imp::ModelActivity {
-        imp::ModelActivity::from_instance(self)
-    }
 }
 
 #[cfg(test)]

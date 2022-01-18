@@ -85,10 +85,6 @@ impl PluginWeightSummaryRow {
             .expect("Failed to create PluginWeightSummaryRow")
     }
 
-    fn imp(&self) -> &imp::PluginWeightSummaryRow {
-        imp::PluginWeightSummaryRow::from_instance(self)
-    }
-
     pub async fn update(&self) {
         let self_ = self.imp();
         let settings = Settings::instance();

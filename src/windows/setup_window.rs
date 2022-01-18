@@ -208,11 +208,6 @@ impl SetupWindow {
                 obj.handle_unit_system_changed();
             }));
     }
-
-    fn imp(&self) -> &imp::SetupWindow {
-        imp::SetupWindow::from_instance(self)
-    }
-
     fn handle_fullscreen(&self) {
         if self.is_fullscreen() {
             self.unfullscreen();

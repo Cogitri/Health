@@ -131,10 +131,6 @@ impl Registrar {
         }
     }
 
-    fn imp(&self) -> &imp::Registrar {
-        imp::Registrar::from_instance(self)
-    }
-
     fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create Registrar")
     }

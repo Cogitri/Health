@@ -153,10 +153,6 @@ impl Application {
         .expect("Failed to create Application")
     }
 
-    fn imp(&self) -> &imp::Application {
-        imp::Application::from_instance(self)
-    }
-
     fn handle_about(&self) {
         gtk::AboutDialog::builder()
             .transient_for(

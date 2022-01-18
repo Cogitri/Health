@@ -516,10 +516,6 @@ impl BarGraphView {
         self.property("x-lines-interval")
     }
 
-    fn imp(&self) -> &imp::BarGraphView {
-        imp::BarGraphView::from_instance(self)
-    }
-
     fn on_motion_event(
         &self,
         x: f64,

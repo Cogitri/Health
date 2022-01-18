@@ -212,10 +212,6 @@ impl PasswordEntry {
     fn handle_password_repeat_entry_changed(&self) {
         self.notify("password");
     }
-
-    fn imp(&self) -> &imp::PasswordEntry {
-        imp::PasswordEntry::from_instance(self)
-    }
 }
 
 #[cfg(test)]

@@ -258,10 +258,6 @@ impl ViewAddActivity {
         );
     }
 
-    fn imp(&self) -> &imp::ViewAddActivity {
-        imp::ViewAddActivity::from_instance(self)
-    }
-
     fn setup_actions(&self) {
         let action_group = gio::SimpleActionGroup::new();
 

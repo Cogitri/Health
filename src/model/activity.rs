@@ -483,10 +483,6 @@ impl Activity {
             .expect("Failed to create Activity")
     }
 
-    fn imp(&self) -> &imp::Activity {
-        imp::Activity::from_instance(self)
-    }
-
     pub fn activity_type(&self) -> ActivityType {
         ActivityType::from_str(&self.property::<String>("activity-type")).unwrap()
     }

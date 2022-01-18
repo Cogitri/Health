@@ -311,10 +311,6 @@ impl Window {
             view.update().await;
         }));
     }
-
-    fn imp(&self) -> &imp::Window {
-        imp::Window::from_instance(self)
-    }
 }
 
 #[cfg(test)]

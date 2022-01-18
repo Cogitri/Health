@@ -208,10 +208,6 @@ glib::wrapper! {
 }
 
 impl PluginDetails {
-    fn imp(&self) -> &imp::PluginDetails {
-        imp::PluginDetails::from_instance(self)
-    }
-
     pub fn new() -> Self {
         glib::Object::new(&[]).expect("Failed to create PluginDetails")
     }

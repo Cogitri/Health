@@ -87,10 +87,6 @@ impl ViewAddWeight {
         .expect("Failed to create ViewAddWeight")
     }
 
-    fn imp(&self) -> &imp::ViewAddWeight {
-        imp::ViewAddWeight::from_instance(self)
-    }
-
     pub async fn handle_response(&self, id: gtk::ResponseType) {
         if id == gtk::ResponseType::Ok {
             let self_ = self.imp();

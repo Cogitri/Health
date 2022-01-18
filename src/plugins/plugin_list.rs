@@ -146,10 +146,6 @@ impl PluginList {
 
         ret
     }
-
-    fn imp(&self) -> &imp::PluginList {
-        imp::PluginList::from_instance(self)
-    }
 }
 
 #[cfg(test)]

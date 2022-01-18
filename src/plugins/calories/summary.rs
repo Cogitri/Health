@@ -83,10 +83,6 @@ impl PluginCaloriesSummaryRow {
             .expect("Failed to create PluginCaloriesSummaryRow")
     }
 
-    fn imp(&self) -> &imp::PluginCaloriesSummaryRow {
-        imp::PluginCaloriesSummaryRow::from_instance(self)
-    }
-
     pub async fn update(&self) {
         let self_ = self.imp();
         if let Some(bar) = Database::instance()

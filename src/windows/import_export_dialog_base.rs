@@ -269,10 +269,6 @@ impl ImportExportDialogBase {
         }));
     }
 
-    fn imp(&self) -> &imp::ImportExportDialogBase {
-        imp::ImportExportDialogBase::from_instance(self)
-    }
-
     async fn on_response(&self, id: gtk::ResponseType) {
         let self_ = self.imp();
         if id == gtk::ResponseType::Ok {

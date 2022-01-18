@@ -78,10 +78,6 @@ impl PluginActivitiesSummaryRow {
             .expect("Failed to create PluginActivitiesSummaryRow")
     }
 
-    fn imp(&self) -> &imp::PluginActivitiesSummaryRow {
-        imp::PluginActivitiesSummaryRow::from_instance(self)
-    }
-
     pub async fn update(&self) {
         let self_ = self.imp();
         let active_minutes_today: i64 = Database::instance()

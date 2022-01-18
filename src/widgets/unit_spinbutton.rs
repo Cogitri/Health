@@ -508,10 +508,6 @@ impl UnitSpinButton {
             gtk::Inhibit(false)
         }
     }
-
-    fn imp(&self) -> &imp::UnitSpinButton {
-        imp::UnitSpinButton::from_instance(self)
-    }
 }
 
 #[cfg(test)]

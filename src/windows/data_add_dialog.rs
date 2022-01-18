@@ -164,10 +164,6 @@ impl DataAddDialog {
             self.destroy();
         }
     }
-
-    fn imp(&self) -> &imp::DataAddDialog {
-        imp::DataAddDialog::from_instance(self)
-    }
 }
 
 #[cfg(test)]

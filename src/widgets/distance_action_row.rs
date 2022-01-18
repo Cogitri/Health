@@ -272,10 +272,6 @@ impl DistanceActionRow {
         Length::new::<meter>(self.property("value-meter"))
     }
 
-    fn imp(&self) -> &imp::DistanceActionRow {
-        imp::DistanceActionRow::from_instance(self)
-    }
-
     #[template_callback]
     fn handle_distance_spin_button_changed(&self, spinbutton: UnitSpinButton) {
         let self_ = self.imp();

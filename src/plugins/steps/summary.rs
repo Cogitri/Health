@@ -84,10 +84,6 @@ impl PluginStepsSummaryRow {
             .expect("Failed to create PluginStepsSummaryRow")
     }
 
-    fn imp(&self) -> &imp::PluginStepsSummaryRow {
-        imp::PluginStepsSummaryRow::from_instance(self)
-    }
-
     pub async fn update(&self) {
         let self_ = self.imp();
         let db = Database::instance();

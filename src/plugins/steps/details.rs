@@ -258,10 +258,6 @@ impl PluginStepsDetails {
 
         self_.steps_graph_model.replace(Some(steps_graph_model));
     }
-
-    fn imp(&self) -> &imp::PluginStepsDetails {
-        imp::PluginStepsDetails::from_instance(self)
-    }
 }
 
 #[derive(Clone, Boxed)]

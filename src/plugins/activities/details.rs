@@ -179,10 +179,6 @@ impl PluginActivitiesDetails {
             self.switch_to_empty_page();
         }
     }
-
-    fn imp(&self) -> &imp::PluginActivitiesDetails {
-        imp::PluginActivitiesDetails::from_instance(self)
-    }
 }
 
 #[derive(Clone, Boxed)]

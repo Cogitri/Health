@@ -228,10 +228,6 @@ impl PluginCaloriesDetails {
             .calories_graph_model
             .replace(Some(calories_graph_model));
     }
-
-    fn imp(&self) -> &imp::PluginCaloriesDetails {
-        imp::PluginCaloriesDetails::from_instance(self)
-    }
 }
 
 #[derive(Clone, Boxed)]

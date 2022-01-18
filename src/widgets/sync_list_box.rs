@@ -137,10 +137,6 @@ impl SyncListBox {
             .expect("Failed to create SyncListBox")
     }
 
-    fn imp(&self) -> &imp::SyncListBox {
-        imp::SyncListBox::from_instance(self)
-    }
-
     fn handle_db_receiver_received(&self, res: Result<()>) -> glib::Continue {
         let self_ = self.imp();
         if let Err(e) = res {
