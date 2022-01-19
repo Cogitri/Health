@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, UnitSystem},
+    core::UnitSystem,
     model::NotificationFrequency,
     prelude::*,
     windows::{ExportDialog, ImportDialog},
@@ -28,7 +28,7 @@ use gtk::{
     gio,
     glib::{self, clone, subclass::prelude::*},
 };
-use gtk_macros::{spawn, stateful_action};
+use gtk_macros::stateful_action;
 use std::str::FromStr;
 use uom::si::{
     f32::{Length, Mass},
@@ -44,7 +44,6 @@ mod imp {
     };
     use adw::prelude::*;
     use gtk::{glib, subclass::prelude::*, CompositeTemplate};
-    use once_cell::unsync::OnceCell;
     use std::{cell::Cell, str::FromStr};
     use uom::si::{
         f32::Mass,
@@ -57,7 +56,6 @@ mod imp {
     pub struct PreferencesWindow {
         pub current_unit_system: Cell<UnitSystem>,
         pub settings: Settings,
-        pub window_indentifier: OnceCell<ashpd::WindowIdentifier>,
 
         #[template_child]
         pub height_actionrow: TemplateChild<adw::ActionRow>,
@@ -106,7 +104,6 @@ mod imp {
             Self {
                 current_unit_system: Cell::new(settings.unit_system()),
                 settings,
-                window_indentifier: OnceCell::new(),
                 height_actionrow: TemplateChild::default(),
                 weight_goal_actionrow: TemplateChild::default(),
                 birthday_selector: TemplateChild::default(),
@@ -319,11 +316,6 @@ impl PreferencesWindow {
             imp.settings.enable_notifications()
                 && imp.settings.notification_frequency() == NotificationFrequency::Fixed,
         );
-        if switch_state && ashpd::is_sandboxed() && !initializing {
-            spawn!(clone!(@weak self as obj => async move {
-                obj.handle_sandbox_autostart().await;
-            }));
-        }
     }
 
     #[template_callback]
@@ -356,41 +348,6 @@ impl PreferencesWindow {
     fn handle_import_csv_button_clicked(&self) {
         let dialog = ImportDialog::new(self.transient_for().as_ref());
         dialog.show();
-    }
-
-    async fn handle_sandbox_autostart(&self) {
-        let imp = self.imp();
-        let window_indentifier = if let Some(i) = imp.window_indentifier.get() {
-            i
-        } else {
-            let i =
-                ashpd::WindowIdentifier::from_native(self.upcast_ref::<adw::PreferencesWindow>())
-                    .await;
-            imp.window_indentifier.set(i).unwrap();
-            imp.window_indentifier.get().unwrap()
-        };
-        match ashpd::desktop::background::request(
-            window_indentifier,
-            &i18n("Remind you of your step goals"),
-            true,
-            Some(&[crate::config::APPLICATION_ID, "--gapplication-service"]),
-            false,
-        )
-        .await
-        {
-            Ok(r) => {
-                if !r.auto_start() {
-                    glib::g_warning!(
-                        crate::config::LOG_DOMAIN,
-                        "Permission to be autostarted was denied..."
-                    )
-                }
-            }
-            Err(e) => glib::g_warning!(
-                crate::config::LOG_DOMAIN,
-                "Couldn't request to stay active in background: {e}",
-            ),
-        }
     }
 
     #[template_callback]

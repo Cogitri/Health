@@ -21,10 +21,6 @@ features = ["gtk_v4_4"]
 [dependencies.anyhow]
 version = "1.0"
 
-[dependencies.ashpd]
-version = "0.2.0-beta-1"
-features = ["feature_gtk4"]
-
 [dependencies.async-trait]
 version = "0.1.52"
 
