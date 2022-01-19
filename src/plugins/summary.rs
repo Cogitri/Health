@@ -128,7 +128,7 @@ mod imp {
             match pspec.name() {
                 "plugin-name" => self
                     .plugin_name
-                    .set(PluginName::from_str(&value.get::<String>().unwrap()).unwrap())
+                    .set(PluginName::from_str(value.get::<&str>().unwrap()).unwrap())
                     .unwrap(),
                 _ => unimplemented!(),
             }

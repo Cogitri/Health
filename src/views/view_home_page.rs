@@ -198,7 +198,7 @@ impl ViewHomePage {
         self.connect_local("view-changed", false, move |values| {
             callback(
                 &values[0].get().unwrap(),
-                PluginName::from_str(&values[1].get::<String>().unwrap()).unwrap(),
+                PluginName::from_str(values[1].get::<&str>().unwrap()).unwrap(),
             );
             None
         })

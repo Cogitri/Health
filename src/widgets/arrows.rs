@@ -64,7 +64,7 @@ mod imp {
             match pspec.name() {
                 "weight-change" => {
                     self.weight_change
-                        .set(WeightChange::from_str(&value.get::<String>().unwrap()).unwrap());
+                        .set(WeightChange::from_str(value.get::<&str>().unwrap()).unwrap());
                     obj.queue_draw();
                 }
                 _ => unimplemented!(),

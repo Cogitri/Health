@@ -206,7 +206,7 @@ mod imp {
             match pspec.name() {
                 "notification-frequency" => {
                     let frequency =
-                        NotificationFrequency::from_str(&value.get::<String>().unwrap()).unwrap();
+                        NotificationFrequency::from_str(value.get::<&str>().unwrap()).unwrap();
                     self.settings.set_notification_frequency(frequency);
                     self.reminder_time
                         .set_visible(frequency == NotificationFrequency::Fixed);

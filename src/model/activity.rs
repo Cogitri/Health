@@ -193,7 +193,7 @@ mod imp {
             match pspec.name() {
                 "activity-type" => {
                     self.inner.borrow_mut().activity_type =
-                        ActivityType::from_str(&value.get::<String>().unwrap()).unwrap()
+                        ActivityType::from_str(value.get::<&str>().unwrap()).unwrap()
                 }
                 "calories-burned" => {
                     self.inner.borrow_mut().calories_burned =

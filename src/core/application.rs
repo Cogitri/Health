@@ -145,7 +145,7 @@ impl Application {
 
     pub fn new() -> Self {
         glib::Object::new(&[
-            ("application-id", &crate::config::APPLICATION_ID.to_string()),
+            ("application-id", &crate::config::APPLICATION_ID),
             ("flags", &gio::ApplicationFlags::FLAGS_NONE),
         ])
         .expect("Failed to create Application")

@@ -151,7 +151,7 @@ mod imp {
             match pspec.name() {
                 "unitsize" => {
                     let adjustment = &self.distance_adjustment;
-                    let unitsize = Unitsize::from_str(&value.get::<String>().unwrap()).unwrap();
+                    let unitsize = Unitsize::from_str(value.get::<&str>().unwrap()).unwrap();
                     self.inner.borrow_mut().unitsize = unitsize;
                     if unitsize == Unitsize::Small {
                         adjustment.set_step_increment(100.0);

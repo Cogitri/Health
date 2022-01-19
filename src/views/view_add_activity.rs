@@ -205,7 +205,7 @@ mod imp {
             match pspec.name() {
                 "selected-activity-name" => self
                     .activity_type_menu_button
-                    .set_label(&value.get::<String>().unwrap()),
+                    .set_label(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
