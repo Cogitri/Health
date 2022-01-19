@@ -223,7 +223,8 @@ impl ModelNotification {
             && time_now.minute() == notify_time.minute()
             && frequency == NotificationFrequency::Fixed;
         let periodic = frequency != NotificationFrequency::Fixed
-            && imp.inner.borrow().hour_count % interval == 0;
+            && imp.inner.borrow().hour_count % interval == 0
+            && time_now.minute() == 0;
         if fixed_time || periodic {
             let notification = gio::Notification::new(&i18n("Health: walking reminder"));
             notification.set_body(Some(&(self.reminder_text().await)));
