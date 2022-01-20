@@ -1,0 +1,39 @@
+using Gtk 4.0;
+
+ShortcutsWindow shortcuts_window {
+  modal: true;
+
+  ShortcutsSection {
+    section-name: "shortcuts";
+    max-height: 12;
+
+    ShortcutsGroup {
+      title: _("General");
+
+      ShortcutsShortcut {
+        accelerator: "<ctrl>Q";
+        title: _("Quit the application");
+      }
+
+      ShortcutsShortcut {
+        accelerator: "<ctrl>question";
+        title: _("Show this shortcuts window");
+      }
+
+      ShortcutsShortcut {
+        accelerator: "F1";
+        title: _("Show help");
+      }
+
+      ShortcutsShortcut {
+        accelerator: "F10";
+        title: _("Show primary menu");
+      }
+
+      ShortcutsShortcut {
+        accelerator: "F11";
+        title: _("Toggle fullscreen mode");
+      }
+    }
+  }
+}

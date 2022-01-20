@@ -1,0 +1,34 @@
+using Gtk 4.0;
+
+template HealthActivityTypeSelector : Popover {
+  height-request: 250;
+  width-request: 200;
+
+  ScrolledWindow {
+    hscrollbar-policy: never;
+    vexpand: true;
+
+    Box {
+      orientation: vertical;
+
+      Box recents_box {
+        orientation: vertical;
+        visible: false;
+        vexpand: true;
+        spacing: 6;
+
+        ListBox recent_activity_types_list_box {
+          selection-mode: none;
+          row-activated => activated_list_box_row() swapped;
+        }
+
+        Separator { }
+      }
+
+      ListBox activity_types_list_box {
+        selection-mode: none;
+        row-activated => activated_list_box_row() swapped;
+      }
+    }
+  }
+}

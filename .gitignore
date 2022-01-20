@@ -12,3 +12,6 @@ po/*.pot
 .flatpak
 .idea
 .direnv
+subprojects/blueprint-compiler
+
+/subprojects/blueprint-compiler

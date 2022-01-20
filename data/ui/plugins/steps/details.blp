@@ -1,0 +1,21 @@
+using Gtk 4.0;
+
+template HealthPluginStepsDetails : .HealthPluginDetails {
+  empty-label: _("You can use the <b>+</b> button to add a new activity.");
+  empty-icon-name: "steps-symbolic";
+  name: "Steps";
+  filled-title: _("Steps");
+  content-widget: Frame {
+    margin-bottom: 18;
+    margin-end: 18;
+    margin-start: 18;
+
+    styles [
+      "view",
+    ]
+
+    ScrolledWindow scrolled_window {
+      vscrollbar-policy: never;
+    }
+  };
+}

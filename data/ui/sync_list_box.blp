@@ -1,0 +1,49 @@
+using Gtk 4.0;
+using Adw 1;
+
+SizeGroup {
+  widgets [google_fit_spinner, google_fit_selected_image]
+}
+
+template HealthSyncListBox : Adw.Bin {
+  ListBox sync_list_box {
+    selection-mode: none;
+
+    styles [
+      "boxed-list",
+    ]
+
+    row-activated => handle_row_activated() swapped;
+
+    ListBoxRow google_fit_start_sync_row {
+      Box {
+        valign: center;
+        halign: center;
+        vexpand: true;
+        hexpand: true;
+
+        Label {
+          margin-top: 22;
+          margin-bottom: 22;
+          margin-start: 6;
+          margin-end: 6;
+          label: "Google Fit";
+        }
+
+        Stack google_fit_stack {
+          visible: false;
+
+          StackPage {
+            child: Spinner google_fit_spinner { };
+          }
+
+          StackPage {
+            child: Image google_fit_selected_image {
+              icon-name: "object-select-symbolic";
+            };
+          }
+        }
+      }
+    }
+  }
+}

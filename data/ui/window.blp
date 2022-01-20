@@ -1,0 +1,105 @@
+using Gtk 4.0;
+using Adw 1;
+
+menu primary_menu {
+  section {
+    item {
+      action: "win.disable-current-plugin";
+      label: _("_Disable Current Plugin");
+    }
+  }
+
+  section {
+    item {
+      action: "app.preferences";
+      label: _("_Preferences");
+    }
+
+    item {
+      action: "app.shortcuts";
+      label: _("_Keyboard Shortcuts");
+    }
+  }
+
+  section {
+    item {
+      action: "app.about";
+      label: _("_About Health");
+    }
+  }
+}
+
+PopoverMenu primary_menu_popover {
+  menu-model: primary_menu;
+}
+
+template HealthWindow : Adw.ApplicationWindow {
+  title: _("Health");
+  default-width: "600";
+  default-height: "620";
+  close-request => handle_close_request() swapped;
+  notify::default-height => handle_property_default_height_notify() swapped;
+  notify::default-width => handle_property_default_width_notify() swapped;
+
+  Box {
+    orientation: vertical;
+
+    Adw.HeaderBar header_bar {
+      show-end-title-buttons: true;
+      show-start-title-buttons: true;
+      centering-policy: strict;
+
+      styles [
+        "titlebar",
+      ]
+
+      Button back_button {
+        visible: false;
+        icon-name: "go-previous-symbolic";
+        clicked => handle_back_button_clicked() swapped;
+      }
+
+      Button add_data_button {
+        icon-name: "list-add-symbolic";
+        clicked => handle_add_data_button_clicked() swapped;
+      }
+
+      Button enable_plugin_button {
+        visible: false;
+        label: _("Enable plugin");
+        clicked => handle_enable_plugin_button_clicked() swapped;
+
+        styles [
+          "suggested-action",
+        ]
+      }
+
+      [end]
+      MenuButton primary_menu_button {
+        icon-name: "open-menu-symbolic";
+        popover: primary_menu_popover;
+      }
+    }
+
+    InfoBar error_infobar {
+      revealed: false;
+      show-close-button: true;
+      message-type: error;
+      response => handle_error_infobar_response() swapped;
+
+      Label error_label {
+        margin-start: 6;
+        margin-end: 6;
+        halign: center;
+        hexpand: true;
+      }
+    }
+
+    .HealthViewHomePage view_home_page {
+      width-request: "265";
+      height-request: "200";
+      vexpand: true;
+      view-changed => handle_view_changed() swapped;
+    }
+  }
+}

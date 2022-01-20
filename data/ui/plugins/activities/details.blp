@@ -1,0 +1,57 @@
+using Gtk 4.0;
+using Adw 1;
+
+template HealthPluginActivitiesDetails : .HealthPluginDetails {
+  empty-label: _("You can use the <b>+</b> button to add a new activity.");
+  empty-icon-name: "walking-symbolic";
+  name: "Activities";
+  filled-title: _("Recent Activities");
+  content-widget: Stack stack_activity {
+    StackPage {
+      name: "no_recent";
+      child: Box {
+        orientation: vertical;
+
+        Image empty_icon {
+          pixel-size: 96;
+          icon-name: "walking-symbolic";
+
+          styles [
+            "dim-label",
+          ]
+        }
+
+        Label since_date {
+          margin-top: 10;
+        }
+      };
+    }
+
+    StackPage {
+      name: "recent_activities";
+      child: Box {
+        ScrolledWindow scrolled_window {
+          Adw.Clamp clamp {
+            maximum-size: 800;
+            tightening-threshold: 600;
+            valign: center;
+            vexpand: true;
+            hexpand: true;
+            margin-start: 6;
+            margin-end: 6;
+            margin-top: 6;
+            margin-bottom: 6;
+
+            ListBox list_box {
+              selection-mode: none;
+
+              styles [
+                "boxed-list",
+              ]
+            }
+          }
+        }
+      };
+    }
+  };
+}

@@ -36,6 +36,10 @@ mod imp {
         pub current_plugin: OnceCell<String>,
         #[template_child]
         pub stack: TemplateChild<adw::ViewStack>,
+        #[template_child]
+        pub button_cancel: TemplateChild<gtk::Button>,
+        #[template_child]
+        pub button_ok: TemplateChild<gtk::Button>,
     }
 
     #[glib::object_subclass]
@@ -57,6 +61,9 @@ mod imp {
     impl ObjectImpl for DataAddDialog {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
+
+            obj.add_action_widget(&*self.button_cancel, gtk::ResponseType::Cancel);
+            obj.add_action_widget(&*self.button_ok, gtk::ResponseType::Ok);
 
             for stack_page in &[
                 ViewAddActivity::new().upcast::<ViewAdd>(),

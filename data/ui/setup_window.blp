@@ -1,0 +1,387 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adjustment height_adjustment {
+  upper: 300;
+  step-increment: 1;
+  page-increment: 10;
+}
+
+Adjustment step_goal_adjustment {
+  upper: 99999;
+  step-increment: 100;
+  page-increment: 1000;
+}
+
+Adjustment weight_goal_adjustment {
+  upper: 999;
+  step-increment: 1;
+  page-increment: 10;
+}
+
+SizeGroup {
+  widgets [setup_done_button, setup_next_page_button]
+}
+
+SizeGroup {
+  widgets [setup_quit_button, setup_previous_page_button]
+}
+
+template HealthSetupWindow : Adw.ApplicationWindow {
+  default-width: 750;
+  default-height: 500;
+  title: _("Health Setup");
+
+  Box {
+    orientation: vertical;
+
+    Adw.HeaderBar header_bar {
+      show-end-title-buttons: false;
+      show-start-title-buttons: false;
+
+      Stack setup_left_stack {
+        transition-type: crossfade;
+
+        StackPage {
+          child: Button setup_quit_button {
+            label: _("_Quit");
+            action-name: "app.quit";
+            use-underline: true;
+            clicked => handle_setup_quit_button_clicked() swapped;
+          };
+        }
+
+        StackPage {
+          child: Button setup_previous_page_button {
+            label: _("_Previous");
+            use-underline: true;
+            visible: false;
+            clicked => handle_setup_previous_page_button_clicked() swapped;
+          };
+        }
+      }
+
+      [end]
+      Stack setup_right_stack {
+        visible-child: setup_done_button;
+        transition-type: crossfade;
+
+        StackPage {
+          child: Button setup_next_page_button {
+            label: _("_Next");
+            use-underline: true;
+            sensitive: false;
+            clicked => handle_setup_next_page_button_clicked() swapped;
+
+            styles [
+              "suggested-action",
+            ]
+          };
+        }
+
+        StackPage {
+          child: Button setup_done_button {
+            label: _("_Done");
+            use-underline: true;
+            visible: false;
+            clicked => handle_setup_done_button_clicked() swapped;
+
+            styles [
+              "suggested-action",
+            ]
+          };
+        }
+      }
+    }
+
+    Adw.Carousel setup_carousel {
+      vexpand: true;
+      hexpand: true;
+      interactive: false;
+      page-changed => handle_setup_carousel_page_changed() swapped;
+
+      Box setup_first_page {
+        orientation: vertical;
+        halign: center;
+        vexpand: true;
+        hexpand: true;
+
+        Label {
+          label: _("Welcome to Health!");
+          margin-top: 25;
+          margin-bottom: 10;
+          wrap: true;
+          wrap-mode: word_char;
+
+          styles [
+            "title-1",
+          ]
+        }
+
+        Label {
+          label: _("Please enter some information to get setup.");
+          wrap: true;
+          wrap-mode: word_char;
+
+          styles [
+            "title-2",
+          ]
+        }
+
+        Adw.Clamp {
+          maximum-size: "400";
+          tightening-threshold: "200";
+          valign: center;
+          vexpand: true;
+          hexpand: true;
+
+          ListBox {
+            selection-mode: none;
+
+            styles [
+              "boxed-list",
+            ]
+
+            Adw.ActionRow unit_actionrow {
+              title: _("Unit system");
+
+              Box unit_box {
+                valign: center;
+
+                styles [
+                  "linked",
+                ]
+
+                ToggleButton unit_imperial_togglebutton {
+                  label: _("Imperial");
+                  action-name: "app.unit-system";
+                  action-target: "\'imperial\'";
+                }
+
+                ToggleButton unit_metric_togglebutton {
+                  label: _("Metric");
+                  action-name: "app.unit-system";
+                  action-target: "\'metric\'";
+                }
+              }
+            }
+
+            Adw.ActionRow age_actionrow {
+              title: _("Birthday");
+
+              .HealthDateSelector birthday_selector {
+                valign: center;
+                notify::selected-date => try_enable_next_button() swapped;
+              }
+            }
+
+            Adw.ActionRow height_actionrow {
+              title: _("Height");
+
+              .HealthUnitSpinButton height_spin_button {
+                unit-kind: "like_centimeters";
+                width-chars: "5";
+                text: "0";
+                adjustment: "height_adjustment";
+                valign: center;
+                changed => handle_height_spin_button_changed() swapped;
+              }
+            }
+          }
+
+          layout {
+            column: "0";
+            row: "2";
+          }
+        }
+      }
+
+      Box setup_second_page {
+        orientation: vertical;
+        halign: center;
+        vexpand: true;
+        hexpand: true;
+
+        Label {
+          label: _("Please enter your daily step goal.");
+          margin-top: 25;
+          margin-bottom: 10;
+          wrap: true;
+          wrap-mode: word_char;
+
+          styles [
+            "title-1",
+          ]
+        }
+
+        Label {
+          label: _("The WHO recommends 10.000 steps per day.");
+          wrap: true;
+          wrap-mode: word_char;
+
+          styles [
+            "title-2",
+          ]
+        }
+
+        Adw.Clamp {
+          maximum-size: "400";
+          tightening-threshold: "200";
+          valign: center;
+          vexpand: true;
+          hexpand: true;
+
+          ListBox {
+            selection-mode: none;
+
+            styles [
+              "boxed-list",
+            ]
+
+            Adw.ActionRow step_goal_actionrow {
+              title: _("Step goal");
+
+              SpinButton step_goal_spin_button {
+                width-chars: 5;
+                adjustment: step_goal_adjustment;
+                numeric: true;
+                valign: center;
+              }
+            }
+          }
+
+          layout {
+            column: "0";
+            row: "2";
+          }
+        }
+      }
+
+      Box setup_third_page {
+        orientation: vertical;
+        halign: center;
+        vexpand: true;
+        hexpand: true;
+
+        Label {
+          label: _("Please enter your weight goal.");
+          margin-top: 25;
+          margin-bottom: 10;
+          wrap: true;
+          wrap-mode: word_char;
+
+          styles [
+            "title-1",
+          ]
+        }
+
+        Label {
+          label: _("The WHO recommends a BMI of 18.5-24.9.");
+          wrap: true;
+          wrap-mode: word_char;
+
+          styles [
+            "title-2",
+          ]
+        }
+
+        Adw.Clamp {
+          maximum-size: "400";
+          tightening-threshold: "200";
+          valign: center;
+          vexpand: true;
+          hexpand: true;
+
+          ListBox {
+            selection-mode: none;
+
+            styles [
+              "boxed-list",
+              "weight-goal",
+            ]
+
+            Box {
+              orientation: vertical;
+
+              Adw.ActionRow weight_goal_actionrow {
+                title: _("Weight goal");
+
+                .HealthUnitSpinButton weight_goal_spin_button {
+                  unit-kind: "like_kilogram";
+                  digits: "1";
+                  width-chars: "5";
+                  adjustment: "weight_goal_adjustment";
+                  valign: center;
+                  changed => handle_weight_spin_button_changed() swapped;
+                }
+              }
+
+              .HealthBMILevelBar bmi_levelbar {
+                margin-start: "6";
+                margin-end: "6";
+                margin-top: "6";
+                margin-bottom: "6";
+              }
+            }
+          }
+
+          layout {
+            column: "0";
+            row: "2";
+          }
+        }
+      }
+
+      Box setup_fourth_page {
+        orientation: vertical;
+        halign: center;
+        vexpand: true;
+        hexpand: true;
+
+        Label {
+          label: _("Setup sync with third-party providers.");
+          margin-top: 25;
+          margin-bottom: 10;
+          wrap: true;
+          wrap-mode: word_char;
+
+          styles [
+            "title-1",
+          ]
+        }
+
+        Label {
+          label: _("You can sync steps and weight measurements from/to third-party providers.");
+          margin-end: 6;
+          margin-start: 6;
+          wrap: true;
+
+          styles [
+            "title-2",
+          ]
+        }
+
+        Adw.Clamp {
+          maximum-size: "400";
+          tightening-threshold: "200";
+          valign: center;
+          vexpand: true;
+          hexpand: true;
+
+          .HealthSyncListBox sync_list_box {
+            parent-window: "HealthSetupWindow";
+          }
+
+          layout {
+            column: "0";
+            row: "2";
+          }
+        }
+      }
+    }
+
+    Adw.CarouselIndicatorDots {
+      carousel: setup_carousel;
+    }
+  }
+}

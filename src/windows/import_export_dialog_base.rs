@@ -169,6 +169,8 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
+            obj.add_action_widget(&*self.button_cancel, gtk::ResponseType::Cancel);
+            obj.add_action_widget(&*self.button_ok, gtk::ResponseType::Ok);
             obj.set_response_sensitive(gtk::ResponseType::Ok, false);
         }
 

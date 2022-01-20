@@ -1,0 +1,17 @@
+using Gtk 4.0;
+
+template HealthTabButton : .HealthCard {
+  Box {
+    orientation: vertical;
+    margin-top: 10;
+    margin-bottom: 10;
+    halign: center;
+    hexpand: true;
+
+    Image icon {
+      pixel-size: 64;
+    }
+
+    Label tab_name { }
+  }
+}

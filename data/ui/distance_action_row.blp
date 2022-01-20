@@ -1,0 +1,52 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adjustment distance_adjustment {
+  upper: 100000;
+  step-increment: 100;
+  page-increment: 1000;
+}
+
+template HealthDistanceActionRow : Adw.ActionRow {
+  title: _("Distance");
+
+  Box {
+    spacing: 12;
+
+    Box unit_box {
+      valign: center;
+
+      styles [
+        "linked",
+      ]
+
+      ToggleButton big_unit_togglebutton {
+        action-name: "activity_add_dialog.unitsize";
+        action-target: "\'big\'";
+
+        styles [
+          "small-button",
+        ]
+      }
+
+      ToggleButton small_unit_togglebutton {
+        action-name: "activity_add_dialog.unitsize";
+        action-target: "\'small\'";
+
+        styles [
+          "small-button",
+        ]
+      }
+    }
+
+    .HealthUnitSpinButton distance_spin_button {
+      width-chars: "5";
+      text: "0";
+      adjustment: distance_adjustment;
+      valign: center;
+      unit-kind: "like_meters";
+      changed => handle_distance_spin_button_changed() swapped;
+      input => handle_distance_spin_button_input() swapped;
+    }
+  }
+}

@@ -1,0 +1,74 @@
+using Gtk 4.0;
+using Adw 1;
+
+template HealthPluginDetails : Adw.Bin {
+  Stack stack {
+    StackPage {
+      name: "empty_page";
+      child: Box empty_box {
+        halign: center;
+        valign: center;
+        orientation: vertical;
+
+        Image empty_icon {
+          pixel-size: 96;
+
+          styles [
+            "dim-label",
+          ]
+        }
+
+        Label empty_label {
+          wrap: true;
+          margin-start: 6;
+          margin-end: 6;
+          use-markup: true;
+
+          styles [
+            "dim-label",
+          ]
+        }
+      };
+    }
+
+    StackPage {
+      name: "data_page";
+      child: Box main_box {
+        orientation: vertical;
+
+        Label filled_title_label {
+          margin-top: 25;
+
+          styles [
+            "heading",
+          ]
+        }
+
+        Box {
+          orientation: vertical;
+
+          Label filled_subtitle_label {
+            margin-top: 6;
+            margin-bottom: 15;
+            margin-start: 6;
+            margin-end: 6;
+            wrap: true;
+            wrap-mode: word_char;
+            visible: bind HealthPluginDetails.is-mocked sync-create;
+          }
+
+          Label is_mocked_label {
+            margin-top: 6;
+            margin-bottom: 15;
+            margin-start: 6;
+            margin-end: 6;
+            wrap: true;
+            wrap-mode: word_char;
+            label: _("This is a preview of how the plugin presents data. Enable the plugin to see your actual, live data.");
+            visible: bind HealthPluginDetails.is-mocked sync-create;
+          }
+        }
+      };
+    }
+  }
+}

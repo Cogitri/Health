@@ -1,0 +1,107 @@
+using Gtk 4.0;
+
+Adjustment day_adjustment {
+  lower: 1;
+  step-increment: 1;
+  page-increment: 10;
+}
+
+Adjustment year_adjustment {
+  upper: 9999;
+  step-increment: 1;
+  page-increment: 10;
+}
+
+Gtk.StringList month_model {
+  strings [
+    _("January"),
+    _("February"),
+    _("March"),
+    _("April"),
+    _("May"),
+    _("June"),
+    _("July"),
+    _("August"),
+    _("September"),
+    _("October"),
+    _("November"),
+    _("December")
+  ]
+}
+
+template HealthDateSelector : Grid {
+  Label {
+    label: _("Day");
+
+    layout {
+      row: "0";
+      column: "0";
+    }
+  }
+
+  SpinButton day_spinner {
+    text: "1";
+    numeric: true;
+    width-chars: 2;
+    adjustment: day_adjustment;
+    margin-start: 6;
+    margin-end: 6;
+    margin-top: 6;
+    margin-bottom: 6;
+    changed => handle_date_widget_changed() swapped;
+
+    layout {
+      row: "0";
+      column: "1";
+    }
+  }
+
+  Label {
+    label: _("Month");
+
+    layout {
+      row: "1";
+      column: "0";
+    }
+  }
+
+  DropDown month_dropdown {
+    margin-start: 6;
+    margin-end: 6;
+    margin-top: 6;
+    margin-bottom: 6;
+    model: month_model;
+    notify::selected => handle_date_widget_changed() swapped;
+
+    layout {
+      row: "1";
+      column: "1";
+    }
+  }
+
+  Label {
+    label: _("Year");
+
+    layout {
+      row: "2";
+      column: "0";
+    }
+  }
+
+  SpinButton year_spinner {
+    text: "2000";
+    numeric: true;
+    width-chars: 4;
+    adjustment: year_adjustment;
+    margin-start: 6;
+    margin-end: 6;
+    margin-top: 6;
+    margin-bottom: 6;
+    changed => handle_date_widget_changed() swapped;
+
+    layout {
+      row: "2";
+      column: "1";
+    }
+  }
+}

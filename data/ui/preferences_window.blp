@@ -1,0 +1,247 @@
+using Gtk 4.0;
+using Adw 1;
+
+Adjustment age_adjustment {
+  upper: 200;
+  step-increment: 1;
+  page-increment: 10;
+}
+
+Adjustment height_adjustment {
+  upper: 300;
+  step-increment: 1;
+  page-increment: 10;
+}
+
+Adjustment step_goal_adjustment {
+  upper: 99999;
+  step-increment: 100;
+  page-increment: 1000;
+}
+
+Adjustment weight_goal_adjustment {
+  upper: 999;
+  step-increment: 1;
+  page-increment: 10;
+}
+
+Adjustment notify_hour_adjustment {
+  upper: 23;
+  step-increment: 1;
+}
+
+Adjustment notify_minute_adjustment {
+  upper: 55;
+  step-increment: 5;
+}
+
+menu notification_frequency_menu {
+  section {
+    display-hint: "circular-buttons";
+
+    item {
+      label: _("_Every 1 hour");
+      action: "notification.frequency";
+      target: "hourly";
+    }
+
+    item {
+      label: _("_Every 4 hours");
+      action: "notification.frequency";
+      target: "every4hrs";
+    }
+
+    item {
+      label: _("_Fixed Time");
+      action: "notification.frequency";
+      target: "fixed";
+    }
+  }
+}
+
+template HealthPreferencesWindow : Adw.PreferencesWindow {
+  title: _("Health Preferences");
+  destroy-with-parent: true;
+  close-request => handle_close_window() swapped;
+
+  Adw.PreferencesPage {
+    icon-name: "emblem-system-symbolic";
+    title: _("General");
+
+    Adw.PreferencesGroup {
+      title: _("User");
+
+      Adw.ActionRow {
+        title: _("Unit system");
+
+        Box {
+          valign: center;
+
+          styles [
+            "linked",
+          ]
+
+          ToggleButton unit_imperial_togglebutton {
+            label: _("Imperial");
+            action-name: "app.unit-system";
+            action-target: "\"imperial\"";
+          }
+
+          ToggleButton unit_metric_togglebutton {
+            label: _("Metric");
+            action-name: "app.unit-system";
+            action-target: "\"metric\"";
+          }
+        }
+      }
+
+      Adw.ActionRow age_actionrow {
+        title: _("Birthday");
+
+        .HealthDateSelector birthday_selector {
+          valign: center;
+          notify::selected-date => handle_birthday_selector_changed() swapped;
+        }
+      }
+
+      Adw.ActionRow height_actionrow {
+        title: _("Height");
+
+        .HealthUnitSpinButton height_spin_button {
+          unit-kind: "like_centimeters";
+          width-chars: "5";
+          text: "0";
+          adjustment: "height_adjustment";
+          valign: center;
+          changed => handle_height_spin_button_changed() swapped;
+        }
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Notifications");
+
+      Adw.ActionRow {
+        title: _("Enable notifications");
+
+        Switch enable_notify {
+          margin-top: 15;
+          margin-bottom: 15;
+          margin-end: 10;
+          notify::active => handle_enable_notify_changed_callback() swapped;
+        }
+      }
+
+      Adw.ActionRow periodic_frequency_select {
+        title: _("Frequency");
+
+        MenuButton {
+          margin-top: 15;
+          margin-bottom: 15;
+          margin-end: 15;
+          popover: PopoverMenu notif {
+            menu-model: notification_frequency_menu;
+          };
+        }
+      }
+
+      Adw.ActionRow reminder_time {
+        title: _("Daily reminder time");
+
+        SpinButton reminder_hour {
+          orientation: vertical;
+          numeric: true;
+          adjustment: notify_hour_adjustment;
+        }
+
+        SpinButton reminder_minutes {
+          orientation: vertical;
+          numeric: true;
+          adjustment: notify_minute_adjustment;
+        }
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: "Steps";
+
+      Adw.ActionRow step_goal_actionrow {
+        title: _("Step goal");
+        subtitle: _("The WHO recommends 10.000 steps per day.");
+
+        SpinButton step_goal_spin_button {
+          width-chars: 5;
+          text: "10000";
+          adjustment: step_goal_adjustment;
+          numeric: true;
+          valign: center;
+          changed => handle_step_goal_spin_button_changed() swapped;
+        }
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: "Weight";
+
+      Adw.ActionRow weight_goal_actionrow {
+        title: _("Weight");
+        subtitle: _("The WHO recommends a BMI of 18.5-24.9.");
+
+        Box {
+          spacing: 12;
+
+          .HealthBMILevelBar bmi_levelbar {
+            valign: center;
+            hexpand: true;
+          }
+
+          .HealthUnitSpinButton weight_goal_spin_button {
+            unit-kind: "like_kilogram";
+            digits: "1";
+            width-chars: "5";
+            adjustment: "weight_goal_adjustment";
+            valign: center;
+            changed => handle_weight_goal_spin_button_changed() swapped;
+          }
+        }
+      }
+    }
+  }
+
+  Adw.PreferencesPage {
+    title: _("Sync");
+    icon-name: "emblem-synchronizing-symbolic";
+
+    Adw.PreferencesGroup {
+      title: _("Start sync with third-party providers.");
+
+      .HealthSyncListBox sync_list_box {
+        parent-window: "HealthPreferencesWindow";
+      }
+    }
+
+    Adw.PreferencesGroup {
+      title: _("Importing and exporting data");
+
+      Adw.ActionRow {
+        title: _("Export data as CSV");
+
+        Button export_csv_button {
+          label: _("Export…");
+          valign: center;
+          clicked => handle_export_csv_button_clicked() swapped;
+        }
+      }
+
+      Adw.ActionRow {
+        title: _("Import data from CSV");
+
+        Button import_csv_button {
+          label: _("Import…");
+          valign: center;
+          clicked => handle_import_csv_button_clicked() swapped;
+        }
+      }
+    }
+  }
+}

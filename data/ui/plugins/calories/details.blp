@@ -1,0 +1,52 @@
+using Gtk 4.0;
+
+template HealthPluginCaloriesDetails : .HealthPluginDetails {
+  empty-label: _("You can use the <b>+</b> button to add a new activity.");
+  empty-icon-name: "calories-symbolic";
+  name: "Calories";
+  filled-title: _("Calories");
+  content-widget: Overlay {
+    Frame {
+      margin-bottom: 18;
+      margin-end: 18;
+      margin-start: 18;
+
+      styles [
+        "view",
+      ]
+
+      ScrolledWindow scrolled_window {
+        vscrollbar-policy: never;
+      }
+    }
+
+    [overlay]
+    Grid legend_box {
+      halign: end;
+      valign: start;
+      margin-end: 40;
+      margin-top: 5;
+
+      .HealthLegendRow {
+        layout {
+          column: "0";
+          row: "0";
+        }
+      }
+
+      .HealthLegendRow {
+        layout {
+          column: "0";
+          row: "1";
+        }
+      }
+
+      .HealthLegendRow {
+        layout {
+          column: "0";
+          row: "2";
+        }
+      }
+    }
+  };
+}
