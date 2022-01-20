@@ -48,7 +48,7 @@
   <template class="HealthDateSelector" parent="GtkGrid">
     <child>
       <object class="GtkLabel">
-        <property name="label" translatable="yes">Day</property>
+        <property name="label" translatable="1">Day</property>
         <layout>
           <property name="row">0</property>
           <property name="column">0</property>
@@ -74,7 +74,7 @@
     </child>
     <child>
       <object class="GtkLabel">
-        <property name="label" translatable="yes">Month</property>
+        <property name="label" translatable="1">Month</property>
         <layout>
           <property name="row">1</property>
           <property name="column">0</property>
@@ -97,7 +97,7 @@
     </child>
     <child>
       <object class="GtkLabel">
-        <property name="label" translatable="yes">Year</property>
+        <property name="label" translatable="1">Year</property>
         <layout>
           <property name="row">2</property>
           <property name="column">0</property>

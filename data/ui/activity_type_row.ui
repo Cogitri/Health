@@ -22,7 +22,6 @@
   <template class="HealthActivityTypeRow" parent="GtkListBoxRow">
     <child>
       <object class="GtkBox">
-        <property name="orientation">horizontal</property>
         <property name="hexpand">1</property>
         <property name="spacing">12</property>
         <child>

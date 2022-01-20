@@ -44,9 +44,7 @@
     <object class="GtkSizeGroup" id="size_group">
       <property name="mode">vertical</property>
     </object>
-    <object class="GtkSizeGroup" id="summary_size_group">
-      <property name="mode">horizontal</property>
-    </object>
+    <object class="GtkSizeGroup" id="summary_size_group"/>
     <child>
       <object class="GtkStack" id="stack">
         <child>
@@ -71,15 +69,14 @@
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkLabel">
-                            <property name="can_focus">False</property>
+                            <property name="can_focus">0</property>
                             <property name="ellipsize">end</property>
-                            <property name="use-markup">True</property>
+                            <property name="use-markup">1</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">For you</property>
+                            <property name="label" translatable="1">For you</property>
                             <property name="margin-bottom">12</property>
                             <style>
                               <class name="heading"/>
-                              <!-- Matching elementary class. -->
                               <class name="h4"/>
                             </style>
                           </object>
@@ -105,7 +102,7 @@
                                 <property name="name">no-plugins-enabled</property>
                                 <property name="child">
                                   <object class="GtkLabel">
-                                    <property name="label" translatable="yes">No plugins enabled. Enable one from the list below to start using Health.</property>
+                                    <property name="label" translatable="1">No plugins enabled. Enable one from the list below to start using Health.</property>
                                     <property name="wrap">1</property>
                                     <style>
                                       <class name="dim-label"/>
@@ -125,15 +122,14 @@
                         <property name="orientation">vertical</property>
                         <child>
                           <object class="GtkLabel">
-                            <property name="can_focus">False</property>
+                            <property name="can_focus">0</property>
                             <property name="ellipsize">end</property>
-                            <property name="use-markup">True</property>
+                            <property name="use-markup">1</property>
                             <property name="xalign">0</property>
-                            <property name="label" translatable="yes">All data</property>
+                            <property name="label" translatable="1">All data</property>
                             <property name="margin-bottom">12</property>
                             <style>
                               <class name="heading"/>
-                              <!-- Matching elementary class. -->
                               <class name="h4"/>
                             </style>
                           </object>

@@ -36,14 +36,12 @@
     <property name="page-increment">10</property>
   </object>
   <object class="GtkSizeGroup">
-    <property name="mode">horizontal</property>
     <widgets>
       <widget name="setup_done_button"/>
       <widget name="setup_next_page_button"/>
     </widgets>
   </object>
   <object class="GtkSizeGroup">
-    <property name="mode">horizontal</property>
     <widgets>
       <widget name="setup_quit_button"/>
       <widget name="setup_previous_page_button"/>
@@ -52,7 +50,7 @@
   <template class="HealthSetupWindow" parent="AdwApplicationWindow">
     <property name="default-width">750</property>
     <property name="default-height">500</property>
-    <property name="title" translatable="yes">Health Setup</property>
+    <property name="title" translatable="1">Health Setup</property>
     <child>
       <object class="GtkBox">
         <property name="orientation">vertical</property>
@@ -67,10 +65,9 @@
                   <object class="GtkStackPage">
                     <property name="child">
                       <object class="GtkButton" id="setup_quit_button">
-                        <property name="label" translatable="yes">_Quit</property>
+                        <property name="label" translatable="1">_Quit</property>
                         <property name="action-name">app.quit</property>
                         <property name="use-underline">1</property>
-                        <property name="sensitive">1</property>
                         <signal name="clicked" handler="handle_setup_quit_button_clicked" swapped="true"/>
                       </object>
                     </property>
@@ -80,7 +77,7 @@
                   <object class="GtkStackPage">
                     <property name="child">
                       <object class="GtkButton" id="setup_previous_page_button">
-                        <property name="label" translatable="yes">_Previous</property>
+                        <property name="label" translatable="1">_Previous</property>
                         <property name="use-underline">1</property>
                         <property name="visible">0</property>
                         <signal name="clicked" handler="handle_setup_previous_page_button_clicked" swapped="true"/>
@@ -98,7 +95,7 @@
                   <object class="GtkStackPage">
                     <property name="child">
                       <object class="GtkButton" id="setup_next_page_button">
-                        <property name="label" translatable="yes">_Next</property>
+                        <property name="label" translatable="1">_Next</property>
                         <property name="use-underline">1</property>
                         <property name="sensitive">0</property>
                         <signal name="clicked" handler="handle_setup_next_page_button_clicked" swapped="true"/>
@@ -113,7 +110,7 @@
                   <object class="GtkStackPage">
                     <property name="child">
                       <object class="GtkButton" id="setup_done_button">
-                        <property name="label" translatable="yes">_Done</property>
+                        <property name="label" translatable="1">_Done</property>
                         <property name="use-underline">1</property>
                         <property name="visible">0</property>
                         <signal name="clicked" handler="handle_setup_done_button_clicked" swapped="true"/>
@@ -138,15 +135,15 @@
               <object class="GtkBox" id="setup_first_page">
                 <property name="orientation">vertical</property>
                 <property name="halign">center</property>
-                <property name="vexpand">True</property>
-                <property name="hexpand">True</property>
+                <property name="vexpand">1</property>
+                <property name="hexpand">1</property>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">Welcome to Health!</property>
+                    <property name="label" translatable="1">Welcome to Health!</property>
                     <property name="margin-top">25</property>
                     <property name="margin-bottom">10</property>
                     <property name="wrap">1</property>
-                    <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                    <property name="wrap_mode">word-char</property>
                     <style>
                       <class name="title-1"/>
                     </style>
@@ -154,9 +151,9 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">Please enter some information to get setup.</property>
+                    <property name="label" translatable="1">Please enter some information to get setup.</property>
                     <property name="wrap">1</property>
-                    <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                    <property name="wrap_mode">word-char</property>
                     <style>
                       <class name="title-2"/>
                     </style>
@@ -177,7 +174,7 @@
                         </style>
                         <child>
                           <object class="AdwActionRow" id="unit_actionrow">
-                            <property name="title" translatable="yes">Unit system</property>
+                            <property name="title" translatable="1">Unit system</property>
                             <child>
                               <object class="GtkBox" id="unit_box">
                                 <property name="valign">center</property>
@@ -186,16 +183,16 @@
                                 </style>
                                 <child>
                                   <object class="GtkToggleButton" id="unit_imperial_togglebutton">
-                                    <property name="label" translatable="yes">Imperial</property>
+                                    <property name="label" translatable="1">Imperial</property>
                                     <property name="action-name">app.unit-system</property>
-                                    <property name="action-target">'imperial'</property>
+                                    <property name="action-target">&apos;imperial&apos;</property>
                                   </object>
                                 </child>
                                 <child>
                                   <object class="GtkToggleButton" id="unit_metric_togglebutton">
-                                    <property name="label" translatable="yes">Metric</property>
+                                    <property name="label" translatable="1">Metric</property>
                                     <property name="action-name">app.unit-system</property>
-                                    <property name="action-target">'metric'</property>
+                                    <property name="action-target">&apos;metric&apos;</property>
                                   </object>
                                 </child>
                               </object>
@@ -204,7 +201,7 @@
                         </child>
                         <child>
                           <object class="AdwActionRow" id="age_actionrow">
-                            <property name="title" translatable="yes">Birthday</property>
+                            <property name="title" translatable="1">Birthday</property>
                             <child>
                               <object class="HealthDateSelector" id="birthday_selector">
                                 <property name="valign">center</property>
@@ -215,7 +212,7 @@
                         </child>
                         <child>
                           <object class="AdwActionRow" id="height_actionrow">
-                            <property name="title" translatable="yes">Height</property>
+                            <property name="title" translatable="1">Height</property>
                             <child>
                               <object class="HealthUnitSpinButton" id="height_spin_button">
                                 <property name="unit-kind">like_centimeters</property>
@@ -242,15 +239,15 @@
               <object class="GtkBox" id="setup_second_page">
                 <property name="orientation">vertical</property>
                 <property name="halign">center</property>
-                <property name="vexpand">True</property>
-                <property name="hexpand">True</property>
+                <property name="vexpand">1</property>
+                <property name="hexpand">1</property>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">Please enter your daily step goal.</property>
+                    <property name="label" translatable="1">Please enter your daily step goal.</property>
                     <property name="margin-top">25</property>
                     <property name="margin-bottom">10</property>
                     <property name="wrap">1</property>
-                    <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                    <property name="wrap_mode">word-char</property>
                     <style>
                       <class name="title-1"/>
                     </style>
@@ -258,9 +255,9 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">The WHO recommends 10.000 steps per day.</property>
+                    <property name="label" translatable="1">The WHO recommends 10.000 steps per day.</property>
                     <property name="wrap">1</property>
-                    <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                    <property name="wrap_mode">word-char</property>
                     <style>
                       <class name="title-2"/>
                     </style>
@@ -281,7 +278,7 @@
                         </style>
                         <child>
                           <object class="AdwActionRow" id="step_goal_actionrow">
-                            <property name="title" translatable="yes">Step goal</property>
+                            <property name="title" translatable="1">Step goal</property>
                             <child>
                               <object class="GtkSpinButton" id="step_goal_spin_button">
                                 <property name="width-chars">5</property>
@@ -306,15 +303,15 @@
               <object class="GtkBox" id="setup_third_page">
                 <property name="orientation">vertical</property>
                 <property name="halign">center</property>
-                <property name="vexpand">True</property>
-                <property name="hexpand">True</property>
+                <property name="vexpand">1</property>
+                <property name="hexpand">1</property>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">Please enter your weight goal.</property>
+                    <property name="label" translatable="1">Please enter your weight goal.</property>
                     <property name="margin-top">25</property>
                     <property name="margin-bottom">10</property>
                     <property name="wrap">1</property>
-                    <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                    <property name="wrap_mode">word-char</property>
                     <style>
                       <class name="title-1"/>
                     </style>
@@ -322,9 +319,9 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">The WHO recommends a BMI of 18.5-24.9.</property>
+                    <property name="label" translatable="1">The WHO recommends a BMI of 18.5-24.9.</property>
                     <property name="wrap">1</property>
-                    <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                    <property name="wrap_mode">word-char</property>
                     <style>
                       <class name="title-2"/>
                     </style>
@@ -349,7 +346,7 @@
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="AdwActionRow" id="weight_goal_actionrow">
-                                <property name="title" translatable="yes">Weight goal</property>
+                                <property name="title" translatable="1">Weight goal</property>
                                 <child>
                                   <object class="HealthUnitSpinButton" id="weight_goal_spin_button">
                                     <property name="unit-kind">like_kilogram</property>
@@ -386,15 +383,15 @@
               <object class="GtkBox" id="setup_fourth_page">
                 <property name="orientation">vertical</property>
                 <property name="halign">center</property>
-                <property name="vexpand">True</property>
-                <property name="hexpand">True</property>
+                <property name="vexpand">1</property>
+                <property name="hexpand">1</property>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">Setup sync with third-party providers.</property>
+                    <property name="label" translatable="1">Setup sync with third-party providers.</property>
                     <property name="margin-top">25</property>
                     <property name="margin-bottom">10</property>
                     <property name="wrap">1</property>
-                    <property name="wrap_mode">PANGO_WRAP_WORD_CHAR</property>
+                    <property name="wrap_mode">word-char</property>
                     <style>
                       <class name="title-1"/>
                     </style>
@@ -402,7 +399,7 @@
                 </child>
                 <child>
                   <object class="GtkLabel">
-                    <property name="label" translatable="yes">You can sync steps and weight measurements from/to third-party providers.</property>
+                    <property name="label" translatable="1">You can sync steps and weight measurements from/to third-party providers.</property>
                     <property name="margin-end">6</property>
                     <property name="margin-start">6</property>
                     <property name="wrap">1</property>

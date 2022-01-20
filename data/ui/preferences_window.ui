@@ -48,40 +48,40 @@
     <property name="upper">55</property>
     <property name="step-increment">5</property>
   </object>
-    <menu id="notification_frequency_menu">
+  <menu id="notification_frequency_menu">
     <section>
-      <attribute name='display-hint'>circular-buttons</attribute>
+      <attribute name="display-hint">circular-buttons</attribute>
       <item>
-        <attribute name='label' translatable='yes'>_Every 1 hour</attribute>
-        <attribute name='action'>notification.frequency</attribute>
-        <attribute name='target'>hourly</attribute>
+        <attribute name="label" translatable="yes">_Every 1 hour</attribute>
+        <attribute name="action">notification.frequency</attribute>
+        <attribute name="target">hourly</attribute>
       </item>
       <item>
-        <attribute name='label' translatable='yes'>_Every 4 hours</attribute>
-        <attribute name='action'>notification.frequency</attribute>
-        <attribute name='target'>every4hrs</attribute>
+        <attribute name="label" translatable="yes">_Every 4 hours</attribute>
+        <attribute name="action">notification.frequency</attribute>
+        <attribute name="target">every4hrs</attribute>
       </item>
       <item>
-        <attribute name='label' translatable='yes'>_Fixed Time</attribute>
-        <attribute name='action'>notification.frequency</attribute>
-        <attribute name='target'>fixed</attribute>
+        <attribute name="label" translatable="yes">_Fixed Time</attribute>
+        <attribute name="action">notification.frequency</attribute>
+        <attribute name="target">fixed</attribute>
       </item>
     </section>
   </menu>
   <template class="HealthPreferencesWindow" parent="AdwPreferencesWindow">
-    <property name="title" translatable="yes">Health Preferences</property>
+    <property name="title" translatable="1">Health Preferences</property>
     <property name="destroy-with-parent">1</property>
     <signal name="close-request" handler="handle_close_window" swapped="true"/>
     <child>
       <object class="AdwPreferencesPage">
         <property name="icon_name">emblem-system-symbolic</property>
-        <property name="title" translatable="yes">General</property>
+        <property name="title" translatable="1">General</property>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">User</property>
+            <property name="title" translatable="1">User</property>
             <child>
               <object class="AdwActionRow">
-                <property name="title" translatable="yes">Unit system</property>
+                <property name="title" translatable="1">Unit system</property>
                 <child>
                   <object class="GtkBox">
                     <property name="valign">center</property>
@@ -90,16 +90,16 @@
                     </style>
                     <child>
                       <object class="GtkToggleButton" id="unit_imperial_togglebutton">
-                        <property name="label" translatable="yes">Imperial</property>
+                        <property name="label" translatable="1">Imperial</property>
                         <property name="action-name">app.unit-system</property>
-                        <property name="action-target">"imperial"</property>
+                        <property name="action-target">&quot;imperial&quot;</property>
                       </object>
                     </child>
                     <child>
                       <object class="GtkToggleButton" id="unit_metric_togglebutton">
-                        <property name="label" translatable="yes">Metric</property>
+                        <property name="label" translatable="1">Metric</property>
                         <property name="action-name">app.unit-system</property>
-                        <property name="action-target">"metric"</property>
+                        <property name="action-target">&quot;metric&quot;</property>
                       </object>
                     </child>
                   </object>
@@ -108,7 +108,7 @@
             </child>
             <child>
               <object class="AdwActionRow" id="age_actionrow">
-                <property name="title" translatable="yes">Birthday</property>
+                <property name="title" translatable="1">Birthday</property>
                 <child>
                   <object class="HealthDateSelector" id="birthday_selector">
                     <property name="valign">center</property>
@@ -119,7 +119,7 @@
             </child>
             <child>
               <object class="AdwActionRow" id="height_actionrow">
-                <property name="title" translatable="yes">Height</property>
+                <property name="title" translatable="1">Height</property>
                 <child>
                   <object class="HealthUnitSpinButton" id="height_spin_button">
                     <property name="unit-kind">like_centimeters</property>
@@ -136,13 +136,12 @@
         </child>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">Notifications</property>
+            <property name="title" translatable="1">Notifications</property>
             <child>
               <object class="AdwActionRow">
-                <property name="title" translatable="yes">Enable notifications</property>
+                <property name="title" translatable="1">Enable notifications</property>
                 <child>
                   <object class="GtkSwitch" id="enable_notify">
-                    <property name="active">0</property>
                     <property name="margin-top">15</property>
                     <property name="margin-bottom">15</property>
                     <property name="margin-end">10</property>
@@ -153,7 +152,7 @@
             </child>
             <child>
               <object class="AdwActionRow" id="periodic_frequency_select">
-                <property name="title" translatable="yes">Frequency</property>
+                <property name="title" translatable="1">Frequency</property>
                 <child>
                   <object class="GtkMenuButton">
                     <property name="margin-top">15</property>
@@ -170,7 +169,7 @@
             </child>
             <child>
               <object class="AdwActionRow" id="reminder_time">
-                <property name="title" translatable="yes">Daily reminder time</property>
+                <property name="title" translatable="1">Daily reminder time</property>
                 <child>
                   <object class="GtkSpinButton" id="reminder_hour">
                     <property name="orientation">vertical</property>
@@ -194,8 +193,8 @@
             <property name="title">Steps</property>
             <child>
               <object class="AdwActionRow" id="step_goal_actionrow">
-                <property name="title" translatable="yes">Step goal</property>
-                <property name="subtitle" translatable="yes">The WHO recommends 10.000 steps per day.</property>
+                <property name="title" translatable="1">Step goal</property>
+                <property name="subtitle" translatable="1">The WHO recommends 10.000 steps per day.</property>
                 <child>
                   <object class="GtkSpinButton" id="step_goal_spin_button">
                     <property name="width-chars">5</property>
@@ -215,8 +214,8 @@
             <property name="title">Weight</property>
             <child>
               <object class="AdwActionRow" id="weight_goal_actionrow">
-                <property name="title" translatable="yes">Weight</property>
-                <property name="subtitle" translatable="yes">The WHO recommends a BMI of 18.5-24.9.</property>
+                <property name="title" translatable="1">Weight</property>
+                <property name="subtitle" translatable="1">The WHO recommends a BMI of 18.5-24.9.</property>
                 <child>
                   <object class="GtkBox">
                     <property name="spacing">12</property>
@@ -246,11 +245,11 @@
     </child>
     <child>
       <object class="AdwPreferencesPage">
-        <property name="title" translatable="yes">Sync</property>
+        <property name="title" translatable="1">Sync</property>
         <property name="icon-name">emblem-synchronizing-symbolic</property>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">Start sync with third-party providers.</property>
+            <property name="title" translatable="1">Start sync with third-party providers.</property>
             <child>
               <object class="HealthSyncListBox" id="sync_list_box">
                 <property name="parent-window">HealthPreferencesWindow</property>
@@ -260,13 +259,13 @@
         </child>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">Importing and exporting data</property>
+            <property name="title" translatable="1">Importing and exporting data</property>
             <child>
               <object class="AdwActionRow">
-                <property name="title" translatable="yes">Export data as CSV</property>
+                <property name="title" translatable="1">Export data as CSV</property>
                 <child>
                   <object class="GtkButton" id="export_csv_button">
-                    <property name="label" translatable="yes">Export…</property>
+                    <property name="label" translatable="1">Export…</property>
                     <property name="valign">center</property>
                     <signal name="clicked" handler="handle_export_csv_button_clicked" swapped="true"/>
                   </object>
@@ -275,10 +274,10 @@
             </child>
             <child>
               <object class="AdwActionRow">
-                <property name="title" translatable="yes">Import data from CSV</property>
+                <property name="title" translatable="1">Import data from CSV</property>
                 <child>
                   <object class="GtkButton" id="import_csv_button">
-                    <property name="label" translatable="yes">Import…</property>
+                    <property name="label" translatable="1">Import…</property>
                     <property name="valign">center</property>
                     <signal name="clicked" handler="handle_import_csv_button_clicked" swapped="true"/>
                   </object>

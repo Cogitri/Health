@@ -27,13 +27,13 @@
     <signal name="response" handler="handle_response" swapped="true"/>
     <child type="action">
       <object class="GtkButton" id="button_cancel">
-        <property name="label" translatable="yes">_Cancel</property>
+        <property name="label" translatable="1">_Cancel</property>
         <property name="use-underline">1</property>
       </object>
     </child>
     <child type="action">
       <object class="GtkButton" id="button_ok">
-        <property name="label" translatable="yes">_Export</property>
+        <property name="label" translatable="1">_Export</property>
         <property name="use-underline">1</property>
       </object>
     </child>
@@ -81,7 +81,7 @@
                     </child>
                     <child>
                       <object class="AdwActionRow" id="weights_action_row">
-                        <property name="title" translatable="yes">Export weight measurements</property>
+                        <property name="title" translatable="1">Export weight measurements</property>
                         <child>
                           <object class="GtkSwitch" id="weight_switch">
                             <property name="active">1</property>
@@ -96,7 +96,7 @@
                     </child>
                     <child>
                       <object class="AdwActionRow" id="encrypt_action_row">
-                        <property name="title" translatable="yes">Encrypt export</property>
+                        <property name="title" translatable="1">Encrypt export</property>
                         <child>
                           <object class="GtkSwitch" id="encrypt_switch">
                             <property name="active">1</property>

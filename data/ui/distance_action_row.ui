@@ -26,7 +26,7 @@
     <property name="page-increment">1000</property>
   </object>
   <template class="HealthDistanceActionRow" parent="AdwActionRow">
-    <property name="title" translatable="yes">Distance</property>
+    <property name="title" translatable="1">Distance</property>
     <child>
       <object class="GtkBox">
         <property name="spacing">12</property>
@@ -39,7 +39,7 @@
             <child>
               <object class="GtkToggleButton" id="big_unit_togglebutton">
                 <property name="action-name">activity_add_dialog.unitsize</property>
-                <property name="action-target">'big'</property>
+                <property name="action-target">&apos;big&apos;</property>
                 <style>
                   <class name="small-button"/>
                 </style>
@@ -48,7 +48,7 @@
             <child>
               <object class="GtkToggleButton" id="small_unit_togglebutton">
                 <property name="action-name">activity_add_dialog.unitsize</property>
-                <property name="action-target">'small'</property>
+                <property name="action-target">&apos;small&apos;</property>
                 <style>
                   <class name="small-button"/>
                 </style>

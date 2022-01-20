@@ -25,13 +25,13 @@
     <signal name="response" handler="handle_response" swapped="true"/>
     <child type="action">
       <object class="GtkButton" id="button_cancel">
-        <property name="label" translatable="yes">_Cancel</property>
+        <property name="label" translatable="1">_Cancel</property>
         <property name="use-underline">1</property>
       </object>
     </child>
     <child type="action">
       <object class="GtkButton" id="button_ok">
-        <property name="label" translatable="yes">_Save</property>
+        <property name="label" translatable="1">_Save</property>
         <property name="use-underline">1</property>
       </object>
     </child>
@@ -54,7 +54,7 @@
         <child>
           <object class="AdwViewStack" id="stack"/>
         </child>
-     </object>
+      </object>
     </child>
   </template>
 </interface>

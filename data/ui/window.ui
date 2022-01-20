@@ -48,7 +48,7 @@
     <property name="menu_model">primary_menu</property>
   </object>
   <template class="HealthWindow" parent="AdwApplicationWindow">
-    <property name="title" translatable="yes">Health</property>
+    <property name="title" translatable="1">Health</property>
     <property name="default-width">600</property>
     <property name="default-height">620</property>
     <signal name="close-request" handler="handle_close_request" swapped="true"/>
@@ -81,7 +81,7 @@
             <child>
               <object class="GtkButton" id="enable_plugin_button">
                 <property name="visible">0</property>
-                <property name="label" translatable="yes">Enable plugin</property>
+                <property name="label" translatable="1">Enable plugin</property>
                 <signal name="clicked" handler="handle_enable_plugin_button_clicked" swapped="true"/>
                 <style>
                   <class name="suggested-action"/>
@@ -100,7 +100,7 @@
           <object class="GtkInfoBar" id="error_infobar">
             <property name="revealed">0</property>
             <property name="show-close-button">1</property>
-            <property name="message-type">GTK_MESSAGE_ERROR</property>
+            <property name="message-type">error</property>
             <signal name="response" handler="handle_error_infobar_response" swapped="true"/>
             <child>
               <object class="GtkLabel" id="error_label">

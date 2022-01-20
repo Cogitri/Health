@@ -20,15 +20,12 @@
 <interface domain="dev.Cogitri.Health">
   <requires lib="gtk" version="4.0"/>
   <template class="HealthActivityTypeSelector" parent="GtkPopover">
-    <property name="position">bottom</property>
-    <property name="autohide">1</property>
     <property name="height-request">250</property>
     <property name="width-request">200</property>
     <child>
       <object class="GtkScrolledWindow">
-        <property name="hscrollbar-policy">GTK_POLICY_NEVER</property>
+        <property name="hscrollbar-policy">never</property>
         <property name="vexpand">1</property>
-        <property name="has-frame">0</property>
         <child>
           <object class="GtkBox">
             <property name="orientation">vertical</property>
@@ -45,9 +42,7 @@
                   </object>
                 </child>
                 <child>
-                  <object class="GtkSeparator">
-                    <property name="orientation">horizontal</property>
-                  </object>
+                  <object class="GtkSeparator"/>
                 </child>
               </object>
             </child>

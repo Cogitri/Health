@@ -51,7 +51,6 @@
     <property name="page-increment">20</property>
   </object>
   <object class="GtkSizeGroup">
-    <property name="mode">horizontal</property>
     <widgets>
       <widget name="activity_type_menu_button"/>
       <widget name="calories_burned_spin_button"/>
@@ -88,7 +87,7 @@
     </child>
   </template>
   <object class="AdwActionRow" id="date_selector_actionrow">
-    <property name="title" translatable="yes">Date</property>
+    <property name="title" translatable="1">Date</property>
     <child>
       <object class="HealthDateSelector" id="date_selector">
         <property name="valign">center</property>
@@ -99,7 +98,7 @@
     <signal name="notify::selected-activity" handler="handle_activity_type_selector_activity_selected" swapped="true"/>
   </object>
   <object class="AdwActionRow" id="activity_type_actionrow">
-    <property name="title" translatable="yes">Activity Type</property>
+    <property name="title" translatable="1">Activity Type</property>
     <child>
       <object class="GtkMenuButton" id="activity_type_menu_button">
         <property name="valign">center</property>
@@ -108,7 +107,7 @@
     </child>
   </object>
   <object class="AdwActionRow" id="calories_burned_action_row">
-    <property name="title" translatable="yes">Calories Burned</property>
+    <property name="title" translatable="1">Calories Burned</property>
     <child>
       <object class="GtkSpinButton" id="calories_burned_spin_button">
         <property name="width-chars">5</property>
@@ -125,7 +124,7 @@
     <signal name="input" handler="handle_distance_action_row_input" swapped="true"/>
   </object>
   <object class="AdwActionRow" id="duration_action_row">
-    <property name="title" translatable="yes">Active Minutes</property>
+    <property name="title" translatable="1">Active Minutes</property>
     <child>
       <object class="GtkSpinButton" id="duration_spin_button">
         <property name="width-chars">5</property>
@@ -138,7 +137,7 @@
     </child>
   </object>
   <object class="AdwActionRow" id="heart_rate_average_action_row">
-    <property name="title" translatable="yes">Average Heart Rate</property>
+    <property name="title" translatable="1">Average Heart Rate</property>
     <child>
       <object class="GtkSpinButton" id="heart_rate_average_spin_button">
         <property name="width-chars">5</property>
@@ -150,7 +149,7 @@
     </child>
   </object>
   <object class="AdwActionRow" id="heart_rate_min_action_row">
-    <property name="title" translatable="yes">Minimum Heart Rate</property>
+    <property name="title" translatable="1">Minimum Heart Rate</property>
     <child>
       <object class="GtkSpinButton" id="heart_rate_min_spin_button">
         <property name="width-chars">5</property>
@@ -162,7 +161,7 @@
     </child>
   </object>
   <object class="AdwActionRow" id="heart_rate_max_action_row">
-    <property name="title" translatable="yes">Maximum Heart Rate</property>
+    <property name="title" translatable="1">Maximum Heart Rate</property>
     <child>
       <object class="GtkSpinButton" id="heart_rate_max_spin_button">
         <property name="width-chars">5</property>
@@ -174,7 +173,7 @@
     </child>
   </object>
   <object class="AdwActionRow" id="stepcount_action_row">
-    <property name="title" translatable="yes">Stepcount</property>
+    <property name="title" translatable="1">Stepcount</property>
     <child>
       <object class="GtkSpinButton" id="steps_spin_button">
         <property name="width-chars">5</property>
