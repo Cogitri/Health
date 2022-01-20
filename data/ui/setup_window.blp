@@ -129,8 +129,8 @@ template HealthSetupWindow : Adw.ApplicationWindow {
         }
 
         Adw.Clamp {
-          maximum-size: "400";
-          tightening-threshold: "200";
+          maximum-size: 400;
+          tightening-threshold: 200;
           valign: center;
           vexpand: true;
           hexpand: true;
@@ -180,9 +180,9 @@ template HealthSetupWindow : Adw.ApplicationWindow {
 
               .HealthUnitSpinButton height_spin_button {
                 unit-kind: "like_centimeters";
-                width-chars: "5";
+                width-chars: 5;
                 text: "0";
-                adjustment: "height_adjustment";
+                adjustment: height_adjustment;
                 valign: center;
                 changed => handle_height_spin_button_changed() swapped;
               }
@@ -190,8 +190,8 @@ template HealthSetupWindow : Adw.ApplicationWindow {
           }
 
           layout {
-            column: "0";
-            row: "2";
+            column: 0;
+            row: 2;
           }
         }
       }
@@ -225,8 +225,8 @@ template HealthSetupWindow : Adw.ApplicationWindow {
         }
 
         Adw.Clamp {
-          maximum-size: "400";
-          tightening-threshold: "200";
+          maximum-size: 400;
+          tightening-threshold: 200;
           valign: center;
           vexpand: true;
           hexpand: true;
@@ -251,8 +251,8 @@ template HealthSetupWindow : Adw.ApplicationWindow {
           }
 
           layout {
-            column: "0";
-            row: "2";
+            column: 0;
+            row: 2;
           }
         }
       }
@@ -308,26 +308,26 @@ template HealthSetupWindow : Adw.ApplicationWindow {
 
                 .HealthUnitSpinButton weight_goal_spin_button {
                   unit-kind: "like_kilogram";
-                  digits: "1";
-                  width-chars: "5";
-                  adjustment: "weight_goal_adjustment";
+                  digits: 1;
+                  width-chars: 5;
+                  adjustment: weight_goal_adjustment;
                   valign: center;
                   changed => handle_weight_spin_button_changed() swapped;
                 }
               }
 
               .HealthBMILevelBar bmi_levelbar {
-                margin-start: "6";
-                margin-end: "6";
-                margin-top: "6";
-                margin-bottom: "6";
+                margin-start: 6;
+                margin-end: 6;
+                margin-top: 6;
+                margin-bottom: 6;
               }
             }
           }
 
           layout {
-            column: "0";
-            row: "2";
+            column: 0;
+            row: 2;
           }
         }
       }
@@ -362,19 +362,19 @@ template HealthSetupWindow : Adw.ApplicationWindow {
         }
 
         Adw.Clamp {
-          maximum-size: "400";
-          tightening-threshold: "200";
+          maximum-size: 400;
+          tightening-threshold: 200;
           valign: center;
           vexpand: true;
           hexpand: true;
 
           .HealthSyncListBox sync_list_box {
-            parent-window: "HealthSetupWindow";
+            parent-window: HealthSetupWindow;
           }
 
           layout {
-            column: "0";
-            row: "2";
+            column: 0;
+            row: 2;
           }
         }
       }

@@ -34,8 +34,8 @@ template HealthDateSelector : Grid {
     label: _("Day");
 
     layout {
-      row: "0";
-      column: "0";
+      row: 0;
+      column: 0;
     }
   }
 
@@ -51,8 +51,8 @@ template HealthDateSelector : Grid {
     changed => handle_date_widget_changed() swapped;
 
     layout {
-      row: "0";
-      column: "1";
+      row: 0;
+      column: 1;
     }
   }
 
@@ -60,8 +60,8 @@ template HealthDateSelector : Grid {
     label: _("Month");
 
     layout {
-      row: "1";
-      column: "0";
+      row: 1;
+      column: 0;
     }
   }
 
@@ -74,8 +74,8 @@ template HealthDateSelector : Grid {
     notify::selected => handle_date_widget_changed() swapped;
 
     layout {
-      row: "1";
-      column: "1";
+      row: 1;
+      column: 1;
     }
   }
 
@@ -83,8 +83,8 @@ template HealthDateSelector : Grid {
     label: _("Year");
 
     layout {
-      row: "2";
-      column: "0";
+      row: 2;
+      column: 0;
     }
   }
 
@@ -100,8 +100,8 @@ template HealthDateSelector : Grid {
     changed => handle_date_widget_changed() swapped;
 
     layout {
-      row: "2";
-      column: "1";
+      row: 2;
+      column: 1;
     }
   }
 }

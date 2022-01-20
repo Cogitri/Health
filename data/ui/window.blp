@@ -35,8 +35,8 @@ PopoverMenu primary_menu_popover {
 
 template HealthWindow : Adw.ApplicationWindow {
   title: _("Health");
-  default-width: "600";
-  default-height: "620";
+  default-width: 600;
+  default-height: 620;
   close-request => handle_close_request() swapped;
   notify::default-height => handle_property_default_height_notify() swapped;
   notify::default-width => handle_property_default_width_notify() swapped;
@@ -96,8 +96,8 @@ template HealthWindow : Adw.ApplicationWindow {
     }
 
     .HealthViewHomePage view_home_page {
-      width-request: "265";
-      height-request: "200";
+      width-request: 265;
+      height-request: 200;
       vexpand: true;
       view-changed => handle_view_changed() swapped;
     }

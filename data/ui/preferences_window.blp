@@ -109,7 +109,7 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
 
         .HealthUnitSpinButton height_spin_button {
           unit-kind: "like_centimeters";
-          width-chars: "5";
+          width-chars: 5;
           text: "0";
           adjustment: "height_adjustment";
           valign: center;
@@ -163,7 +163,7 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
     }
 
     Adw.PreferencesGroup {
-      title: "Steps";
+      title: _("Steps");
 
       Adw.ActionRow step_goal_actionrow {
         title: _("Step goal");
@@ -181,7 +181,7 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
     }
 
     Adw.PreferencesGroup {
-      title: "Weight";
+      title: _("Weight");
 
       Adw.ActionRow weight_goal_actionrow {
         title: _("Weight");
@@ -197,9 +197,9 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
 
           .HealthUnitSpinButton weight_goal_spin_button {
             unit-kind: "like_kilogram";
-            digits: "1";
-            width-chars: "5";
-            adjustment: "weight_goal_adjustment";
+            digits: 1;
+            width-chars: 5;
+            adjustment: weight_goal_adjustment;
             valign: center;
             changed => handle_weight_goal_spin_button_changed() swapped;
           }
@@ -216,7 +216,7 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
       title: _("Start sync with third-party providers.");
 
       .HealthSyncListBox sync_list_box {
-        parent-window: "HealthPreferencesWindow";
+        parent-window: HealthPreferencesWindow;
       }
     }
 

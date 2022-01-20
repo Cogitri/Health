@@ -18,16 +18,16 @@ template HealthImportExportDialogBase : Dialog {
   response => handle_response() swapped;
 
   Adw.Clamp {
-    maximum-size: "400";
-    tightening-threshold: "200";
+    maximum-size: 400;
+    tightening-threshold: 200;
     valign: center;
     halign: center;
     vexpand: true;
     hexpand: true;
-    margin-start: "6";
-    margin-end: "6";
-    margin-top: "6";
-    margin-bottom: "6";
+    margin-start: 6;
+    margin-end: 6;
+    margin-top: 6;
+    margin-bottom: 6;
 
     Stack stack {
       StackPage {
@@ -79,10 +79,10 @@ template HealthImportExportDialogBase : Dialog {
           }
 
           .HealthPasswordEntry password_entry {
-            margin-start: "6";
-            margin-end: "6";
-            margin-top: "6";
-            margin-bottom: "6";
+            margin-start: 6;
+            margin-end: 6;
+            margin-top: 6;
+            margin-bottom: 6;
             notify::password => check_activate_response() swapped;
           }
         };

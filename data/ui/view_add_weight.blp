@@ -15,15 +15,15 @@ template HealthViewAddWeight : .HealthViewAdd {
     propagate-natural-height: true;
 
     Adw.Clamp {
-      maximum-size: "400";
-      tightening-threshold: "200";
+      maximum-size: 400;
+      tightening-threshold: 200;
       valign: center;
       vexpand: true;
       hexpand: true;
-      margin-start: "6";
-      margin-end: "6";
-      margin-top: "6";
-      margin-bottom: "6";
+      margin-start: 6;
+      margin-end: 6;
+      margin-top: 6;
+      margin-bottom: 6;
 
       Adw.PreferencesGroup {
         Adw.ActionRow {
@@ -39,10 +39,10 @@ template HealthViewAddWeight : .HealthViewAdd {
 
           .HealthUnitSpinButton weight_spin_button {
             unit-kind: "like_kilogram";
-            width-chars: "5";
+            width-chars: 5;
             text: "0";
-            adjustment: "weight_adjustment";
-            digits: "1";
+            adjustment: weight_adjustment;
+            digits: 1;
             valign: center;
           }
         }
