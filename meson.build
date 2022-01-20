@@ -29,6 +29,8 @@ gettext_package = 'dev.Cogitri.Health'
 health_version = meson.project_version() + version_suffix
 health_data_dir = get_option('prefix') / get_option('datadir') / application_id
 
+cargo = find_program('cargo', required: true)
+
 subdir('data')
 subdir('src')
 subdir('po')

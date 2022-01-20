@@ -115,7 +115,7 @@ blueprints = custom_target('blueprints',
   command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
 )
 
-gnome.compile_resources('dev.Cogitri.Health',
+resources = gnome.compile_resources('dev.Cogitri.Health',
   'dev.Cogitri.Health.gresource.xml',
   dependencies: blueprints,
   gresource_bundle: true,
