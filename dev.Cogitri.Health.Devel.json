@@ -42,7 +42,7 @@
       "builddir": true,
       "buildsystem": "meson",
       "cleanup": ["/usr/"],
-      "config-opts": ["-Dprofile=development", "--buildtype=debug"],
+      "config-opts": ["-Dprofile=development"],
       "sources": [
         {
           "type": "dir",
