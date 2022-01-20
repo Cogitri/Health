@@ -274,7 +274,7 @@ impl ViewAddActivity {
             })
         );
 
-        self.insert_action_group("activity_add_dialog", Some(&action_group));
+        self.insert_action_group("view_add_activity", Some(&action_group));
     }
 
     fn set_selected_activity_name(&self, val: &str) {
