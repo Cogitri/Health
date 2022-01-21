@@ -267,10 +267,13 @@ impl ModelNotification {
 #[cfg(test)]
 mod test {
     use super::{ModelNotification, NotificationFrequency};
+    use crate::utils::init_env;
     use gtk::gio;
 
     #[test]
     fn new() {
+        init_env();
+
         ModelNotification::new(
             &gio::Application::new(None, gio::ApplicationFlags::FLAGS_NONE),
             NotificationFrequency::Every4Hrs,

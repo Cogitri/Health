@@ -136,9 +136,11 @@ impl ModelActivity {
 #[cfg(test)]
 mod test {
     use super::ModelActivity;
+    use crate::utils::init_env;
 
     #[test]
     fn new() {
+        init_env();
         ModelActivity::new();
     }
 }

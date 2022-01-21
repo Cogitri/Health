@@ -174,42 +174,62 @@ pub fn get_file_in_builddir(filename: &str) -> Option<std::path::PathBuf> {
 }
 
 #[cfg(test)]
+pub fn init_env() {
+    use std::env::set_var;
+    set_var(
+        "HEALTH_GRESOURCE_DIR",
+        &format!("{}/build/data", env!("CARGO_MANIFEST_DIR")),
+    );
+    set_var(
+        "HEALTH_ONTOLOGY_PATH",
+        &format!("{}/data/tracker/ontology", env!("CARGO_MANIFEST_DIR")),
+    );
+}
+
+#[cfg(test)]
 pub fn init_gtk() {
     let res = if let Some(gresource_path) = get_file_in_builddir("dev.Cogitri.Health.gresource") {
         gio::Resource::load(gresource_path)
     } else {
         use std::process::Command;
-        use tempfile::tempdir;
 
-        let dir = tempdir().unwrap();
-        let mut gresource_path = dir.path().to_path_buf();
-        gresource_path.push("out.gresource");
-
-        let output = Command::new("glib-compile-resources")
-            .arg(&format!(
-                "{}/data/dev.Cogitri.Health.gresource.xml",
-                env!("CARGO_MANIFEST_DIR")
-            ))
-            .arg("--sourcedir")
-            .arg(&format!("{}/data", env!("CARGO_MANIFEST_DIR")))
-            .arg("--internal")
-            .arg("--target")
-            .arg(&gresource_path)
+        let meson_output = Command::new("meson")
+            .arg(format!("{}/build", env!("CARGO_MANIFEST_DIR")))
             .output()
-            .expect("Failed to run glib-compile-resources!");
+            .expect("Failed to run meson subprojects download!");
+
+        if !meson_output.status.success() {
+            panic!(
+                "Couldn't execute meson subprojects download! Status: {} Stdout: {}, Stderr: {}",
+                meson_output.status,
+                String::from_utf8_lossy(&meson_output.stdout),
+                String::from_utf8_lossy(&meson_output.stderr)
+            );
+        }
+
+        let output = Command::new("ninja")
+            .arg("-C")
+            .arg(format!("{}/build", env!("CARGO_MANIFEST_DIR")))
+            .arg("data/dev.Cogitri.Health.gresource")
+            .output()
+            .expect("Failed to run ninja!");
 
         if !output.status.success() {
             panic!(
-                "Couldn't execute glib-compile-resources! Status: {} Stdout: {}, Stderr: {}",
+                "Couldn't execute ninja! Status: {} Stdout: {}, Stderr: {}",
                 output.status,
                 String::from_utf8_lossy(&output.stdout),
                 String::from_utf8_lossy(&output.stderr)
             );
         }
 
-        gio::Resource::load(gresource_path)
+        gio::Resource::load(&format!(
+            "{}/build/data/dev.Cogitri.Health.gresource",
+            env!("CARGO_MANIFEST_DIR")
+        ))
     };
 
+    init_env();
     gio::resources_register(&res.unwrap());
 
     gtk::init().unwrap();
