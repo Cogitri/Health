@@ -763,10 +763,7 @@ impl Database {
             resource.set_int64("health:calories_burned", c.into());
         }
         if let Some(d) = activity.distance() {
-            resource.set_int64(
-                "health:distance",
-                d.get::<uom::si::length::kilometer>() as i64,
-            );
+            resource.set_int64("health:distance", d.get::<meter>() as i64);
         }
         if let Some(avg) = activity.heart_rate_avg() {
             resource.set_int64("health:hearth_rate_avg", avg.into());
@@ -818,10 +815,7 @@ impl Database {
             "health:weight_datetime",
             &weight.date.to_rfc3339_opts(SecondsFormat::Secs, true),
         );
-        resource.set_double(
-            "health:weight",
-            weight.weight.get::<uom::si::mass::kilogram>().into(),
-        );
+        resource.set_double("health:weight", weight.weight.get::<kilogram>().into());
 
         let (connection, manager) = {
             let inner_ref = imp.inner.borrow();
