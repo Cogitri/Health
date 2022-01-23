@@ -38,6 +38,18 @@
   },
   "modules": [
     {
+      "name": "blueprintcompiler",
+      "buildsystem": "meson",
+      "builddir": true,
+      "sources": [
+        {
+          "type": "git",
+          "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler",
+          "commit": "98bb9e30082774952c4cdfabac53b4d3e09c88ba"
+        }
+      ]
+    },
+    {
       "name": "health",
       "builddir": true,
       "buildsystem": "meson",

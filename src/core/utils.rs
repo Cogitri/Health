@@ -193,14 +193,16 @@ pub fn init_gtk() {
     } else {
         use std::process::Command;
 
+        let dir_str = env!("OUT_DIR");
+
         let meson_output = Command::new("meson")
-            .arg(format!("{}/build", env!("CARGO_MANIFEST_DIR")))
+            .arg(format!("{}/build", dir_str))
             .output()
-            .expect("Failed to run meson subprojects download!");
+            .expect("Failed to run meson configure download!");
 
         if !meson_output.status.success() {
-            panic!(
-                "Couldn't execute meson subprojects download! Status: {} Stdout: {}, Stderr: {}",
+            println!(
+                "Couldn't run meson configure! Status: {}\nStdout:\n{}\nStderr:\n{}",
                 meson_output.status,
                 String::from_utf8_lossy(&meson_output.stdout),
                 String::from_utf8_lossy(&meson_output.stderr)
@@ -209,7 +211,7 @@ pub fn init_gtk() {
 
         let output = Command::new("ninja")
             .arg("-C")
-            .arg(format!("{}/build", env!("CARGO_MANIFEST_DIR")))
+            .arg(format!("{}/build", dir_str))
             .arg("data/dev.Cogitri.Health.gresource")
             .output()
             .expect("Failed to run ninja!");
@@ -225,7 +227,7 @@ pub fn init_gtk() {
 
         gio::Resource::load(&format!(
             "{}/build/data/dev.Cogitri.Health.gresource",
-            env!("CARGO_MANIFEST_DIR")
+            dir_str
         ))
     };
 
