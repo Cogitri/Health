@@ -41,7 +41,6 @@ mod imp {
 
     #[derive(Debug, Default)]
     pub struct ModelNotificationMut {
-        pub hour_count: i32,
         pub notification_frequency: NotificationFrequency,
         pub notification_time: Option<NaiveTime>,
         pub step_goal: u32,
@@ -210,10 +209,6 @@ impl ModelNotification {
         let notify_time = imp.inner.borrow().notification_time.unwrap();
         let frequency = imp.inner.borrow().notification_frequency;
 
-        if time_now.minute() == 0 {
-            imp.inner.borrow_mut().hour_count += 1;
-        }
-
         let interval = match frequency {
             NotificationFrequency::Hourly => 60,
             NotificationFrequency::Every4Hrs => 60 * 4,
@@ -223,7 +218,7 @@ impl ModelNotification {
             && time_now.minute() == notify_time.minute()
             && frequency == NotificationFrequency::Fixed;
         let periodic = frequency != NotificationFrequency::Fixed
-            && imp.inner.borrow().hour_count % interval == 0
+            && time_now.hour() % interval == 0
             && time_now.minute() == 0;
         if fixed_time || periodic {
             let notification = gio::Notification::new(&i18n("Health: walking reminder"));
@@ -246,21 +241,12 @@ impl ModelNotification {
             .todays_steps(chrono::Local::today().and_hms(0, 0, 0).into())
             .await
             .unwrap();
-        let message_pool = vec![{
-            // TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
-            ni18n_f("{} step remaining to complete your daily step goal",
-                "{} steps remaining to complete your daily step goal",
-                (step_goal - step_count).try_into().unwrap_or(0),
-                &[&(step_goal - step_count).to_string()],
-            ) +
-            // TRANSLATORS: Second (final) part of message, see previous source string.
-            &ni18n_f("of {} step",
-                "of {} steps",
-                step_goal.try_into().unwrap(),
-                &[&step_goal.to_string()],
-            )
-        }];
-        message_pool[0].clone()
+        ni18n_f(
+            "{} step remaining to complete your daily step goal.",
+            "{} steps remaining to complete your daily step goal.",
+            (step_goal - step_count).try_into().unwrap_or(0),
+            &[&(step_goal - step_count).to_string()],
+        )
     }
 }
 
