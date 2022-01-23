@@ -121,7 +121,7 @@ mod imp {
                         .contains(ActivityDataPoints::DISTANCE)
                     {
                         if let Some(distance) = activity.distance() {
-                            let args = if self.settings.unit_system() == UnitSystem::Imperial {
+                            let args = if self.settings.unit_system() == UnitSystem::Metric {
                                 let m = distance.get::<meter>().round_decimal_places(1);
                                 ni18n_f("{} meter", "{} meters", m as u32, &[&m.to_string()])
                             } else {
