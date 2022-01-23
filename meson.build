@@ -44,7 +44,7 @@ devenv.set('HEALTH_GRESOURCE_DIR', meson.current_build_dir() / 'data')
 meson.add_devenv(devenv)
 
 run_target('run',
-  command : 'build-aux/run.sh')
+  command : ['build-aux/run.sh', application_id])
 
 run_target('potfiles-in',
   command : 'build-aux/build-potfiles-in.sh')
