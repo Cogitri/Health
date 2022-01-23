@@ -678,7 +678,7 @@ impl ActivityBuilder {
     }
 
     pub fn duration(&mut self, duration: Duration) -> &mut Self {
-        self.duration = Some(duration.num_seconds().try_into().unwrap());
+        self.duration = Some(duration.num_seconds());
         self
     }
 
