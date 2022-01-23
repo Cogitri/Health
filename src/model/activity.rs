@@ -483,6 +483,10 @@ impl Activity {
             .expect("Failed to create Activity")
     }
 
+    pub fn builder() -> ActivityBuilder {
+        ActivityBuilder::new()
+    }
+
     pub fn activity_type(&self) -> ActivityType {
         ActivityType::from_str(&self.property::<String>("activity-type")).unwrap()
     }
@@ -592,6 +596,110 @@ impl<'de> serde::Deserialize<'de> for Activity {
         let a = Self::new();
         a.imp().inner.replace(inner);
         Ok(a)
+    }
+}
+
+#[derive(Clone, Default)]
+/// A [builder-pattern] type to construct [`Activity`] objects.
+///
+/// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
+#[must_use = "The builder must be built to be used"]
+pub struct ActivityBuilder {
+    activity_type: Option<ActivityType>,
+    calories_burned: Option<i64>,
+    date: Option<DateTimeBoxed>,
+    distance: Option<f32>,
+    duration: Option<i64>,
+    heart_rate_avg: Option<i64>,
+    heart_rate_max: Option<i64>,
+    heart_rate_min: Option<i64>,
+    steps: Option<i64>,
+}
+
+impl ActivityBuilder {
+    /// Create a new [`ActivityBuilder`].
+    pub fn new() -> Self {
+        Self::default()
+    }
+
+    /// Build the [`ActivityBuilder`].
+    #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
+    pub fn build(self) -> Activity {
+        let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
+        if let Some(ref activity_type) = self.activity_type {
+            properties.push(("activity-type", activity_type));
+        }
+        if let Some(ref calories_burned) = self.calories_burned {
+            properties.push(("calories-burned", calories_burned));
+        }
+        if let Some(ref date) = self.date {
+            properties.push(("date", date));
+        }
+        if let Some(ref distance) = self.distance {
+            properties.push(("distance-meter", distance));
+        }
+        if let Some(ref duration) = self.duration {
+            properties.push(("duration-seconds", duration));
+        }
+        if let Some(ref heart_rate_avg) = self.heart_rate_avg {
+            properties.push(("heart-rate-avg", heart_rate_avg));
+        }
+        if let Some(ref heart_rate_max) = self.heart_rate_max {
+            properties.push(("heart-rate-max", heart_rate_max));
+        }
+        if let Some(ref heart_rate_min) = self.heart_rate_min {
+            properties.push(("heart-rate-min", heart_rate_min));
+        }
+        if let Some(ref steps) = self.steps {
+            properties.push(("steps", steps));
+        }
+        glib::Object::new::<Activity>(&properties)
+            .expect("Failed to create an instance of Activity")
+    }
+
+    pub fn activity_type(&mut self, activity_type: ActivityType) -> &mut Self {
+        self.activity_type = Some(activity_type);
+        self
+    }
+
+    pub fn calories_burned(&mut self, calories_burned: u32) -> &mut Self {
+        self.calories_burned = Some(calories_burned.into());
+        self
+    }
+
+    pub fn date(&mut self, date: DateTime<FixedOffset>) -> &mut Self {
+        self.date = Some(DateTimeBoxed(date));
+        self
+    }
+
+    pub fn distance(&mut self, distance: Length) -> &mut Self {
+        self.distance = Some(distance.get::<meter>());
+        self
+    }
+
+    pub fn duration(&mut self, duration: Duration) -> &mut Self {
+        self.duration = Some(duration.num_seconds().try_into().unwrap());
+        self
+    }
+
+    pub fn heart_rate_avg(&mut self, heart_rate_avg: u32) -> &mut Self {
+        self.heart_rate_avg = Some(heart_rate_avg.into());
+        self
+    }
+
+    pub fn heart_rate_max(&mut self, heart_rate_max: u32) -> &mut Self {
+        self.heart_rate_max = Some(heart_rate_max.into());
+        self
+    }
+
+    pub fn heart_rate_min(&mut self, heart_rate_min: u32) -> &mut Self {
+        self.heart_rate_min = Some(heart_rate_min.into());
+        self
+    }
+
+    pub fn steps(&mut self, steps: u32) -> &mut Self {
+        self.steps = Some(steps.into());
+        self
     }
 }
 

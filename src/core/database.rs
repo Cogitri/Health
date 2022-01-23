@@ -146,46 +146,45 @@ impl Database {
 
         let mut ret = Vec::new();
         while let Ok(true) = cursor.next_future().await {
-            let activity = Activity::new();
+            let mut activity = Activity::builder();
 
             for i in 0..cursor.n_columns() {
                 match cursor.variable_name(i).unwrap().as_str() {
                     "id" => {
-                        activity
-                            .set_activity_type(ActivityType::from_i64(cursor.integer(i)).unwrap());
+                        activity.activity_type(ActivityType::from_i64(cursor.integer(i)).unwrap());
                     }
                     "date" => {
-                        activity.set_date(
+                        activity.date(
                             DateTime::parse_from_rfc3339(cursor.string(i).unwrap().as_str())
                                 .unwrap(),
                         );
                     }
                     "calories_burned" => {
-                        activity.set_calories_burned(Some(cursor.integer(i).try_into().unwrap()));
+                        activity.calories_burned(cursor.integer(i).try_into().unwrap());
                     }
                     "distance" => {
-                        activity.set_distance(Some(Length::new::<meter>(cursor.integer(i) as f32)));
+                        activity.distance(Length::new::<meter>(cursor.integer(i) as f32));
                     }
                     "heart_rate_avg" => {
-                        activity.set_heart_rate_avg(Some(cursor.integer(i).try_into().unwrap()));
+                        activity.heart_rate_avg(cursor.integer(i).try_into().unwrap());
                     }
                     "heart_rate_max" => {
-                        activity.set_heart_rate_max(Some(cursor.integer(i).try_into().unwrap()));
+                        activity.heart_rate_max(cursor.integer(i).try_into().unwrap());
                     }
                     "heart_rate_min" => {
-                        activity.set_heart_rate_min(Some(cursor.integer(i).try_into().unwrap()));
+                        activity.heart_rate_min(cursor.integer(i).try_into().unwrap());
                     }
                     "minutes" => {
-                        activity.set_duration(Duration::minutes(cursor.integer(i)));
+                        activity.duration(Duration::minutes(cursor.integer(i)));
                     }
                     "steps" => {
-                        activity.set_steps(Some(cursor.integer(i).try_into().unwrap()));
+                        activity.steps(cursor.integer(i).try_into().unwrap());
                     }
                     _ => unimplemented!(),
                 }
             }
 
-            ret.push(activity);
+            ret.push(activity.build());
         }
         //when tracker ordering is fixed, sparql query will order by desc date
         //ret.sort_by_key(crate::Activity::date);
