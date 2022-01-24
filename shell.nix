@@ -47,4 +47,5 @@ in pkgs.mkShell {
   RUSTFLAGS="-C linker=clang -C link-arg=--ld-path=${pkgs.lld_13}/bin/ld.lld";
   LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath buildInputs}";
   XDG_DATA_DIRS = with pkgs; "${gtk4.dev}/share:{libadwaita.dev}/share:${gdk_pixbuf.dev}/share:${gobject-introspection.dev}/share:${pango.dev}/share:${harfbuzz.dev}/share:${graphene}/share:${libadwaita.dev}/share";
+  RUST_BACKTRACE = 1;
 }
