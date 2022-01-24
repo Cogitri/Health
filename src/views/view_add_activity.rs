@@ -459,7 +459,7 @@ impl ViewAddActivity {
                 ))
                 .set_duration(Duration::minutes(
                     spin_button_value_if_datapoint(
-                        &imp.calories_burned_spin_button,
+                        &imp.duration_spin_button,
                         &selected_activity,
                         ActivityDataPoints::DURATION,
                     )
