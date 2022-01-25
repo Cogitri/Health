@@ -22,11 +22,13 @@ mod imp {
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{glib, subclass::prelude::*};
     use once_cell::unsync::OnceCell;
+    use std::cell::Cell;
 
     #[derive(Debug, Default)]
     pub struct ViewAdd {
         pub icon_name: OnceCell<String>,
         pub view_title: OnceCell<String>,
+        pub is_responsive: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -55,6 +57,13 @@ mod imp {
                         None,
                         glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
                     ),
+                    glib::ParamSpecBoolean::new(
+                        "is-responsive",
+                        "is-responsive",
+                        "is-responsive",
+                        false,
+                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
+                    ),
                 ]
             });
 
@@ -71,6 +80,7 @@ mod imp {
             match pspec.name() {
                 "icon-name" => self.icon_name.set(value.get().unwrap()).unwrap(),
                 "view-title" => self.view_title.set(value.get().unwrap()).unwrap(),
+                "is-responsive" => self.is_responsive.set(value.get().unwrap()),
                 _ => unimplemented!(),
             }
         }
@@ -79,6 +89,7 @@ mod imp {
             match pspec.name() {
                 "icon-name" => self.icon_name.get().unwrap().to_value(),
                 "view-title" => self.view_title.get().unwrap().to_value(),
+                "is-responsive" => self.is_responsive.get().to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -102,13 +113,29 @@ impl ViewAdd {
 }
 
 pub trait ViewAddExt {
+    fn connect_is_responsive_notify<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId;
+
     fn icon_name(&self) -> String;
+    fn is_responsive(&self) -> bool;
+    fn set_is_responsive(&self, value: bool);
     fn view_title(&self) -> String;
 }
 
 impl<O: IsA<ViewAdd>> ViewAddExt for O {
+    fn connect_is_responsive_notify<F: Fn(&Self) + 'static>(&self, f: F) -> glib::SignalHandlerId {
+        self.connect_notify_local(Some("is-responsive"), move |s, _| f(s))
+    }
+
     fn icon_name(&self) -> String {
         self.property("icon-name")
+    }
+
+    fn is_responsive(&self) -> bool {
+        self.property("is-responsive")
+    }
+
+    fn set_is_responsive(&self, value: bool) {
+        self.set_property("is-responsive", value)
     }
 
     fn view_title(&self) -> String {

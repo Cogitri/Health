@@ -44,6 +44,7 @@ template HealthViewAddWeight : .HealthViewAdd {
             adjustment: weight_adjustment;
             digits: 1;
             valign: center;
+            changed => handle_weight_spin_button_changed() swapped;
           }
         }
       }

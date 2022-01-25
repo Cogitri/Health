@@ -16,7 +16,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::views::{ViewAddActivity, ViewAddWeight};
+use crate::{
+    prelude::*,
+    views::{ViewAdd, ViewAddActivity, ViewAddWeight},
+};
 use gtk::{
     glib::{self, subclass::prelude::*, translate::FromGlib},
     prelude::*,
@@ -76,6 +79,9 @@ mod imp {
                         &stack_page.view_title(),
                     )
                     .set_icon_name(Some(&stack_page.icon_name()));
+                stack_page.connect_is_responsive_notify(glib::clone!(@weak obj => move |v| {
+                    obj.handle_is_responsive_notify(v);
+                }));
             }
             if &obj.property::<String>("current-plugin") == "weight" {
                 self.stack.set_visible_child_name("Add Weight Data");
@@ -120,6 +126,7 @@ mod imp {
     impl WindowImpl for DataAddDialog {}
     impl DialogImpl for DataAddDialog {}
 }
+
 glib::wrapper! {
     /// popup dialog box that adds activity/weight/water intake data .
     pub struct DataAddDialog(ObjectSubclass<imp::DataAddDialog>)
@@ -140,6 +147,13 @@ impl DataAddDialog {
             ("current-plugin", &current_plugin),
         ])
         .expect("Failed to create DataAddDialog")
+    }
+
+    fn handle_is_responsive_notify(&self, view: &ViewAdd) {
+        let imp = self.imp();
+        if imp.stack.visible_child_name() == Some(view.widget_name()) {
+            self.set_response_sensitive(gtk::ResponseType::Ok, view.is_responsive());
+        }
     }
 
     #[template_callback]
@@ -169,6 +183,17 @@ impl DataAddDialog {
                 _ => unimplemented!(),
             };
             self.destroy();
+        }
+    }
+
+    #[template_callback]
+    fn handle_stack_visible_child_notify(&self) {
+        let imp = self.imp();
+        if let Some(w) = imp.stack.visible_child() {
+            self.set_response_sensitive(
+                gtk::ResponseType::Ok,
+                w.downcast_ref::<ViewAdd>().unwrap().is_responsive(),
+            );
         }
     }
 }

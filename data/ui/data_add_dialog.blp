@@ -26,6 +26,8 @@ template HealthDataAddDialog : Dialog {
   Box {
     orientation: vertical;
 
-    Adw.ViewStack stack { }
+    Adw.ViewStack stack {
+      notify::visible-child => handle_stack_visible_child_notify() swapped;
+    }
   }
 }

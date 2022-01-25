@@ -383,6 +383,12 @@ impl ViewAddActivity {
             activity.autofill_from_minutes();
         }
         self.set_spin_buttons_from_activity(imp.duration_spin_button.upcast_ref());
+        self.set_is_responsive(
+            imp.duration_spin_button
+                .raw_value::<f64>()
+                .unwrap_or_default()
+                != 0.0,
+        );
     }
 
     fn handle_duration_spin_button_input(&self) -> Option<Result<f64, ()>> {

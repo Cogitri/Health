@@ -19,6 +19,7 @@
 use crate::{
     core::{i18n, UnitSystem},
     model::Weight,
+    prelude::*,
     views::ViewAdd,
 };
 use gtk::glib::{self, subclass::prelude::*};
@@ -57,6 +58,7 @@ mod imp {
         fn class_init(klass: &mut Self::Class) {
             UnitSpinButton::static_type();
             Self::bind_template(klass);
+            Self::Type::bind_template_callbacks(klass);
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -76,9 +78,9 @@ glib::wrapper! {
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
+#[gtk::template_callbacks]
 impl ViewAddWeight {
     /// Create a new [ViewAddWeight]
-
     pub fn new() -> Self {
         glib::Object::new(&[
             ("icon-name", &"weight-scale-symbolic"),
@@ -106,6 +108,12 @@ impl ViewAddWeight {
                 )
             }
         }
+    }
+
+    #[template_callback]
+    fn handle_weight_spin_button_changed(&self) {
+        let imp = self.imp();
+        self.set_is_responsive(imp.weight_spin_button.value() != 0.0);
     }
 }
 
