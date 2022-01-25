@@ -129,8 +129,7 @@ features = ["json"]
 git = "https://github.com/hwchen/secret-service-rs"
 
 [dependencies.zxcvbn]
-git = "https://github.com/Cogitri/zxcvbn-rs"
-branch = "chrono-time"
+version = "2"
 
 [dev-dependencies.float_eq]
 version = "0.7"
