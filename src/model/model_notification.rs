@@ -235,12 +235,7 @@ impl ModelNotification {
     #[rustfmt::skip::attributes(ni18n_f)]
     async fn reminder_text(&self) -> String {
         let step_goal = i64::from(self.imp().inner.borrow().step_goal);
-        let step_count = self
-            .imp()
-            .database
-            .todays_steps(chrono::Local::today().and_hms(0, 0, 0).into())
-            .await
-            .unwrap();
+        let step_count = self.imp().database.todays_steps().await.unwrap();
         ni18n_f(
             "{} step remaining to complete your daily step goal.",
             "{} steps remaining to complete your daily step goal.",

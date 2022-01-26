@@ -87,10 +87,7 @@ impl PluginStepsSummaryRow {
     pub async fn update(&self) {
         let imp = self.imp();
         let db = Database::instance();
-        let step_count = db
-            .todays_steps(chrono::Local::today().and_hms(0, 0, 0).into())
-            .await
-            .unwrap_or(0);
+        let step_count = db.todays_steps().await.unwrap_or(0);
         let step_goal = Settings::instance().user_step_goal();
 
         self.set_subtitle(&ni18n_f(

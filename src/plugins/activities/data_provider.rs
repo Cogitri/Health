@@ -124,12 +124,7 @@ impl ModelActivity {
     }
 
     pub async fn activity_present(&self) -> bool {
-        self.imp()
-            .database
-            .num_activities()
-            .await
-            .map(|x| x != 0)
-            .unwrap_or(false)
+        self.imp().database.has_activities().await.unwrap_or(false)
     }
 }
 

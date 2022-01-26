@@ -21,7 +21,7 @@ use crate::{
     views::SplitBar,
 };
 use anyhow::Result;
-use chrono::{Date, DateTime, Duration, FixedOffset, NaiveDate, SecondsFormat, Utc};
+use chrono::{Date, DateTime, Duration, FixedOffset, Local, NaiveDate, SecondsFormat, Utc};
 use gtk::{
     gio::{self, subclass::prelude::*},
     glib::{self, prelude::*},
@@ -42,17 +42,12 @@ mod imp {
         gio::subclass::prelude::*,
         glib::{self, subclass::Signal},
     };
-    use std::cell::RefCell;
-
-    #[derive(Debug)]
-    pub struct DatabaseMut {
-        pub connection: tracker::SparqlConnection,
-        pub manager: tracker::NamespaceManager,
-    }
+    use once_cell::unsync::OnceCell;
 
     #[derive(Debug, Default)]
     pub struct Database {
-        pub inner: RefCell<Option<DatabaseMut>>,
+        pub connection: OnceCell<tracker::SparqlConnection>,
+        pub manager: OnceCell<tracker::NamespaceManager>,
     }
 
     #[glib::object_subclass]
@@ -137,7 +132,7 @@ impl Database {
     ) -> Result<Vec<Activity>> {
         let imp = self.imp();
 
-        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
+        let connection = imp.connection.get().unwrap();
         let cursor = if let Some(date) = date_opt {
             connection.query_future(&format!("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY DESC(?date)", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
         } else {
@@ -200,16 +195,7 @@ impl Database {
     /// # Returns
     /// An array of [SplitBar]s that are within the given timeframe or a [glib::Error] if querying the DB goes wrong.
     pub async fn calories(&self, minimum_date: DateTime<FixedOffset>) -> Result<Vec<SplitBar>> {
-        let connection = {
-            self.imp()
-                .inner
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .connection
-                .clone()
-        };
-
+        let connection = self.imp().connection.get().unwrap();
         let cursor = connection.query_future(&format!("SELECT ?date ?id ?calories_burned WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned. FILTER  (?date >= '{}'^^xsd:dateTime) }}", minimum_date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
 
         let mut hashmap: std::collections::HashMap<
@@ -262,16 +248,7 @@ impl Database {
         &self,
         minimum_date: DateTime<FixedOffset>,
     ) -> Result<Vec<ActivityType>> {
-        let connection = {
-            self.imp()
-                .inner
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .connection
-                .clone()
-        };
-
+        let connection = self.imp().connection.get().unwrap();
         let mut most_frequent = Vec::new();
 
         let cursor = connection.query_future(&format!("SELECT ?id WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned . FILTER  (?date >= '{}'^^xsd:dateTime) }} GROUP BY ?id ORDER BY DESC (SUM(?calories_burned))", minimum_date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
@@ -282,27 +259,18 @@ impl Database {
         Ok(most_frequent)
     }
 
-    pub async fn num_activities(&self) -> Result<i64> {
-        let connection = {
-            self.imp()
-                .inner
-                .borrow()
-                .as_ref()
-                .unwrap()
-                .connection
-                .clone()
-        };
+    pub async fn has_activities(&self) -> Result<bool> {
+        let connection = self.imp().connection.get().unwrap();
         let cursor = connection
-            .query_future("SELECT COUNT (?datapoint) WHERE { ?datapoint a health:Activity }")
+            .query_future("ASK { ?datapoint a health:Activity")
             .await?;
         cursor.next_future().await?;
-        Ok(cursor.integer(0))
+        Ok(cursor.is_boolean(0))
     }
 
     #[cfg(test)]
     pub fn connection(&self) -> tracker::SparqlConnection {
-        let imp = self.imp();
-        imp.inner.borrow().as_ref().unwrap().connection.clone()
+        self.imp().connection.get().unwrap().clone()
     }
 
     pub fn instance() -> Self {
@@ -320,8 +288,7 @@ impl Database {
 
     #[cfg(test)]
     pub fn manager(&self) -> tracker::NamespaceManager {
-        let imp = self.imp();
-        imp.inner.borrow().as_ref().unwrap().manager.clone()
+        self.imp().manager.get().unwrap().clone()
     }
 
     /// Get steps.
@@ -334,7 +301,7 @@ impl Database {
     pub async fn steps(&self, date: DateTime<FixedOffset>) -> Result<Vec<Steps>> {
         let imp = self.imp();
 
-        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
+        let connection = imp.connection.get().unwrap();
         let cursor = connection.query_future(&format!("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}  ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
         let mut hashmap = std::collections::HashMap::new();
 
@@ -360,15 +327,13 @@ impl Database {
 
     /// Get today's steps.
     ///
-    /// # Arguments
-    /// * `date_opt` - If `Some`, only get steps that are more recent than `date_opt`.
-    ///
     /// # Returns
     /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
-    pub async fn todays_steps(&self, date: DateTime<FixedOffset>) -> Result<i64> {
+    pub async fn todays_steps(&self) -> Result<i64> {
         let imp = self.imp();
+        let date: DateTime<FixedOffset> = Local::today().and_hms(0, 0, 0).into();
 
-        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
+        let connection = imp.connection.get().unwrap();
         let cursor = connection.query_future(&format!("SELECT SUM(?steps) WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
 
         let steps = if let Ok(true) = cursor.next_future().await {
@@ -390,7 +355,7 @@ impl Database {
     pub async fn weights(&self, date_opt: Option<DateTime<FixedOffset>>) -> Result<Vec<Weight>> {
         let imp = self.imp();
 
-        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
+        let connection = imp.connection.get().unwrap();
         let cursor = if let Some(date) = date_opt {
             connection.query_future(&format!("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
         } else {
@@ -421,7 +386,7 @@ impl Database {
     pub async fn weight_exists_on_date(&self, date: Date<FixedOffset>) -> Result<bool> {
         let imp = self.imp();
 
-        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
+        let connection = imp.connection.get().unwrap();
         let cursor = connection.query_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight ?weight . FILTER(?date >= '{}'^^xsd:date && ?date < '{}'^^xsd:date) }}", date.format("%Y-%m-%d"), (date + Duration::days(1)).format("%Y-%m-%d"))).await?;
 
         assert!(cursor.next_future().await?);
@@ -443,11 +408,8 @@ impl Database {
             return Ok(());
         }
 
-        let (connection, manager) = {
-            let inner_ref = imp.inner.borrow();
-            let inner = inner_ref.as_ref().unwrap();
-            (inner.connection.clone(), inner.manager.clone())
-        };
+        let connection = imp.connection.get().unwrap();
+        let manager = imp.manager.get().unwrap();
 
         for s in steps {
             let resource = tracker::Resource::new(None);
@@ -467,7 +429,7 @@ impl Database {
             connection
                 .update_future(
                     resource
-                        .print_sparql_update(Some(&manager), None)
+                        .print_sparql_update(Some(manager), None)
                         .unwrap()
                         .as_str(),
                 )
@@ -492,11 +454,8 @@ impl Database {
             return Ok(());
         }
 
-        let (connection, manager) = {
-            let inner_ref = imp.inner.borrow();
-            let inner = inner_ref.as_ref().unwrap();
-            (inner.connection.clone(), inner.manager.clone())
-        };
+        let connection = imp.connection.get().unwrap();
+        let manager = imp.manager.get().unwrap();
 
         for w in weights {
             let resource = tracker::Resource::new(None);
@@ -510,7 +469,7 @@ impl Database {
             connection
                 .update_future(
                     resource
-                        .print_sparql_update(Some(&manager), None)
+                        .print_sparql_update(Some(manager), None)
                         .unwrap()
                         .as_str(),
                 )
@@ -538,11 +497,8 @@ impl Database {
     /// Am error if querying the DB goes wrong.
     pub async fn migrate_activities_date_datetime(&self) -> Result<()> {
         let imp = self.imp();
-        let (connection, manager) = {
-            let inner_ref = imp.inner.borrow();
-            let inner = inner_ref.as_ref().unwrap();
-            (inner.connection.clone(), inner.manager.clone())
-        };
+        let connection = imp.connection.get().unwrap();
+        let manager = imp.manager.get().unwrap();
 
         let cursor =
         connection.query_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?;
@@ -621,7 +577,7 @@ impl Database {
             connection
                 .update_future(
                     resource
-                        .print_sparql_update(Some(&manager), None)
+                        .print_sparql_update(Some(manager), None)
                         .unwrap()
                         .as_str(),
                 )
@@ -644,11 +600,8 @@ impl Database {
     /// An error if querying the DB goes wrong.
     pub async fn migrate_weight_date_datetime(&self) -> Result<()> {
         let imp = self.imp();
-        let (connection, manager) = {
-            let inner_ref = imp.inner.borrow();
-            let inner = inner_ref.as_ref().unwrap();
-            (inner.connection.clone(), inner.manager.clone())
-        };
+        let connection = imp.connection.get().unwrap();
+        let manager = imp.manager.get().unwrap();
 
         let cursor =
         connection.query_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . } ORDER BY ?date").await?;
@@ -672,7 +625,7 @@ impl Database {
             connection
                 .update_future(
                     resource
-                        .print_sparql_update(Some(&manager), None)
+                        .print_sparql_update(Some(manager), None)
                         .unwrap()
                         .as_str(),
                 )
@@ -727,7 +680,7 @@ impl Database {
     /// Returns an error if querying the DB goes wrong.
     pub async fn reset(&self) -> Result<()> {
         let imp = self.imp();
-        let connection = { imp.inner.borrow().as_ref().unwrap().connection.clone() };
+        let connection = imp.connection.get().unwrap();
         connection
             .update_future("DELETE WHERE { ?datapoint a health:WeightMeasurement }")
             .await?;
@@ -780,16 +733,13 @@ impl Database {
             resource.set_int64("health:steps", s.into());
         }
 
-        let (connection, manager) = {
-            let inner_ref = imp.inner.borrow();
-            let inner = inner_ref.as_ref().unwrap();
-            (inner.connection.clone(), inner.manager.clone())
-        };
+        let connection = imp.connection.get().unwrap();
+        let manager = imp.manager.get().unwrap();
 
         connection
             .update_future(
                 resource
-                    .print_sparql_update(Some(&manager), None)
+                    .print_sparql_update(Some(manager), None)
                     .unwrap()
                     .as_str(),
             )
@@ -816,16 +766,13 @@ impl Database {
         );
         resource.set_double("health:weight", weight.weight.get::<kilogram>().into());
 
-        let (connection, manager) = {
-            let inner_ref = imp.inner.borrow();
-            let inner = inner_ref.as_ref().unwrap();
-            (inner.connection.clone(), inner.manager.clone())
-        };
+        let connection = imp.connection.get().unwrap();
+        let manager = imp.manager.get().unwrap();
 
         connection
             .update_future(
                 resource
-                    .print_sparql_update(Some(&manager), None)
+                    .print_sparql_update(Some(manager), None)
                     .unwrap()
                     .as_str(),
             )
@@ -840,7 +787,11 @@ impl Database {
     /// # Arguments
     /// * `ontology_path` - `Some` if a custom path for the Tracker ontology path is desired (e.g. in tests), or `None` to use the default.
     /// * `store_path` - `Some` if a custom store path for the Tracker DB is desired (e.g. in tests), or `None` to use the default.
+    ///
+    /// # Panics
+    /// This function will panic if it's called on the same [Database] object multiple times.
     fn connect(&self, ontology_path: Option<PathBuf>, store_path: Option<PathBuf>) -> Result<()> {
+        let imp = self.imp();
         let mut store_path = store_path.unwrap_or_else(glib::user_data_dir);
         store_path.push("health");
 
@@ -856,15 +807,15 @@ impl Database {
         let manager = tracker::NamespaceManager::new();
         manager.add_prefix("health", "https://gitlab.gnome.org/World/health#");
 
-        self.imp().inner.replace(Some(imp::DatabaseMut {
-            connection: tracker::SparqlConnection::new(
+        imp.manager.set(manager).unwrap();
+        imp.connection
+            .set(tracker::SparqlConnection::new(
                 tracker::SparqlConnectionFlags::NONE,
                 Some(&gio::File::for_path(store_path)),
                 Some(&gio::File::for_path(ontology_path)),
                 None::<&gio::Cancellable>,
-            )?,
-            manager,
-        }));
+            )?)
+            .unwrap();
 
         Ok(())
     }
