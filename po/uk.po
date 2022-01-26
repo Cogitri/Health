@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-24 09:14+0000\n"
-"PO-Revision-Date: 2022-01-24 17:18+0200\n"
+"POT-Creation-Date: 2022-01-25 22:47+0000\n"
+"PO-Revision-Date: 2022-01-26 12:57+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -185,16 +185,21 @@ msgid "A health tracking app for the GNOME desktop."
 msgstr "Програма стеження за станом здоров'я для стільниці GNOME."
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+#| msgid ""
+#| "A health tracking app for the GNOME desktop. Health can visualize how "
+#| "many steps you've made daily, your weight development over time and your "
+#| "daily activities."
 msgid ""
 "A health tracking app for the GNOME desktop. Health can visualize how many "
 "steps you've made daily, your weight development over time and your daily "
-"activities."
+"activities. Data can be synched from Google Fit or manually entered into "
+"Health. Afterwards, it can be viewed and edited in Health."
 msgstr ""
 "Програма стеження за станом здоров'я для стільниці GNOME. «Здоров'я» може "
 "візуалізувати кількість кроків, які ви виконуєте щодня, динаміку вашої ваги "
-"та ваші щоденні фізичні вправи."
+"та ваші щоденні фізичні вправи. Дані може бути синхронізовано із Google Fit або введено вручну до «Здоров'я». Після цього, дані можна буде переглядати і редагувати у «Здоров'ї»."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:34
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:37
 msgid "Rasmus “Cogitri” Thomsen"
 msgstr "Rasmus “Cogitri” Thomsen"
 
@@ -340,7 +345,7 @@ msgstr "Виміри ваги"
 
 #: data/ui/plugins/weight/summary.blp:5 data/ui/preferences_window.blp:184
 #: data/ui/preferences_window.blp:187 data/ui/view_add_weight.blp:38
-#: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:85
+#: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
 msgid "Weight"
 msgstr "Вага"
 
@@ -518,8 +523,7 @@ msgstr "Увімкнути або вимкнути повноекранний р
 
 #: data/ui/sync_list_box.blp:30
 msgid "Google Fit"
-msgstr ""
-"Google Fit"
+msgstr "Google Fit"
 
 #: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:30
 msgid "Date"
@@ -673,8 +677,6 @@ msgid "Health: walking reminder"
 msgstr "Здоров'я: нагадування щодо прогулянки"
 
 #: src/model/model_notification.rs:245
-#| msgid "{} step remaining to complete your daily step goal"
-#| msgid_plural "{} steps remaining to complete your daily step goal"
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "{} крок лишився до виконання щоденної цільової кількості кроків."
