@@ -262,7 +262,7 @@ impl Database {
     pub async fn has_activities(&self) -> Result<bool> {
         let connection = self.imp().connection.get().unwrap();
         let cursor = connection
-            .query_future("ASK { ?datapoint a health:Activity")
+            .query_future("ASK { ?datapoint a health:Activity }")
             .await?;
         cursor.next_future().await?;
         Ok(cursor.is_boolean(0))
@@ -840,14 +840,13 @@ mod test {
 
     #[test]
     fn check_doesnt_exist_activity() {
-        let expected_activity = Activity::new();
         let data_dir = tempdir().unwrap();
         let date = Local::now();
+        let expected_activity = Activity::builder()
+            .activity_type(ActivityType::Walking)
+            .date(date.into())
+            .build();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
-
-        expected_activity
-            .set_activity_type(ActivityType::Walking)
-            .set_date(date.into());
 
         let retrieved_activities = async move {
             db.save_activity(expected_activity).await.unwrap();
@@ -881,15 +880,15 @@ mod test {
 
     #[test]
     fn check_exists_activity() {
-        let expected_activity = Activity::new();
         let data_dir = tempdir().unwrap();
         let date = Local::now();
+        let expected_activity = Activity::builder()
+            .activity_type(ActivityType::Walking)
+            .date(date.into())
+            .steps(50)
+            .build();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
 
-        expected_activity
-            .set_activity_type(ActivityType::Walking)
-            .set_date(date.into())
-            .set_steps(Some(50));
         let a = expected_activity.clone();
 
         let retrieved_activities = async move {
@@ -931,14 +930,13 @@ mod test {
         let date = Local::now();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
         let connection = db.connection();
-        let expected_activity = Activity::new();
+        let expected_activity = Activity::builder()
+            .activity_type(ActivityType::Walking)
+            .date(date.into())
+            .steps(50)
+            .build();
         let manager = db.manager();
         let resource = tracker::Resource::new(None);
-
-        expected_activity
-            .set_activity_type(ActivityType::Walking)
-            .set_date(date.into())
-            .set_steps(Some(50));
 
         resource.set_uri("rdf:type", "health:Activity");
         resource.set_string(
@@ -1103,5 +1101,139 @@ mod test {
         assert_eq!(calories.len(), 2);
         assert_eq!(*calories[0].calorie_split.values().next().unwrap(), 500);
         assert_eq!(*calories[1].calorie_split.values().next().unwrap(), 1000);
+    }
+
+    #[test]
+    fn test_most_frequent_activities() {
+        let data_dir = tempdir().unwrap();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        let now: DateTime<FixedOffset> = Local::now().into();
+        let activities = vec![
+            (
+                Activity::builder()
+                    .activity_type(ActivityType::Walking)
+                    .calories_burned(5)
+                    .date(now)
+                    .build(),
+                vec![ActivityType::Walking],
+            ),
+            (
+                Activity::builder()
+                    .activity_type(ActivityType::Basketball)
+                    .calories_burned(5)
+                    .date(now)
+                    .build(),
+                vec![ActivityType::Walking, ActivityType::Basketball],
+            ),
+            (
+                Activity::builder()
+                    .activity_type(ActivityType::Walking)
+                    .calories_burned(5)
+                    .date(now)
+                    .build(),
+                vec![ActivityType::Walking, ActivityType::Basketball],
+            ),
+            (
+                Activity::builder()
+                    .activity_type(ActivityType::Swimming)
+                    .calories_burned(5)
+                    .date(now)
+                    .build(),
+                vec![
+                    ActivityType::Walking,
+                    ActivityType::Swimming,
+                    ActivityType::Basketball,
+                ],
+            ),
+        ];
+
+        let prev = now - Duration::minutes(1);
+
+        for (activity, expected_types) in activities {
+            glib::clone!(@weak db => async move {
+                db.save_activity(activity).await.unwrap();
+                assert_eq!(expected_types, db.most_frequent_activities(prev).await.unwrap());
+            })
+            .block();
+        }
+    }
+
+    #[test]
+    fn test_has_activities() {
+        let data_dir = tempdir().unwrap();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        glib::clone!(@weak db => async move {
+            assert!(!db.has_activities().await.unwrap());
+            db.save_activity(Activity::new()).await.unwrap();
+            assert!(db.has_activities().await.unwrap());
+        })
+        .block();
+    }
+
+    #[test]
+    fn test_todays_steps() {
+        let data_dir = tempdir().unwrap();
+        let database = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        let db = database.clone();
+        async move {
+            let now: DateTime<FixedOffset> = Local::now().into();
+            assert_eq!(db.todays_steps().await.unwrap(), 0);
+            db.save_activity(
+                Activity::builder()
+                    .activity_type(ActivityType::Walking)
+                    .steps(1000)
+                    .date(now)
+                    .build(),
+            )
+            .await
+            .unwrap();
+            assert_eq!(db.todays_steps().await.unwrap(), 1000);
+            db.save_activity(
+                Activity::builder()
+                    .activity_type(ActivityType::Walking)
+                    .steps(1000)
+                    .date(now)
+                    .build(),
+            )
+            .await
+            .unwrap();
+            assert_eq!(db.todays_steps().await.unwrap(), 2000);
+            db.save_activity(
+                Activity::builder()
+                    .activity_type(ActivityType::Walking)
+                    .steps(1500)
+                    .date(now)
+                    .build(),
+            )
+            .await
+            .unwrap();
+            assert_eq!(db.todays_steps().await.unwrap(), 3500);
+            db.save_activity(
+                Activity::builder()
+                    .activity_type(ActivityType::Walking)
+                    .steps(1500)
+                    .date(now - Duration::days(1))
+                    .build(),
+            )
+            .await
+            .unwrap();
+            assert_eq!(db.todays_steps().await.unwrap(), 3500);
+        }
+        .block();
+    }
+
+    #[test]
+    fn test_weight_exists_on_date() {
+        let data_dir = tempdir().unwrap();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        glib::clone!(@weak db => async move {
+            let now: DateTime<FixedOffset> = Local::now().into();
+            let mass = Mass::new::<kilogram>(70.0);
+            db.save_weight(Weight::new(now - Duration::days(1), mass)).await.unwrap();
+            assert!(!db.weight_exists_on_date(now.date()).await.unwrap());
+            db.save_weight(Weight::new(now, mass)).await.unwrap();
+            assert!(db.weight_exists_on_date(now.date()).await.unwrap());
+        })
+        .block();
     }
 }

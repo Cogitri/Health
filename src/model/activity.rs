@@ -624,7 +624,7 @@ impl ActivityBuilder {
 
     /// Build the [`ActivityBuilder`].
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
-    pub fn build(self) -> Activity {
+    pub fn build(&mut self) -> Activity {
         let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
         if let Some(ref activity_type) = self.activity_type {
             properties.push(("activity-type", activity_type));
