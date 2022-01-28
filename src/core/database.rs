@@ -287,6 +287,13 @@ impl Database {
     }
 
     #[cfg(test)]
+    pub fn set_instance(db: Database) {
+        unsafe {
+            DATABASE = Some(db);
+        }
+    }
+
+    #[cfg(test)]
     pub fn manager(&self) -> tracker::NamespaceManager {
         self.imp().manager.get().unwrap().clone()
     }

@@ -151,9 +151,23 @@ impl PluginList {
 #[cfg(test)]
 mod test {
     use super::PluginList;
+    use crate::plugins::{Plugin, PluginName, StepsPlugin};
 
     #[test]
     fn new() {
         PluginList::new(Vec::new());
+    }
+
+    #[test]
+    fn remove() {
+        let list = PluginList::new(Vec::new());
+        assert!(list.is_empty());
+        assert!(list.remove(PluginName::Steps).is_none());
+        let plugin = Box::new(StepsPlugin::new());
+        list.push(plugin.clone());
+        assert!(!list.is_empty());
+        assert!(list.contains(PluginName::Steps));
+        assert_eq!(list.remove(plugin.name()).unwrap().name(), plugin.name());
+        assert!(!list.contains(PluginName::Calories));
     }
 }

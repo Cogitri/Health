@@ -262,10 +262,18 @@ mod test {
     use super::CsvHandler;
     use crate::{
         core::{i18n, Database},
+        model::{Activity, Weight},
         sync::csv::EncryptionError,
+        utils::init_gschema,
     };
+    use chrono::{DateTime, Duration, NaiveDateTime, Utc};
     use gtk::{gio, glib};
     use tempfile::tempdir;
+    use uom::si::{
+        f32::{Length, Mass},
+        length::kilometer,
+        mass::kilogram,
+    };
 
     #[test]
     fn simple_read_write() {
@@ -380,5 +388,66 @@ mod test {
                 .to_string(),
             i18n("No weight measurements added yet; can't create empty export!")
         );
+    }
+
+    #[test]
+    fn activities_reimport() {
+        let _dir = init_gschema();
+        let ctx = glib::MainContext::new();
+        let file = gio::File::new_tmp(Some("Health-Test-XXXXXX")).unwrap().0;
+        let data_dir = tempdir().unwrap();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        let csv_handler = CsvHandler::new_with_database(db.clone());
+        let act = Activity::builder()
+            .date(
+                DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(1_000_000_000, 0), Utc)
+                    .into(),
+            )
+            .steps(2000)
+            .calories_burned(2000)
+            .duration(Duration::minutes(20))
+            .distance(Length::new::<kilometer>(2.0))
+            .build();
+        ctx.block_on(async {
+            db.save_activity(act.clone()).await.unwrap();
+            csv_handler
+                .export_activities_csv(&file, None)
+                .await
+                .unwrap();
+            db.reset().await.unwrap();
+            csv_handler
+                .import_activities_csv(&file, None)
+                .await
+                .unwrap();
+            let new_act = &db.activities(None).await.unwrap()[0];
+            assert_eq!(new_act.date(), act.date());
+            assert_eq!(new_act.steps(), act.steps());
+            assert_eq!(new_act.calories_burned(), act.calories_burned());
+            assert_eq!(new_act.duration(), act.duration());
+            assert_eq!(new_act.distance(), act.distance());
+        });
+    }
+
+    #[test]
+    fn weights_reimport() {
+        let _dir = init_gschema();
+        let ctx = glib::MainContext::new();
+        let file = gio::File::new_tmp(Some("Health-Test-XXXXXX")).unwrap().0;
+        let data_dir = tempdir().unwrap();
+        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        let csv_handler = CsvHandler::new_with_database(db.clone());
+        let weight = Weight::new(
+            DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(1_000_000_000, 0), Utc).into(),
+            Mass::new::<kilogram>(70.0),
+        );
+        ctx.block_on(async {
+            db.save_weight(weight.clone()).await.unwrap();
+            csv_handler.export_weights_csv(&file, None).await.unwrap();
+            db.reset().await.unwrap();
+            csv_handler.import_weights_csv(&file, None).await.unwrap();
+            let new_weight = &db.weights(None).await.unwrap()[0];
+            assert_eq!(new_weight.date, weight.date);
+            assert_eq!(new_weight.weight, weight.weight);
+        });
     }
 }

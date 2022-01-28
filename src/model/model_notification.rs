@@ -22,12 +22,12 @@ use crate::{
     model::NotificationFrequency,
     prelude::*,
 };
-use chrono::{Local, Timelike};
+use chrono::{Local, NaiveTime, Timelike};
 use gtk::{
     gio::{self, prelude::*, subclass::prelude::*},
     glib,
 };
-use std::{convert::TryInto, string::ToString};
+use std::{convert::TryInto, str::FromStr, string::ToString};
 
 mod imp {
     use crate::{core::Database, model::NotificationFrequency, prelude::*};
@@ -151,6 +151,10 @@ glib::wrapper! {
 }
 
 impl ModelNotification {
+    pub fn application(&self) -> gio::Application {
+        self.property("application")
+    }
+
     pub fn new<T: IsA<gio::Application>>(
         application: &T,
         notification_frequency: NotificationFrequency,
@@ -164,6 +168,14 @@ impl ModelNotification {
             ("step-goal", &step_goal),
         ])
         .expect("Failed to create ModelNotification")
+    }
+
+    pub fn notification_frequency(&self) -> NotificationFrequency {
+        NotificationFrequency::from_str(&self.property::<String>("notification-frequency")).unwrap()
+    }
+
+    pub fn notification_time(&self) -> NaiveTime {
+        self.property::<NaiveTimeBoxed>("notification-time").0
     }
 
     pub fn register_periodic_notify(&self) {
@@ -261,5 +273,22 @@ mod test {
             chrono::NaiveTime::parse_from_str("12:00:00", "%H:%M:%S").unwrap(),
             1000,
         );
+    }
+
+    #[test]
+    fn properties() {
+        init_env();
+        let app = gio::Application::new(None, gio::ApplicationFlags::FLAGS_NONE);
+        let time = chrono::NaiveTime::parse_from_str("12:00:00", "%H:%M:%S").unwrap();
+
+        let model = ModelNotification::new(&app, NotificationFrequency::Every4Hrs, time, 1000);
+
+        assert_eq!(model.application(), app);
+        assert_eq!(
+            model.notification_frequency(),
+            NotificationFrequency::Every4Hrs
+        );
+        assert_eq!(model.notification_time(), time);
+        assert_eq!(model.step_goal(), 1000);
     }
 }

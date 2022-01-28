@@ -23,3 +23,13 @@ impl FnBoxedPoint {
         Self(Rc::new(RefCell::new(func)))
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::FnBoxedPoint;
+
+    #[test]
+    fn new() {
+        FnBoxedPoint::new(None);
+    }
+}

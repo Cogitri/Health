@@ -610,4 +610,13 @@ mod test {
         init_gtk();
         BarGraphView::new();
     }
+
+    #[test]
+    fn properties() {
+        init_gtk();
+        let b = BarGraphView::new();
+        b.set_rmr(b.rmr());
+        b.set_x_lines_interval(b.x_lines_interval());
+        b.set_hover_func(None);
+    }
 }

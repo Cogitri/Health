@@ -131,11 +131,52 @@ impl ModelActivity {
 #[cfg(test)]
 mod test {
     use super::ModelActivity;
-    use crate::utils::init_env;
+    use crate::{
+        core::Database,
+        model::{Activity, ActivityType},
+        prelude::*,
+        utils::*,
+    };
+    use chrono::{DateTime, Duration, NaiveDateTime, Utc};
+    use gtk::{glib, prelude::*};
 
     #[test]
     fn new() {
         init_env();
         ModelActivity::new();
+    }
+
+    #[test]
+    fn is_empty() {
+        let _dir = init_gschema();
+
+        let data_dir = tempfile::tempdir().unwrap();
+        Database::set_instance(
+            Database::new_with_store_path(data_dir.path().to_path_buf()).unwrap(),
+        );
+        let a = ModelActivity::new();
+        assert!(a.is_empty());
+        glib::clone!(@weak a => async move {
+            a.reload().await.unwrap();
+            assert!(a.is_empty());
+            assert_eq!(a.n_items(), 0);
+            assert_eq!(a.item(0), None);
+            let activity = Activity::builder()
+                .activity_type(ActivityType::Walking)
+                .duration(Duration::minutes(1))
+                .date(DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(1_000_000_000, 0), Utc).into())
+                .build();
+            Database::instance().save_activity(activity.clone()).await.unwrap();
+            a.reload().await.unwrap();
+            assert!(!a.is_empty());
+            assert_eq!(a.n_items(), 1);
+            let new_act = a.item(0).unwrap().downcast::<Activity>().unwrap();
+            assert_eq!(activity.activity_type(), new_act.activity_type());
+            assert_eq!(activity.duration(), new_act.duration());
+            assert_eq!(activity.date(), new_act.date());
+            assert_eq!(a.item(1), None);
+
+        })
+        .block();
     }
 }

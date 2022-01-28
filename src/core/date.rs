@@ -57,7 +57,7 @@ impl glib::DateTime {
 #[cfg(test)]
 mod test {
     use super::*;
-    use chrono::{DateTime, Datelike, FixedOffset, Timelike};
+    use chrono::{DateTime, Datelike, FixedOffset, NaiveDateTime, Timelike, Utc};
 
     #[test]
     fn convert_gdatetime_chrono() {
@@ -69,5 +69,14 @@ mod test {
         assert_eq!(gdate.hour() as u32, chrono_date.hour());
         assert_eq!(gdate.minute() as u32, chrono_date.minute());
         assert_eq!(gdate.second() as u32, chrono_date.second());
+    }
+
+    #[test]
+    fn test_format_local() {
+        gettextrs::setlocale(gettextrs::LocaleCategory::LcAll, "en_US.UTF-8");
+        let date = DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(1_000_000_000, 0), Utc);
+        assert_eq!(date.format_local(), "09/09/2001");
+        gettextrs::setlocale(gettextrs::LocaleCategory::LcAll, "de_DE.UTF-8");
+        assert_eq!(date.format_local(), "09.09.2001");
     }
 }

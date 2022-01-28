@@ -644,4 +644,14 @@ mod test {
         init_gtk();
         GraphView::new();
     }
+
+    #[test]
+    fn properties() {
+        init_gtk();
+        let g = GraphView::new();
+        g.set_limit(g.limit());
+        g.set_limit_label(g.limit_label());
+        g.set_x_lines_interval(g.x_lines_interval());
+        g.set_hover_func(None);
+    }
 }

@@ -275,4 +275,38 @@ mod test {
         })
         .unwrap();
     }
+
+    #[test]
+    fn today_step_count() {
+        let ctx = glib::MainContext::new();
+        ctx.with_thread_default(|| {
+            let data_dir = tempdir().unwrap();
+            let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+            ctx.block_on(
+                db.save_activity(
+                    Activity::builder()
+                        .date(Local::now().into())
+                        .steps(2000)
+                        .build(),
+                ),
+            )
+            .unwrap();
+            let mut model = GraphModelSteps::new_with_database(db.clone());
+            assert!(model.today_step_count().is_none());
+            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            assert_eq!(model.today_step_count(), Some(2000));
+            ctx.block_on(
+                db.save_activity(
+                    Activity::builder()
+                        .date(Local::now().into())
+                        .steps(4000)
+                        .build(),
+                ),
+            )
+            .unwrap();
+            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            assert_eq!(model.today_step_count(), Some(6000));
+        })
+        .unwrap();
+    }
 }
