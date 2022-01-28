@@ -13,7 +13,7 @@
     <file preprocess="xml-stripblanks">ui/password_entry.ui</file>
     <file preprocess="xml-stripblanks">ui/preferences_window.ui</file>
     <file preprocess="xml-stripblanks">ui/setup_window.ui</file>
-    <file preprocess="xml-stripblanks">ui/shortcuts_window.ui</file>
+    <file preprocess="xml-stripblanks" alias="gtk/help-overlay.ui">ui/shortcuts_window.ui</file>
     <file preprocess="xml-stripblanks">ui/sync_list_box.ui</file>
     <file preprocess="xml-stripblanks">ui/tab_button.ui</file>
     <file preprocess="xml-stripblanks">ui/view_add_activity.ui</file>

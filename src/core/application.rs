@@ -234,13 +234,6 @@ impl Application {
         imp.window.set(glib::ObjectExt::downgrade(&window)).unwrap();
     }
 
-    fn handle_shortcuts() {
-        gtk::Builder::from_resource("/dev/Cogitri/Health/ui/shortcuts_window.ui")
-            .object::<gtk::ShortcutsWindow>("shortcuts_window")
-            .unwrap()
-            .show();
-    }
-
     fn handle_unit_system(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
         let parameter = parameter.unwrap();
 
@@ -286,7 +279,6 @@ impl Application {
         self.set_accels_for_action("win.fullscreen", &["F11"]);
         self.set_accels_for_action("win.hamburger-menu", &["F10"]);
         self.set_accels_for_action("app.help", &["F1"]);
-        self.set_accels_for_action("app.shortcuts", &["<Primary>question"]);
         self.set_accels_for_action("app.quit", &["<Primary>q"]);
     }
 
@@ -322,10 +314,6 @@ impl Application {
                 obj.handle_quit();
             })
         );
-
-        action!(self, "shortcuts", move |_, _| {
-            Self::handle_shortcuts();
-        });
 
         stateful_action!(
             self,
