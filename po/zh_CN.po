@@ -2,21 +2,22 @@
 # Copyright (C) 2021 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
 # D <afecr@foxmail.com>, 2021.
+# lumingzh <lumingzh@qq.com>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-18 20:06+0000\n"
-"PO-Revision-Date: 2022-01-19 10:34-0500\n"
-"Last-Translator: D <afecr@foxmail.com>\n"
-"Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
+"POT-Creation-Date: 2022-01-25 22:47+0000\n"
+"PO-Revision-Date: 2022-01-31 18:17+0800\n"
+"Last-Translator: lumingzh <lumingzh@qq.com>\n"
+"Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 2.4.3\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 41.0\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -40,7 +41,7 @@ msgstr "设置启用的插件"
 
 #: data/dev.Cogitri.Health.gschema.xml:27
 msgid "Sets all data source plugins that are enabled in Health."
-msgstr ""
+msgstr "设置健康中已启用的所有数据源插件。"
 
 #: data/dev.Cogitri.Health.gschema.xml:31
 msgid "Notification time"
@@ -159,7 +160,7 @@ msgstr "窗口的宽度。"
 
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.ui:51
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37
 #: src/main.rs:31
 msgid "Health"
 msgstr "健康"
@@ -174,383 +175,393 @@ msgid "A health tracking app for the GNOME desktop."
 msgstr "GNOME 桌面的健康追踪应用。"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+#| msgid ""
+#| "A health tracking app for the GNOME desktop. Health can visualize how "
+#| "many steps you've made daily, your weight development over time and your "
+#| "daily activities."
 msgid ""
 "A health tracking app for the GNOME desktop. Health can visualize how many "
 "steps you've made daily, your weight development over time and your daily "
-"activities."
+"activities. Data can be synched from Google Fit or manually entered into "
+"Health. Afterwards, it can be viewed and edited in Health."
 msgstr ""
 "GNOME 桌面的健康追踪应用。健康可以可视化您每天走了多少步，随着时间推移您的体"
-"重的发展，以及您每天的活动。"
+"重的发展，以及您每天的活动。数据可以从谷歌 Fit 同步或手动输入。之后可以在健康"
+"中查阅和编辑这些数据。"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:34
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:37
 msgid "Rasmus “Cogitri” Thomsen"
 msgstr "Rasmus “Cogitri” Thomsen"
 
-#: data/ui/data_add_dialog.ui:28 data/ui/import_export_dialog_base.ui:30
+#: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
 #: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
 #: src/windows/import_dialog.rs:53 src/windows/import_dialog.rs:82
 msgid "_Cancel"
 msgstr "取消(_C)"
 
-#: data/ui/data_add_dialog.ui:34 src/windows/export_dialog.rs:52
+#: data/ui/data_add_dialog.blp:10 src/windows/export_dialog.rs:52
 #: src/windows/export_dialog.rs:88
 msgid "_Save"
 msgstr "保存(_S)"
 
-#: data/ui/date_selector.ui:29
+#: data/ui/date_selector.blp:17
 msgid "January"
 msgstr "一月"
 
-#: data/ui/date_selector.ui:30 src/widgets/date_selector.rs:245
+#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:245
 msgid "February"
 msgstr "二月"
 
-#: data/ui/date_selector.ui:31
+#: data/ui/date_selector.blp:19
 msgid "March"
 msgstr "三月"
 
-#: data/ui/date_selector.ui:32
+#: data/ui/date_selector.blp:20
 msgid "April"
 msgstr "四月"
 
-#: data/ui/date_selector.ui:33
+#: data/ui/date_selector.blp:21
 msgid "May"
 msgstr "五月"
 
-#: data/ui/date_selector.ui:34
+#: data/ui/date_selector.blp:22
 msgid "June"
 msgstr "六月"
 
-#: data/ui/date_selector.ui:35
+#: data/ui/date_selector.blp:23
 msgid "July"
 msgstr "七月"
 
-#: data/ui/date_selector.ui:36
+#: data/ui/date_selector.blp:24
 msgid "August"
 msgstr "八月"
 
-#: data/ui/date_selector.ui:37
+#: data/ui/date_selector.blp:25
 msgid "September"
 msgstr "九月"
 
-#: data/ui/date_selector.ui:38
+#: data/ui/date_selector.blp:26
 msgid "October"
 msgstr "十月"
 
-#: data/ui/date_selector.ui:39
+#: data/ui/date_selector.blp:27
 msgid "November"
 msgstr "十一月"
 
-#: data/ui/date_selector.ui:40
+#: data/ui/date_selector.blp:28
 msgid "December"
 msgstr "十二月"
 
-#: data/ui/date_selector.ui:51
+#: data/ui/date_selector.blp:34
 msgid "Day"
 msgstr "日"
 
-#: data/ui/date_selector.ui:77
+#: data/ui/date_selector.blp:60
 msgid "Month"
 msgstr "月"
 
-#: data/ui/date_selector.ui:100
+#: data/ui/date_selector.blp:83
 msgid "Year"
 msgstr "年"
 
-#: data/ui/distance_action_row.ui:29 src/widgets/activity_row.rs:131
+#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:131
 msgid "Distance"
 msgstr "距离"
 
-#: data/ui/import_export_dialog_base.ui:36
+#: data/ui/import_export_dialog_base.blp:10
 msgid "_Export"
 msgstr "导出(_E)"
 
-#: data/ui/import_export_dialog_base.ui:84
+#: data/ui/import_export_dialog_base.blp:56
 msgid "Export weight measurements"
 msgstr "导出体重测量结果"
 
-#: data/ui/import_export_dialog_base.ui:99
+#: data/ui/import_export_dialog_base.blp:69
 msgid "Encrypt export"
 msgstr "加密导出"
 
-#: data/ui/password_entry.ui:28
+#: data/ui/password_entry.blp:9
 msgid "_Password"
 msgstr "密码(_P)"
 
-#: data/ui/password_entry.ui:59
+#: data/ui/password_entry.blp:40
 msgid "_Confirm password"
 msgstr "确认密码(_C)"
 
-#: data/ui/plugins/activities/details.ui:24
-#: data/ui/plugins/calories/details.ui:23 data/ui/plugins/steps/details.ui:23
+#: data/ui/plugins/activities/details.blp:5
+#: data/ui/plugins/calories/details.blp:4 data/ui/plugins/steps/details.blp:4
 msgid "You can use the <b>+</b> button to add a new activity."
 msgstr "您可以使用 <b>+</b> 按钮来添加新活动。"
 
-#: data/ui/plugins/activities/details.ui:27
+#: data/ui/plugins/activities/details.blp:8
 msgid "Recent Activities"
 msgstr "最近活动"
 
-#: data/ui/plugins/activities/summary.ui:25 data/ui/view_add_activity.ui:128
+#: data/ui/plugins/activities/summary.blp:5 data/ui/view_add_activity.blp:84
 msgid "Active Minutes"
 msgstr "活动分钟数"
 
-#: data/ui/plugins/calories/details.ui:26 src/plugins/calories/plugin.rs:39
+#: data/ui/plugins/calories/details.blp:7 src/plugins/calories/plugin.rs:39
 msgid "Calories"
 msgstr "卡路里"
 
-#: data/ui/plugins/calories/summary.ui:24 data/ui/view_add_activity.ui:111
+#: data/ui/plugins/calories/summary.blp:5 data/ui/view_add_activity.blp:66
 msgid "Calories Burned"
 msgstr "消耗的卡路里"
 
-#: data/ui/plugins/details.ui:93
+#: data/ui/plugins/details.blp:68
 msgid ""
 "This is a preview of how the plugin presents data. Enable the plugin to see "
 "your actual, live data."
-msgstr ""
+msgstr "这是插件如何呈现数据的预览。启用该插件来查看您确切实时的数据。"
 
-#: data/ui/plugins/steps/details.ui:26 data/ui/plugins/steps/summary.ui:24
-#: src/plugins/steps/plugin.rs:39
+#: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
+#: data/ui/preferences_window.blp:166 src/plugins/steps/plugin.rs:39
 msgid "Steps"
 msgstr "步数"
 
-#: data/ui/plugins/weight/details.ui:23
+#: data/ui/plugins/weight/details.blp:5
 msgid "You can use the <b>+</b> button to add a new weight measurement."
 msgstr "您可以使用 <b>+</b> 按钮来添加新的体重测量结果。"
 
-#: data/ui/plugins/weight/details.ui:26
+#: data/ui/plugins/weight/details.blp:8
 msgid "Weight Measurements"
 msgstr "体重测量结果"
 
-#: data/ui/plugins/weight/summary.ui:24 data/ui/preferences_window.ui:218
-#: data/ui/view_add_weight.ui:59 src/plugins/weight/plugin.rs:39
-#: src/views/view_add_weight.rs:85
+#: data/ui/plugins/weight/summary.blp:5 data/ui/preferences_window.blp:184
+#: data/ui/preferences_window.blp:187 data/ui/view_add_weight.blp:38
+#: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
 msgid "Weight"
 msgstr "体重"
 
-#: data/ui/preferences_window.ui:55
+#: data/ui/preferences_window.blp:43
 msgid "_Every 1 hour"
 msgstr "每 1 小时(_E)"
 
-#: data/ui/preferences_window.ui:60
+#: data/ui/preferences_window.blp:49
 msgid "_Every 4 hours"
 msgstr "每 4 小时(_E)"
 
-#: data/ui/preferences_window.ui:65
+#: data/ui/preferences_window.blp:55
 msgid "_Fixed Time"
 msgstr "固定时间(_F)"
 
-#: data/ui/preferences_window.ui:72
+#: data/ui/preferences_window.blp:63
 msgid "Health Preferences"
 msgstr "健康首选项"
 
-#: data/ui/preferences_window.ui:78 data/ui/shortcuts_window.ui:30
+#: data/ui/preferences_window.blp:69 data/ui/shortcuts_window.blp:11
 msgid "General"
 msgstr "常规"
 
-#: data/ui/preferences_window.ui:81
+#: data/ui/preferences_window.blp:72
 msgid "User"
 msgstr "用户"
 
-#: data/ui/preferences_window.ui:84 data/ui/setup_window.ui:180
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:146
 msgid "Unit system"
 msgstr "单位制"
 
-#: data/ui/preferences_window.ui:93 data/ui/setup_window.ui:189
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:156
 msgid "Imperial"
 msgstr "英制"
 
-#: data/ui/preferences_window.ui:100 data/ui/setup_window.ui:196
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:162
 msgid "Metric"
 msgstr "公制"
 
-#: data/ui/preferences_window.ui:111 data/ui/setup_window.ui:207
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:170
 msgid "Birthday"
 msgstr "生日"
 
-#: data/ui/preferences_window.ui:122 data/ui/setup_window.ui:218
+#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:179
 msgid "Height"
 msgstr "身高"
 
-#: data/ui/preferences_window.ui:139
+#: data/ui/preferences_window.blp:122
 msgid "Notifications"
 msgstr "通知"
 
-#: data/ui/preferences_window.ui:142
+#: data/ui/preferences_window.blp:125
 msgid "Enable notifications"
 msgstr "启用通知"
 
-#: data/ui/preferences_window.ui:156
+#: data/ui/preferences_window.blp:136
 msgid "Frequency"
 msgstr "频率"
 
-#: data/ui/preferences_window.ui:173
+#: data/ui/preferences_window.blp:149
 msgid "Daily reminder time"
 msgstr "每日提醒时间"
 
-#: data/ui/preferences_window.ui:197 data/ui/setup_window.ui:284
+#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:242
 #: src/plugins/steps/details.rs:241
 msgid "Step goal"
 msgstr "步数目标"
 
-#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:261
+#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:218
 msgid "The WHO recommends 10.000 steps per day."
 msgstr "世界卫生组织建议每天 10000 步。"
 
-#: data/ui/preferences_window.ui:219 data/ui/setup_window.ui:325
+#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:279
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "世界卫生组织建议 BMI 为 18.5-24.9。"
 
-#: data/ui/preferences_window.ui:249
+#: data/ui/preferences_window.blp:212
 msgid "Sync"
 msgstr "同步"
 
-#: data/ui/preferences_window.ui:253
+#: data/ui/preferences_window.blp:216
 msgid "Start sync with third-party providers."
 msgstr "开始与第三方提供程序同步。"
 
-#: data/ui/preferences_window.ui:263
+#: data/ui/preferences_window.blp:224
 msgid "Importing and exporting data"
 msgstr "导入和导出数据"
 
-#: data/ui/preferences_window.ui:266
+#: data/ui/preferences_window.blp:227
 msgid "Export data as CSV"
 msgstr "将数据导出为 CSV"
 
-#: data/ui/preferences_window.ui:269
+#: data/ui/preferences_window.blp:230
 msgid "Export…"
 msgstr "导出…"
 
-#: data/ui/preferences_window.ui:278
+#: data/ui/preferences_window.blp:237
 msgid "Import data from CSV"
 msgstr "从 CSV 导入数据"
 
-#: data/ui/preferences_window.ui:281
+#: data/ui/preferences_window.blp:240
 msgid "Import…"
 msgstr "导入…"
 
-#: data/ui/setup_window.ui:55
+#: data/ui/setup_window.blp:33
 msgid "Health Setup"
 msgstr "健康设置"
 
-#: data/ui/setup_window.ui:70
+#: data/ui/setup_window.blp:47
 msgid "_Quit"
 msgstr "退出(_Q)"
 
-#: data/ui/setup_window.ui:83
+#: data/ui/setup_window.blp:56
 msgid "_Previous"
 msgstr "上一步(_P)"
 
-#: data/ui/setup_window.ui:101
+#: data/ui/setup_window.blp:71
 msgid "_Next"
 msgstr "下一步(_N)"
 
-#: data/ui/setup_window.ui:116
+#: data/ui/setup_window.blp:84
 msgid "_Done"
 msgstr "完成(_D)"
 
-#: data/ui/setup_window.ui:145
+#: data/ui/setup_window.blp:110
 msgid "Welcome to Health!"
 msgstr "欢迎使用健康！"
 
-#: data/ui/setup_window.ui:157
+#: data/ui/setup_window.blp:122
 msgid "Please enter some information to get setup."
 msgstr "请输入一些信息以进行设置。"
 
-#: data/ui/setup_window.ui:249
+#: data/ui/setup_window.blp:206
 msgid "Please enter your daily step goal."
 msgstr "请输入您的每日步数目标。"
 
-#: data/ui/setup_window.ui:313
+#: data/ui/setup_window.blp:267
 msgid "Please enter your weight goal."
 msgstr "请输入您的体重目标。"
 
-#: data/ui/setup_window.ui:352 src/plugins/weight/details.rs:221
+#: data/ui/setup_window.blp:307 src/plugins/weight/details.rs:221
 msgid "Weight goal"
 msgstr "体重目标"
 
-#: data/ui/setup_window.ui:393
+#: data/ui/setup_window.blp:342
 msgid "Setup sync with third-party providers."
 msgstr "设置与第三方提供程序同步。"
 
-#: data/ui/setup_window.ui:405
+#: data/ui/setup_window.blp:354
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr "您可以从/向第三方提供程序同步步数和体重测量结果。"
 
-#: data/ui/shortcuts_window.ui:34
+#: data/ui/shortcuts_window.blp:15
 msgid "Quit the application"
 msgstr "退出应用程序"
 
-#: data/ui/shortcuts_window.ui:40
+#: data/ui/shortcuts_window.blp:20
 msgid "Show this shortcuts window"
 msgstr "显示此快捷键窗口"
 
-#: data/ui/shortcuts_window.ui:46
+#: data/ui/shortcuts_window.blp:25
 msgid "Show help"
 msgstr "显示帮助"
 
-#: data/ui/shortcuts_window.ui:52
+#: data/ui/shortcuts_window.blp:30
 msgid "Show primary menu"
 msgstr "显示主菜单"
 
-#: data/ui/shortcuts_window.ui:58
+#: data/ui/shortcuts_window.blp:35
 msgid "Toggle fullscreen mode"
 msgstr "切换全屏模式"
 
-#: data/ui/view_add_activity.ui:91 data/ui/view_add_weight.ui:49
+#: data/ui/sync_list_box.blp:30
+msgid "Google Fit"
+msgstr "谷歌 Fit"
+
+#: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:30
 msgid "Date"
 msgstr "日期"
 
-#: data/ui/view_add_activity.ui:102
+#: data/ui/view_add_activity.blp:57
 msgid "Activity Type"
 msgstr "活动类型"
 
-#: data/ui/view_add_activity.ui:141
+#: data/ui/view_add_activity.blp:97
 msgid "Average Heart Rate"
 msgstr "平均心率"
 
-#: data/ui/view_add_activity.ui:153
+#: data/ui/view_add_activity.blp:109
 msgid "Minimum Heart Rate"
 msgstr "最小心率"
 
-#: data/ui/view_add_activity.ui:165
+#: data/ui/view_add_activity.blp:121
 msgid "Maximum Heart Rate"
 msgstr "最大心率"
 
-#: data/ui/view_add_activity.ui:177
+#: data/ui/view_add_activity.blp:133
 msgid "Stepcount"
 msgstr "步数"
 
-#: data/ui/view_home_page.ui:78
+#: data/ui/view_home_page.blp:61
 msgid "For you"
-msgstr ""
+msgstr "您的"
 
-#: data/ui/view_home_page.ui:108
+#: data/ui/view_home_page.blp:86
 msgid ""
 "No plugins enabled. Enable one from the list below to start using Health."
-msgstr ""
+msgstr "未启用插件。请从下面的列表中启用插件来开始使用健康。"
 
-#: data/ui/view_home_page.ui:132
+#: data/ui/view_home_page.blp:107
 msgid "All data"
 msgstr "所有数据"
 
-#: data/ui/window.ui:27
+#: data/ui/window.blp:8
 msgid "_Disable Current Plugin"
 msgstr "禁用当前插件(_D)"
 
-#: data/ui/window.ui:33
+#: data/ui/window.blp:15
 msgid "_Preferences"
 msgstr "首选项(_P)"
 
-#: data/ui/window.ui:37
+#: data/ui/window.blp:20
 msgid "_Keyboard Shortcuts"
 msgstr "键盘快捷键(_K)"
 
-#: data/ui/window.ui:43
+#: data/ui/window.blp:27
 msgid "_About Health"
 msgstr "关于健康(_A)"
 
-#: data/ui/window.ui:84
+#: data/ui/window.blp:69
 msgid "Enable plugin"
 msgstr "启用插件"
 
@@ -642,21 +653,16 @@ msgstr "排球"
 msgid "Walking"
 msgstr "步行"
 
-#: src/model/model_notification.rs:228
+#: src/model/model_notification.rs:224
 msgid "Health: walking reminder"
 msgstr "健康：步行提醒"
 
-#. TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
-#: src/model/model_notification.rs:250
-msgid "{} step remaining to complete your daily step goal"
-msgid_plural "{} steps remaining to complete your daily step goal"
-msgstr[0] "还剩 {} 步才能完成您的每日步数目标"
-
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/model/model_notification.rs:256
-msgid "of {} step"
-msgid_plural "of {} steps"
-msgstr[0] "（{} 步）"
+#: src/model/model_notification.rs:245
+#| msgid "{} step remaining to complete your daily step goal"
+#| msgid_plural "{} steps remaining to complete your daily step goal"
+msgid "{} step remaining to complete your daily step goal."
+msgid_plural "{} steps remaining to complete your daily step goal."
+msgstr[0] "还剩 {} 步完成您的每日步数目标。"
 
 #: src/plugins/activities/plugin.rs:39
 msgid "Activities"
@@ -723,11 +729,10 @@ msgid_plural "{} steps taken today"
 msgstr[0] "今天走了 {} 步"
 
 #: src/plugins/steps/summary.rs:107
-#, fuzzy
 #| msgid "Please enter your daily step goal."
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
-msgstr[0] "请输入您的每日步数目标。"
+msgstr[0] "已达到您每日步数目标的百分之 {}"
 
 #: src/plugins/weight/details.rs:193
 msgid "Current BMI: {}"
@@ -812,32 +817,28 @@ msgid_plural "{} kilograms"
 msgstr[0] "{} 公斤"
 
 #: src/plugins/weight/summary.rs:139
-#, fuzzy
 #| msgid "compared to previous weight"
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
-msgstr[0] "与以前的体重相比"
+msgstr[0] "与以前的测量相比 + {} 磅"
 
 #: src/plugins/weight/summary.rs:147
-#, fuzzy
 #| msgid "compared to previous weight"
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
-msgstr[0] "与以前的体重相比"
+msgstr[0] "与以前的测量相比 + {} 公斤"
 
 #: src/plugins/weight/summary.rs:158
-#, fuzzy
 #| msgid "compared to previous weight"
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
-msgstr[0] "与以前的体重相比"
+msgstr[0] "与以前的测量相比 {} 磅"
 
 #: src/plugins/weight/summary.rs:166
-#, fuzzy
 #| msgid "compared to previous weight"
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
-msgstr[0] "与以前的体重相比"
+msgstr[0] "与以前的测量相比 {} 公斤"
 
 #: src/plugins/weight/summary.rs:174
 msgid "No change in weight"
@@ -912,12 +913,11 @@ msgid "Activity"
 msgstr "活动"
 
 #: src/widgets/activity_row.rs:79
-#, fuzzy
 #| msgid "{} Minute"
 #| msgid_plural "{} Minutes"
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
-msgstr[0] "{} 分钟"
+msgstr[0] "{} 了 {} 分钟"
 
 #: src/widgets/activity_row.rs:91
 msgid "Calories burned"
@@ -943,7 +943,7 @@ msgstr[0] "{} 米"
 #: src/widgets/activity_row.rs:129
 msgid "{} yard"
 msgid_plural "{} yards"
-msgstr[0] ""
+msgstr[0] "{} 码"
 
 #: src/widgets/bmi_level_bar.rs:219 src/widgets/bmi_level_bar.rs:256
 msgid "<small>Current BMI: {}</small>"
@@ -1051,37 +1051,33 @@ msgstr "打开体重测量结果"
 msgid "Import data"
 msgstr "导入数据"
 
-#: src/windows/import_export_dialog_base.rs:212
+#: src/windows/import_export_dialog_base.rs:214
 msgid "Import activities"
 msgstr "导入活动"
 
-#: src/windows/import_export_dialog_base.rs:214
+#: src/windows/import_export_dialog_base.rs:216
 msgid "Import is encrypted"
 msgstr "导入已加密"
 
-#: src/windows/import_export_dialog_base.rs:215
+#: src/windows/import_export_dialog_base.rs:217
 msgid "Import weights"
 msgstr "导入体重"
 
-#: src/windows/import_export_dialog_base.rs:216
+#: src/windows/import_export_dialog_base.rs:218
 msgid "Import"
 msgstr "导入"
 
-#: src/windows/import_export_dialog_base.rs:294
+#: src/windows/import_export_dialog_base.rs:296
 msgid "Success!"
 msgstr "成功！"
 
-#: src/windows/import_export_dialog_base.rs:298
+#: src/windows/import_export_dialog_base.rs:300
 msgid "An error occurred!"
 msgstr "发生了错误！"
 
-#: src/windows/import_export_dialog_base.rs:303
+#: src/windows/import_export_dialog_base.rs:305
 msgid "Close"
 msgstr "关闭"
-
-#: src/windows/preferences_window.rs:374
-msgid "Remind you of your step goals"
-msgstr "提醒您您的步数目标"
 
 #: src/windows/window.rs:97
 msgid "Failed to migrate database to new version due to error {}"
@@ -1090,6 +1086,13 @@ msgstr "无法将数据库迁移到新版本，由于错误 {}"
 #: src/windows/window.rs:266
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr "无法同步 Google Fit 数据，由于错误：{}"
+
+#~ msgid "of {} step"
+#~ msgid_plural "of {} steps"
+#~ msgstr[0] "（{} 步）"
+
+#~ msgid "Remind you of your step goals"
+#~ msgstr "提醒您您的步数目标"
 
 #~ msgid "Last opened view"
 #~ msgstr "上次打开的视图"
