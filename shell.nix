@@ -1,7 +1,6 @@
 let
   moz_overlay = import (builtins.fetchTarball https://github.com/mozilla/nixpkgs-mozilla/archive/master.tar.gz);
-  pkgs = import (fetchTarball("https://github.com/nixos/nixpkgs/archive/a6928c74cc64a141051160d1cdbbc3d2c1bbece2.tar.gz")) { overlays = [ moz_overlay ]; };
-
+  pkgs = import (fetchTarball("channel:nixpkgs-unstable")) { overlays = [ moz_overlay ]; };
   rustSrc =
     pkgs.latest.rustChannels.stable.rust.override { extensions = [ "rust-src" ]; };
   buildInputs = with pkgs; [ 
