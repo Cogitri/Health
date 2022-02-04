@@ -3,14 +3,15 @@
 # This file is distributed under the same license as the health package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # Fran Dieguez <frandieguez@gnome.org>, 2021.
+# Fran Diéguez <frandieguez@gnome.org>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-09-04 00:41+0000\n"
-"PO-Revision-Date: 2021-09-07 00:32+0200\n"
-"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
+"POT-Creation-Date: 2022-01-25 22:47+0000\n"
+"PO-Revision-Date: 2022-02-04 15:05+0100\n"
+"Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
@@ -22,41 +23,32 @@ msgstr ""
 "X-DL-Branch: master\n"
 "X-DL-Domain: po\n"
 "X-DL-State: Translating\n"
-"X-Generator: Gtranslator 40.0\n"
-
-#: data/dev.Cogitri.Health.desktop.in.in:3
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.ui:45
-#: src/main.rs:31
-msgid "Health"
-msgstr "Saúde"
-
-#: data/dev.Cogitri.Health.desktop.in.in:5
-msgid "@APPLICATION_ID@"
-msgstr "@APPLICATION_ID@"
+"X-Generator: Gtranslator 41.0\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
-msgid "Last opened view"
-msgstr "Última vista aberta"
-
-#: data/dev.Cogitri.Health.gschema.xml:17
-msgid "The last view the user had opened, for restoring it on start"
-msgstr "A última vista que abreu o usuario, para restaurala ao inicio"
-
-#: data/dev.Cogitri.Health.gschema.xml:21
 msgid "First time setup done"
 msgstr "Configuración inicial feita"
 
-#: data/dev.Cogitri.Health.gschema.xml:22
+#: data/dev.Cogitri.Health.gschema.xml:17
 msgid "Whether the user has completed the setup wizard"
 msgstr "Indica se o usuario completou o titorial de configuración"
 
-#: data/dev.Cogitri.Health.gschema.xml:26
+#: data/dev.Cogitri.Health.gschema.xml:21
 msgid "Toggle notifications"
 msgstr "Trocar notificacións"
 
-#: data/dev.Cogitri.Health.gschema.xml:27
+#: data/dev.Cogitri.Health.gschema.xml:22
 msgid "Whether to enable notifications."
 msgstr "Indica se actiar as notificacións."
+
+#: data/dev.Cogitri.Health.gschema.xml:26
+msgid "Set enabled plugins"
+msgstr "Estabelecer engadidos activados"
+
+#: data/dev.Cogitri.Health.gschema.xml:27
+msgid "Sets all data source plugins that are enabled in Health."
+msgstr ""
+"Estabelece todos engadidos de orixes de datos que están activos en Saúde"
 
 #: data/dev.Cogitri.Health.gschema.xml:31
 msgid "Notification time"
@@ -113,6 +105,8 @@ msgstr "Sistema de unidades usado"
 #: data/dev.Cogitri.Health.gschema.xml:57
 msgid "The unit system the user chose, e.g. for cm vs inch for height"
 msgstr ""
+"A unidade do sistema que o usuario escolle, p.ex. cm ou polgadas para a "
+"altura"
 
 #: data/dev.Cogitri.Health.gschema.xml:61
 msgid "User age"
@@ -120,7 +114,7 @@ msgstr "Idade do usuario"
 
 #: data/dev.Cogitri.Health.gschema.xml:62
 msgid "The age of the user (deprecated)."
-msgstr ""
+msgstr "A idade o usuario (obsoleto)"
 
 #: data/dev.Cogitri.Health.gschema.xml:66
 msgid "Absolute user age"
@@ -128,7 +122,7 @@ msgstr "Idade absoluta do usuario"
 
 #: data/dev.Cogitri.Health.gschema.xml:67
 msgid "The age of the user in absolute terms (like 01/01/1970)"
-msgstr ""
+msgstr "A idade do usuario en termos absolutos (como 01/01/1970)"
 
 #: data/dev.Cogitri.Health.gschema.xml:71
 msgid "User height"
@@ -136,7 +130,7 @@ msgstr "Altura de usuario"
 
 #: data/dev.Cogitri.Health.gschema.xml:72
 msgid "The height of the user."
-msgstr ""
+msgstr "A altura do usuario."
 
 #: data/dev.Cogitri.Health.gschema.xml:76
 msgid "User step goal"
@@ -144,7 +138,7 @@ msgstr "Obxectivo de pasos do usuario"
 
 #: data/dev.Cogitri.Health.gschema.xml:77
 msgid "The amount of steps the user wants to reach daily."
-msgstr ""
+msgstr "A cantidade de pasos que o usuario quere acadar cada día."
 
 #: data/dev.Cogitri.Health.gschema.xml:81
 msgid "User weight goal"
@@ -152,7 +146,7 @@ msgstr "Obxectivo de peso do usuario"
 
 #: data/dev.Cogitri.Health.gschema.xml:82
 msgid "The weight the user wants to reach."
-msgstr ""
+msgstr "O peso que o usuario quere acadar."
 
 #: data/dev.Cogitri.Health.gschema.xml:86
 msgid "Window height"
@@ -160,7 +154,7 @@ msgstr "Altura da xanela"
 
 #: data/dev.Cogitri.Health.gschema.xml:87
 msgid "The height of the window."
-msgstr ""
+msgstr "A altura da xanela"
 
 #: data/dev.Cogitri.Health.gschema.xml:91
 msgid "Window maximized"
@@ -168,7 +162,7 @@ msgstr "Xanela maximizadda"
 
 #: data/dev.Cogitri.Health.gschema.xml:92
 msgid "Whether the window is maximized."
-msgstr ""
+msgstr "Indica se a xanela está maximizada"
 
 #: data/dev.Cogitri.Health.gschema.xml:96
 msgid "Window width"
@@ -176,560 +170,530 @@ msgstr "Anchura da xanela"
 
 #: data/dev.Cogitri.Health.gschema.xml:97
 msgid "The width of the window."
-msgstr ""
+msgstr "A anchura da xanela."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:138
+#: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
+#: data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37
+#: src/main.rs:31
+msgid "Health"
+msgstr "Saúde"
+
+#: data/dev.Cogitri.Health.Autostart.desktop.in.in:5
+#: data/dev.Cogitri.Health.desktop.in.in:5
+msgid "@APPLICATION_ID@"
+msgstr "@APPLICATION_ID@"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:167
 msgid "A health tracking app for the GNOME desktop."
-msgstr ""
+msgstr "Unha aplicación de seguimento da saúde para o escritorio de GNOME."
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
 msgid ""
 "A health tracking app for the GNOME desktop. Health can visualize how many "
 "steps you've made daily, your weight development over time and your daily "
-"activities."
+"activities. Data can be synched from Google Fit or manually entered into "
+"Health. Afterwards, it can be viewed and edited in Health."
 msgstr ""
+"Unha aplicación de seguimento da saúde para o escritorio de GNOME. Saúde "
+"pode mostrar cantos pasos fixo diariamente, a evolución do seu peso no tempo "
+"e as súas actividades diarias. Os datos sincronízanse con Google Fit ou cos "
+"datos inseridos manualmente en Saúde. Despois diso pode velo e editalos "
+"desde Saúde."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:31
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:37
 msgid "Rasmus “Cogitri” Thomsen"
-msgstr ""
+msgstr "Rasmus “Cogitri” Thomsen"
 
-#: data/ui/activity_add_dialog.ui:64
-msgid "Add An Activity"
-msgstr "Engadir unha actividade"
-
-#: data/ui/activity_add_dialog.ui:93 data/ui/weight_add_dialog.ui:51
-msgid "Date"
-msgstr "Data"
-
-#: data/ui/activity_add_dialog.ui:102
-msgid "Activity Type"
-msgstr "Tipo de actividade"
-
-#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:75
-msgid "Calories Burned"
-msgstr "Calorias queimadas"
-
-#: data/ui/activity_add_dialog.ui:124
-msgid "Active Minutes"
-msgstr "Minutos activos"
-
-#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:102
-msgid "Average Heart Rate"
-msgstr "Pulsacións medias"
-
-#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:111
-msgid "Minimum Heart Rate"
-msgstr "Pulsacións mínimas"
-
-#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:120
-msgid "Maximum Heart Rate"
-msgstr "Pulsacións máximas"
-
-#: data/ui/activity_add_dialog.ui:172
-msgid "Stepcount"
-msgstr "Contía de pasos"
-
-#: data/ui/activity_row.ui:84
-msgid "Distance in Meters"
-msgstr "Distancia en metros"
-
-#: data/ui/activity_row.ui:93 data/ui/home_page.ui:69 data/ui/step_view.ui:26
-#: data/ui/step_view.ui:27
-msgid "Steps"
-msgstr "Pasos"
-
-#: data/ui/activity_view.ui:24 data/ui/calorie_view.ui:23
-#: data/ui/home_page.ui:24 data/ui/step_view.ui:23
-msgid "You can use the <b>+</b> button to add a new activity."
-msgstr "Pode usar o botón <b>+</b> para engadir unha actividade nova."
-
-#: data/ui/activity_view.ui:27 data/ui/home_page.ui:27
-msgid "Recent Activities"
-msgstr "Actividades recentes"
-
-#: data/ui/activity_view.ui:28
-msgid "Activities"
-msgstr "Actividades"
-
-#: data/ui/calorie_view.ui:26 data/ui/calorie_view.ui:27
-msgid "Calories"
-msgstr "Calorias"
-
-#: data/ui/data_add_dialog.ui:26 data/ui/preferences_window.ui:72
-msgid "Health Preferences"
-msgstr "Prererencias de Saúde"
-
-#: data/ui/data_add_dialog.ui:31 data/ui/import_export_dialog_base.ui:29
-#: src/windows/export_dialog.rs:56 src/windows/export_dialog.rs:92
-#: src/windows/import_dialog.rs:56 src/windows/import_dialog.rs:85
+#: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
+#: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
+#: src/windows/import_dialog.rs:53 src/windows/import_dialog.rs:82
 msgid "_Cancel"
 msgstr "_Cancelar"
 
-#: data/ui/data_add_dialog.ui:37 src/windows/export_dialog.rs:55
-#: src/windows/export_dialog.rs:91
+#: data/ui/data_add_dialog.blp:10 src/windows/export_dialog.rs:52
+#: src/windows/export_dialog.rs:88
 msgid "_Save"
 msgstr "_Gardar"
 
-#: data/ui/date_editor.ui:29
+#: data/ui/date_selector.blp:17
 msgid "January"
 msgstr "Xaneiro"
 
-#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:244
+#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:245
 msgid "February"
 msgstr "Febreiro"
 
-#: data/ui/date_editor.ui:31
+#: data/ui/date_selector.blp:19
 msgid "March"
 msgstr "Marzo"
 
-#: data/ui/date_editor.ui:32
+#: data/ui/date_selector.blp:20
 msgid "April"
 msgstr "Abril"
 
-#: data/ui/date_editor.ui:33
+#: data/ui/date_selector.blp:21
 msgid "May"
 msgstr "Maio"
 
-#: data/ui/date_editor.ui:34
+#: data/ui/date_selector.blp:22
 msgid "June"
 msgstr "Xuño"
 
-#: data/ui/date_editor.ui:35
+#: data/ui/date_selector.blp:23
 msgid "July"
 msgstr "Xullo"
 
-#: data/ui/date_editor.ui:36
+#: data/ui/date_selector.blp:24
 msgid "August"
 msgstr "Agosto"
 
-#: data/ui/date_editor.ui:37
+#: data/ui/date_selector.blp:25
 msgid "September"
 msgstr "Setembro"
 
-#: data/ui/date_editor.ui:38
+#: data/ui/date_selector.blp:26
 msgid "October"
 msgstr "Outubro"
 
-#: data/ui/date_editor.ui:39
+#: data/ui/date_selector.blp:27
 msgid "November"
 msgstr "Novembro"
 
-#: data/ui/date_editor.ui:40
+#: data/ui/date_selector.blp:28
 msgid "December"
 msgstr "Decembro"
 
-#: data/ui/date_editor.ui:51
+#: data/ui/date_selector.blp:34
 msgid "Day"
 msgstr "Día"
 
-#: data/ui/date_editor.ui:76
+#: data/ui/date_selector.blp:60
 msgid "Month"
 msgstr "Mes"
 
-#: data/ui/date_editor.ui:98
+#: data/ui/date_selector.blp:83
 msgid "Year"
 msgstr "Ano"
 
-#: data/ui/distance_action_row.ui:29
+#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:131
 msgid "Distance"
 msgstr "Distancia"
 
-#: data/ui/home_page.ui:28
-msgid "Home Page"
-msgstr "Páxina principal"
-
-#: data/ui/home_page.ui:63 data/ui/preferences_window.ui:82
-#: data/ui/shortcuts_window.ui:30
-msgid "General"
-msgstr "Xeral"
-
-#: data/ui/home_page.ui:66
-msgid "Today"
-msgstr "Hoxe"
-
-#. TRANSLATORS: This is displayed via two strings: x% and then this label. E.g. 100% of daily step goal
-#: data/ui/home_page.ui:90
-msgid "of daily step goal"
-msgstr "do obxectivo de pasos diario"
-
-#: data/ui/home_page.ui:103 data/ui/preferences_window.ui:218
-#: data/ui/weight_add_dialog.ui:61 data/ui/weight_view.ui:27
-msgid "Weight"
-msgstr "Peso"
-
-#: data/ui/import_export_dialog_base.ui:35
+#: data/ui/import_export_dialog_base.blp:10
 msgid "_Export"
 msgstr "_Exportar"
 
-#: data/ui/password_entry.ui:28
+#: data/ui/import_export_dialog_base.blp:56
+#| msgid "Weight Measurements"
+msgid "Export weight measurements"
+msgstr "Exportar medidas de peso"
+
+#: data/ui/import_export_dialog_base.blp:69
+msgid "Encrypt export"
+msgstr "Cifrar exportado"
+
+#: data/ui/password_entry.blp:9
 msgid "_Password"
 msgstr "_Contrasinal"
 
-#: data/ui/password_entry.ui:58
+#: data/ui/password_entry.blp:40
 msgid "_Confirm password"
 msgstr "_Confirmar contrasinal"
 
-#: data/ui/preferences_window.ui:55
-msgid "_Every 1 hour"
-msgstr "_Cada hora"
+#: data/ui/plugins/activities/details.blp:5
+#: data/ui/plugins/calories/details.blp:4 data/ui/plugins/steps/details.blp:4
+msgid "You can use the <b>+</b> button to add a new activity."
+msgstr "Pode usar o botón <b>+</b> para engadir unha actividade nova."
 
-#: data/ui/preferences_window.ui:60
-msgid "_Every 4 hours"
-msgstr "_Cada 4 horas"
+#: data/ui/plugins/activities/details.blp:8
+msgid "Recent Activities"
+msgstr "Actividades recentes"
 
-#: data/ui/preferences_window.ui:65
-msgid "_Fixed Time"
-msgstr "_Hora fixa"
+#: data/ui/plugins/activities/summary.blp:5 data/ui/view_add_activity.blp:84
+msgid "Active Minutes"
+msgstr "Minutos activos"
 
-#: data/ui/preferences_window.ui:85
-msgid "User"
-msgstr "Usuario"
+#: data/ui/plugins/calories/details.blp:7 src/plugins/calories/plugin.rs:39
+msgid "Calories"
+msgstr "Calorias"
 
-#: data/ui/preferences_window.ui:88 data/ui/setup_window.ui:176
-msgid "Unit system"
-msgstr "Sistema de unidades"
+#: data/ui/plugins/calories/summary.blp:5 data/ui/view_add_activity.blp:66
+msgid "Calories Burned"
+msgstr "Calorias queimadas"
 
-#: data/ui/preferences_window.ui:97 data/ui/setup_window.ui:185
-msgid "Imperial"
-msgstr "Imperial"
-
-#: data/ui/preferences_window.ui:104 data/ui/setup_window.ui:192
-msgid "Metric"
-msgstr "Métrico"
-
-#: data/ui/preferences_window.ui:115 data/ui/setup_window.ui:203
-msgid "Birthday"
-msgstr "Día de nacemento"
-
-#: data/ui/preferences_window.ui:125 data/ui/setup_window.ui:213
-msgid "Height"
-msgstr "Altura"
-
-#: data/ui/preferences_window.ui:141
-msgid "Notifications"
-msgstr "Notificacións"
-
-#: data/ui/preferences_window.ui:144
-msgid "Enable notifications"
-msgstr "Activar notificacións"
-
-#: data/ui/preferences_window.ui:157
-msgid "Frequency"
-msgstr "Frecuencia"
-
-#: data/ui/preferences_window.ui:174
-msgid "Daily reminder time"
-msgstr "Hora de recordatorio diario"
-
-#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:279
-#: src/views/view_steps.rs:193
-msgid "Step goal"
-msgstr "Obxectivo de pasos"
-
-#: data/ui/preferences_window.ui:199 data/ui/setup_window.ui:256
-msgid "The WHO recommends 10.000 steps per day."
-msgstr "A OMS recomenda 10.000 pasos diarios."
-
-#: data/ui/preferences_window.ui:219 data/ui/setup_window.ui:321
-msgid "The WHO recommends a BMI of 18.5-24.9."
-msgstr "A OMS recomenta un IMC de 18.5 a 24.9."
-
-#: data/ui/preferences_window.ui:248
-msgid "Sync"
-msgstr "Sincronizar"
-
-#: data/ui/preferences_window.ui:252
-msgid "Start sync with third-party providers."
-msgstr "Comezar sincronización cos fornecedores de terceiros."
-
-#: data/ui/preferences_window.ui:262
-msgid "Importing and exporting data"
-msgstr "Importar e exportar datos"
-
-#: data/ui/preferences_window.ui:265
-msgid "Export data as CSV"
-msgstr "Exportar datos como CSV"
-
-#: data/ui/preferences_window.ui:268
-msgid "Export…"
-msgstr "Exportar…"
-
-#: data/ui/preferences_window.ui:276
-msgid "Import data from CSV"
-msgstr "Importar datos desde CSV"
-
-#: data/ui/preferences_window.ui:279
-msgid "Import…"
-msgstr "Importar…"
-
-#: data/ui/setup_window.ui:55
-msgid "Health Setup"
-msgstr "Configuración de Saúde"
-
-#: data/ui/setup_window.ui:70
-msgid "_Quit"
-msgstr "_Saír"
-
-#: data/ui/setup_window.ui:82
-msgid "_Previous"
-msgstr "_Anterior"
-
-#: data/ui/setup_window.ui:99
-msgid "_Next"
-msgstr "_Seguinte"
-
-#: data/ui/setup_window.ui:113
-msgid "_Done"
-msgstr "_Feito"
-
-#: data/ui/setup_window.ui:140
-msgid "Welcome to Health!"
-msgstr "Benvida a Saúde!"
-
-#: data/ui/setup_window.ui:153
-msgid "Please enter some information to get setup."
-msgstr "Escriba algunha información para configurar."
-
-#: data/ui/setup_window.ui:243
-msgid "Please enter your daily step goal."
-msgstr "Introduza o obxectivo de pasos diario."
-
-#: data/ui/setup_window.ui:308
-msgid "Please enter your weight goal."
-msgstr "Introduza o obxectivo de peso."
-
-#: data/ui/setup_window.ui:349 src/views/view_weight.rs:171
-msgid "Weight goal"
-msgstr "Obxectivo de peso"
-
-#: data/ui/setup_window.ui:389
-msgid "Setup sync with third-party providers."
-msgstr "Configurar a sincronización con fornecedores de terceiros."
-
-#: data/ui/setup_window.ui:402
+#: data/ui/plugins/details.blp:68
 msgid ""
-"You can sync steps and weight measurements from/to third-party providers."
+"This is a preview of how the plugin presents data. Enable the plugin to see "
+"your actual, live data."
 msgstr ""
+"Isto é unha vista previa de como representa os datos o engadido. Active este "
+"engadido para ver os datos reais e en vivo."
 
-#: data/ui/shortcuts_window.ui:34
-msgid "Quit the application"
-msgstr "Saír da aplicación"
+#: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
+#: data/ui/preferences_window.blp:166 src/plugins/steps/plugin.rs:39
+msgid "Steps"
+msgstr "Pasos"
 
-#: data/ui/shortcuts_window.ui:40
-msgid "Show this shortcuts window"
-msgstr "Mostrar esta pantalla de atallos"
+#: data/ui/plugins/weight/details.blp:5
+msgid "You can use the <b>+</b> button to add a new weight measurement."
+msgstr "Pode usar o botón <b>+</b> para engadir unha nova pesaxe."
 
-#: data/ui/shortcuts_window.ui:46
-msgid "Show help"
-msgstr "Mostrar a axuda"
-
-#: data/ui/shortcuts_window.ui:52
-msgid "Show primary menu"
-msgstr "Mostrar o menú principal"
-
-#: data/ui/shortcuts_window.ui:58
-msgid "Toggle fullscreen mode"
-msgstr "Trocar o modo a pantalla completa"
-
-#: data/ui/weight_add_dialog.ui:31 data/ui/weight_view.ui:26
+#: data/ui/plugins/weight/details.blp:8
 msgid "Weight Measurements"
 msgstr "Medidas de peso"
 
-#: data/ui/weight_add_dialog.ui:32
-msgid "Add Weight Record"
-msgstr "Engadir rexistro de peso"
+#: data/ui/plugins/weight/summary.blp:5 data/ui/preferences_window.blp:184
+#: data/ui/preferences_window.blp:187 data/ui/view_add_weight.blp:38
+#: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
+msgid "Weight"
+msgstr "Peso"
 
-#: data/ui/weight_view.ui:23
-msgid "You can use the <b>+</b> button to add a new weight measurement."
+#: data/ui/preferences_window.blp:43
+msgid "_Every 1 hour"
+msgstr "_Cada hora"
+
+#: data/ui/preferences_window.blp:49
+msgid "_Every 4 hours"
+msgstr "_Cada 4 horas"
+
+#: data/ui/preferences_window.blp:55
+msgid "_Fixed Time"
+msgstr "_Hora fixa"
+
+#: data/ui/preferences_window.blp:63
+msgid "Health Preferences"
+msgstr "Prererencias de Saúde"
+
+#: data/ui/preferences_window.blp:69 data/ui/shortcuts_window.blp:11
+msgid "General"
+msgstr "Xeral"
+
+#: data/ui/preferences_window.blp:72
+msgid "User"
+msgstr "Usuario"
+
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:146
+msgid "Unit system"
+msgstr "Sistema de unidades"
+
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:156
+msgid "Imperial"
+msgstr "Imperial"
+
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:162
+msgid "Metric"
+msgstr "Métrico"
+
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:170
+msgid "Birthday"
+msgstr "Día de nacemento"
+
+#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:179
+msgid "Height"
+msgstr "Altura"
+
+#: data/ui/preferences_window.blp:122
+msgid "Notifications"
+msgstr "Notificacións"
+
+#: data/ui/preferences_window.blp:125
+msgid "Enable notifications"
+msgstr "Activar notificacións"
+
+#: data/ui/preferences_window.blp:136
+msgid "Frequency"
+msgstr "Frecuencia"
+
+#: data/ui/preferences_window.blp:149
+msgid "Daily reminder time"
+msgstr "Hora de recordatorio diario"
+
+#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:242
+#: src/plugins/steps/details.rs:241
+msgid "Step goal"
+msgstr "Obxectivo de pasos"
+
+#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:218
+msgid "The WHO recommends 10.000 steps per day."
+msgstr "A OMS recomenda 10.000 pasos diarios."
+
+#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:279
+msgid "The WHO recommends a BMI of 18.5-24.9."
+msgstr "A OMS recomenta un IMC de 18.5 a 24.9."
+
+#: data/ui/preferences_window.blp:212
+msgid "Sync"
+msgstr "Sincronizar"
+
+#: data/ui/preferences_window.blp:216
+msgid "Start sync with third-party providers."
+msgstr "Comezar sincronización cos fornecedores de terceiros."
+
+#: data/ui/preferences_window.blp:224
+msgid "Importing and exporting data"
+msgstr "Importar e exportar datos"
+
+#: data/ui/preferences_window.blp:227
+msgid "Export data as CSV"
+msgstr "Exportar datos como CSV"
+
+#: data/ui/preferences_window.blp:230
+msgid "Export…"
+msgstr "Exportar…"
+
+#: data/ui/preferences_window.blp:237
+msgid "Import data from CSV"
+msgstr "Importar datos desde CSV"
+
+#: data/ui/preferences_window.blp:240
+msgid "Import…"
+msgstr "Importar…"
+
+#: data/ui/setup_window.blp:33
+msgid "Health Setup"
+msgstr "Configuración de Saúde"
+
+#: data/ui/setup_window.blp:47
+msgid "_Quit"
+msgstr "_Saír"
+
+#: data/ui/setup_window.blp:56
+msgid "_Previous"
+msgstr "_Anterior"
+
+#: data/ui/setup_window.blp:71
+msgid "_Next"
+msgstr "_Seguinte"
+
+#: data/ui/setup_window.blp:84
+msgid "_Done"
+msgstr "_Feito"
+
+#: data/ui/setup_window.blp:110
+msgid "Welcome to Health!"
+msgstr "Benvida a Saúde!"
+
+#: data/ui/setup_window.blp:122
+msgid "Please enter some information to get setup."
+msgstr "Escriba algunha información para configurar."
+
+#: data/ui/setup_window.blp:206
+msgid "Please enter your daily step goal."
+msgstr "Introduza o obxectivo de pasos diario."
+
+#: data/ui/setup_window.blp:267
+msgid "Please enter your weight goal."
+msgstr "Introduza o obxectivo de peso."
+
+#: data/ui/setup_window.blp:307 src/plugins/weight/details.rs:221
+msgid "Weight goal"
+msgstr "Obxectivo de peso"
+
+#: data/ui/setup_window.blp:342
+msgid "Setup sync with third-party providers."
+msgstr "Configurar a sincronización con fornecedores de terceiros."
+
+#: data/ui/setup_window.blp:354
+msgid ""
+"You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
+"Pode sincronizar os pasos e pexases desde/cara fornecedores de terceiros."
 
-#: data/ui/window.ui:27
+#: data/ui/shortcuts_window.blp:15
+msgid "Quit the application"
+msgstr "Saír da aplicación"
+
+#: data/ui/shortcuts_window.blp:20
+msgid "Show this shortcuts window"
+msgstr "Mostrar esta pantalla de atallos"
+
+#: data/ui/shortcuts_window.blp:25
+msgid "Show help"
+msgstr "Mostrar a axuda"
+
+#: data/ui/shortcuts_window.blp:30
+msgid "Show primary menu"
+msgstr "Mostrar o menú principal"
+
+#: data/ui/shortcuts_window.blp:35
+msgid "Toggle fullscreen mode"
+msgstr "Trocar o modo a pantalla completa"
+
+#: data/ui/sync_list_box.blp:30
+msgid "Google Fit"
+msgstr "Google Fit"
+
+#: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:30
+msgid "Date"
+msgstr "Data"
+
+#: data/ui/view_add_activity.blp:57
+msgid "Activity Type"
+msgstr "Tipo de actividade"
+
+#: data/ui/view_add_activity.blp:97
+msgid "Average Heart Rate"
+msgstr "Pulsacións medias"
+
+#: data/ui/view_add_activity.blp:109
+msgid "Minimum Heart Rate"
+msgstr "Pulsacións mínimas"
+
+#: data/ui/view_add_activity.blp:121
+msgid "Maximum Heart Rate"
+msgstr "Pulsacións máximas"
+
+#: data/ui/view_add_activity.blp:133
+msgid "Stepcount"
+msgstr "Contía de pasos"
+
+#: data/ui/view_home_page.blp:61
+msgid "For you"
+msgstr "Para vostede"
+
+#: data/ui/view_home_page.blp:86
+msgid ""
+"No plugins enabled. Enable one from the list below to start using Health."
+msgstr ""
+"Non se activaron engadidos. Active un da lista de embaixo para comezar a "
+"usar Saúde."
+
+#: data/ui/view_home_page.blp:107
+msgid "All data"
+msgstr "Todos os datos"
+
+#: data/ui/window.blp:8
+msgid "_Disable Current Plugin"
+msgstr "_Desactivar o engadido actual"
+
+#: data/ui/window.blp:15
 msgid "_Preferences"
 msgstr "_Preferencias"
 
-#: data/ui/window.ui:31
+#: data/ui/window.blp:20
 msgid "_Keyboard Shortcuts"
 msgstr "Atallos de _teclado"
 
-#: data/ui/window.ui:37
+#: data/ui/window.blp:27
 msgid "_About Health"
 msgstr "_Sobre Saúde"
 
-#: src/core/application.rs:140
-msgid "translator-credits"
-msgstr "Fran Dieguez <frandieguez@gnome.org>, 2021"
+#: data/ui/window.blp:69
+msgid "Enable plugin"
+msgstr "Activar engadido"
 
-#: src/core/application.rs:142
+#: src/core/application.rs:169
+msgid "translator-credits"
+msgstr "Fran Dieguez <frandieguez@gnome.org>, 2021-2022."
+
+#: src/core/application.rs:171
 msgid "Websites"
 msgstr "Sitios web"
 
-#: src/daemon/main.rs:31
-msgid "Health Daemon"
-msgstr "Daemon de Saúde"
-
-#: src/model/activity_info.rs:74
+#: src/model/activity_info.rs:83
 msgid "Basketball"
 msgstr "Baloncesto"
 
-#: src/model/activity_info.rs:89
+#: src/model/activity_info.rs:93
 msgid "Bicycling"
 msgstr "Ciclismo"
 
-#: src/model/activity_info.rs:103
+#: src/model/activity_info.rs:102
 msgid "Boxing"
 msgstr "Boxeo"
 
-#: src/model/activity_info.rs:117
+#: src/model/activity_info.rs:111
 msgid "Dancing"
 msgstr "Baile"
 
-#: src/model/activity_info.rs:131
+#: src/model/activity_info.rs:120
 msgid "Football"
 msgstr "Fútbol americano"
 
-#: src/model/activity_info.rs:143
+#: src/model/activity_info.rs:127
 msgid "Golf"
 msgstr "Golf"
 
-#: src/model/activity_info.rs:159
+#: src/model/activity_info.rs:138
 msgid "Hiking"
 msgstr "Sendeirismo"
 
-#: src/model/activity_info.rs:173
+#: src/model/activity_info.rs:147
 msgid "Hockey"
 msgstr "Xockei"
 
-#: src/model/activity_info.rs:188
+#: src/model/activity_info.rs:157
 msgid "Horse Riding"
 msgstr "Montar a cabalo"
 
-#: src/model/activity_info.rs:202
+#: src/model/activity_info.rs:166
 msgid "Other Sports"
 msgstr "Outros deportes"
 
-#: src/model/activity_info.rs:217
+#: src/model/activity_info.rs:176
 msgid "Rollerblading"
 msgstr "Patinaxe"
 
-#: src/model/activity_info.rs:233
+#: src/model/activity_info.rs:187
 msgid "Running"
 msgstr "Correr"
 
-#: src/model/activity_info.rs:248
+#: src/model/activity_info.rs:197
 msgid "Skiing"
 msgstr "Esquiar"
 
-#: src/model/activity_info.rs:262
+#: src/model/activity_info.rs:206
 msgid "Soccer"
 msgstr "Fútbol"
 
-#: src/model/activity_info.rs:276
+#: src/model/activity_info.rs:215
 msgid "Softball"
 msgstr "Softball"
 
-#: src/model/activity_info.rs:291
+#: src/model/activity_info.rs:225
 msgid "Swimming"
 msgstr "Natación"
 
-#: src/model/activity_info.rs:305
+#: src/model/activity_info.rs:234
 msgid "Tennis"
 msgstr "Tenis"
 
-#: src/model/activity_info.rs:319
+#: src/model/activity_info.rs:243
 msgid "Track And Field"
 msgstr ""
 
-#: src/model/activity_info.rs:335
+#: src/model/activity_info.rs:254
 msgid "Volleyball"
 msgstr "Voleiball"
 
-#: src/model/activity_info.rs:351
+#: src/model/activity_info.rs:265
 msgid "Walking"
 msgstr "Andar"
 
-#: src/model/model_notification.rs:125
+#: src/model/model_notification.rs:224
 msgid "Health: walking reminder"
 msgstr "Saúde: recordatorio de andar"
 
-#. TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
-#: src/model/model_notification.rs:148
-msgid "{} step remaining to complete your daily step goal"
-msgid_plural "{} steps remaining to complete your daily step goal"
-msgstr[0] ""
-msgstr[1] ""
+#: src/model/model_notification.rs:245
+#| msgid "Please enter your daily step goal."
+msgid "{} step remaining to complete your daily step goal."
+msgid_plural "{} steps remaining to complete your daily step goal."
+msgstr[0] "Falta {} paso para completar o seu obxectivo de pasos diarios."
+msgstr[1] "Faltan {} pasos para completar o seu obxectivo de pasos diarios."
 
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/model/model_notification.rs:154
-msgid "of {} step"
-msgid_plural "of {} steps"
-msgstr[0] "de {} paso"
-msgstr[1] "de {} pasos"
+#: src/plugins/activities/plugin.rs:39
+msgid "Activities"
+msgstr "Actividades"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:360
-msgid "No activities added yet; can't create empty export!"
-msgstr ""
+#: src/plugins/activities/summary.rs:93
+#| msgid "Active Minutes"
+msgid "{} active minute today"
+msgid_plural "{} active minutes today"
+msgstr[0] "{} minuto activo hoxe"
+msgstr[1] "{} minutos activos hoxe"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:378
-msgid "No weight measurements added yet; can't create empty export!"
-msgstr ""
-
-#: src/sync/csv.rs:184 src/sync/csv.rs:322
-msgid "Can't parse encrypted backup without encryption key!"
-msgstr ""
-
-#: src/sync/csv.rs:195 src/sync/csv.rs:342
-msgid ""
-"Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
-"encrypted one?"
-msgstr ""
-
-#: src/sync/csv.rs:208
-msgid "Couldn't decrypt data. Are you sure you're using the right key?"
-msgstr ""
-
-#: src/sync/database_receiver.rs:46
-msgid "Couldn't synchronize steps due to error {}"
-msgstr ""
-
-#: src/sync/database_receiver.rs:60
-msgid "Couldn't synchronize weight measurements due to error {}"
-msgstr ""
-
-#: src/sync/google_fit.rs:211
-msgid "CRSF Verification failed, got {}, expected {}"
-msgstr ""
-
-#: src/sync/google_fit.rs:227
-msgid "Requesting OAuth2 token failed due to error {}"
-msgstr ""
-
-#: src/sync/sync_provider.rs:109
-msgid ""
-"Can't retrieve OAuth2 token when no refresh token is set! Please re-"
-"authenticate with your sync provider."
-msgstr ""
-
-#: src/sync/sync_provider.rs:228
-msgid "Successfully authenticated, please return to Health."
-msgstr ""
-
-#: src/sync/sync_provider.rs:240
-msgid "Couldn't parse OAuth2 response"
-msgstr ""
-
-#: src/views/bar_graph_view.rs:510
-msgid "Enter weight record to calculate idle calories"
-msgstr ""
-
-#: src/views/bar_graph_view.rs:514
-msgid "Idle calories"
-msgstr ""
-
-#: src/views/view_activity.rs:184
-msgid "No activities on or after {}"
-msgstr ""
-
-#: src/views/view_calories.rs:169
+#: src/plugins/calories/details.rs:215
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -747,115 +711,88 @@ msgstr[1] ""
 "{} calorias\n"
 "{}"
 
-#: src/views/view_home_page.rs:256
-msgid "{} step taken today"
-msgid_plural "{} steps taken today"
-msgstr[0] ""
-msgstr[1] ""
+#: src/plugins/calories/summary.rs:96 src/plugins/calories/summary.rs:103
+#| msgid "Calories Burned"
+msgid "{} calorie burned today"
+msgid_plural "{} calories burned today"
+msgstr[0] "{} caloría queimada hoxe"
+msgstr[1] "{} calorías queimadas hoxe"
 
-#: src/views/view_home_page.rs:262
-msgid "{}%"
-msgstr "{}%"
-
-#. TRANSLATORS: Current user weight
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:297 src/views/view_home_page.rs:331
-msgid "{} pound"
-msgid_plural "{} pounds"
-msgstr[0] "{} libra"
-msgstr[1] "{} libras"
-
-#. TRANSLATORS: Current user weight
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:304 src/views/view_home_page.rs:338
-msgid "{} kilogram"
-msgid_plural "{} kilograms"
-msgstr[0] "{} quilogramo"
-msgstr[1] "{} quilogramos"
-
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:314
-msgid "+ {} pound"
-msgid_plural "+ {} pounds"
-msgstr[0] "+ {} libra"
-msgstr[1] "+ {} libras"
-
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:321
-msgid "+ {} kilogram"
-msgid_plural "+ {} kilograms"
-msgstr[0] "+ {} quilogramo"
-msgstr[1] "+ {} quilogramos"
-
-#: src/views/view_home_page.rs:346
-msgid "No change in weight"
-msgstr "Ningún cambio no peso"
-
-#: src/views/view_home_page.rs:351
-msgid "compared to previous weight"
-msgstr "comparado co peso anterior"
-
-#: src/views/view_home_page.rs:355
-msgid "use + to add a weight record"
-msgstr "use + para engadir un rexistro de peso"
-
-#: src/views/view_steps.rs:140
+#: src/plugins/steps/details.rs:187
 msgid "Today's steps: {}"
 msgstr "Pasos de hoxe: {}"
 
-#: src/views/view_steps.rs:156
+#: src/plugins/steps/details.rs:202
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
+"Aínda non hai ningunha racha. Alcance o seu obxectivo de pasos durante "
+"varios días para comezar unha racha!"
 
-#: src/views/view_steps.rs:160
+#: src/plugins/steps/details.rs:206
 msgid ""
 "You're on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
 "You're on a streak for {} days. Reach your step goal today to continue it!"
 msgstr[0] ""
+"Está nunha racha de {} día. Alcance o seu obxectivo diario para continuala!"
 msgstr[1] ""
+"Está nunha racha de {} días. Alcance o seu obxectivo diario para continuala!"
 
-#: src/views/view_steps.rs:168
+#: src/plugins/steps/details.rs:214
 msgid "You've reached your step goal today. Keep going to start a streak!"
 msgstr ""
+"Acadou o obxectivo de pasos de hoxe. Continúe así para comezar unha racha!"
 
-#: src/views/view_steps.rs:171
+#: src/plugins/steps/details.rs:217
 msgid "You're on a streak for {} day. Good job!"
 msgid_plural "You're on a streak for {} days. Good job!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Está nunha racha de {} día. Bo traballo!"
+msgstr[1] "Está nunha racha de {} días. Bo traballo!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/views/view_steps.rs:186
+#: src/plugins/steps/details.rs:234
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{} paso de {}"
+msgstr[1] "{} pasos de {}"
 
-#: src/views/view_weight.rs:145
+#: src/plugins/steps/summary.rs:97
+msgid "{} step taken today"
+msgid_plural "{} steps taken today"
+msgstr[0] "{} paso realizado hoxe"
+msgstr[1] "{} pasos realizados hoxe"
+
+#: src/plugins/steps/summary.rs:107
+#| msgid "Please enter your daily step goal."
+msgid "Reached {} percent of daily step goal"
+msgid_plural "Reached {} percent of daily step goal"
+msgstr[0] "Alcanzouse o {} porcentaxe do obxectivo de pasos diario."
+msgstr[1] "Alcanzouse o {} porcentaxe do obxectivo de pasos diario."
+
+#: src/plugins/weight/details.rs:193
 msgid "Current BMI: {}"
 msgstr "IMC actual: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/views/view_weight.rs:158
+#: src/plugins/weight/details.rs:208
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{} libra de {}"
+msgstr[1] "{} libras de {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/views/view_weight.rs:161
+#: src/plugins/weight/details.rs:211
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{} quilogramo de {}"
+msgstr[1] "{} quilogramos de {}"
 
-#: src/views/view_weight.rs:199
+#: src/plugins/weight/details.rs:247 src/plugins/weight/details.rs:252
 msgid "Unknown BMI"
 msgstr "IMC descoñecido"
 
-#: src/views/view_weight.rs:223
+#: src/plugins/weight/details.rs:271
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -863,9 +800,13 @@ msgid_plural ""
 "Your weight goal is {} pounds. Add a first weight measurement to see how "
 "close you are to reaching it."
 msgstr[0] ""
+"O seu obxectivo de peso é {} libra. Engada unha primeira medición de peso "
+"para ver o cerca que está de alcanzalo."
 msgstr[1] ""
+"O seu obxectivo de peso é {} libras. Engada unha primeira medición de peso "
+"para ver o cerca que está de alcanzalo."
 
-#: src/views/view_weight.rs:230
+#: src/plugins/weight/details.rs:278
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -873,201 +814,410 @@ msgid_plural ""
 "Your weight goal is {} kilograms. Add a first weight measurement to see how "
 "close you are to reaching it."
 msgstr[0] ""
+"O seu obxectivo de peso é {} quilogramo. Engada unha primeira medición de "
+"peso para ver o cerca que está de alcanzalo."
 msgstr[1] ""
+"O seu obxectivo de peso é {} quilogramos. Engada unha primeira medición de "
+"peso para ver o cerca que está de alcanzalo."
 
-#: src/views/view_weight.rs:239
+#: src/plugins/weight/details.rs:287
 msgid "You've reached your weight goal. Great job!"
-msgstr ""
+msgstr "Alcanzou o seu obxectivo de peso. Gran traballo!"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/views/view_weight.rs:255
+#: src/plugins/weight/details.rs:303
 msgid "Your weight goal is {} pound,"
 msgid_plural "Your weight goal is {} pounds,"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "O seu obxectivo de peso é {} libra,"
+msgstr[1] "O seu obxectivo de peso é {} libras,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:261
+#: src/plugins/weight/details.rs:308
 msgid "you have {} pound left to reach it"
 msgid_plural "you have {} pounds left to reach it"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "faltan {} libra para alcanzalo"
+msgstr[1] "faltan {} libras para alcanzalo"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/views/view_weight.rs:268
+#: src/plugins/weight/details.rs:315
 msgid "Your weight goal is {} kilogram,"
 msgid_plural "Your weight goal is {} kilograms,"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "O seu obxectivo de peso é {} quilogramo,"
+msgstr[1] "O seu obxectivo de peso é {} quilogramos,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:274
+#: src/plugins/weight/details.rs:321
 msgid "you have {} kilogram left to reach it"
 msgid_plural "you have {} kilograms left to reach it"
+msgstr[0] "falta {} quilogramo para alcanzalo"
+msgstr[1] "falta {} quilogramos para alcanzalo"
+
+#: src/plugins/weight/details.rs:331
+msgid "No weight goal set yet. You can set it in Health's preferences."
+msgstr ""
+"Non se estabeleceu un obxectivo aínda. Pode estabelecelo desde as "
+"preferencias de Saúde."
+
+#: src/plugins/weight/summary.rs:120
+msgid "{} pound"
+msgid_plural "{} pounds"
+msgstr[0] "{} libra"
+msgstr[1] "{} libras"
+
+#: src/plugins/weight/summary.rs:128
+msgid "{} kilogram"
+msgid_plural "{} kilograms"
+msgstr[0] "{} quilogramo"
+msgstr[1] "{} quilogramos"
+
+#: src/plugins/weight/summary.rs:139
+#| msgid "compared to previous weight"
+msgid "+ {} pound compared to previous measurement"
+msgid_plural "+ {} pounds compared to previous measurement"
+msgstr[0] "+ {} libra comparado coa pesaxe anterior"
+msgstr[1] "+ {} libras comparado coa pesaxe anterior"
+
+#: src/plugins/weight/summary.rs:147
+#| msgid "compared to previous weight"
+msgid "+ {} kilogram compared to previous measurement"
+msgid_plural "+ {} kilograms compared to previous measurement"
+msgstr[0] "+ {} quilogramo comparado coa anterior pesaxe"
+msgstr[1] "+ {} quilogramos comparado coa anterior pesaxe"
+
+#: src/plugins/weight/summary.rs:158
+#| msgid "compared to previous weight"
+msgid "{} pound compared to previous measurement"
+msgid_plural "{} pounds compared to previous measurement"
+msgstr[0] "{} libra comparado coa anterior pesaxe"
+msgstr[1] "{} libras comparado coa anterior pesaxe"
+
+#: src/plugins/weight/summary.rs:166
+#| msgid "compared to previous weight"
+msgid "{} kilogram compared to previous measurement"
+msgid_plural "{} kilograms compared to previous measurement"
+msgstr[0] "{} quilogramo comparado coa anterior pesaxe"
+msgstr[1] "{} quilogramos comparado coa anterior pesaxe"
+
+#: src/plugins/weight/summary.rs:174
+msgid "No change in weight"
+msgstr "Ningún cambio no peso"
+
+#: src/plugins/weight/summary.rs:179
+msgid "No weight data available"
+msgstr "Non hai datos de peso dispoñíbeis"
+
+#: src/sync/csv.rs:81 src/sync/csv.rs:363
+msgid "No activities added yet; can't create empty export!"
+msgstr ""
+"Aínda non se engadiron actividades. Non é posíbel crear un exportado baleiro!"
+
+#: src/sync/csv.rs:111 src/sync/csv.rs:381
+msgid "No weight measurements added yet; can't create empty export!"
+msgstr ""
+"Aínda non hai pesaxes engadidas. Non é posíbel crear un exportado baleiro!"
+
+#: src/sync/csv.rs:184 src/sync/csv.rs:325
+msgid "Can't parse encrypted backup without encryption key!"
+msgstr "Non é posíbel analizar o respaldo cifrado sen unha chave de cifrado!"
+
+#: src/sync/csv.rs:195 src/sync/csv.rs:345
+msgid ""
+"Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
+"encrypted one?"
+msgstr ""
+"Non é posíbel analizar o CSV. Desexa tentar ler un respaldo non cifrado como "
+"un cifrado?"
+
+#: src/sync/csv.rs:208
+msgid "Couldn't decrypt data. Are you sure you're using the right key?"
+msgstr ""
+"Non é posíbel descifrar os datos. Ten certeza que está usando a chave "
+"equivocada?"
+
+#: src/sync/database_receiver.rs:46
+msgid "Couldn't synchronize steps due to error {}"
+msgstr "Produciuse un fallo ao sincronizar os pasos debido a un erro {}"
+
+#: src/sync/database_receiver.rs:60
+msgid "Couldn't synchronize weight measurements due to error {}"
+msgstr ""
+"Produciuse un fallo ao sincronizar a medición de peso os pasos debido a un "
+"erro {}"
+
+#: src/sync/google_fit.rs:211
+msgid "CRSF Verification failed, got {}, expected {}"
+msgstr "Fallou a verificación de CSRF, obtívose {} e agardábase {}"
+
+#: src/sync/google_fit.rs:227
+msgid "Requesting OAuth2 token failed due to error {}"
+msgstr "Produciuse un fallo ao solicitar o token de OAuth2 debido a erro {}"
+
+#: src/sync/sync_provider.rs:109
+msgid ""
+"Can't retrieve OAuth2 token when no refresh token is set! Please re-"
+"authenticate with your sync provider."
+msgstr ""
+"Non é posíbel obter o token de OAuth2 cando non hai un token de refresco "
+"estabelecido! Reautentíquese co seu fornecedor de sincronización."
+
+#: src/sync/sync_provider.rs:225
+msgid "Successfully authenticated, please return to Health."
+msgstr "Autenticación exitosa, volva a Saúde."
+
+#: src/sync/sync_provider.rs:236
+msgid "Couldn't parse OAuth2 response"
+msgstr "Non foi posíbel analizar a resposta de OAuth2"
+
+#: src/views/bar_graph_view.rs:584
+msgid "Enter weight record to calculate idle calories"
+msgstr "Escriba o rexistro de peso para calcular as calorías baleiras"
+
+#: src/views/bar_graph_view.rs:588
+msgid "Idle calories"
+msgstr "Calorías baleiras"
+
+#: src/views/view_add_activity.rs:237
+#| msgid "Activities"
+msgid "Activity"
+msgstr "Actividade"
+
+#: src/widgets/activity_row.rs:79
+#| msgid "{} Minute"
+#| msgid_plural "{} Minutes"
+msgid "{} for {} Minute"
+msgid_plural "{} for {} Minutes"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/views/view_weight.rs:283
-msgid "No weight goal set yet. You can set it in Health's preferences."
-msgstr ""
+#: src/widgets/activity_row.rs:91
+#| msgid "Calories Burned"
+msgid "Calories burned"
+msgstr "Calorías queimadas"
 
-#: src/widgets/activity_row.rs:131
-msgid "{} Minute"
-msgid_plural "{} Minutes"
-msgstr[0] "{} minuto"
-msgstr[1] "{} minutos"
+#: src/widgets/activity_row.rs:101
+#| msgid "Average Heart Rate"
+msgid "Average heart rate"
+msgstr "Taxa de pulsacións media"
 
-#: src/widgets/activity_row.rs:147 src/widgets/activity_row.rs:229
-msgid "{} Calorie"
-msgid_plural "{} Calories"
-msgstr[0] "{} caloria"
-msgstr[1] "{} calorias"
+#: src/widgets/activity_row.rs:107
+#| msgid "Maximum Heart Rate"
+msgid "Maximum heart rate"
+msgstr "Taxa de pulsacións máxima"
 
-#: src/widgets/bmi_level_bar.rs:174 src/widgets/bmi_level_bar.rs:203
+#: src/widgets/activity_row.rs:113
+#| msgid "Minimum Heart Rate"
+msgid "Minimum heart rate"
+msgstr "Taxa de pulsacións mínima"
+
+#: src/widgets/activity_row.rs:126
+msgid "{} meter"
+msgid_plural "{} meters"
+msgstr[0] "{} metro"
+msgstr[1] "{} metros"
+
+#: src/widgets/activity_row.rs:129
+msgid "{} yard"
+msgid_plural "{} yards"
+msgstr[0] "{} iarda"
+msgstr[1] "{} iardas"
+
+#: src/widgets/bmi_level_bar.rs:219 src/widgets/bmi_level_bar.rs:256
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>IMC actual: {}</small>"
 
-#: src/widgets/distance_action_row.rs:248
+#: src/widgets/distance_action_row.rs:303
 msgid "KM"
 msgstr "KM"
 
-#: src/widgets/distance_action_row.rs:249
+#: src/widgets/distance_action_row.rs:304
 msgid "Meters"
 msgstr "Metros"
 
-#: src/widgets/distance_action_row.rs:251
+#: src/widgets/distance_action_row.rs:306
 msgid "Miles"
 msgstr "Millas"
 
-#: src/widgets/distance_action_row.rs:252
+#: src/widgets/distance_action_row.rs:307
 msgid "Feet"
 msgstr "Pés"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:462 src/widgets/unit_spinbutton.rs:625
+#: src/widgets/unit_spinbutton.rs:475 src/widgets/unit_spinbutton.rs:635
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:464
+#: src/widgets/unit_spinbutton.rs:477
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:466
+#: src/widgets/unit_spinbutton.rs:479
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:468
+#: src/widgets/unit_spinbutton.rs:481
 msgid "kg"
 msgstr "qm"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:470 src/widgets/unit_spinbutton.rs:627
+#: src/widgets/unit_spinbutton.rs:483 src/widgets/unit_spinbutton.rs:637
 msgid "in"
 msgstr "in"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:472
+#: src/widgets/unit_spinbutton.rs:485
 msgid "ft"
 msgstr "ft"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:474
+#: src/widgets/unit_spinbutton.rs:487
 msgid "mi"
 msgstr "mi"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:476
+#: src/widgets/unit_spinbutton.rs:489
 msgid "lb"
 msgstr "lb"
 
-#: src/windows/export_dialog.rs:54
+#: src/windows/export_dialog.rs:51
 msgid "Save Activities"
 msgstr "Gardar actividades"
 
 #. TRANSLATORS: Please keep the file extension (.csv.encrypted)
-#: src/windows/export_dialog.rs:63
+#: src/windows/export_dialog.rs:60
 msgid "Activities.csv.encrypted"
 msgstr "Actividades.csv.cifrado"
 
 #. TRANSLATORS: Please keep the file extension (.csv)
-#: src/windows/export_dialog.rs:66
+#: src/windows/export_dialog.rs:63
 msgid "Activities.csv"
 msgstr "Actividades.csv"
 
-#: src/windows/export_dialog.rs:90
+#: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
 msgstr "Gardar medida de peso"
 
-#: src/windows/export_dialog.rs:98
+#: src/windows/export_dialog.rs:95
 msgid "Weight Measurements.csv.encrypted"
 msgstr "Medidas de peso.csv.cifrado"
 
-#: src/windows/export_dialog.rs:100
+#: src/windows/export_dialog.rs:97
 msgid "Weight Measurements.csv"
 msgstr "Medidas de peso.csv"
 
-#: src/windows/export_dialog.rs:135
+#: src/windows/export_dialog.rs:132
 msgid "Export data"
 msgstr "Datos exportados"
 
-#: src/windows/import_dialog.rs:54
+#: src/windows/import_dialog.rs:51
 msgid "Open Activities"
 msgstr "Abrir actividades"
 
-#: src/windows/import_dialog.rs:55 src/windows/import_dialog.rs:84
+#: src/windows/import_dialog.rs:52 src/windows/import_dialog.rs:81
 msgid "_Open"
 msgstr "_Abrir"
 
-#: src/windows/import_dialog.rs:83
+#: src/windows/import_dialog.rs:80
 msgid "Open Weight Measurement"
 msgstr "Abrir medida de peso"
 
-#: src/windows/import_dialog.rs:124
+#: src/windows/import_dialog.rs:121
 msgid "Import data"
 msgstr "Importar datos"
 
-#: src/windows/import_export_dialog_base.rs:227
+#: src/windows/import_export_dialog_base.rs:214
 msgid "Import activities"
 msgstr "Importar actividades"
 
-#: src/windows/import_export_dialog_base.rs:229
+#: src/windows/import_export_dialog_base.rs:216
 msgid "Import is encrypted"
 msgstr "O importado está cifrado"
 
-#: src/windows/import_export_dialog_base.rs:230
+#: src/windows/import_export_dialog_base.rs:217
 msgid "Import weights"
 msgstr "Importar pesos"
 
-#: src/windows/import_export_dialog_base.rs:231
+#: src/windows/import_export_dialog_base.rs:218
 msgid "Import"
 msgstr "Importar"
 
-#: src/windows/import_export_dialog_base.rs:328
+#: src/windows/import_export_dialog_base.rs:296
 msgid "Success!"
 msgstr "Éxito!"
 
-#: src/windows/import_export_dialog_base.rs:332
+#: src/windows/import_export_dialog_base.rs:300
 msgid "An error occurred!"
 msgstr "Produciuse un erro!"
 
-#: src/windows/import_export_dialog_base.rs:338
+#: src/windows/import_export_dialog_base.rs:305
 msgid "Close"
 msgstr "Pechar"
 
-#: src/windows/preferences_window.rs:375
-msgid "Remind you of your step goals"
-msgstr "Recordarlle os seus obxetivos de peso"
-
-#: src/windows/window.rs:136
+#: src/windows/window.rs:97
 msgid "Failed to migrate database to new version due to error {}"
 msgstr ""
 "Produciuse un falo ao migrar a bases de datos á nova versión debido a un "
 "erro {}"
 
-#: src/windows/window.rs:347
+#: src/windows/window.rs:266
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr ""
 "Non foi posíbel sincronizar os datos de Google Fit debido ao un erro: {}"
+
+#~ msgid "Last opened view"
+#~ msgstr "Última vista aberta"
+
+#~ msgid "The last view the user had opened, for restoring it on start"
+#~ msgstr "A última vista que abreu o usuario, para restaurala ao inicio"
+
+#~ msgid "Add An Activity"
+#~ msgstr "Engadir unha actividade"
+
+#~ msgid "Distance in Meters"
+#~ msgstr "Distancia en metros"
+
+#~ msgid "Home Page"
+#~ msgstr "Páxina principal"
+
+#~ msgid "Today"
+#~ msgstr "Hoxe"
+
+#~ msgid "of daily step goal"
+#~ msgstr "do obxectivo de pasos diario"
+
+#~ msgid "Add Weight Record"
+#~ msgstr "Engadir rexistro de peso"
+
+#~ msgid "Health Daemon"
+#~ msgstr "Daemon de Saúde"
+
+#~ msgid "of {} step"
+#~ msgid_plural "of {} steps"
+#~ msgstr[0] "de {} paso"
+#~ msgstr[1] "de {} pasos"
+
+#~ msgid "{}%"
+#~ msgstr "{}%"
+
+#~ msgid "+ {} pound"
+#~ msgid_plural "+ {} pounds"
+#~ msgstr[0] "+ {} libra"
+#~ msgstr[1] "+ {} libras"
+
+#~ msgid "+ {} kilogram"
+#~ msgid_plural "+ {} kilograms"
+#~ msgstr[0] "+ {} quilogramo"
+#~ msgstr[1] "+ {} quilogramos"
+
+#~ msgid "use + to add a weight record"
+#~ msgstr "use + para engadir un rexistro de peso"
+
+#~ msgid "{} Calorie"
+#~ msgid_plural "{} Calories"
+#~ msgstr[0] "{} caloria"
+#~ msgstr[1] "{} calorias"
+
+#~ msgid "Remind you of your step goals"
+#~ msgstr "Recordarlle os seus obxetivos de peso"
