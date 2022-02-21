@@ -7,6 +7,7 @@ project('Health', 'rust',
 
 dependency('libadwaita-1', version: '>= 1.0.1')
 dependency('gtk4', version: '>= 4.6.0')
+dependency('libsecret-1')
 
 i18n = import('i18n')
 gnome = import('gnome')

@@ -17,7 +17,7 @@
  */
 
 use adw::subclass::prelude::*;
-use gtk::glib::{self};
+use gtk::glib;
 
 mod imp {
     use adw::subclass::prelude::*;

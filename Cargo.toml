@@ -65,6 +65,9 @@ version = "0.3.0"
 [dependencies.http]
 version = "0.2"
 
+[dependencies.libsecret]
+version = "0.1.3"
+
 [dependencies.num-derive]
 version = "0.3"
 
@@ -124,9 +127,6 @@ features = ["f32", "si"]
 default-features = false
 version = "2"
 features = ["json"]
-
-[dependencies.secret-service]
-git = "https://github.com/hwchen/secret-service-rs"
 
 [dependencies.zxcvbn]
 version = "2"

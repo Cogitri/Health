@@ -17,7 +17,7 @@
  */
 
 use super::Card;
-use gtk::glib::{self};
+use gtk::glib;
 
 mod imp {
     use super::Card;

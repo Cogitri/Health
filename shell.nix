@@ -23,6 +23,8 @@ let
     harfbuzz
     libadwaita
     librsvg
+    libsecret
+    libsecret.dev
     libxml2
     lld_13
     meson

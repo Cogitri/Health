@@ -25,8 +25,8 @@ use oauth2::{
     AuthorizationCode, CsrfToken, EmptyExtraTokenFields, RefreshToken, StandardTokenResponse,
     TokenResponse,
 };
-use secret_service::{Collection, EncryptionType, Error as SsError, SecretService};
 use std::{
+    collections::HashMap,
     io::{BufRead, BufReader, Write},
     net::TcpListener,
 };
@@ -120,19 +120,13 @@ pub trait SyncProvider {
     /// A `RefreshToken` if a refresh token is set, or `None` if no refresh token is set.
     /// May return an error if querying the secret store fails.
     fn token(&self) -> Result<Option<RefreshToken>> {
-        let ss = SecretService::new(EncryptionType::Dh)?;
-        let collection = default_collection_unlocked(&ss)?;
+        let mut password_attributes = HashMap::new();
+        password_attributes.insert("label", self.provider_name());
 
-        if let Some(password) = collection
-            .get_all_items()?
-            .iter()
-            .find(|p| p.get_label().unwrap_or_default() == self.provider_name())
+        if let Some(password) =
+            libsecret::password_lookup_sync(None, password_attributes, None::<&gio::Cancellable>)?
         {
-            password.unlock()?;
-
-            Ok(Some(RefreshToken::new(
-                String::from_utf8(password.get_secret()?).map_err(|_| SsError::NoResult)?,
-            )))
+            Ok(Some(RefreshToken::new(password.to_string())))
         } else {
             Ok(None)
         }
@@ -146,25 +140,13 @@ pub trait SyncProvider {
     /// # Returns
     /// May return an error if querying the secret store fails.
     fn set_token(&self, value: RefreshToken) -> Result<()> {
-        let ss = SecretService::new(EncryptionType::Dh)?;
-        let collection = default_collection_unlocked(&ss)?;
-
-        // Delete old entries
-        for p in collection
-            .get_all_items()?
-            .iter()
-            .filter(|p| p.get_label().unwrap_or_default() == self.provider_name())
-        {
-            p.unlock()?;
-            p.delete()?;
-        }
-
-        collection.create_item(
+        libsecret::password_store_sync(
+            None,
+            HashMap::new(),
+            Some(&libsecret::COLLECTION_DEFAULT),
             self.provider_name(),
-            std::collections::HashMap::new(),
-            value.secret().as_bytes(),
-            true,
-            "text/plain",
+            value.secret(),
+            None::<&gio::Cancellable>,
         )?;
 
         Ok(())
@@ -234,21 +216,5 @@ pub trait SyncProvider {
         }
 
         anyhow::bail!("{}", i18n("Couldn't parse OAuth2 response"))
-    }
-}
-
-fn default_collection_unlocked<'a>(ss: &'a SecretService) -> Result<Collection<'a>> {
-    let collection = match ss.get_default_collection() {
-        Ok(collection) => Ok(collection),
-        Err(SsError::NoResult) => ss.create_collection("default", "default"),
-        Err(x) => Err(x),
-    };
-
-    match collection {
-        Ok(c) => {
-            c.unlock()?;
-            Ok(c)
-        }
-        Err(e) => Err(e.into()),
     }
 }
