@@ -19,6 +19,7 @@
 use crate::{core::i18n, prelude::*};
 use anyhow::Result;
 use gtk::gio;
+use i18n::i18n_f;
 use oauth2::{
     basic::{BasicClient, BasicTokenType},
     url::Url,
@@ -26,7 +27,6 @@ use oauth2::{
     TokenResponse,
 };
 use std::{
-    collections::HashMap,
     io::{BufRead, BufReader, Write},
     net::TcpListener,
 };
@@ -114,18 +114,28 @@ pub trait SyncProvider {
         }
     }
 
+    /// Get the libsecret Schema used by Health
+    fn schema(&self) -> libsecret::Schema {
+        libsecret::Schema::new(
+            crate::config::APPLICATION_ID,
+            libsecret::SchemaFlags::NONE,
+            [("provider", libsecret::SchemaAttributeType::String)]
+                .into_iter()
+                .collect(),
+        )
+    }
+
     /// Retrieve the [RefreshToken] from the secret store.
     ///
     /// # Returns
     /// A `RefreshToken` if a refresh token is set, or `None` if no refresh token is set.
     /// May return an error if querying the secret store fails.
     fn token(&self) -> Result<Option<RefreshToken>> {
-        let mut password_attributes = HashMap::new();
-        password_attributes.insert("label", self.provider_name());
-
-        if let Some(password) =
-            libsecret::password_lookup_sync(None, password_attributes, None::<&gio::Cancellable>)?
-        {
+        if let Some(password) = libsecret::password_lookup_sync(
+            Some(&self.schema()),
+            [("provider", self.provider_name())].into_iter().collect(),
+            None::<&gio::Cancellable>,
+        )? {
             Ok(Some(RefreshToken::new(password.to_string())))
         } else {
             Ok(None)
@@ -141,10 +151,10 @@ pub trait SyncProvider {
     /// May return an error if querying the secret store fails.
     fn set_token(&self, value: RefreshToken) -> Result<()> {
         libsecret::password_store_sync(
-            None,
-            HashMap::new(),
+            Some(&self.schema()),
+            [("provider", self.provider_name())].into_iter().collect(),
             Some(&libsecret::COLLECTION_DEFAULT),
-            self.provider_name(),
+            &i18n_f("Token for Health sync provider {}", &[self.provider_name()]),
             value.secret(),
             None::<&gio::Cancellable>,
         )?;
