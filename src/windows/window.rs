@@ -212,7 +212,8 @@ impl Window {
     }
 
     #[template_callback]
-    fn handle_error_infobar_response(bar: &gtk::InfoBar, response: gtk::ResponseType) {
+    fn handle_error_infobar_response(&self, response: i32, bar: &gtk::InfoBar) {
+        let response: gtk::ResponseType = unsafe { glib::translate::from_glib(response) };
         if response == gtk::ResponseType::Close {
             bar.set_revealed(false);
         }
