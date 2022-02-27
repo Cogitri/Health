@@ -2,16 +2,16 @@
 # Copyright (C) 2021 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Fran Dieguez <frandieguez@gnome.org>, 2021.
 # Fran Diéguez <frandieguez@gnome.org>, 2022.
+# Fran Dieguez <frandieguez@gnome.org>, 2021-2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-25 22:47+0000\n"
-"PO-Revision-Date: 2022-02-04 15:05+0100\n"
-"Last-Translator: Fran Diéguez <frandieguez@gnome.org>\n"
+"POT-Creation-Date: 2022-02-04 14:12+0000\n"
+"PO-Revision-Date: 2022-02-27 23:58+0100\n"
+"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
 "Language-Team: Galician <proxecto@trasno.gal>\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr ""
 "X-DL-Branch: master\n"
 "X-DL-Domain: po\n"
 "X-DL-State: Translating\n"
-"X-Generator: Gtranslator 41.0\n"
+"X-Generator: Gtranslator 42.alpha0\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -285,7 +285,6 @@ msgid "_Export"
 msgstr "_Exportar"
 
 #: data/ui/import_export_dialog_base.blp:56
-#| msgid "Weight Measurements"
 msgid "Export weight measurements"
 msgstr "Exportar medidas de peso"
 
@@ -671,12 +670,11 @@ msgstr "Voleiball"
 msgid "Walking"
 msgstr "Andar"
 
-#: src/model/model_notification.rs:224
+#: src/model/model_notification.rs:236
 msgid "Health: walking reminder"
 msgstr "Saúde: recordatorio de andar"
 
-#: src/model/model_notification.rs:245
-#| msgid "Please enter your daily step goal."
+#: src/model/model_notification.rs:252
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "Falta {} paso para completar o seu obxectivo de pasos diarios."
@@ -687,7 +685,6 @@ msgid "Activities"
 msgstr "Actividades"
 
 #: src/plugins/activities/summary.rs:93
-#| msgid "Active Minutes"
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "{} minuto activo hoxe"
@@ -712,7 +709,6 @@ msgstr[1] ""
 "{}"
 
 #: src/plugins/calories/summary.rs:96 src/plugins/calories/summary.rs:103
-#| msgid "Calories Burned"
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "{} caloría queimada hoxe"
@@ -757,14 +753,13 @@ msgid_plural "{} steps on {}"
 msgstr[0] "{} paso de {}"
 msgstr[1] "{} pasos de {}"
 
-#: src/plugins/steps/summary.rs:97
+#: src/plugins/steps/summary.rs:94
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} paso realizado hoxe"
 msgstr[1] "{} pasos realizados hoxe"
 
-#: src/plugins/steps/summary.rs:107
-#| msgid "Please enter your daily step goal."
+#: src/plugins/steps/summary.rs:104
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Alcanzouse o {} porcentaxe do obxectivo de pasos diario."
@@ -871,28 +866,24 @@ msgstr[0] "{} quilogramo"
 msgstr[1] "{} quilogramos"
 
 #: src/plugins/weight/summary.rs:139
-#| msgid "compared to previous weight"
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "+ {} libra comparado coa pesaxe anterior"
 msgstr[1] "+ {} libras comparado coa pesaxe anterior"
 
 #: src/plugins/weight/summary.rs:147
-#| msgid "compared to previous weight"
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "+ {} quilogramo comparado coa anterior pesaxe"
 msgstr[1] "+ {} quilogramos comparado coa anterior pesaxe"
 
 #: src/plugins/weight/summary.rs:158
-#| msgid "compared to previous weight"
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "{} libra comparado coa anterior pesaxe"
 msgstr[1] "{} libras comparado coa anterior pesaxe"
 
 #: src/plugins/weight/summary.rs:166
-#| msgid "compared to previous weight"
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "{} quilogramo comparado coa anterior pesaxe"
@@ -906,21 +897,21 @@ msgstr "Ningún cambio no peso"
 msgid "No weight data available"
 msgstr "Non hai datos de peso dispoñíbeis"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:363
+#: src/sync/csv.rs:81 src/sync/csv.rs:371
 msgid "No activities added yet; can't create empty export!"
 msgstr ""
 "Aínda non se engadiron actividades. Non é posíbel crear un exportado baleiro!"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:381
+#: src/sync/csv.rs:111 src/sync/csv.rs:389
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr ""
 "Aínda non hai pesaxes engadidas. Non é posíbel crear un exportado baleiro!"
 
-#: src/sync/csv.rs:184 src/sync/csv.rs:325
+#: src/sync/csv.rs:184 src/sync/csv.rs:333
 msgid "Can't parse encrypted backup without encryption key!"
 msgstr "Non é posíbel analizar o respaldo cifrado sen unha chave de cifrado!"
 
-#: src/sync/csv.rs:195 src/sync/csv.rs:345
+#: src/sync/csv.rs:195 src/sync/csv.rs:353
 msgid ""
 "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -977,35 +968,28 @@ msgid "Idle calories"
 msgstr "Calorías baleiras"
 
 #: src/views/view_add_activity.rs:237
-#| msgid "Activities"
 msgid "Activity"
 msgstr "Actividade"
 
 #: src/widgets/activity_row.rs:79
-#| msgid "{} Minute"
-#| msgid_plural "{} Minutes"
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{} por {} minuto"
+msgstr[1] "{} por {} minutos"
 
 #: src/widgets/activity_row.rs:91
-#| msgid "Calories Burned"
 msgid "Calories burned"
 msgstr "Calorías queimadas"
 
 #: src/widgets/activity_row.rs:101
-#| msgid "Average Heart Rate"
 msgid "Average heart rate"
 msgstr "Taxa de pulsacións media"
 
 #: src/widgets/activity_row.rs:107
-#| msgid "Maximum Heart Rate"
 msgid "Maximum heart rate"
 msgstr "Taxa de pulsacións máxima"
 
 #: src/widgets/activity_row.rs:113
-#| msgid "Minimum Heart Rate"
 msgid "Minimum heart rate"
 msgstr "Taxa de pulsacións mínima"
 
