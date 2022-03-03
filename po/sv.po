@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-28 15:46+0000\n"
-"PO-Revision-Date: 2022-02-20 21:10+0100\n"
+"POT-Creation-Date: 2022-03-03 20:40+0000\n"
+"PO-Revision-Date: 2022-03-03 21:44+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -940,11 +940,15 @@ msgstr ""
 "Kan inte erhålla OAuth2-token då ingen uppdateringstoken har ställts in! "
 "Autentisera igen med din synkroniseringsleverantör."
 
-#: src/sync/sync_provider.rs:225
+#: src/sync/sync_provider.rs:157
+msgid "Token for Health sync provider {}"
+msgstr "Token för synkroniseringsleverantören {} för Hälsa"
+
+#: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
 msgstr "Lyckades autentisera, återvänd till Hälsa."
 
-#: src/sync/sync_provider.rs:236
+#: src/sync/sync_provider.rs:228
 msgid "Couldn't parse OAuth2 response"
 msgstr "Kunde inte tolka OAuth2-svar"
 
@@ -1135,7 +1139,7 @@ msgid "Failed to migrate database to new version due to error {}"
 msgstr ""
 "Misslyckades med att migrera databas till ny version på grund av fel {}"
 
-#: src/windows/window.rs:266
+#: src/windows/window.rs:267
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr "Kunde inte synkronisera Google Fit-data på grund av fel: {}"
 
