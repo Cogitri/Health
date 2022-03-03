@@ -238,7 +238,7 @@ impl Application {
         let parameter = parameter.unwrap();
 
         self.imp().settings.set_unit_system(
-            UnitSystem::from_str(parameter.to_string().replace("'", "").as_str()).unwrap(),
+            UnitSystem::from_str(parameter.to_string().replace('\'', "").as_str()).unwrap(),
         );
 
         action.set_state(parameter);
