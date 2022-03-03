@@ -175,7 +175,14 @@ impl Database {
                     "steps" => {
                         activity.steps(cursor.integer(i).try_into().unwrap());
                     }
-                    _ => unimplemented!(),
+                    _ => {
+                        glib::g_error!(
+                            crate::config::APPLICATION_ID,
+                            "Unknown variable name {}",
+                            cursor.variable_name(i).unwrap()
+                        );
+                        unimplemented!();
+                    }
                 }
             }
 
