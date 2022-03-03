@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-25 22:47+0000\n"
-"PO-Revision-Date: 2022-02-20 20:31+0200\n"
+"POT-Creation-Date: 2022-02-20 19:37+0000\n"
+"PO-Revision-Date: 2022-03-03 05:36+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <(nothing)>\n"
 "Language: sr\n"
@@ -177,10 +177,6 @@ msgid "A health tracking app for the GNOME desktop."
 msgstr "Програм за праћење здравља за Гномову радну површ."
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
-#| msgid ""
-#| "A health tracking app for the GNOME desktop. Health can visualize how "
-#| "many steps you've made daily, your weight development over time and your "
-#| "daily activities."
 msgid ""
 "A health tracking app for the GNOME desktop. Health can visualize how many "
 "steps you've made daily, your weight development over time and your daily "
@@ -661,13 +657,11 @@ msgstr "Одбојка"
 msgid "Walking"
 msgstr "Ходање"
 
-#: src/model/model_notification.rs:224
+#: src/model/model_notification.rs:236
 msgid "Health: walking reminder"
 msgstr "Здравље: подсетник ходања"
 
-#: src/model/model_notification.rs:245
-#| msgid "{} step remaining to complete your daily step goal"
-#| msgid_plural "{} steps remaining to complete your daily step goal"
+#: src/model/model_notification.rs:252
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "{} корак је остао до испуњења вашег циља дневних корака."
@@ -680,8 +674,6 @@ msgid "Activities"
 msgstr "Активности"
 
 #: src/plugins/activities/summary.rs:93
-#| msgid "{} active minutes today"
-#| msgid_plural "{} active minutes today"
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "{} активан минут данас"
@@ -768,7 +760,7 @@ msgstr[1] "{} корака {}"
 msgstr[2] "{} корака {}"
 msgstr[3] "1 корак {}"
 
-#: src/plugins/steps/summary.rs:97
+#: src/plugins/steps/summary.rs:94
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} корак сте направили данас"
@@ -776,8 +768,7 @@ msgstr[1] "{} корака сте направили данас"
 msgstr[2] "{} корака сте направили данас"
 msgstr[3] "{} корак сте направили данас"
 
-#: src/plugins/steps/summary.rs:107
-#| msgid "Please enter your daily step goal."
+#: src/plugins/steps/summary.rs:104
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Достигнут је {} проценат дневног циља корака"
@@ -952,19 +943,19 @@ msgstr "Нема промене у тежини"
 msgid "No weight data available"
 msgstr "Нема доступних података тежине"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:363
+#: src/sync/csv.rs:81 src/sync/csv.rs:371
 msgid "No activities added yet; can't create empty export!"
 msgstr "Још увек нису додате активности; не могу да направим празан извоз!"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:381
+#: src/sync/csv.rs:111 src/sync/csv.rs:389
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr "Још увек нису додате мере тежине; не могу да направим празан извоз!"
 
-#: src/sync/csv.rs:184 src/sync/csv.rs:325
+#: src/sync/csv.rs:184 src/sync/csv.rs:333
 msgid "Can't parse encrypted backup without encryption key!"
 msgstr "Не могу да обрадим шифровану резерву без кључа шифровања!"
 
-#: src/sync/csv.rs:195 src/sync/csv.rs:345
+#: src/sync/csv.rs:195 src/sync/csv.rs:353
 msgid ""
 "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -1018,13 +1009,10 @@ msgid "Idle calories"
 msgstr "Калорије мировања"
 
 #: src/views/view_add_activity.rs:237
-#| msgid "Activities"
 msgid "Activity"
 msgstr "Активност"
 
 #: src/widgets/activity_row.rs:79
-#| msgid "{} Minute"
-#| msgid_plural "{} Minutes"
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} за {} минут"
@@ -1033,22 +1021,18 @@ msgstr[2] "{} за {} минута"
 msgstr[3] "1 минут"
 
 #: src/widgets/activity_row.rs:91
-#| msgid "Calories Burned"
 msgid "Calories burned"
 msgstr "Сагорених калорија"
 
 #: src/widgets/activity_row.rs:101
-#| msgid "Average Heart Rate"
 msgid "Average heart rate"
 msgstr "Просечни откуцаји срца"
 
 #: src/widgets/activity_row.rs:107
-#| msgid "Maximum Heart Rate"
 msgid "Maximum heart rate"
 msgstr "Највећи број откуцаја срца"
 
 #: src/widgets/activity_row.rs:113
-#| msgid "Minimum Heart Rate"
 msgid "Minimum heart rate"
 msgstr "Најмањи број откуцаја срца"
 
@@ -1061,7 +1045,6 @@ msgstr[2] "{} метара"
 msgstr[3] "1 метар"
 
 #: src/widgets/activity_row.rs:129
-#, fuzzy
 msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} стопа"
