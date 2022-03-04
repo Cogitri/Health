@@ -9,16 +9,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-27 16:46+0000\n"
-"PO-Revision-Date: 2022-01-27 13:48-0300\n"
+"POT-Creation-Date: 2022-03-03 20:40+0000\n"
+"PO-Revision-Date: 2022-03-04 08:24-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 40.0\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -185,10 +185,6 @@ msgid "A health tracking app for the GNOME desktop."
 msgstr "Um aplicativo de monitoramento de saúde para o ambiente GNOME."
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
-#| msgid ""
-#| "A health tracking app for the GNOME desktop. Health can visualize how "
-#| "many steps you've made daily, your weight development over time and your "
-#| "daily activities."
 msgid ""
 "A health tracking app for the GNOME desktop. Health can visualize how many "
 "steps you've made daily, your weight development over time and your daily "
@@ -678,13 +674,11 @@ msgstr "Vôlei"
 msgid "Walking"
 msgstr "Caminhada"
 
-#: src/model/model_notification.rs:224
+#: src/model/model_notification.rs:236
 msgid "Health: walking reminder"
 msgstr "Saúde: lembrete de caminhada"
 
-#: src/model/model_notification.rs:245
-#| msgid "{} step remaining to complete your daily step goal"
-#| msgid_plural "{} steps remaining to complete your daily step goal"
+#: src/model/model_notification.rs:252
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "{} passo restante para concluir sua meta diária de passos."
@@ -763,13 +757,13 @@ msgid_plural "{} steps on {}"
 msgstr[0] "{} passo em {}"
 msgstr[1] "{} passos em {}"
 
-#: src/plugins/steps/summary.rs:97
+#: src/plugins/steps/summary.rs:94
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} passo dado hoje"
 msgstr[1] "{} passos dados hoje"
 
-#: src/plugins/steps/summary.rs:107
+#: src/plugins/steps/summary.rs:104
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Atingido {} porcento da meta diária de passos"
@@ -907,24 +901,24 @@ msgstr "Sem mudança de peso"
 msgid "No weight data available"
 msgstr "Nenhum dado sobre peso disponível"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:363
+#: src/sync/csv.rs:81 src/sync/csv.rs:371
 msgid "No activities added yet; can't create empty export!"
 msgstr ""
 "Nenhuma atividade adicionada ainda; não é possível criar uma exportação "
 "vazia!"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:381
+#: src/sync/csv.rs:111 src/sync/csv.rs:389
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr ""
 "Nenhuma medida de peso adicionada ainda; não é possível criar uma exportação "
 "vazia!"
 
-#: src/sync/csv.rs:184 src/sync/csv.rs:325
+#: src/sync/csv.rs:184 src/sync/csv.rs:333
 msgid "Can't parse encrypted backup without encryption key!"
 msgstr ""
 "Não é possível analisar backup criptografado sem chave de criptografia!"
 
-#: src/sync/csv.rs:195 src/sync/csv.rs:345
+#: src/sync/csv.rs:195 src/sync/csv.rs:353
 msgid ""
 "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -962,11 +956,15 @@ msgstr ""
 "Não é possível recuperar o token OAuth2 quando nenhum token de atualização "
 "está definido! Reautentique com seu provedor de sincronização."
 
-#: src/sync/sync_provider.rs:225
+#: src/sync/sync_provider.rs:157
+msgid "Token for Health sync provider {}"
+msgstr "Token para Saúde sincronizar o provedor {}"
+
+#: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
 msgstr "Autenticado com sucesso, volte para o app Saúde."
 
-#: src/sync/sync_provider.rs:236
+#: src/sync/sync_provider.rs:228
 msgid "Couldn't parse OAuth2 response"
 msgstr "Não foi possível analisar a resposta OAuth2"
 
@@ -1154,7 +1152,7 @@ msgstr "Fechar"
 msgid "Failed to migrate database to new version due to error {}"
 msgstr "Falha ao migrar o banco de dados para a nova versão devido ao erro {}"
 
-#: src/windows/window.rs:266
+#: src/windows/window.rs:267
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr ""
 "Não foi possível sincronizar os dados do Google Fit devido a um erro: {}"
