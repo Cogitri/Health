@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-25 22:47+0000\n"
-"PO-Revision-Date: 2022-01-26 14:46+0000\n"
+"POT-Creation-Date: 2022-03-03 20:40+0000\n"
+"PO-Revision-Date: 2022-03-04 10:20+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Portuguese <gnome-pt-translation@googlegroups.com>\n"
 "Language: pt\n"
@@ -661,11 +661,11 @@ msgstr "Voleibol"
 msgid "Walking"
 msgstr "Caminhada"
 
-#: src/model/model_notification.rs:224
+#: src/model/model_notification.rs:236
 msgid "Health: walking reminder"
 msgstr "Saúde: lembrete de caminhada"
 
-#: src/model/model_notification.rs:245
+#: src/model/model_notification.rs:252
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "{} passo restante para concluir o seu objetivo diário."
@@ -744,13 +744,13 @@ msgid_plural "{} steps on {}"
 msgstr[0] "{} passo em {}"
 msgstr[1] "{} passos em {}"
 
-#: src/plugins/steps/summary.rs:97
+#: src/plugins/steps/summary.rs:94
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} passo dado hoje"
 msgstr[1] "{} passos dados hoje"
 
-#: src/plugins/steps/summary.rs:107
+#: src/plugins/steps/summary.rs:104
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Atingido {} por cento do objetivo diário de passos"
@@ -888,25 +888,25 @@ msgstr "Sem alterações de peso"
 msgid "No weight data available"
 msgstr "Não existem dados de peso"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:363
+#: src/sync/csv.rs:81 src/sync/csv.rs:371
 msgid "No activities added yet; can't create empty export!"
 msgstr ""
 "Nenhuma atividade adicionada ainda; não é possível criar uma exportação "
 "vazia!"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:381
+#: src/sync/csv.rs:111 src/sync/csv.rs:389
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr ""
 "Nenhuma medida de peso adicionada ainda; não é possível criar uma exportação "
 "vazia!"
 
-#: src/sync/csv.rs:184 src/sync/csv.rs:325
+#: src/sync/csv.rs:184 src/sync/csv.rs:333
 msgid "Can't parse encrypted backup without encryption key!"
 msgstr ""
 "Não é possível analisar cópias de segurança encriptadas sem chave de "
 "encriptação!"
 
-#: src/sync/csv.rs:195 src/sync/csv.rs:345
+#: src/sync/csv.rs:195 src/sync/csv.rs:353
 msgid ""
 "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -930,7 +930,7 @@ msgstr "Não foi possível sincronizar as medições de peso devido ao erro {}"
 
 #: src/sync/google_fit.rs:211
 msgid "CRSF Verification failed, got {}, expected {}"
-msgstr "A verificação de CRSF falhou, obteve {}, esperado {}"
+msgstr "Falha na verificação de CRSF, obteve {}, esperado {}"
 
 #: src/sync/google_fit.rs:227
 msgid "Requesting OAuth2 token failed due to error {}"
@@ -944,11 +944,15 @@ msgstr ""
 "Não é possível recuperar o token OAuth2 quando nenhum token de atualização "
 "está definido! Re-autenticar com o seu fornecedor de sincronização."
 
-#: src/sync/sync_provider.rs:225
+#: src/sync/sync_provider.rs:157
+msgid "Token for Health sync provider {}"
+msgstr "Token para fornecedor de sincronização da Saúde {}"
+
+#: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
 msgstr "Autenticado com sucesso, volte para a Saúde."
 
-#: src/sync/sync_provider.rs:236
+#: src/sync/sync_provider.rs:228
 msgid "Couldn't parse OAuth2 response"
 msgstr "Não foi possível analisar a resposta OAuth2"
 
@@ -1136,7 +1140,7 @@ msgstr "Fechar"
 msgid "Failed to migrate database to new version due to error {}"
 msgstr "Falha ao migrar a base de dados para a nova versão devido ao erro {}"
 
-#: src/windows/window.rs:266
+#: src/windows/window.rs:267
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr ""
 "Não foi possível sincronizar os dados do Google Fit devido a um erro: {}"
