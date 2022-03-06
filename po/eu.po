@@ -6,8 +6,8 @@
 msgid ""
 msgstr "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-25 22:47+0000\n"
-"PO-Revision-Date: 2022-02-13 17:00+0100\n"
+"POT-Creation-Date: 2022-03-03 20:40+0000\n"
+"PO-Revision-Date: 2022-03-06 17:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -643,11 +643,11 @@ msgstr "Boleibola"
 msgid "Walking"
 msgstr "Ibilaldiak"
 
-#: src/model/model_notification.rs:224
+#: src/model/model_notification.rs:236
 msgid "Health: walking reminder"
 msgstr "Osasuna: ibiltzeko oroigarria"
 
-#: src/model/model_notification.rs:245
+#: src/model/model_notification.rs:252
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "Urrats {} falta zaizu egunerako duzun urrats-helburua osatzeko."
@@ -719,13 +719,13 @@ msgid_plural "{} steps on {}"
 msgstr[0] "Urrats {} honetan: {}"
 msgstr[1] "{} urrats honetan: {}"
 
-#: src/plugins/steps/summary.rs:97
+#: src/plugins/steps/summary.rs:94
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "Urrats {} egin da gaur"
 msgstr[1] "{} urrats egin dira gaur"
 
-#: src/plugins/steps/summary.rs:107
+#: src/plugins/steps/summary.rs:104
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Eguneko urrats-helburuaren ehuneko {} egin da"
@@ -853,19 +853,19 @@ msgstr "Ez da aldaketarik izan pisuan"
 msgid "No weight data available"
 msgstr "Ez dago pisuaren daturik erabilgarri"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:363
+#: src/sync/csv.rs:81 src/sync/csv.rs:371
 msgid "No activities added yet; can't create empty export!"
 msgstr "Ez da jarduerarik sortu oraindik; ezin da hutsik dagoena esportatu!"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:381
+#: src/sync/csv.rs:111 src/sync/csv.rs:389
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr "Ez da pisu-neurketarik sortu oraindik; ezin da hutsik dagoena esportatu!"
 
-#: src/sync/csv.rs:184 src/sync/csv.rs:325
+#: src/sync/csv.rs:184 src/sync/csv.rs:333
 msgid "Can't parse encrypted backup without encryption key!"
 msgstr "Ezin da zifratutako babeskopia analizatu zifratze-gakorik gabe!"
 
-#: src/sync/csv.rs:195 src/sync/csv.rs:345
+#: src/sync/csv.rs:195 src/sync/csv.rs:353
 msgid ""
 "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -897,11 +897,15 @@ msgid ""
 "authenticate with your sync provider."
 msgstr "Ezin da OAuth2 tokena atzitu freskatze-tokenik ezarri ez bada! Autentifikatu berriro zure sinkronizazio-hornitzailearekin."
 
-#: src/sync/sync_provider.rs:225
+#: src/sync/sync_provider.rs:157
+msgid "Token for Health sync provider {}"
+msgstr "Osasuna aplikazioaren hornitzailearen konfigurazioa {}"
+
+#: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
 msgstr "Autentifikazioa ongi gauzatu da, itzuli Osasuna aplikaziora."
 
-#: src/sync/sync_provider.rs:236
+#: src/sync/sync_provider.rs:228
 msgid "Couldn't parse OAuth2 response"
 msgstr "Ezin izan da OAuth2 erantzuna analizatu"
 
@@ -1089,7 +1093,7 @@ msgstr "Itxi"
 msgid "Failed to migrate database to new version due to error {}"
 msgstr "Huts egin du datu-basea bertsio berrira migratzeak, {} errorea"
 
-#: src/windows/window.rs:266
+#: src/windows/window.rs:267
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr "Ezin izan da Google Fit-ekin sinkronizatu, errorea: {}"
 
