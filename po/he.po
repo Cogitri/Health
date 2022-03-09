@@ -7,8 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-11-07 21:03+0000\n"
-"PO-Revision-Date: 2021-11-12 00:05+0200\n"
+"POT-Creation-Date: 2022-03-08 10:25+0000\n"
+"PO-Revision-Date: 2022-03-09 10:21+0200\n"
+"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
@@ -16,42 +17,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
 "2 : 3);\n"
-"Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
-"X-Generator: Poedit 3.0\n"
-
-#: data/dev.Cogitri.Health.desktop.in.in:3
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.ui:45
-#: src/main.rs:31
-msgid "Health"
-msgstr "בריאות"
-
-#: data/dev.Cogitri.Health.desktop.in.in:5
-msgid "@APPLICATION_ID@"
-msgstr "@APPLICATION_ID@"
+"X-Generator: Poedit 3.0.1\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
-msgid "Last opened view"
-msgstr "התצוגה האחרונה שנפתחה"
-
-#: data/dev.Cogitri.Health.gschema.xml:17
-msgid "The last view the user had opened, for restoring it on start"
-msgstr "התצוגה האחרונה שנפתחה על ידי המשתמש, כדי לשחזר אותה בהתחלה"
-
-#: data/dev.Cogitri.Health.gschema.xml:21
 msgid "First time setup done"
 msgstr "ההקמה הראשונית בוצעה"
 
-#: data/dev.Cogitri.Health.gschema.xml:22
+#: data/dev.Cogitri.Health.gschema.xml:17
 msgid "Whether the user has completed the setup wizard"
 msgstr "האם המשתמש השלים את אשף ההקמה"
 
-#: data/dev.Cogitri.Health.gschema.xml:26
+#: data/dev.Cogitri.Health.gschema.xml:21
 msgid "Toggle notifications"
 msgstr "החלפת מצב התראות"
 
-#: data/dev.Cogitri.Health.gschema.xml:27
+#: data/dev.Cogitri.Health.gschema.xml:22
 msgid "Whether to enable notifications."
 msgstr "האם להפעיל התראות."
+
+#: data/dev.Cogitri.Health.gschema.xml:26
+msgid "Set enabled plugins"
+msgstr "הגדרת תוספים פעילים"
+
+#: data/dev.Cogitri.Health.gschema.xml:27
+msgid "Sets all data source plugins that are enabled in Health."
+msgstr "מגדיר את כל תוספי מקורות הנתונים שמופעלים בתוכנת הבריאות."
 
 #: data/dev.Cogitri.Health.gschema.xml:31
 msgid "Notification time"
@@ -68,8 +58,7 @@ msgstr "תדירות התראות"
 #: data/dev.Cogitri.Health.gschema.xml:37
 msgid ""
 "How frequent should the user be notified to complete their daily step-goal."
-msgstr ""
-"מה התדירות בה תישלח הודעה למשתמשים בנוגע להשלמת יעד הצעדים היומי שלהם."
+msgstr "מה התדירות בה תישלח הודעה למשתמשים בנוגע להשלמת יעד הצעדים היומי שלהם."
 
 #: data/dev.Cogitri.Health.gschema.xml:41
 msgid "List of recent activity types"
@@ -173,7 +162,19 @@ msgstr "רוחב החלון"
 msgid "The width of the window."
 msgstr "הרוחב של החלון."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:138
+#: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
+#: data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37
+#: src/main.rs:31
+msgid "Health"
+msgstr "בריאות"
+
+#: data/dev.Cogitri.Health.Autostart.desktop.in.in:5
+#: data/dev.Cogitri.Health.desktop.in.in:5
+msgid "@APPLICATION_ID@"
+msgstr "@APPLICATION_ID@"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:167
 msgid "A health tracking app for the GNOME desktop."
 msgstr "יישום מעקב בריאות עבור שולחן העבודה GNOME."
 
@@ -181,389 +182,401 @@ msgstr "יישום מעקב בריאות עבור שולחן העבודה GNOME.
 msgid ""
 "A health tracking app for the GNOME desktop. Health can visualize how many "
 "steps you've made daily, your weight development over time and your daily "
-"activities."
+"activities. Data can be synched from Google Fit or manually entered into "
+"Health. Afterwards, it can be viewed and edited in Health."
 msgstr ""
 "יישום מעקב בריאות עבור שולחן העבודה GNOME. תכנית הבריאות יכולה לשקף באופן "
 "חזותי את כמות הצעדים שעשית ביום, התפתחות המשקל שלך לאורך הזמן והפעילויות "
-"היומיות שלך."
+"היומיות שלך. אפשר לסנכרן נתונים מ־Google Fit או למלא אותם ידנית לתוך יישום "
+"הבריאות. לאחר מכן ניתן לצפות ולערוך אותם ביישום."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:34
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:37
 msgid "Rasmus “Cogitri” Thomsen"
 msgstr "Rasmus “Cogitri” Thomsen"
 
-#: data/ui/activity_add_dialog.ui:64
-msgid "Add An Activity"
-msgstr "הוספת פעילות"
-
-#: data/ui/activity_add_dialog.ui:93 data/ui/weight_add_dialog.ui:51
-msgid "Date"
-msgstr "תאריך"
-
-#: data/ui/activity_add_dialog.ui:102
-msgid "Activity Type"
-msgstr "סוג פעילות"
-
-#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:70
-msgid "Calories Burned"
-msgstr "קלוריות שנשרפו"
-
-#: data/ui/activity_add_dialog.ui:124
-msgid "Active Minutes"
-msgstr "דקות פעילות"
-
-#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:97
-msgid "Average Heart Rate"
-msgstr "דופק ממוצע"
-
-#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:106
-msgid "Minimum Heart Rate"
-msgstr "דופק מזערי"
-
-#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:115
-msgid "Maximum Heart Rate"
-msgstr "דופק מרבי"
-
-#: data/ui/activity_add_dialog.ui:172
-msgid "Stepcount"
-msgstr "מד־צעדים"
-
-#: data/ui/activity_row.ui:79
-msgid "Distance in Meters"
-msgstr "מרחק במטרים"
-
-#: data/ui/activity_row.ui:88 data/ui/home_page.ui:69 data/ui/step_view.ui:26
-#: data/ui/step_view.ui:27
-msgid "Steps"
-msgstr "צעדים"
-
-#: data/ui/activity_view.ui:24 data/ui/calorie_view.ui:23
-#: data/ui/home_page.ui:24 data/ui/step_view.ui:23
-msgid "You can use the <b>+</b> button to add a new activity."
-msgstr "אפשר להשתמש בכפתור <b>+</b> כדי להוסיף פעילות חדשה."
-
-#: data/ui/activity_view.ui:27 data/ui/home_page.ui:27
-msgid "Recent Activities"
-msgstr "פעילויות אחרונות"
-
-#: data/ui/activity_view.ui:28
-msgid "Activities"
-msgstr "פעילויות"
-
-#: data/ui/calorie_view.ui:26 data/ui/calorie_view.ui:27
-msgid "Calories"
-msgstr "קלוריות"
-
-#: data/ui/data_add_dialog.ui:26 data/ui/preferences_window.ui:72
-msgid "Health Preferences"
-msgstr "העדפות תכנית הבריאות"
-
-#: data/ui/data_add_dialog.ui:31 data/ui/import_export_dialog_base.ui:29
-#: src/windows/export_dialog.rs:56 src/windows/export_dialog.rs:92
-#: src/windows/import_dialog.rs:56 src/windows/import_dialog.rs:85
+#: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
+#: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
+#: src/windows/import_dialog.rs:53 src/windows/import_dialog.rs:82
 msgid "_Cancel"
 msgstr "_ביטול"
 
-#: data/ui/data_add_dialog.ui:37 src/windows/export_dialog.rs:55
-#: src/windows/export_dialog.rs:91
+#: data/ui/data_add_dialog.blp:10 src/windows/export_dialog.rs:52
+#: src/windows/export_dialog.rs:88
 msgid "_Save"
 msgstr "_שמירה"
 
-#: data/ui/date_editor.ui:29
+#: data/ui/date_selector.blp:17
 msgid "January"
 msgstr "ינואר"
 
-#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:262
+#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:245
 msgid "February"
 msgstr "פברואר"
 
-#: data/ui/date_editor.ui:31
+#: data/ui/date_selector.blp:19
 msgid "March"
 msgstr "מרץ"
 
-#: data/ui/date_editor.ui:32
+#: data/ui/date_selector.blp:20
 msgid "April"
 msgstr "אפריל"
 
-#: data/ui/date_editor.ui:33
+#: data/ui/date_selector.blp:21
 msgid "May"
 msgstr "מאי"
 
-#: data/ui/date_editor.ui:34
+#: data/ui/date_selector.blp:22
 msgid "June"
 msgstr "יוני"
 
-#: data/ui/date_editor.ui:35
+#: data/ui/date_selector.blp:23
 msgid "July"
 msgstr "יולי"
 
-#: data/ui/date_editor.ui:36
+#: data/ui/date_selector.blp:24
 msgid "August"
 msgstr "אוגוסט"
 
-#: data/ui/date_editor.ui:37
+#: data/ui/date_selector.blp:25
 msgid "September"
 msgstr "ספטמבר"
 
-#: data/ui/date_editor.ui:38
+#: data/ui/date_selector.blp:26
 msgid "October"
 msgstr "אוקטובר"
 
-#: data/ui/date_editor.ui:39
+#: data/ui/date_selector.blp:27
 msgid "November"
 msgstr "נובמבר"
 
-#: data/ui/date_editor.ui:40
+#: data/ui/date_selector.blp:28
 msgid "December"
 msgstr "דצמבר"
 
-#: data/ui/date_editor.ui:51
+#: data/ui/date_selector.blp:34
 msgid "Day"
 msgstr "יום"
 
-#: data/ui/date_editor.ui:76
+#: data/ui/date_selector.blp:60
 msgid "Month"
 msgstr "חודש"
 
-#: data/ui/date_editor.ui:98
+#: data/ui/date_selector.blp:83
 msgid "Year"
 msgstr "שנה"
 
-#: data/ui/distance_action_row.ui:29
+#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:131
 msgid "Distance"
 msgstr "מרחק"
 
-#: data/ui/home_page.ui:28
-msgid "Home Page"
-msgstr "עמוד הבית"
-
-#: data/ui/home_page.ui:63 data/ui/preferences_window.ui:82
-#: data/ui/shortcuts_window.ui:30
-msgid "General"
-msgstr "כללי"
-
-#: data/ui/home_page.ui:66
-msgid "Today"
-msgstr "היום"
-
-#. TRANSLATORS: This is displayed via two strings: x% and then this label. E.g. 100% of daily step goal
-#: data/ui/home_page.ui:90
-msgid "of daily step goal"
-msgstr "מתוך יעד הצעדים היומי"
-
-#: data/ui/home_page.ui:103 data/ui/preferences_window.ui:218
-#: data/ui/weight_add_dialog.ui:61 data/ui/weight_view.ui:27
-msgid "Weight"
-msgstr "משקל"
-
-#: data/ui/import_export_dialog_base.ui:35
+#: data/ui/import_export_dialog_base.blp:10
 msgid "_Export"
 msgstr "יי_צוא"
 
-#: data/ui/password_entry.ui:28
+#: data/ui/import_export_dialog_base.blp:56
+msgid "Export weight measurements"
+msgstr "ייצוא מדדי משקל"
+
+#: data/ui/import_export_dialog_base.blp:69
+msgid "Encrypt export"
+msgstr "הצפנת ייצוא"
+
+#: data/ui/password_entry.blp:9
 msgid "_Password"
 msgstr "_סיסמה"
 
-#: data/ui/password_entry.ui:58
+#: data/ui/password_entry.blp:40
 msgid "_Confirm password"
 msgstr "_אישור סיסמה"
 
-#: data/ui/preferences_window.ui:55
+#: data/ui/plugins/activities/details.blp:5
+#: data/ui/plugins/calories/details.blp:4 data/ui/plugins/steps/details.blp:4
+msgid "You can use the <b>+</b> button to add a new activity."
+msgstr "הכפתור <b>+</b> משמש להוספת פעילות חדשה."
+
+#: data/ui/plugins/activities/details.blp:8
+msgid "Recent Activities"
+msgstr "פעילויות אחרונות"
+
+#: data/ui/plugins/activities/summary.blp:5 data/ui/view_add_activity.blp:84
+msgid "Active Minutes"
+msgstr "דקות פעילות"
+
+#: data/ui/plugins/calories/details.blp:7 src/plugins/calories/plugin.rs:39
+msgid "Calories"
+msgstr "קלוריות"
+
+#: data/ui/plugins/calories/summary.blp:5 data/ui/view_add_activity.blp:66
+msgid "Calories Burned"
+msgstr "קלוריות שנשרפו"
+
+#: data/ui/plugins/details.blp:68
+msgid ""
+"This is a preview of how the plugin presents data. Enable the plugin to see "
+"your actual, live data."
+msgstr ""
+"זו תצוגה מקדימה של איך התוסף מייצג נתונים. יש להפעיל את התוסף כדי לראות את "
+"הנתונים האמתיים שלך בזמן אמת."
+
+#: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
+#: data/ui/preferences_window.blp:166 src/plugins/steps/plugin.rs:39
+msgid "Steps"
+msgstr "צעדים"
+
+#: data/ui/plugins/weight/details.blp:5
+msgid "You can use the <b>+</b> button to add a new weight measurement."
+msgstr "הכפתור <b>+</b> משמש להוספת מדדי משקל חדשים."
+
+#: data/ui/plugins/weight/details.blp:8
+msgid "Weight Measurements"
+msgstr "מדדי משקל"
+
+#: data/ui/plugins/weight/summary.blp:5 data/ui/preferences_window.blp:184
+#: data/ui/preferences_window.blp:187 data/ui/view_add_weight.blp:38
+#: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
+msgid "Weight"
+msgstr "משקל"
+
+#: data/ui/preferences_window.blp:43
 msgid "_Every 1 hour"
 msgstr "_כל שעה"
 
-#: data/ui/preferences_window.ui:60
+#: data/ui/preferences_window.blp:49
 msgid "_Every 4 hours"
 msgstr "כל _4 שעות"
 
-#: data/ui/preferences_window.ui:65
+#: data/ui/preferences_window.blp:55
 msgid "_Fixed Time"
 msgstr "זמן _קבוע"
 
-#: data/ui/preferences_window.ui:85
+#: data/ui/preferences_window.blp:63
+msgid "Health Preferences"
+msgstr "העדפות תכנית הבריאות"
+
+#: data/ui/preferences_window.blp:69 data/ui/shortcuts_window.blp:11
+msgid "General"
+msgstr "כללי"
+
+#: data/ui/preferences_window.blp:72
 msgid "User"
 msgstr "משתמש"
 
-#: data/ui/preferences_window.ui:88 data/ui/setup_window.ui:176
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:146
 msgid "Unit system"
 msgstr "מערכת יחידות"
 
-#: data/ui/preferences_window.ui:97 data/ui/setup_window.ui:185
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:156
 msgid "Imperial"
 msgstr "אימפריאלית"
 
-#: data/ui/preferences_window.ui:104 data/ui/setup_window.ui:192
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:162
 msgid "Metric"
 msgstr "מטרית"
 
-#: data/ui/preferences_window.ui:115 data/ui/setup_window.ui:203
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:170
 msgid "Birthday"
 msgstr "יום הולדת"
 
-#: data/ui/preferences_window.ui:125 data/ui/setup_window.ui:213
+#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:179
 msgid "Height"
 msgstr "גובה"
 
-#: data/ui/preferences_window.ui:141
+#: data/ui/preferences_window.blp:122
 msgid "Notifications"
 msgstr "התראות"
 
-#: data/ui/preferences_window.ui:144
+#: data/ui/preferences_window.blp:125
 msgid "Enable notifications"
 msgstr "הפעלת התראות"
 
-#: data/ui/preferences_window.ui:157
+#: data/ui/preferences_window.blp:136
 msgid "Frequency"
 msgstr "תדירות"
 
-#: data/ui/preferences_window.ui:174
+#: data/ui/preferences_window.blp:149
 msgid "Daily reminder time"
 msgstr "מועד תזכורת יומית"
 
-#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:279
-#: src/views/view_steps.rs:193
+#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:242
+#: src/plugins/steps/details.rs:241
 msgid "Step goal"
 msgstr "יעד צעדים"
 
-#: data/ui/preferences_window.ui:199 data/ui/setup_window.ui:256
+#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:218
 msgid "The WHO recommends 10.000 steps per day."
 msgstr "ארגון הבריאות העולמי ממליץ על 10,000 צעדים ביום."
 
-#: data/ui/preferences_window.ui:219 data/ui/setup_window.ui:321
+#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:279
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "ארגון הבריאות העולמי ממליץ על BMI בין 18.5 לבין 24.9."
 
-#: data/ui/preferences_window.ui:248
+#: data/ui/preferences_window.blp:212
 msgid "Sync"
 msgstr "סנכרון"
 
-#: data/ui/preferences_window.ui:252
+#: data/ui/preferences_window.blp:216
 msgid "Start sync with third-party providers."
-msgstr "להפעיל סנכרון עם ספקי צד־שלישי"
+msgstr "להפעיל סנכרון עם ספקי צד־שלישי."
 
-#: data/ui/preferences_window.ui:262
+#: data/ui/preferences_window.blp:224
 msgid "Importing and exporting data"
 msgstr "ייבוא וייצוא נתונים"
 
-#: data/ui/preferences_window.ui:265
+#: data/ui/preferences_window.blp:227
 msgid "Export data as CSV"
 msgstr "ייצוא נתונים כ־CSV"
 
-#: data/ui/preferences_window.ui:268
+#: data/ui/preferences_window.blp:230
 msgid "Export…"
 msgstr "ייצוא…"
 
-#: data/ui/preferences_window.ui:276
+#: data/ui/preferences_window.blp:237
 msgid "Import data from CSV"
 msgstr "ייבוא נתונים מ־CSV"
 
-#: data/ui/preferences_window.ui:279
+#: data/ui/preferences_window.blp:240
 msgid "Import…"
 msgstr "ייבוא…"
 
-#: data/ui/setup_window.ui:55
+#: data/ui/setup_window.blp:33
 msgid "Health Setup"
 msgstr "הקמת תכנית הבריאות"
 
-#: data/ui/setup_window.ui:70
+#: data/ui/setup_window.blp:47
 msgid "_Quit"
 msgstr "י_ציאה"
 
-#: data/ui/setup_window.ui:82
+#: data/ui/setup_window.blp:56
 msgid "_Previous"
 msgstr "ה_קודם"
 
-#: data/ui/setup_window.ui:99
+#: data/ui/setup_window.blp:71
 msgid "_Next"
 msgstr "ה_בא"
 
-#: data/ui/setup_window.ui:113
+#: data/ui/setup_window.blp:84
 msgid "_Done"
 msgstr "_סיום"
 
-#: data/ui/setup_window.ui:140
+#: data/ui/setup_window.blp:110
 msgid "Welcome to Health!"
-msgstr "ברוך בואך לתכנית הבריאות!"
+msgstr "ברוך בואך לתוכנית הבריאות!"
 
-#: data/ui/setup_window.ui:153
+#: data/ui/setup_window.blp:122
 msgid "Please enter some information to get setup."
 msgstr "נא למלא פרטים כדי להקים את המערכת."
 
-#: data/ui/setup_window.ui:243
+#: data/ui/setup_window.blp:206
 msgid "Please enter your daily step goal."
 msgstr "נא למלא את יעד הצעדים היומי שלך."
 
-#: data/ui/setup_window.ui:308
+#: data/ui/setup_window.blp:267
 msgid "Please enter your weight goal."
 msgstr "נא למלא את יעד המשקל שלך."
 
-#: data/ui/setup_window.ui:349 src/views/view_weight.rs:171
+#: data/ui/setup_window.blp:307 src/plugins/weight/details.rs:221
 msgid "Weight goal"
 msgstr "יעד משקל"
 
-#: data/ui/setup_window.ui:389
+#: data/ui/setup_window.blp:342
 msgid "Setup sync with third-party providers."
 msgstr "הגדרת סנכרון עם ספקי צד־שלישי."
 
-#: data/ui/setup_window.ui:402
+#: data/ui/setup_window.blp:354
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr "אפשר לסנכרן את מדדי הצעדים והמשקל מתוך/אל ספקי צד־שלישי."
 
-#: data/ui/shortcuts_window.ui:34
+#: data/ui/shortcuts_window.blp:15
 msgid "Quit the application"
 msgstr "יציאה מהיישום"
 
-#: data/ui/shortcuts_window.ui:40
+#: data/ui/shortcuts_window.blp:20
 msgid "Show this shortcuts window"
 msgstr "הצגת חלון הקיצורים הזה"
 
-#: data/ui/shortcuts_window.ui:46
+#: data/ui/shortcuts_window.blp:25
 msgid "Show help"
 msgstr "הצגת העזרה"
 
-#: data/ui/shortcuts_window.ui:52
+#: data/ui/shortcuts_window.blp:30
 msgid "Show primary menu"
 msgstr "הצגת התפריט הראשי"
 
-#: data/ui/shortcuts_window.ui:58
+#: data/ui/shortcuts_window.blp:35
 msgid "Toggle fullscreen mode"
 msgstr "מילוי המסך/גודל רגיל"
 
-#: data/ui/weight_add_dialog.ui:31 data/ui/weight_view.ui:26
-msgid "Weight Measurements"
-msgstr "מדדי משקל"
+#: data/ui/sync_list_box.blp:30
+msgid "Google Fit"
+msgstr "Google Fit"
 
-#: data/ui/weight_add_dialog.ui:32
-msgid "Add Weight Record"
-msgstr "הוספת רשומת משקל"
+#: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:30
+msgid "Date"
+msgstr "תאריך"
 
-#: data/ui/weight_view.ui:23
-msgid "You can use the <b>+</b> button to add a new weight measurement."
-msgstr "אפשר להשתמש בכפתור <b>+</b> כדי להוסיף מדדי משקל חדשים."
+#: data/ui/view_add_activity.blp:57
+msgid "Activity Type"
+msgstr "סוג פעילות"
 
-#: data/ui/window.ui:27
+#: data/ui/view_add_activity.blp:97
+msgid "Average Heart Rate"
+msgstr "דופק ממוצע"
+
+#: data/ui/view_add_activity.blp:109
+msgid "Minimum Heart Rate"
+msgstr "דופק מזערי"
+
+#: data/ui/view_add_activity.blp:121
+msgid "Maximum Heart Rate"
+msgstr "דופק מרבי"
+
+#: data/ui/view_add_activity.blp:133
+msgid "Stepcount"
+msgstr "מד־צעדים"
+
+#: data/ui/view_home_page.blp:61
+msgid "For you"
+msgstr "בשבילך"
+
+#: data/ui/view_home_page.blp:86
+msgid ""
+"No plugins enabled. Enable one from the list below to start using Health."
+msgstr ""
+"אין תוספים פעילים. יש להפעיל אחד מהרשימה שלהלן כדי להתחיל להשתמש בתוכנת "
+"הבריאות."
+
+#: data/ui/view_home_page.blp:107
+msgid "All data"
+msgstr "כל הנתונים"
+
+#: data/ui/window.blp:8
+msgid "_Disable Current Plugin"
+msgstr "ה_שבתת התוסף הנוכחי"
+
+#: data/ui/window.blp:15
 msgid "_Preferences"
 msgstr "ה_עדפות"
 
-#: data/ui/window.ui:31
+#: data/ui/window.blp:20
 msgid "_Keyboard Shortcuts"
 msgstr "_קיצורי מקלדת"
 
-#: data/ui/window.ui:37
+#: data/ui/window.blp:27
 msgid "_About Health"
 msgstr "על תכנית ה_בריאות"
 
-#: src/core/application.rs:140
+#: data/ui/window.blp:69
+msgid "Enable plugin"
+msgstr "הפעלת תוסף"
+
+#: src/core/application.rs:169
 msgid "translator-credits"
 msgstr "ירון שהרבני <sh.yaron@gmail.com>"
 
-#: src/core/application.rs:142
+#: src/core/application.rs:171
 msgid "Websites"
 msgstr "אתרים"
-
-#: src/daemon/main.rs:31
-msgid "Health Daemon"
-msgstr "סוכן תכנית הבריאות"
 
 #: src/model/activity_info.rs:83
 msgid "Basketball"
@@ -645,41 +658,297 @@ msgstr "כדורעף"
 msgid "Walking"
 msgstr "הליכה"
 
-#: src/model/model_notification.rs:125
+#: src/model/model_notification.rs:236
 msgid "Health: walking reminder"
 msgstr "בריאות: תזכורת הליכה"
 
-#. TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
-#: src/model/model_notification.rs:148
-msgid "{} step remaining to complete your daily step goal"
-msgid_plural "{} steps remaining to complete your daily step goal"
-msgstr[0] "נותר צעד אחד להשלמת יעד הצעדים היומי שלך"
-msgstr[1] "נותרו {} צעדים להשלמת יעד הצעדים היומי שלך"
-msgstr[2] "נותרו {} צעדים להשלמת יעד הצעדים היומי שלך"
-msgstr[3] "נותרו {} צעדים להשלמת יעד הצעדים היומי שלך"
+#: src/model/model_notification.rs:252
+msgid "{} step remaining to complete your daily step goal."
+msgid_plural "{} steps remaining to complete your daily step goal."
+msgstr[0] "נותר צעד אחד להשלמת יעד הצעדים היומי שלך."
+msgstr[1] "נותרו שני צעדים להשלמת יעד הצעדים היומי שלך."
+msgstr[2] "נותרו {} צעדים להשלמת יעד הצעדים היומי שלך."
+msgstr[3] "נותרו {} צעדים להשלמת יעד הצעדים היומי שלך."
+
+#: src/plugins/activities/plugin.rs:39
+msgid "Activities"
+msgstr "פעילויות"
+
+#: src/plugins/activities/summary.rs:93
+msgid "{} active minute today"
+msgid_plural "{} active minutes today"
+msgstr[0] "דקת פעילות היום"
+msgstr[1] "שתי דקות פעילות היום"
+msgstr[2] "{} דקות פעילות היום"
+msgstr[3] "היום עשית {} צעדים"
+
+#: src/plugins/calories/details.rs:215
+msgid ""
+"{}:\n"
+"{} calorie\n"
+"{}"
+msgid_plural ""
+"{}:\n"
+"{} calories\n"
+"{}"
+msgstr[0] ""
+"{}:‬\n"
+"‫{} קלוריה‬\n"
+"‫{}"
+msgstr[1] ""
+"{}:‬\n"
+"‫{} קלוריות‬\n"
+"‫{}"
+msgstr[2] ""
+"‫{}:‬\n"
+"‫‫{} קלוריות‬\n"
+"‫‫{}"
+msgstr[3] ""
+"‫{}:‬\n"
+"‫‫{} קלוריות‬\n"
+"‫‫{}"
+
+#: src/plugins/calories/summary.rs:96 src/plugins/calories/summary.rs:103
+msgid "{} calorie burned today"
+msgid_plural "{} calories burned today"
+msgstr[0] "קלוריה נשרפה היום"
+msgstr[1] "שתי קלוריות נשרפו היום"
+msgstr[2] "{} קלוריות נשרפו היום"
+msgstr[3] "{} קלוריות נשרפו היום"
+
+#: src/plugins/steps/details.rs:187
+msgid "Today's steps: {}"
+msgstr "צעדים יומיים: {}"
+
+#: src/plugins/steps/details.rs:202
+msgid ""
+"No streak yet. Reach your step goal for multiple days to start a streak!"
+msgstr "אין רצף עדיין. נא להגיע ליעד הצעדים שלך במשך מספר ימים כדי להתחיל רצף!"
+
+#: src/plugins/steps/details.rs:206
+msgid ""
+"You're on a streak for {} day. Reach your step goal today to continue it!"
+msgid_plural ""
+"You're on a streak for {} days. Reach your step goal today to continue it!"
+msgstr[0] "צברת רצף של יום. הגעה ליעד הצעדים היומי ימשיך אותו!"
+msgstr[1] "צברת רצף של יומיים. הגעה ליעד הצעדים היומי ימשיך אותו!"
+msgstr[2] "צברת רצף של {} ימים. הגעה ליעד הצעדים היומי ימשיך אותו!"
+msgstr[3] "צברת רצף של {} ימים. הגעה ליעד הצעדים היומי ימשיך אותו!"
+
+#: src/plugins/steps/details.rs:214
+msgid "You've reached your step goal today. Keep going to start a streak!"
+msgstr "הגעת ליעד הצעדים היומי שלך. כדי להתחיל רצף נדרשים עוד כאלה!"
+
+#: src/plugins/steps/details.rs:217
+msgid "You're on a streak for {} day. Good job!"
+msgid_plural "You're on a streak for {} days. Good job!"
+msgstr[0] "צברת רצף של יום. כל הכבוד!"
+msgstr[1] "צברת רצף של יומיים. כל הכבוד!"
+msgstr[2] "צברת רצף של {} ימים. כל הכבוד!"
+msgstr[3] "צברת רצף של {} ימים. כל הכבוד!"
+
+#. TRANSLATORS: X step(s) on DATE
+#: src/plugins/steps/details.rs:234
+msgid "{} step on {}"
+msgid_plural "{} steps on {}"
+msgstr[0] "צעד {} ב־{}"
+msgstr[1] "{} צעדים ב־{}"
+msgstr[2] "{} צעדים ב־{}"
+msgstr[3] "{} צעדים ב־{}"
+
+#: src/plugins/steps/summary.rs:94
+msgid "{} step taken today"
+msgid_plural "{} steps taken today"
+msgstr[0] "היום עשית צעד אחד"
+msgstr[1] "היום עשית שני צעדים"
+msgstr[2] "היום עשית {} צעדים"
+msgstr[3] "היום עשית {} צעדים"
+
+#: src/plugins/steps/summary.rs:104
+msgid "Reached {} percent of daily step goal"
+msgid_plural "Reached {} percent of daily step goal"
+msgstr[0] "הגעת לאחוז מיעד הצעדים היומי שלך"
+msgstr[1] "הגעת לשני אחוז מיעד הצעדים היומי שלך"
+msgstr[2] "הגעת ל־{} אחוז מיעד הצעדים היומי שלך"
+msgstr[3] "הגעת ל־{} אחוז מיעד הצעדים היומי שלך"
+
+#: src/plugins/weight/details.rs:193
+msgid "Current BMI: {}"
+msgstr "‫BMI נוכחי: {}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/plugins/weight/details.rs:208
+msgid "{} pound on {}"
+msgid_plural "{} pounds on {}"
+msgstr[0] "פאונד {} ב־{}"
+msgstr[1] "{} פאונד ב־{}"
+msgstr[2] "{} פאונד ב־{}"
+msgstr[3] "{} פאונד ב־{}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/plugins/weight/details.rs:211
+msgid "{} kilogram on {}"
+msgid_plural "{} kilograms on {}"
+msgstr[0] "קילוגרם {} ב־{}"
+msgstr[1] "{} קילוגרמים ב־{}"
+msgstr[2] "{} קילוגרמים ב־{}"
+msgstr[3] "{} קילוגרמים ב־{}"
+
+#: src/plugins/weight/details.rs:247 src/plugins/weight/details.rs:252
+msgid "Unknown BMI"
+msgstr "‫BMI לא ידוע"
+
+#: src/plugins/weight/details.rs:271
+msgid ""
+"Your weight goal is {} pound. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} pounds. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"יעד המשקל שלך הוא פאונד. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק מהיעד."
+msgstr[1] ""
+"יעד המשקל שלך הוא שני פאונד. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
+"מהיעד."
+msgstr[2] ""
+"יעד המשקל שלך הוא {} פאונד. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
+"מהיעד."
+msgstr[3] ""
+"יעד המשקל שלך הוא {} פאונד. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
+"מהיעד."
+
+#: src/plugins/weight/details.rs:278
+msgid ""
+"Your weight goal is {} kilogram. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} kilograms. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"יעד המשקל שלך הוא קילוגרם. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק מהיעד."
+msgstr[1] ""
+"יעד המשקל שלך הוא שני קילוגרמים. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
+"מהיעד."
+msgstr[2] ""
+"יעד המשקל שלך הוא {} קילוגרמים. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
+"מהיעד."
+msgstr[3] ""
+"יעד המשקל שלך הוא {} קילוגרמים. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
+"מהיעד."
+
+#: src/plugins/weight/details.rs:287
+msgid "You've reached your weight goal. Great job!"
+msgstr "הגעת למשקל היעד שלך. כל הכבוד!"
+
+#. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
+#: src/plugins/weight/details.rs:303
+msgid "Your weight goal is {} pound,"
+msgid_plural "Your weight goal is {} pounds,"
+msgstr[0] "יעד המשקל שלך הוא פאונד,"
+msgstr[1] "יעד המשקל שלך הוא שני פאונד,"
+msgstr[2] "יעד המשקל שלך הוא {} פאונד,"
+msgstr[3] "יעד המשקל שלך הוא {} פאונד,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/model/model_notification.rs:154
-msgid "of {} step"
-msgid_plural "of {} steps"
-msgstr[0] "מתוך צעד"
-msgstr[1] "מתוך שני צעדים"
-msgstr[2] "מתוך {} צעדים"
-msgstr[3] "מתוך {} צעדים"
+#: src/plugins/weight/details.rs:308
+msgid "you have {} pound left to reach it"
+msgid_plural "you have {} pounds left to reach it"
+msgstr[0] "כדי להגיע אליו נותר לך עוד פאונד"
+msgstr[1] "כדי להגיע אליו נותרו לך עוד שני פאונד"
+msgstr[2] "כדי להגיע אליו נותרו לך עוד {} פאונד"
+msgstr[3] "כדי להגיע אליו נותרו לך עוד {} פאונד"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:360
+#. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
+#: src/plugins/weight/details.rs:315
+msgid "Your weight goal is {} kilogram,"
+msgid_plural "Your weight goal is {} kilograms,"
+msgstr[0] "יעד המשקל שלך הוא קילוגרם,"
+msgstr[1] "יעד המשקל שלך הוא שני קילוגרמים,"
+msgstr[2] "יעד המשקל שלך הוא {} קילוגרמים,"
+msgstr[3] "יעד המשקל שלך הוא {} קילוגרמים,"
+
+#. TRANSLATORS: Second (final) part of message, see previous source string.
+#: src/plugins/weight/details.rs:321
+msgid "you have {} kilogram left to reach it"
+msgid_plural "you have {} kilograms left to reach it"
+msgstr[0] "כדי להגיע אליו נותר לך עוד קילוגרם"
+msgstr[1] "כדי להגיע אליו נותרו לך עוד שני קילוגרמים"
+msgstr[2] "כדי להגיע אליו נותרו לך עוד {} קילוגרמים"
+msgstr[3] "כדי להגיע אליו נותרו לך עוד {} קילוגרמים"
+
+#: src/plugins/weight/details.rs:331
+msgid "No weight goal set yet. You can set it in Health's preferences."
+msgstr "לא הוגדר יעד משקל עדיין. ניתן להגדיר אותו בהעדפות של תכנית הבריאות."
+
+#: src/plugins/weight/summary.rs:120
+msgid "{} pound"
+msgid_plural "{} pounds"
+msgstr[0] "פאונד אחד"
+msgstr[1] "שני פאונד"
+msgstr[2] "{} פאונד"
+msgstr[3] "{} פאונד"
+
+#: src/plugins/weight/summary.rs:128
+msgid "{} kilogram"
+msgid_plural "{} kilograms"
+msgstr[0] "קילוגרם אחד"
+msgstr[1] "שני קילוגרמים"
+msgstr[2] "{} קילוגרמים"
+msgstr[3] "{} קילוגרמים"
+
+#: src/plugins/weight/summary.rs:139
+msgid "+ {} pound compared to previous measurement"
+msgid_plural "+ {} pounds compared to previous measurement"
+msgstr[0] "נוסף פאונד ביחס למדידה הקודמת"
+msgstr[1] "נוספו שני פאונד ביחס למדידה הקודמת"
+msgstr[2] "נוספו {} פאונד ביחס למדידה הקודמת"
+msgstr[3] "נוספו {} פאונד ביחס למדידה הקודמת"
+
+#: src/plugins/weight/summary.rs:147
+msgid "+ {} kilogram compared to previous measurement"
+msgid_plural "+ {} kilograms compared to previous measurement"
+msgstr[0] "נוסף קילוגרם ביחס למדידה הקודמת"
+msgstr[1] "נוספו שני קילוגרמים ביחס למדידה הקודמת"
+msgstr[2] "נוספו {} קילוגרמים ביחס למדידה הקודמת"
+msgstr[3] "נוספו {} קילוגרמים ביחס למדידה הקודמת"
+
+#: src/plugins/weight/summary.rs:158
+msgid "{} pound compared to previous measurement"
+msgid_plural "{} pounds compared to previous measurement"
+msgstr[0] "פאונד ביחס למדידה הקודמת"
+msgstr[1] "שני פאונד ביחס למדידה הקודמת"
+msgstr[2] "{} פאונד ביחס למדידה הקודמת"
+msgstr[3] "{} פאונד ביחס למדידה הקודמת"
+
+#: src/plugins/weight/summary.rs:166
+msgid "{} kilogram compared to previous measurement"
+msgid_plural "{} kilograms compared to previous measurement"
+msgstr[0] "קילוגרם ביחס למדידה הקודמת"
+msgstr[1] "שני קילוגרמים ביחס למדידה הקודמת"
+msgstr[2] "{} קילוגרמים ביחס למדידה הקודמת"
+msgstr[3] "{} קילוגרמים ביחס למדידה הקודמת"
+
+#: src/plugins/weight/summary.rs:174
+msgid "No change in weight"
+msgstr "אין שינוי במשקל"
+
+#: src/plugins/weight/summary.rs:179
+msgid "No weight data available"
+msgstr "אין מדדי משקל זמינים"
+
+#: src/sync/csv.rs:81 src/sync/csv.rs:371
 msgid "No activities added yet; can't create empty export!"
 msgstr "עדיין לא נוספו פעילויות, לא ניתן ליצור ייצוא ריק!"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:378
+#: src/sync/csv.rs:111 src/sync/csv.rs:389
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr "עדיין לא נוספו מדדי משקל, אי אפשר ליצור ייצוא ריק!"
 
-#: src/sync/csv.rs:184 src/sync/csv.rs:322
+#: src/sync/csv.rs:184 src/sync/csv.rs:333
 msgid "Can't parse encrypted backup without encryption key!"
 msgstr "אי אפשר לפענח גיבוי מוצפן בלי מפתח הצפנה!"
 
-#: src/sync/csv.rs:195 src/sync/csv.rs:342
+#: src/sync/csv.rs:195 src/sync/csv.rs:353
 msgid ""
 "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -713,422 +982,275 @@ msgstr ""
 "אי אפשר לקבל את אסימון OAuth2 כשלא מוגדר אסימון רענון! נא לעבור אימות מחדש "
 "מול ספק הסנכרון שלך."
 
-#: src/sync/sync_provider.rs:228
+#: src/sync/sync_provider.rs:157
+msgid "Token for Health sync provider {}"
+msgstr "אסימון לספק הסנכרון מול יישום הבריאות {}"
+
+#: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
 msgstr "האימות הצליח, נא לחזור לתכנית הבריאות."
 
-#: src/sync/sync_provider.rs:240
+#: src/sync/sync_provider.rs:228
 msgid "Couldn't parse OAuth2 response"
 msgstr "לא ניתן לפענח את תגובת ה־OAuth2"
 
-#: src/views/bar_graph_view.rs:518
+#: src/views/bar_graph_view.rs:584
 msgid "Enter weight record to calculate idle calories"
 msgstr "נא למלא רשומת משקל כדי לחשב קלוריות במנוחה"
 
-#: src/views/bar_graph_view.rs:522
+#: src/views/bar_graph_view.rs:588
 msgid "Idle calories"
 msgstr "קלוריות במנוחה"
 
-#: src/views/view_calories.rs:175
-msgid ""
-"{}:\n"
-"{} calorie\n"
-"{}"
-msgid_plural ""
-"{}:\n"
-"{} calories\n"
-"{}"
-msgstr[0] ""
-"{}:‬\n"
-"‫{} קלוריה‬\n"
-"‫{}"
-msgstr[1] ""
-"{}:‬\n"
-"‫{} קלוריות‬\n"
-"‫{}"
-msgstr[2] ""
-"‫{}:‬\n"
-"‫‫{} קלוריות‬\n"
-"‫‫{}"
-msgstr[3] ""
-"‫{}:‬\n"
-"‫‫{} קלוריות‬\n"
-"‫‫{}"
+#: src/views/view_add_activity.rs:237
+msgid "Activity"
+msgstr "פעילות"
 
-#: src/views/view_home_page.rs:256
-msgid "{} step taken today"
-msgid_plural "{} steps taken today"
-msgstr[0] "היום עשית צעד אחד"
-msgstr[1] "היום עשית שני צעדים"
-msgstr[2] "היום עשית {} צעדים"
-msgstr[3] "היום עשית {} צעדים"
+#: src/widgets/activity_row.rs:79
+msgid "{} for {} Minute"
+msgid_plural "{} for {} Minutes"
+msgstr[0] "{} למשך דקה"
+msgstr[1] "{} למשך שתי דקות"
+msgstr[2] "{} למשך {} דקות"
+msgstr[3] "{} למשך {} דקות"
 
-#: src/views/view_home_page.rs:263
-msgid "No step goal set"
-msgstr "לא הוגדר יעד צעדים"
+#: src/widgets/activity_row.rs:91
+msgid "Calories burned"
+msgstr "קלוריות שנשרפו"
 
-#: src/views/view_home_page.rs:266
-msgid "{}%"
-msgstr "{}%"
+#: src/widgets/activity_row.rs:101
+msgid "Average heart rate"
+msgstr "דופק ממוצע"
 
-#. TRANSLATORS: Current user weight
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:302 src/views/view_home_page.rs:336
-msgid "{} pound"
-msgid_plural "{} pounds"
-msgstr[0] "פאונד אחד"
-msgstr[1] "שני פאונד"
-msgstr[2] "{} פאונד"
-msgstr[3] "{} פאונד"
+#: src/widgets/activity_row.rs:107
+msgid "Maximum heart rate"
+msgstr "דופק מרבי"
 
-#. TRANSLATORS: Current user weight
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:309 src/views/view_home_page.rs:343
-msgid "{} kilogram"
-msgid_plural "{} kilograms"
-msgstr[0] "קילוגרם אחד"
-msgstr[1] "שני קילוגרמים"
-msgstr[2] "{} קילוגרמים"
-msgstr[3] "{} קילוגרמים"
+#: src/widgets/activity_row.rs:113
+msgid "Minimum heart rate"
+msgstr "דופק מזערי"
 
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:319
-msgid "+ {} pound"
-msgid_plural "+ {} pounds"
-msgstr[0] "+ פאונד"
-msgstr[1] "+ שני פאונד"
-msgstr[2] "+ {} פאונד"
-msgstr[3] "+ {} פאונד"
+#: src/widgets/activity_row.rs:126
+msgid "{} meter"
+msgid_plural "{} meters"
+msgstr[0] "מטר"
+msgstr[1] "שני מטרים"
+msgstr[2] "{} מטרים"
+msgstr[3] "{} מטרים"
 
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:326
-msgid "+ {} kilogram"
-msgid_plural "+ {} kilograms"
-msgstr[0] "+ קילוגרם"
-msgstr[1] "+ שני קילוגרמים"
-msgstr[2] "+ {} קילוגרמים"
-msgstr[3] "+ {} קילוגרמים"
+#: src/widgets/activity_row.rs:129
+msgid "{} yard"
+msgid_plural "{} yards"
+msgstr[0] "יארד"
+msgstr[1] "שני יארד"
+msgstr[2] "{} יארד"
+msgstr[3] "{} יארד"
 
-#: src/views/view_home_page.rs:351
-msgid "No change in weight"
-msgstr "אין שינוי במשקל"
-
-#: src/views/view_home_page.rs:356
-msgid "compared to previous weight"
-msgstr "בהשוואה למשקל הקודם"
-
-#: src/views/view_home_page.rs:360
-msgid "use + to add a weight record"
-msgstr "+ להוספת רשומת משקל"
-
-#: src/views/view_steps.rs:140
-msgid "Today's steps: {}"
-msgstr "צעדים יומיים: {}"
-
-#: src/views/view_steps.rs:156
-msgid ""
-"No streak yet. Reach your step goal for multiple days to start a streak!"
-msgstr ""
-"אין רצף עדיין. נא להגיע ליעד הצעדים שלך במשך מספר ימים כדי להתחיל רצף!"
-
-#: src/views/view_steps.rs:160
-msgid ""
-"You're on a streak for {} day. Reach your step goal today to continue it!"
-msgid_plural ""
-"You're on a streak for {} days. Reach your step goal today to continue it!"
-msgstr[0] "צברת רצף של יום. הגעה ליעד הצעדים היומי ימשיך אותו!"
-msgstr[1] "צברת רצף של יומיים. הגעה ליעד הצעדים היומי ימשיך אותו!"
-msgstr[2] "צברת רצף של {} ימים. הגעה ליעד הצעדים היומי ימשיך אותו!"
-msgstr[3] "צברת רצף של {} ימים. הגעה ליעד הצעדים היומי ימשיך אותו!"
-
-#: src/views/view_steps.rs:168
-msgid "You've reached your step goal today. Keep going to start a streak!"
-msgstr "הגעת ליעד הצעדים היומי שלך. כדי להתחיל רצף נדרשים עוד כאלה!"
-
-#: src/views/view_steps.rs:171
-msgid "You're on a streak for {} day. Good job!"
-msgid_plural "You're on a streak for {} days. Good job!"
-msgstr[0] "צברת רצף של יום. כל הכבוד!"
-msgstr[1] "צברת רצף של יומיים. כל הכבוד!"
-msgstr[2] "צברת רצף של {} ימים. כל הכבוד!"
-msgstr[3] "צברת רצף של {} ימים. כל הכבוד!"
-
-#. TRANSLATORS: X step(s) on DATE
-#: src/views/view_steps.rs:186
-msgid "{} step on {}"
-msgid_plural "{} steps on {}"
-msgstr[0] "צעד {} ב־{}"
-msgstr[1] "{} צעדים ב־{}"
-msgstr[2] "{} צעדים ב־{}"
-msgstr[3] "{} צעדים ב־{}"
-
-#: src/views/view_weight.rs:145
-msgid "Current BMI: {}"
-msgstr "‫BMI נוכחי: {}"
-
-#. TRANSLATORS: Weight X on date Y
-#: src/views/view_weight.rs:158
-msgid "{} pound on {}"
-msgid_plural "{} pounds on {}"
-msgstr[0] "פאונד {} ב־{}"
-msgstr[1] "{} פאונד ב־{}"
-msgstr[2] "{} פאונד ב־{}"
-msgstr[3] "{} פאונד ב־{}"
-
-#. TRANSLATORS: Weight X on date Y
-#: src/views/view_weight.rs:161
-msgid "{} kilogram on {}"
-msgid_plural "{} kilograms on {}"
-msgstr[0] "קילוגרם {} ב־{}"
-msgstr[1] "{} קילוגרמים ב־{}"
-msgstr[2] "{} קילוגרמים ב־{}"
-msgstr[3] "{} קילוגרמים ב־{}"
-
-#: src/views/view_weight.rs:196 src/views/view_weight.rs:201
-msgid "Unknown BMI"
-msgstr "‫BMI לא ידוע"
-
-#: src/views/view_weight.rs:225
-msgid ""
-"Your weight goal is {} pound. Add a first weight measurement to see how "
-"close you are to reaching it."
-msgid_plural ""
-"Your weight goal is {} pounds. Add a first weight measurement to see how "
-"close you are to reaching it."
-msgstr[0] ""
-"יעד המשקל שלך הוא פאונד. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק מהיעד."
-msgstr[1] ""
-"יעד המשקל שלך הוא שני פאונד. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
-"מהיעד."
-msgstr[2] ""
-"יעד המשקל שלך הוא {} פאונד. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
-"מהיעד."
-msgstr[3] ""
-"יעד המשקל שלך הוא {} פאונד. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
-"מהיעד."
-
-#: src/views/view_weight.rs:232
-msgid ""
-"Your weight goal is {} kilogram. Add a first weight measurement to see how "
-"close you are to reaching it."
-msgid_plural ""
-"Your weight goal is {} kilograms. Add a first weight measurement to see how "
-"close you are to reaching it."
-msgstr[0] ""
-"יעד המשקל שלך הוא קילוגרם. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
-"מהיעד."
-msgstr[1] ""
-"יעד המשקל שלך הוא שני קילוגרמים. יש להוסיף מדד משקל ראשון כדי לראות מה "
-"המרחק מהיעד."
-msgstr[2] ""
-"יעד המשקל שלך הוא {} קילוגרמים. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
-"מהיעד."
-msgstr[3] ""
-"יעד המשקל שלך הוא {} קילוגרמים. יש להוסיף מדד משקל ראשון כדי לראות מה המרחק "
-"מהיעד."
-
-#: src/views/view_weight.rs:241
-msgid "You've reached your weight goal. Great job!"
-msgstr "הגעת למשקל היעד שלך. כל הכבוד!"
-
-#. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/views/view_weight.rs:257
-msgid "Your weight goal is {} pound,"
-msgid_plural "Your weight goal is {} pounds,"
-msgstr[0] "יעד המשקל שלך הוא פאונד,"
-msgstr[1] "יעד המשקל שלך הוא שני פאונד,"
-msgstr[2] "יעד המשקל שלך הוא {} פאונד,"
-msgstr[3] "יעד המשקל שלך הוא {} פאונד,"
-
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:263
-msgid "you have {} pound left to reach it"
-msgid_plural "you have {} pounds left to reach it"
-msgstr[0] "כדי להגיע אליו נותר לך עוד פאונד"
-msgstr[1] "כדי להגיע אליו נותרו לך עוד שני פאונד"
-msgstr[2] "כדי להגיע אליו נותרו לך עוד {} פאונד"
-msgstr[3] "כדי להגיע אליו נותרו לך עוד {} פאונד"
-
-#. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/views/view_weight.rs:270
-msgid "Your weight goal is {} kilogram,"
-msgid_plural "Your weight goal is {} kilograms,"
-msgstr[0] "יעד המשקל שלך הוא קילוגרם,"
-msgstr[1] "יעד המשקל שלך הוא שני קילוגרמים,"
-msgstr[2] "יעד המשקל שלך הוא {} קילוגרמים,"
-msgstr[3] "יעד המשקל שלך הוא {} קילוגרמים,"
-
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:276
-msgid "you have {} kilogram left to reach it"
-msgid_plural "you have {} kilograms left to reach it"
-msgstr[0] "כדי להגיע אליו נותר לך עוד קילוגרם"
-msgstr[1] "כדי להגיע אליו נותרו לך עוד שני קילוגרמים"
-msgstr[2] "כדי להגיע אליו נותרו לך עוד {} קילוגרמים"
-msgstr[3] "כדי להגיע אליו נותרו לך עוד {} קילוגרמים"
-
-#: src/views/view_weight.rs:285
-msgid "No weight goal set yet. You can set it in Health's preferences."
-msgstr "לא הוגדר יעד משקל עדיין. ניתן להגדיר אותו בהעדפות של תכנית הבריאות."
-
-#: src/widgets/activity_row.rs:131
-msgid "{} Minute"
-msgid_plural "{} Minutes"
-msgstr[0] "דקה"
-msgstr[1] "שתי דקות"
-msgstr[2] "{} דקות"
-msgstr[3] "{} דקות"
-
-#: src/widgets/activity_row.rs:147 src/widgets/activity_row.rs:229
-msgid "{} Calorie"
-msgid_plural "{} Calories"
-msgstr[0] "קלוריה"
-msgstr[1] "{} קלוריות"
-msgstr[2] "{} קלוריות"
-msgstr[3] "{} קלוריות"
-
-#: src/widgets/bmi_level_bar.rs:174 src/widgets/bmi_level_bar.rs:203
+#: src/widgets/bmi_level_bar.rs:219 src/widgets/bmi_level_bar.rs:256
 msgid "<small>Current BMI: {}</small>"
 msgstr "‫<small>BMI נוכחי: {}</small>"
 
-#: src/widgets/distance_action_row.rs:248
+#: src/widgets/distance_action_row.rs:303
 msgid "KM"
 msgstr "ק״מ"
 
-#: src/widgets/distance_action_row.rs:249
+#: src/widgets/distance_action_row.rs:304
 msgid "Meters"
 msgstr "מטרים"
 
-#: src/widgets/distance_action_row.rs:251
+#: src/widgets/distance_action_row.rs:306
 msgid "Miles"
 msgstr "מיילים"
 
-#: src/widgets/distance_action_row.rs:252
+#: src/widgets/distance_action_row.rs:307
 msgid "Feet"
 msgstr "רגל"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:480 src/widgets/unit_spinbutton.rs:643
+#: src/widgets/unit_spinbutton.rs:475 src/widgets/unit_spinbutton.rs:635
 msgid "cm"
 msgstr "ס״מ"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:482
+#: src/widgets/unit_spinbutton.rs:477
 msgid "m"
 msgstr "מ׳"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:484
+#: src/widgets/unit_spinbutton.rs:479
 msgid "km"
 msgstr "ק״מ"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:486
+#: src/widgets/unit_spinbutton.rs:481
 msgid "kg"
 msgstr "ק״ג"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:645
+#: src/widgets/unit_spinbutton.rs:483 src/widgets/unit_spinbutton.rs:637
 msgid "in"
 msgstr "אינ׳"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:490
+#: src/widgets/unit_spinbutton.rs:485
 msgid "ft"
 msgstr "רגל"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:492
+#: src/widgets/unit_spinbutton.rs:487
 msgid "mi"
 msgstr "מייל"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:494
+#: src/widgets/unit_spinbutton.rs:489
 msgid "lb"
 msgstr "פאונד"
 
-#: src/windows/export_dialog.rs:54
+#: src/windows/export_dialog.rs:51
 msgid "Save Activities"
 msgstr "שמירת פעילויות"
 
 #. TRANSLATORS: Please keep the file extension (.csv.encrypted)
-#: src/windows/export_dialog.rs:63
+#: src/windows/export_dialog.rs:60
 msgid "Activities.csv.encrypted"
 msgstr "פעילויות.csv.encrypted"
 
 #. TRANSLATORS: Please keep the file extension (.csv)
-#: src/windows/export_dialog.rs:66
+#: src/windows/export_dialog.rs:63
 msgid "Activities.csv"
 msgstr "פעילויות.csv"
 
-#: src/windows/export_dialog.rs:90
+#: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
 msgstr "שמירת מדדי המשקל"
 
-#: src/windows/export_dialog.rs:98
+#: src/windows/export_dialog.rs:95
 msgid "Weight Measurements.csv.encrypted"
 msgstr "מדדי משקל.csv.encrypted"
 
-#: src/windows/export_dialog.rs:100
+#: src/windows/export_dialog.rs:97
 msgid "Weight Measurements.csv"
 msgstr "מדדי משקל.csv"
 
-#: src/windows/export_dialog.rs:135
+#: src/windows/export_dialog.rs:132
 msgid "Export data"
 msgstr "ייצוא נתונים"
 
-#: src/windows/import_dialog.rs:54
+#: src/windows/import_dialog.rs:51
 msgid "Open Activities"
 msgstr "פתיחת פעילויות"
 
-#: src/windows/import_dialog.rs:55 src/windows/import_dialog.rs:84
+#: src/windows/import_dialog.rs:52 src/windows/import_dialog.rs:81
 msgid "_Open"
 msgstr "_פתיחה"
 
-#: src/windows/import_dialog.rs:83
+#: src/windows/import_dialog.rs:80
 msgid "Open Weight Measurement"
 msgstr "פתיחת מדדי משקל"
 
-#: src/windows/import_dialog.rs:124
+#: src/windows/import_dialog.rs:121
 msgid "Import data"
 msgstr "ייבוא נתונים"
 
-#: src/windows/import_export_dialog_base.rs:227
+#: src/windows/import_export_dialog_base.rs:214
 msgid "Import activities"
 msgstr "ייבוא פעילויות"
 
-#: src/windows/import_export_dialog_base.rs:229
+#: src/windows/import_export_dialog_base.rs:216
 msgid "Import is encrypted"
 msgstr "הייבוא מוצפן"
 
-#: src/windows/import_export_dialog_base.rs:230
+#: src/windows/import_export_dialog_base.rs:217
 msgid "Import weights"
 msgstr "ייבוא משקלים"
 
-#: src/windows/import_export_dialog_base.rs:231
+#: src/windows/import_export_dialog_base.rs:218
 msgid "Import"
 msgstr "ייבוא"
 
-#: src/windows/import_export_dialog_base.rs:328
+#: src/windows/import_export_dialog_base.rs:296
 msgid "Success!"
 msgstr "הצליח!"
 
-#: src/windows/import_export_dialog_base.rs:332
+#: src/windows/import_export_dialog_base.rs:300
 msgid "An error occurred!"
 msgstr "אירעה שגיאה!"
 
-#: src/windows/import_export_dialog_base.rs:338
+#: src/windows/import_export_dialog_base.rs:305
 msgid "Close"
 msgstr "סגירה"
 
-#: src/windows/preferences_window.rs:375
-msgid "Remind you of your step goals"
-msgstr "להזכיר לך את יעד הצעדים שלך"
-
-#: src/windows/window.rs:136
+#: src/windows/window.rs:97
 msgid "Failed to migrate database to new version due to error {}"
-msgstr "הסבת מסד הנתונים לגרסה החדשה נכשלה עקב השגיאה {}"
+msgstr "הסבת מסד הנתונים לגירסה החדשה נכשלה עקב השגיאה {}"
 
-#: src/windows/window.rs:347
+#: src/windows/window.rs:267
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr "הסנכרון מול נתוני Google Fit לא צלח עקב השגיאה: {}"
+
+#~ msgid "Last opened view"
+#~ msgstr "התצוגה האחרונה שנפתחה"
+
+#~ msgid "The last view the user had opened, for restoring it on start"
+#~ msgstr "התצוגה האחרונה שנפתחה על ידי המשתמש, כדי לשחזר אותה בהתחלה"
+
+#~ msgid "Add An Activity"
+#~ msgstr "הוספת פעילות"
+
+#~ msgid "Distance in Meters"
+#~ msgstr "מרחק במטרים"
+
+#~ msgid "Home Page"
+#~ msgstr "עמוד הבית"
+
+#~ msgid "Today"
+#~ msgstr "היום"
+
+#~ msgid "of daily step goal"
+#~ msgstr "מתוך יעד הצעדים היומי"
+
+#~ msgid "Add Weight Record"
+#~ msgstr "הוספת רשומת משקל"
+
+#~ msgid "Health Daemon"
+#~ msgstr "סוכן תכנית הבריאות"
+
+#~ msgid "of {} step"
+#~ msgid_plural "of {} steps"
+#~ msgstr[0] "מתוך צעד"
+#~ msgstr[1] "מתוך שני צעדים"
+#~ msgstr[2] "מתוך {} צעדים"
+#~ msgstr[3] "מתוך {} צעדים"
+
+#~ msgid "No step goal set"
+#~ msgstr "לא הוגדר יעד צעדים"
+
+#~ msgid "{}%"
+#~ msgstr "{}%"
+
+#~ msgid "+ {} pound"
+#~ msgid_plural "+ {} pounds"
+#~ msgstr[0] "+ פאונד"
+#~ msgstr[1] "+ שני פאונד"
+#~ msgstr[2] "+ {} פאונד"
+#~ msgstr[3] "+ {} פאונד"
+
+#~ msgid "+ {} kilogram"
+#~ msgid_plural "+ {} kilograms"
+#~ msgstr[0] "+ קילוגרם"
+#~ msgstr[1] "+ שני קילוגרמים"
+#~ msgstr[2] "+ {} קילוגרמים"
+#~ msgstr[3] "+ {} קילוגרמים"
+
+#~ msgid "use + to add a weight record"
+#~ msgstr "+ להוספת רשומת משקל"
+
+#~ msgid "{} Calorie"
+#~ msgid_plural "{} Calories"
+#~ msgstr[0] "קלוריה"
+#~ msgstr[1] "{} קלוריות"
+#~ msgstr[2] "{} קלוריות"
+#~ msgstr[3] "{} קלוריות"
+
+#~ msgid "Remind you of your step goals"
+#~ msgstr "להזכיר לך את יעד הצעדים שלך"
