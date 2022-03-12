@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-03-03 20:40+0000\n"
-"PO-Revision-Date: 2022-03-03 21:44+0100\n"
+"POT-Creation-Date: 2022-03-12 15:26+0000\n"
+"PO-Revision-Date: 2022-03-12 17:32+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -360,23 +360,23 @@ msgstr "Allmänt"
 msgid "User"
 msgstr "Användare"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:146
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
 msgid "Unit system"
 msgstr "Enhetssystem"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:156
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
 msgid "Imperial"
 msgstr "Brittiskt"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
 msgid "Metric"
 msgstr "Metriskt"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:170
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
 msgid "Birthday"
 msgstr "Födelsedag"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:179
+#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
 msgid "Height"
 msgstr "Vikt"
 
@@ -396,16 +396,16 @@ msgstr "Frekvens"
 msgid "Daily reminder time"
 msgstr "Daglig påminnelsetid"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:242
+#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
 #: src/plugins/steps/details.rs:241
 msgid "Step goal"
 msgstr "Stegmål"
 
-#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:218
+#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:224
 msgid "The WHO recommends 10.000 steps per day."
 msgstr "WHO rekommenderar 10 000 steg per dag."
 
-#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:279
+#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "WHO rekommenderar ett BMI på 18,5-24,9."
 
@@ -437,51 +437,55 @@ msgstr "Importera data från CSV"
 msgid "Import…"
 msgstr "Importera…"
 
-#: data/ui/setup_window.blp:33
+#: data/ui/setup_window.blp:39
 msgid "Health Setup"
 msgstr "Konfiguration av Hälsa"
 
-#: data/ui/setup_window.blp:47
+#: data/ui/setup_window.blp:53
 msgid "_Quit"
 msgstr "A_vsluta"
 
-#: data/ui/setup_window.blp:56
+#: data/ui/setup_window.blp:62
 msgid "_Previous"
 msgstr "Fö_regående"
 
-#: data/ui/setup_window.blp:71
+#: data/ui/setup_window.blp:77
 msgid "_Next"
 msgstr "_Nästa"
 
-#: data/ui/setup_window.blp:84
+#: data/ui/setup_window.blp:90
 msgid "_Done"
 msgstr "_Färdig"
 
-#: data/ui/setup_window.blp:110
+#: data/ui/setup_window.blp:116
 msgid "Welcome to Health!"
 msgstr "Välkommen till Hälsa!"
 
-#: data/ui/setup_window.blp:122
+#: data/ui/setup_window.blp:128
 msgid "Please enter some information to get setup."
 msgstr "Ange lite information för att konfigurera."
 
-#: data/ui/setup_window.blp:206
+#: data/ui/setup_window.blp:212
 msgid "Please enter your daily step goal."
 msgstr "Ange ditt dagliga stegmål."
 
-#: data/ui/setup_window.blp:267
+#: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
 msgstr "Ange din målvikt."
 
-#: data/ui/setup_window.blp:307 src/plugins/weight/details.rs:221
+#: data/ui/setup_window.blp:314
+msgid "Current weight"
+msgstr "Aktuell vikt"
+
+#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:221
 msgid "Weight goal"
 msgstr "Målvikt"
 
-#: data/ui/setup_window.blp:342
+#: data/ui/setup_window.blp:372
 msgid "Setup sync with third-party providers."
 msgstr "Konfigurera synkronisering med tredjepartsleverantörer."
 
-#: data/ui/setup_window.blp:354
+#: data/ui/setup_window.blp:384
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
@@ -999,7 +1003,12 @@ msgid_plural "{} yards"
 msgstr[0] "{} yard"
 msgstr[1] "{} yard"
 
-#: src/widgets/bmi_level_bar.rs:219 src/widgets/bmi_level_bar.rs:256
+#: src/widgets/bmi_level_bar.rs:267 src/windows/preferences_window.rs:411
+#: src/windows/setup_window.rs:249
+msgid "Current BMI"
+msgstr "Aktuellt BMI"
+
+#: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Aktuellt BMI: {}</small>"
 
@@ -1132,6 +1141,10 @@ msgstr "Ett fel inträffade!"
 #: src/windows/import_export_dialog_base.rs:305
 msgid "Close"
 msgstr "Stäng"
+
+#: src/windows/setup_window.rs:250
+msgid "Target BMI"
+msgstr "Mål-BMI"
 
 # TODO: ev kolon
 #: src/windows/window.rs:97
