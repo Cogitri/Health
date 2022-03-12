@@ -134,7 +134,9 @@ impl Database {
 
         let connection = imp.connection.get().unwrap();
         let cursor = if let Some(date) = date_opt {
-            connection.query_future(&format!("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY DESC(?date)", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
+            let statement = connection.query_statement("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER  (?date >= ~date^^xsd:dateTime)}} ORDER BY DESC(?date)", None::<&gio::Cancellable>).unwrap().unwrap();
+            statement.bind_string("date", &date.to_rfc3339_opts(SecondsFormat::Secs, true));
+            statement.execute_future().await?
         } else {
             connection.query_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?
         };
@@ -203,7 +205,12 @@ impl Database {
     /// An array of [SplitBar]s that are within the given timeframe or a [glib::Error] if querying the DB goes wrong.
     pub async fn calories(&self, minimum_date: DateTime<FixedOffset>) -> Result<Vec<SplitBar>> {
         let connection = self.imp().connection.get().unwrap();
-        let cursor = connection.query_future(&format!("SELECT ?date ?id ?calories_burned WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned. FILTER  (?date >= '{}'^^xsd:dateTime) }}", minimum_date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+        let statement = connection.query_statement("SELECT ?date ?id ?calories_burned WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned. FILTER  (?date >= ~date^^xsd:dateTime) }}", None::<&gio::Cancellable>).unwrap().unwrap();
+        statement.bind_string(
+            "date",
+            &minimum_date.to_rfc3339_opts(SecondsFormat::Secs, true),
+        );
+        let cursor = statement.execute_future().await?;
 
         let mut hashmap: std::collections::HashMap<
             DateTime<FixedOffset>,
@@ -258,7 +265,13 @@ impl Database {
         let connection = self.imp().connection.get().unwrap();
         let mut most_frequent = Vec::new();
 
-        let cursor = connection.query_future(&format!("SELECT ?id WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned . FILTER  (?date >= '{}'^^xsd:dateTime) }} GROUP BY ?id ORDER BY DESC (SUM(?calories_burned))", minimum_date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+        let statement = connection.query_statement("SELECT ?id WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned . FILTER  (?date >= ~date^^xsd:dateTime) }} GROUP BY ?id ORDER BY DESC (SUM(?calories_burned))", None::<&gio::Cancellable>).unwrap().unwrap();
+        statement.bind_string(
+            "date",
+            &minimum_date.to_rfc3339_opts(SecondsFormat::Secs, true),
+        );
+        let cursor = statement.execute_future().await?;
+
         while let Ok(true) = cursor.next_future().await {
             most_frequent.push(ActivityType::from_i64(cursor.integer(0)).unwrap());
         }
@@ -316,7 +329,10 @@ impl Database {
         let imp = self.imp();
 
         let connection = imp.connection.get().unwrap();
-        let cursor = connection.query_future(&format!("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}  ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+
+        let statement = connection.query_statement("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= ~date^^xsd:dateTime)}}  ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
+        statement.bind_string("date", &date.to_rfc3339_opts(SecondsFormat::Secs, true));
+        let cursor = statement.execute_future().await?;
         let mut hashmap = std::collections::HashMap::new();
 
         while let Ok(true) = cursor.next_future().await {
@@ -348,7 +364,9 @@ impl Database {
         let date: DateTime<FixedOffset> = Local::today().and_hms(0, 0, 0).into();
 
         let connection = imp.connection.get().unwrap();
-        let cursor = connection.query_future(&format!("SELECT SUM(?steps) WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= '{}'^^xsd:dateTime)}}", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?;
+        let statement = connection.query_statement("SELECT SUM(?steps) WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= ~date^^xsd:dateTime)}}", None::<&gio::Cancellable>).unwrap().unwrap();
+        statement.bind_string("date", &date.to_rfc3339_opts(SecondsFormat::Secs, true));
+        let cursor = statement.execute_future().await?;
 
         let steps = if let Ok(true) = cursor.next_future().await {
             cursor.integer(0)
@@ -371,7 +389,9 @@ impl Database {
 
         let connection = imp.connection.get().unwrap();
         let cursor = if let Some(date) = date_opt {
-            connection.query_future(&format!("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . FILTER  (?date >= '{}'^^xsd:dateTime)}} ORDER BY ?date", date.to_rfc3339_opts(chrono::SecondsFormat::Secs, true))).await?
+            let statement = connection.query_statement("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . FILTER  (?date >= ~date^^xsd:dateTime)}} ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
+            statement.bind_string("date", &date.to_rfc3339_opts(SecondsFormat::Secs, true));
+            statement.execute_future().await?
         } else {
             connection.query_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . } ORDER BY ?date").await?
         };
@@ -401,7 +421,20 @@ impl Database {
         let imp = self.imp();
 
         let connection = imp.connection.get().unwrap();
-        let cursor = connection.query_future(&format!("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight ?weight . FILTER(?date >= '{}'^^xsd:date && ?date < '{}'^^xsd:date) }}", date.format("%Y-%m-%d"), (date + Duration::days(1)).format("%Y-%m-%d"))).await?;
+        let statement = connection.query_statement("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight ?weight . FILTER(?date >= ~date^^xsd:dateTime && ?date < ~nextdate^^xsd:dateTime) }}", None::<&gio::Cancellable>).unwrap().unwrap();
+        statement.bind_string(
+            "date",
+            &date
+                .and_hms(0, 0, 0)
+                .to_rfc3339_opts(SecondsFormat::Secs, true),
+        );
+        statement.bind_string(
+            "nextdate",
+            &(date + Duration::days(1))
+                .and_hms(0, 0, 0)
+                .to_rfc3339_opts(SecondsFormat::Secs, true),
+        );
+        let cursor = statement.execute_future().await?;
 
         assert!(cursor.next_future().await?);
 
