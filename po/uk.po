@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-03-03 20:40+0000\n"
-"PO-Revision-Date: 2022-03-04 12:04+0200\n"
+"POT-Creation-Date: 2022-03-12 15:26+0000\n"
+"PO-Revision-Date: 2022-03-12 19:25+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -371,23 +371,23 @@ msgstr "Загальне"
 msgid "User"
 msgstr "Користувач"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:146
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
 msgid "Unit system"
 msgstr "Система одиниць"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:156
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
 msgid "Imperial"
 msgstr "Імперська"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
 msgid "Metric"
 msgstr "Метрична"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:170
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
 msgid "Birthday"
 msgstr "День народження"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:179
+#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
 msgid "Height"
 msgstr "Зріст"
 
@@ -407,16 +407,16 @@ msgstr "Частота"
 msgid "Daily reminder time"
 msgstr "Час щоденного нагадування"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:242
+#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
 #: src/plugins/steps/details.rs:241
 msgid "Step goal"
 msgstr "Цільова к-ть кроків"
 
-#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:218
+#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:224
 msgid "The WHO recommends 10.000 steps per day."
 msgstr "ВОЗ рекомендовано виконувати 10000 кроків щодня."
 
-#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:279
+#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "Рекомендованим ВОЗ значенням ІМТ є від 18,5 до 24,9."
 
@@ -448,51 +448,56 @@ msgstr "Імпортувати дані з CSV"
 msgid "Import…"
 msgstr "Імпортувати…"
 
-#: data/ui/setup_window.blp:33
+#: data/ui/setup_window.blp:39
 msgid "Health Setup"
 msgstr "Налаштовування «Здоров'я»"
 
-#: data/ui/setup_window.blp:47
+#: data/ui/setup_window.blp:53
 msgid "_Quit"
 msgstr "Ви_йти"
 
-#: data/ui/setup_window.blp:56
+#: data/ui/setup_window.blp:62
 msgid "_Previous"
 msgstr "_Назад"
 
-#: data/ui/setup_window.blp:71
+#: data/ui/setup_window.blp:77
 msgid "_Next"
 msgstr "_Далі"
 
-#: data/ui/setup_window.blp:84
+#: data/ui/setup_window.blp:90
 msgid "_Done"
 msgstr "_Завершити"
 
-#: data/ui/setup_window.blp:110
+#: data/ui/setup_window.blp:116
 msgid "Welcome to Health!"
 msgstr "Вітаємо у «Здоров'ї»!"
 
-#: data/ui/setup_window.blp:122
+#: data/ui/setup_window.blp:128
 msgid "Please enter some information to get setup."
 msgstr "Будь ласка, надайте певні відомості для налаштовування програми."
 
-#: data/ui/setup_window.blp:206
+#: data/ui/setup_window.blp:212
 msgid "Please enter your daily step goal."
 msgstr "Будь ласка, введіть щоденну цільову кількість кроків."
 
-#: data/ui/setup_window.blp:267
+#: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
 msgstr "Будь ласка, введіть значення цільової ваги."
 
-#: data/ui/setup_window.blp:307 src/plugins/weight/details.rs:221
+#: data/ui/setup_window.blp:314
+#| msgid "Import weights"
+msgid "Current weight"
+msgstr "Поточна вага"
+
+#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:221
 msgid "Weight goal"
 msgstr "Цільова вага"
 
-#: data/ui/setup_window.blp:342
+#: data/ui/setup_window.blp:372
 msgid "Setup sync with third-party providers."
 msgstr "Налаштуйте синхронізацію із даними сторонніх надавачів."
 
-#: data/ui/setup_window.blp:354
+#: data/ui/setup_window.blp:384
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
@@ -1017,8 +1022,7 @@ msgstr ""
 
 #: src/sync/sync_provider.rs:157
 msgid "Token for Health sync provider {}"
-msgstr ""
-"Жетон надавача даних синхронізації «Здоров'я» {}"
+msgstr "Жетон надавача даних синхронізації «Здоров'я» {}"
 
 #: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
@@ -1080,7 +1084,13 @@ msgstr[1] "{} ярди"
 msgstr[2] "{} ярдів"
 msgstr[3] "{} ярд"
 
-#: src/widgets/bmi_level_bar.rs:219 src/widgets/bmi_level_bar.rs:256
+#: src/widgets/bmi_level_bar.rs:267 src/windows/preferences_window.rs:411
+#: src/windows/setup_window.rs:249
+#| msgid "Current BMI: {}"
+msgid "Current BMI"
+msgstr "Поточний ІМТ"
+
+#: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Поточний ІМТ: {}</small>"
 
@@ -1213,6 +1223,11 @@ msgstr "Сталася помилка!"
 #: src/windows/import_export_dialog_base.rs:305
 msgid "Close"
 msgstr "Закрити"
+
+#: src/windows/setup_window.rs:250
+msgid "Target BMI"
+msgstr ""
+"Цільовий ІМТ"
 
 #: src/windows/window.rs:97
 msgid "Failed to migrate database to new version due to error {}"
