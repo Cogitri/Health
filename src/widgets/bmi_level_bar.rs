@@ -43,6 +43,7 @@ mod imp {
     pub struct BmiLevelBarMut {
         pub height: Length,
         pub weight: Mass,
+        pub bmi_label: String,
     }
 
     #[derive(Debug, CompositeTemplate, Default)]
@@ -128,6 +129,13 @@ mod imp {
                         0.0,
                         glib::ParamFlags::READWRITE,
                     ),
+                    glib::ParamSpecString::new(
+                        "bmi-label",
+                        "bmi-label",
+                        "User BMI label",
+                        None,
+                        glib::ParamFlags::READWRITE,
+                    ),
                 ]
             });
 
@@ -150,6 +158,10 @@ mod imp {
                     self.inner.borrow_mut().weight = Mass::new::<kilogram>(value.get().unwrap());
                     obj.recalculate_bmi();
                 }
+                "bmi-label" => {
+                    self.inner.borrow_mut().bmi_label = value.get().unwrap();
+                    obj.recalculate_bmi();
+                }
                 _ => unimplemented!(),
             }
         }
@@ -158,6 +170,7 @@ mod imp {
             match pspec.name() {
                 "height-meter" => self.inner.borrow().height.get::<meter>().to_value(),
                 "weight-kilogram" => self.inner.borrow().weight.get::<kilogram>().to_value(),
+                "bmi-label" => self.inner.borrow().bmi_label.to_value(),
                 _ => unimplemented!(),
             }
         }
@@ -199,11 +212,17 @@ impl BmiLevelBar {
         self.set_property("weight-kilogram", value.get::<kilogram>())
     }
 
+    /// Set the text to display in the label.
+    pub fn set_bmi_label(&self, value: &str) {
+        self.set_property("bmi-label", value)
+    }
+
     fn recalculate_bmi(&self) {
         let imp = self.imp();
 
         let height = self.height().get::<meter>();
         let weight = self.weight().get::<kilogram>();
+        let label_text = imp.inner.borrow().bmi_label.clone();
         if height != 0.0 && weight != 0.0 {
             let current_bmi = weight / (height * height);
             let fraction = (current_bmi - LEVEL_BAR_MIN) / (LEVEL_BAR_MAX - LEVEL_BAR_MIN);
@@ -214,11 +233,9 @@ impl BmiLevelBar {
             } else {
                 imp.level_bar.set_value(fraction.into());
             }
+            let bmi_label_text = format!("<small>{}: {:.2}</small>", label_text, current_bmi);
 
-            imp.bmi_label.set_markup(&crate::core::i18n_f(
-                "<small>Current BMI: {}</small>",
-                &[&format!("{current_bmi:.2}")],
-            ));
+            imp.bmi_label.set_markup(&bmi_label_text);
         }
     }
 }
@@ -247,6 +264,7 @@ mod test {
         let bar = BmiLevelBar::new();
         bar.set_height(Length::new::<meter>(1.85));
         bar.set_weight(Mass::new::<kilogram>(70.0));
+        bar.set_bmi_label(&crate::core::i18n("Current BMI"));
 
         let imp = bar.imp();
         assert_eq!(imp.level_bar.value(), 0.4213869571685791);

@@ -16,7 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::UnitSystem, prelude::*};
+use crate::{
+    core::{i18n, UnitSystem},
+    model::Weight,
+    prelude::*,
+};
 use adw::prelude::*;
 use chrono::Local;
 use gtk::{
@@ -34,7 +38,7 @@ static OPTIMAL_BMI: f32 = 22.5;
 
 mod imp {
     use crate::{
-        core::{Settings, UnitSystem},
+        core::{Database, Settings, UnitSystem},
         widgets::{BmiLevelBar, DateSelector, SyncListBox, UnitSpinButton},
     };
     use gtk::{
@@ -50,9 +54,12 @@ mod imp {
     pub struct SetupWindow {
         pub current_unit_system: Cell<UnitSystem>,
         pub settings: Settings,
+        pub database: Database,
 
         #[template_child]
-        pub bmi_levelbar: TemplateChild<BmiLevelBar>,
+        pub current_bmi_levelbar: TemplateChild<BmiLevelBar>,
+        #[template_child]
+        pub target_bmi_levelbar: TemplateChild<BmiLevelBar>,
         #[template_child]
         pub setup_first_page: TemplateChild<gtk::Box>,
         #[template_child]
@@ -82,6 +89,8 @@ mod imp {
         #[template_child]
         pub weight_goal_spin_button: TemplateChild<UnitSpinButton>,
         #[template_child]
+        pub weight_spin_button: TemplateChild<UnitSpinButton>,
+        #[template_child]
         pub unit_imperial_togglebutton: TemplateChild<gtk::ToggleButton>,
         #[template_child]
         pub unit_metric_togglebutton: TemplateChild<gtk::ToggleButton>,
@@ -89,6 +98,8 @@ mod imp {
         pub height_actionrow: TemplateChild<adw::ActionRow>,
         #[template_child]
         pub weight_goal_actionrow: TemplateChild<adw::ActionRow>,
+        #[template_child]
+        pub weight_actionrow: TemplateChild<adw::ActionRow>,
         #[template_child]
         pub setup_carousel: TemplateChild<adw::Carousel>,
         #[template_child]
@@ -103,10 +114,13 @@ mod imp {
 
         fn new() -> Self {
             let settings = Settings::instance();
+            let database = Database::instance();
             Self {
                 current_unit_system: Cell::new(settings.unit_system()),
                 settings,
-                bmi_levelbar: TemplateChild::default(),
+                database,
+                current_bmi_levelbar: TemplateChild::default(),
+                target_bmi_levelbar: TemplateChild::default(),
                 setup_first_page: TemplateChild::default(),
                 setup_second_page: TemplateChild::default(),
                 setup_third_page: TemplateChild::default(),
@@ -121,10 +135,12 @@ mod imp {
                 height_spin_button: TemplateChild::default(),
                 step_goal_spin_button: TemplateChild::default(),
                 weight_goal_spin_button: TemplateChild::default(),
+                weight_spin_button: TemplateChild::default(),
                 unit_imperial_togglebutton: TemplateChild::default(),
                 unit_metric_togglebutton: TemplateChild::default(),
                 height_actionrow: TemplateChild::default(),
                 weight_goal_actionrow: TemplateChild::default(),
+                weight_actionrow: TemplateChild::default(),
                 setup_carousel: TemplateChild::default(),
                 sync_list_box: TemplateChild::default(),
             }
@@ -169,10 +185,10 @@ mod imp {
 }
 
 glib::wrapper! {
-    /// The [SetupWindow] is shown to the user on the first start of the applcation to fill in some data.
-    pub struct SetupWindow(ObjectSubclass<imp::SetupWindow>)
-        @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow, adw::ApplicationWindow,
-        @implements gio::ActionGroup, gio::ActionMap, gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
+  /// The [SetupWindow] is shown to the user on the first start of the applcation to fill in some data.
+  pub struct SetupWindow(ObjectSubclass<imp::SetupWindow>)
+      @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow, adw::ApplicationWindow,
+      @implements gio::ActionGroup, gio::ActionMap, gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
 #[gtk::template_callbacks]
@@ -219,7 +235,7 @@ impl SetupWindow {
     fn handle_height_spin_button_changed(&self) {
         let imp = self.imp();
         self.set_optimal_weight_goal();
-        self.try_enable_next_button();
+        self.try_enable_next_button_first_page();
 
         let unitless_height = imp.height_spin_button.raw_value().unwrap_or_default();
         let height = if imp.current_unit_system.get() == UnitSystem::Metric {
@@ -227,7 +243,11 @@ impl SetupWindow {
         } else {
             Length::new::<inch>(unitless_height)
         };
-        imp.bmi_levelbar.set_height(height);
+        imp.current_bmi_levelbar.set_height(height);
+        imp.target_bmi_levelbar.set_height(height);
+
+        imp.current_bmi_levelbar.set_bmi_label(&i18n("Current BMI"));
+        imp.target_bmi_levelbar.set_bmi_label(&i18n("Target BMI"));
     }
 
     #[template_callback]
@@ -252,6 +272,26 @@ impl SetupWindow {
         }
     }
 
+    pub async fn add_weight(&self) {
+        let imp = self.imp();
+        let unitless_weight = imp.weight_spin_button.raw_value().unwrap_or_default();
+        let weight = if imp.current_unit_system.get() == UnitSystem::Metric {
+            Mass::new::<kilogram>(unitless_weight)
+        } else {
+            Mass::new::<pound>(unitless_weight)
+        };
+        if let Err(e) = imp
+            .database
+            .save_weight(Weight::new(Local::now().into(), weight))
+            .await
+        {
+            glib::g_warning!(
+                crate::config::LOG_DOMAIN,
+                "Failed to save new data due to error {e}",
+            )
+        }
+    }
+
     #[template_callback]
     fn handle_setup_done_button_clicked(&self) {
         let imp = self.imp();
@@ -270,15 +310,19 @@ impl SetupWindow {
         imp.settings
             .set_user_step_goal(imp.step_goal_spin_button.raw_value().unwrap_or_default());
 
-        let unitless_weight = imp.weight_goal_spin_button.raw_value().unwrap_or_default();
-        let weight = if imp.current_unit_system.get() == UnitSystem::Metric {
-            Mass::new::<kilogram>(unitless_weight)
+        let unitless_weight_goal = imp.weight_goal_spin_button.raw_value().unwrap_or_default();
+        let weight_goal = if imp.current_unit_system.get() == UnitSystem::Metric {
+            Mass::new::<kilogram>(unitless_weight_goal)
         } else {
-            Mass::new::<pound>(unitless_weight)
+            Mass::new::<pound>(unitless_weight_goal)
         };
-        imp.settings.set_user_weight_goal(weight);
+        imp.settings.set_user_weight_goal(weight_goal);
 
-        self.emit_by_name::<()>("setup-done", &[]);
+        glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
+            obj.add_weight().await;
+            obj.emit_by_name::<()>("setup-done", &[]);
+        }));
+
         self.destroy();
     }
 
@@ -289,9 +333,15 @@ impl SetupWindow {
             0 => imp
                 .setup_carousel
                 .scroll_to(&imp.setup_second_page.get(), true),
-            1 => imp
-                .setup_carousel
-                .scroll_to(&imp.setup_third_page.get(), true),
+            1 => {
+                if imp.setup_next_page_button.is_sensitive()
+                    && imp.weight_spin_button.has_default_value()
+                {
+                    imp.setup_next_page_button.set_sensitive(false);
+                }
+                imp.setup_carousel
+                    .scroll_to(&imp.setup_third_page.get(), true)
+            }
             2 => imp
                 .setup_carousel
                 .scroll_to(&imp.setup_fourth_page.get(), true),
@@ -308,9 +358,13 @@ impl SetupWindow {
             1 => imp
                 .setup_carousel
                 .scroll_to(&imp.setup_first_page.get(), true),
-            2 => imp
-                .setup_carousel
-                .scroll_to(&imp.setup_second_page.get(), true),
+            2 => {
+                if !imp.setup_next_page_button.is_sensitive() {
+                    imp.setup_next_page_button.set_sensitive(true);
+                }
+                imp.setup_carousel
+                    .scroll_to(&imp.setup_second_page.get(), true)
+            }
             3 => imp
                 .setup_carousel
                 .scroll_to(&imp.setup_third_page.get(), true),
@@ -326,6 +380,20 @@ impl SetupWindow {
     #[template_callback]
     fn handle_weight_spin_button_changed(&self) {
         let imp = self.imp();
+        self.try_enable_next_button_third_page();
+        let unitless_weight = imp.weight_spin_button.raw_value().unwrap_or_default();
+        let weight = if imp.current_unit_system.get() == UnitSystem::Metric {
+            Mass::new::<kilogram>(unitless_weight)
+        } else {
+            Mass::new::<pound>(unitless_weight)
+        };
+
+        imp.current_bmi_levelbar.set_weight(weight);
+    }
+
+    #[template_callback]
+    fn handle_weight_goal_spin_button_changed(&self) {
+        let imp = self.imp();
         let unitless_weight = imp.weight_goal_spin_button.raw_value().unwrap_or_default();
         let weight = if imp.current_unit_system.get() == UnitSystem::Metric {
             Mass::new::<kilogram>(unitless_weight)
@@ -333,7 +401,7 @@ impl SetupWindow {
             Mass::new::<pound>(unitless_weight)
         };
 
-        imp.bmi_levelbar.set_weight(weight);
+        imp.target_bmi_levelbar.set_weight(weight);
     }
 
     fn handle_unit_system_changed(&self) {
@@ -410,11 +478,19 @@ impl SetupWindow {
     }
 
     #[template_callback]
-    fn try_enable_next_button(&self) {
+    fn try_enable_next_button_first_page(&self) {
         let imp = self.imp();
         let birthday = imp.birthday_selector.selected_date().date();
         let sensitive =
             birthday != Local::now().date() && !imp.height_spin_button.has_default_value();
+        imp.setup_next_page_button.set_sensitive(sensitive);
+        imp.setup_carousel.set_interactive(sensitive);
+    }
+
+    #[template_callback]
+    fn try_enable_next_button_third_page(&self) {
+        let imp = self.imp();
+        let sensitive = !imp.weight_spin_button.has_default_value();
         imp.setup_next_page_button.set_sensitive(sensitive);
         imp.setup_carousel.set_interactive(sensitive);
     }

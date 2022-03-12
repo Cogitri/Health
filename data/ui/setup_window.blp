@@ -13,6 +13,12 @@ Adjustment step_goal_adjustment {
   page-increment: 1000;
 }
 
+Adjustment weight_adjustment {
+  upper: 300;
+  step-increment: 1;
+  page-increment: 10;
+}
+
 Adjustment weight_goal_adjustment {
   upper: 999;
   step-increment: 1;
@@ -171,7 +177,7 @@ template HealthSetupWindow : Adw.ApplicationWindow {
 
               .HealthDateSelector birthday_selector {
                 valign: center;
-                notify::selected-date => try_enable_next_button() swapped;
+                notify::selected-date => try_enable_next_button_first_page() swapped;
               }
             }
 
@@ -262,6 +268,7 @@ template HealthSetupWindow : Adw.ApplicationWindow {
         halign: center;
         vexpand: true;
         hexpand: true;
+        notify::selected-value => try_enable_next_button_third_page() swapped;
 
         Label {
           label: _("Please enter your weight goal.");
@@ -303,6 +310,29 @@ template HealthSetupWindow : Adw.ApplicationWindow {
             Box {
               orientation: vertical;
 
+              Adw.ActionRow weight_actionrow {
+                title: _("Current weight");
+
+                .HealthUnitSpinButton weight_spin_button {
+                  unit-kind: "like_kilogram";
+                  digits: 1;
+                  width-chars: 5;
+                  adjustment: weight_adjustment;
+                  valign: center;
+                  changed => handle_weight_spin_button_changed() swapped;
+                }
+              }
+	      .HealthBMILevelBar current_bmi_levelbar {
+	        margin-start: 6;
+	        margin-end: 6;
+	        margin-top: 6;
+	        margin-bottom: 6;
+	      }
+            }
+
+            Box {
+              orientation: vertical;
+
               Adw.ActionRow weight_goal_actionrow {
                 title: _("Weight goal");
 
@@ -312,11 +342,11 @@ template HealthSetupWindow : Adw.ApplicationWindow {
                   width-chars: 5;
                   adjustment: weight_goal_adjustment;
                   valign: center;
-                  changed => handle_weight_spin_button_changed() swapped;
+                  changed => handle_weight_goal_spin_button_changed() swapped;
                 }
               }
 
-              .HealthBMILevelBar bmi_levelbar {
+              .HealthBMILevelBar target_bmi_levelbar {
                 margin-start: 6;
                 margin-end: 6;
                 margin-top: 6;
