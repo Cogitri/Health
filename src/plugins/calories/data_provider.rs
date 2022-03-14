@@ -19,11 +19,10 @@
 use crate::{
     core::{Database, Settings},
     model::ActivityType,
+    prelude::*,
     views::SplitBar,
 };
 use anyhow::Result;
-use chrono::{DateTime, Datelike, Duration, FixedOffset, Utc};
-use gtk::glib;
 use std::collections::HashMap;
 use uom::si::{f32::Mass, length::centimeter, mass::kilogram};
 
@@ -60,15 +59,10 @@ impl GraphModelCalories {
     ///
     /// # Returns
     /// Returns an error if querying the DB fails.
-    pub async fn reload(&mut self, duration: Duration) -> Result<()> {
-        self.distinct_activities = self
-            .database
-            .most_frequent_activities((chrono::Local::now() - duration).into())
-            .await?;
-        self.split_bar = self
-            .database
-            .calories((chrono::Local::now() - duration).into())
-            .await?;
+    pub async fn reload(&mut self, duration: glib::TimeSpan) -> Result<()> {
+        let date = glib::DateTime::local().subtract(duration);
+        self.distinct_activities = self.database.most_frequent_activities(date.clone()).await?;
+        self.split_bar = self.database.calories(date).await?;
         self.rmr = self.rmr().await;
         Ok(())
     }
@@ -79,17 +73,15 @@ impl GraphModelCalories {
             return Vec::new();
         }
 
-        let first_date = self.split_bar.first().unwrap().date;
+        let first_date = self.split_bar.first().unwrap().date.clone();
         let mut map = HashMap::new();
 
         for bar in &self.split_bar {
-            map.insert(bar.date, bar.calorie_split.clone());
+            map.insert(bar.date.clone(), bar.calorie_split.clone());
         }
 
-        for date_delta in
-            0..(DateTime::<FixedOffset>::from(Utc::now()).date() - first_date).num_days()
-        {
-            map.entry(first_date + Duration::days(date_delta))
+        for date_delta in 0..first_date.difference(&glib::DateTime::local()).as_days() {
+            map.entry(first_date.add_days(date_delta.try_into().unwrap()).unwrap())
                 .or_insert_with(HashMap::new);
         }
 
@@ -118,8 +110,12 @@ impl GraphModelCalories {
             .map_or_else(|| Mass::new::<kilogram>(0.0), |w| w.weight)
             .get::<kilogram>() as f32;
         let height = self.settings.user_height().get::<centimeter>() as f32;
-        let age =
-            (chrono::Local::now().year() - self.settings.user_birthday().unwrap().year()) as f32;
+        let age = self
+            .settings
+            .user_birthday()
+            .unwrap()
+            .difference(&glib::DateTime::local())
+            .as_years() as f32;
         if weight != 0.0 {
             9.99 * weight + 6.25 * height - 4.92 * age
         } else {

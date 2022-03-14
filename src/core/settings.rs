@@ -17,9 +17,9 @@
  */
 
 use crate::{
-    core::UnitSystem, model::NotificationFrequency, plugins::PluginName, settings_getter_setter,
+    core::UnitSystem, model::NotificationFrequency, plugins::PluginName, prelude::*,
+    settings_getter_setter,
 };
-use chrono::{Date, DateTime, FixedOffset, NaiveTime};
 use gtk::{
     gio::{self, prelude::*},
     glib,
@@ -141,15 +141,18 @@ impl Settings {
     }
 
     /// Get the timestamp of the last sync with Google Fit.
-    pub fn timestamp_last_sync_google_fit(&self) -> DateTime<FixedOffset> {
-        DateTime::parse_from_rfc3339(self.string("timestamp-last-sync-google-fit").as_str())
+    pub fn timestamp_last_sync_google_fit(&self) -> glib::DateTime {
+        glib::DateTime::from_iso8601(self.string("timestamp-last-sync-google-fit").as_str(), None)
             .unwrap()
     }
 
     /// Set the timestamp of the last sync with Google Fit.
-    pub fn set_timestamp_last_sync_google_fit(&self, value: DateTime<FixedOffset>) {
-        self.set_string("timestamp-last-sync-google-fit", &value.to_rfc3339())
-            .unwrap();
+    pub fn set_timestamp_last_sync_google_fit(&self, value: glib::DateTime) {
+        self.set_string(
+            "timestamp-last-sync-google-fit",
+            &value.format_iso8601().unwrap(),
+        )
+        .unwrap();
     }
 
     /// Connect to the `unitsystem` key changing. Keep in mind that the key has to be read once before connecting or this won't do anything!
@@ -183,12 +186,11 @@ impl Settings {
         })
     }
 
-    pub fn notification_time(&self) -> NaiveTime {
-        NaiveTime::parse_from_str(self.string("notification-time").as_str(), "%H:%M:%S")
-            .expect("Couldn't parse time")
+    pub fn notification_time(&self) -> Time {
+        Time::parse(self.string("notification-time").as_str()).expect("Couldn't parse time")
     }
 
-    pub fn set_notification_time(&self, value: NaiveTime) {
+    pub fn set_notification_time(&self, value: Time) {
         self.set_string("notification-time", &value.to_string())
             .unwrap();
     }
@@ -215,24 +217,23 @@ impl Settings {
     }
 
     /// Get the timestamp of the last sync with Google Fit.
-    pub fn user_birthday(&self) -> Option<Date<FixedOffset>> {
+    pub fn user_birthday(&self) -> Option<glib::DateTime> {
         let str = self.string("user-birthday");
 
         if str.is_empty() {
             None
         } else {
-            Some(
-                DateTime::parse_from_rfc3339(str.as_str())
-                    .map(|s| s.date())
-                    .unwrap(),
-            )
+            Some(glib::DateTime::from_iso8601(str.as_str(), None).unwrap())
         }
     }
 
     /// Set the timestamp of the last sync with Google Fit.
-    pub fn set_user_birthday(&self, value: Date<FixedOffset>) {
-        self.set_string("user-birthday", &value.and_hms(0, 0, 0).to_rfc3339())
-            .unwrap();
+    pub fn set_user_birthday(&self, value: glib::DateTime) {
+        self.set_string(
+            "user-birthday",
+            &value.reset_hms().format_iso8601().unwrap(),
+        )
+        .unwrap();
     }
 
     /// Get the user's height.
@@ -276,8 +277,8 @@ impl Settings {
 #[cfg(test)]
 mod test {
     use super::Settings;
-    use crate::utils::init_gschema;
-    use chrono::{DateTime, FixedOffset, Local};
+    use crate::{prelude::*, utils::init_gschema};
+    use gtk::glib;
     use uom::si::{f32::Mass, mass::kilogram};
 
     fn get() -> (Option<tempfile::TempDir>, Settings) {
@@ -367,8 +368,7 @@ mod test {
     #[test]
     fn user_birthday() {
         let (_tmp, settings) = get();
-        let d: DateTime<FixedOffset> = Local::now().into();
-        settings.set_user_birthday(settings.user_birthday().unwrap_or(d.date()));
+        settings.set_user_birthday(settings.user_birthday().unwrap_or(glib::DateTime::local()));
     }
 
     #[test]

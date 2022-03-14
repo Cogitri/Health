@@ -16,9 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::views::Point;
+use crate::{prelude::*, views::Point};
 use anyhow::Result;
-use chrono::{DateTime, Duration, FixedOffset, Local};
 use uom::si::{f32::Mass, mass::kilogram};
 
 #[derive(Debug, Default, Clone)]
@@ -29,23 +28,23 @@ impl GraphModelWeightMocked {
         Self {}
     }
 
-    pub async fn reload(&mut self, _duration: Duration) -> Result<()> {
+    pub async fn reload(&mut self, _duration: glib::TimeSpan) -> Result<()> {
         Ok(())
     }
 
     pub fn to_points(&self) -> Vec<Point> {
-        let now: DateTime<FixedOffset> = Local::now().into();
+        let now = glib::DateTime::local();
         vec![
             Point {
-                date: now.date() - Duration::days(60),
+                date: now.add_days(-60).unwrap(),
                 value: 65.0,
             },
             Point {
-                date: now.date() - Duration::days(30),
+                date: now.add_days(-30).unwrap(),
                 value: 64.2,
             },
             Point {
-                date: now.date(),
+                date: now,
                 value: 63.6,
             },
         ]

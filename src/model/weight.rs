@@ -17,7 +17,7 @@
  */
 
 use crate::sync::serialize;
-use chrono::{DateTime, FixedOffset};
+use gtk::glib;
 use uom::si::f32::Mass;
 
 /// A [Weight] is a single weight measurement the user did on a certain date.
@@ -25,14 +25,14 @@ use uom::si::f32::Mass;
 pub struct Weight {
     #[serde(serialize_with = "serialize::serialize_date")]
     #[serde(deserialize_with = "serialize::deserialize_date")]
-    pub date: DateTime<FixedOffset>,
+    pub date: glib::DateTime,
     #[serde(serialize_with = "serialize::serialize_mass")]
     #[serde(deserialize_with = "serialize::deserialize_mass")]
     pub weight: Mass,
 }
 
 impl Weight {
-    pub fn new(date: DateTime<FixedOffset>, weight: Mass) -> Self {
+    pub fn new(date: glib::DateTime, weight: Mass) -> Self {
         Self { date, weight }
     }
 }

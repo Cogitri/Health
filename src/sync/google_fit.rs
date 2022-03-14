@@ -20,9 +20,9 @@ use super::{sync_provider::SyncProvider, DatabaseValue};
 use crate::{
     core::{i18n_f, Settings},
     model::{Steps, Weight},
+    prelude::*,
 };
 use anyhow::Result;
-use chrono::{DateTime, FixedOffset, Utc};
 use gtk::glib;
 use oauth2::{
     basic::{BasicClient, BasicTokenType},
@@ -53,7 +53,7 @@ struct Value {
 struct Point {
     #[serde(deserialize_with = "super::serialize::deserialize_modified_time_millis")]
     #[serde(rename = "modifiedTimeMillis")]
-    pub date: DateTime<FixedOffset>,
+    pub date: glib::DateTime,
     pub value: Vec<Value>,
 }
 
@@ -76,11 +76,11 @@ impl GoogleFitSyncProvider {
     ///
     /// # Returns
     /// An array of [Steps], or a [anyhow::Error] if querying the Google Fit API fails.
-    fn steps(&mut self, date_opt: Option<DateTime<FixedOffset>>) -> Result<Vec<Steps>> {
+    fn steps(&mut self, date_opt: Option<glib::DateTime>) -> Result<Vec<Steps>> {
         let points = if let Some(date) = date_opt {
-            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/{}-{}", date.timestamp_nanos(), Utc::now().timestamp_nanos()))
+            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/{}-{}", date.nanoseconds(), glib::DateTime::utc().nanoseconds()))
         } else {
-            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/0-{}", Utc::now().timestamp_nanos()))
+            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas/datasets/0-{}", glib::DateTime::utc().nanoseconds()))
         }?;
 
         Ok(Self::points_to_steps(points))
@@ -93,11 +93,11 @@ impl GoogleFitSyncProvider {
     ///
     /// # Returns
     /// An array of [Weight]s, or a [anyhow::Error] if querying the Google Fit API fails.
-    fn weights(&mut self, date_opt: Option<DateTime<FixedOffset>>) -> Result<Vec<Weight>> {
+    fn weights(&mut self, date_opt: Option<glib::DateTime>) -> Result<Vec<Weight>> {
         let points = if let Some(date) = date_opt {
-            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/{}-{}", date.timestamp_nanos(), Utc::now().timestamp_nanos()))
+            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/{}-{}", date.nanoseconds(), glib::DateTime::utc().nanoseconds()))
         } else {
-            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/0-{}", Utc::now().timestamp_nanos()))
+            self.get::<Points>(&format!("users/me/dataSources/derived:com.google.weight:com.google.android.gms:merge_weight/datasets/0-{}", glib::DateTime::utc().nanoseconds()))
         }?;
 
         Ok(Self::points_to_weights(points))
@@ -112,7 +112,7 @@ impl GoogleFitSyncProvider {
         for s in p.point {
             if steps_map.contains_key(&s.date) {
                 steps_map.insert(
-                    s.date,
+                    s.date.clone(),
                     steps_map.get(&s.date).unwrap()
                         + s.value.iter().map(|s| s.int_val.unwrap()).sum::<u32>(),
                 );
@@ -236,7 +236,7 @@ impl SyncProvider for GoogleFitSyncProvider {
             self.set_token(refresh_token.clone())?;
             let settings = Settings::instance();
             settings.set_sync_provider_setup_google_fit(true);
-            settings.set_timestamp_last_sync_google_fit(chrono::Local::now().into());
+            settings.set_timestamp_last_sync_google_fit(glib::DateTime::local());
         }
 
         Ok(())
@@ -259,9 +259,9 @@ impl SyncProvider for GoogleFitSyncProvider {
     fn sync_data(&mut self) -> Result<()> {
         let settings = Settings::instance();
         let last_sync_date = settings.timestamp_last_sync_google_fit();
-        settings.set_timestamp_last_sync_google_fit(chrono::Local::now().into());
+        settings.set_timestamp_last_sync_google_fit(glib::DateTime::local());
 
-        let steps = self.steps(Some(last_sync_date))?;
+        let steps = self.steps(Some(last_sync_date.clone()))?;
         self.sender.send(DatabaseValue::Steps(steps)).unwrap();
 
         let weights = self.weights(Some(last_sync_date))?;
@@ -294,64 +294,94 @@ mod test {
 
         assert_eq!(steps.len(), 15);
         assert_eq!(
-            steps.get(0).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-10T21:12:22+00:00"), 1201))
+            steps
+                .get(0)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-10T21:12:22Z"), 1201))
         );
         assert_eq!(
-            steps.get(1).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-12T07:38:32+00:00"), 1493))
+            steps
+                .get(1)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-12T07:38:32Z"), 1493))
         );
         assert_eq!(
-            steps.get(2).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-12T09:57:43+00:00"), 515))
+            steps
+                .get(2)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-12T09:57:43Z"), 515))
         );
         assert_eq!(
-            steps.get(3).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-12T12:56:56+00:00"), 184))
+            steps
+                .get(3)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-12T12:56:56Z"), 184))
         );
         assert_eq!(
-            steps.get(4).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-12T13:59:01+00:00"), 934))
+            steps
+                .get(4)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-12T13:59:01Z"), 934))
         );
         assert_eq!(
-            steps.get(5).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-12T14:58:50+00:00"), 1368))
+            steps
+                .get(5)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-12T14:58:50Z"), 1368))
         );
         assert_eq!(
-            steps.get(6).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-12T14:58:53+00:00"), 1659))
+            steps
+                .get(6)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-12T14:58:53Z"), 1659))
         );
         assert_eq!(
-            steps.get(7).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-12T14:58:55+00:00"), 1132))
+            steps
+                .get(7)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-12T14:58:55Z"), 1132))
         );
         assert_eq!(
-            steps.get(8).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-12T19:03:36+00:00"), 640))
+            steps
+                .get(8)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-12T19:03:36Z"), 640))
         );
         assert_eq!(
-            steps.get(9).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-12T22:03:37+00:00"), 225))
+            steps
+                .get(9)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-12T22:03:37Z"), 225))
         );
         assert_eq!(
-            steps.get(10).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-13T07:25:25+00:00"), 77))
+            steps
+                .get(10)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-13T07:25:25Z"), 77))
         );
         assert_eq!(
-            steps.get(11).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-14T07:50:04+00:00"), 1341))
+            steps
+                .get(11)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-14T07:50:04Z"), 1341))
         );
         assert_eq!(
-            steps.get(12).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-14T13:47:05+00:00"), 575))
+            steps
+                .get(12)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-14T13:47:05Z"), 575))
         );
         assert_eq!(
-            steps.get(13).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-14T15:00:53+00:00"), 23))
+            steps
+                .get(13)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-14T15:00:53Z"), 23))
         );
         assert_eq!(
-            steps.get(14).map(|s| (s.date.to_rfc3339(), s.steps)),
-            Some((String::from("2021-01-14T20:02:10+00:00"), 104))
+            steps
+                .get(14)
+                .map(|s| (s.date.format_iso8601().unwrap().to_string(), s.steps)),
+            Some((String::from("2021-01-14T20:02:10Z"), 104))
         );
     }
 
@@ -366,28 +396,32 @@ mod test {
         assert_eq!(weights.len(), 4);
 
         assert_eq!(
-            weights
-                .get(0)
-                .map(|w| (w.date.to_rfc3339(), w.weight.get::<kilogram>())),
-            Some((String::from("2020-09-23T18:10:55+00:00"), 73.0))
+            weights.get(0).map(|w| (
+                w.date.format_iso8601().unwrap().to_string(),
+                w.weight.get::<kilogram>()
+            )),
+            Some((String::from("2020-09-23T18:10:55Z"), 73.0))
         );
         assert_eq!(
-            weights
-                .get(1)
-                .map(|w| (w.date.to_rfc3339(), w.weight.get::<kilogram>())),
-            Some((String::from("2020-09-23T18:10:55+00:00"), 69.0))
+            weights.get(1).map(|w| (
+                w.date.format_iso8601().unwrap().to_string(),
+                w.weight.get::<kilogram>()
+            )),
+            Some((String::from("2020-09-23T18:10:55Z"), 69.0))
         );
         assert_eq!(
-            weights
-                .get(2)
-                .map(|w| (w.date.to_rfc3339(), w.weight.get::<kilogram>())),
-            Some((String::from("2020-10-16T07:28:52+00:00"), 68.1))
+            weights.get(2).map(|w| (
+                w.date.format_iso8601().unwrap().to_string(),
+                w.weight.get::<kilogram>()
+            )),
+            Some((String::from("2020-10-16T07:28:52Z"), 68.1))
         );
         assert_eq!(
-            weights
-                .get(3)
-                .map(|w| (w.date.to_rfc3339(), w.weight.get::<kilogram>())),
-            Some((String::from("2020-10-19T14:04:22+00:00"), 70.0))
+            weights.get(3).map(|w| (
+                w.date.format_iso8601().unwrap().to_string(),
+                w.weight.get::<kilogram>()
+            )),
+            Some((String::from("2020-10-19T14:04:22Z"), 70.0))
         );
     }
 }

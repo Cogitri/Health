@@ -16,9 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::views::Point;
+use crate::{prelude::*, views::Point};
 use anyhow::Result;
-use chrono::{DateTime, Duration, FixedOffset, Local};
+use gtk::glib;
 
 #[derive(Debug, Default, Clone)]
 pub struct GraphModelStepsMocked {}
@@ -40,23 +40,23 @@ impl GraphModelStepsMocked {
         2
     }
 
-    pub async fn reload(&mut self, _duration: Duration) -> Result<()> {
+    pub async fn reload(&mut self, _duration: glib::TimeSpan) -> Result<()> {
         Ok(())
     }
 
     pub fn to_points(&self) -> Vec<Point> {
-        let now: DateTime<FixedOffset> = Local::now().into();
+        let now = glib::DateTime::local();
         vec![
             Point {
-                date: now.date() - Duration::days(2),
+                date: now.add_days(-2).unwrap(),
                 value: 10200.0,
             },
             Point {
-                date: now.date() - Duration::days(1),
+                date: now.add_days(-1).unwrap(),
                 value: 9700.0,
             },
             Point {
-                date: now.date(),
+                date: now,
                 value: 8500.0,
             },
         ]

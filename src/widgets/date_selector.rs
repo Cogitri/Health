@@ -16,8 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::prelude::*;
-use chrono::{DateTime, FixedOffset, Local, LocalResult, NaiveDate, TimeZone};
 use gtk::{
     glib::{self, SignalHandlerId},
     prelude::*,
@@ -25,7 +23,6 @@ use gtk::{
 
 mod imp {
     use crate::prelude::*;
-    use chrono::{DateTime, Datelike, FixedOffset, Local, NaiveDate};
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
@@ -61,10 +58,12 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            let now = Local::now();
-            obj.set_selected_date(now.into());
-            self.day_adjustment
-                .set_upper(obj.get_days_from_month(now.date().year(), now.date().month()) as f64);
+            let now = glib::DateTime::local();
+            obj.set_selected_date(now.clone());
+            self.day_adjustment.set_upper(glib::DateTime::days_of_month(
+                now.year(),
+                now.month().try_into().unwrap(),
+            ) as f64);
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -74,7 +73,7 @@ mod imp {
                     "selected-date",
                     "selected-date",
                     "selected-date",
-                    DateTimeBoxed::static_type(),
+                    glib::DateTime::static_type(),
                     glib::ParamFlags::READWRITE,
                 )]
             });
@@ -86,22 +85,28 @@ mod imp {
                 "selected-date" => {
                     let year = self.year_spinner.raw_value().unwrap_or(0);
                     // The dropdown starts counting from 0, not 1.
-                    let month = (self.month_dropdown.selected() + 1).clamp(1, 12);
+                    let month: i32 = (self.month_dropdown.selected() + 1)
+                        .clamp(1, 12)
+                        .try_into()
+                        .unwrap();
                     let mut day = self.day_spinner.raw_value().unwrap_or(1).clamp(1, 31);
-                    match NaiveDate::from_ymd_opt(year, month, day) {
-                        Some(d) => obj.date_to_datetime_boxed(d).to_value(),
-                        None => {
+                    match glib::DateTime::from_local(year, month, day, 0, 0, 0.0) {
+                        Ok(o) => o.to_value(),
+                        Err(_) => {
                             if day > 28 {
-                                while NaiveDate::from_ymd_opt(year, month, day).is_none() {
+                                while glib::DateTime::from_local(year, month, day, 0, 0, 0.0)
+                                    .is_err()
+                                {
                                     day -= 1;
                                     if day <= 28 {
                                         break;
                                     }
                                 }
-                                if let Some(d) = NaiveDate::from_ymd_opt(year, month, day) {
-                                    let date = obj.date_to_datetime_boxed(d);
-                                    obj.set_property("selected-date", date.clone());
-                                    return date.to_value();
+                                if let Ok(d) =
+                                    glib::DateTime::from_local(year, month, day, 0, 0, 0.0)
+                                {
+                                    obj.set_property("selected-date", d.clone());
+                                    return d.to_value();
                                 }
                             }
                             unimplemented!();
@@ -114,26 +119,29 @@ mod imp {
 
         fn set_property(
             &self,
-            obj: &Self::Type,
+            _obj: &Self::Type,
             _id: usize,
             value: &glib::Value,
             pspec: &glib::ParamSpec,
         ) {
             match pspec.name() {
                 "selected-date" => {
-                    let datetime = value.get::<DateTimeBoxed>().unwrap().0;
+                    let datetime = value.get::<glib::DateTime>().unwrap();
 
-                    let now: DateTime<FixedOffset> = Local::now().into();
-                    let date = if datetime.date() > now.date() {
+                    let now = glib::DateTime::local();
+                    let date = if datetime.reset_hms() > now.reset_hms() {
                         now
                     } else {
                         datetime
                     };
 
-                    self.day_adjustment
-                        .set_upper(obj.get_days_from_month(date.year(), date.month()) as f64);
-                    self.day_spinner.set_value(date.day().into());
-                    self.month_dropdown.set_selected(date.month() - 1);
+                    self.day_adjustment.set_upper(glib::DateTime::days_of_month(
+                        date.year(),
+                        date.month().try_into().unwrap(),
+                    ) as f64);
+                    self.day_spinner.set_value(date.day_of_month().into());
+                    self.month_dropdown
+                        .set_selected((date.month() - 1).try_into().unwrap());
                     self.year_spinner.set_value(date.year().into());
                 }
                 _ => unimplemented!(),
@@ -166,8 +174,8 @@ impl DateSelector {
     }
 
     /// Get the currently selected date
-    pub fn selected_date(&self) -> DateTime<FixedOffset> {
-        self.property::<DateTimeBoxed>("selected-date").0
+    pub fn selected_date(&self) -> glib::DateTime {
+        self.property::<glib::DateTime>("selected-date")
     }
 
     #[template_callback]
@@ -181,41 +189,15 @@ impl DateSelector {
     }
 
     /// Set the currently selected date.
-    pub fn set_selected_date(&self, value: DateTime<FixedOffset>) {
-        self.set_property("selected-date", DateTimeBoxed(value));
-    }
-
-    fn date_to_datetime_boxed(&self, d: NaiveDate) -> DateTimeBoxed {
-        match Local.from_local_datetime(&d.and_hms(12, 0, 0)) {
-            LocalResult::Single(d) | LocalResult::Ambiguous(d, _) => DateTimeBoxed(d.into()),
-            LocalResult::None => {
-                unimplemented!()
-            }
-        }
-    }
-
-    fn get_days_from_month(&self, year: i32, month: u32) -> i64 {
-        NaiveDate::from_ymd(
-            match month {
-                12 => year + 1,
-                _ => year,
-            },
-            match month {
-                12 => 1,
-                _ => month + 1,
-            },
-            1,
-        )
-        .signed_duration_since(NaiveDate::from_ymd(year, month, 1))
-        .num_days()
+    pub fn set_selected_date(&self, value: glib::DateTime) {
+        self.set_property("selected-date", value);
     }
 }
 
 #[cfg(test)]
 mod test {
     use super::*;
-    use crate::{core::i18n, utils::init_gtk};
-    use chrono::Datelike;
+    use crate::{core::i18n, prelude::*, utils::init_gtk};
     use gtk::subclass::prelude::*;
 
     #[test]
@@ -246,8 +228,8 @@ mod test {
         );
         selector_.year_spinner.set_value(2007.0);
         assert_eq!(
-            selector.selected_date().date().naive_local(),
-            NaiveDate::from_ymd(2007, 2, 17)
+            selector.selected_date().format("%Y-%m-%d").unwrap(),
+            "2007-02-17"
         );
     }
 
@@ -257,14 +239,13 @@ mod test {
         let selector = DateSelector::new();
         let selector_ = selector.imp();
 
-        let now = DateTime::<chrono::Utc>::from_utc(
-            NaiveDate::from_ymd(2007, 2, 17).and_hms(12, 0, 0),
-            chrono::Utc,
-        );
-        selector.set_selected_date(now.into());
-        assert_eq!(selector_.day_spinner.value() as u32, now.date().day());
-        assert_eq!(selector_.month_dropdown.selected(), now.date().month() - 1);
-        assert_eq!(selector_.year_spinner.value() as i32, now.date().year());
+        let now = Date::new(2007, 2, 17)
+            .unwrap()
+            .and_time_utc(Time::new(12, 0, 0).unwrap());
+        selector.set_selected_date(now.clone());
+        assert_eq!(selector_.day_spinner.value() as i32, now.day_of_month());
+        assert_eq!(selector_.month_dropdown.selected() as i32, now.month() - 1);
+        assert_eq!(selector_.year_spinner.value() as i32, now.year());
         assert_eq!(selector_.day_adjustment.upper(), 28.0);
     }
 
@@ -278,15 +259,15 @@ mod test {
         selector_.month_dropdown.set_selected(1);
         selector_.year_spinner.set_value(2000.0);
         assert_eq!(
-            selector.selected_date().date().naive_local(),
-            NaiveDate::from_ymd(2000, 2, 29)
+            selector.selected_date().format("%Y-%m-%d").unwrap(),
+            "2000-02-29"
         );
 
         selector_.day_spinner.set_value(31.0);
         selector_.year_spinner.set_value(2001.0);
         assert_eq!(
-            selector.selected_date().date().naive_local(),
-            NaiveDate::from_ymd(2001, 2, 28)
+            selector.selected_date().format("%Y-%m-%d").unwrap(),
+            "2001-02-28"
         );
     }
 }

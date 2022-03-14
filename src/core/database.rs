@@ -18,10 +18,10 @@
 
 use crate::{
     model::{Activity, ActivityType, Steps, Weight},
+    prelude::*,
     views::SplitBar,
 };
 use anyhow::Result;
-use chrono::{Date, DateTime, Duration, FixedOffset, Local, NaiveDate, SecondsFormat, Utc};
 use gtk::{
     gio::{self, subclass::prelude::*},
     glib::{self, prelude::*},
@@ -126,16 +126,13 @@ impl Database {
     ///
     /// # Returns
     /// An array of [Activity]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
-    pub async fn activities(
-        &self,
-        date_opt: Option<DateTime<FixedOffset>>,
-    ) -> Result<Vec<Activity>> {
+    pub async fn activities(&self, date_opt: Option<glib::DateTime>) -> Result<Vec<Activity>> {
         let imp = self.imp();
 
         let connection = imp.connection.get().unwrap();
         let cursor = if let Some(date) = date_opt {
             let statement = connection.query_statement("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER  (?date >= ~date^^xsd:dateTime)}} ORDER BY DESC(?date)", None::<&gio::Cancellable>).unwrap().unwrap();
-            statement.bind_string("date", &date.to_rfc3339_opts(SecondsFormat::Secs, true));
+            statement.bind_string("date", &date.format_iso8601().unwrap().as_str());
             statement.execute_future().await?
         } else {
             connection.query_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?
@@ -151,10 +148,10 @@ impl Database {
                         activity.activity_type(ActivityType::from_i64(cursor.integer(i)).unwrap());
                     }
                     "date" => {
-                        activity.date(
-                            DateTime::parse_from_rfc3339(cursor.string(i).unwrap().as_str())
-                                .unwrap(),
-                        );
+                        activity.date(glib::DateTime::from_iso8601(
+                            cursor.string(i).unwrap().as_str(),
+                            None,
+                        )?);
                     }
                     "calories_burned" => {
                         activity.calories_burned(cursor.integer(i).try_into().unwrap());
@@ -172,7 +169,7 @@ impl Database {
                         activity.heart_rate_min(cursor.integer(i).try_into().unwrap());
                     }
                     "minutes" => {
-                        activity.duration(Duration::minutes(cursor.integer(i)));
+                        activity.duration(glib::TimeSpan::from_minutes(cursor.integer(i)));
                     }
                     "steps" => {
                         activity.steps(cursor.integer(i).try_into().unwrap());
@@ -203,22 +200,20 @@ impl Database {
     ///
     /// # Returns
     /// An array of [SplitBar]s that are within the given timeframe or a [glib::Error] if querying the DB goes wrong.
-    pub async fn calories(&self, minimum_date: DateTime<FixedOffset>) -> Result<Vec<SplitBar>> {
+    pub async fn calories(&self, minimum_date: glib::DateTime) -> Result<Vec<SplitBar>> {
         let connection = self.imp().connection.get().unwrap();
         let statement = connection.query_statement("SELECT ?date ?id ?calories_burned WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned. FILTER  (?date >= ~date^^xsd:dateTime) }}", None::<&gio::Cancellable>).unwrap().unwrap();
-        statement.bind_string(
-            "date",
-            &minimum_date.to_rfc3339_opts(SecondsFormat::Secs, true),
-        );
+        statement.bind_string("date", &minimum_date.format_iso8601().unwrap().as_str());
         let cursor = statement.execute_future().await?;
 
         let mut hashmap: std::collections::HashMap<
-            DateTime<FixedOffset>,
+            glib::DateTime,
             std::collections::HashMap<ActivityType, i64>,
         > = std::collections::HashMap::new();
 
         while let Ok(true) = cursor.next_future().await {
-            let date = DateTime::parse_from_rfc3339(cursor.string(0).unwrap().as_str()).unwrap();
+            let date =
+                glib::DateTime::from_iso8601(cursor.string(0).unwrap().as_str(), None).unwrap();
             let id = ActivityType::from_i64(cursor.integer(1)).unwrap();
             let calories = cursor.integer(2);
             let new_map = |id, calories| {
@@ -240,7 +235,7 @@ impl Database {
         let mut v: Vec<SplitBar> = hashmap
             .drain()
             .map(|(date, bar)| SplitBar {
-                date: date.date(),
+                date,
                 calorie_split: bar,
             })
             .collect();
@@ -260,16 +255,13 @@ impl Database {
 
     pub async fn most_frequent_activities(
         &self,
-        minimum_date: DateTime<FixedOffset>,
+        minimum_date: glib::DateTime,
     ) -> Result<Vec<ActivityType>> {
         let connection = self.imp().connection.get().unwrap();
         let mut most_frequent = Vec::new();
 
         let statement = connection.query_statement("SELECT ?id WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned . FILTER  (?date >= ~date^^xsd:dateTime) }} GROUP BY ?id ORDER BY DESC (SUM(?calories_burned))", None::<&gio::Cancellable>).unwrap().unwrap();
-        statement.bind_string(
-            "date",
-            &minimum_date.to_rfc3339_opts(SecondsFormat::Secs, true),
-        );
+        statement.bind_string("date", &minimum_date.format_iso8601().unwrap().as_str());
         let cursor = statement.execute_future().await?;
 
         while let Ok(true) = cursor.next_future().await {
@@ -325,21 +317,24 @@ impl Database {
     ///
     /// # Returns
     /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
-    pub async fn steps(&self, date: DateTime<FixedOffset>) -> Result<Vec<Steps>> {
+    pub async fn steps(&self, date: glib::DateTime) -> Result<Vec<Steps>> {
         let imp = self.imp();
 
         let connection = imp.connection.get().unwrap();
 
         let statement = connection.query_statement("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= ~date^^xsd:dateTime)}}  ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
-        statement.bind_string("date", &date.to_rfc3339_opts(SecondsFormat::Secs, true));
+        statement.bind_string("date", &date.format_iso8601().unwrap());
         let cursor = statement.execute_future().await?;
         let mut hashmap = std::collections::HashMap::new();
 
         while let Ok(true) = cursor.next_future().await {
             hashmap.insert(
-                DateTime::parse_from_rfc3339(cursor.string(0).unwrap().as_str()).unwrap(),
+                glib::DateTime::from_iso8601(cursor.string(0).unwrap().as_str(), None).unwrap(),
                 hashmap
-                    .get(&DateTime::parse_from_rfc3339(cursor.string(0).unwrap().as_str()).unwrap())
+                    .get(
+                        &glib::DateTime::from_iso8601(cursor.string(0).unwrap().as_str(), None)
+                            .unwrap(),
+                    )
                     .unwrap_or(&0)
                     + u32::try_from(cursor.integer(1)).unwrap(),
             );
@@ -361,11 +356,11 @@ impl Database {
     /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn todays_steps(&self) -> Result<i64> {
         let imp = self.imp();
-        let date: DateTime<FixedOffset> = Local::today().and_hms(0, 0, 0).into();
+        let date = glib::DateTime::today();
 
         let connection = imp.connection.get().unwrap();
         let statement = connection.query_statement("SELECT SUM(?steps) WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps . FILTER  (?date >= ~date^^xsd:dateTime)}}", None::<&gio::Cancellable>).unwrap().unwrap();
-        statement.bind_string("date", &date.to_rfc3339_opts(SecondsFormat::Secs, true));
+        statement.bind_string("date", &date.format_iso8601().unwrap());
         let cursor = statement.execute_future().await?;
 
         let steps = if let Ok(true) = cursor.next_future().await {
@@ -384,13 +379,13 @@ impl Database {
     ///
     /// # Returns
     /// An array of [Weight]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
-    pub async fn weights(&self, date_opt: Option<DateTime<FixedOffset>>) -> Result<Vec<Weight>> {
+    pub async fn weights(&self, date_opt: Option<glib::DateTime>) -> Result<Vec<Weight>> {
         let imp = self.imp();
 
         let connection = imp.connection.get().unwrap();
         let cursor = if let Some(date) = date_opt {
             let statement = connection.query_statement("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . FILTER  (?date >= ~date^^xsd:dateTime)}} ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
-            statement.bind_string("date", &date.to_rfc3339_opts(SecondsFormat::Secs, true));
+            statement.bind_string("date", &date.format_iso8601().unwrap().as_str());
             statement.execute_future().await?
         } else {
             connection.query_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . } ORDER BY ?date").await?
@@ -399,13 +394,13 @@ impl Database {
 
         while let Ok(true) = cursor.next_future().await {
             ret.push(Weight::new(
-                DateTime::parse_from_rfc3339(cursor.string(0).unwrap().as_str()).unwrap(),
+                glib::DateTime::from_iso8601(cursor.string(0).unwrap().as_str(), None).unwrap(),
                 Mass::new::<kilogram>(cursor.double(1) as f32),
             ));
         }
 
         // FIXME: The DB should sort this.
-        ret.sort_by_key(|a| a.date);
+        ret.sort_by_key(|a| a.date.clone());
 
         Ok(ret)
     }
@@ -417,22 +412,21 @@ impl Database {
     ///
     /// # Returns
     /// True if a [Weight] exists on the `date`, or [glib::Error] if querying the DB goes wrong.
-    pub async fn weight_exists_on_date(&self, date: Date<FixedOffset>) -> Result<bool> {
+    pub async fn weight_exists_on_date(&self, date: glib::DateTime) -> Result<bool> {
         let imp = self.imp();
 
         let connection = imp.connection.get().unwrap();
         let statement = connection.query_statement("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight ?weight . FILTER(?date >= ~date^^xsd:dateTime && ?date < ~nextdate^^xsd:dateTime) }}", None::<&gio::Cancellable>).unwrap().unwrap();
-        statement.bind_string(
-            "date",
-            &date
-                .and_hms(0, 0, 0)
-                .to_rfc3339_opts(SecondsFormat::Secs, true),
-        );
+        statement.bind_string("date", &date.reset_hms().format_iso8601().unwrap().as_str());
         statement.bind_string(
             "nextdate",
-            &(date + Duration::days(1))
-                .and_hms(0, 0, 0)
-                .to_rfc3339_opts(SecondsFormat::Secs, true),
+            &date
+                .add_days(1)
+                .unwrap()
+                .reset_hms()
+                .format_iso8601()
+                .unwrap()
+                .as_str(),
         );
         let cursor = statement.execute_future().await?;
 
@@ -463,7 +457,7 @@ impl Database {
             resource.set_uri("rdf:type", "health:Activity");
             resource.set_string(
                 "health:activity_datetime",
-                &s.date.to_rfc3339_opts(SecondsFormat::Secs, true),
+                &s.date.format_iso8601().unwrap().as_str(),
             );
             resource.set_int64("health:steps", s.steps.into());
             resource.set_int64(
@@ -509,7 +503,7 @@ impl Database {
             resource.set_uri("rdf:type", "health:WeightMeasurement");
             resource.set_string(
                 "health:weight_datetime",
-                &w.date.to_rfc3339_opts(SecondsFormat::Secs, true),
+                &w.date.format_iso8601().unwrap().as_str(),
             );
             resource.set_double("health:weight", w.weight.get::<kilogram>().into());
 
@@ -562,17 +556,11 @@ impl Database {
                     "date" => {
                         resource.set_string(
                             "health:activity_datetime",
-                            &DateTime::<Utc>::from_utc(
-                                NaiveDate::parse_from_str(
-                                    cursor.string(i).unwrap().as_str(),
-                                    "%Y-%m-%d",
-                                )
+                            Date::parse(cursor.string(i).unwrap().as_str())?
+                                .and_time_utc(Time::new(0, 0, 0).unwrap())
+                                .format_iso8601()
                                 .unwrap()
-                                .and_hms(0, 0, 0),
-                                Utc,
-                            )
-                            .with_timezone(&chrono::Local)
-                            .to_rfc3339_opts(SecondsFormat::Secs, true),
+                                .as_str(),
                         );
                     }
                     "calories_burned" => {
@@ -658,14 +646,11 @@ impl Database {
             resource.set_uri("rdf:type", "health:WeightMeasurement");
             resource.set_string(
                 "health:weight_datetime",
-                &DateTime::<Utc>::from_utc(
-                    NaiveDate::parse_from_str(cursor.string(0).unwrap().as_str(), "%Y-%m-%d")
-                        .unwrap()
-                        .and_hms(0, 0, 0),
-                    Utc,
-                )
-                .with_timezone(&chrono::Local)
-                .to_rfc3339_opts(SecondsFormat::Secs, true),
+                Date::parse(cursor.string(0).unwrap().as_str())?
+                    .and_time_utc(Time::new(0, 0, 0).unwrap())
+                    .format_iso8601()
+                    .unwrap()
+                    .as_str(),
             );
             resource.set_double("health:weight", cursor.double(1));
 
@@ -751,7 +736,7 @@ impl Database {
         resource.set_uri("rdf:type", "health:Activity");
         resource.set_string(
             "health:activity_datetime",
-            &activity.date().to_rfc3339_opts(SecondsFormat::Secs, true),
+            &activity.date().format_iso8601().unwrap().as_str(),
         );
         resource.set_int64(
             "health:activity_id",
@@ -773,8 +758,8 @@ impl Database {
         if let Some(min) = activity.heart_rate_min() {
             resource.set_int64("health:hearth_rate_min", min.into());
         }
-        if activity.duration().num_minutes() != 0 {
-            resource.set_int64("health:minutes", activity.duration().num_minutes());
+        if activity.duration().as_minutes() != 0 {
+            resource.set_int64("health:minutes", activity.duration().as_minutes());
         }
         if let Some(s) = activity.steps() {
             resource.set_int64("health:steps", s.into());
@@ -809,7 +794,7 @@ impl Database {
         resource.set_uri("rdf:type", "health:WeightMeasurement");
         resource.set_string(
             "health:weight_datetime",
-            &weight.date.to_rfc3339_opts(SecondsFormat::Secs, true),
+            &weight.date.format_iso8601().unwrap().as_str(),
         );
         resource.set_double("health:weight", weight.weight.get::<kilogram>().into());
 
@@ -873,8 +858,7 @@ mod test {
     use std::{cell::Cell, rc::Rc};
 
     use super::*;
-    use crate::{model::ActivityType, prelude::*};
-    use chrono::{Duration, Local};
+    use crate::model::ActivityType;
     use num_traits::cast::ToPrimitive;
     use tempfile::tempdir;
     use uom::si::{f32::Mass, mass::kilogram};
@@ -888,17 +872,17 @@ mod test {
     #[test]
     fn check_doesnt_exist_activity() {
         let data_dir = tempdir().unwrap();
-        let date = Local::now();
+        let date = glib::DateTime::local();
         let expected_activity = Activity::builder()
             .activity_type(ActivityType::Walking)
-            .date(date.into())
+            .date(date.clone())
             .build();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
 
         let retrieved_activities = async move {
             db.save_activity(expected_activity).await.unwrap();
 
-            db.activities(Some((date + Duration::days(1)).into()))
+            db.activities(Some(date.add_days(1).unwrap()))
                 .await
                 .unwrap()
         }
@@ -909,17 +893,15 @@ mod test {
     #[test]
     fn check_doesnt_exists_weight() {
         let data_dir = tempdir().unwrap();
-        let date = Local::now();
+        let date = glib::DateTime::local();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
-        let expected_weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
+        let expected_weight = Weight::new(date.clone(), Mass::new::<kilogram>(50.0));
         let w = expected_weight.clone();
 
         let retrieved_weights = async move {
             db.save_weight(w).await.unwrap();
 
-            db.weights(Some((date + Duration::days(1)).into()))
-                .await
-                .unwrap()
+            db.weights(Some(date.add_days(1).unwrap())).await.unwrap()
         }
         .block();
         assert!(retrieved_weights.is_empty());
@@ -928,10 +910,10 @@ mod test {
     #[test]
     fn check_exists_activity() {
         let data_dir = tempdir().unwrap();
-        let date = Local::now();
+        let date = glib::DateTime::local();
         let expected_activity = Activity::builder()
             .activity_type(ActivityType::Walking)
-            .date(date.into())
+            .date(date.clone())
             .steps(50)
             .build();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
@@ -941,7 +923,7 @@ mod test {
         let retrieved_activities = async move {
             db.save_activity(a).await.unwrap();
 
-            db.activities(Some((date - Duration::days(1)).into()))
+            db.activities(Some(date.add_days(-1).unwrap()))
                 .await
                 .unwrap()
         }
@@ -954,17 +936,15 @@ mod test {
     #[test]
     fn check_exists_weight() {
         let data_dir = tempdir().unwrap();
-        let date = Local::now();
+        let date = glib::DateTime::local();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
-        let expected_weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
+        let expected_weight = Weight::new(date.clone(), Mass::new::<kilogram>(50.0));
         let w = expected_weight.clone();
 
         let retrieved_weights = async move {
             db.save_weight(w).await.unwrap();
 
-            db.weights(Some((date - Duration::days(1)).into()))
-                .await
-                .unwrap()
+            db.weights(Some(date.add_days(-1).unwrap())).await.unwrap()
         }
         .block();
         let weight = retrieved_weights.get(0).unwrap();
@@ -974,12 +954,12 @@ mod test {
     #[test]
     fn migration_activities() {
         let data_dir = tempdir().unwrap();
-        let date = Local::now();
+        let date = glib::DateTime::local();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
         let connection = db.connection();
         let expected_activity = Activity::builder()
             .activity_type(ActivityType::Walking)
-            .date(date.into())
+            .date(date.clone())
             .steps(50)
             .build();
         let manager = db.manager();
@@ -988,7 +968,7 @@ mod test {
         resource.set_uri("rdf:type", "health:Activity");
         resource.set_string(
             "health:activity_date",
-            &format!("{}", &expected_activity.date().date().format("%Y-%m-%d")),
+            &expected_activity.date().format("%Y-%m-%d").unwrap(),
         );
         resource.set_int64(
             "health:activity_id",
@@ -1008,7 +988,7 @@ mod test {
 
         let retrieved_activities = async move {
             db.migrate().await.unwrap();
-            db.activities(Some((date - Duration::days(1)).into()))
+            db.activities(Some(date.add_days(-1).unwrap()))
                 .await
                 .unwrap()
         }
@@ -1018,10 +998,10 @@ mod test {
         assert_eq!(
             expected_activity
                 .date()
-                .date()
-                .and_hms(0, 0, 0)
-                .to_rfc3339(),
-            activity.date().with_timezone(&chrono::Utc).to_rfc3339()
+                .reset_hms()
+                .format_iso8601()
+                .unwrap(),
+            activity.date().reset_hms().format_iso8601().unwrap()
         );
         assert_eq!(
             expected_activity.activity_type().to_u32().unwrap(),
@@ -1032,16 +1012,16 @@ mod test {
     #[test]
     fn migration_weights() {
         let data_dir = tempdir().unwrap();
-        let date = Local::now();
+        let date = glib::DateTime::local();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
         let connection = db.connection();
-        let expected_weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
+        let expected_weight = Weight::new(date.clone(), Mass::new::<kilogram>(50.0));
         let manager = db.manager();
         let resource = tracker::Resource::new(None);
         resource.set_uri("rdf:type", "health:WeightMeasurement");
         resource.set_string(
             "health:weight_date",
-            &format!("{}", &expected_weight.date.date().format("%Y-%m-%d")),
+            &expected_weight.date.format("%Y-%m-%d").unwrap(),
         );
         resource.set_double(
             "health:weight",
@@ -1063,16 +1043,14 @@ mod test {
 
         let retrieved_weights = async move {
             db.migrate().await.unwrap();
-            db.weights(Some((date - Duration::days(1)).into()))
-                .await
-                .unwrap()
+            db.weights(Some(date.add_days(-1).unwrap())).await.unwrap()
         }
         .block();
         let weight = retrieved_weights.get(0).unwrap();
         assert_eq!(expected_weight.weight, weight.weight);
         assert_eq!(
-            expected_weight.date.date().and_hms(0, 0, 0).to_rfc3339(),
-            weight.date.with_timezone(&chrono::Utc).to_rfc3339()
+            expected_weight.date.reset_hms().format_iso8601().unwrap(),
+            weight.date.reset_hms().format_iso8601().unwrap()
         );
     }
 
@@ -1098,7 +1076,7 @@ mod test {
         let data_dir = tempdir().unwrap();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
         let was_called = Rc::new(Cell::new(false));
-        let date = Local::now();
+        let date = glib::DateTime::local();
         let weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
 
         db.connect_weights_updated(glib::clone!(@weak was_called => move |_| {
@@ -1112,11 +1090,12 @@ mod test {
     }
 
     #[test]
+    #[allow(unused_braces)]
     fn test_calories() {
         let data_dir = tempdir().unwrap();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
         let activity = Activity::new();
-        let date = activity.date() - Duration::days(1);
+        let date = activity.date().add_days(-1).unwrap();
 
         activity.set_calories_burned(Some(500));
         glib::clone!(@weak db, @weak activity => async move {
@@ -1124,8 +1103,7 @@ mod test {
             }
         )
         .block();
-        let cloned = db.clone();
-        let calories = async move { cloned.calories(date).await.unwrap() }.block();
+        let calories = glib::clone!(@strong db, @strong date => async move { db.calories(date).await.unwrap() }).block();
         assert_eq!(*calories[0].calorie_split.values().next().unwrap(), 500);
 
         glib::clone!(@weak db, @weak activity => async move {
@@ -1133,11 +1111,10 @@ mod test {
             }
         )
         .block();
-        let cloned = db.clone();
-        let calories = async move { cloned.calories(date).await.unwrap() }.block();
+        let calories = glib::clone!(@strong db, @strong date => async move { db.calories(date).await.unwrap() }).block();
         assert_eq!(*calories[0].calorie_split.values().next().unwrap(), 1000);
 
-        activity.set_date(date);
+        activity.set_date(date.clone());
         glib::clone!(@weak db, @weak activity => async move {
                 db.save_activity(activity).await.unwrap();
             }
@@ -1154,13 +1131,13 @@ mod test {
     fn test_most_frequent_activities() {
         let data_dir = tempdir().unwrap();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
-        let now: DateTime<FixedOffset> = Local::now().into();
+        let now = glib::DateTime::local();
         let activities = vec![
             (
                 Activity::builder()
                     .activity_type(ActivityType::Walking)
                     .calories_burned(5)
-                    .date(now)
+                    .date(now.clone())
                     .build(),
                 vec![ActivityType::Walking],
             ),
@@ -1168,7 +1145,7 @@ mod test {
                 Activity::builder()
                     .activity_type(ActivityType::Basketball)
                     .calories_burned(5)
-                    .date(now)
+                    .date(now.clone())
                     .build(),
                 vec![ActivityType::Walking, ActivityType::Basketball],
             ),
@@ -1176,7 +1153,7 @@ mod test {
                 Activity::builder()
                     .activity_type(ActivityType::Walking)
                     .calories_burned(5)
-                    .date(now)
+                    .date(now.clone())
                     .build(),
                 vec![ActivityType::Walking, ActivityType::Basketball],
             ),
@@ -1184,7 +1161,7 @@ mod test {
                 Activity::builder()
                     .activity_type(ActivityType::Swimming)
                     .calories_burned(5)
-                    .date(now)
+                    .date(now.clone())
                     .build(),
                 vec![
                     ActivityType::Walking,
@@ -1194,10 +1171,10 @@ mod test {
             ),
         ];
 
-        let prev = now - Duration::minutes(1);
+        let prev = now.clone().add_minutes(-1).unwrap();
 
         for (activity, expected_types) in activities {
-            glib::clone!(@weak db => async move {
+            glib::clone!(@weak db, @strong prev => async move {
                 db.save_activity(activity).await.unwrap();
                 assert_eq!(expected_types, db.most_frequent_activities(prev).await.unwrap());
             })
@@ -1223,13 +1200,13 @@ mod test {
         let database = Database::new_with_store_path(data_dir.path().into()).unwrap();
         let db = database.clone();
         async move {
-            let now: DateTime<FixedOffset> = Local::now().into();
+            let now = glib::DateTime::local();
             assert_eq!(db.todays_steps().await.unwrap(), 0);
             db.save_activity(
                 Activity::builder()
                     .activity_type(ActivityType::Walking)
                     .steps(1000)
-                    .date(now)
+                    .date(now.clone())
                     .build(),
             )
             .await
@@ -1239,7 +1216,7 @@ mod test {
                 Activity::builder()
                     .activity_type(ActivityType::Walking)
                     .steps(1000)
-                    .date(now)
+                    .date(now.clone())
                     .build(),
             )
             .await
@@ -1249,7 +1226,7 @@ mod test {
                 Activity::builder()
                     .activity_type(ActivityType::Walking)
                     .steps(1500)
-                    .date(now)
+                    .date(now.clone())
                     .build(),
             )
             .await
@@ -1259,7 +1236,7 @@ mod test {
                 Activity::builder()
                     .activity_type(ActivityType::Walking)
                     .steps(1500)
-                    .date(now - Duration::days(1))
+                    .date(now.add_days(-1).unwrap())
                     .build(),
             )
             .await
@@ -1274,12 +1251,12 @@ mod test {
         let data_dir = tempdir().unwrap();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
         glib::clone!(@weak db => async move {
-            let now: DateTime<FixedOffset> = Local::now().into();
+            let now = glib::DateTime::local();
             let mass = Mass::new::<kilogram>(70.0);
-            db.save_weight(Weight::new(now - Duration::days(1), mass)).await.unwrap();
-            assert!(!db.weight_exists_on_date(now.date()).await.unwrap());
-            db.save_weight(Weight::new(now, mass)).await.unwrap();
-            assert!(db.weight_exists_on_date(now.date()).await.unwrap());
+            db.save_weight(Weight::new(now.clone().add_days(-1).unwrap(), mass)).await.unwrap();
+            assert!(!db.weight_exists_on_date(now.clone()).await.unwrap());
+            db.save_weight(Weight::new(now.clone(), mass)).await.unwrap();
+            assert!(db.weight_exists_on_date(now).await.unwrap());
         })
         .block();
     }

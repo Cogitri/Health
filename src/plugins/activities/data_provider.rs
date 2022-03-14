@@ -137,7 +137,6 @@ mod test {
         prelude::*,
         utils::*,
     };
-    use chrono::{DateTime, Duration, NaiveDateTime, Utc};
     use gtk::{glib, prelude::*};
 
     #[test]
@@ -163,8 +162,8 @@ mod test {
             assert_eq!(a.item(0), None);
             let activity = Activity::builder()
                 .activity_type(ActivityType::Walking)
-                .duration(Duration::minutes(1))
-                .date(DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(1_000_000_000, 0), Utc).into())
+                .duration(glib::TimeSpan::from_minutes(1))
+                .date(glib::DateTime::from_unix_utc(1_000_000_000).unwrap())
                 .build();
             Database::instance().save_activity(activity.clone()).await.unwrap();
             a.reload().await.unwrap();

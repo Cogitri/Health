@@ -73,7 +73,7 @@ mod imp {
                     let activity = value.get::<Activity>().unwrap();
                     let activity_info = ActivityInfo::from(activity.activity_type());
 
-                    let minutes = activity.duration().num_minutes();
+                    let minutes = activity.duration().as_minutes();
                     // TRANSLATORS: activity for x minutes, e.g. "Walking for 10 minutes",
                     obj.set_title(&ni18n_f(
                         "{} for {} Minute",

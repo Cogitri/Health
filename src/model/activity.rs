@@ -20,7 +20,6 @@ use crate::{
     model::{ActivityDataPoints, ActivityInfo, ActivityType},
     prelude::*,
 };
-use chrono::{DateTime, Duration, FixedOffset, Local};
 use gtk::glib::{self, prelude::*, subclass::prelude::*};
 use std::{
     convert::{TryFrom, TryInto},
@@ -41,7 +40,6 @@ static RUNNING_STEPS_PER_MINUTE: u32 = 150;
 
 mod imp {
     use crate::{model::ActivityType, prelude::*, sync::serialize};
-    use chrono::{DateTime, Duration, FixedOffset, Utc};
     use gtk::{glib, prelude::*, subclass::prelude::*};
     use std::{cell::RefCell, convert::TryInto, str::FromStr};
     use uom::si::{f32::Length, length::meter};
@@ -54,7 +52,7 @@ mod imp {
         pub calories_burned: Option<u32>,
         #[serde(serialize_with = "serialize::serialize_date")]
         #[serde(deserialize_with = "serialize::deserialize_date")]
-        pub date: DateTime<FixedOffset>,
+        pub date: glib::DateTime,
         #[serde(serialize_with = "serialize::serialize_distance")]
         #[serde(deserialize_with = "serialize::deserialize_distance")]
         pub distance: Option<Length>,
@@ -63,7 +61,7 @@ mod imp {
         pub heart_rate_min: Option<u32>,
         #[serde(serialize_with = "serialize::serialize_duration")]
         #[serde(deserialize_with = "serialize::deserialize_duration")]
-        pub duration: Duration,
+        pub duration: glib::TimeSpan,
         pub steps: Option<u32>,
     }
 
@@ -82,12 +80,12 @@ mod imp {
                 inner: RefCell::new(ActivityMut {
                     activity_type: ActivityType::default(),
                     calories_burned: None,
-                    date: Utc::now().into(),
+                    date: glib::DateTime::local(),
                     distance: None,
                     heart_rate_avg: None,
                     heart_rate_max: None,
                     heart_rate_min: None,
-                    duration: Duration::seconds(0),
+                    duration: glib::TimeSpan::from_seconds(0),
                     steps: None,
                 }),
             }
@@ -120,7 +118,7 @@ mod imp {
                         "date",
                         "date",
                         "date",
-                        DateTimeBoxed::static_type(),
+                        glib::DateTime::static_type(),
                         glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
                     ),
                     glib::ParamSpecFloat::new(
@@ -200,7 +198,7 @@ mod imp {
                         value.get::<i64>().unwrap().try_into().ok();
                 }
                 "date" => {
-                    self.inner.borrow_mut().date = value.get::<DateTimeBoxed>().unwrap().0;
+                    self.inner.borrow_mut().date = value.get().unwrap();
                 }
                 "distance-meter" => {
                     let value = value.get::<f32>().unwrap();
@@ -211,7 +209,8 @@ mod imp {
                     }
                 }
                 "duration-seconds" => {
-                    self.inner.borrow_mut().duration = Duration::seconds(value.get().unwrap());
+                    self.inner.borrow_mut().duration =
+                        glib::TimeSpan::from_seconds(value.get().unwrap());
                 }
                 "heart-rate-avg" => {
                     self.inner.borrow_mut().heart_rate_avg =
@@ -241,14 +240,14 @@ mod imp {
                     .calories_burned
                     .unwrap_ori(-1)
                     .to_value(),
-                "date" => DateTimeBoxed(self.inner.borrow().date).to_value(),
+                "date" => self.inner.borrow().date.to_value(),
                 "distance-meter" => self
                     .inner
                     .borrow()
                     .distance
                     .map_or(-1.0, |d| d.get::<meter>())
                     .to_value(),
-                "duration-seconds" => self.inner.borrow().duration.num_seconds().to_value(),
+                "duration-seconds" => self.inner.borrow().duration.as_seconds().to_value(),
                 "heart-rate-avg" => self.inner.borrow().heart_rate_avg.unwrap_ori(-1).to_value(),
                 "heart-rate-max" => self.inner.borrow().heart_rate_max.unwrap_ori(-1).to_value(),
                 "heart-rate-min" => self.inner.borrow().heart_rate_min.unwrap_ori(-1).to_value(),
@@ -281,7 +280,7 @@ impl Activity {
     /// activity.set_activity_type(ActivityType::Walking);
     /// activity.set_calories_burned(Some(100));
     /// activity.autofill_from_calories();
-    /// assert_eq!(activity.duration().num_minutes(), 20);
+    /// assert_eq!(activity.duration().as_minutes(), 20);
     /// ```
     pub fn autofill_from_calories(&self) {
         let imp = self.imp();
@@ -299,8 +298,9 @@ impl Activity {
                 .available_data_points
                 .contains(ActivityDataPoints::CALORIES_BURNED)
         {
-            imp.inner.borrow_mut().duration =
-                Duration::minutes((calories / info.average_calories_burned_per_minute).into());
+            imp.inner.borrow_mut().duration = glib::TimeSpan::from_minutes(
+                (calories / info.average_calories_burned_per_minute).into(),
+            );
 
             self.autofill_from_minutes();
         }
@@ -317,7 +317,7 @@ impl Activity {
     /// activity.set_activity_type(ActivityType::Walking);
     /// activity.set_distance(Some(Length::new::<kilometer>(1.0)));
     /// activity.autofill_from_distance();
-    /// assert_eq!(activity.duration().num_minutes(), 11);
+    /// assert_eq!(activity.duration().as_minutes(), 11);
     /// ```
     pub fn autofill_from_distance(&self) {
         let imp = self.imp();
@@ -345,26 +345,26 @@ impl Activity {
                 ActivityType::Swimming => Some(distance / SWIMMING_METERS_PER_MINUTE),
                 _ => None,
             }
-            .map(|v| Duration::minutes(v.into()))
+            .map(|v| glib::TimeSpan::from_minutes(v.into()))
             {
                 inner.duration = duration;
             }
 
             inner.calories_burned = Some(
-                u32::try_from(inner.duration.num_minutes()).unwrap()
+                u32::try_from(inner.duration.as_minutes()).unwrap()
                     * info.average_calories_burned_per_minute,
             );
 
             match inner.activity_type {
                 ActivityType::Walking | ActivityType::Hiking => {
                     inner.steps = Some(
-                        u32::try_from(inner.duration.num_minutes()).unwrap()
+                        u32::try_from(inner.duration.as_minutes()).unwrap()
                             * WALKING_STEPS_PER_MINUTE,
                     )
                 }
                 ActivityType::Running => {
                     inner.steps = Some(
-                        u32::try_from(inner.duration.num_minutes()).unwrap()
+                        u32::try_from(inner.duration.as_minutes()).unwrap()
                             * RUNNING_STEPS_PER_MINUTE,
                     )
                 }
@@ -378,11 +378,11 @@ impl Activity {
     /// # Examples
     /// ```
     /// use libhealth::model::{Activity, ActivityType};
-    /// use chrono::Duration;
+    /// use gtk::glib;
     ///
     /// let activity = Activity::new();
     /// activity.set_activity_type(ActivityType::Walking);
-    /// activity.set_duration(Duration::minutes(20));
+    /// activity.set_duration(glib::TimeSpan::from_minutes(20));
     /// activity.autofill_from_minutes();
     /// assert_eq!(activity.calories_burned(), Some(100));
     /// ```
@@ -391,7 +391,7 @@ impl Activity {
 
         let mut inner = imp.inner.borrow_mut();
         let info = ActivityInfo::from(inner.activity_type);
-        let minutes = u32::try_from(inner.duration.num_minutes()).unwrap();
+        let minutes = u32::try_from(inner.duration.as_minutes()).unwrap();
 
         if minutes != 0
             && info
@@ -439,7 +439,7 @@ impl Activity {
     /// activity.set_activity_type(ActivityType::Walking);
     /// activity.set_steps(Some(100));
     /// activity.autofill_from_steps();
-    /// assert_eq!(activity.duration().num_minutes(), 1);
+    /// assert_eq!(activity.duration().as_minutes(), 1);
     /// ```
     pub fn autofill_from_steps(&self) {
         let imp = self.imp();
@@ -455,16 +455,18 @@ impl Activity {
         {
             match inner.activity_type {
                 ActivityType::Walking | ActivityType::Hiking => {
-                    inner.duration = Duration::minutes((steps / WALKING_STEPS_PER_MINUTE).into());
+                    inner.duration =
+                        glib::TimeSpan::from_minutes((steps / WALKING_STEPS_PER_MINUTE).into());
                     inner.distance = Some(Length::new::<meter>(
-                        (u32::try_from(inner.duration.num_minutes()).unwrap()
+                        (u32::try_from(inner.duration.as_minutes()).unwrap()
                             * WALKING_METERS_PER_MINUTE) as f32,
                     ));
                 }
                 ActivityType::Running => {
-                    inner.duration = Duration::minutes((steps / RUNNING_STEPS_PER_MINUTE).into());
+                    inner.duration =
+                        glib::TimeSpan::from_minutes((steps / RUNNING_STEPS_PER_MINUTE).into());
                     inner.distance = Some(Length::new::<meter>(
-                        (u32::try_from(inner.duration.num_minutes()).unwrap()
+                        (u32::try_from(inner.duration.as_minutes()).unwrap()
                             * RUNNING_METERS_PER_MINUTE) as f32,
                     ));
                 }
@@ -473,14 +475,13 @@ impl Activity {
 
             inner.calories_burned = Some(
                 info.average_calories_burned_per_minute
-                    * u32::try_from(inner.duration.num_minutes()).unwrap(),
+                    * u32::try_from(inner.duration.as_minutes()).unwrap(),
             );
         }
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[("date", &DateTimeBoxed(Local::now().into()))])
-            .expect("Failed to create Activity")
+        glib::Object::new(&[("date", &glib::DateTime::local())]).expect("Failed to create Activity")
     }
 
     pub fn builder() -> ActivityBuilder {
@@ -495,8 +496,8 @@ impl Activity {
         self.property::<i64>("calories-burned").try_into().ok()
     }
 
-    pub fn date(&self) -> DateTime<FixedOffset> {
-        self.property::<DateTimeBoxed>("date").0
+    pub fn date(&self) -> glib::DateTime {
+        self.property("date")
     }
 
     pub fn distance(&self) -> Option<Length> {
@@ -508,8 +509,8 @@ impl Activity {
         }
     }
 
-    pub fn duration(&self) -> Duration {
-        Duration::seconds(self.property("duration-seconds"))
+    pub fn duration(&self) -> glib::TimeSpan {
+        glib::TimeSpan::from_seconds(self.property("duration-seconds"))
     }
 
     pub fn heart_rate_avg(&self) -> Option<u32> {
@@ -538,8 +539,8 @@ impl Activity {
         self
     }
 
-    pub fn set_date(&self, value: DateTime<FixedOffset>) -> &Self {
-        self.set_property("date", DateTimeBoxed(value));
+    pub fn set_date(&self, value: glib::DateTime) -> &Self {
+        self.set_property("date", value);
         self
     }
 
@@ -548,8 +549,8 @@ impl Activity {
         self
     }
 
-    pub fn set_duration(&self, value: Duration) -> &Self {
-        self.set_property("duration-seconds", value.num_seconds());
+    pub fn set_duration(&self, value: glib::TimeSpan) -> &Self {
+        self.set_property("duration-seconds", value.as_seconds());
         self
     }
 
@@ -607,7 +608,7 @@ impl<'de> serde::Deserialize<'de> for Activity {
 pub struct ActivityBuilder {
     activity_type: Option<ActivityType>,
     calories_burned: Option<i64>,
-    date: Option<DateTimeBoxed>,
+    date: Option<glib::DateTime>,
     distance: Option<f32>,
     duration: Option<i64>,
     heart_rate_avg: Option<i64>,
@@ -667,8 +668,8 @@ impl ActivityBuilder {
         self
     }
 
-    pub fn date(&mut self, date: DateTime<FixedOffset>) -> &mut Self {
-        self.date = Some(DateTimeBoxed(date));
+    pub fn date(&mut self, date: glib::DateTime) -> &mut Self {
+        self.date = Some(date);
         self
     }
 
@@ -677,8 +678,8 @@ impl ActivityBuilder {
         self
     }
 
-    pub fn duration(&mut self, duration: Duration) -> &mut Self {
-        self.duration = Some(duration.num_seconds());
+    pub fn duration(&mut self, duration: glib::TimeSpan) -> &mut Self {
+        self.duration = Some(duration.as_seconds());
         self
     }
 
@@ -706,7 +707,6 @@ impl ActivityBuilder {
 #[cfg(test)]
 mod test {
     use super::*;
-    use chrono::{DateTime, Duration};
     use serde_test::{assert_ser_tokens, Token};
     use uom::si::{f32::Length, length::kilometer};
 
@@ -718,7 +718,9 @@ mod test {
     #[test]
     fn serialize_default() {
         let a = Activity::new();
-        a.set_date(DateTime::parse_from_rfc3339("2021-03-28T20:39:08.315749637+00:00").unwrap());
+        a.set_date(
+            glib::DateTime::from_iso8601("2021-03-28T20:39:08.315749637+00:00", None).unwrap(),
+        );
         assert_ser_tokens(
             &a,
             &[
@@ -731,7 +733,7 @@ mod test {
                 Token::Str("calories_burned"),
                 Token::None,
                 Token::Str("date"),
-                Token::Str("2021-03-28T20:39:08.315749637+00:00"),
+                Token::Str("2021-03-28T20:39:08.315749Z"),
                 Token::Str("distance"),
                 Token::F32(0.0),
                 Token::Str("heart_rate_avg"),
@@ -754,7 +756,7 @@ mod test {
         let a = Activity::new();
         a.set_steps(Some(2000));
         a.autofill_from_steps();
-        assert_eq!(a.duration(), Duration::minutes(20));
+        assert_eq!(a.duration(), glib::TimeSpan::from_minutes(20));
         assert_eq!(a.distance(), Some(Length::new::<kilometer>(1.8)));
         assert_eq!(a.calories_burned(), Some(100));
     }
@@ -762,7 +764,7 @@ mod test {
     #[test]
     fn autofill_from_minutes() {
         let a = Activity::new();
-        a.set_duration(Duration::minutes(20));
+        a.set_duration(glib::TimeSpan::from_minutes(20));
         a.autofill_from_minutes();
         assert_eq!(a.calories_burned(), Some(100));
         assert_eq!(a.steps(), Some(2000));
@@ -776,7 +778,7 @@ mod test {
         a.autofill_from_distance();
         assert_eq!(a.calories_burned(), Some(100));
         assert_eq!(a.steps(), Some(2000));
-        assert_eq!(a.duration(), Duration::minutes(20));
+        assert_eq!(a.duration(), glib::TimeSpan::from_minutes(20));
     }
 
     #[test]
@@ -786,7 +788,7 @@ mod test {
         a.autofill_from_calories();
         assert_eq!(a.distance(), Some(Length::new::<kilometer>(1.8)));
         assert_eq!(a.steps(), Some(2000));
-        assert_eq!(a.duration(), Duration::minutes(20));
+        assert_eq!(a.duration(), glib::TimeSpan::from_minutes(20));
     }
 
     #[test]

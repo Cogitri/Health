@@ -22,7 +22,6 @@ use crate::{
     prelude::*,
     views::ViewAdd,
 };
-use chrono::Duration;
 use gtk::{
     gio,
     glib::{self, clone, subclass::prelude::*},
@@ -377,7 +376,7 @@ impl ViewAddActivity {
         let imp = self.imp();
         {
             let activity = &imp.inner.borrow_mut().activity;
-            activity.set_duration(Duration::minutes(
+            activity.set_duration(glib::TimeSpan::from_minutes(
                 imp.duration_spin_button.raw_value().unwrap_or_default(),
             ));
             activity.autofill_from_minutes();
@@ -463,7 +462,7 @@ impl ViewAddActivity {
                     &selected_activity,
                     ActivityDataPoints::STEP_COUNT,
                 ))
-                .set_duration(Duration::minutes(
+                .set_duration(glib::TimeSpan::from_minutes(
                     spin_button_value_if_datapoint(
                         &imp.duration_spin_button,
                         &selected_activity,
@@ -540,7 +539,7 @@ impl ViewAddActivity {
                 inner
                     .user_changed_datapoints
                     .contains(ActivityDataPoints::DISTANCE),
-                inner.activity.duration().num_minutes(),
+                inner.activity.duration().as_minutes(),
                 inner
                     .user_changed_datapoints
                     .contains(ActivityDataPoints::DURATION),

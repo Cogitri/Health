@@ -16,9 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{model::ActivityType, views::SplitBar};
+use crate::{model::ActivityType, prelude::*, views::SplitBar};
 use anyhow::Result;
-use chrono::{DateTime, Duration, FixedOffset, Local};
+use gtk::glib;
 use std::collections::HashMap;
 
 /// A [GraphModelCaloriesMocked] manages calories data for easy consumption in views.
@@ -33,30 +33,30 @@ impl GraphModelCaloriesMocked {
         Self::default()
     }
 
-    pub async fn reload(&mut self, _duration: Duration) -> Result<()> {
+    pub async fn reload(&mut self, _duration: glib::TimeSpan) -> Result<()> {
         Ok(())
     }
 
     /// Converts the model's data to an array of `SplitBars` so it can be displayed in a `BarGraphView`.
     pub fn to_split_bar(&self) -> Vec<SplitBar> {
-        let now: DateTime<FixedOffset> = Local::now().into();
+        let now = glib::DateTime::local();
         vec![
             SplitBar {
-                date: now.date(),
+                date: now.clone(),
                 calorie_split: HashMap::from([
                     (ActivityType::Basketball, 50),
                     (ActivityType::Walking, 150),
                 ]),
             },
             SplitBar {
-                date: now.date() - Duration::days(1),
+                date: now.add_days(-1).unwrap(),
                 calorie_split: HashMap::from([
                     (ActivityType::Swimming, 250),
                     (ActivityType::Walking, 150),
                 ]),
             },
             SplitBar {
-                date: now.date() - Duration::days(2),
+                date: now.add_days(-2).unwrap(),
                 calorie_split: HashMap::from([
                     (ActivityType::Basketball, 220),
                     (ActivityType::Running, 380),

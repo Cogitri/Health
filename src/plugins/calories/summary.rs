@@ -2,6 +2,7 @@ use crate::{
     core::ni18n_f,
     core::Database,
     plugins::{PluginName, PluginSummaryRow},
+    prelude::*,
 };
 use gtk::{glib, subclass::prelude::*};
 
@@ -86,7 +87,7 @@ impl PluginCaloriesSummaryRow {
     pub async fn update(&self) {
         let imp = self.imp();
         if let Some(bar) = Database::instance()
-            .calories((chrono::Local::now() - chrono::Duration::days(1)).into())
+            .calories(glib::DateTime::local().add_days(-1).unwrap())
             .await
             .ok()
             .and_then(|s| s.get(0).cloned())

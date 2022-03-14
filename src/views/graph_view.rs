@@ -18,15 +18,20 @@
 
 use crate::model::FnBoxedPoint;
 use crate::prelude::*;
-use chrono::{Date, FixedOffset, Local};
 use gtk::{gdk, gio::subclass::prelude::*, glib, pango, prelude::*};
 use std::convert::TryInto;
 
 /// A [Point] describes a single datapoint in a [GraphView]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone)]
 pub struct Point {
-    pub date: Date<FixedOffset>,
+    pub date: glib::DateTime,
     pub value: f32,
+}
+
+impl PartialEq for Point {
+    fn eq(&self, other: &Self) -> bool {
+        self.value == other.value && self.date.equals_date(&other.date)
+    }
 }
 
 static HALF_X_PADDING: f32 = 40.0;
@@ -550,7 +555,7 @@ impl GraphView {
 
     /// Sets the points that should be rendered in the graph view.
     pub fn set_points(&self, points: Vec<Point>) {
-        let layout = self.create_pango_layout(Some(&Local::now().format_local()));
+        let layout = self.create_pango_layout(Some(&glib::DateTime::local().format_local()));
         let (_, extents) = layout.extents();
         let datapoint_width = pango::units_to_double(extents.width()) + f64::from(HALF_X_PADDING);
 
