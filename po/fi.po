@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-25 22:47+0000\n"
-"PO-Revision-Date: 2022-02-03 13:30+0200\n"
+"POT-Creation-Date: 2022-03-12 15:26+0000\n"
+"PO-Revision-Date: 2022-03-14 21:53+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -276,7 +276,7 @@ msgstr "Vie painomittaukset"
 
 #: data/ui/import_export_dialog_base.blp:69
 msgid "Encrypt export"
-msgstr ""
+msgstr "Salaa vienti"
 
 #: data/ui/password_entry.blp:9
 msgid "_Password"
@@ -356,23 +356,23 @@ msgstr "Yleiset"
 msgid "User"
 msgstr "Käyttäjä"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:146
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
 msgid "Unit system"
 msgstr "Yksikköjärjestelmä"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:156
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
 msgid "Imperial"
 msgstr "Imperiaalinen"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
 msgid "Metric"
 msgstr "Metrinen"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:170
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
 msgid "Birthday"
 msgstr "Syntymäpäivä"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:179
+#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
 msgid "Height"
 msgstr "Pituus"
 
@@ -392,17 +392,17 @@ msgstr "Aikaväli"
 msgid "Daily reminder time"
 msgstr "Päivittäisen muistutuksen aika"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:242
+#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
 #: src/plugins/steps/details.rs:241
 msgid "Step goal"
 msgstr "Askeltavoite"
 
-#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:218
+#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:224
 msgid "The WHO recommends 10.000 steps per day."
 msgstr ""
 "Maailman terveysjärjestö suosittelee päivittäisten askelten määräksi 10 000."
 
-#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:279
+#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr ""
 "Maailman terveysjärjestö suosittelee painoindeksin olevan välillä 18,5-24,9."
@@ -435,51 +435,55 @@ msgstr "Tuo tietoa CSV-tiedostosta"
 msgid "Import…"
 msgstr "Tuo…"
 
-#: data/ui/setup_window.blp:33
+#: data/ui/setup_window.blp:39
 msgid "Health Setup"
 msgstr "Terveyden määritykset"
 
-#: data/ui/setup_window.blp:47
+#: data/ui/setup_window.blp:53
 msgid "_Quit"
 msgstr "_Lopeta"
 
-#: data/ui/setup_window.blp:56
+#: data/ui/setup_window.blp:62
 msgid "_Previous"
 msgstr "_Edellinen"
 
-#: data/ui/setup_window.blp:71
+#: data/ui/setup_window.blp:77
 msgid "_Next"
 msgstr "_Seuraava"
 
-#: data/ui/setup_window.blp:84
+#: data/ui/setup_window.blp:90
 msgid "_Done"
 msgstr "_Valmis"
 
-#: data/ui/setup_window.blp:110
+#: data/ui/setup_window.blp:116
 msgid "Welcome to Health!"
 msgstr "Tervetuloa Terveyden pariin!"
 
-#: data/ui/setup_window.blp:122
+#: data/ui/setup_window.blp:128
 msgid "Please enter some information to get setup."
 msgstr "Anna hieman tietoja, jotta määritykset saadaan tehtyä."
 
-#: data/ui/setup_window.blp:206
+#: data/ui/setup_window.blp:212
 msgid "Please enter your daily step goal."
 msgstr "Määritä päivittäisen askelmäärän tavoite."
 
-#: data/ui/setup_window.blp:267
+#: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
 msgstr "Määritä tavoitepaino."
 
-#: data/ui/setup_window.blp:307 src/plugins/weight/details.rs:221
+#: data/ui/setup_window.blp:314
+msgid "Current weight"
+msgstr "Nykyinen paino"
+
+#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:221
 msgid "Weight goal"
 msgstr "Tavoitepaino"
 
-#: data/ui/setup_window.blp:342
+#: data/ui/setup_window.blp:372
 msgid "Setup sync with third-party providers."
 msgstr "Määritä synkronointi kolmannen osapuolten palvelujen kanssa."
 
-#: data/ui/setup_window.blp:354
+#: data/ui/setup_window.blp:384
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
@@ -657,11 +661,11 @@ msgstr "Lentopallo"
 msgid "Walking"
 msgstr "Kävely"
 
-#: src/model/model_notification.rs:224
+#: src/model/model_notification.rs:236
 msgid "Health: walking reminder"
 msgstr "Terveys: muistutus kävelystä"
 
-#: src/model/model_notification.rs:245
+#: src/model/model_notification.rs:252
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "{} askel jäljellä päivittäisen askeltavoitteen saavuttamiseksi."
@@ -696,7 +700,6 @@ msgstr[1] ""
 "{}"
 
 #: src/plugins/calories/summary.rs:96 src/plugins/calories/summary.rs:103
-#| msgid "Calories Burned"
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "{} kalori poltettu tänään"
@@ -744,14 +747,13 @@ msgid_plural "{} steps on {}"
 msgstr[0] "{} askel {}"
 msgstr[1] "{} askelta {}"
 
-#: src/plugins/steps/summary.rs:97
+#: src/plugins/steps/summary.rs:94
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} askel tänään"
 msgstr[1] "{} askelta tänään"
 
-#: src/plugins/steps/summary.rs:107
-#| msgid "Please enter your daily step goal."
+#: src/plugins/steps/summary.rs:104
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Saavutettu {} prosentti päivittäisestä askeltavoitteesta"
@@ -862,7 +864,6 @@ msgstr[0] "verrattuna aiempaan painoon"
 msgstr[1] "verrattuna aiempaan painoon"
 
 #: src/plugins/weight/summary.rs:147
-#| msgid "compared to previous weight"
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "+ {} kilogramma verrattuna aiempaan mittaukseen"
@@ -890,19 +891,19 @@ msgstr "Ei muutosta painossa"
 msgid "No weight data available"
 msgstr "Painotietoja ei ole saatavilla"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:363
+#: src/sync/csv.rs:81 src/sync/csv.rs:371
 msgid "No activities added yet; can't create empty export!"
 msgstr "Aktiviteetteja ei ole lisätty vielä; tyhjää vientiä ei voi luoda!"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:381
+#: src/sync/csv.rs:111 src/sync/csv.rs:389
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr "Painomittauksia ei ole vielä lisätty; tyhjää vientiä ei voi luoda!"
 
-#: src/sync/csv.rs:184 src/sync/csv.rs:325
+#: src/sync/csv.rs:184 src/sync/csv.rs:333
 msgid "Can't parse encrypted backup without encryption key!"
 msgstr "Salattua varmuuskopiota ei voi jäsentää ilman salausavainta!"
 
-#: src/sync/csv.rs:195 src/sync/csv.rs:345
+#: src/sync/csv.rs:195 src/sync/csv.rs:353
 msgid ""
 "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -938,11 +939,15 @@ msgstr ""
 "OAuth2-polettia ei voi noutaa, kun päivityspolettia ei ole asetettu! "
 "Tunnistaudu uudelleen synkronoinnin palveluntarjoajan kanssa."
 
-#: src/sync/sync_provider.rs:225
+#: src/sync/sync_provider.rs:157
+msgid "Token for Health sync provider {}"
+msgstr ""
+
+#: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
 msgstr "Tunnistautuminen onnistui, palaa Terveyteen."
 
-#: src/sync/sync_provider.rs:236
+#: src/sync/sync_provider.rs:228
 msgid "Couldn't parse OAuth2 response"
 msgstr "OAuth2-vastausta ei voitu jäsentää"
 
@@ -959,8 +964,6 @@ msgid "Activity"
 msgstr "Aktiviteetti"
 
 #: src/widgets/activity_row.rs:79
-#| msgid "{} Minute"
-#| msgid_plural "{} Minutes"
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} {} minuutin ajan"
@@ -994,7 +997,12 @@ msgid_plural "{} yards"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/widgets/bmi_level_bar.rs:219 src/widgets/bmi_level_bar.rs:256
+#: src/widgets/bmi_level_bar.rs:267 src/windows/preferences_window.rs:411
+#: src/windows/setup_window.rs:249
+msgid "Current BMI"
+msgstr "Nykyinen painoindeksi"
+
+#: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Nykyinen painoindeksi: {}</small>"
 
@@ -1128,11 +1136,15 @@ msgstr "Tapahtui virhe!"
 msgid "Close"
 msgstr "Sulje"
 
+#: src/windows/setup_window.rs:250
+msgid "Target BMI"
+msgstr "Tavoitepainoindeksi"
+
 #: src/windows/window.rs:97
 msgid "Failed to migrate database to new version due to error {}"
 msgstr "Tietokannan migraatio uuteen versioon {} epäonnistui virheen vuoksi"
 
-#: src/windows/window.rs:266
+#: src/windows/window.rs:267
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr "Google Fit -tietoja ei voitu synkronoida virheen vuoksi: {}"
 
