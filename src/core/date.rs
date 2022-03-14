@@ -1,5 +1,6 @@
 use anyhow::{bail, Result};
 use gtk::glib::{self, Boxed};
+use std::fmt;
 
 pub mod prelude {
     pub use super::*;
@@ -67,7 +68,7 @@ impl glib::DateTime {
         )
         .unwrap();
         let date = Self::from_local(year, month, 1, 0, 0, 0.0).unwrap();
-        date.difference(&following_month).as_days() * -1
+        -date.difference(&following_month).as_days()
     }
 
     #[must_use]
@@ -83,24 +84,42 @@ impl glib::DateTime {
     pub fn equals_date(&self, other: &Self) -> bool {
         self.year() == other.year() && self.day_of_year() == other.day_of_year()
     }
+
+    #[must_use]
+    pub fn date(&self) -> Date {
+        Date::new(
+            self.year().try_into().unwrap(),
+            self.month().try_into().unwrap(),
+            self.day_of_month().try_into().unwrap(),
+        )
+        .unwrap()
+    }
 }
 
 #[easy_ext::ext(GTimeSpanExt)]
 impl glib::TimeSpan {
+    #[must_use]
     pub fn reverse(&self) -> Self {
-        Self::from_microseconds(self.as_microseconds() * -1)
+        Self::from_microseconds(-self.as_microseconds())
     }
 
+    #[must_use]
     pub fn as_years(&self) -> i64 {
         self.as_days() / 365
     }
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
 pub struct Time {
     hour: u8,
     minutes: u8,
     seconds: u8,
+}
+
+impl fmt::Display for Time {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}:{}:{}", self.hour, self.minutes, self.seconds)
+    }
 }
 
 impl Time {
@@ -117,40 +136,41 @@ impl Time {
     }
 
     pub fn parse(string: &str) -> Result<Self> {
-        let split: Vec<&str> = string.split(":").collect();
+        let split: Vec<&str> = string.split(':').collect();
         if split.len() < 3 {
             bail!("Invalid string!");
         }
 
-        Ok(Self::new(
-            split[0].parse()?,
-            split[1].parse()?,
-            split[2].parse()?,
-        )?)
+        Self::new(split[0].parse()?, split[1].parse()?, split[2].parse()?)
     }
 
-    pub fn to_string(&self) -> String {
-        format!("{}:{}:{}", self.hour, self.minutes, self.seconds)
-    }
-
+    #[must_use]
     pub fn hour(&self) -> u8 {
         self.hour
     }
 
+    #[must_use]
     pub fn minutes(&self) -> u8 {
         self.minutes
     }
 
+    #[must_use]
     pub fn seconds(&self) -> u8 {
         self.seconds
     }
 }
 
-#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug)]
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Debug, Hash)]
 pub struct Date {
     year: u16,
     month: u8,
     day: u8,
+}
+
+impl fmt::Display for Date {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}-{}-{}", self.year, self.month, self.day)
+    }
 }
 
 impl Date {
@@ -164,22 +184,15 @@ impl Date {
         Ok(Self { year, month, day })
     }
 
-    pub fn parse(string: &str) -> anyhow::Result<Self> {
-        let split: Vec<&str> = string.split("-").collect();
+    pub fn parse(string: &str) -> Result<Self> {
+        let split: Vec<&str> = string.split('-').collect();
         if split.len() < 3 {
             anyhow::bail!("Invalid string!");
         }
-        Ok(Self::new(
-            split[0].parse()?,
-            split[1].parse()?,
-            split[2].parse()?,
-        )?)
+        Self::new(split[0].parse()?, split[1].parse()?, split[2].parse()?)
     }
 
-    pub fn to_string(&self) -> String {
-        format!("{}-{}-{}", self.year, self.month, self.day)
-    }
-
+    #[must_use]
     pub fn and_time_local(&self, time: Time) -> glib::DateTime {
         glib::DateTime::from_local(
             self.year().into(),
@@ -192,6 +205,7 @@ impl Date {
         .unwrap()
     }
 
+    #[must_use]
     pub fn and_time_utc(&self, time: Time) -> glib::DateTime {
         glib::DateTime::from_utc(
             self.year().into(),
@@ -204,14 +218,17 @@ impl Date {
         .unwrap()
     }
 
+    #[must_use]
     pub fn year(&self) -> u16 {
         self.year
     }
 
+    #[must_use]
     pub fn month(&self) -> u8 {
         self.month
     }
 
+    #[must_use]
     pub fn day(&self) -> u8 {
         self.day
     }

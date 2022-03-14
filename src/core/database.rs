@@ -132,7 +132,7 @@ impl Database {
         let connection = imp.connection.get().unwrap();
         let cursor = if let Some(date) = date_opt {
             let statement = connection.query_statement("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER  (?date >= ~date^^xsd:dateTime)}} ORDER BY DESC(?date)", None::<&gio::Cancellable>).unwrap().unwrap();
-            statement.bind_string("date", &date.format_iso8601().unwrap().as_str());
+            statement.bind_string("date", date.format_iso8601().unwrap().as_str());
             statement.execute_future().await?
         } else {
             connection.query_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?
@@ -203,7 +203,7 @@ impl Database {
     pub async fn calories(&self, minimum_date: glib::DateTime) -> Result<Vec<SplitBar>> {
         let connection = self.imp().connection.get().unwrap();
         let statement = connection.query_statement("SELECT ?date ?id ?calories_burned WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned. FILTER  (?date >= ~date^^xsd:dateTime) }}", None::<&gio::Cancellable>).unwrap().unwrap();
-        statement.bind_string("date", &minimum_date.format_iso8601().unwrap().as_str());
+        statement.bind_string("date", minimum_date.format_iso8601().unwrap().as_str());
         let cursor = statement.execute_future().await?;
 
         let mut hashmap: std::collections::HashMap<
@@ -261,7 +261,7 @@ impl Database {
         let mut most_frequent = Vec::new();
 
         let statement = connection.query_statement("SELECT ?id WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned . FILTER  (?date >= ~date^^xsd:dateTime) }} GROUP BY ?id ORDER BY DESC (SUM(?calories_burned))", None::<&gio::Cancellable>).unwrap().unwrap();
-        statement.bind_string("date", &minimum_date.format_iso8601().unwrap().as_str());
+        statement.bind_string("date", minimum_date.format_iso8601().unwrap().as_str());
         let cursor = statement.execute_future().await?;
 
         while let Ok(true) = cursor.next_future().await {
@@ -328,15 +328,11 @@ impl Database {
         let mut hashmap = std::collections::HashMap::new();
 
         while let Ok(true) = cursor.next_future().await {
+            let date =
+                glib::DateTime::from_iso8601(cursor.string(0).unwrap().as_str(), None).unwrap();
             hashmap.insert(
-                glib::DateTime::from_iso8601(cursor.string(0).unwrap().as_str(), None).unwrap(),
-                hashmap
-                    .get(
-                        &glib::DateTime::from_iso8601(cursor.string(0).unwrap().as_str(), None)
-                            .unwrap(),
-                    )
-                    .unwrap_or(&0)
-                    + u32::try_from(cursor.integer(1)).unwrap(),
+                date.clone(),
+                hashmap.get(&date).unwrap_or(&0) + u32::try_from(cursor.integer(1)).unwrap(),
             );
         }
 
@@ -385,7 +381,7 @@ impl Database {
         let connection = imp.connection.get().unwrap();
         let cursor = if let Some(date) = date_opt {
             let statement = connection.query_statement("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . FILTER  (?date >= ~date^^xsd:dateTime)}} ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
-            statement.bind_string("date", &date.format_iso8601().unwrap().as_str());
+            statement.bind_string("date", date.format_iso8601().unwrap().as_str());
             statement.execute_future().await?
         } else {
             connection.query_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . } ORDER BY ?date").await?
@@ -417,11 +413,10 @@ impl Database {
 
         let connection = imp.connection.get().unwrap();
         let statement = connection.query_statement("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight ?weight . FILTER(?date >= ~date^^xsd:dateTime && ?date < ~nextdate^^xsd:dateTime) }}", None::<&gio::Cancellable>).unwrap().unwrap();
-        statement.bind_string("date", &date.reset_hms().format_iso8601().unwrap().as_str());
+        statement.bind_string("date", date.reset_hms().format_iso8601().unwrap().as_str());
         statement.bind_string(
             "nextdate",
-            &date
-                .add_days(1)
+            date.add_days(1)
                 .unwrap()
                 .reset_hms()
                 .format_iso8601()
@@ -457,7 +452,7 @@ impl Database {
             resource.set_uri("rdf:type", "health:Activity");
             resource.set_string(
                 "health:activity_datetime",
-                &s.date.format_iso8601().unwrap().as_str(),
+                s.date.format_iso8601().unwrap().as_str(),
             );
             resource.set_int64("health:steps", s.steps.into());
             resource.set_int64(
@@ -503,7 +498,7 @@ impl Database {
             resource.set_uri("rdf:type", "health:WeightMeasurement");
             resource.set_string(
                 "health:weight_datetime",
-                &w.date.format_iso8601().unwrap().as_str(),
+                w.date.format_iso8601().unwrap().as_str(),
             );
             resource.set_double("health:weight", w.weight.get::<kilogram>().into());
 
@@ -736,7 +731,7 @@ impl Database {
         resource.set_uri("rdf:type", "health:Activity");
         resource.set_string(
             "health:activity_datetime",
-            &activity.date().format_iso8601().unwrap().as_str(),
+            activity.date().format_iso8601().unwrap().as_str(),
         );
         resource.set_int64(
             "health:activity_id",
@@ -794,7 +789,7 @@ impl Database {
         resource.set_uri("rdf:type", "health:WeightMeasurement");
         resource.set_string(
             "health:weight_datetime",
-            &weight.date.format_iso8601().unwrap().as_str(),
+            weight.date.format_iso8601().unwrap().as_str(),
         );
         resource.set_double("health:weight", weight.weight.get::<kilogram>().into());
 

@@ -269,7 +269,7 @@ impl Application {
         let imp = self.imp();
         if imp.settings.user_birthday().is_none() {
             let age: i32 = imp.settings.user_age().try_into().unwrap();
-            let datetime = glib::DateTime::local().add_years(age * -1).unwrap();
+            let datetime = glib::DateTime::local().add_years(-age).unwrap();
             imp.settings.set_user_birthday(datetime);
         }
     }

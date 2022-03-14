@@ -60,10 +60,8 @@ mod imp {
 
             let now = glib::DateTime::local();
             obj.set_selected_date(now.clone());
-            self.day_adjustment.set_upper(glib::DateTime::days_of_month(
-                now.year(),
-                now.month().try_into().unwrap(),
-            ) as f64);
+            self.day_adjustment
+                .set_upper(glib::DateTime::days_of_month(now.year(), now.month()) as f64);
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -135,10 +133,8 @@ mod imp {
                         datetime
                     };
 
-                    self.day_adjustment.set_upper(glib::DateTime::days_of_month(
-                        date.year(),
-                        date.month().try_into().unwrap(),
-                    ) as f64);
+                    self.day_adjustment
+                        .set_upper(glib::DateTime::days_of_month(date.year(), date.month()) as f64);
                     self.day_spinner.set_value(date.day_of_month().into());
                     self.month_dropdown
                         .set_selected((date.month() - 1).try_into().unwrap());

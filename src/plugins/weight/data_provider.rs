@@ -148,7 +148,8 @@ mod test {
                 Mass::new::<kilogram>(43.0),
             );
             ctx.block_on(db.save_weight(weight)).unwrap();
-            ctx.block_on(model.reload(glib::TimeSpan::from_days(1)))
+            // 5 second buffer since it might take a second or two to save the weight
+            ctx.block_on(model.reload(glib::TimeSpan::from_seconds(3600 * 24 + 5)))
                 .unwrap();
             assert_eq!(
                 model.to_points(),
@@ -166,7 +167,8 @@ mod test {
 
             let weight = Weight::new(date.clone(), Mass::new::<kilogram>(43.0));
             ctx.block_on(db.save_weight(weight)).unwrap();
-            ctx.block_on(model.reload(glib::TimeSpan::from_days(1)))
+            // 5 second buffer since it might take a second or two to save the weight
+            ctx.block_on(model.reload(glib::TimeSpan::from_seconds(3600 * 24 + 5)))
                 .unwrap();
             assert_eq!(
                 model.to_points(),

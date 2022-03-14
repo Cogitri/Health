@@ -107,7 +107,7 @@ pub fn serialize_date<S>(d: &glib::DateTime, s: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
 {
-    s.serialize_str(&d.format_iso8601().unwrap().as_str())
+    s.serialize_str(d.format_iso8601().unwrap().as_str())
 }
 
 #[allow(clippy::trivially_copy_pass_by_ref)]

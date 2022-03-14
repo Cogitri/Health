@@ -70,7 +70,7 @@ impl GraphModelSteps {
     /// The number of days.
     pub fn streak_count_today(&self, step_goal: u32) -> u32 {
         let today = glib::DateTime::local();
-        self.streak_count(step_goal, today.into())
+        self.streak_count(step_goal, today)
     }
 
     /// Get how many days the user has upheld their step streak (as in have reached their step goal), excluding today.
@@ -117,7 +117,7 @@ impl GraphModelSteps {
     pub async fn reload(&mut self, duration: glib::TimeSpan) -> Result<()> {
         self.vec = self
             .database
-            .steps((glib::DateTime::local().subtract(duration)).into())
+            .steps(glib::DateTime::local().subtract(duration))
             .await?;
         Ok(())
     }
@@ -133,22 +133,27 @@ impl GraphModelSteps {
         let mut map = BTreeMap::new();
 
         for steps in &self.vec {
-            let date = steps.date.clone();
+            let date = steps.date.date();
             if map.contains_key(&date) {
-                map.insert(date.clone(), map.get(&date).unwrap() + steps.steps);
+                map.insert(date, map.get(&date).unwrap() + steps.steps);
             } else {
-                map.insert(date.clone(), steps.steps);
+                map.insert(date, steps.steps);
             }
         }
 
         for date_delta in 0..(first_date.difference(&glib::DateTime::local()).as_days()) {
-            map.entry(first_date.add_days(date_delta.try_into().unwrap()).unwrap())
-                .or_insert(0);
+            map.entry(
+                first_date
+                    .add_days(date_delta.try_into().unwrap())
+                    .unwrap()
+                    .date(),
+            )
+            .or_insert(0);
         }
 
         map.into_iter()
             .map(|(date, steps)| Point {
-                date,
+                date: date.and_time_local(Time::new(12, 0, 0).unwrap()),
                 value: steps as f32,
             })
             .collect::<Vec<Point>>()
@@ -239,7 +244,7 @@ mod test {
 
             let act = Activity::new();
             act.set_steps(Some(8000));
-            let date_y = date.clone().add_days(1).unwrap().add_hours(-1).unwrap();
+            let date_y = date.clone().add_days(-1).unwrap().add_hours(-1).unwrap();
             act.set_date(date_y.clone());
             ctx.block_on(db.save_activity(act)).unwrap();
             ctx.block_on(model.reload(glib::TimeSpan::from_days(30)))
