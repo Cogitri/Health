@@ -27,7 +27,6 @@ use crate::{
     views::{BarGraphView, SplitBar},
 };
 use crate::{model::ActivityInfo, widgets::LegendRow};
-use chrono::Duration;
 use gtk::{
     glib::{self, subclass::prelude::*, Boxed, Cast},
     prelude::*,
@@ -177,7 +176,10 @@ impl PluginCaloriesDetails {
         let imp = self.imp();
 
         let mut calories_graph_model = { imp.calories_graph_model.borrow_mut().take().unwrap() };
-        if let Err(e) = calories_graph_model.reload(Duration::days(30)).await {
+        if let Err(e) = calories_graph_model
+            .reload(glib::TimeSpan::from_days(30))
+            .await
+        {
             glib::g_warning!(crate::config::LOG_DOMAIN, "Failed to reload step data: {e}",);
         }
 
@@ -246,7 +248,7 @@ impl DataProvider {
         Self::Mocked(GraphModelCaloriesMocked::new())
     }
 
-    pub async fn reload(&mut self, duration: chrono::Duration) -> anyhow::Result<()> {
+    pub async fn reload(&mut self, duration: glib::TimeSpan) -> anyhow::Result<()> {
         match self {
             Self::Actual(m) => m.reload(duration).await,
             Self::Mocked(m) => m.reload(duration).await,

@@ -44,7 +44,24 @@
         {
           "type": "git",
           "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler",
-          "commit": "98bb9e30082774952c4cdfabac53b4d3e09c88ba"
+          "commit": "93f2a27e35905420e70bfdb5c2f04d6af43b357d"
+        }
+      ]
+    },
+    {
+      "name": "tracker",
+      "buildsystem": "meson",
+      "builddir": true,
+      "config-opts": ["-Dman=false", "-Dsystemd_user_services=false"],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://download.gnome.org/sources/tracker/3.3/tracker-3.3.0.rc.tar.xz",
+          "sha512": "9b7e75320e03ef8f528b6e89cdc55439e80df1c5e85a29b2dae09dc446eb94874b10f4f4674b9d37c3ecd80531dd09df7a1f3a27e7b03762744727736c33ad2b"
+        },
+        {
+          "type": "patch",
+          "path": "build-aux/tracker-subsecond-accuracy.patch"
         }
       ]
     },

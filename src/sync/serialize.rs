@@ -20,7 +20,7 @@ use crate::{
     core::{Settings, UnitSystem},
     model::ActivityType,
 };
-use chrono::{DateTime, Duration, FixedOffset, TimeZone};
+use gtk::glib;
 use serde::{de, Deserialize, Deserializer, Serializer};
 use std::{convert::TryInto, str::FromStr};
 use uom::si::{
@@ -38,13 +38,13 @@ where
     ActivityType::from_str(buf.as_str()).map_err(serde::de::Error::custom)
 }
 
-pub fn deserialize_date<'de, D>(deserializer: D) -> Result<DateTime<FixedOffset>, D::Error>
+pub fn deserialize_date<'de, D>(deserializer: D) -> Result<glib::DateTime, D::Error>
 where
     D: Deserializer<'de>,
 {
     let buf = String::deserialize(deserializer)?;
 
-    DateTime::parse_from_rfc3339(&buf).map_err(serde::de::Error::custom)
+    glib::DateTime::from_iso8601(&buf, None).map_err(serde::de::Error::custom)
 }
 
 pub fn deserialize_distance<'de, D>(deserializer: D) -> Result<Option<Length>, D::Error>
@@ -65,13 +65,13 @@ where
     }
 }
 
-pub fn deserialize_duration<'de, D>(deserializer: D) -> Result<Duration, D::Error>
+pub fn deserialize_duration<'de, D>(deserializer: D) -> Result<glib::TimeSpan, D::Error>
 where
     D: Deserializer<'de>,
 {
     let buf = u32::deserialize(deserializer)?;
 
-    Ok(Duration::minutes(buf.into()))
+    Ok(glib::TimeSpan::from_minutes(buf.into()))
 }
 
 pub fn deserialize_mass<'de, D>(deserializer: D) -> Result<Mass, D::Error>
@@ -86,19 +86,14 @@ where
     }
 }
 
-pub fn deserialize_modified_time_millis<'de, D>(
-    deserializer: D,
-) -> Result<DateTime<FixedOffset>, D::Error>
+pub fn deserialize_modified_time_millis<'de, D>(deserializer: D) -> Result<glib::DateTime, D::Error>
 where
     D: Deserializer<'de>,
 {
     let val = String::deserialize(deserializer)?.parse::<u64>().unwrap() / 1000;
-    let date_time = FixedOffset::east(0)
-        .ymd(1970, 1, 1)
-        .and_hms(0, 0, 0)
-        .checked_add_signed(Duration::seconds(val.try_into().unwrap()));
+    let date_time = glib::DateTime::from_unix_utc(val.try_into().unwrap());
 
-    date_time.map_or_else(|| Err(de::Error::custom("date would overflow")), Ok)
+    date_time.map_or_else(|_| Err(de::Error::custom("date would overflow")), Ok)
 }
 
 pub fn serialize_activity_type<S>(val: &ActivityType, s: S) -> Result<S::Ok, S::Error>
@@ -108,11 +103,11 @@ where
     s.serialize_str(val.as_ref())
 }
 
-pub fn serialize_date<S>(d: &DateTime<FixedOffset>, s: S) -> Result<S::Ok, S::Error>
+pub fn serialize_date<S>(d: &glib::DateTime, s: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
 {
-    s.serialize_str(&d.to_rfc3339())
+    s.serialize_str(d.format_iso8601().unwrap().as_str())
 }
 
 #[allow(clippy::trivially_copy_pass_by_ref)]
@@ -134,11 +129,11 @@ where
     }
 }
 
-pub fn serialize_duration<S>(d: &Duration, s: S) -> Result<S::Ok, S::Error>
+pub fn serialize_duration<S>(d: &glib::TimeSpan, s: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
 {
-    s.serialize_u32(d.num_minutes().try_into().unwrap())
+    s.serialize_u32(d.as_minutes().try_into().unwrap())
 }
 
 #[allow(clippy::trivially_copy_pass_by_ref)]

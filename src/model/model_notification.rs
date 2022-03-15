@@ -22,7 +22,6 @@ use crate::{
     model::NotificationFrequency,
     prelude::*,
 };
-use chrono::{Local, NaiveTime, Timelike};
 use gtk::{
     gio::{self, prelude::*, subclass::prelude::*},
     glib,
@@ -31,7 +30,6 @@ use std::{convert::TryInto, str::FromStr, string::ToString};
 
 mod imp {
     use crate::{core::Database, model::NotificationFrequency, prelude::*};
-    use chrono::NaiveTime;
     use gtk::{
         gio::{self, prelude::*, subclass::prelude::*},
         glib,
@@ -42,7 +40,7 @@ mod imp {
     #[derive(Debug, Default)]
     pub struct ModelNotificationMut {
         pub notification_frequency: NotificationFrequency,
-        pub notification_time: Option<NaiveTime>,
+        pub notification_time: Option<Time>,
         pub step_goal: u32,
         pub timeout_source_id: Option<glib::SourceId>,
     }
@@ -84,7 +82,7 @@ mod imp {
                         "notification-time",
                         "notification-time",
                         "notification-time",
-                        NaiveTimeBoxed::static_type(),
+                        TimeBoxed::static_type(),
                         glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
                     ),
                     glib::ParamSpecUInt::new(
@@ -117,7 +115,7 @@ mod imp {
                 }
                 "notification-time" => {
                     self.inner.borrow_mut().notification_time =
-                        Some(value.get::<NaiveTimeBoxed>().unwrap().0);
+                        Some(value.get::<TimeBoxed>().unwrap().0);
                 }
                 "step-goal" => self.inner.borrow_mut().step_goal = value.get().unwrap(),
                 _ => unimplemented!(),
@@ -134,7 +132,7 @@ mod imp {
                     .as_ref()
                     .to_value(),
                 "notification-time" => {
-                    NaiveTimeBoxed(self.inner.borrow().notification_time.unwrap()).to_value()
+                    TimeBoxed(self.inner.borrow().notification_time.unwrap()).to_value()
                 }
                 "step-goal" => self.inner.borrow().step_goal.to_value(),
                 _ => unimplemented!(),
@@ -158,13 +156,13 @@ impl ModelNotification {
     pub fn new<T: IsA<gio::Application>>(
         application: &T,
         notification_frequency: NotificationFrequency,
-        notification_time: chrono::NaiveTime,
+        notification_time: Time,
         step_goal: u32,
     ) -> Self {
         glib::Object::new(&[
             ("application", application),
             ("notification-frequency", &notification_frequency),
-            ("notification-time", &NaiveTimeBoxed(notification_time)),
+            ("notification-time", &TimeBoxed(notification_time)),
             ("step-goal", &step_goal),
         ])
         .expect("Failed to create ModelNotification")
@@ -174,8 +172,8 @@ impl ModelNotification {
         NotificationFrequency::from_str(&self.property::<String>("notification-frequency")).unwrap()
     }
 
-    pub fn notification_time(&self) -> NaiveTime {
-        self.property::<NaiveTimeBoxed>("notification-time").0
+    pub fn notification_time(&self) -> Time {
+        self.property::<TimeBoxed>("notification-time").0
     }
 
     pub fn register_periodic_notify(&self) {
@@ -197,8 +195,8 @@ impl ModelNotification {
         self.set_property("notification-frequency", value);
     }
 
-    pub fn set_notification_time(&self, value: chrono::NaiveTime) {
-        self.set_property("notification-time", NaiveTimeBoxed(value));
+    pub fn set_notification_time(&self, value: Time) {
+        self.set_property("notification-time", TimeBoxed(value));
     }
 
     pub fn set_step_goal(&self, value: u32) {
@@ -217,7 +215,7 @@ impl ModelNotification {
 
     async fn periodic_callback(&self) {
         let imp = self.imp();
-        let time_now = Local::now().time();
+        let time_now = glib::DateTime::local();
         let notify_time = imp.inner.borrow().notification_time.unwrap();
         let frequency = imp.inner.borrow().notification_frequency;
 
@@ -226,8 +224,8 @@ impl ModelNotification {
             NotificationFrequency::Every4Hrs => 60 * 4,
             NotificationFrequency::Fixed => 0,
         };
-        let fixed_time = time_now.hour() == notify_time.hour()
-            && time_now.minute() == notify_time.minute()
+        let fixed_time = time_now.hour() == i32::from(notify_time.hour())
+            && time_now.minute() == i32::from(notify_time.minutes())
             && frequency == NotificationFrequency::Fixed;
         let periodic = frequency != NotificationFrequency::Fixed
             && time_now.hour() % interval == 0
@@ -260,7 +258,7 @@ impl ModelNotification {
 #[cfg(test)]
 mod test {
     use super::{ModelNotification, NotificationFrequency};
-    use crate::utils::init_env;
+    use crate::{prelude::*, utils::init_env};
     use gtk::gio;
 
     #[test]
@@ -270,7 +268,7 @@ mod test {
         ModelNotification::new(
             &gio::Application::new(None, gio::ApplicationFlags::FLAGS_NONE),
             NotificationFrequency::Every4Hrs,
-            chrono::NaiveTime::parse_from_str("12:00:00", "%H:%M:%S").unwrap(),
+            Time::parse("12:00:00").unwrap(),
             1000,
         );
     }
@@ -279,7 +277,7 @@ mod test {
     fn properties() {
         init_env();
         let app = gio::Application::new(None, gio::ApplicationFlags::FLAGS_NONE);
-        let time = chrono::NaiveTime::parse_from_str("12:00:00", "%H:%M:%S").unwrap();
+        let time = Time::parse("12:00:00").unwrap();
 
         let model = ModelNotification::new(&app, NotificationFrequency::Every4Hrs, time, 1000);
 

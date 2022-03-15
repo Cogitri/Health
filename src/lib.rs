@@ -87,6 +87,7 @@ pub use crate::core::utils;
 
 pub mod prelude {
     use anyhow::Result;
+    pub use gtk::{gdk, gio, glib};
     use std::{future::Future, pin::Pin};
 
     pub type PinnedResultFuture<T> = Pin<Box<dyn Future<Output = Result<T>> + 'static>>;

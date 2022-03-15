@@ -22,7 +22,6 @@ use crate::{
     prelude::*,
 };
 use adw::prelude::*;
-use chrono::Local;
 use gtk::{
     gio,
     glib::{self, clone, subclass::prelude::*},
@@ -282,7 +281,7 @@ impl SetupWindow {
         };
         if let Err(e) = imp
             .database
-            .save_weight(Weight::new(Local::now().into(), weight))
+            .save_weight(Weight::new(glib::DateTime::local(), weight))
             .await
         {
             glib::g_warning!(
@@ -305,7 +304,7 @@ impl SetupWindow {
         };
 
         imp.settings
-            .set_user_birthday(imp.birthday_selector.selected_date().date());
+            .set_user_birthday(imp.birthday_selector.selected_date());
         imp.settings.set_user_height(height);
         imp.settings
             .set_user_step_goal(imp.step_goal_spin_button.raw_value().unwrap_or_default());
@@ -480,9 +479,9 @@ impl SetupWindow {
     #[template_callback]
     fn try_enable_next_button_first_page(&self) {
         let imp = self.imp();
-        let birthday = imp.birthday_selector.selected_date().date();
-        let sensitive =
-            birthday != Local::now().date() && !imp.height_spin_button.has_default_value();
+        let birthday = imp.birthday_selector.selected_date().reset_hms();
+        let sensitive = birthday != glib::DateTime::local().reset_hms()
+            && !imp.height_spin_button.has_default_value();
         imp.setup_next_page_button.set_sensitive(sensitive);
         imp.setup_carousel.set_interactive(sensitive);
     }

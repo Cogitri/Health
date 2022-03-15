@@ -25,7 +25,6 @@ use crate::{
     prelude::*,
     views::GraphView,
 };
-use chrono::Duration;
 use gtk::{
     gio::subclass::prelude::*,
     glib::{self, Boxed},
@@ -183,7 +182,7 @@ impl PluginWeightDetails {
     pub async fn update(&self) {
         let imp = self.imp();
         let mut weight_graph_model = { imp.weight_graph_model.borrow_mut().take().unwrap() };
-        if let Err(e) = weight_graph_model.reload(Duration::days(30)).await {
+        if let Err(e) = weight_graph_model.reload(glib::TimeSpan::from_days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
                 "Failed to reload weight data: {e}",
@@ -353,7 +352,7 @@ impl DataProvider {
         Self::Mocked(GraphModelWeightMocked::new())
     }
 
-    pub async fn reload(&mut self, duration: Duration) -> anyhow::Result<()> {
+    pub async fn reload(&mut self, duration: glib::TimeSpan) -> anyhow::Result<()> {
         match self {
             Self::Actual(m) => m.reload(duration).await,
             Self::Mocked(m) => m.reload(duration).await,

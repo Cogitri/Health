@@ -266,7 +266,6 @@ mod test {
         sync::csv::EncryptionError,
         utils::init_gschema,
     };
-    use chrono::{DateTime, Duration, NaiveDateTime, Utc};
     use gtk::{gio, glib};
     use tempfile::tempdir;
     use uom::si::{
@@ -399,13 +398,10 @@ mod test {
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
         let csv_handler = CsvHandler::new_with_database(db.clone());
         let act = Activity::builder()
-            .date(
-                DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(1_000_000_000, 0), Utc)
-                    .into(),
-            )
+            .date(glib::DateTime::from_unix_utc(1_000_000_000).unwrap())
             .steps(2000)
             .calories_burned(2000)
-            .duration(Duration::minutes(20))
+            .duration(glib::TimeSpan::from_minutes(20))
             .distance(Length::new::<kilometer>(2.0))
             .build();
         ctx.block_on(async {
@@ -437,7 +433,7 @@ mod test {
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
         let csv_handler = CsvHandler::new_with_database(db.clone());
         let weight = Weight::new(
-            DateTime::<Utc>::from_utc(NaiveDateTime::from_timestamp(1_000_000_000, 0), Utc).into(),
+            glib::DateTime::from_unix_utc(1_000_000_000).unwrap(),
             Mass::new::<kilogram>(70.0),
         );
         ctx.block_on(async {

@@ -6,7 +6,6 @@ use crate::{
     prelude::*,
 };
 use adw::prelude::*;
-use chrono::Duration;
 use gtk::{glib, subclass::prelude::*};
 use uom::si::mass::{kilogram, pound};
 
@@ -89,7 +88,7 @@ impl PluginWeightSummaryRow {
         let imp = self.imp();
         let settings = Settings::instance();
         let mut weight_model = GraphModelWeight::new();
-        if let Err(e) = weight_model.reload(Duration::days(30)).await {
+        if let Err(e) = weight_model.reload(glib::TimeSpan::from_days(30)).await {
             glib::g_warning!(crate::config::LOG_DOMAIN, "Failed to reload step data: {e}",);
         }
 

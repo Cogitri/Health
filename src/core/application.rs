@@ -19,10 +19,10 @@
 use crate::{
     core::{i18n, UnitSystem},
     model::ModelNotification,
+    prelude::*,
     windows::{PreferencesWindow, Window},
 };
 use anyhow::Result;
-use chrono::{DateTime, Duration, FixedOffset, Local};
 use gtk::{
     gio::{self, prelude::*},
     glib::{self, clone, subclass::prelude::*},
@@ -268,10 +268,9 @@ impl Application {
     fn migrate_gsettings(&self) {
         let imp = self.imp();
         if imp.settings.user_birthday().is_none() {
-            let age = imp.settings.user_age();
-            let datetime: DateTime<FixedOffset> =
-                (Local::now() - Duration::weeks((age * 52).into())).into();
-            imp.settings.set_user_birthday(datetime.date());
+            let age: i32 = imp.settings.user_age().try_into().unwrap();
+            let datetime = glib::DateTime::local().add_years(-age).unwrap();
+            imp.settings.set_user_birthday(datetime);
         }
     }
 
@@ -365,8 +364,11 @@ impl Application {
 #[cfg(test)]
 mod test {
     use super::Application;
-    use crate::core::{utils::init_gschema, Settings};
-    use chrono::{Duration, Utc};
+    use crate::{
+        core::{utils::init_gschema, Settings},
+        prelude::*,
+    };
+    use gtk::glib;
 
     #[test]
     fn new() {
@@ -387,10 +389,13 @@ mod test {
                 .user_birthday()
                 .unwrap()
                 .format("%Y-%m-%d")
+                .unwrap()
                 .to_string(),
-            (Utc::now() - Duration::weeks(50 * 52))
-                .date()
+            glib::DateTime::utc()
+                .add_years(-50)
+                .unwrap()
                 .format("%Y-%m-%d")
+                .unwrap()
                 .to_string(),
         );
     }

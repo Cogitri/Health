@@ -25,7 +25,6 @@ use crate::{
     prelude::*,
     views::{GraphView, Point},
 };
-use chrono::Duration;
 use gtk::glib::{self, subclass::prelude::*, Boxed};
 use std::{cell::RefCell, rc::Rc};
 
@@ -176,7 +175,7 @@ impl PluginStepsDetails {
         let imp = self.imp();
 
         let mut steps_graph_model = { imp.steps_graph_model.borrow_mut().take().unwrap() };
-        if let Err(e) = steps_graph_model.reload(Duration::days(30)).await {
+        if let Err(e) = steps_graph_model.reload(glib::TimeSpan::from_days(30)).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
                 "Failed to reload step data: {e}",
@@ -297,7 +296,7 @@ impl DataProvider {
             Self::Mocked(m) => m.streak_count_yesterday(step_goal),
         }
     }
-    pub async fn reload(&mut self, duration: Duration) -> anyhow::Result<()> {
+    pub async fn reload(&mut self, duration: glib::TimeSpan) -> anyhow::Result<()> {
         match self {
             Self::Actual(m) => m.reload(duration).await,
             Self::Mocked(m) => m.reload(duration).await,

@@ -21,7 +21,6 @@ use crate::{
     model::{ActivityInfo, ActivityType, FnBoxedTuple},
     prelude::*,
 };
-use chrono::{Date, FixedOffset, Local};
 use gtk::{gdk, gio::subclass::prelude::*, glib, pango, prelude::*};
 use std::{collections::HashMap, convert::TryInto};
 
@@ -35,7 +34,7 @@ pub struct Tuple {
 
 #[derive(Clone, Debug)]
 pub struct SplitBar {
-    pub date: Date<FixedOffset>,
+    pub date: glib::DateTime,
     pub calorie_split: HashMap<ActivityType, i64>,
 }
 
@@ -472,7 +471,7 @@ impl BarGraphView {
     }
 
     pub fn set_split_bars(&self, split_bars: Vec<SplitBar>) {
-        let layout = self.create_pango_layout(Some(&Local::now().format_local()));
+        let layout = self.create_pango_layout(Some(&glib::DateTime::local().format_local()));
         let (_, extents) = layout.extents();
         let datapoint_width = pango::units_to_double(extents.width()) + f64::from(HALF_X_PADDING);
 

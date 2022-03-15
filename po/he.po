@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-03-08 10:25+0000\n"
-"PO-Revision-Date: 2022-03-09 10:21+0200\n"
+"POT-Creation-Date: 2022-03-12 15:26+0000\n"
+"PO-Revision-Date: 2022-03-13 10:16+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <he@li.org>\n"
 "Language: he\n"
@@ -361,23 +361,23 @@ msgstr "כללי"
 msgid "User"
 msgstr "משתמש"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:146
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
 msgid "Unit system"
 msgstr "מערכת יחידות"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:156
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
 msgid "Imperial"
 msgstr "אימפריאלית"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
 msgid "Metric"
 msgstr "מטרית"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:170
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
 msgid "Birthday"
 msgstr "יום הולדת"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:179
+#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
 msgid "Height"
 msgstr "גובה"
 
@@ -397,16 +397,16 @@ msgstr "תדירות"
 msgid "Daily reminder time"
 msgstr "מועד תזכורת יומית"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:242
+#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
 #: src/plugins/steps/details.rs:241
 msgid "Step goal"
 msgstr "יעד צעדים"
 
-#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:218
+#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:224
 msgid "The WHO recommends 10.000 steps per day."
 msgstr "ארגון הבריאות העולמי ממליץ על 10,000 צעדים ביום."
 
-#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:279
+#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "ארגון הבריאות העולמי ממליץ על BMI בין 18.5 לבין 24.9."
 
@@ -438,51 +438,55 @@ msgstr "ייבוא נתונים מ־CSV"
 msgid "Import…"
 msgstr "ייבוא…"
 
-#: data/ui/setup_window.blp:33
+#: data/ui/setup_window.blp:39
 msgid "Health Setup"
 msgstr "הקמת תכנית הבריאות"
 
-#: data/ui/setup_window.blp:47
+#: data/ui/setup_window.blp:53
 msgid "_Quit"
 msgstr "י_ציאה"
 
-#: data/ui/setup_window.blp:56
+#: data/ui/setup_window.blp:62
 msgid "_Previous"
 msgstr "ה_קודם"
 
-#: data/ui/setup_window.blp:71
+#: data/ui/setup_window.blp:77
 msgid "_Next"
 msgstr "ה_בא"
 
-#: data/ui/setup_window.blp:84
+#: data/ui/setup_window.blp:90
 msgid "_Done"
 msgstr "_סיום"
 
-#: data/ui/setup_window.blp:110
+#: data/ui/setup_window.blp:116
 msgid "Welcome to Health!"
 msgstr "ברוך בואך לתוכנית הבריאות!"
 
-#: data/ui/setup_window.blp:122
+#: data/ui/setup_window.blp:128
 msgid "Please enter some information to get setup."
 msgstr "נא למלא פרטים כדי להקים את המערכת."
 
-#: data/ui/setup_window.blp:206
+#: data/ui/setup_window.blp:212
 msgid "Please enter your daily step goal."
 msgstr "נא למלא את יעד הצעדים היומי שלך."
 
-#: data/ui/setup_window.blp:267
+#: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
 msgstr "נא למלא את יעד המשקל שלך."
 
-#: data/ui/setup_window.blp:307 src/plugins/weight/details.rs:221
+#: data/ui/setup_window.blp:314
+msgid "Current weight"
+msgstr "משקל נוכחי"
+
+#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:221
 msgid "Weight goal"
 msgstr "יעד משקל"
 
-#: data/ui/setup_window.blp:342
+#: data/ui/setup_window.blp:372
 msgid "Setup sync with third-party providers."
 msgstr "הגדרת סנכרון עם ספקי צד־שלישי."
 
-#: data/ui/setup_window.blp:354
+#: data/ui/setup_window.blp:384
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr "אפשר לסנכרן את מדדי הצעדים והמשקל מתוך/אל ספקי צד־שלישי."
@@ -1046,7 +1050,12 @@ msgstr[1] "שני יארד"
 msgstr[2] "{} יארד"
 msgstr[3] "{} יארד"
 
-#: src/widgets/bmi_level_bar.rs:219 src/widgets/bmi_level_bar.rs:256
+#: src/widgets/bmi_level_bar.rs:267 src/windows/preferences_window.rs:411
+#: src/windows/setup_window.rs:249
+msgid "Current BMI"
+msgstr "BMI נוכחי"
+
+#: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "‫<small>BMI נוכחי: {}</small>"
 
@@ -1179,6 +1188,10 @@ msgstr "אירעה שגיאה!"
 #: src/windows/import_export_dialog_base.rs:305
 msgid "Close"
 msgstr "סגירה"
+
+#: src/windows/setup_window.rs:250
+msgid "Target BMI"
+msgstr "יעד BMI"
 
 #: src/windows/window.rs:97
 msgid "Failed to migrate database to new version due to error {}"

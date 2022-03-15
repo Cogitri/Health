@@ -19,10 +19,10 @@
 use crate::{
     core::{Database, Settings, UnitSystem},
     model::weight::Weight,
+    prelude::*,
     views::Point,
 };
 use anyhow::Result;
-use chrono::Duration;
 use std::collections::BTreeMap;
 use uom::si::{
     f32::Mass,
@@ -62,10 +62,10 @@ impl GraphModelWeight {
     ///
     /// # Returns
     /// Returns an error if querying the DB fails.
-    pub async fn reload(&mut self, duration: Duration) -> Result<()> {
+    pub async fn reload(&mut self, duration: glib::TimeSpan) -> Result<()> {
         self.vec = self
             .database
-            .weights(Some((chrono::Local::now() - duration).into()))
+            .weights(Some(glib::DateTime::local().subtract(duration)))
             .await?;
         Ok(())
     }
@@ -82,7 +82,7 @@ impl GraphModelWeight {
                     w.weight.get::<pound>()
                 };
 
-                (w.date.date(), val)
+                (w.date.clone(), val)
             })
             .collect::<BTreeMap<_, _>>();
 
@@ -113,8 +113,7 @@ impl GraphModelWeight {
 #[cfg(test)]
 mod test {
     use super::GraphModelWeight;
-    use crate::{core::Database, model::Weight, views::Point};
-    use chrono::{Duration, Local};
+    use crate::{core::Database, model::Weight, prelude::*, views::Point};
     use gtk::glib;
     use tempfile::tempdir;
     use uom::si::{f32::Mass, mass::kilogram};
@@ -127,52 +126,58 @@ mod test {
             let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
 
             let mut model = GraphModelWeight::new_with_database(db.clone());
-            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(1)))
+                .unwrap();
             assert_eq!(model.to_points(), vec![]);
 
-            let date = Local::now().into();
-            let weight = Weight::new(date, Mass::new::<kilogram>(42.0));
+            let date = glib::DateTime::local();
+            let weight = Weight::new(date.clone(), Mass::new::<kilogram>(42.0));
             ctx.block_on(db.save_weight(weight)).unwrap();
-            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(1)))
+                .unwrap();
             assert_eq!(
                 model.to_points(),
                 vec![Point {
-                    date: date.date(),
+                    date: date.clone(),
                     value: 42.0,
                 }]
             );
 
-            let weight = Weight::new(date - Duration::days(1), Mass::new::<kilogram>(43.0));
+            let weight = Weight::new(
+                date.clone().add_days(-1).unwrap(),
+                Mass::new::<kilogram>(43.0),
+            );
             ctx.block_on(db.save_weight(weight)).unwrap();
-            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            // 5 second buffer since it might take a second or two to save the weight
+            ctx.block_on(model.reload(glib::TimeSpan::from_seconds(3600 * 24 + 5)))
+                .unwrap();
             assert_eq!(
                 model.to_points(),
                 vec![
                     Point {
-                        date: (date - Duration::days(1)).date(),
+                        date: date.clone().add_days(-1).unwrap(),
                         value: 43.0,
                     },
                     Point {
-                        date: date.date(),
+                        date: date.clone(),
                         value: 42.0,
                     }
                 ]
             );
 
-            let weight = Weight::new(date, Mass::new::<kilogram>(43.0));
+            let weight = Weight::new(date.clone(), Mass::new::<kilogram>(43.0));
             ctx.block_on(db.save_weight(weight)).unwrap();
-            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            // 5 second buffer since it might take a second or two to save the weight
+            ctx.block_on(model.reload(glib::TimeSpan::from_seconds(3600 * 24 + 5)))
+                .unwrap();
             assert_eq!(
                 model.to_points(),
                 vec![
                     Point {
-                        date: (date - Duration::days(1)).date(),
+                        date: date.clone().add_days(-1).unwrap(),
                         value: 43.0,
                     },
-                    Point {
-                        date: date.date(),
-                        value: 43.0,
-                    }
+                    Point { date, value: 43.0 }
                 ]
             );
         })

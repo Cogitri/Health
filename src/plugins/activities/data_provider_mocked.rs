@@ -19,8 +19,10 @@
 use anyhow::Result;
 use gtk::{gio, glib};
 mod imp {
-    use crate::model::{Activity, ActivityType};
-    use chrono::{DateTime, Duration, FixedOffset, Local};
+    use crate::{
+        model::{Activity, ActivityType},
+        prelude::*,
+    };
     use gtk::subclass::prelude::*;
     use gtk::{
         gio,
@@ -47,17 +49,17 @@ mod imp {
 
     impl ObjectImpl for ModelActivityMocked {
         fn constructed(&self, obj: &Self::Type) {
-            let now: DateTime<FixedOffset> = Local::now().into();
+            let now = glib::DateTime::local();
             let a = Activity::new();
             a.set_activity_type(ActivityType::Walking);
-            a.set_duration(Duration::minutes(75));
-            a.set_date(now);
+            a.set_duration(glib::TimeSpan::from_minutes(75));
+            a.set_date(now.clone());
             a.set_steps(Some(5000));
             a.set_calories_burned(Some(200));
 
             let b = Activity::new();
             b.set_activity_type(ActivityType::Walking);
-            b.set_duration(Duration::minutes(23));
+            b.set_duration(glib::TimeSpan::from_minutes(23));
             b.set_date(now);
             b.set_steps(Some(2300));
             b.set_calories_burned(Some(75));

@@ -16,17 +16,17 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use chrono::{DateTime, FixedOffset};
+use gtk::glib;
 
 /// A [Steps] is a single step measurement the user did on a certain date.
 #[derive(Debug)]
 pub struct Steps {
-    pub date: DateTime<FixedOffset>,
+    pub date: glib::DateTime,
     pub steps: u32,
 }
 
 impl Steps {
-    pub fn new(date: DateTime<FixedOffset>, steps: u32) -> Self {
+    pub fn new(date: glib::DateTime, steps: u32) -> Self {
         Self { date, steps }
     }
 }

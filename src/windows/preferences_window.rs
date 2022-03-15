@@ -23,7 +23,6 @@ use crate::{
     windows::{ExportDialog, ImportDialog},
 };
 use adw::prelude::*;
-use chrono::{NaiveTime, Timelike};
 use gtk::{
     gio,
     glib::{self, clone, subclass::prelude::*},
@@ -162,8 +161,7 @@ mod imp {
             self.step_goal_spin_button
                 .set_value(f64::from(self.settings.user_step_goal()));
             if let Some(date) = self.settings.user_birthday() {
-                self.birthday_selector
-                    .set_selected_date(date.and_hms(0, 0, 0));
+                self.birthday_selector.set_selected_date(date);
             }
             self.bmi_levelbar.set_height(self.settings.user_height());
 
@@ -299,7 +297,7 @@ impl PreferencesWindow {
     fn handle_birthday_selector_changed(&self) {
         let imp = self.imp();
         imp.settings
-            .set_user_birthday(imp.birthday_selector.selected_date().date());
+            .set_user_birthday(imp.birthday_selector.selected_date());
     }
 
     fn handle_enable_notify_changed(&self, initializing: bool) {
@@ -417,18 +415,18 @@ impl PreferencesWindow {
         let notify_time = imp.settings.notification_time();
         imp.reminder_hour.set_value(f64::from(notify_time.hour()));
         imp.reminder_minutes
-            .set_value(f64::from(notify_time.minute()));
+            .set_value(f64::from(notify_time.minutes()));
     }
 
     #[template_callback]
     fn handle_close_window(&self) -> bool {
         let imp = self.imp();
-        let remind_time = NaiveTime::from_hms_milli(
-            imp.reminder_hour.value_as_int() as u32,
-            imp.reminder_minutes.value_as_int() as u32,
+        let remind_time = Time::new(
+            imp.reminder_hour.value_as_int().try_into().unwrap(),
+            imp.reminder_minutes.value_as_int().try_into().unwrap(),
             0,
-            0,
-        );
+        )
+        .unwrap();
         imp.settings.set_notification_time(remind_time);
         false
     }

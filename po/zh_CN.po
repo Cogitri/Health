@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-25 22:47+0000\n"
-"PO-Revision-Date: 2022-01-31 18:17+0800\n"
+"POT-Creation-Date: 2022-03-12 15:26+0000\n"
+"PO-Revision-Date: 2022-03-14 19:17+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -175,10 +175,6 @@ msgid "A health tracking app for the GNOME desktop."
 msgstr "GNOME 桌面的健康追踪应用。"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
-#| msgid ""
-#| "A health tracking app for the GNOME desktop. Health can visualize how "
-#| "many steps you've made daily, your weight development over time and your "
-#| "daily activities."
 msgid ""
 "A health tracking app for the GNOME desktop. Health can visualize how many "
 "steps you've made daily, your weight development over time and your daily "
@@ -358,23 +354,23 @@ msgstr "常规"
 msgid "User"
 msgstr "用户"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:146
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
 msgid "Unit system"
 msgstr "单位制"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:156
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
 msgid "Imperial"
 msgstr "英制"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
 msgid "Metric"
 msgstr "公制"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:170
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
 msgid "Birthday"
 msgstr "生日"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:179
+#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
 msgid "Height"
 msgstr "身高"
 
@@ -394,16 +390,16 @@ msgstr "频率"
 msgid "Daily reminder time"
 msgstr "每日提醒时间"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:242
+#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
 #: src/plugins/steps/details.rs:241
 msgid "Step goal"
 msgstr "步数目标"
 
-#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:218
+#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:224
 msgid "The WHO recommends 10.000 steps per day."
 msgstr "世界卫生组织建议每天 10000 步。"
 
-#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:279
+#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "世界卫生组织建议 BMI 为 18.5-24.9。"
 
@@ -435,51 +431,56 @@ msgstr "从 CSV 导入数据"
 msgid "Import…"
 msgstr "导入…"
 
-#: data/ui/setup_window.blp:33
+#: data/ui/setup_window.blp:39
 msgid "Health Setup"
 msgstr "健康设置"
 
-#: data/ui/setup_window.blp:47
+#: data/ui/setup_window.blp:53
 msgid "_Quit"
 msgstr "退出(_Q)"
 
-#: data/ui/setup_window.blp:56
+#: data/ui/setup_window.blp:62
 msgid "_Previous"
 msgstr "上一步(_P)"
 
-#: data/ui/setup_window.blp:71
+#: data/ui/setup_window.blp:77
 msgid "_Next"
 msgstr "下一步(_N)"
 
-#: data/ui/setup_window.blp:84
+#: data/ui/setup_window.blp:90
 msgid "_Done"
 msgstr "完成(_D)"
 
-#: data/ui/setup_window.blp:110
+#: data/ui/setup_window.blp:116
 msgid "Welcome to Health!"
 msgstr "欢迎使用健康！"
 
-#: data/ui/setup_window.blp:122
+#: data/ui/setup_window.blp:128
 msgid "Please enter some information to get setup."
 msgstr "请输入一些信息以进行设置。"
 
-#: data/ui/setup_window.blp:206
+#: data/ui/setup_window.blp:212
 msgid "Please enter your daily step goal."
 msgstr "请输入您的每日步数目标。"
 
-#: data/ui/setup_window.blp:267
+#: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
 msgstr "请输入您的体重目标。"
 
-#: data/ui/setup_window.blp:307 src/plugins/weight/details.rs:221
+#: data/ui/setup_window.blp:314
+#| msgid "Import weights"
+msgid "Current weight"
+msgstr "当前体重"
+
+#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:221
 msgid "Weight goal"
 msgstr "体重目标"
 
-#: data/ui/setup_window.blp:342
+#: data/ui/setup_window.blp:372
 msgid "Setup sync with third-party providers."
 msgstr "设置与第三方提供程序同步。"
 
-#: data/ui/setup_window.blp:354
+#: data/ui/setup_window.blp:384
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr "您可以从/向第三方提供程序同步步数和体重测量结果。"
@@ -653,13 +654,11 @@ msgstr "排球"
 msgid "Walking"
 msgstr "步行"
 
-#: src/model/model_notification.rs:224
+#: src/model/model_notification.rs:236
 msgid "Health: walking reminder"
 msgstr "健康：步行提醒"
 
-#: src/model/model_notification.rs:245
-#| msgid "{} step remaining to complete your daily step goal"
-#| msgid_plural "{} steps remaining to complete your daily step goal"
+#: src/model/model_notification.rs:252
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "还剩 {} 步完成您的每日步数目标。"
@@ -723,13 +722,12 @@ msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} 步（{}）"
 
-#: src/plugins/steps/summary.rs:97
+#: src/plugins/steps/summary.rs:94
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "今天走了 {} 步"
 
-#: src/plugins/steps/summary.rs:107
-#| msgid "Please enter your daily step goal."
+#: src/plugins/steps/summary.rs:104
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "已达到您每日步数目标的百分之 {}"
@@ -817,25 +815,21 @@ msgid_plural "{} kilograms"
 msgstr[0] "{} 公斤"
 
 #: src/plugins/weight/summary.rs:139
-#| msgid "compared to previous weight"
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "与以前的测量相比 + {} 磅"
 
 #: src/plugins/weight/summary.rs:147
-#| msgid "compared to previous weight"
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "与以前的测量相比 + {} 公斤"
 
 #: src/plugins/weight/summary.rs:158
-#| msgid "compared to previous weight"
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "与以前的测量相比 {} 磅"
 
 #: src/plugins/weight/summary.rs:166
-#| msgid "compared to previous weight"
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "与以前的测量相比 {} 公斤"
@@ -848,19 +842,19 @@ msgstr "体重无变化"
 msgid "No weight data available"
 msgstr "无可用体重数据"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:363
+#: src/sync/csv.rs:81 src/sync/csv.rs:371
 msgid "No activities added yet; can't create empty export!"
 msgstr "尚未添加活动；无法创建空导出！"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:381
+#: src/sync/csv.rs:111 src/sync/csv.rs:389
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr "尚未添加体重测量结果；无法创建空导出！"
 
-#: src/sync/csv.rs:184 src/sync/csv.rs:325
+#: src/sync/csv.rs:184 src/sync/csv.rs:333
 msgid "Can't parse encrypted backup without encryption key!"
 msgstr "没有加密密钥，无法解析加密备份！"
 
-#: src/sync/csv.rs:195 src/sync/csv.rs:345
+#: src/sync/csv.rs:195 src/sync/csv.rs:353
 msgid ""
 "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -892,11 +886,15 @@ msgid ""
 "authenticate with your sync provider."
 msgstr "未设置刷新令牌时无法检索 OAuth2 令牌！请重新与您的同步提供程序认证。"
 
-#: src/sync/sync_provider.rs:225
+#: src/sync/sync_provider.rs:157
+msgid "Token for Health sync provider {}"
+msgstr "用于健康同步提供者 {} 的令牌"
+
+#: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
 msgstr "已成功认证，请返回到健康。"
 
-#: src/sync/sync_provider.rs:236
+#: src/sync/sync_provider.rs:228
 msgid "Couldn't parse OAuth2 response"
 msgstr "无法解析 OAuth2 响应"
 
@@ -913,8 +911,6 @@ msgid "Activity"
 msgstr "活动"
 
 #: src/widgets/activity_row.rs:79
-#| msgid "{} Minute"
-#| msgid_plural "{} Minutes"
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} 了 {} 分钟"
@@ -945,7 +941,13 @@ msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} 码"
 
-#: src/widgets/bmi_level_bar.rs:219 src/widgets/bmi_level_bar.rs:256
+#: src/widgets/bmi_level_bar.rs:267 src/windows/preferences_window.rs:411
+#: src/windows/setup_window.rs:249
+#| msgid "Current BMI: {}"
+msgid "Current BMI"
+msgstr "当前 BMI"
+
+#: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>当前 BMI：{}</small>"
 
@@ -1079,11 +1081,15 @@ msgstr "发生了错误！"
 msgid "Close"
 msgstr "关闭"
 
+#: src/windows/setup_window.rs:250
+msgid "Target BMI"
+msgstr "目标 BMI"
+
 #: src/windows/window.rs:97
 msgid "Failed to migrate database to new version due to error {}"
 msgstr "无法将数据库迁移到新版本，由于错误 {}"
 
-#: src/windows/window.rs:266
+#: src/windows/window.rs:267
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr "无法同步 Google Fit 数据，由于错误：{}"
 

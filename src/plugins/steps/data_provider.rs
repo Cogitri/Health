@@ -16,9 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use crate::{core::Database, model::Steps, views::Point};
+use crate::{core::Database, model::Steps, prelude::*, views::Point};
 use anyhow::Result;
-use chrono::{DateTime, Duration, FixedOffset, Utc};
 use std::{collections::BTreeMap, convert::TryInto};
 
 /// A [GraphModelSteps] manages step data for easy consumption in views.
@@ -46,12 +45,12 @@ impl GraphModelSteps {
     /// # Returns
     /// The amount of steps that have been done today, none `None` if no steps have been done yet.
     pub fn today_step_count(&self) -> Option<u32> {
-        let today = chrono::Local::now().date();
+        let today = glib::DateTime::local();
         let today_steps = self
             .vec
             .iter()
             .filter_map(|s| {
-                if today == s.date.date() {
+                if today.reset_hms() == s.date.reset_hms() {
                     Some(s.steps)
                 } else {
                     None
@@ -70,8 +69,8 @@ impl GraphModelSteps {
     /// # Returns
     /// The number of days.
     pub fn streak_count_today(&self, step_goal: u32) -> u32 {
-        let today = chrono::Local::now();
-        self.streak_count(step_goal, today.into())
+        let today = glib::DateTime::local();
+        self.streak_count(step_goal, today)
     }
 
     /// Get how many days the user has upheld their step streak (as in have reached their step goal), excluding today.
@@ -79,29 +78,29 @@ impl GraphModelSteps {
     /// # Returns
     /// The number of days.
     pub fn streak_count_yesterday(&self, step_goal: u32) -> u32 {
-        let yesterday = chrono::Local::now() - Duration::days(1);
-        self.streak_count(step_goal, yesterday.into())
+        let yesterday = glib::DateTime::local().add_days(-1).unwrap();
+        self.streak_count(step_goal, yesterday)
     }
 
     #[allow(clippy::map_entry)]
-    fn streak_count(&self, step_goal: u32, date: DateTime<FixedOffset>) -> u32 {
+    fn streak_count(&self, step_goal: u32, date: glib::DateTime) -> u32 {
         let mut map = BTreeMap::new();
         for steps in &self.vec {
-            let date = steps.date.date();
+            let date = steps.date.reset_hms();
             if map.contains_key(&date) {
-                map.insert(date, map.get(&date).unwrap() + steps.steps);
+                map.insert(date.clone(), map.get(&date).unwrap() + steps.steps);
             } else {
-                map.insert(date, steps.steps);
+                map.insert(date.clone(), steps.steps);
             }
         }
 
-        let mut date_it: DateTime<FixedOffset> = date + Duration::days(1);
+        let mut date_it = date.reset_hms().add_days(1).unwrap();
         map.into_iter()
             .rev()
-            .skip_while(|(s_date, _)| *s_date > date.date()) // skip days which are newer than date - e.g. skip today if we want to get yesterday's streak count
+            .skip_while(|(s_date, _)| *s_date > date.reset_hms()) // skip days which are newer than date - e.g. skip today if we want to get yesterday's streak count
             .take_while(|(s_date, steps)| {
-                date_it = date_it - Duration::days(1);
-                *s_date == date_it.date() && *steps >= step_goal
+                date_it = date_it.add_days(-1).unwrap();
+                s_date.reset_hms() == date_it && *steps >= step_goal
             })
             .count()
             .try_into()
@@ -115,10 +114,10 @@ impl GraphModelSteps {
     ///
     /// # Returns
     /// Returns an error if querying the DB fails.
-    pub async fn reload(&mut self, duration: Duration) -> Result<()> {
+    pub async fn reload(&mut self, duration: glib::TimeSpan) -> Result<()> {
         self.vec = self
             .database
-            .steps((chrono::Local::now() - duration).into())
+            .steps(glib::DateTime::local().subtract(duration))
             .await?;
         Ok(())
     }
@@ -130,7 +129,7 @@ impl GraphModelSteps {
             return Vec::new();
         }
 
-        let first_date = self.vec.first().unwrap().date.date();
+        let first_date = self.vec.first().unwrap().date.reset_hms();
         let mut map = BTreeMap::new();
 
         for steps in &self.vec {
@@ -142,16 +141,19 @@ impl GraphModelSteps {
             }
         }
 
-        for date_delta in
-            0..(DateTime::<FixedOffset>::from(Utc::now()).date() - first_date).num_days()
-        {
-            map.entry(first_date + Duration::days(date_delta))
-                .or_insert(0);
+        for date_delta in 0..(first_date.difference(&glib::DateTime::local()).as_days()) {
+            map.entry(
+                first_date
+                    .add_days(date_delta.try_into().unwrap())
+                    .unwrap()
+                    .date(),
+            )
+            .or_insert(0);
         }
 
         map.into_iter()
             .map(|(date, steps)| Point {
-                date,
+                date: date.and_time_local(Time::new(12, 0, 0).unwrap()),
                 value: steps as f32,
             })
             .collect::<Vec<Point>>()
@@ -166,8 +168,7 @@ impl GraphModelSteps {
 #[cfg(test)]
 mod test {
     use super::GraphModelSteps;
-    use crate::{core::Database, model::Activity, views::Point};
-    use chrono::{Duration, Local};
+    use crate::{core::Database, model::Activity, prelude::*, views::Point};
     use gtk::glib;
     use tempfile::tempdir;
 
@@ -177,23 +178,27 @@ mod test {
         ctx.with_thread_default(|| {
             let data_dir = tempdir().unwrap();
             let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+            let now = glib::DateTime::local();
 
             let mut model = GraphModelSteps::new_with_database(db.clone());
-            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(1)))
+                .unwrap();
             assert_eq!(model.streak_count_today(5000), 0);
 
             let act = Activity::new();
             act.set_steps(Some(5000));
-            act.set_date(Local::now().into());
+            act.set_date(now.clone());
             ctx.block_on(db.save_activity(act)).unwrap();
-            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(1)))
+                .unwrap();
             assert_eq!(model.streak_count_today(5000), 1);
 
             let act = Activity::new();
             act.set_steps(Some(8000));
-            act.set_date((Local::now() - Duration::days(1) - Duration::hours(1)).into());
+            act.set_date(now.clone().add_days(-1).unwrap().add_hours(-1).unwrap());
             ctx.block_on(db.save_activity(act)).unwrap();
-            ctx.block_on(model.reload(Duration::days(30))).unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(30)))
+                .unwrap();
             assert_eq!(model.streak_count_today(5000), 2);
             assert_eq!(model.streak_count_today(8000), 0);
             assert_eq!(model.streak_count_yesterday(5000), 1);
@@ -201,9 +206,10 @@ mod test {
 
             let act = Activity::new();
             act.set_steps(Some(400));
-            act.set_date((Local::now() - Duration::days(1)).into());
+            act.set_date(now.add_days(-1).unwrap());
             ctx.block_on(db.save_activity(act)).unwrap();
-            ctx.block_on(model.reload(Duration::days(30))).unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(30)))
+                .unwrap();
             assert_eq!(model.streak_count_today(5000), 2);
         })
         .unwrap();
@@ -217,38 +223,41 @@ mod test {
             let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
 
             let mut model = GraphModelSteps::new_with_database(db.clone());
-            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(1)))
+                .unwrap();
             assert_eq!(model.to_points(), vec![]);
 
             let act = Activity::new();
             act.set_steps(Some(5000));
-            let date = Local::now().into();
-            act.set_date(date);
+            let date = glib::DateTime::local();
+            act.set_date(date.clone());
             ctx.block_on(db.save_activity(act)).unwrap();
-            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(1)))
+                .unwrap();
             assert_eq!(
                 model.to_points(),
                 vec![Point {
-                    date: date.date(),
+                    date: date.clone(),
                     value: 5000.0
                 }]
             );
 
             let act = Activity::new();
             act.set_steps(Some(8000));
-            let date_y = (Local::now() - Duration::days(1) - Duration::hours(1)).into();
-            act.set_date(date_y);
+            let date_y = date.clone().add_days(-1).unwrap().add_hours(-1).unwrap();
+            act.set_date(date_y.clone());
             ctx.block_on(db.save_activity(act)).unwrap();
-            ctx.block_on(model.reload(Duration::days(30))).unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(30)))
+                .unwrap();
             assert_eq!(
                 model.to_points(),
                 vec![
                     Point {
-                        date: date_y.date(),
+                        date: date_y.clone(),
                         value: 8000.0
                     },
                     Point {
-                        date: date.date(),
+                        date: date.clone(),
                         value: 5000.0
                     }
                 ]
@@ -256,18 +265,19 @@ mod test {
 
             let act = Activity::new();
             act.set_steps(Some(400));
-            act.set_date((Local::now() - Duration::days(1)).into());
+            act.set_date(date.add_days(-1).unwrap());
             ctx.block_on(db.save_activity(act)).unwrap();
-            ctx.block_on(model.reload(Duration::days(30))).unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(30)))
+                .unwrap();
             assert_eq!(
                 model.to_points(),
                 vec![
                     Point {
-                        date: date_y.date(),
+                        date: date_y,
                         value: 8400.0
                     },
                     Point {
-                        date: date.date(),
+                        date: date,
                         value: 5000.0
                     }
                 ]
@@ -282,29 +292,20 @@ mod test {
         ctx.with_thread_default(|| {
             let data_dir = tempdir().unwrap();
             let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+            let now = glib::DateTime::local();
             ctx.block_on(
-                db.save_activity(
-                    Activity::builder()
-                        .date(Local::now().into())
-                        .steps(2000)
-                        .build(),
-                ),
+                db.save_activity(Activity::builder().date(now.clone()).steps(2000).build()),
             )
             .unwrap();
             let mut model = GraphModelSteps::new_with_database(db.clone());
             assert!(model.today_step_count().is_none());
-            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(1)))
+                .unwrap();
             assert_eq!(model.today_step_count(), Some(2000));
-            ctx.block_on(
-                db.save_activity(
-                    Activity::builder()
-                        .date(Local::now().into())
-                        .steps(4000)
-                        .build(),
-                ),
-            )
-            .unwrap();
-            ctx.block_on(model.reload(Duration::days(1))).unwrap();
+            ctx.block_on(db.save_activity(Activity::builder().date(now).steps(4000).build()))
+                .unwrap();
+            ctx.block_on(model.reload(glib::TimeSpan::from_days(1)))
+                .unwrap();
             assert_eq!(model.today_step_count(), Some(6000));
         })
         .unwrap();
