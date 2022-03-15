@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-01-25 22:47+0000\n"
-"PO-Revision-Date: 2022-02-01 15:46+0200\n"
+"POT-Creation-Date: 2022-03-15 08:58+0000\n"
+"PO-Revision-Date: 2022-03-15 13:48+0300\n"
 "Last-Translator: Alexey Rubtsov <rushills@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -214,7 +214,7 @@ msgstr "_Сохранить"
 msgid "January"
 msgstr "Январь"
 
-#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:245
+#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:223
 msgid "February"
 msgstr "Февраль"
 
@@ -339,8 +339,7 @@ msgstr ""
 msgid "Weight Measurements"
 msgstr "Измерения веса"
 
-#: data/ui/plugins/weight/summary.blp:5 data/ui/preferences_window.blp:184
-#: data/ui/preferences_window.blp:187 data/ui/view_add_weight.blp:38
+#: data/ui/plugins/weight/summary.blp:5 data/ui/view_add_weight.blp:38
 #: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
 msgid "Weight"
 msgstr "Вес"
@@ -369,23 +368,23 @@ msgstr "Общие"
 msgid "User"
 msgstr "Пользователь"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:146
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
 msgid "Unit system"
 msgstr "Система единиц измерения"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:156
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
 msgid "Imperial"
 msgstr "Имперская"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
 msgid "Metric"
 msgstr "Метрическая"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:170
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
 msgid "Birthday"
 msgstr "День рождения"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:179
+#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
 msgid "Height"
 msgstr "Рост"
 
@@ -405,16 +404,20 @@ msgstr "Частота"
 msgid "Daily reminder time"
 msgstr "Время ежедневного напоминания"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:242
-#: src/plugins/steps/details.rs:241
+#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
+#: src/plugins/steps/details.rs:240
 msgid "Step goal"
 msgstr "Цель в шагах"
 
-#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:218
-msgid "The WHO recommends 10.000 steps per day."
+#: data/ui/preferences_window.blp:170
+msgid "The WHO recommends 10,000 steps per day."
 msgstr "ВОЗ рекомендует делать 10 000 шагов в день."
 
-#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:279
+#: data/ui/preferences_window.blp:184 data/ui/preferences_window.blp:187
+msgid "Weight Goal"
+msgstr "Цель по весу"
+
+#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "ВОЗ рекомендует ИМТ в пределах 18,5-24,9."
 
@@ -446,51 +449,59 @@ msgstr "Импорт данных из CSV"
 msgid "Import…"
 msgstr "Импортировать…"
 
-#: data/ui/setup_window.blp:33
+#: data/ui/setup_window.blp:39
 msgid "Health Setup"
 msgstr "Настройка Здоровья"
 
-#: data/ui/setup_window.blp:47
+#: data/ui/setup_window.blp:53
 msgid "_Quit"
 msgstr "_Завершить"
 
-#: data/ui/setup_window.blp:56
+#: data/ui/setup_window.blp:62
 msgid "_Previous"
 msgstr "_Предыдущее"
 
-#: data/ui/setup_window.blp:71
+#: data/ui/setup_window.blp:77
 msgid "_Next"
 msgstr "_Следующее"
 
-#: data/ui/setup_window.blp:84
+#: data/ui/setup_window.blp:90
 msgid "_Done"
 msgstr "_Готово"
 
-#: data/ui/setup_window.blp:110
+#: data/ui/setup_window.blp:116
 msgid "Welcome to Health!"
 msgstr "Добро пожаловать в Здоровье!"
 
-#: data/ui/setup_window.blp:122
+#: data/ui/setup_window.blp:128
 msgid "Please enter some information to get setup."
 msgstr "Пожалуйста, введите некоторую информацию для настройки."
 
-#: data/ui/setup_window.blp:206
+#: data/ui/setup_window.blp:212
 msgid "Please enter your daily step goal."
 msgstr "Пожалуйста, введите свою ежедневную цель в шагах."
 
-#: data/ui/setup_window.blp:267
+#: data/ui/setup_window.blp:224
+msgid "The WHO recommends 10.000 steps per day."
+msgstr "ВОЗ рекомендует делать 10 000 шагов в день."
+
+#: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
 msgstr "Пожалуйста, введите свою цель по весу."
 
-#: data/ui/setup_window.blp:307 src/plugins/weight/details.rs:221
+#: data/ui/setup_window.blp:314
+msgid "Current weight"
+msgstr "Текущий вес"
+
+#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:220
 msgid "Weight goal"
 msgstr "Цель по весу"
 
-#: data/ui/setup_window.blp:342
+#: data/ui/setup_window.blp:372
 msgid "Setup sync with third-party providers."
 msgstr "Настройка синхронизации со сторонними провайдерами."
 
-#: data/ui/setup_window.blp:354
+#: data/ui/setup_window.blp:384
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
@@ -581,7 +592,9 @@ msgstr "Включить модуль"
 
 #: src/core/application.rs:169
 msgid "translator-credits"
-msgstr "Alexey Rubtsov <rushills@gmail.com>, 2021"
+msgstr ""
+"Alexey Rubtsov <rushills@gmail.com>, 2021\n"
+"Aleksandr Melman <alexmelman88@gmail.com>, 2022"
 
 #: src/core/application.rs:171
 msgid "Websites"
@@ -667,29 +680,29 @@ msgstr "Волейбол"
 msgid "Walking"
 msgstr "Ходьба"
 
-#: src/model/model_notification.rs:224
+#: src/model/model_notification.rs:234
 msgid "Health: walking reminder"
 msgstr "Здоровье: напоминание о ходьбе"
 
-#: src/model/model_notification.rs:245
+#: src/model/model_notification.rs:250
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
-msgstr[0] "Остался {} шаг до выполнения ежедневной цели по шагам"
-msgstr[1] "Осталось {} шага до выполнения ежедневной цели по шагам"
-msgstr[2] "Осталось {} шагов до выполнения ежедневной цели по шагам"
+msgstr[0] "Остался {} шаг до выполнения ежедневной цели по шагам."
+msgstr[1] "Осталось {} шага до выполнения ежедневной цели по шагам."
+msgstr[2] "Осталось {} шагов до выполнения ежедневной цели по шагам."
 
 #: src/plugins/activities/plugin.rs:39
 msgid "Activities"
 msgstr "Активности"
 
-#: src/plugins/activities/summary.rs:93
+#: src/plugins/activities/summary.rs:91
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "{} активная минута сегодня"
 msgstr[1] "{} активные минуты сегодня"
 msgstr[2] "{} активных минут сегодня"
 
-#: src/plugins/calories/details.rs:215
+#: src/plugins/calories/details.rs:217
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -711,25 +724,25 @@ msgstr[2] ""
 "{} калорий\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:96 src/plugins/calories/summary.rs:103
+#: src/plugins/calories/summary.rs:97 src/plugins/calories/summary.rs:104
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "{} сожжённая калория сегодня"
 msgstr[1] "{} сожжённые калории сегодня"
 msgstr[2] "{} сожжённых калорий сегодня"
 
-#: src/plugins/steps/details.rs:187
+#: src/plugins/steps/details.rs:186
 msgid "Today's steps: {}"
 msgstr "Сегодняшние шаги: {}"
 
-#: src/plugins/steps/details.rs:202
+#: src/plugins/steps/details.rs:201
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
 "Пока нет непрерывных занятий. Достигайте своей цели по шагам в течение "
 "нескольких дней, чтобы начать полосу!"
 
-#: src/plugins/steps/details.rs:206
+#: src/plugins/steps/details.rs:205
 msgid ""
 "You're on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -744,13 +757,13 @@ msgstr[2] ""
 "Вы находитесь на непрерывной полосе в течение {} дней. Достигните своей цели "
 "по шагам сегодня, чтобы продолжить ее!"
 
-#: src/plugins/steps/details.rs:214
+#: src/plugins/steps/details.rs:213
 msgid "You've reached your step goal today. Keep going to start a streak!"
 msgstr ""
 "Сегодня вы достигли своей цели по шагам. Продолжайте, чтобы начать "
 "непрерывную полосу!"
 
-#: src/plugins/steps/details.rs:217
+#: src/plugins/steps/details.rs:216
 msgid "You're on a streak for {} day. Good job!"
 msgid_plural "You're on a streak for {} days. Good job!"
 msgstr[0] "У вас непрерывная полоса в {} день. Хорошая работа!"
@@ -758,33 +771,37 @@ msgstr[1] "У вас непрерывная полоса в {} дня. Хоро�
 msgstr[2] "У вас непрерывная полоса в {} дней. Хорошая работа!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:234
+#: src/plugins/steps/details.rs:233
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} шаг на {}"
 msgstr[1] "{} шага на {}"
 msgstr[2] "{} шагов на {}"
 
-#: src/plugins/steps/summary.rs:97
+#: src/plugins/steps/summary.rs:94
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} шаг сделан сегодня"
 msgstr[1] "{} шага сделано сегодня"
 msgstr[2] "{} шагов сделано сегодня"
 
-#: src/plugins/steps/summary.rs:107
+#: src/plugins/steps/summary.rs:105
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Достигнут {}%% ежедневной цели по шагам"
 msgstr[1] "Достигнут {}%% ежедневной цели по шагам"
 msgstr[2] "Достигнут {}%% ежедневной цели по шагам"
 
-#: src/plugins/weight/details.rs:193
+#: src/plugins/steps/summary.rs:112
+msgid "Well done! You have reached your daily step goal!"
+msgstr "Отлично! Вы достигли своей ежедневной цели по шагам!"
+
+#: src/plugins/weight/details.rs:192
 msgid "Current BMI: {}"
 msgstr "Текущий ИМТ: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:208
+#: src/plugins/weight/details.rs:207
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} фунт на {}"
@@ -792,18 +809,18 @@ msgstr[1] "{} фунта на {}"
 msgstr[2] "{} фунтов на {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:211
+#: src/plugins/weight/details.rs:210
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} килограмм на {}"
 msgstr[1] "{} килограмма на {}"
 msgstr[2] "{} килограммов на {}"
 
-#: src/plugins/weight/details.rs:247 src/plugins/weight/details.rs:252
+#: src/plugins/weight/details.rs:246 src/plugins/weight/details.rs:251
 msgid "Unknown BMI"
 msgstr "Неизвестный ИМТ"
 
-#: src/plugins/weight/details.rs:271
+#: src/plugins/weight/details.rs:270
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -820,7 +837,7 @@ msgstr[2] ""
 "Ваша цель по весу - {} фунтов. Добавьте первое измерение веса, чтобы узнать, "
 "насколько вы близки к ее достижению."
 
-#: src/plugins/weight/details.rs:278
+#: src/plugins/weight/details.rs:277
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -837,12 +854,12 @@ msgstr[2] ""
 "Ваша цель по весу - {} килограммов. Добавьте первое измерение веса, чтобы "
 "узнать, насколько вы близки к ее достижению."
 
-#: src/plugins/weight/details.rs:287
+#: src/plugins/weight/details.rs:286
 msgid "You've reached your weight goal. Great job!"
 msgstr "Вы достигли своей цели по весу. Отличная работа!"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:303
+#: src/plugins/weight/details.rs:302
 msgid "Your weight goal is {} pound,"
 msgid_plural "Your weight goal is {} pounds,"
 msgstr[0] "Ваша цель по весу - {} фунт,"
@@ -850,7 +867,7 @@ msgstr[1] "Ваша цель по весу - {} фунта,"
 msgstr[2] "Ваша цель по весу - {} фунтов,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:308
+#: src/plugins/weight/details.rs:307
 msgid "you have {} pound left to reach it"
 msgid_plural "you have {} pounds left to reach it"
 msgstr[0] "вам остался {} фунт, чтобы достичь её"
@@ -858,7 +875,7 @@ msgstr[1] "вам осталось {} фунта, чтобы достичь её
 msgstr[2] "вам осталось {} фунтов, чтобы достичь её"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:315
+#: src/plugins/weight/details.rs:314
 msgid "Your weight goal is {} kilogram,"
 msgid_plural "Your weight goal is {} kilograms,"
 msgstr[0] "Ваша цель по весу - {} килограмм,"
@@ -866,84 +883,84 @@ msgstr[1] "Ваша цель по весу - {} килограмма,"
 msgstr[2] "Ваша цель по весу - {} килограммов,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:321
+#: src/plugins/weight/details.rs:320
 msgid "you have {} kilogram left to reach it"
 msgid_plural "you have {} kilograms left to reach it"
 msgstr[0] "вам остался {} килограмм, чтобы достичь её"
 msgstr[1] "вам осталось {} килограмма, чтобы достичь её"
 msgstr[2] "вам осталось {} килограммов, чтобы достичь её"
 
-#: src/plugins/weight/details.rs:331
+#: src/plugins/weight/details.rs:330
 msgid "No weight goal set yet. You can set it in Health's preferences."
 msgstr ""
 "Цель по весу пока не установлена. Вы можете установить ее в настройках "
 "Здоровье."
 
-#: src/plugins/weight/summary.rs:120
+#: src/plugins/weight/summary.rs:119
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} фунт"
 msgstr[1] "{} фунта"
 msgstr[2] "{} фунтов"
 
-#: src/plugins/weight/summary.rs:128
+#: src/plugins/weight/summary.rs:127
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} килограмм"
 msgstr[1] "{} килограмма"
 msgstr[2] "{} килограммов"
 
-#: src/plugins/weight/summary.rs:139
+#: src/plugins/weight/summary.rs:138
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "+ {} фунт по сравнению с предыдущим измерением"
 msgstr[1] "+ {} фунта по сравнению с предыдущим измерением"
 msgstr[2] "+ {} фунтов по сравнению с предыдущим измерением"
 
-#: src/plugins/weight/summary.rs:147
+#: src/plugins/weight/summary.rs:146
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "+ {} килограмм по сравнению с предыдущим измерением"
 msgstr[1] "+ {} килограмма по сравнению с предыдущим измерением"
 msgstr[2] "+ {} килограммов по сравнению с предыдущим измерением"
 
-#: src/plugins/weight/summary.rs:158
+#: src/plugins/weight/summary.rs:157
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "{} фунт по сравнению с предыдущим измерением"
 msgstr[1] "{} фунта по сравнению с предыдущим измерением"
 msgstr[2] "{} фунтов по сравнению с предыдущим измерением"
 
-#: src/plugins/weight/summary.rs:166
+#: src/plugins/weight/summary.rs:165
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "{} килограмм по сравнению с предыдущим измерением"
 msgstr[1] "{} килограмма по сравнению с предыдущим измерением"
 msgstr[2] "{} килограммов по сравнению с предыдущим измерением"
 
-#: src/plugins/weight/summary.rs:174
+#: src/plugins/weight/summary.rs:173
 msgid "No change in weight"
 msgstr "Без изменения веса"
 
-#: src/plugins/weight/summary.rs:179
+#: src/plugins/weight/summary.rs:178
 msgid "No weight data available"
 msgstr "Нет добавленных записей о весе"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:363
+#: src/sync/csv.rs:81 src/sync/csv.rs:370
 msgid "No activities added yet; can't create empty export!"
 msgstr ""
 "Пока не добавлено ни одной активности; невозможно создать пустой экспорт!"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:381
+#: src/sync/csv.rs:111 src/sync/csv.rs:388
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr "Еще не добавлены измерения веса; невозможно создать пустой экспорт!"
 
-#: src/sync/csv.rs:184 src/sync/csv.rs:325
+#: src/sync/csv.rs:184 src/sync/csv.rs:332
 msgid "Can't parse encrypted backup without encryption key!"
 msgstr ""
 "Невозможно разобрать зашифрованную резервную копию без ключа шифрования!"
 
-#: src/sync/csv.rs:195 src/sync/csv.rs:345
+#: src/sync/csv.rs:195 src/sync/csv.rs:352
 msgid ""
 "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -980,23 +997,27 @@ msgstr ""
 "Не удается получить токен OAuth2, когда не установлен токен обновления! "
 "Пожалуйста, повторите аутентификацию у поставщика синхронизации."
 
-#: src/sync/sync_provider.rs:225
+#: src/sync/sync_provider.rs:157
+msgid "Token for Health sync provider {}"
+msgstr "Токен для поставщика синхронизации Здоровья {}"
+
+#: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
 msgstr "Успешная аутентификация, пожалуйста, вернитесь в раздел \"Здоровье\"."
 
-#: src/sync/sync_provider.rs:236
+#: src/sync/sync_provider.rs:228
 msgid "Couldn't parse OAuth2 response"
 msgstr "Не удалось разобрать ответ OAuth2"
 
-#: src/views/bar_graph_view.rs:584
+#: src/views/bar_graph_view.rs:583
 msgid "Enter weight record to calculate idle calories"
 msgstr "Введите данные о весе, чтобы рассчитать калории холостого хода"
 
-#: src/views/bar_graph_view.rs:588
+#: src/views/bar_graph_view.rs:587
 msgid "Idle calories"
 msgstr "Калории покоя"
 
-#: src/views/view_add_activity.rs:237
+#: src/views/view_add_activity.rs:236
 msgid "Activity"
 msgstr "Активность"
 
@@ -1037,7 +1058,11 @@ msgstr[0] "{} ярд"
 msgstr[1] "{} ярда"
 msgstr[2] "{} ярдов"
 
-#: src/widgets/bmi_level_bar.rs:219 src/widgets/bmi_level_bar.rs:256
+#: src/widgets/bmi_level_bar.rs:267 src/windows/setup_window.rs:248
+msgid "Current BMI"
+msgstr "Текущий ИМТ"
+
+#: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Текущий индекс массы тела {}</small>"
 
@@ -1171,11 +1196,15 @@ msgstr "Произошла ошибка!"
 msgid "Close"
 msgstr "Закрыть"
 
+#: src/windows/preferences_window.rs:409 src/windows/setup_window.rs:249
+msgid "Target BMI"
+msgstr "Целевой ИМТ"
+
 #: src/windows/window.rs:97
 msgid "Failed to migrate database to new version due to error {}"
 msgstr "Не удалось перенести базу данных на новую версию из-за ошибки {}"
 
-#: src/windows/window.rs:266
+#: src/windows/window.rs:267
 msgid "Couldn't sync Google Fit data due to error: {}"
 msgstr "Не удалось синхронизировать данные Google Fit из-за ошибки: {}"
 
