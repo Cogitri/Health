@@ -55,7 +55,7 @@ template HealthPluginDetails : Adw.Bin {
             margin-end: 6;
             wrap: true;
             wrap-mode: word_char;
-            visible: bind HealthPluginDetails.is-mocked sync-create;
+            visible: bind HealthPluginDetails.is-mocked;
           }
 
           Label is_mocked_label {
@@ -66,7 +66,7 @@ template HealthPluginDetails : Adw.Bin {
             wrap: true;
             wrap-mode: word_char;
             label: _("This is a preview of how the plugin presents data. Enable the plugin to see your actual, live data.");
-            visible: bind HealthPluginDetails.is-mocked sync-create;
+            visible: bind HealthPluginDetails.is-mocked;
           }
         }
       };
