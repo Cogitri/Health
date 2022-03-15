@@ -1,7 +1,7 @@
 use std::convert::TryInto;
 
 use crate::{
-    core::{ni18n_f, Database, Settings},
+    core::{i18n, ni18n_f, Database, Settings},
     plugins::{PluginName, PluginSummaryRow},
 };
 use adw::prelude::*;
@@ -100,12 +100,17 @@ impl PluginStepsSummaryRow {
         imp.circular_progress_bar
             .set_step_count(step_count.try_into().unwrap());
         let steps_percentage = (step_count as f32 / step_goal.max(1) as f32 * 100.0) as u32;
-        imp.activity_subtext.set_text(&ni18n_f(
-            "Reached {} percent of daily step goal",
-            "Reached {} percent of daily step goal",
-            steps_percentage,
-            &[&steps_percentage.to_string()],
-        ));
+        if steps_percentage < 100 {
+            imp.activity_subtext.set_text(&ni18n_f(
+                "Reached {} percent of daily step goal",
+                "Reached {} percent of daily step goal",
+                steps_percentage,
+                &[&steps_percentage.to_string()],
+            ));
+        } else {
+            imp.activity_subtext
+                .set_text(&i18n("Well done! You have reached your daily step goal!"));
+        }
     }
 }
 

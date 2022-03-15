@@ -408,7 +408,7 @@ impl PreferencesWindow {
             imp.settings.set_user_weight_goal(weight);
             imp.bmi_levelbar.set_weight(weight);
             imp.bmi_levelbar
-                .set_bmi_label(&crate::core::i18n("Current BMI"));
+                .set_bmi_label(&crate::core::i18n("Target BMI"));
         }
     }
 
