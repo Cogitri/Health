@@ -6,8 +6,8 @@
 msgid ""
 msgstr "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-03-03 20:40+0000\n"
-"PO-Revision-Date: 2022-03-06 17:00+0100\n"
+"POT-Creation-Date: 2022-03-15 08:58+0000\n"
+"PO-Revision-Date: 2022-03-20 17:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -198,7 +198,7 @@ msgstr "_Gorde"
 msgid "January"
 msgstr "Urtarrila"
 
-#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:245
+#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:223
 msgid "February"
 msgstr "Otsaila"
 
@@ -318,8 +318,7 @@ msgstr "Pisu-neurketa bat gehitzeko, erabili <b>+</b> botoia."
 msgid "Weight Measurements"
 msgstr "Pisu-neurketak"
 
-#: data/ui/plugins/weight/summary.blp:5 data/ui/preferences_window.blp:184
-#: data/ui/preferences_window.blp:187 data/ui/view_add_weight.blp:38
+#: data/ui/plugins/weight/summary.blp:5 data/ui/view_add_weight.blp:38
 #: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
 msgid "Weight"
 msgstr "Pisua"
@@ -348,23 +347,23 @@ msgstr "Orokorra"
 msgid "User"
 msgstr "Erabiltzailea"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:146
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
 msgid "Unit system"
 msgstr "Unitate-sistema"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:156
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
 msgid "Imperial"
 msgstr "Inperiala"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
 msgid "Metric"
 msgstr "Metrikoa"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:170
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
 msgid "Birthday"
 msgstr "Urtebetetzea"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:179
+#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
 msgid "Height"
 msgstr "Altuera"
 
@@ -384,16 +383,20 @@ msgstr "Maiztasuna"
 msgid "Daily reminder time"
 msgstr "Eguneroko oroigarriaren ordua"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:242
-#: src/plugins/steps/details.rs:241
+#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
+#: src/plugins/steps/details.rs:240
 msgid "Step goal"
 msgstr "Urrats-helburua"
 
-#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:218
-msgid "The WHO recommends 10.000 steps per day."
+#: data/ui/preferences_window.blp:170
+msgid "The WHO recommends 10,000 steps per day."
 msgstr "OMEk egunean 10.000 urrats egitea gomendatzen du."
 
-#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:279
+#: data/ui/preferences_window.blp:184 data/ui/preferences_window.blp:187
+msgid "Weight Goal"
+msgstr "Pisu-helburua"
+
+#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "OMEk 18,5 eta 24,9 balioen arteko GMIa gomentatzen du."
 
@@ -425,51 +428,59 @@ msgstr "Itsatsi datuak CSV fitxategitik"
 msgid "Import…"
 msgstr "Inportatu…"
 
-#: data/ui/setup_window.blp:33
+#: data/ui/setup_window.blp:39
 msgid "Health Setup"
 msgstr "Osasuna aplikazioaren konfigurazioa"
 
-#: data/ui/setup_window.blp:47
+#: data/ui/setup_window.blp:53
 msgid "_Quit"
 msgstr "I_rten"
 
-#: data/ui/setup_window.blp:56
+#: data/ui/setup_window.blp:62
 msgid "_Previous"
 msgstr "_Aurrekoa"
 
-#: data/ui/setup_window.blp:71
+#: data/ui/setup_window.blp:77
 msgid "_Next"
 msgstr "_Hurrengoa"
 
-#: data/ui/setup_window.blp:84
+#: data/ui/setup_window.blp:90
 msgid "_Done"
 msgstr "_Eginda"
 
-#: data/ui/setup_window.blp:110
+#: data/ui/setup_window.blp:116
 msgid "Welcome to Health!"
 msgstr "Ongi etorri Osasuna aplikaziora!"
 
-#: data/ui/setup_window.blp:122
+#: data/ui/setup_window.blp:128
 msgid "Please enter some information to get setup."
 msgstr "Sartu informazioa konfigurazioa gauzatzeko."
 
-#: data/ui/setup_window.blp:206
+#: data/ui/setup_window.blp:212
 msgid "Please enter your daily step goal."
 msgstr "Sartu egunean zenbat urrats egingo dituzun."
 
-#: data/ui/setup_window.blp:267
+#: data/ui/setup_window.blp:224
+msgid "The WHO recommends 10.000 steps per day."
+msgstr "OMEk egunean 10.000 urrats egitea gomendatzen du."
+
+#: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
 msgstr "Sartu zein pisu izan nahi duzun."
 
-#: data/ui/setup_window.blp:307 src/plugins/weight/details.rs:221
+#: data/ui/setup_window.blp:314
+msgid "Current weight"
+msgstr "Uneko pisua"
+
+#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:220
 msgid "Weight goal"
 msgstr "Pisu-helburua"
 
-#: data/ui/setup_window.blp:342
+#: data/ui/setup_window.blp:372
 msgid "Setup sync with third-party providers."
 msgstr "Konfiguratu hirugarren hornitzaileen sinkronizazioa."
 
-#: data/ui/setup_window.blp:354
+#: data/ui/setup_window.blp:384
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr "Urratsak eta pisu-neurketak hirugarren hornitzaileekin sinkronizatu dezakezu."
@@ -643,11 +654,11 @@ msgstr "Boleibola"
 msgid "Walking"
 msgstr "Ibilaldiak"
 
-#: src/model/model_notification.rs:236
+#: src/model/model_notification.rs:234
 msgid "Health: walking reminder"
 msgstr "Osasuna: ibiltzeko oroigarria"
 
-#: src/model/model_notification.rs:252
+#: src/model/model_notification.rs:250
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "Urrats {} falta zaizu egunerako duzun urrats-helburua osatzeko."
@@ -657,13 +668,13 @@ msgstr[1] "{} urrats falta zaizkizu egunerako duzun urrats-helburua osatzeko."
 msgid "Activities"
 msgstr "Jarduerak"
 
-#: src/plugins/activities/summary.rs:93
+#: src/plugins/activities/summary.rs:91
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "Minutu {} aktibo gaur"
 msgstr[1] "{} minutu aktibo gaur"
 
-#: src/plugins/calories/details.rs:215
+#: src/plugins/calories/details.rs:217
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -679,22 +690,22 @@ msgstr[1] "{}:\n"
 "{} kaloria\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:96 src/plugins/calories/summary.rs:103
+#: src/plugins/calories/summary.rs:97 src/plugins/calories/summary.rs:104
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "{} kaloria erre da gaur"
 msgstr[1] "Erretako kaloriak"
 
-#: src/plugins/steps/details.rs:187
+#: src/plugins/steps/details.rs:186
 msgid "Today's steps: {}"
 msgstr "Gaurko urratsak: {}"
 
-#: src/plugins/steps/details.rs:202
+#: src/plugins/steps/details.rs:201
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr "Ez zaude bolada onean. Zure urrats-helburua zenbait egunez bete behar duzu boladan egokian sartzeko!"
 
-#: src/plugins/steps/details.rs:206
+#: src/plugins/steps/details.rs:205
 msgid ""
 "You're on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -702,18 +713,18 @@ msgid_plural ""
 msgstr[0] "Bolada onean zaude egun {}ez. Iritsi zure urrats-helburura bolada onarekin jarraitzeko!"
 msgstr[1] "Bolada onean zaude {} egunez. Iritsi zure urrats-helburura bolada onarekin jarraitzeko"
 
-#: src/plugins/steps/details.rs:214
+#: src/plugins/steps/details.rs:213
 msgid "You've reached your step goal today. Keep going to start a streak!"
 msgstr "Zure urrats-helburua bete duzu gaur. Jarraitu horrela bolada on bati ekiteko!"
 
-#: src/plugins/steps/details.rs:217
+#: src/plugins/steps/details.rs:216
 msgid "You're on a streak for {} day. Good job!"
 msgid_plural "You're on a streak for {} days. Good job!"
 msgstr[0] "Bolada onean zaude egun {}ez. Lan ona!"
 msgstr[1] "Bolada onean zaude {} egunez. Lan ona!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:234
+#: src/plugins/steps/details.rs:233
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "Urrats {} honetan: {}"
@@ -725,35 +736,39 @@ msgid_plural "{} steps taken today"
 msgstr[0] "Urrats {} egin da gaur"
 msgstr[1] "{} urrats egin dira gaur"
 
-#: src/plugins/steps/summary.rs:104
+#: src/plugins/steps/summary.rs:105
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Eguneko urrats-helburuaren ehuneko {} egin da"
 msgstr[1] "Eguneko urrats-helburuaren ehuneko {} egin da"
 
-#: src/plugins/weight/details.rs:193
+#: src/plugins/steps/summary.rs:112
+msgid "Well done! You have reached your daily step goal!"
+msgstr "Ondo! Egunerako duzun urrats-helburua osatu duzu!"
+
+#: src/plugins/weight/details.rs:192
 msgid "Current BMI: {}"
 msgstr "Uneko GMIa: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:208
+#: src/plugins/weight/details.rs:207
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "Libera {} honetan: {}"
 msgstr[1] "{} libera honetan: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:211
+#: src/plugins/weight/details.rs:210
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "Kilogramo {} honetan: {}"
 msgstr[1] "{} kilogramo honetan: {}"
 
-#: src/plugins/weight/details.rs:247 src/plugins/weight/details.rs:252
+#: src/plugins/weight/details.rs:246 src/plugins/weight/details.rs:251
 msgid "Unknown BMI"
 msgstr "GMI ezezaguna"
 
-#: src/plugins/weight/details.rs:271
+#: src/plugins/weight/details.rs:270
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -763,7 +778,7 @@ msgid_plural ""
 msgstr[0] "Zure pisu-helburua libera {} da. Gehitu pisu-neurketa bat hura iristetik zein hurbil zauden ikusteko."
 msgstr[1] "Zure pisu-helburua {} libera dira. Gehitu pisu-neurketa bat hura iristetik zein hurbil zauden ikusteko."
 
-#: src/plugins/weight/details.rs:278
+#: src/plugins/weight/details.rs:277
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -773,99 +788,99 @@ msgid_plural ""
 msgstr[0] "Zure pisu-helburua kilogramo {} da. Gehitu pisu-neurketa bat hura iristetik zein hurbil zauden ikusteko."
 msgstr[1] "Zure pisu-helburua {} kilogramo dira. Gehitu pisu-neurketa bat hura iristetik zein hurbil zauden ikusteko."
 
-#: src/plugins/weight/details.rs:287
+#: src/plugins/weight/details.rs:286
 msgid "You've reached your weight goal. Great job!"
 msgstr "Zure pisu-helburura iritsi zara. Lan ona!"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:303
+#: src/plugins/weight/details.rs:302
 msgid "Your weight goal is {} pound,"
 msgid_plural "Your weight goal is {} pounds,"
 msgstr[0] "Zure pisu-helburua libera {} da,"
 msgstr[1] "Zure pisu-helburua {} libera dira,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:308
+#: src/plugins/weight/details.rs:307
 msgid "you have {} pound left to reach it"
 msgid_plural "you have {} pounds left to reach it"
 msgstr[0] "libera {} falta zaizu hartara iristeko"
 msgstr[1] "{} libera falta zaizkizu hartara iristeko"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:315
+#: src/plugins/weight/details.rs:314
 msgid "Your weight goal is {} kilogram,"
 msgid_plural "Your weight goal is {} kilograms,"
 msgstr[0] "Zure pisu-helburua kilogramo {} da,"
 msgstr[1] "Zure pisu-helburua {} kilogramo dira,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:321
+#: src/plugins/weight/details.rs:320
 msgid "you have {} kilogram left to reach it"
 msgid_plural "you have {} kilograms left to reach it"
 msgstr[0] "kilogramo {} falta zaizu hartara iristeko"
 msgstr[1] "{} kilogramo falta zaizkizu hartara iristeko"
 
-#: src/plugins/weight/details.rs:331
+#: src/plugins/weight/details.rs:330
 msgid "No weight goal set yet. You can set it in Health's preferences."
 msgstr "Ez da pisu-helbururik ezarri oraindik. Hobespenetan ezarri dezakezu."
 
-#: src/plugins/weight/summary.rs:120
+#: src/plugins/weight/summary.rs:119
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "Libera {}"
 msgstr[1] "{} libera"
 
-#: src/plugins/weight/summary.rs:128
+#: src/plugins/weight/summary.rs:127
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "Kilogramo {}"
 msgstr[1] "{} kilogramo"
 
-#: src/plugins/weight/summary.rs:139
+#: src/plugins/weight/summary.rs:138
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "Libera + {} aurreko pisuarekin alderatuta"
 msgstr[1] "+ {} libera aurreko pisuarekin alderatuta"
 
-#: src/plugins/weight/summary.rs:147
+#: src/plugins/weight/summary.rs:146
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "Kilogramo + {} aurreko pisuarekin alderatuta"
 msgstr[1] "+ {} kilogramo aurreko pisuarekin alderatuta"
 
-#: src/plugins/weight/summary.rs:158
+#: src/plugins/weight/summary.rs:157
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "Libera {} aurreko pisuarekin alderatuta"
 msgstr[1] "{} libera aurreko pisuarekin alderatuta"
 
-#: src/plugins/weight/summary.rs:166
+#: src/plugins/weight/summary.rs:165
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "Kilogramo {} aurreko pisuarekin alderatuta"
 msgstr[1] "{} kilogramo aurreko pisuarekin alderatuta"
 
-#: src/plugins/weight/summary.rs:174
+#: src/plugins/weight/summary.rs:173
 msgid "No change in weight"
 msgstr "Ez da aldaketarik izan pisuan"
 
-#: src/plugins/weight/summary.rs:179
+#: src/plugins/weight/summary.rs:178
 msgid "No weight data available"
 msgstr "Ez dago pisuaren daturik erabilgarri"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:371
+#: src/sync/csv.rs:81 src/sync/csv.rs:370
 msgid "No activities added yet; can't create empty export!"
 msgstr "Ez da jarduerarik sortu oraindik; ezin da hutsik dagoena esportatu!"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:389
+#: src/sync/csv.rs:111 src/sync/csv.rs:388
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr "Ez da pisu-neurketarik sortu oraindik; ezin da hutsik dagoena esportatu!"
 
-#: src/sync/csv.rs:184 src/sync/csv.rs:333
+#: src/sync/csv.rs:184 src/sync/csv.rs:332
 msgid "Can't parse encrypted backup without encryption key!"
 msgstr "Ezin da zifratutako babeskopia analizatu zifratze-gakorik gabe!"
 
-#: src/sync/csv.rs:195 src/sync/csv.rs:353
+#: src/sync/csv.rs:195 src/sync/csv.rs:352
 msgid ""
 "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -909,15 +924,15 @@ msgstr "Autentifikazioa ongi gauzatu da, itzuli Osasuna aplikaziora."
 msgid "Couldn't parse OAuth2 response"
 msgstr "Ezin izan da OAuth2 erantzuna analizatu"
 
-#: src/views/bar_graph_view.rs:584
+#: src/views/bar_graph_view.rs:583
 msgid "Enter weight record to calculate idle calories"
 msgstr "Sartu pisu-erregistroa kaloria inaktiboak kalkulatzeko"
 
-#: src/views/bar_graph_view.rs:588
+#: src/views/bar_graph_view.rs:587
 msgid "Idle calories"
 msgstr "Kaloria inaktiboak"
 
-#: src/views/view_add_activity.rs:237
+#: src/views/view_add_activity.rs:236
 msgid "Activity"
 msgstr "Jarduera"
 
@@ -955,7 +970,11 @@ msgid_plural "{} yards"
 msgstr[0] "Yarda {}"
 msgstr[1] "{} yarda"
 
-#: src/widgets/bmi_level_bar.rs:219 src/widgets/bmi_level_bar.rs:256
+#: src/widgets/bmi_level_bar.rs:267 src/windows/setup_window.rs:248
+msgid "Current BMI"
+msgstr "Uneko GMIa"
+
+#: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Uneko GMIa: {}</small>"
 
@@ -1088,6 +1107,10 @@ msgstr "Errorea gertatu da!"
 #: src/windows/import_export_dialog_base.rs:305
 msgid "Close"
 msgstr "Itxi"
+
+#: src/windows/preferences_window.rs:409 src/windows/setup_window.rs:249
+msgid "Target BMI"
+msgstr "Helburuko GMIa"
 
 #: src/windows/window.rs:97
 msgid "Failed to migrate database to new version due to error {}"
