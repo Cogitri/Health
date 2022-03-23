@@ -35,19 +35,29 @@
               ];
             };
           rustSrc = pkgs.latest.rustChannels.stable.rust.override { extensions = [ "rust-src" ]; };
-          buildInputs = with pkgs; [
-            appstream-glib
-            cairo
+          nativeBuildInputs = with pkgs; [
             cargo-audit
             cargo-bloat
             cargo-dephell
             cargo-expand
             cargo-outdated
             clang_13
-            desktop-file-utils
             gdb
+            libxml2
+            lld_13
+            meson
+            ninja
+            python3
+            pkg-config
+            rustfmt
+            rustSrc
+            valgrind
+          ];
+          buildInputs = with pkgs; [
+            appstream-glib
+            cairo
+            desktop-file-utils
             gdk-pixbuf
-            glib
             glib
             graphene
             gtk4.dev
@@ -58,18 +68,9 @@
             librsvg
             libsecret
             libsecret.dev
-            libxml2
-            lld_13
-            meson
-            ninja
             pango
-            pkg-config
-            python3
-            rustfmt
-            rustSrc
             trackerPatched
             trackerPatched.dev
-            valgrind
             wayland
             wayland.dev
           ];
@@ -78,7 +79,7 @@
           devShell = pkgs.mkShell
             {
               name = "Health-shell";
-              inherit buildInputs;
+              inherit nativeBuildInputs buildInputs;
               RUST_SRC_PATH = "${rustSrc}/lib/rustlib/src/rust/src";
               RUSTFLAGS = "-C linker=clang -C link-arg=--ld-path=${pkgs.lld_13}/bin/ld.lld";
               LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath buildInputs}";
