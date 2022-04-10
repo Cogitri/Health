@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-03-12 15:26+0000\n"
-"PO-Revision-Date: 2022-03-14 21:53+0200\n"
+"POT-Creation-Date: 2022-03-15 08:58+0000\n"
+"PO-Revision-Date: 2022-04-10 15:50+0300\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: \n"
 "Language: fi\n"
@@ -206,7 +206,7 @@ msgstr "_Tallenna"
 msgid "January"
 msgstr "Tammikuu"
 
-#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:245
+#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:223
 msgid "February"
 msgstr "Helmikuu"
 
@@ -326,8 +326,7 @@ msgstr "Käytä <b>+</b>-painiketta lisätäksesi painomerkinnän."
 msgid "Weight Measurements"
 msgstr "Painomittaukset"
 
-#: data/ui/plugins/weight/summary.blp:5 data/ui/preferences_window.blp:184
-#: data/ui/preferences_window.blp:187 data/ui/view_add_weight.blp:38
+#: data/ui/plugins/weight/summary.blp:5 data/ui/view_add_weight.blp:38
 #: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
 msgid "Weight"
 msgstr "Paino"
@@ -393,14 +392,19 @@ msgid "Daily reminder time"
 msgstr "Päivittäisen muistutuksen aika"
 
 #: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
-#: src/plugins/steps/details.rs:241
+#: src/plugins/steps/details.rs:240
 msgid "Step goal"
 msgstr "Askeltavoite"
 
-#: data/ui/preferences_window.blp:170 data/ui/setup_window.blp:224
-msgid "The WHO recommends 10.000 steps per day."
+#: data/ui/preferences_window.blp:170
+msgid "The WHO recommends 10,000 steps per day."
 msgstr ""
-"Maailman terveysjärjestö suosittelee päivittäisten askelten määräksi 10 000."
+"Maailman terveysjärjestö WHO suosittelee päivittäisten askelten määräksi 10 "
+"000."
+
+#: data/ui/preferences_window.blp:184 data/ui/preferences_window.blp:187
+msgid "Weight Goal"
+msgstr "Tavoitepaino"
 
 #: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
 msgid "The WHO recommends a BMI of 18.5-24.9."
@@ -467,6 +471,11 @@ msgstr "Anna hieman tietoja, jotta määritykset saadaan tehtyä."
 msgid "Please enter your daily step goal."
 msgstr "Määritä päivittäisen askelmäärän tavoite."
 
+#: data/ui/setup_window.blp:224
+msgid "The WHO recommends 10.000 steps per day."
+msgstr ""
+"Maailman terveysjärjestö suosittelee päivittäisten askelten määräksi 10 000."
+
 #: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
 msgstr "Määritä tavoitepaino."
@@ -475,7 +484,7 @@ msgstr "Määritä tavoitepaino."
 msgid "Current weight"
 msgstr "Nykyinen paino"
 
-#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:221
+#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:220
 msgid "Weight goal"
 msgstr "Tavoitepaino"
 
@@ -661,11 +670,11 @@ msgstr "Lentopallo"
 msgid "Walking"
 msgstr "Kävely"
 
-#: src/model/model_notification.rs:236
+#: src/model/model_notification.rs:234
 msgid "Health: walking reminder"
 msgstr "Terveys: muistutus kävelystä"
 
-#: src/model/model_notification.rs:252
+#: src/model/model_notification.rs:250
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "{} askel jäljellä päivittäisen askeltavoitteen saavuttamiseksi."
@@ -675,13 +684,13 @@ msgstr[1] "{} askelta jäljellä päivittäisen askeltavoitteen saavuttamiseksi.
 msgid "Activities"
 msgstr "Aktiviteetit"
 
-#: src/plugins/activities/summary.rs:93
+#: src/plugins/activities/summary.rs:91
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "{} aktiivinen minuutti tänään"
 msgstr[1] "{} aktiivista minuuttia tänään"
 
-#: src/plugins/calories/details.rs:215
+#: src/plugins/calories/details.rs:217
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -699,24 +708,24 @@ msgstr[1] ""
 "{} kaloria\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:96 src/plugins/calories/summary.rs:103
+#: src/plugins/calories/summary.rs:97 src/plugins/calories/summary.rs:104
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "{} kalori poltettu tänään"
 msgstr[1] "{} kaloria poltettu tänään"
 
-#: src/plugins/steps/details.rs:187
+#: src/plugins/steps/details.rs:186
 msgid "Today's steps: {}"
 msgstr "Askeleita tänään: {}"
 
-#: src/plugins/steps/details.rs:202
+#: src/plugins/steps/details.rs:201
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
 "Ei putkea vielä. Saavuta askeltavoitteesi useina päivinä aloittaaksesi "
 "putken!"
 
-#: src/plugins/steps/details.rs:206
+#: src/plugins/steps/details.rs:205
 msgid ""
 "You're on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -728,20 +737,20 @@ msgstr[1] ""
 "Putkesi on jatkunut {} päivän ajan. Saavuta askeltavoitteesi jatkaaksesi "
 "putkea!"
 
-#: src/plugins/steps/details.rs:214
+#: src/plugins/steps/details.rs:213
 msgid "You've reached your step goal today. Keep going to start a streak!"
 msgstr ""
 "Olet saavuttanut päivittäisen askeltavoitteesi. Jatka kävelyä aloittaaksesi "
 "putken!"
 
-#: src/plugins/steps/details.rs:217
+#: src/plugins/steps/details.rs:216
 msgid "You're on a streak for {} day. Good job!"
 msgid_plural "You're on a streak for {} days. Good job!"
 msgstr[0] "Olet {} päivän putkessa. Hieno juttu!"
 msgstr[1] "Olet {} päivän putkessa. Hyvä juttu!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:234
+#: src/plugins/steps/details.rs:233
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} askel {}"
@@ -753,35 +762,39 @@ msgid_plural "{} steps taken today"
 msgstr[0] "{} askel tänään"
 msgstr[1] "{} askelta tänään"
 
-#: src/plugins/steps/summary.rs:104
+#: src/plugins/steps/summary.rs:105
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Saavutettu {} prosentti päivittäisestä askeltavoitteesta"
 msgstr[1] "Saavutettu {} prosenttia päivittäisestä askeltavoitteesta"
 
-#: src/plugins/weight/details.rs:193
+#: src/plugins/steps/summary.rs:112
+msgid "Well done! You have reached your daily step goal!"
+msgstr "Hyvin tehty! Saavutit päivittäisen askeltavoitteesi!"
+
+#: src/plugins/weight/details.rs:192
 msgid "Current BMI: {}"
 msgstr "Nykyinen painoindeksi: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:208
+#: src/plugins/weight/details.rs:207
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} pauna {}"
 msgstr[1] "{} paunaa {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:211
+#: src/plugins/weight/details.rs:210
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogramma {}"
 msgstr[1] "{} kilogrammaa {}"
 
-#: src/plugins/weight/details.rs:247 src/plugins/weight/details.rs:252
+#: src/plugins/weight/details.rs:246 src/plugins/weight/details.rs:251
 msgid "Unknown BMI"
 msgstr "Tuntematon painoindeksi"
 
-#: src/plugins/weight/details.rs:271
+#: src/plugins/weight/details.rs:270
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -791,7 +804,7 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/plugins/weight/details.rs:278
+#: src/plugins/weight/details.rs:277
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -805,57 +818,57 @@ msgstr[1] ""
 "Tavoitepainosi on {} kilogrammaa. Lisää ensimmäinen painomittaus nähdäksesi, "
 "kuinka lähellä olet tavoitteen toteutumista."
 
-#: src/plugins/weight/details.rs:287
+#: src/plugins/weight/details.rs:286
 msgid "You've reached your weight goal. Great job!"
 msgstr "Saavutit tavoitepainosi. Hieno juttu!"
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:303
+#: src/plugins/weight/details.rs:302
 msgid "Your weight goal is {} pound,"
 msgid_plural "Your weight goal is {} pounds,"
 msgstr[0] "Tavoitepainosi on {} pauna,"
 msgstr[1] "Tavoitepainosi on {} paunaa,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:308
+#: src/plugins/weight/details.rs:307
 msgid "you have {} pound left to reach it"
 msgid_plural "you have {} pounds left to reach it"
 msgstr[0] ""
 msgstr[1] ""
 
 #. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:315
+#: src/plugins/weight/details.rs:314
 msgid "Your weight goal is {} kilogram,"
 msgid_plural "Your weight goal is {} kilograms,"
 msgstr[0] "Tavoitepainosi on {} kilogramma,"
 msgstr[1] "Tavoitepainosi on {} kilogrammaa,"
 
 #. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:321
+#: src/plugins/weight/details.rs:320
 msgid "you have {} kilogram left to reach it"
 msgid_plural "you have {} kilograms left to reach it"
 msgstr[0] "sinulla on {} kilogramma jäljellä tavoitteeseen"
 msgstr[1] "sinulla on {} kilogrammaa jäljellä tavoitteeseen"
 
-#: src/plugins/weight/details.rs:331
+#: src/plugins/weight/details.rs:330
 msgid "No weight goal set yet. You can set it in Health's preferences."
 msgstr ""
 "Tavoitepainoa ei ole vielä asetettu. Voit lisätä tavoitteen Terveyden "
 "asetuksissa."
 
-#: src/plugins/weight/summary.rs:120
+#: src/plugins/weight/summary.rs:119
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} pauna"
 msgstr[1] "{} paunaa"
 
-#: src/plugins/weight/summary.rs:128
+#: src/plugins/weight/summary.rs:127
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} kilogramma"
 msgstr[1] "{} kilogrammaa"
 
-#: src/plugins/weight/summary.rs:139
+#: src/plugins/weight/summary.rs:138
 #, fuzzy
 #| msgid "compared to previous weight"
 msgid "+ {} pound compared to previous measurement"
@@ -863,13 +876,13 @@ msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "verrattuna aiempaan painoon"
 msgstr[1] "verrattuna aiempaan painoon"
 
-#: src/plugins/weight/summary.rs:147
+#: src/plugins/weight/summary.rs:146
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "+ {} kilogramma verrattuna aiempaan mittaukseen"
 msgstr[1] "+ {} kilogrammaa verrattuna aiempaan mittaukseen"
 
-#: src/plugins/weight/summary.rs:158
+#: src/plugins/weight/summary.rs:157
 #, fuzzy
 #| msgid "compared to previous weight"
 msgid "{} pound compared to previous measurement"
@@ -877,33 +890,33 @@ msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "verrattuna aiempaan painoon"
 msgstr[1] "verrattuna aiempaan painoon"
 
-#: src/plugins/weight/summary.rs:166
+#: src/plugins/weight/summary.rs:165
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "{} kilogramma verrattuna aiempaan mittaukseen"
 msgstr[1] "{} kilogrammaa verrattuna aiempaan mittaukseen"
 
-#: src/plugins/weight/summary.rs:174
+#: src/plugins/weight/summary.rs:173
 msgid "No change in weight"
 msgstr "Ei muutosta painossa"
 
-#: src/plugins/weight/summary.rs:179
+#: src/plugins/weight/summary.rs:178
 msgid "No weight data available"
 msgstr "Painotietoja ei ole saatavilla"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:371
+#: src/sync/csv.rs:81 src/sync/csv.rs:370
 msgid "No activities added yet; can't create empty export!"
 msgstr "Aktiviteetteja ei ole lisätty vielä; tyhjää vientiä ei voi luoda!"
 
-#: src/sync/csv.rs:111 src/sync/csv.rs:389
+#: src/sync/csv.rs:111 src/sync/csv.rs:388
 msgid "No weight measurements added yet; can't create empty export!"
 msgstr "Painomittauksia ei ole vielä lisätty; tyhjää vientiä ei voi luoda!"
 
-#: src/sync/csv.rs:184 src/sync/csv.rs:333
+#: src/sync/csv.rs:184 src/sync/csv.rs:332
 msgid "Can't parse encrypted backup without encryption key!"
 msgstr "Salattua varmuuskopiota ei voi jäsentää ilman salausavainta!"
 
-#: src/sync/csv.rs:195 src/sync/csv.rs:353
+#: src/sync/csv.rs:195 src/sync/csv.rs:352
 msgid ""
 "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -951,15 +964,15 @@ msgstr "Tunnistautuminen onnistui, palaa Terveyteen."
 msgid "Couldn't parse OAuth2 response"
 msgstr "OAuth2-vastausta ei voitu jäsentää"
 
-#: src/views/bar_graph_view.rs:584
+#: src/views/bar_graph_view.rs:583
 msgid "Enter weight record to calculate idle calories"
 msgstr "Anna painomerkintä laskeaksesi joutilaskalorit"
 
-#: src/views/bar_graph_view.rs:588
+#: src/views/bar_graph_view.rs:587
 msgid "Idle calories"
 msgstr "Joutilaskalorit"
 
-#: src/views/view_add_activity.rs:237
+#: src/views/view_add_activity.rs:236
 msgid "Activity"
 msgstr "Aktiviteetti"
 
@@ -997,8 +1010,7 @@ msgid_plural "{} yards"
 msgstr[0] ""
 msgstr[1] ""
 
-#: src/widgets/bmi_level_bar.rs:267 src/windows/preferences_window.rs:411
-#: src/windows/setup_window.rs:249
+#: src/widgets/bmi_level_bar.rs:267 src/windows/setup_window.rs:248
 msgid "Current BMI"
 msgstr "Nykyinen painoindeksi"
 
@@ -1136,7 +1148,7 @@ msgstr "Tapahtui virhe!"
 msgid "Close"
 msgstr "Sulje"
 
-#: src/windows/setup_window.rs:250
+#: src/windows/preferences_window.rs:409 src/windows/setup_window.rs:249
 msgid "Target BMI"
 msgstr "Tavoitepainoindeksi"
 
