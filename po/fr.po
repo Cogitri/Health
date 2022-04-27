@@ -1,22 +1,22 @@
-# French translation for health.
-# Copyright (C) 2022 health's COPYRIGHT HOLDER
-# This file is distributed under the same license as the health package.
-# kollboued <kollboued@kollboued.infini.fr>, 2022.
+#
+#  <>, 2022.
+# Kollboued <>, 2022.
+# Charles Monzat <charles.monzat@free.fr>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-04-16 09:23+0000\n"
-"PO-Revision-Date: 2022-04-25 00:21+0200\n"
-"Last-Translator: \n"
-"Language-Team: French <gnomefr@traduc.org>\n"
+"POT-Creation-Date: 2022-04-25 16:30+0000\n"
+"PO-Revision-Date: 2022-04-27 15:02+0200\n"
+"Last-Translator: Charles Monzat <charles.monzat@free.fr>\n"
+"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Gtranslator 40.0\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -69,12 +69,15 @@ msgid "List of recent activity types"
 msgstr "Liste des types d’activités récentes"
 
 #: data/dev.Cogitri.Health.gschema.xml:42
+#| msgid ""
+#| "Activity types the user used recently, to be shown first in the activity "
+#| "types selector’s list"
 msgid ""
 "Activity types the user used recently, to be shown first in the activity "
-"types selector’s list"
+"types selector's list"
 msgstr ""
-"Types d’activités utilisés récemment, à afficher en "
-"premier dans la liste du sélecteur de types d’activités"
+"Types d’activités utilisés récemment, à afficher en premier dans la liste du "
+"sélecteur de types d’activités"
 
 #: data/dev.Cogitri.Health.gschema.xml:46
 msgid "Google Fit Sync-Provider setup"
@@ -207,7 +210,7 @@ msgstr "Rasmus “Cogitri” Thomsen"
 #: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
 #: src/windows/import_dialog.rs:53 src/windows/import_dialog.rs:82
 msgid "_Cancel"
-msgstr "_Annuler"
+msgstr "A_nnuler"
 
 #: data/ui/data_add_dialog.blp:10 src/windows/export_dialog.rs:52
 #: src/windows/export_dialog.rs:88
@@ -318,14 +321,14 @@ msgstr "Calories"
 
 #: data/ui/plugins/calories/summary.blp:5 data/ui/view_add_activity.blp:66
 msgid "Calories Burned"
-msgstr "Calories brulées"
+msgstr "Calories brûlées"
 
 #: data/ui/plugins/details.blp:68
 msgid ""
 "This is a preview of how the plugin presents data. Enable the plugin to see "
 "your actual, live data."
 msgstr ""
-"Ceci est un aperçu de la façon dont le greffon présente les données. Activez "
+"Ceci est un aperçu de la façon dont le greffon présente les données. Activez-"
 "le pour voir vos données réelles en direct."
 
 #: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
@@ -354,7 +357,7 @@ msgstr "_Toutes les heures"
 
 #: data/ui/preferences_window.blp:49
 msgid "_Every 4 hours"
-msgstr "_Toutes les 4 heures"
+msgstr "T_outes les 4 heures"
 
 #: data/ui/preferences_window.blp:55
 msgid "_Fixed Time"
@@ -362,7 +365,7 @@ msgstr "Heure _fixe"
 
 #: data/ui/preferences_window.blp:63
 msgid "Health Preferences"
-msgstr "Préférences de santé"
+msgstr "Préférences de Santé"
 
 #: data/ui/preferences_window.blp:69 data/ui/shortcuts_window.blp:11
 msgid "General"
@@ -483,7 +486,7 @@ msgstr "Veuillez saisir quelques informations pour la mise en route."
 
 #: data/ui/setup_window.blp:212
 msgid "Please enter your daily step goal."
-msgstr "Veuillez entrer votre objectif de pas quotidien."
+msgstr "Veuillez saisir votre objectif de pas quotidien."
 
 #: data/ui/setup_window.blp:224
 msgid "The WHO recommends 10.000 steps per day."
@@ -581,7 +584,7 @@ msgstr "_Désactiver le greffon actuel"
 
 #: data/ui/window.blp:15
 msgid "_Preferences"
-msgstr "_Préférences"
+msgstr "Pré_férences"
 
 #: data/ui/window.blp:20
 msgid "_Keyboard Shortcuts"
@@ -589,7 +592,7 @@ msgstr "_Raccourcis clavier"
 
 #: data/ui/window.blp:27
 msgid "_About Health"
-msgstr "_À propos de Santé"
+msgstr "À _propos de Santé"
 
 #: data/ui/window.blp:69
 msgid "Enable plugin"
@@ -597,7 +600,8 @@ msgstr "Désactiver le greffon"
 
 #: src/core/application.rs:169
 msgid "translator-credits"
-msgstr "Kollboued\n"
+msgstr ""
+"Kollboued\n"
 "Alexandre Franke"
 
 #: src/core/application.rs:171
@@ -650,7 +654,7 @@ msgstr "Roller"
 
 #: src/model/activity_info.rs:187
 msgid "Running"
-msgstr "Course à pieds"
+msgstr "Course à pied"
 
 #: src/model/activity_info.rs:197
 msgid "Skiing"
@@ -714,17 +718,19 @@ msgid_plural ""
 "{} calories\n"
 "{}"
 msgstr[0] ""
-"{}:\n"
-"{} calorie"
+"{} :\n"
+"{} calorie\n"
+"{}"
 msgstr[1] ""
-"{}:\n"
-"{} calories"
+"{} :\n"
+"{} calories\n"
+"{}"
 
 #: src/plugins/calories/summary.rs:97 src/plugins/calories/summary.rs:104
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
-msgstr[0] "{} calorie brulée aujourd’hui"
-msgstr[1] "{} calories brulées aujourd’hui"
+msgstr[0] "{} calorie brûlée aujourd’hui"
+msgstr[1] "{} calories brûlées aujourd’hui"
 
 #: src/plugins/steps/details.rs:186
 msgid "Today's steps: {}"
@@ -777,8 +783,8 @@ msgstr[1] "{} pas effectués aujourd’hui"
 #: src/plugins/steps/summary.rs:105
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
-msgstr[0] "{} % de l’objectif de pas quotidien atteint"
-msgstr[1] "{} % de l’objectif de pas quotidien atteint"
+msgstr[0] "{} % de l’objectif de pas quotidien atteint"
+msgstr[1] "{} % de l’objectif de pas quotidien atteint"
 
 #: src/plugins/steps/summary.rs:112
 msgid "Well done! You have reached your daily step goal!"
@@ -799,8 +805,8 @@ msgstr[1] "{} livres le {}"
 #: src/plugins/weight/details.rs:210
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
-msgstr[0] "{] kilogramme le {}"
-msgstr[1] "{} kilogrammes le {]"
+msgstr[0] "{} kilogramme le {}"
+msgstr[1] "{} kilogrammes le {}"
 
 #: src/plugins/weight/details.rs:246 src/plugins/weight/details.rs:251
 msgid "Unknown BMI"
@@ -986,7 +992,8 @@ msgstr "Impossible d’analyser la réponse OAuth2"
 
 #: src/views/bar_graph_view.rs:583
 msgid "Enter weight record to calculate idle calories"
-msgstr "Saisissez l’enregistrement de poids pour calculer les calories au repos"
+msgstr ""
+"Saisissez l’enregistrement de poids pour calculer les calories au repos"
 
 #: src/views/bar_graph_view.rs:587
 msgid "Idle calories"
@@ -1004,7 +1011,7 @@ msgstr[1] "{} pour {} minutes"
 
 #: src/widgets/activity_row.rs:91
 msgid "Calories burned"
-msgstr "Calories brulées"
+msgstr "Calories brûlées"
 
 #: src/widgets/activity_row.rs:101
 msgid "Average heart rate"
@@ -1022,7 +1029,7 @@ msgstr "Fréquence cardiaque minimale"
 msgid "{} meter"
 msgid_plural "{} meters"
 msgstr[0] "{} mètre"
-msgstr[1] "[} mètres"
+msgstr[1] "{} mètres"
 
 #: src/widgets/activity_row.rs:129
 msgid "{} yard"
