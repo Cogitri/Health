@@ -72,7 +72,7 @@
       <description>The height of the user.</description>
     </key>
     <key name="user-stepgoal" type="u">
-      <default>10000</default>
+      <default>7500</default>
       <summary>User step goal</summary>
       <description>The amount of steps the user wants to reach daily.</description>
     </key>
