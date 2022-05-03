@@ -27,11 +27,6 @@
               inherit system;
               overlays = [
                 mozilla.overlay
-                (final: prev: {
-                  trackerPatched = pkgs.tracker.overrideAttrs (old: rec {
-                    patches = old.patches ++ [ ./build-aux/tracker-subsecond-accuracy.patch ];
-                  });
-                })
               ];
             };
           rustSrc = pkgs.latest.rustChannels.stable.rust.override { extensions = [ "rust-src" ]; };
@@ -69,8 +64,8 @@
             libsecret
             libsecret.dev
             pango
-            trackerPatched
-            trackerPatched.dev
+            tracker
+            tracker.dev
             wayland
             wayland.dev
           ];
