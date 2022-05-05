@@ -41,14 +41,13 @@ mod imp {
     use adw::subclass::prelude::*;
     use gtk::glib::{self, clone, g_warning};
     use gtk::{prelude::*, subclass::prelude::*};
-    use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 
     #[derive(Debug, Default)]
     pub struct Application {
         pub notification_model: RefCell<Option<ModelNotification>>,
         pub settings: Settings,
-        pub window: OnceCell<glib::WeakRef<Window>>,
+        pub window: RefCell<Option<glib::WeakRef<Window>>>,
     }
 
     #[glib::object_subclass]
@@ -63,15 +62,17 @@ mod imp {
         fn activate(&self, obj: &Self::Type) {
             self.parent_activate(obj);
 
-            let has_window = self.window.get().and_then(glib::WeakRef::upgrade).is_some();
+            if let Some(window) = self.window.borrow().clone().and_then(|s| s.upgrade()) {
+                window.present();
+                return;
+            }
 
-            if !has_window && self.settings.did_initial_setup() {
+            if self.settings.did_initial_setup() {
                 let window = Window::new(obj);
                 window.show();
                 self.window
-                    .set(glib::ObjectExt::downgrade(&window))
-                    .unwrap();
-            } else if !has_window {
+                    .replace(Some(glib::ObjectExt::downgrade(&window)));
+            } else {
                 let setup_window = SetupWindow::new(obj);
 
                 setup_window.connect_setup_done(clone!(@weak obj => move |_| {
@@ -157,8 +158,9 @@ impl Application {
                 &self
                     .imp()
                     .window
-                    .get()
-                    .and_then(glib::WeakRef::upgrade)
+                    .borrow()
+                    .clone()
+                    .and_then(|s| s.upgrade())
                     .unwrap(),
             )
             .modal(true)
@@ -211,15 +213,16 @@ impl Application {
         PreferencesWindow::new(
             self.imp()
                 .window
-                .get()
-                .and_then(glib::WeakRef::upgrade)
+                .borrow()
+                .clone()
+                .and_then(|s| s.upgrade())
                 .map(glib::Cast::upcast),
         )
         .show()
     }
 
     fn handle_quit(&self) {
-        if let Some(window) = self.imp().window.get().and_then(glib::WeakRef::upgrade) {
+        if let Some(window) = self.imp().window.borrow().clone().and_then(|s| s.upgrade()) {
             window.destroy();
         }
 
@@ -231,7 +234,8 @@ impl Application {
         imp.settings.set_did_initial_setup(true);
         let window = Window::new(self);
         window.show();
-        imp.window.set(glib::ObjectExt::downgrade(&window)).unwrap();
+        imp.window
+            .replace(Some(glib::ObjectExt::downgrade(&window)));
     }
 
     fn handle_unit_system(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
