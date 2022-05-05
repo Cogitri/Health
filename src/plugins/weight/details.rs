@@ -252,8 +252,6 @@ impl PluginWeightDetails {
         }
     }
 
-    // TRANSLATORS notes have to be on the same line, so we cant split them
-    #[rustfmt::skip]
     fn update_weight_goal_label(&self, model: &DataProvider) {
         let imp = self.imp();
         if let Some(weight_goal) = imp.settings.user_weight_goal() {
@@ -298,30 +296,30 @@ impl PluginWeightDetails {
                 }
 
                 let goal_label_text = if unit_system == UnitSystem::Imperial {
-                    // TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-                    ni18n_f("Your weight goal is {} pound,",
-                        "Your weight goal is {} pounds,",
-                        weight_value as u32, &[&format!("{weight_value:.1}")],
-                    ) +
-                    // TRANSLATORS: Second (final) part of message, see previous source string.
-                    &ni18n_f( "you have {} pound left to reach it",
-                        "you have {} pounds left to reach it",
-                        diff as u32, &[&format!("{diff:.1}",
-                        diff = diff.round_decimal_places(1))],
-                    )
-                } else {
-                    // TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-                    ni18n_f("Your weight goal is {} kilogram,",
-                        "Your weight goal is {} kilograms,",
+                    ni18n_f(
+                        "Your weight goal is {} pound.",
+                        "Your weight goal is {} pounds.",
                         weight_value as u32,
                         &[&format!("{weight_value:.1}")],
-                    ) +
-                    // TRANSLATORS: Second (final) part of message, see previous source string.
-                    &ni18n_f("you have {} kilogram left to reach it",
-                        "you have {} kilograms left to reach it",
+                    ) + &ni18n_f(
+                        "You have {} pound left to reach it.",
+                        "You have {} pounds left to reach it.",
                         diff as u32,
                         &[&format!("{diff:.1}", diff = diff.round_decimal_places(1))],
                     )
+                } else {
+                    ni18n_f(
+                        "Your weight goal is {} kilogram.",
+                        "Your weight goal is {} kilograms.",
+                        weight_value as u32,
+                        &[&format!("{weight_value:.1}")],
+                    ) + " "
+                        + &ni18n_f(
+                            "You have {} kilogram left to reach it",
+                            "You have {} kilograms left to reach it",
+                            diff as u32,
+                            &[&format!("{diff:.1}", diff = diff.round_decimal_places(1))],
+                        )
                 };
                 self.set_filled_subtitle(&goal_label_text);
             }
