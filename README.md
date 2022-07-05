@@ -19,7 +19,7 @@ Open GNOME Builder, click on `Clone Repository...` and enter the repository URL.
 You can build Health with the following command:
 
 ```sh
-flatpak-builder --user --install --force-clean app dev.Cogitri.Health.json
+flatpak-builder --user --install --force-clean app dev.Cogitri.Health.Devel.json
 ```
 
 You can also pass `--system` instead of `--user` to flatpak-builder to install Health system-wide instead of only for your user. However, that requires root permissions.
@@ -27,7 +27,7 @@ You can also pass `--system` instead of `--user` to flatpak-builder to install H
 Afterwards, you can run it with:
 
 ```sh
-flatpak run dev.Cogitri.Health
+flatpak run dev.Cogitri.Health.Devel
 ```
 
 For development purposes you can also run Health directly via flatpak-builder to avoid the time cost of packing the flatpak and then installing it like so:
