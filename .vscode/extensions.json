@@ -1,7 +1,7 @@
 {
     "recommendations": [
         "vadimcn.vscode-lldb",
-        "matklad.rust-analyzer",
+        "rust-lang.rust-analyzer",
         "rafaelmardojai.vscode-gnome-theme"
     ]
 }
