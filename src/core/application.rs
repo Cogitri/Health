@@ -372,6 +372,7 @@ mod test {
 
     #[test]
     fn new() {
+        let _tmp = init_gschema();
         Application::new();
     }
 
