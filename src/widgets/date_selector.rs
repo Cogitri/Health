@@ -81,7 +81,7 @@ mod imp {
         fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "selected-date" => {
-                    let year = self.year_spinner.raw_value().unwrap_or(0);
+                    let year = self.year_spinner.value_as_int();
                     // The dropdown starts counting from 0, not 1.
                     let month: i32 = (self.month_dropdown.selected() + 1)
                         .clamp(1, 12)
