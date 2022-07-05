@@ -36,7 +36,7 @@ default-features = false
 version = "1.1"
 
 [dependencies.delegate]
-version = "0.6"
+version = "0.7"
 
 [dependencies.easy-ext]
 default-features = false
@@ -115,7 +115,7 @@ package = "tracker-rs"
 
 [dependencies.uom]
 default-features = false
-version = "0.32"
+version = "0.33"
 features = ["f32", "si"]
 
 [dependencies.ureq]
@@ -127,7 +127,7 @@ features = ["json"]
 version = "2"
 
 [dev-dependencies.float_eq]
-version = "0.7"
+version = "1"
 
 [dev-dependencies.serde_test]
 version = "1"
