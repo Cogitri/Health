@@ -2,6 +2,8 @@
     "recommendations": [
         "vadimcn.vscode-lldb",
         "rust-lang.rust-analyzer",
-        "rafaelmardojai.vscode-gnome-theme"
+        "rafaelmardojai.vscode-gnome-theme",
+        "bilelmoussaoui.flatpak-vscode",
+        "mesonbuild.mesonbuild"
     ]
 }
