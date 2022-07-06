@@ -251,14 +251,14 @@ impl Window {
         self.sync_data();
 
         // FIXME: Allow setting custom sync interval
-        glib::timeout_add_seconds_local(
+        self.imp().inner.borrow_mut().sync_source_id = Some(glib::timeout_add_seconds_local(
             60 * 5,
             clone!(@weak self as obj => @default-panic, move || {
                 obj.sync_data();
 
                 glib::Continue(true)
             }),
-        );
+        ));
     }
 
     fn handle_sync_data_error_received(&self, err_opt: Option<anyhow::Error>) -> glib::Continue {
