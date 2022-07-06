@@ -6,12 +6,11 @@
 	<url type="bugtracker">https://gitlab.gnome.org/World/Health/issues</url>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
-	<summary>A health tracking app for the GNOME desktop.</summary>
+	<summary>Track your fitness goals</summary>
 	<description>
 		<p>
-			A health tracking app for the GNOME desktop. Health can visualize
-			how many steps you’ve made daily, your weight development over time
-			and your daily activities.
+			Health can visualize how many steps you’ve made daily,
+			your weight development over time and your daily activities.
 
 			Data can be synched from Google Fit or manually entered into Health.
 			Afterwards, it can be viewed and edited in Health.
