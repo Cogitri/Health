@@ -10,7 +10,7 @@
 	<description>
 		<p>
 			A health tracking app for the GNOME desktop. Health can visualize
-			how many steps you've made daily, your weight development over time
+			how many steps you’ve made daily, your weight development over time
 			and your daily activities.
 
 			Data can be synched from Google Fit or manually entered into Health.

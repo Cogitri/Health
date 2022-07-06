@@ -264,7 +264,7 @@ impl Window {
     fn handle_sync_data_error_received(&self, err_opt: Option<anyhow::Error>) -> glib::Continue {
         if let Some(e) = err_opt {
             self.show_error(&i18n_f(
-                "Couldn't sync Google Fit data due to error: {}",
+                "Couldn’t sync Google Fit data due to error: {}",
                 &[&e.to_string()],
             ));
         }

@@ -106,7 +106,7 @@ pub trait SyncProvider {
                 .exchange_refresh_token(&token)
                 .request(oauth2::ureq::http_client)?),
             Ok(None) => {
-                Err(anyhow::anyhow!("{}", i18n("Can't retrieve OAuth2 token when no refresh token is set! Please re-authenticate with your sync provider.")))
+                Err(anyhow::anyhow!("{}", i18n("Can’t retrieve OAuth2 token when no refresh token is set! Please re-authenticate with your sync provider.")))
             }
             Err(e) => {
                 Err(e)
@@ -225,6 +225,6 @@ pub trait SyncProvider {
             }
         }
 
-        anyhow::bail!("{}", i18n("Couldn't parse OAuth2 response"))
+        anyhow::bail!("{}", i18n("Couldn’t parse OAuth2 response"))
     }
 }

@@ -183,7 +183,7 @@ impl PluginStepsDetails {
         }
 
         self.set_filled_title(&i18n_f(
-            "Today's steps: {}",
+            "Today’s steps: {}",
             &[&steps_graph_model
                 .today_step_count()
                 .unwrap_or(0)
@@ -202,19 +202,19 @@ impl PluginStepsDetails {
                     ));
                 } else {
                     self.set_filled_subtitle(&ni18n_f(
-                        "You're on a streak for {} day. Reach your step goal today to continue it!",
-                        "You're on a streak for {} days. Reach your step goal today to continue it!",
+                        "You’re on a streak for {} day. Reach your step goal today to continue it!",
+                        "You’re on a streak for {} days. Reach your step goal today to continue it!",
                         previous_streak,
                         &[&previous_streak.to_string()],
                     ));
                 }
             }
             1 => self.set_filled_subtitle(&i18n(
-                "You've reached your step goal today. Keep going to start a streak!",
+                "You’ve reached your step goal today. Keep going to start a streak!",
             )),
             _ => self.set_filled_subtitle(&ni18n_f(
-                "You're on a streak for {} day. Good job!",
-                "You're on a streak for {} days. Good job!",
+                "You’re on a streak for {} day. Good job!",
+                "You’re on a streak for {} days. Good job!",
                 streak_count,
                 &[&streak_count.to_string()],
             )),

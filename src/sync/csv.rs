@@ -78,7 +78,7 @@ impl CsvHandler {
         let activities = self.db.activities(None).await?;
 
         if activities.is_empty() {
-            anyhow::bail!(i18n("No activities added yet; can't create empty export!"));
+            anyhow::bail!(i18n("No activities added yet; can’t create empty export!"));
         }
 
         for activity in activities {
@@ -108,7 +108,7 @@ impl CsvHandler {
 
         if weights.is_empty() {
             anyhow::bail!(i18n(
-                "No weight measurements added yet; can't create empty export!"
+                "No weight measurements added yet; can’t create empty export!"
             ));
         }
 
@@ -181,7 +181,7 @@ impl CsvHandler {
 
         if serde_json::from_slice::<EncryptedValue>(&data).is_ok() {
             Err(EncryptionError::EncryptedAsUnencrypted(i18n(
-                "Can't parse encrypted backup without encryption key!",
+                "Can’t parse encrypted backup without encryption key!",
             )))
             .map_err(anyhow::Error::msg)
         } else {
@@ -192,7 +192,7 @@ impl CsvHandler {
     async fn read_csv_encrypted(&self, file: &gio::File, key: &str) -> Result<Vec<u8>> {
         let raw_contents = file.load_contents_future().await?.0;
         let encrypted_value: EncryptedValue = serde_json::from_slice(&raw_contents)
-            .map_err(|_| EncryptionError::UnencryptedAsEncrypted(i18n("Couldn't parse CSV. Are you trying to read an unencrypted backup as an encrypted one?")))?;
+            .map_err(|_| EncryptionError::UnencryptedAsEncrypted(i18n("Couldn’t parse CSV. Are you trying to read an unencrypted backup as an encrypted one?")))?;
         let mut hasher = Sha256::new();
         hasher.update(key.as_bytes());
         let hash = hasher.finalize();
@@ -205,7 +205,7 @@ impl CsvHandler {
             .decrypt(nonce, encrypted_value.data.as_slice())
             .map_err(|_| {
                 EncryptionError::Decrypt(i18n(
-                    "Couldn't decrypt data. Are you sure you're using the right key?",
+                    "Couldn’t decrypt data. Are you sure you’re using the right key?",
                 ))
             })?)
     }
@@ -329,7 +329,7 @@ mod test {
         assert_eq!(
             data_readback.err().and_then(|e| e.downcast().ok()),
             Some(EncryptionError::EncryptedAsUnencrypted(i18n(
-                "Can't parse encrypted backup without encryption key!"
+                "Can’t parse encrypted backup without encryption key!"
             ))),
         );
     }
@@ -349,7 +349,7 @@ mod test {
 
         assert_eq!(
             data_readback.err().and_then(|e| e.downcast().ok()),
-            Some(EncryptionError::UnencryptedAsEncrypted(i18n("Couldn't parse CSV. Are you trying to read an unencrypted backup as an encrypted one?"))),
+            Some(EncryptionError::UnencryptedAsEncrypted(i18n("Couldn’t parse CSV. Are you trying to read an unencrypted backup as an encrypted one?"))),
         );
     }
 
@@ -367,7 +367,7 @@ mod test {
                 .err()
                 .unwrap()
                 .to_string(),
-            i18n("No activities added yet; can't create empty export!")
+            i18n("No activities added yet; can’t create empty export!")
         );
     }
 
@@ -385,7 +385,7 @@ mod test {
                 .err()
                 .unwrap()
                 .to_string(),
-            i18n("No weight measurements added yet; can't create empty export!")
+            i18n("No weight measurements added yet; can’t create empty export!")
         );
     }
 

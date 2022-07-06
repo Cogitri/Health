@@ -281,7 +281,7 @@ impl PluginWeightDetails {
                 self.set_filled_subtitle(&goal_label_text);
             } else if weight_value > 0.1 && !model.is_empty() {
                 if model.last_weight().unwrap() == weight_goal {
-                    self.set_filled_subtitle(&i18n("You've reached your weight goal. Great job!"));
+                    self.set_filled_subtitle(&i18n("You’ve reached your weight goal. Great job!"));
                 }
 
                 let unit_diff = model.last_weight().unwrap() - weight_goal;
@@ -325,7 +325,7 @@ impl PluginWeightDetails {
             }
         } else {
             self.set_filled_subtitle(&i18n(
-                "No weight goal set yet. You can set it in Health's preferences.",
+                "No weight goal set yet. You can set it in Health’s preferences.",
             ));
         }
     }
