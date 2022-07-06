@@ -10,49 +10,17 @@ A health tracking app for the GNOME desktop.
 
 ## Hacking on Health
 
-### With GNOME Builder
+### VSCode
 
-Open GNOME Builder, click on `Clone Repository...` and enter the repository URL. Afterwards, click on `Clone Project` and you should be all set up. Pressing `F5` or pressing the build button in the top bar should build Health for you.<>
-
-### Building in Flatpak
-
-You can build Health with the following command:
+The easiest way to get started with Health is by using the "Flatak" extension for VSCode.
+You can setup the dependencies of Health by running the following commands:
 
 ```sh
-flatpak-builder --user --install --force-clean app dev.Cogitri.Health.Devel.json
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak install org.freedesktop.Sdk.Extension.rust-stable//21.08 org.gnome.Sdk//42
 ```
 
-You can also pass `--system` instead of `--user` to flatpak-builder to install Health system-wide instead of only for your user. However, that requires root permissions.
-
-Afterwards, you can run it with:
-
-```sh
-flatpak run dev.Cogitri.Health.Devel
-```
-
-For development purposes you can also run Health directly via flatpak-builder to avoid the time cost of packing the flatpak and then installing it like so:
-
-```sh
-flatpak-builder --user --force-clean app dev.Cogitri.Health.json
-flatpak-builder --run app dev.Cogitri.Health.json dev.Cogitri.Health
-```
-
-
-### Building manually
-
-If you don't want to use Flatpak, you can build Health manually like so after installing `rust`, `tracker3-devel` and `libadwaita-devel`:
-
-```
-meson -Dprofile=development build
-ninja -C build
-```
-
-Afterwards, you may launch Health by running:
-
-```
-ninja -C build run
-```
-
+Afterwards, simply open the Health Code-Workspace by opening VSCode and using `File -> Open Workspace from File ...`. Install the recommended extensions. Now you can build and run Health with the commands of the Flatpak extension (`Ctrl+Shift+P -> Flatpak: Run`).
 
 ## Using CI Snapshots
 
@@ -65,12 +33,9 @@ To download the flatpak bundle of merge requests, go to the merge request, click
 After downloading the file, you can install it with:
 
 ```sh
-# The GNOME Nightly SDK is required for development snapshots of Health
-flatpak remote-add --user --if-not-exists gnome-nightly https://nightly.gnome.org/gnome-nightly.flatpakrepo
-
 tar xf repo.tar
 flatpak build-bundle repo/ health.flatpak dev.Cogitri.Health.Devel
 flatpak install --user health.flatpak
 ```
 
-As mentioned above, you can use `--system` instead of `--user` in the first&last command to install Health system-wide.
+As mentioned above, you can use `--system` instead of `--user` in the first and last command to install Health system-wide.

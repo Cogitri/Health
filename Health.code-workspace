@@ -12,7 +12,24 @@
       "titleBar.inactiveForeground": "#cccccc"
     },
     "editor.formatOnSave": true,
-    "nixEnvSelector.suggestion": false,
-    "nixEnvSelector.nixFile": "${workspaceRoot}/shell.nix"
+    "files.watcherExclude": {
+      "**/.git/objects/**": true,
+      "**/.git/subtree-cache/**": true,
+      "**/node_modules/*/**": true,
+      "**/.hg/store/**": true,
+      ".flatpak/**": true,
+      "_build/**": true
+    },
+    "rust-analyzer.server.path": "/home/rasmus/Projects/Health/.flatpak/rust-analyzer.sh",
+    "rust-analyzer.runnables.command": "/home/rasmus/Projects/Health/.flatpak/cargo.sh",
+    "rust-analyzer.runnables.extraArgs": [
+      "--target-dir=_build/src"
+    ],
+    "rust-analyzer.files.excludeDirs": [
+      ".flatpak"
+    ],
+    "mesonbuild.configureOnOpen": false,
+    "mesonbuild.buildFolder": "_build",
+    "mesonbuild.mesonPath": "/home/rasmus/Projects/Health/.flatpak/meson.sh"
   }
 }
