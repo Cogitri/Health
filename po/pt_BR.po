@@ -4,21 +4,27 @@
 # Enrico Nicoletto <liverig@gmail.com>, 2021.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2021-2022.
 # Matheus Barbosa <mdpb.matheus@gmail.com>, 2022.
+# Diogo Leal <diogo@diogoleal.com>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-03-15 08:58+0000\n"
-"PO-Revision-Date: 2022-03-13 15:52-0300\n"
-"Last-Translator: Matheus Barbosa <mdpb.matheus@gmail.com>\n"
+"POT-Creation-Date: 2022-07-07 16:42+0000\n"
+"PO-Revision-Date: 2022-07-09 00:31-0300\n"
+"Last-Translator: Diogo Leal <diogo@diogoleal.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 40.0\n"
+"X-Generator: Gtranslator 42.0\n"
+"X-DL-Team: pt_BR\n"
+"X-DL-Module: health\n"
+"X-DL-Branch: master\n"
+"X-DL-Domain: po\n"
+"X-DL-State: Translating\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -73,7 +79,7 @@ msgstr "Lista de tipos de atividades recentes"
 #: data/dev.Cogitri.Health.gschema.xml:42
 msgid ""
 "Activity types the user used recently, to be shown first in the activity "
-"types selector's list"
+"types selector’s list"
 msgstr ""
 "Tipos de atividades que o usuário usou recentemente, para serem mostrados "
 "primeiro na lista do seletor de tipos de atividades"
@@ -175,29 +181,23 @@ msgstr "Largura da janela."
 msgid "Health"
 msgstr "Saúde"
 
-#: data/dev.Cogitri.Health.Autostart.desktop.in.in:5
-#: data/dev.Cogitri.Health.desktop.in.in:5
-msgid "@APPLICATION_ID@"
-msgstr "@APPLICATION_ID@"
-
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:167
-msgid "A health tracking app for the GNOME desktop."
-msgstr "Um aplicativo de monitoramento de saúde para o ambiente GNOME."
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9
+msgid "Track your fitness goals"
+msgstr "Acompanhe suas metas de condicionamento físico"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
 msgid ""
-"A health tracking app for the GNOME desktop. Health can visualize how many "
-"steps you've made daily, your weight development over time and your daily "
-"activities. Data can be synched from Google Fit or manually entered into "
-"Health. Afterwards, it can be viewed and edited in Health."
+"Health can visualize how many steps you’ve made daily, your weight "
+"development over time and your daily activities. Data can be synched from "
+"Google Fit or manually entered into Health. Afterwards, it can be viewed and "
+"edited in Health."
 msgstr ""
-"Um aplicativo de monitoramento de saúde para o ambiente GNOME. O Saúde pode "
-"visualizar quantos passos você deu diariamente, seu desenvolvimento de peso "
-"ao longo do tempo e suas atividades diárias. Dados podem ser sincronizados "
-"com Google Fit ou inseridos manualmente no Saúde. Após, eles podem ser "
-"vistos e editados no Saúde."
+"O Saúde pode visualizar quantos passos você deu diariamente, seu "
+"desenvolvimento de peso ao longo do tempo e suas atividades diárias. Dados "
+"podem ser sincronizados com o Google Fit ou inseridos manualmente no Saúde. "
+"Depois disso, eles podem ser vistos e editados no Saúde."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:37
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:36
 msgid "Rasmus “Cogitri” Thomsen"
 msgstr "Rasmus “Cogitri” Thomsen"
 
@@ -212,63 +212,63 @@ msgstr "_Cancelar"
 msgid "_Save"
 msgstr "_Salvar"
 
-#: data/ui/date_selector.blp:17
+#: data/ui/date_selector.blp:18
 msgid "January"
 msgstr "Janeiro"
 
-#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:223
+#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:223
 msgid "February"
 msgstr "Fevereiro"
 
-#: data/ui/date_selector.blp:19
+#: data/ui/date_selector.blp:20
 msgid "March"
 msgstr "Março"
 
-#: data/ui/date_selector.blp:20
+#: data/ui/date_selector.blp:21
 msgid "April"
 msgstr "Abril"
 
-#: data/ui/date_selector.blp:21
+#: data/ui/date_selector.blp:22
 msgid "May"
 msgstr "Maio"
 
-#: data/ui/date_selector.blp:22
+#: data/ui/date_selector.blp:23
 msgid "June"
 msgstr "Junho"
 
-#: data/ui/date_selector.blp:23
+#: data/ui/date_selector.blp:24
 msgid "July"
 msgstr "Julho"
 
-#: data/ui/date_selector.blp:24
+#: data/ui/date_selector.blp:25
 msgid "August"
 msgstr "Agosto"
 
-#: data/ui/date_selector.blp:25
+#: data/ui/date_selector.blp:26
 msgid "September"
 msgstr "Setembro"
 
-#: data/ui/date_selector.blp:26
+#: data/ui/date_selector.blp:27
 msgid "October"
 msgstr "Outubro"
 
-#: data/ui/date_selector.blp:27
+#: data/ui/date_selector.blp:28
 msgid "November"
 msgstr "Novembro"
 
-#: data/ui/date_selector.blp:28
+#: data/ui/date_selector.blp:29
 msgid "December"
 msgstr "Dezembro"
 
-#: data/ui/date_selector.blp:34
+#: data/ui/date_selector.blp:35
 msgid "Day"
 msgstr "Dia"
 
-#: data/ui/date_selector.blp:60
+#: data/ui/date_selector.blp:61
 msgid "Month"
 msgstr "Mês"
 
-#: data/ui/date_selector.blp:83
+#: data/ui/date_selector.blp:84
 msgid "Year"
 msgstr "Ano"
 
@@ -342,7 +342,7 @@ msgstr "Medidas de peso"
 #: data/ui/plugins/weight/summary.blp:5 data/ui/view_add_weight.blp:38
 #: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
 msgid "Weight"
-msgstr "Altura"
+msgstr "Peso"
 
 #: data/ui/preferences_window.blp:43
 msgid "_Every 1 hour"
@@ -358,7 +358,7 @@ msgstr "Tempo _fixo"
 
 #: data/ui/preferences_window.blp:63
 msgid "Health Preferences"
-msgstr "Preferências do app Saúde"
+msgstr "Preferências do Saúde"
 
 #: data/ui/preferences_window.blp:69 data/ui/shortcuts_window.blp:11
 msgid "General"
@@ -409,18 +409,17 @@ msgstr "Hora do lembrete diário"
 msgid "Step goal"
 msgstr "Meta de passos"
 
-# WHO  = OMS = Organização Mundial da Saúde
 #: data/ui/preferences_window.blp:170
-msgid "The WHO recommends 10,000 steps per day."
-msgstr "A OMS recomenda 10.000 passos por dia."
+msgid "7,500 steps per day are recommended."
+msgstr "7.500 passos por dia são recomendados."
 
 #: data/ui/preferences_window.blp:184 data/ui/preferences_window.blp:187
 msgid "Weight Goal"
 msgstr "Meta de peso"
 
-# WHO  = OMS = Organização Mundial da Saúde
+# WHO = OMS = Organização Mundial da Saúde
 # BMI = IMC = Índice de  Massa Corporal
-#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
+#: data/ui/preferences_window.blp:188
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "A OMS recomenda um IMC de 18,5 – 24,9."
 
@@ -484,7 +483,7 @@ msgstr "Por favor, insira algumas informações para fazer a configuração."
 msgid "Please enter your daily step goal."
 msgstr "Por favor, insira sua meta diária de passos."
 
-# WHO  = OMS = Organização Mundial da Saúde
+# WHO = OMS = Organização Mundial da Saúde
 #: data/ui/setup_window.blp:224
 msgid "The WHO recommends 10.000 steps per day."
 msgstr "A OMS recomenda 10.000 passos por dia."
@@ -492,6 +491,12 @@ msgstr "A OMS recomenda 10.000 passos por dia."
 #: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
 msgstr "Por favor, insira sua meta de peso."
+
+# WHO = OMS = Organização Mundial da Saúde
+# BMI = IMC = Índice de Massa Corporal
+#: data/ui/setup_window.blp:286
+msgid "The WHO recommends a BMI of 18.5–24.9."
+msgstr "A OMS recomenda um IMC de 18,5 – 24,9."
 
 #: data/ui/setup_window.blp:314
 msgid "Current weight"
@@ -569,7 +574,7 @@ msgid ""
 "No plugins enabled. Enable one from the list below to start using Health."
 msgstr ""
 "Não há plugins habilitados. Habilite um da lista abaixo para começar a usar "
-"o app Saúde."
+"o aplicativo Saúde."
 
 #: data/ui/view_home_page.blp:107
 msgid "All data"
@@ -596,13 +601,17 @@ msgid "Enable plugin"
 msgstr "Habilitar plugin"
 
 #: src/core/application.rs:169
+msgid "A health tracking app for the GNOME desktop."
+msgstr "Um aplicativo de monitoramento de saúde para o ambiente GNOME."
+
+#: src/core/application.rs:171
 msgid "translator-credits"
 msgstr ""
 "Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Enrico Nicoletto <liverig@gmail.com>\n"
 "Matheus Barbosa <mdpb.matheus@gmail.com>"
 
-#: src/core/application.rs:171
+#: src/core/application.rs:173
 msgid "Websites"
 msgstr "Sites"
 
@@ -731,7 +740,7 @@ msgstr[0] "{} caloria gasta hoje"
 msgstr[1] "{} calorias gastas hoje"
 
 #: src/plugins/steps/details.rs:186
-msgid "Today's steps: {}"
+msgid "Today’s steps: {}"
 msgstr "Passos de hoje: {}"
 
 #: src/plugins/steps/details.rs:201
@@ -743,24 +752,24 @@ msgstr ""
 
 #: src/plugins/steps/details.rs:205
 msgid ""
-"You're on a streak for {} day. Reach your step goal today to continue it!"
+"You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
-"You're on a streak for {} days. Reach your step goal today to continue it!"
+"You’re on a streak for {} days. Reach your step goal today to continue it!"
 msgstr[0] ""
 "Você está em uma sequência de {} dia. Atinja sua meta hoje para continuar!"
 msgstr[1] ""
 "Você está em uma sequência de {} dias. Atinja sua meta hoje para continuar!"
 
 #: src/plugins/steps/details.rs:213
-msgid "You've reached your step goal today. Keep going to start a streak!"
+msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr ""
 "Você atingiu sua meta de passos hoje. Continue para começar uma sequência!"
 
 #: src/plugins/steps/details.rs:216
-msgid "You're on a streak for {} day. Good job!"
-msgid_plural "You're on a streak for {} days. Good job!"
-msgstr[0] "Você está em uma sequência de {} dia. Bom trabalho!"
-msgstr[1] "Você está em uma sequência de {} dias. Bom trabalho!"
+msgid "You’re on a streak for {} day. Good job!"
+msgid_plural "You’re on a streak for {} days. Good job!"
+msgstr[0] "Você está em uma sequência de {} dia. Parabéns!"
+msgstr[1] "Você está em uma sequência de {} dias. Parabéns!"
 
 #. TRANSLATORS: X step(s) on DATE
 #: src/plugins/steps/details.rs:233
@@ -807,7 +816,7 @@ msgstr[1] "{} quilogramas em {}"
 msgid "Unknown BMI"
 msgstr "IMC desconhecido"
 
-#: src/plugins/weight/details.rs:270
+#: src/plugins/weight/details.rs:268
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -821,7 +830,7 @@ msgstr[1] ""
 "Sua meta de peso é de {} libras. Adicione uma primeira medida de peso para "
 "ver o quão perto você está de atingi-la."
 
-#: src/plugins/weight/details.rs:277
+#: src/plugins/weight/details.rs:275
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -835,43 +844,39 @@ msgstr[1] ""
 "Sua meta de peso é de {} quilogramas. Adicione uma primeira medida de peso "
 "para ver o quão perto você está de atingi-la."
 
-#: src/plugins/weight/details.rs:286
-msgid "You've reached your weight goal. Great job!"
-msgstr "Você atingiu sua meta de peso. Bom trabalho!"
+#: src/plugins/weight/details.rs:284
+msgid "You’ve reached your weight goal. Great job!"
+msgstr "Você atingiu sua meta de peso. Parabéns!"
 
-#. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:302
-msgid "Your weight goal is {} pound,"
-msgid_plural "Your weight goal is {} pounds,"
-msgstr[0] "Sua meta de peso é de {} libra,"
-msgstr[1] "Sua meta de peso é de {} libras,"
+#: src/plugins/weight/details.rs:300
+msgid "Your weight goal is {} pound."
+msgid_plural "Your weight goal is {} pounds."
+msgstr[0] "Sua meta de peso é de {} libra."
+msgstr[1] "Sua meta de peso é de {} libras."
 
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:307
-msgid "you have {} pound left to reach it"
-msgid_plural "you have {} pounds left to reach it"
-msgstr[0] "faltando {} libra para atingi-la"
-msgstr[1] "faltando {} libras para atingi-la"
+#: src/plugins/weight/details.rs:305
+msgid "You have {} pound left to reach it."
+msgid_plural "You have {} pounds left to reach it."
+msgstr[0] "Falta {} libra para atingi-la."
+msgstr[1] "Faltam {} libras para atingi-la."
 
-#. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:314
-msgid "Your weight goal is {} kilogram,"
-msgid_plural "Your weight goal is {} kilograms,"
-msgstr[0] "Sua meta de peso é de {} quilograma,"
-msgstr[1] "Sua meta de peso é de {} quilogramas,"
+#: src/plugins/weight/details.rs:312
+msgid "Your weight goal is {} kilogram."
+msgid_plural "Your weight goal is {} kilograms."
+msgstr[0] "Sua meta de peso é de {} quilograma."
+msgstr[1] "Sua meta de peso é de {} quilogramas."
 
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:320
-msgid "you have {} kilogram left to reach it"
-msgid_plural "you have {} kilograms left to reach it"
-msgstr[0] "faltando {} quilograma para atingi-la"
-msgstr[1] "faltando {} quilogramas para atingi-la"
+#: src/plugins/weight/details.rs:318
+msgid "You have {} kilogram left to reach it"
+msgid_plural "You have {} kilograms left to reach it"
+msgstr[0] "Falta {} quilograma para atingi-la"
+msgstr[1] "Faltam {} quilogramas para atingi-la"
 
-#: src/plugins/weight/details.rs:330
-msgid "No weight goal set yet. You can set it in Health's preferences."
+#: src/plugins/weight/details.rs:328
+msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr ""
-"Nenhuma meta de peso definida ainda. Você pode configurá-la nas preferências "
-"do app Saúde."
+"Nenhuma meta de peso definida ainda. Você pode defini-la nas preferências "
+"do aplicativo."
 
 #: src/plugins/weight/summary.rs:119
 msgid "{} pound"
@@ -918,42 +923,42 @@ msgid "No weight data available"
 msgstr "Nenhum dado sobre peso disponível"
 
 #: src/sync/csv.rs:81 src/sync/csv.rs:370
-msgid "No activities added yet; can't create empty export!"
+msgid "No activities added yet; can’t create empty export!"
 msgstr ""
 "Nenhuma atividade adicionada ainda; não é possível criar uma exportação "
 "vazia!"
 
 #: src/sync/csv.rs:111 src/sync/csv.rs:388
-msgid "No weight measurements added yet; can't create empty export!"
+msgid "No weight measurements added yet; can’t create empty export!"
 msgstr ""
 "Nenhuma medida de peso adicionada ainda; não é possível criar uma exportação "
 "vazia!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:332
-msgid "Can't parse encrypted backup without encryption key!"
+msgid "Can’t parse encrypted backup without encryption key!"
 msgstr ""
 "Não é possível analisar backup criptografado sem chave de criptografia!"
 
 #: src/sync/csv.rs:195 src/sync/csv.rs:352
 msgid ""
-"Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
+"Couldn’t parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
 msgstr ""
 "Não foi possível analisar CSV. Você está tentando ler um backup não "
 "criptografado como criptografado?"
 
 #: src/sync/csv.rs:208
-msgid "Couldn't decrypt data. Are you sure you're using the right key?"
+msgid "Couldn’t decrypt data. Are you sure you’re using the right key?"
 msgstr ""
 "Não foi possível descriptografar os dados. Tem certeza de que está usando a "
 "chave certa?"
 
 #: src/sync/database_receiver.rs:46
-msgid "Couldn't synchronize steps due to error {}"
+msgid "Couldn’t synchronize steps due to error {}"
 msgstr "Não foi possível sincronizar os passos devido ao erro {}"
 
 #: src/sync/database_receiver.rs:60
-msgid "Couldn't synchronize weight measurements due to error {}"
+msgid "Couldn’t synchronize weight measurements due to error {}"
 msgstr "Não foi possível sincronizar as medições de peso devido ao erro {}"
 
 #: src/sync/google_fit.rs:211
@@ -966,7 +971,7 @@ msgstr "A solicitação do token OAuth2 falhou devido ao erro {}"
 
 #: src/sync/sync_provider.rs:109
 msgid ""
-"Can't retrieve OAuth2 token when no refresh token is set! Please re-"
+"Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
 "authenticate with your sync provider."
 msgstr ""
 "Não é possível recuperar o token OAuth2 quando nenhum token de atualização "
@@ -981,7 +986,7 @@ msgid "Successfully authenticated, please return to Health."
 msgstr "Autenticado com sucesso, volte para o app Saúde."
 
 #: src/sync/sync_provider.rs:228
-msgid "Couldn't parse OAuth2 response"
+msgid "Couldn’t parse OAuth2 response"
 msgstr "Não foi possível analisar a resposta OAuth2"
 
 #: src/views/bar_graph_view.rs:583
@@ -1032,7 +1037,7 @@ msgstr[1] "{} jardas"
 
 #: src/widgets/bmi_level_bar.rs:267 src/windows/setup_window.rs:248
 msgid "Current BMI"
-msgstr "BMI atual"
+msgstr "IMC atual"
 
 #: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
@@ -1170,16 +1175,23 @@ msgstr "Fechar"
 
 #: src/windows/preferences_window.rs:409 src/windows/setup_window.rs:249
 msgid "Target BMI"
-msgstr "BMI planejado"
+msgstr "IMC planejado"
 
 #: src/windows/window.rs:97
 msgid "Failed to migrate database to new version due to error {}"
 msgstr "Falha ao migrar o banco de dados para a nova versão devido ao erro {}"
 
 #: src/windows/window.rs:267
-msgid "Couldn't sync Google Fit data due to error: {}"
+msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr ""
 "Não foi possível sincronizar os dados do Google Fit devido a um erro: {}"
+
+#~ msgid "@APPLICATION_ID@"
+#~ msgstr "@APPLICATION_ID@"
+
+# WHO  = OMS = Organização Mundial da Saúde
+#~ msgid "The WHO recommends 10,000 steps per day."
+#~ msgstr "A OMS recomenda 10.000 passos por dia."
 
 #~ msgid "of {} step"
 #~ msgid_plural "of {} steps"
