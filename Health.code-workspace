@@ -20,6 +20,9 @@
       ".flatpak/**": true,
       "_build/**": true
     },
+    "mesonbuild.configureOnOpen": false,
+    "mesonbuild.buildFolder": "_build",
+    "mesonbuild.mesonPath": "/home/rasmus/Projects/Health/.flatpak/meson.sh",
     "rust-analyzer.server.path": "/home/rasmus/Projects/Health/.flatpak/rust-analyzer.sh",
     "rust-analyzer.runnables.command": "/home/rasmus/Projects/Health/.flatpak/cargo.sh",
     "rust-analyzer.runnables.extraArgs": [
@@ -27,9 +30,6 @@
     ],
     "rust-analyzer.files.excludeDirs": [
       ".flatpak"
-    ],
-    "mesonbuild.configureOnOpen": false,
-    "mesonbuild.buildFolder": "_build",
-    "mesonbuild.mesonPath": "/home/rasmus/Projects/Health/.flatpak/meson.sh"
+    ]
   }
 }
