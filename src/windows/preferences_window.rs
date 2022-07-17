@@ -271,7 +271,7 @@ impl PreferencesWindow {
             action_group,
             "frequency",
             Some(&String::static_variant_type()),
-            "hourly",
+            self.imp().settings.notification_frequency(),
             clone!(@weak self as obj => move |a, p| {
                 obj.handle_frequency(a, p);
             })

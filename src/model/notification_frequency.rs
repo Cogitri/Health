@@ -51,3 +51,9 @@ impl glib::ToValue for NotificationFrequency {
         <String as glib::StaticType>::static_type()
     }
 }
+
+impl glib::ToVariant for NotificationFrequency {
+    fn to_variant(&self) -> glib::Variant {
+        self.as_ref().to_variant()
+    }
+}
