@@ -39,7 +39,10 @@ mod imp {
         windows::{SetupWindow, Window},
     };
     use adw::subclass::prelude::*;
-    use gtk::glib::{self, clone, g_warning};
+    use gtk::{
+        gio,
+        glib::{self, clone, g_warning},
+    };
     use gtk::{prelude::*, subclass::prelude::*};
     use std::cell::RefCell;
 
@@ -101,9 +104,12 @@ mod imp {
             obj.migrate_gsettings();
             obj.setup_actions();
             obj.setup_accels();
-            obj.setup_notifications();
-            // Hold onto this application to send notifications
-            obj.hold();
+
+            if obj.flags().contains(gio::ApplicationFlags::IS_SERVICE) {
+                obj.setup_notifications();
+                // Hold onto this application to send notifications
+                obj.hold();
+            }
         }
     }
 
