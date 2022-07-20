@@ -111,9 +111,9 @@ checksum = "37ccbd214614c6783386c1af30caf03192f17891059cecc394b4fb119e363de3"
 
 [[package]]
 name = "bytes"
-version = "1.1.0"
+version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c4872d67bab6358e59559027aa3b9157c53d9358c51423c17554809a8858e0f8"
+checksum = "f0b3de4a0c5e67e16066a0715723abd91edc2f9001d09c46e1dca929351e130e"
 
 [[package]]
 name = "cairo-rs"
@@ -815,7 +815,7 @@ dependencies = [
 
 [[package]]
 name = "health"
-version = "0.93.3"
+version = "0.94.0"
 dependencies = [
  "anyhow",
  "async-trait",
@@ -1544,9 +1544,12 @@ dependencies = [
 
 [[package]]
 name = "slab"
-version = "0.4.6"
+version = "0.4.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "eb703cfe953bccee95685111adeedb76fabe4e97549a58d16f03ea7b9367bb32"
+checksum = "4614a76b2a8be0058caa9dbbaf66d988527d86d003c11a94fbd335d7661edcef"
+dependencies = [
+ "autocfg",
+]
 
 [[package]]
 name = "smallvec"
@@ -1694,9 +1697,9 @@ dependencies = [
 
 [[package]]
 name = "tracker-rs"
-version = "0.2.1"
+version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "325f26e3d16ccf09c933d8dcd98379ec55389c4e383d0a98f747c78c99f18109"
+checksum = "303639f7251faccbc201f1030d0d2f57c65a1a2f2d39fb24d609b44c15e24e95"
 dependencies = [
  "bitflags",
  "gio",

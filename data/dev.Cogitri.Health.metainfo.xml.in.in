@@ -46,6 +46,12 @@
 	</kudos>
 
 	<releases>
+		<release version="0.94.0" date="2022-07-17">
+			<p>
+				The 0.94.0 release includes a major update to the main view of the app,
+				fixes bugs with date handling and makes notifications more reliable.
+			</p>
+		</release>
 		<release version="0.93.3" date="2021-11-06">
 			<p>
 				This release includes a number of fixes, including:

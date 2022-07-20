@@ -9,13 +9,6 @@ variables:
   TARBALL: "Health-${CI_COMMIT_TAG}.tar.xz"
   PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/release-tarballs/${CI_COMMIT_TAG}"
 
-.flatpak_cache_template: &flatpak_cache
-  cache:
-    key: "flatpak"
-    paths:
-      - .flatpak-builder/cache/
-      - _build/
-
 stages:
   - qa
   - build
@@ -61,10 +54,6 @@ clippy:
     - meson build
     - cargo clippy --version
     - cargo clippy -- -D warnings
-  cache:
-    key: clippy
-    paths:
-      - target
 
 flatpak:
   extends: ".flatpak"
@@ -89,10 +78,6 @@ pages:
     - cargo makedocs -i "health" -i "gio" -i "glib"
     - rm -rf public
     - mv target/doc/ public
-  cache:
-    key: pages
-    paths:
-      - target
   artifacts:
     paths:
       - public
@@ -107,50 +92,25 @@ create-dist-tarball:
   tags:
     - flatpak
   script:
-    - flatpak-builder --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} --force-clean app ${MANIFEST_PATH}
-    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} meson _build
-    - flatpak-builder --disable-rofiles-fuse --run app ${MANIFEST_PATH} meson dist --no-tests -C _build
-  artifacts:
-    paths:
-      - _build/meson-dist/
-    expire_in: 5 mins
-
-upload-dist-tarball:
-  stage: release-upload
-  image: curlimages/curl:latest
-  rules:
-    - if: $CI_COMMIT_TAG
-  script:
+    - flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
+    - echo "git status; meson dist --no-tests" | flatpak-builder --disable-rofiles-fuse --build-shell=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}
+    - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-dist tarball
     - |
-      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file _build/meson-dist/${TARBALL} ${PACKAGE_REGISTRY_URL}/${TARBALL}
+      curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file tarball/${TARBALL} ${PACKAGE_REGISTRY_URL}/${TARBALL}
 
 # https://gitlab.com/gitlab-org/gitlab/-/issues/271534 The default URL needs authentication right now, which is less than optimal...
 # Get the package_files ID instead and use that as download URL in the "release" step.
-no-auth-url-job:
-  stage: release-fix-url
-  image: alpine:latest
-  rules:
-    - if: $CI_COMMIT_TAG
-  script:
-    - apk add curl jq
-    - |
-      export PACKAGE_ID=$(curl --header "PRIVATE-TOKEN: ${GITLAB_SECRET_API_KEY}" "https://gitlab.gnome.org/api/v4/projects/${CI_PROJECT_ID}/packages?sort=desc" | jq -c .[0].id)
-    - |
-      export PACKAGE_DOWNLOAD_ID=$(curl --header "PRIVATE-TOKEN: ${GITLAB_SECRET_API_KEY}" "https://gitlab.gnome.org/api/v4/projects/${CI_PROJECT_ID}/packages/${PACKAGE_ID}/package_files" | jq -c .[0].id)
-    - echo "https://gitlab.gnome.org/World/Health/-/package_files/$PACKAGE_DOWNLOAD_ID/download" > download_url
-  artifacts:
-    paths:
-      - download_url
-    expire_in: 5 mins
-
 release:
   stage: release-publish
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   rules:
     - if: $CI_COMMIT_TAG
   script:
+    - apk add curl jq
     - |
-      export PACKAGE_DOWNLOAD_URL=$(cat download_url) \
-      && release-cli create --name "Release $CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
+      export PACKAGE_ID=$(curl "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages?sort=desc" | jq -c .[0].id) \
+        && export PACKAGE_DOWNLOAD_ID=$(curl "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/${PACKAGE_ID}/package_files" | jq -c .[0].id) \
+        && export PACKAGE_DOWNLOAD_URL="${CI_PROJECT_URL}/-/package_files/${PACKAGE_DOWNLOAD_ID}/download" \
+        && release-cli create --name "Release $CI_COMMIT_TAG" --tag-name $CI_COMMIT_TAG \
         --description "Please use the attached tarball \"${TARBALL}\", which vendors the required Rust dependencies and can be used to build Health without an internet connection." \
         --assets-link "{\"name\":\"${TARBALL}\",\"url\":\"${PACKAGE_DOWNLOAD_URL}\"}"
