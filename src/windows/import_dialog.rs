@@ -65,7 +65,7 @@ mod imp {
                         let handler = CsvHandler::new();
                         send.resolve(handler.import_activities_csv(&file, pass.as_deref()).await)
                     } else {
-                        send.resolve(Ok(()))
+                        send.resolve(Err(anyhow::anyhow!(i18n("No file selected."))));
                     }
                 });
             }))
@@ -94,7 +94,7 @@ mod imp {
                         let handler = CsvHandler::new();
                         send.resolve(handler.import_weights_csv(&file, pass.as_deref()).await)
                     } else {
-                        send.resolve(Ok(()))
+                        send.resolve(Err(anyhow::anyhow!(i18n("No file selected."))));
                     }
                 });
             }))
