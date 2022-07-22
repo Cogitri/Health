@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-07-06 08:12+0000\n"
-"PO-Revision-Date: 2022-07-07 19:42+0300\n"
+"POT-Creation-Date: 2022-07-21 16:28+0000\n"
+"PO-Revision-Date: 2022-07-22 09:35+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -70,9 +70,6 @@ msgid "List of recent activity types"
 msgstr "Список типів нещодавньої фізичної діяльності"
 
 #: data/dev.Cogitri.Health.gschema.xml:42
-#| msgid ""
-#| "Activity types the user used recently, to be shown first in the activity "
-#| "types selector's list"
 msgid ""
 "Activity types the user used recently, to be shown first in the activity "
 "types selector’s list"
@@ -185,22 +182,16 @@ msgid "Track your fitness goals"
 msgstr "Керуйте вашими цілями у фітнесі"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
-#| msgid ""
-#| "A health tracking app for the GNOME desktop. Health can visualize how "
-#| "many steps you've made daily, your weight development over time and your "
-#| "daily activities. Data can be synched from Google Fit or manually entered "
-#| "into Health. Afterwards, it can be viewed and edited in Health."
 msgid ""
 "Health can visualize how many steps you’ve made daily, your weight "
 "development over time and your daily activities. Data can be synched from "
 "Google Fit or manually entered into Health. Afterwards, it can be viewed and "
 "edited in Health."
 msgstr ""
-"«Здоров'я» може "
-"візуалізувати кількість кроків, які ви виконуєте щодня, динаміку вашої ваги "
-"та ваші щоденні фізичні вправи. Дані може бути синхронізовано із Google Fit "
-"або введено вручну до «Здоров'я». Після цього, дані можна буде переглядати і "
-"редагувати у «Здоров'ї»."
+"«Здоров'я» може візуалізувати кількість кроків, які ви виконуєте щодня, "
+"динаміку вашої ваги та ваші щоденні фізичні вправи. Дані може бути "
+"синхронізовано із Google Fit або введено вручну до «Здоров'я». Після цього, "
+"дані можна буде переглядати і редагувати у «Здоров'ї»."
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:36
 msgid "Rasmus “Cogitri” Thomsen"
@@ -497,7 +488,6 @@ msgid "Please enter your weight goal."
 msgstr "Будь ласка, введіть значення цільової ваги."
 
 #: data/ui/setup_window.blp:286
-#| msgid "The WHO recommends a BMI of 18.5-24.9."
 msgid "The WHO recommends a BMI of 18.5–24.9."
 msgstr "Рекомендованим ВОЗ значенням ІМТ є від 18,5 до 24,9."
 
@@ -603,15 +593,15 @@ msgstr "_Про «Здоров'я»"
 msgid "Enable plugin"
 msgstr "Увімкнути додаток"
 
-#: src/core/application.rs:169
+#: src/core/application.rs:175
 msgid "A health tracking app for the GNOME desktop."
 msgstr "Програма стеження за станом здоров'я для стільниці GNOME."
 
-#: src/core/application.rs:171
+#: src/core/application.rs:177
 msgid "translator-credits"
 msgstr "Юрій Чорноіван <yurchor@ukr.net>, 2021"
 
-#: src/core/application.rs:173
+#: src/core/application.rs:179
 msgid "Websites"
 msgstr "Сайти"
 
@@ -756,7 +746,6 @@ msgstr[2] "Сьогодні спалено {} калорій"
 msgstr[3] "Сьогодні спалено {} калорію"
 
 #: src/plugins/steps/details.rs:186
-#| msgid "Today's steps: {}"
 msgid "Today’s steps: {}"
 msgstr "Сьогодні кроків: {}"
 
@@ -768,10 +757,6 @@ msgstr ""
 "до форми!"
 
 #: src/plugins/steps/details.rs:205
-#| msgid ""
-#| "You're on a streak for {} day. Reach your step goal today to continue it!"
-#| msgid_plural ""
-#| "You're on a streak for {} days. Reach your step goal today to continue it!"
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -790,14 +775,11 @@ msgstr[3] ""
 "кроків, щоб продовжити перебувати у формі!"
 
 #: src/plugins/steps/details.rs:213
-#| msgid "You've reached your step goal today. Keep going to start a streak!"
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr ""
 "Сьогодні ви досягли цільової кількості кроків. Продовжуйте, щоб бути у формі!"
 
 #: src/plugins/steps/details.rs:216
-#| msgid "You're on a streak for {} day. Good job!"
-#| msgid_plural "You're on a streak for {} days. Good job!"
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "Ви у формі уже {} день. Поздоровляємо!"
@@ -901,7 +883,6 @@ msgstr[3] ""
 "наскільки близько ви до досягнення цільової ваги."
 
 #: src/plugins/weight/details.rs:284
-#| msgid "You've reached your weight goal. Great job!"
 msgid "You’ve reached your weight goal. Great job!"
 msgstr "Вами досягнуто цільової ваги. Поздоровляємо!"
 
@@ -938,7 +919,6 @@ msgstr[2] "Вам лишилося {} кілограмів до досягнен
 msgstr[3] "Вам лишився {} кілограм до досягнення бажаного результату"
 
 #: src/plugins/weight/details.rs:328
-#| msgid "No weight goal set yet. You can set it in Health's preferences."
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr ""
 "Цільової ваги ще не встановлено. Ви можете встановити її у налаштуваннях "
@@ -1001,28 +981,22 @@ msgid "No weight data available"
 msgstr "Немає доступних даних щодо ваги"
 
 #: src/sync/csv.rs:81 src/sync/csv.rs:370
-#| msgid "No activities added yet; can't create empty export!"
 msgid "No activities added yet; can’t create empty export!"
 msgstr ""
 "Записів фізичної активності ще не додано. Не можна експортувати порожній "
 "набір даних!"
 
 #: src/sync/csv.rs:111 src/sync/csv.rs:388
-#| msgid "No weight measurements added yet; can't create empty export!"
 msgid "No weight measurements added yet; can’t create empty export!"
 msgstr ""
 "Записів ваги ще не додано. Не можна експортувати порожній набір даних!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:332
-#| msgid "Can't parse encrypted backup without encryption key!"
 msgid "Can’t parse encrypted backup without encryption key!"
 msgstr ""
 "Обробка даних зашифрованої резервної копії без ключа шифрування неможлива!"
 
 #: src/sync/csv.rs:195 src/sync/csv.rs:352
-#| msgid ""
-#| "Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
-#| "encrypted one?"
 msgid ""
 "Couldn’t parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
@@ -1031,17 +1005,14 @@ msgstr ""
 "як зашифровану?"
 
 #: src/sync/csv.rs:208
-#| msgid "Couldn't decrypt data. Are you sure you're using the right key?"
 msgid "Couldn’t decrypt data. Are you sure you’re using the right key?"
 msgstr "Не вдалося розшифрувати дані. Ви певні, що використано належний ключ?"
 
 #: src/sync/database_receiver.rs:46
-#| msgid "Couldn't synchronize steps due to error {}"
 msgid "Couldn’t synchronize steps due to error {}"
 msgstr "Не вдалося синхронізувати дані щодо кроків через помилку {}"
 
 #: src/sync/database_receiver.rs:60
-#| msgid "Couldn't synchronize weight measurements due to error {}"
 msgid "Couldn’t synchronize weight measurements due to error {}"
 msgstr "Не вдалося синхронізувати дані щодо вимірів ваги через помилку {}"
 
@@ -1054,9 +1025,6 @@ msgid "Requesting OAuth2 token failed due to error {}"
 msgstr "Не вдалося здійснити запит щодо жетона OAuth2 через помилку {}"
 
 #: src/sync/sync_provider.rs:109
-#| msgid ""
-#| "Can't retrieve OAuth2 token when no refresh token is set! Please re-"
-#| "authenticate with your sync provider."
 msgid ""
 "Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
 "authenticate with your sync provider."
@@ -1074,7 +1042,6 @@ msgid "Successfully authenticated, please return to Health."
 msgstr "Розпізнавання пройдено. Будь ласка, поверніться до вікна «Здоров'я»."
 
 #: src/sync/sync_provider.rs:228
-#| msgid "Couldn't parse OAuth2 response"
 msgid "Couldn’t parse OAuth2 response"
 msgstr "Не вдалося обробити відповідь OAuth2"
 
@@ -1208,6 +1175,11 @@ msgstr "Фізична активність.csv.encrypted"
 msgid "Activities.csv"
 msgstr "Фізична активність.csv"
 
+#: src/windows/export_dialog.rs:75 src/windows/export_dialog.rs:109
+#: src/windows/import_dialog.rs:68 src/windows/import_dialog.rs:97
+msgid "No file selected."
+msgstr "Не вибрано жодного файла."
+
 #: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
 msgstr "Зберегти вимір ваги"
@@ -1277,7 +1249,6 @@ msgid "Failed to migrate database to new version due to error {}"
 msgstr "Не вдалося перенести базу даних до нової версії через помилку {}"
 
 #: src/windows/window.rs:267
-#| msgid "Couldn't sync Google Fit data due to error: {}"
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Не вдалося синхронізувати дані із Google Fit через помилку: {}"
 
