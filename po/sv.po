@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-07-06 08:12+0000\n"
-"PO-Revision-Date: 2022-07-06 18:53+0200\n"
+"POT-Creation-Date: 2022-07-21 16:28+0000\n"
+"PO-Revision-Date: 2022-07-21 20:49+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -581,11 +581,11 @@ msgstr "_Om Hälsa"
 msgid "Enable plugin"
 msgstr "Aktivera insticksmodul"
 
-#: src/core/application.rs:169
+#: src/core/application.rs:175
 msgid "A health tracking app for the GNOME desktop."
 msgstr "Ett hälsoobservationsprogram för GNOME-skrivbordet."
 
-#: src/core/application.rs:171
+#: src/core/application.rs:177
 msgid "translator-credits"
 msgstr ""
 "Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
@@ -594,7 +594,7 @@ msgstr ""
 "Skicka synpunkter om översättningen till\n"
 "<tp-sv@listor.tp-sv.se>."
 
-#: src/core/application.rs:173
+#: src/core/application.rs:179
 msgid "Websites"
 msgstr "Webbplatser"
 
@@ -1090,6 +1090,11 @@ msgstr "Aktiviteter.csv.encrypted"
 #: src/windows/export_dialog.rs:63
 msgid "Activities.csv"
 msgstr "Aktiviteter.csv"
+
+#: src/windows/export_dialog.rs:75 src/windows/export_dialog.rs:109
+#: src/windows/import_dialog.rs:68 src/windows/import_dialog.rs:97
+msgid "No file selected."
+msgstr "Ingen fil har valts."
 
 #: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
