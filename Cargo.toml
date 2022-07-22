@@ -124,7 +124,7 @@ features = ["derive"]
 version = "1.0"
 
 [dependencies.tracker]
-version = "0.2.1"
+version = "0.2.4"
 package = "tracker-rs"
 features = ["v3_3"]
 

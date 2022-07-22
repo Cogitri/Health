@@ -546,10 +546,7 @@ impl Database {
             let resource = tracker::Resource::new(None);
             resource.set_uri("rdf:type", "health:Activity");
             resource.set_int64("health:activity_user_id", user_id);
-            resource.set_string(
-                "health:activity_datetime",
-                s.date.format_iso8601().unwrap().as_str(),
-            );
+            resource.set_datetime("health:activity_datetime", &s.date);
             resource.set_int64("health:steps", s.steps.into());
             resource.set_int64(
                 "health:activity_id",
@@ -558,14 +555,7 @@ impl Database {
             // FIXME: Set correct minutes here
             resource.set_int64("health:minutes", 0);
 
-            connection
-                .update_future(
-                    resource
-                        .print_sparql_update(Some(manager), None)
-                        .unwrap()
-                        .as_str(),
-                )
-                .await?;
+            connection.update_resource_future(None, &resource).await?;
         }
 
         self.emit_by_name::<()>("activities-updated", &[]);
@@ -594,20 +584,10 @@ impl Database {
             let resource = tracker::Resource::new(None);
             resource.set_uri("rdf:type", "health:WeightMeasurement");
             resource.set_int64("health:activity_user_id", user_id);
-            resource.set_string(
-                "health:weight_datetime",
-                w.date.format_iso8601().unwrap().as_str(),
-            );
+            resource.set_datetime("health:weight_datetime", &w.date);
             resource.set_double("health:weight", w.weight.get::<kilogram>().into());
 
-            connection
-                .update_future(
-                    resource
-                        .print_sparql_update(Some(manager), None)
-                        .unwrap()
-                        .as_str(),
-                )
-                .await?;
+            connection.update_resource_future(None, &resource).await?;
         }
 
         self.emit_by_name::<()>("weights-updated", &[]);
@@ -978,7 +958,6 @@ impl Database {
     pub async fn migrate_activities_date_datetime(&self) -> Result<()> {
         let imp = self.imp();
         let connection = imp.connection.get().unwrap();
-        let manager = imp.manager.get().unwrap();
 
         let cursor = self
             .load_statement_from_gresource("migrate_activities_date_datetime")
@@ -986,6 +965,7 @@ impl Database {
             .await?;
 
         while let Ok(true) = cursor.next_future().await {
+            println!("found");
             let resource = tracker::Resource::new(None);
             resource.set_uri("rdf:type", "health:Activity");
 
@@ -995,13 +975,10 @@ impl Database {
                         resource.set_int64("health:activity_id", cursor.integer(i));
                     }
                     "date" => {
-                        resource.set_string(
+                        resource.set_datetime(
                             "health:activity_datetime",
-                            Date::parse(cursor.string(i).unwrap().as_str())?
-                                .and_time_utc(Time::new(0, 0, 0).unwrap())
-                                .format_iso8601()
-                                .unwrap()
-                                .as_str(),
+                            &Date::parse(cursor.string(i).unwrap().as_str())?
+                                .and_time_utc(Time::new(0, 0, 0).unwrap()),
                         );
                     }
                     "calories_burned" => {
@@ -1050,14 +1027,7 @@ impl Database {
                 }
             }
 
-            connection
-                .update_future(
-                    resource
-                        .print_sparql_update(Some(manager), None)
-                        .unwrap()
-                        .as_str(),
-                )
-                .await?;
+            connection.update_resource_future(None, &resource).await?;
         }
 
         connection
@@ -1077,7 +1047,6 @@ impl Database {
     pub async fn migrate_weight_date_datetime(&self) -> Result<()> {
         let imp = self.imp();
         let connection = imp.connection.get().unwrap();
-        let manager = imp.manager.get().unwrap();
 
         let cursor = self
             .load_statement_from_gresource("migrate_weight_date_datetime")
@@ -1087,24 +1056,14 @@ impl Database {
         while let Ok(true) = cursor.next_future().await {
             let resource = tracker::Resource::new(None);
             resource.set_uri("rdf:type", "health:WeightMeasurement");
-            resource.set_string(
+            resource.set_datetime(
                 "health:weight_datetime",
-                Date::parse(cursor.string(0).unwrap().as_str())?
-                    .and_time_utc(Time::new(0, 0, 0).unwrap())
-                    .format_iso8601()
-                    .unwrap()
-                    .as_str(),
+                &Date::parse(cursor.string(0).unwrap().as_str())?
+                    .and_time_utc(Time::new(0, 0, 0).unwrap()),
             );
             resource.set_double("health:weight", cursor.double(1));
 
-            connection
-                .update_future(
-                    resource
-                        .print_sparql_update(Some(manager), None)
-                        .unwrap()
-                        .as_str(),
-                )
-                .await?;
+            connection.update_resource_future(None, &resource).await?;
         }
 
         connection
@@ -1325,10 +1284,7 @@ impl Database {
         let imp = self.imp();
         let resource = tracker::Resource::new(None);
         resource.set_uri("rdf:type", "health:Activity");
-        resource.set_string(
-            "health:activity_datetime",
-            activity.date().format_iso8601().unwrap().as_str(),
-        );
+        resource.set_datetime("health:activity_datetime", &activity.date());
         resource.set_int64(
             "health:activity_user_id",
             i64::from(imp.settings.active_user_id()),
@@ -1361,16 +1317,8 @@ impl Database {
         }
 
         let connection = imp.connection.get().unwrap();
-        let manager = imp.manager.get().unwrap();
 
-        connection
-            .update_future(
-                resource
-                    .print_sparql_update(Some(manager), None)
-                    .unwrap()
-                    .as_str(),
-            )
-            .await?;
+        connection.update_resource_future(None, &resource).await?;
 
         self.emit_by_name::<()>("activities-updated", &[]);
         Ok(())
@@ -1387,10 +1335,7 @@ impl Database {
         let imp = self.imp();
         let resource = tracker::Resource::new(None);
         resource.set_uri("rdf:type", "health:WeightMeasurement");
-        resource.set_string(
-            "health:weight_datetime",
-            weight.date.format_iso8601().unwrap().as_str(),
-        );
+        resource.set_datetime("health:weight_datetime", &weight.date);
         resource.set_double("health:weight", weight.weight.get::<kilogram>().into());
         resource.set_int64(
             "health:weight_user_id",
@@ -1398,16 +1343,8 @@ impl Database {
         );
 
         let connection = imp.connection.get().unwrap();
-        let manager = imp.manager.get().unwrap();
 
-        connection
-            .update_future(
-                resource
-                    .print_sparql_update(Some(manager), None)
-                    .unwrap()
-                    .as_str(),
-            )
-            .await?;
+        connection.update_resource_future(None, &resource).await?;
 
         self.emit_by_name::<()>("weights-updated", &[]);
         Ok(())
@@ -1615,7 +1552,7 @@ mod test {
     fn migration_activities() {
         let data_dir = tempdir().unwrap();
         let date = glib::DateTime::local();
-        let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
+        let db = Database::new_with_store_path(PathBuf::from("/home/rasmus/tracker")).unwrap();
         let connection = db.connection();
         Settings::instance().set_user_weight_goal(Mass::new::<kilogram>(50.0));
         let expected_activity = Activity::builder()
