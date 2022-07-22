@@ -28,3 +28,4 @@ SELECT
             ?datapoint health:minutes ?minutes
         }
     } ORDER BY DESC(?date)
+      LIMIT 100

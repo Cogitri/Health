@@ -33,3 +33,4 @@ SELECT
             ?user_id = ~user^^xsd:integer
         )
     } ORDER BY DESC(?date)
+      LIMIT 100
