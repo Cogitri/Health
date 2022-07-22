@@ -258,13 +258,11 @@ impl ModelNotification {
 #[cfg(test)]
 mod test {
     use super::{ModelNotification, NotificationFrequency};
-    use crate::{prelude::*, utils::init_env};
+    use crate::prelude::*;
     use gtk::gio;
 
     #[test]
     fn new() {
-        init_env();
-
         ModelNotification::new(
             &gio::Application::new(None, gio::ApplicationFlags::FLAGS_NONE),
             NotificationFrequency::Every4Hrs,
@@ -275,7 +273,6 @@ mod test {
 
     #[test]
     fn properties() {
-        init_env();
         let app = gio::Application::new(None, gio::ApplicationFlags::FLAGS_NONE);
         let time = Time::parse("12:00:00").unwrap();
 

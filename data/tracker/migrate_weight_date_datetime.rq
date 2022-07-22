@@ -1,0 +1,8 @@
+SELECT
+    ?date
+    ?weight
+    WHERE {
+        ?datapoint a health:WeightMeasurement ;
+        health:weight_date ?date ;
+        health:weight ?weight .
+    } ORDER BY ?date

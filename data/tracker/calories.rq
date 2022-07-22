@@ -1,0 +1,15 @@
+SELECT
+    ?date
+    ?id
+    ?calories_burned
+    WHERE {
+        ?datapoint a health:Activity ;
+        health:activity_datetime ?date ;
+        health:activity_id ?id ;
+        health:calories_burned ?calories_burned ;
+        health:activity_user_id ?user_id .
+        FILTER  (
+            ?date >= ~date^^xsd:dateTime &&
+            ?user_id = ~user^^xsd:integer
+        )
+    }

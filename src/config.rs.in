@@ -5,3 +5,4 @@ pub static APPLICATION_ID: &str = @application_id@;
 pub static LOG_DOMAIN: &str = @log_domain@;
 pub static GETTEXT_PACKAGE: &str = @gettext_package@;
 pub static AUTOSTART_DESKTOP_FILE_PATH: &str = @autostart_desktop_file_path@;
+pub static BLUEPRINT_COMPILER_PATH: &str = @blueprint_compiler_path@;

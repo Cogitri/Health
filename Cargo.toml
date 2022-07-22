@@ -24,6 +24,9 @@ path = "src/lib.rs"
 name = "health"
 path = "src/main.rs"
 
+[build-dependencies.glob]
+version = "0.3"
+
 [dependencies.adw]
 version = "0.1.0"
 package = "libadwaita"
@@ -123,7 +126,7 @@ version = "1.0"
 [dependencies.tracker]
 version = "0.2.1"
 package = "tracker-rs"
-features = ["v3_1"]
+features = ["v3_3"]
 
 [dependencies.uom]
 default-features = false

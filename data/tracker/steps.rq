@@ -1,0 +1,13 @@
+SELECT
+    ?date
+    ?steps
+    WHERE {
+        ?datapoint a health:Activity ;
+        health:activity_datetime ?date ;
+        health:steps ?steps ;
+        health:activity_user_id ?user_id .
+        FILTER  (
+            ?date >= ~date^^xsd:dateTime &&
+            ?user_id = ~user^^xsd:integer
+        )
+    }  ORDER BY ?date

@@ -81,7 +81,7 @@ impl PluginActivitiesSummaryRow {
     pub async fn update(&self) {
         let imp = self.imp();
         let active_minutes_today: i64 = Database::instance()
-            .activities(Some(glib::DateTime::local().add_days(-1).unwrap()))
+            .activities_min(glib::DateTime::local().add_days(-1).unwrap())
             .await
             .unwrap_or_default()
             .iter()

@@ -174,65 +174,13 @@ pub fn get_file_in_builddir(filename: &str) -> Option<std::path::PathBuf> {
 }
 
 #[cfg(test)]
-pub fn init_env() {
-    use std::env::set_var;
-    set_var(
-        "HEALTH_GRESOURCE_DIR",
-        &format!("{}/build/data", env!("CARGO_MANIFEST_DIR")),
-    );
-    set_var(
-        "HEALTH_ONTOLOGY_PATH",
-        &format!("{}/data/tracker/ontology", env!("CARGO_MANIFEST_DIR")),
-    );
+pub fn init_gresources() {
+    gio::resources_register_include!("compiled.gresource").unwrap();
 }
 
 #[cfg(test)]
 pub fn init_gtk() {
-    let res = if let Some(gresource_path) = get_file_in_builddir("dev.Cogitri.Health.gresource") {
-        gio::Resource::load(gresource_path)
-    } else {
-        use std::process::Command;
-
-        let dir_str = env!("OUT_DIR");
-
-        let meson_output = Command::new("meson")
-            .arg(format!("{}/build", dir_str))
-            .output()
-            .expect("Failed to run meson configure download!");
-
-        if !meson_output.status.success() {
-            println!(
-                "Couldn't run meson configure! Status: {}\nStdout:\n{}\nStderr:\n{}",
-                meson_output.status,
-                String::from_utf8_lossy(&meson_output.stdout),
-                String::from_utf8_lossy(&meson_output.stderr)
-            );
-        }
-
-        let output = Command::new("ninja")
-            .arg("-C")
-            .arg(format!("{}/build", dir_str))
-            .arg("data/dev.Cogitri.Health.gresource")
-            .output()
-            .expect("Failed to run ninja!");
-
-        if !output.status.success() {
-            panic!(
-                "Couldn't execute ninja! Status: {} Stdout: {}, Stderr: {}",
-                output.status,
-                String::from_utf8_lossy(&output.stdout),
-                String::from_utf8_lossy(&output.stderr)
-            );
-        }
-
-        gio::Resource::load(&format!(
-            "{}/build/data/dev.Cogitri.Health.gresource",
-            dir_str
-        ))
-    };
-
-    init_env();
-    gio::resources_register(&res.unwrap());
+    init_gresources();
 
     gtk::init().unwrap();
     adw::init();

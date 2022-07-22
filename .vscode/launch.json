@@ -15,8 +15,6 @@
       "env": {
         "G_DEBUG": "fatal-criticals",
         "GSETTINGS_SCHEMA_DIR": "${workspaceFolder}/build/data",
-        "HEALTH_GRESOURCE_DIR": "${workspaceFolder}/build/data",
-        "HEALTH_ONTOLOGY_PATH": "${workspaceFolder}/data/tracker/ontology"
       },
       "args": [],
       "cwd": "${workspaceFolder}"
@@ -35,8 +33,6 @@
       "env": {
         "G_DEBUG": "fatal-criticals",
         "GSETTINGS_SCHEMA_DIR": "${workspaceFolder}/build/data",
-        "HEALTH_GRESOURCE_DIR": "${workspaceFolder}/build/data",
-        "HEALTH_ONTOLOGY_PATH": "${workspaceFolder}/data/tracker/ontology"
       },
       "args": [],
       "cwd": "${workspaceFolder}"

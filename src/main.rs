@@ -30,17 +30,7 @@ fn main() {
 
     glib::set_application_name(&i18n("Health"));
     glib::set_prgname(Some("dev.Cogitri.Health"));
-
-    gtk::init().expect("Failed to initialize GTK.");
-    adw::init();
-
-    let res = if let Ok(resource_path) = std::env::var("HEALTH_GRESOURCE_DIR") {
-        gio::Resource::load(resource_path + "/dev.Cogitri.Health.gresource").expect("Couldn't find GResource in HEALTH_GRESOURCE_DIR. Did you forget running ninja -C build?")
-    } else {
-        gio::Resource::load(config::PKGDATADIR.to_owned() + "/dev.Cogitri.Health.gresource")
-            .expect("Could not load resources. Did you forget running Health in the shell provided by \"meson devenv -C build\"?")
-    };
-    gio::resources_register(&res);
+    gio::resources_register_include!("compiled.gresource").unwrap();
 
     let app = Application::new();
 

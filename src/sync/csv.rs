@@ -75,7 +75,7 @@ impl CsvHandler {
     /// An error if writing to the file fails or reading from the DB.
     pub async fn export_activities_csv(&self, file: &gio::File, key: Option<&str>) -> Result<()> {
         let mut wtr = csv::Writer::from_writer(vec![]);
-        let activities = self.db.activities(None).await?;
+        let activities = self.db.activities().await?;
 
         if activities.is_empty() {
             anyhow::bail!(i18n("No activities added yet; can’t create empty export!"));
@@ -415,7 +415,7 @@ mod test {
                 .import_activities_csv(&file, None)
                 .await
                 .unwrap();
-            let new_act = &db.activities(None).await.unwrap()[0];
+            let new_act = &db.activities().await.unwrap()[0];
             assert_eq!(new_act.date(), act.date());
             assert_eq!(new_act.steps(), act.steps());
             assert_eq!(new_act.calories_burned(), act.calories_burned());

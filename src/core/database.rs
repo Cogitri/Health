@@ -164,6 +164,26 @@ impl Database {
         })
     }
 
+    pub fn load_statement_from_gresource(&self, name: &str) -> tracker::SparqlStatement {
+        let connection = self.imp().connection.get().unwrap();
+        connection
+            .load_statement_from_gresource(
+                &format!("/dev/Cogitri/Health/tracker/{}.rq", name),
+                None::<&gio::Cancellable>,
+            )
+            .unwrap()
+            .unwrap()
+    }
+
+    /// Get activities.
+    ///
+    /// # Returns
+    /// An array of [Activity]s, or a [glib::Error] if querying the DB goes wrong.
+    pub async fn activities(&self) -> Result<Vec<Activity>> {
+        let statement = self.load_statement_from_gresource("activities");
+        self.activities_impl(statement).await
+    }
+
     /// Get activities.
     ///
     /// # Arguments
@@ -171,21 +191,42 @@ impl Database {
     ///
     /// # Returns
     /// An array of [Activity]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
-    pub async fn activities(&self, date_opt: Option<glib::DateTime>) -> Result<Vec<Activity>> {
+    pub async fn activities_min(&self, date_min: glib::DateTime) -> Result<Vec<Activity>> {
+        let statement = self.load_statement_from_gresource("activities_min");
+        statement.bind_string("date_min", date_min.format_iso8601().unwrap().as_str());
+        self.activities_impl(statement).await
+    }
+
+    /// Get activities.
+    ///
+    /// # Arguments
+    /// * `date_opt` - If `Some`, only get activities that are more recent than `date_opt`.
+    ///
+    /// # Returns
+    /// An array of [Activity]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
+    pub async fn activities_min_max(
+        &self,
+        date_min: glib::DateTime,
+        date_max: glib::DateTime,
+    ) -> Result<Vec<Activity>> {
+        let statement = self.load_statement_from_gresource("activities_min_max");
+        statement.bind_string("date_min", date_min.format_iso8601().unwrap().as_str());
+        statement.bind_string("date_max", date_max.format_iso8601().unwrap().as_str());
+        self.activities_impl(statement).await
+    }
+
+    /// Get activities.
+    ///
+    /// # Arguments
+    /// * `date_opt` - If `Some`, only get activities that are more recent than `date_opt`.
+    ///
+    /// # Returns
+    /// An array of [Activity]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
+    async fn activities_impl(&self, statement: tracker::SparqlStatement) -> Result<Vec<Activity>> {
         let imp = self.imp();
         let user_id = i64::from(imp.settings.active_user_id());
-
-        let connection = imp.connection.get().unwrap();
-        let cursor = if let Some(date) = date_opt {
-            let statement = connection.query_statement("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_user_id ?user_id ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER (?date >= ~date^^xsd:dateTime && ?user_id = ~user^^xsd:integer)}} ORDER BY DESC(?date)", None::<&gio::Cancellable>).unwrap().unwrap();
-            statement.bind_string("date", date.format_iso8601().unwrap().as_str());
-            statement.bind_int("user", user_id);
-            statement.execute_future().await?
-        } else {
-            let statement = connection.query_statement("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_user_id ?user_id ; health:activity_datetime ?date ; health:activity_id ?id . OPTIONAL {{ ?datapoint health:calories_burned ?calories_burned . }} OPTIONAL {{ ?datapoint health:distance ?distance . }} OPTIONAL {{ ?datapoint health:hearth_rate_avg ?heart_rate_avg . }} OPTIONAL {{ ?datapoint health:hearth_rate_min ?heart_rate_min . }} OPTIONAL {{ ?datapoint health:hearth_rate_max ?heart_rate_max . }} OPTIONAL {{ ?datapoint health:steps ?steps . }} OPTIONAL {{ ?datapoint health:minutes ?minutes }} FILTER (?user_id = ~user^^xsd:integer)}} ORDER BY DESC(?date)", None::<&gio::Cancellable>).unwrap().unwrap();
-            statement.bind_int("user", user_id);
-            statement.execute_future().await?
-        };
+        statement.bind_int("user", user_id);
+        let cursor = statement.execute_future().await?;
 
         let mut ret = Vec::new();
         while let Ok(true) = cursor.next_future().await {
@@ -251,10 +292,8 @@ impl Database {
     /// An array of [SplitBar]s that are within the given timeframe or a [glib::Error] if querying the DB goes wrong.
     pub async fn calories(&self, minimum_date: glib::DateTime) -> Result<Vec<SplitBar>> {
         let imp = self.imp();
-        let connection = imp.connection.get().unwrap();
         let user_id = i64::from(imp.settings.active_user_id());
-
-        let statement = connection.query_statement("SELECT ?date ?id ?calories_burned WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned ; health:activity_user_id ?user_id . FILTER  (?date >= ~date^^xsd:dateTime && ?user_id = ~user^^xsd:integer) }}", None::<&gio::Cancellable>).unwrap().unwrap();
+        let statement = self.load_statement_from_gresource("calories");
         statement.bind_string("date", minimum_date.format_iso8601().unwrap().as_str());
         statement.bind_int("user", user_id);
         let cursor = statement.execute_future().await?;
@@ -311,11 +350,10 @@ impl Database {
         minimum_date: glib::DateTime,
     ) -> Result<Vec<ActivityType>> {
         let imp = self.imp();
-        let connection = imp.connection.get().unwrap();
         let mut most_frequent = Vec::new();
 
         let user_id = i64::from(imp.settings.active_user_id());
-        let statement = connection.query_statement("SELECT ?id WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned; health:activity_user_id ?user_id . FILTER  (?date >= ~date^^xsd:dateTime && ?user_id = ~user^^xsd:integer) }} GROUP BY ?id ORDER BY DESC (SUM(?calories_burned))", None::<&gio::Cancellable>).unwrap().unwrap();
+        let statement = self.load_statement_from_gresource("most_frequent_activities");
         statement.bind_string("date", minimum_date.format_iso8601().unwrap().as_str());
         statement.bind_int("user", user_id);
         let cursor = statement.execute_future().await?;
@@ -375,11 +413,8 @@ impl Database {
     /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn steps(&self, date: glib::DateTime) -> Result<Vec<Steps>> {
         let imp = self.imp();
-
-        let connection = imp.connection.get().unwrap();
         let user_id = i64::from(self.imp().settings.active_user_id());
-
-        let statement = connection.query_statement("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps ; health:activity_user_id ?user_id . FILTER  (?date >= ~date^^xsd:dateTime && ?user_id = ~user^^xsd:integer)}}  ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
+        let statement = self.load_statement_from_gresource("steps");
         statement.bind_string("date", &date.format_iso8601().unwrap());
         statement.bind_int("user", user_id);
         let cursor = statement.execute_future().await?;
@@ -409,12 +444,9 @@ impl Database {
     /// # Returns
     /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn todays_steps(&self) -> Result<i64> {
-        let imp = self.imp();
         let date = glib::DateTime::today();
-        let user_id = i64::from(imp.settings.active_user_id());
-
-        let connection = imp.connection.get().unwrap();
-        let statement = connection.query_statement("SELECT SUM(?steps) WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps ; health:activity_user_id ?user_id . FILTER  (?date >= ~date^^xsd:dateTime && ?user_id = ~user^^xsd:integer)}}", None::<&gio::Cancellable>).unwrap().unwrap();
+        let user_id = i64::from(self.imp().settings.active_user_id());
+        let statement = self.load_statement_from_gresource("todays_steps");
         statement.bind_string("date", &date.format_iso8601().unwrap());
         statement.bind_int("user", user_id);
         let cursor = statement.execute_future().await?;
@@ -436,20 +468,18 @@ impl Database {
     /// # Returns
     /// An array of [Weight]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn weights(&self, date_opt: Option<glib::DateTime>) -> Result<Vec<Weight>> {
-        let imp = self.imp();
-
-        let connection = imp.connection.get().unwrap();
-        let user_id = i64::from(imp.settings.active_user_id());
+        let user_id = i64::from(self.imp().settings.active_user_id());
         let cursor = if let Some(date) = date_opt {
-            let statement = connection.query_statement("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight ; health:weight_user_id ?user_id . FILTER  (?date >= ~date^^xsd:dateTime && ?user_id = ~user^^xsd:integer)}} ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
+            let statement = self.load_statement_from_gresource("weights_min");
             statement.bind_string("date", date.format_iso8601().unwrap().as_str());
             statement.bind_int("user", user_id);
             statement.execute_future().await?
         } else {
-            let statement = connection.query_statement("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight_user_id ?user_id  ; health:weight ?weight . FILTER (?user_id = ~user^^xsd:integer)}} ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
+            let statement = self.load_statement_from_gresource("weights");
             statement.bind_int("user", user_id);
             statement.execute_future().await?
         };
+
         let mut ret = Vec::new();
 
         while let Ok(true) = cursor.next_future().await {
@@ -473,11 +503,9 @@ impl Database {
     /// # Returns
     /// True if a [Weight] exists on the `date`, or [glib::Error] if querying the DB goes wrong.
     pub async fn weight_exists_on_date(&self, date: glib::DateTime) -> Result<bool> {
-        let imp = self.imp();
+        let user_id = i64::from(self.imp().settings.active_user_id());
 
-        let connection = imp.connection.get().unwrap();
-        let user_id = i64::from(imp.settings.active_user_id());
-        let statement = connection.query_statement("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight ?weight ; health:weight_user_id ?user_id . FILTER(?date >= ~date^^xsd:dateTime && ?date < ~nextdate^^xsd:dateTime && ?user_id = ~user^^xsd:integer) }}", None::<&gio::Cancellable>).unwrap().unwrap();
+        let statement = self.load_statement_from_gresource("weight_exists_on_date");
         statement.bind_string("date", date.reset_hms().format_iso8601().unwrap().as_str());
         statement.bind_string(
             "nextdate",
@@ -952,8 +980,10 @@ impl Database {
         let connection = imp.connection.get().unwrap();
         let manager = imp.manager.get().unwrap();
 
-        let cursor =
-        connection.query_future("SELECT ?date ?id ?calories_burned ?distance ?heart_rate_avg ?heart_rate_max ?heart_rate_min ?minutes ?steps WHERE { ?datapoint a health:Activity ; health:activity_date ?date ; health:activity_id ?id . OPTIONAL { ?datapoint health:calories_burned ?calories_burned . } OPTIONAL { ?datapoint health:distance ?distance . } OPTIONAL { ?datapoint health:hearth_rate_avg ?heart_rate_avg . } OPTIONAL { ?datapoint health:hearth_rate_min ?heart_rate_min . } OPTIONAL { ?datapoint health:hearth_rate_max ?heart_rate_max . } OPTIONAL { ?datapoint health:steps ?steps . } OPTIONAL { ?datapoint health:minutes ?minutes } } ORDER BY DESC(?date)").await?;
+        let cursor = self
+            .load_statement_from_gresource("migrate_activities_date_datetime")
+            .execute_future()
+            .await?;
 
         while let Ok(true) = cursor.next_future().await {
             let resource = tracker::Resource::new(None);
@@ -1049,8 +1079,10 @@ impl Database {
         let connection = imp.connection.get().unwrap();
         let manager = imp.manager.get().unwrap();
 
-        let cursor =
-        connection.query_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_date ?date  ; health:weight ?weight . } ORDER BY ?date").await?;
+        let cursor = self
+            .load_statement_from_gresource("migrate_weight_date_datetime")
+            .execute_future()
+            .await?;
 
         while let Ok(true) = cursor.next_future().await {
             let resource = tracker::Resource::new(None);
@@ -1243,7 +1275,7 @@ impl Database {
     fn new() -> Result<Self> {
         let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
 
-        o.connect(None, None)?;
+        o.connect(None)?;
 
         Ok(o)
     }
@@ -1259,11 +1291,8 @@ impl Database {
     pub fn new_with_store_path(store_path: PathBuf) -> Result<Self> {
         let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
 
-        let mut path = PathBuf::new();
-        path.push(env!("CARGO_MANIFEST_DIR"));
-        path.push("data/tracker");
-
-        o.connect(Some(path), Some(store_path))?;
+        crate::utils::init_gresources();
+        o.connect(Some(store_path))?;
 
         Ok(o)
     }
@@ -1465,19 +1494,10 @@ impl Database {
     ///
     /// # Panics
     /// This function will panic if it's called on the same [Database] object multiple times.
-    fn connect(&self, ontology_path: Option<PathBuf>, store_path: Option<PathBuf>) -> Result<()> {
+    fn connect(&self, store_path: Option<PathBuf>) -> Result<()> {
         let imp = self.imp();
         let mut store_path = store_path.unwrap_or_else(glib::user_data_dir);
         store_path.push("health");
-
-        let ontology_path = if let Ok(p) = std::env::var("HEALTH_ONTOLOGY_PATH") {
-            Path::new(&p).to_path_buf()
-        } else {
-            let mut ontology_path =
-                ontology_path.unwrap_or_else(|| Path::new(crate::config::PKGDATADIR).to_path_buf());
-            ontology_path.push("ontology");
-            ontology_path
-        };
 
         let manager = tracker::NamespaceManager::new();
         manager.add_prefix("health", "https://gitlab.gnome.org/World/health#");
@@ -1487,7 +1507,9 @@ impl Database {
             .set(tracker::SparqlConnection::new(
                 tracker::SparqlConnectionFlags::NONE,
                 Some(&gio::File::for_path(store_path)),
-                Some(&gio::File::for_path(ontology_path)),
+                Some(&gio::File::for_uri(
+                    "resource:///dev/Cogitri/Health/tracker/ontology",
+                )),
                 None::<&gio::Cancellable>,
             )?)
             .unwrap();
@@ -1524,9 +1546,7 @@ mod test {
         let retrieved_activities = async move {
             db.save_activity(expected_activity).await.unwrap();
 
-            db.activities(Some(date.add_days(1).unwrap()))
-                .await
-                .unwrap()
+            db.activities_min(date.add_days(1).unwrap()).await.unwrap()
         }
         .block();
         assert!(retrieved_activities.is_empty());
@@ -1565,9 +1585,7 @@ mod test {
         let retrieved_activities = async move {
             db.save_activity(a).await.unwrap();
 
-            db.activities(Some(date.add_days(-1).unwrap()))
-                .await
-                .unwrap()
+            db.activities_min(date.add_days(-1).unwrap()).await.unwrap()
         }
         .block();
         let activity = retrieved_activities.get(0).unwrap();
@@ -1631,9 +1649,7 @@ mod test {
 
         let retrieved_activities = async move {
             db.migrate().await.unwrap();
-            db.activities(Some(date.add_days(-1).unwrap()))
-                .await
-                .unwrap()
+            db.activities_min(date.add_days(-1).unwrap()).await.unwrap()
         }
         .block();
         let activity = retrieved_activities.get(0).unwrap();

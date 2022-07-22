@@ -107,7 +107,7 @@ impl ModelActivity {
         let imp = self.imp();
         let previous_size = { imp.inner.borrow().vec.len() };
 
-        let new_vec = imp.database.activities(None).await?;
+        let new_vec = imp.database.activities().await?;
         {
             imp.inner.borrow_mut().vec = new_vec;
         }
@@ -137,7 +137,6 @@ mod test {
 
     #[test]
     fn new() {
-        init_env();
         ModelActivity::new();
     }
 

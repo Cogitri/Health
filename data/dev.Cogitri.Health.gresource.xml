@@ -43,5 +43,22 @@
     <file preprocess="xml-stripblanks">icons/symbolic/apps/walking-thin-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/symbolic/apps/calories-thin-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/symbolic/apps/weight-scale-thin-symbolic.svg</file>
+
+    <file>tracker/activities_min.rq</file>
+    <file>tracker/activities_min_max.rq</file>
+    <file>tracker/activities.rq</file>
+    <file>tracker/calories.rq</file>
+    <file>tracker/migrate_activities_date_datetime.rq</file>
+    <file>tracker/migrate_weight_date_datetime.rq</file>
+    <file>tracker/most_frequent_activities.rq</file>
+    <file>tracker/steps.rq</file>
+    <file>tracker/todays_steps.rq</file>
+    <file>tracker/weight_exists_on_date.rq</file>
+    <file>tracker/weights_min.rq</file>
+    <file>tracker/weights.rq</file>
+
+
+    <file>tracker/ontology/health.description</file>
+    <file>tracker/ontology/health.ontology</file>
   </gresource>
 </gresources>

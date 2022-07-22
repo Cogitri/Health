@@ -1,0 +1,35 @@
+SELECT
+    ?date
+    ?id
+    ?calories_burned
+    ?distance
+    ?heart_rate_avg
+    ?heart_rate_max
+    ?heart_rate_min
+    ?minutes
+    ?steps
+    WHERE {
+        ?datapoint a health:Activity ;
+        health:activity_user_id ?user_id ;
+        health:activity_datetime ?date ;
+        health:activity_id ?id .
+        OPTIONAL {
+            ?datapoint health:calories_burned ?calories_burned .
+        } OPTIONAL {
+            ?datapoint health:distance ?distance .
+        } OPTIONAL {
+            ?datapoint health:hearth_rate_avg ?heart_rate_avg .
+        } OPTIONAL {
+            ?datapoint health:hearth_rate_min ?heart_rate_min .
+        } OPTIONAL {
+            ?datapoint health:hearth_rate_max ?heart_rate_max .
+        } OPTIONAL {
+            ?datapoint health:steps ?steps .
+        } OPTIONAL {
+            ?datapoint health:minutes ?minutes
+        } FILTER (
+            ?date >= ~date_min^^xsd:dateTime &&
+            ?date <= ~date_max^^xsd:dateTime &&
+            ?user_id = ~user^^xsd:integer
+        )
+    } ORDER BY DESC(?date)

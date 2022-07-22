@@ -40,11 +40,6 @@ subdir('po')
 gnome.post_install(glib_compile_schemas: true, gtk_update_icon_cache: true)
 meson.add_dist_script('build-aux/dist.sh', meson.project_name(), meson.project_version())
 
-devenv = environment()
-devenv.set('HEALTH_ONTOLOGY_PATH', meson.current_source_dir() / 'data' / 'tracker' / 'ontology')
-devenv.set('HEALTH_GRESOURCE_DIR', meson.current_build_dir() / 'data')
-meson.add_devenv(devenv)
-
 run_target('run',
   command : ['build-aux/run.sh', application_id])
 

@@ -1,0 +1,30 @@
+SELECT
+    ?date
+    ?id
+    ?calories_burned
+    ?distance
+    ?heart_rate_avg
+    ?heart_rate_max
+    ?heart_rate_min
+    ?minutes
+    ?steps
+    WHERE {
+        ?datapoint a health:Activity ;
+        health:activity_datetime ?date ;
+        health:activity_id ?id .
+        OPTIONAL {
+            ?datapoint health:calories_burned ?calories_burned .
+        } OPTIONAL {
+            ?datapoint health:distance ?distance .
+        } OPTIONAL {
+            ?datapoint health:hearth_rate_avg ?heart_rate_avg .
+        } OPTIONAL {
+            ?datapoint health:hearth_rate_min ?heart_rate_min .
+        } OPTIONAL {
+            ?datapoint health:hearth_rate_max ?heart_rate_max .
+        } OPTIONAL {
+            ?datapoint health:steps ?steps .
+        } OPTIONAL {
+            ?datapoint health:minutes ?minutes
+        }
+    } ORDER BY DESC(?date)

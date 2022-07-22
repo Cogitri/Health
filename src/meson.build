@@ -6,6 +6,7 @@ conf.set_quoted('application_id', application_id)
 conf.set_quoted('log_domain', application_id)
 conf.set_quoted('gettext_package', gettext_package)
 conf.set_quoted('autostart_desktop_file_path', get_option('prefix') / get_option('datadir') / 'applications' / 'dev.Cogitri.Health.Autostart.desktop')
+conf.set_quoted('blueprint_compiler_path', find_program('blueprint-compiler').full_path())
 
 configure_file(
     input: 'config.rs.in',
@@ -43,7 +44,6 @@ cargo_build = custom_target(
   console: true,
   install: true,
   install_dir: get_option('bindir'),
-  depends: resources,
   command: [
     'env',
     cargo_env,
