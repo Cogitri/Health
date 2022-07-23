@@ -77,6 +77,7 @@ mod imp {
                     .replace(Some(glib::ObjectExt::downgrade(&window)));
             } else {
                 let setup_window = SetupWindow::new(obj);
+                obj.hold();
 
                 setup_window.connect_setup_done(clone!(@weak obj => move |_| {
                     obj.handle_setup_window_setup_done();
@@ -242,6 +243,7 @@ impl Application {
         window.show();
         imp.window
             .replace(Some(glib::ObjectExt::downgrade(&window)));
+        self.release();
     }
 
     fn handle_unit_system(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
