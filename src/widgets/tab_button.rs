@@ -55,20 +55,12 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "tab-name",
-                        "tab-name",
-                        "tab-name",
-                        None,
-                        glib::ParamFlags::WRITABLE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "icon-name",
-                        "icon-name",
-                        "icon-name",
-                        None,
-                        glib::ParamFlags::WRITABLE,
-                    ),
+                    glib::ParamSpecString::builder("tab-name")
+                        .flags(glib::ParamFlags::WRITABLE)
+                        .build(),
+                    glib::ParamSpecString::builder("icon-name")
+                        .flags(glib::ParamFlags::WRITABLE)
+                        .build(),
                 ]
             });
             PROPERTIES.as_ref()

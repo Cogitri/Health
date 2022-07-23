@@ -55,20 +55,8 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "activity-name",
-                        "activity-name",
-                        "activity-name",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecBoxed::new(
-                        "color",
-                        "color",
-                        "color",
-                        gdk::RGBA::static_type(),
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecString::builder("activity-name").build(),
+                    glib::ParamSpecBoxed::builder("color", gdk::RGBA::static_type()).build(),
                 ]
             });
 

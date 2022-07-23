@@ -423,38 +423,17 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoxed::new(
-                        "hover-func",
-                        "hover-func",
-                        "hover-func",
-                        FnBoxedPoint::static_type(),
-                        glib::ParamFlags::WRITABLE,
-                    ),
-                    glib::ParamSpecFloat::new(
-                        "limit",
-                        "limit",
-                        "limit",
-                        -1.0,
-                        f32::MAX,
-                        -1.0,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "limit-label",
-                        "limit-label",
-                        "limit-label",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecFloat::new(
-                        "x-lines-interval",
-                        "x-lines-interval",
-                        "x-lines-interval",
-                        0.0,
-                        f32::MAX,
-                        0.0,
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecBoxed::builder("hover-func", FnBoxedPoint::static_type())
+                        .flags(glib::ParamFlags::WRITABLE)
+                        .build(),
+                    glib::ParamSpecFloat::builder("limit")
+                        .minimum(-1.0)
+                        .default_value(-1.0)
+                        .build(),
+                    glib::ParamSpecString::builder("limit-label").build(),
+                    glib::ParamSpecFloat::builder("x-lines-interval")
+                        .minimum(0.0)
+                        .build(),
                 ]
             });
 

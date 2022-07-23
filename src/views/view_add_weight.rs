@@ -113,7 +113,7 @@ impl ViewAddWeight {
     #[template_callback]
     fn handle_weight_spin_button_changed(&self) {
         let imp = self.imp();
-        self.set_is_responsive(imp.weight_spin_button.value() != 0.0);
+        self.set_is_responsive(imp.weight_spin_button.raw_value().unwrap_or(0.0) != 0.0);
     }
 }
 

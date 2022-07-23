@@ -87,13 +87,12 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoxed::new(
-                    "data-provider",
-                    "data-provider",
+                vec![glib::ParamSpecBoxed::builder(
                     "data-provider",
                     DataProviderBoxed::static_type(),
-                    glib::ParamFlags::CONSTRUCT | glib::ParamFlags::WRITABLE,
-                )]
+                )
+                .flags(glib::ParamFlags::CONSTRUCT | glib::ParamFlags::WRITABLE)
+                .build()]
             });
             PROPERTIES.as_ref()
         }

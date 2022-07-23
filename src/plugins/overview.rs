@@ -58,27 +58,15 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "icon-name",
-                        "icon-name",
-                        "icon-name",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecString::new(
-                        "plugin-name",
-                        "plugin-name",
-                        "plugin-name",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
-                    glib::ParamSpecObject::new(
-                        "icon-widget",
-                        "icon-widget",
-                        "icon-widget",
-                        gtk::Image::static_type(),
-                        glib::ParamFlags::READABLE,
-                    ),
+                    glib::ParamSpecString::builder("icon-name")
+                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY)
+                        .build(),
+                    glib::ParamSpecString::builder("plugin-name")
+                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY)
+                        .build(),
+                    glib::ParamSpecObject::builder("icon-widget", gtk::Image::static_type())
+                        .flags(glib::ParamFlags::READABLE)
+                        .build(),
                 ]
             });
 

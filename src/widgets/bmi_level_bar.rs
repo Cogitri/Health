@@ -111,31 +111,17 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecFloat::new(
-                        "height-meter",
-                        "height-meter",
-                        "User height in meters",
-                        0.0,
-                        f32::MAX,
-                        0.0,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecFloat::new(
-                        "weight-kilogram",
-                        "weight-kilogram",
-                        "User weight in kilogram",
-                        0.0,
-                        f32::MAX,
-                        0.0,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "bmi-label",
-                        "bmi-label",
-                        "User BMI label",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecFloat::builder("height-meter")
+                        .blurb("User height in meters")
+                        .minimum(0.0)
+                        .build(),
+                    glib::ParamSpecFloat::builder("weight-kilogram")
+                        .blurb("User weight in kilogram")
+                        .minimum(0.0)
+                        .build(),
+                    glib::ParamSpecString::builder("bmi-label")
+                        .blurb("User BMI label")
+                        .build(),
                 ]
             });
 

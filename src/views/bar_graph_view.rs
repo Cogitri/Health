@@ -377,31 +377,16 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoxed::new(
-                        "hover-func",
-                        "hover-func",
-                        "hover-func",
-                        FnBoxedTuple::static_type(),
-                        glib::ParamFlags::WRITABLE,
-                    ),
-                    glib::ParamSpecFloat::new(
-                        "rmr",
-                        "rmr",
-                        "Resting Metabolic Rate",
-                        0.0,
-                        f32::MAX,
-                        0.0,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecFloat::new(
-                        "x-lines-interval",
-                        "x-lines-interval",
-                        "x-lines-interval",
-                        0.0,
-                        f32::MAX,
-                        0.0,
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecBoxed::builder("hover-func", FnBoxedTuple::static_type())
+                        .flags(glib::ParamFlags::WRITABLE)
+                        .build(),
+                    glib::ParamSpecFloat::builder("rmr")
+                        .minimum(0.0)
+                        .blurb("Resting Metabolic Rate")
+                        .build(),
+                    glib::ParamSpecFloat::builder("x-lines-interval")
+                        .minimum(0.0)
+                        .build(),
                 ]
             });
 

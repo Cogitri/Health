@@ -87,59 +87,29 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "adjustment",
-                        "adjustment",
-                        "adjustment",
-                        gtk::Adjustment::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "auto-update-unit-system",
-                        "auto-update-unit-system",
-                        "auto-update-unit-system",
-                        true,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecUInt::new(
-                        "digits",
-                        "digits",
-                        "digits",
-                        0,
-                        20,
-                        1,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "has-default-value",
-                        "has-default-value",
-                        "has-default-value",
-                        true,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "unit-kind",
-                        "unit-kind",
-                        "unit-kind",
-                        None,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecString::new(
-                        "unit-system",
-                        "unit-system",
-                        "unit-system",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecDouble::new(
-                        "value",
-                        "value",
-                        "value",
-                        0.0,
-                        f64::MAX,
-                        0.0,
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecObject::builder("adjustment", gtk::Adjustment::static_type())
+                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .build(),
+                    glib::ParamSpecBoolean::builder("auto-update-unit-system")
+                        .default_value(true)
+                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .build(),
+                    glib::ParamSpecUInt::builder("digits")
+                        .maximum(20)
+                        .default_value(1)
+                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .build(),
+                    glib::ParamSpecBoolean::builder("has-default-value")
+                        .default_value(true)
+                        .flags(glib::ParamFlags::READABLE)
+                        .build(),
+                    glib::ParamSpecString::builder("unit-kind")
+                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .build(),
+                    glib::ParamSpecString::builder("unit-system").build(),
+                    glib::ParamSpecDouble::builder("value")
+                        .maximum(f64::MAX)
+                        .build(),
                 ]
             });
 

@@ -29,15 +29,15 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoxed::new(
-                    "plugin",
-                    "plugin",
-                    "plugin",
-                    PluginBoxed::static_type(),
-                    glib::ParamFlags::READABLE
-                        | glib::ParamFlags::WRITABLE
-                        | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                vec![
+                    glib::ParamSpecBoxed::builder("plugin", PluginBoxed::static_type())
+                        .flags(
+                            glib::ParamFlags::READABLE
+                                | glib::ParamFlags::WRITABLE
+                                | glib::ParamFlags::CONSTRUCT_ONLY,
+                        )
+                        .build(),
+                ]
             });
             PROPERTIES.as_ref()
         }

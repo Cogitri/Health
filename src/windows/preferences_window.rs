@@ -151,13 +151,10 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecString::new(
-                    "notification-frequency",
-                    "notification-frequency",
-                    "notification-frequency",
-                    Some("every_4_hrs"),
-                    glib::ParamFlags::WRITABLE,
-                )]
+                vec![glib::ParamSpecString::builder("notification-frequency")
+                    .default_value(Some("every_4_hrs"))
+                    .flags(glib::ParamFlags::WRITABLE)
+                    .build()]
             });
 
             PROPERTIES.as_ref()

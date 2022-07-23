@@ -69,27 +69,15 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "password",
-                        "password",
-                        "password",
-                        None,
-                        glib::ParamFlags::READABLE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "show-password-repeat",
-                        "show-password-repeat",
-                        "show-password-repeat",
-                        true,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "show-password-strength",
-                        "show-password-strength",
-                        "show-password-strength",
-                        true,
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecString::builder("password")
+                        .flags(glib::ParamFlags::READABLE)
+                        .build(),
+                    glib::ParamSpecBoolean::builder("show-password-repeat")
+                        .default_value(true)
+                        .build(),
+                    glib::ParamSpecBoolean::builder("show-password-strength")
+                        .default_value(true)
+                        .build(),
                 ]
             });
 

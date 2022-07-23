@@ -81,13 +81,11 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::new(
-                    "parent-window",
-                    "parent-window",
-                    "parent-window",
-                    gtk::Window::static_type(),
-                    glib::ParamFlags::CONSTRUCT | glib::ParamFlags::READWRITE,
-                )]
+                vec![
+                    glib::ParamSpecObject::builder("parent-window", gtk::Window::static_type())
+                        .flags(glib::ParamFlags::CONSTRUCT | glib::ParamFlags::READWRITE)
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()

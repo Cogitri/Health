@@ -64,36 +64,16 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "application",
-                        "application",
-                        "application",
-                        gio::Application::static_type(),
-                        glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "notification-frequency",
-                        "notification-frequency",
-                        "notification-frequency",
-                        Some(NotificationFrequency::default().as_ref()),
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecBoxed::new(
-                        "notification-time",
-                        "notification-time",
-                        "notification-time",
-                        TimeBoxed::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecUInt::new(
-                        "step-goal",
-                        "step-goal",
-                        "step-goal",
-                        0,
-                        u32::MAX,
-                        0,
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecObject::builder("application", gio::Application::static_type())
+                        .flags(glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE)
+                        .build(),
+                    glib::ParamSpecString::builder("notification-frequency")
+                        .default_value(Some(NotificationFrequency::default().as_ref()))
+                        .build(),
+                    glib::ParamSpecBoxed::builder("notification-time", TimeBoxed::static_type())
+                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .build(),
+                    glib::ParamSpecUInt::builder("step-goal").build(),
                 ]
             });
 

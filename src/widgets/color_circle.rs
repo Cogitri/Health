@@ -51,13 +51,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoxed::new(
-                    "color",
-                    "color",
-                    "color",
-                    gdk::RGBA::static_type(),
-                    glib::ParamFlags::READWRITE,
-                )]
+                vec![glib::ParamSpecBoxed::builder("color", gdk::RGBA::static_type()).build()]
             });
 
             PROPERTIES.as_ref()

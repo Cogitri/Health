@@ -113,48 +113,16 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::new(
-                        "content-widget",
-                        "content-widget",
-                        "content-widget",
-                        gtk::Widget::static_type(),
-                        glib::ParamFlags::WRITABLE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "empty-label",
-                        "empty-label",
-                        "empty-label",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "empty-icon-name",
-                        "empty-icon-name",
-                        "empty-icon-name",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "filled-title",
-                        "filled-title",
-                        "filled-title",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecString::new(
-                        "filled-subtitle",
-                        "filled-subtitle",
-                        "filled-subtitle",
-                        None,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "is-mocked",
-                        "is-mocked",
-                        "is-mocked",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                    ),
+                    glib::ParamSpecObject::builder("content-widget", gtk::Widget::static_type())
+                        .flags(glib::ParamFlags::WRITABLE)
+                        .build(),
+                    glib::ParamSpecString::builder("empty-label").build(),
+                    glib::ParamSpecString::builder("empty-icon-name").build(),
+                    glib::ParamSpecString::builder("filled-title").build(),
+                    glib::ParamSpecString::builder("filled-subtitle").build(),
+                    glib::ParamSpecBoolean::builder("is-mocked")
+                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY)
+                        .build(),
                 ]
             });
 

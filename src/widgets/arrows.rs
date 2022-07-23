@@ -42,13 +42,10 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecString::new(
-                    "weight-change",
-                    "weight-change",
-                    "weight-change",
-                    Some("no_change"),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                )]
+                vec![glib::ParamSpecString::builder("weight-change")
+                    .default_value(Some("no_change"))
+                    .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                    .build()]
             });
 
             PROPERTIES.as_ref()

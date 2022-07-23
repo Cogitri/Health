@@ -119,22 +119,12 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecString::new(
-                        "unitsize",
-                        "unitsize",
-                        "unitsize",
-                        Some("small"),
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecFloat::new(
-                        "value-meter",
-                        "value-meter",
-                        "value-meter",
-                        0.0,
-                        f32::MAX,
-                        0.0,
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecString::builder("unitsize")
+                        .default_value(Some("small"))
+                        .build(),
+                    glib::ParamSpecFloat::builder("value-meter")
+                        .minimum(0.0)
+                        .build(),
                 ]
             });
 

@@ -61,24 +61,8 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecUInt::new(
-                        "step-count",
-                        "step-count",
-                        "step-count",
-                        0,
-                        u32::MAX,
-                        0,
-                        glib::ParamFlags::READWRITE,
-                    ),
-                    glib::ParamSpecUInt::new(
-                        "step-goal",
-                        "step-goal",
-                        "step-goal",
-                        0,
-                        u32::MAX,
-                        0,
-                        glib::ParamFlags::READWRITE,
-                    ),
+                    glib::ParamSpecUInt::builder("step-count").build(),
+                    glib::ParamSpecUInt::builder("step-goal").build(),
                 ]
             });
 
