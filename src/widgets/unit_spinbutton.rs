@@ -339,6 +339,7 @@ impl UnitSpinButton {
     pub fn set_value(&self, value: f64) {
         self.set_property("value", value)
     }
+
     pub fn value(&self) -> f64 {
         self.property("value")
     }
@@ -349,6 +350,13 @@ impl UnitSpinButton {
         imp.spin_button
             .connect_changed(clone!(@weak self as obj => move |_| {
                 obj.emit_by_name::<()>("changed", &[]);
+            }));
+
+        imp.spin_button
+            .connect_text_notify(clone!(@weak self as obj => move |_| {
+                if obj.handle_spin_button_input().map(|s| s.unwrap_or(0.0)).unwrap_or(0.0) != 0.0 {
+                    obj.imp().spin_button.update();
+                }
             }));
 
         imp.spin_button
@@ -463,14 +471,19 @@ impl UnitSpinButton {
     fn handle_spin_button_input(&self) -> Option<Result<f64, ()>> {
         self.emit_by_name::<()>("input", &[]);
 
-        self.raw_value().map(Ok)
+        let mut text = self.text().replace(" ", "");
+
+        if let Some(u) = self.unit_string() {
+            text = text.replace(&u, "");
+        }
+
+        text.parse::<f64>().ok().map(Ok)
     }
 
-    fn handle_spin_button_output(&self) -> gtk::Inhibit {
-        let imp = self.imp();
-        let inner = imp.inner.borrow();
+    fn unit_string(&self) -> Option<String> {
+        let inner = self.imp().inner.borrow();
 
-        if let Some(unit_string) = match (inner.current_unit_system, inner.current_unit_kind) {
+        match (inner.current_unit_system, inner.current_unit_kind) {
             // TRANSLATORS: Unit abbreviation (centimeters)
             (Some(UnitSystem::Metric), Some(UnitKind::LikeCentimeters)) => Some(i18n("cm")),
             // TRANSLATORS: Unit abbreviation (meters)
@@ -488,7 +501,13 @@ impl UnitSpinButton {
             // TRANSLATORS: Unit abbreviation (pounds)
             (Some(UnitSystem::Imperial), Some(UnitKind::LikeKilogram)) => Some(i18n("lb")),
             _ => None,
-        } {
+        }
+    }
+
+    fn handle_spin_button_output(&self) -> gtk::Inhibit {
+        let imp = self.imp();
+
+        if let Some(unit_string) = self.unit_string() {
             let text = format!(
                 "{} {unit_string}",
                 imp.spin_button
@@ -548,7 +567,7 @@ mod test {
             UnitSystem::Metric,
             UnitSystem::Imperial,
             UnitKind::LikeCentimeters,
-            3.9370076656341553
+            3.9
         );
     }
 
@@ -558,7 +577,7 @@ mod test {
             UnitSystem::Metric,
             UnitSystem::Imperial,
             UnitKind::LikeMeters,
-            32.80839920043945
+            32.8
         );
     }
 
@@ -568,7 +587,7 @@ mod test {
             UnitSystem::Metric,
             UnitSystem::Imperial,
             UnitKind::LikeKilometers,
-            6.213711738586426
+            6.2
         );
     }
 
@@ -578,7 +597,7 @@ mod test {
             UnitSystem::Metric,
             UnitSystem::Imperial,
             UnitKind::LikeKilogram,
-            22.04622459411621
+            22.0
         );
     }
 
@@ -588,7 +607,7 @@ mod test {
             UnitSystem::Imperial,
             UnitSystem::Metric,
             UnitKind::LikeCentimeters,
-            25.400001525878906
+            25.4
         );
     }
 
@@ -598,7 +617,7 @@ mod test {
             UnitSystem::Imperial,
             UnitSystem::Metric,
             UnitKind::LikeMeters,
-            3.0480000972747803
+            3.0
         );
     }
 
@@ -608,7 +627,7 @@ mod test {
             UnitSystem::Imperial,
             UnitSystem::Metric,
             UnitKind::LikeKilometers,
-            16.09343910217285
+            16.1
         );
     }
 
@@ -618,7 +637,7 @@ mod test {
             UnitSystem::Imperial,
             UnitSystem::Metric,
             UnitKind::LikeKilogram,
-            4.535923957824707
+            4.5
         );
     }
 
