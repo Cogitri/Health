@@ -354,7 +354,7 @@ impl UnitSpinButton {
 
         imp.spin_button
             .connect_text_notify(clone!(@weak self as obj => move |_| {
-                if obj.handle_spin_button_input().map(|s| s.unwrap_or(0.0)).unwrap_or(0.0) != 0.0 {
+                if obj.handle_spin_button_input().map_or(0.0, |s| s.unwrap_or(0.0)) != 0.0 {
                     obj.imp().spin_button.update();
                 }
             }));
@@ -471,7 +471,7 @@ impl UnitSpinButton {
     fn handle_spin_button_input(&self) -> Option<Result<f64, ()>> {
         self.emit_by_name::<()>("input", &[]);
 
-        let mut text = self.text().replace(" ", "");
+        let mut text = self.text().replace(' ', "");
 
         if let Some(u) = self.unit_string() {
             text = text.replace(&u, "");
