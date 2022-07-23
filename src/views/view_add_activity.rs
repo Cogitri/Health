@@ -423,6 +423,7 @@ impl ViewAddActivity {
         if id == gtk::ResponseType::Ok {
             let imp = self.imp();
             let selected_activity = imp.activity_type_selector.selected_activity();
+            imp.inner.borrow_mut().selected_activity = selected_activity.clone();
             let distance = if selected_activity
                 .available_data_points
                 .contains(ActivityDataPoints::DISTANCE)
