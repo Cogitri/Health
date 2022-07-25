@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-07-21 16:28+0000\n"
-"PO-Revision-Date: 2022-07-22 09:35+0300\n"
+"POT-Creation-Date: 2022-07-24 21:36+0000\n"
+"PO-Revision-Date: 2022-07-25 22:39+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -480,8 +480,9 @@ msgid "Please enter your daily step goal."
 msgstr "Будь ласка, введіть щоденну цільову кількість кроків."
 
 #: data/ui/setup_window.blp:224
-msgid "The WHO recommends 10.000 steps per day."
-msgstr "ВОЗ рекомендовано виконувати 10000 кроків щодня."
+#| msgid "The WHO recommends 10.000 steps per day."
+msgid "The WHO recommends 7.500 steps per day."
+msgstr "ВОЗ рекомендовано виконувати 75000 кроків щодня."
 
 #: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
@@ -593,15 +594,15 @@ msgstr "_Про «Здоров'я»"
 msgid "Enable plugin"
 msgstr "Увімкнути додаток"
 
-#: src/core/application.rs:175
+#: src/core/application.rs:176
 msgid "A health tracking app for the GNOME desktop."
 msgstr "Програма стеження за станом здоров'я для стільниці GNOME."
 
-#: src/core/application.rs:177
+#: src/core/application.rs:178
 msgid "translator-credits"
 msgstr "Юрій Чорноіван <yurchor@ukr.net>, 2021"
 
-#: src/core/application.rs:179
+#: src/core/application.rs:180
 msgid "Websites"
 msgstr "Сайти"
 
@@ -1122,42 +1123,42 @@ msgid "Feet"
 msgstr "фути"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:475 src/widgets/unit_spinbutton.rs:635
+#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:654
 msgid "cm"
 msgstr "см"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:477
+#: src/widgets/unit_spinbutton.rs:490
 msgid "m"
 msgstr "м"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:479
+#: src/widgets/unit_spinbutton.rs:492
 msgid "km"
 msgstr "км"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:481
+#: src/widgets/unit_spinbutton.rs:494
 msgid "kg"
 msgstr "кг"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:483 src/widgets/unit_spinbutton.rs:637
+#: src/widgets/unit_spinbutton.rs:496 src/widgets/unit_spinbutton.rs:656
 msgid "in"
 msgstr "дюйм"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:485
+#: src/widgets/unit_spinbutton.rs:498
 msgid "ft"
 msgstr "фут"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:487
+#: src/widgets/unit_spinbutton.rs:500
 msgid "mi"
 msgstr "миля"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:489
+#: src/widgets/unit_spinbutton.rs:502
 msgid "lb"
 msgstr "фунт"
 
