@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-07-06 08:12+0000\n"
-"PO-Revision-Date: 2022-07-06 19:29+0300\n"
+"POT-Creation-Date: 2022-07-24 21:36+0000\n"
+"PO-Revision-Date: 2022-07-25 13:30+0300\n"
 "Last-Translator: Aleksandr Melman <Alexmelman88@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -475,8 +475,8 @@ msgid "Please enter your daily step goal."
 msgstr "Пожалуйста, введите свою ежедневную цель в шагах."
 
 #: data/ui/setup_window.blp:224
-msgid "The WHO recommends 10.000 steps per day."
-msgstr "ВОЗ рекомендует делать 10 000 шагов в день."
+msgid "The WHO recommends 7.500 steps per day."
+msgstr "ВОЗ рекомендует делать 7500 шагов в день."
 
 #: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
@@ -587,18 +587,18 @@ msgstr "О _Здоровье"
 msgid "Enable plugin"
 msgstr "Включить модуль"
 
-#: src/core/application.rs:169
+#: src/core/application.rs:176
 msgid "A health tracking app for the GNOME desktop."
 msgstr ""
 "Приложение для отслеживания состояния здоровья для рабочего стола GNOME."
 
-#: src/core/application.rs:171
+#: src/core/application.rs:178
 msgid "translator-credits"
 msgstr ""
 "Alexey Rubtsov <rushills@gmail.com>, 2021\n"
 "Aleksandr Melman <alexmelman88@gmail.com>, 2022"
 
-#: src/core/application.rs:173
+#: src/core/application.rs:180
 msgid "Websites"
 msgstr "Вебсайты"
 
@@ -1081,42 +1081,42 @@ msgid "Feet"
 msgstr "Футы"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:475 src/widgets/unit_spinbutton.rs:635
+#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:654
 msgid "cm"
 msgstr "см"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:477
+#: src/widgets/unit_spinbutton.rs:490
 msgid "m"
 msgstr "м"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:479
+#: src/widgets/unit_spinbutton.rs:492
 msgid "km"
 msgstr "км"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:481
+#: src/widgets/unit_spinbutton.rs:494
 msgid "kg"
 msgstr "кг"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:483 src/widgets/unit_spinbutton.rs:637
+#: src/widgets/unit_spinbutton.rs:496 src/widgets/unit_spinbutton.rs:656
 msgid "in"
 msgstr "дюйм"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:485
+#: src/widgets/unit_spinbutton.rs:498
 msgid "ft"
 msgstr "фут"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:487
+#: src/widgets/unit_spinbutton.rs:500
 msgid "mi"
 msgstr "мили"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:489
+#: src/widgets/unit_spinbutton.rs:502
 msgid "lb"
 msgstr "фунт"
 
@@ -1133,6 +1133,11 @@ msgstr "Активности.csv.encrypted"
 #: src/windows/export_dialog.rs:63
 msgid "Activities.csv"
 msgstr "Активности.csv"
+
+#: src/windows/export_dialog.rs:75 src/windows/export_dialog.rs:109
+#: src/windows/import_dialog.rs:68 src/windows/import_dialog.rs:97
+msgid "No file selected."
+msgstr "Файл не выбран."
 
 #: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
