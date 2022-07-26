@@ -1,5 +1,5 @@
 # Portuguese translation for health.
-# Copyright (C) 2021 health's COPYRIGHT HOLDER
+# Copyright (C) 2021-2022 health.
 # This file is distributed under the same license as the health package.
 # Hugo Carvalho <hugokarvalho@hotmail.com>, 2021, 2022.
 #
@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-07-06 08:12+0000\n"
-"PO-Revision-Date: 2022-07-07 12:13+0100\n"
+"POT-Creation-Date: 2022-07-24 21:36+0000\n"
+"PO-Revision-Date: 2022-07-26 14:30+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
-"Language-Team: Portuguese <gnome-pt-translation@googlegroups.com>\n"
+"Language-Team: Portuguese <hugokarvalho@hotmail.com>\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -472,8 +472,8 @@ msgid "Please enter your daily step goal."
 msgstr "Introduza o seu objetivo diário de passos."
 
 #: data/ui/setup_window.blp:224
-msgid "The WHO recommends 10.000 steps per day."
-msgstr "A OMS recomenda 10.000 passos por dia."
+msgid "The WHO recommends 7.500 steps per day."
+msgstr "A OMS recomenda 7.500 passos por dia."
 
 #: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
@@ -583,15 +583,15 @@ msgstr "_Acerca da Saúde"
 msgid "Enable plugin"
 msgstr "Ativar plugin"
 
-#: src/core/application.rs:169
+#: src/core/application.rs:176
 msgid "A health tracking app for the GNOME desktop."
 msgstr "Uma aplicação de monitorização de saúde para o ambiente GNOME."
 
-#: src/core/application.rs:171
+#: src/core/application.rs:178
 msgid "translator-credits"
 msgstr "Hugo Carvalho <hugokarvalho@hotmail.com>"
 
-#: src/core/application.rs:173
+#: src/core/application.rs:180
 msgid "Websites"
 msgstr "Websites"
 
@@ -1041,42 +1041,42 @@ msgid "Feet"
 msgstr "Pés"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:475 src/widgets/unit_spinbutton.rs:635
+#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:654
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:477
+#: src/widgets/unit_spinbutton.rs:490
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:479
+#: src/widgets/unit_spinbutton.rs:492
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:481
+#: src/widgets/unit_spinbutton.rs:494
 msgid "kg"
 msgstr "kg"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:483 src/widgets/unit_spinbutton.rs:637
+#: src/widgets/unit_spinbutton.rs:496 src/widgets/unit_spinbutton.rs:656
 msgid "in"
 msgstr "in"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:485
+#: src/widgets/unit_spinbutton.rs:498
 msgid "ft"
 msgstr "ft"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:487
+#: src/widgets/unit_spinbutton.rs:500
 msgid "mi"
 msgstr "mi"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:489
+#: src/widgets/unit_spinbutton.rs:502
 msgid "lb"
 msgstr "lb"
 
@@ -1093,6 +1093,11 @@ msgstr "Atividades.csv.encrypted"
 #: src/windows/export_dialog.rs:63
 msgid "Activities.csv"
 msgstr "Atividades.csv"
+
+#: src/windows/export_dialog.rs:75 src/windows/export_dialog.rs:109
+#: src/windows/import_dialog.rs:68 src/windows/import_dialog.rs:97
+msgid "No file selected."
+msgstr "Nenhum ficheiro selecionado."
 
 #: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
