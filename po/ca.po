@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-03-15 08:58+0000\n"
-"PO-Revision-Date: 2022-03-15 08:58+0000\n"
-"Last-Translator: Jordi Mas <jmas@softcatala.org>\n"
+"POT-Creation-Date: 2022-07-21 16:28+0000\n"
+"PO-Revision-Date: 2022-07-22 16:27+0200\n"
+"Last-Translator: maite guix <maite.guix@me.com>\n"
 "Language-Team: Catalan <gnome@llistes.softcatala.org>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -71,10 +71,10 @@ msgstr "Llista de tipus d'activitat recents"
 #: data/dev.Cogitri.Health.gschema.xml:42
 msgid ""
 "Activity types the user used recently, to be shown first in the activity "
-"types selector's list"
+"types selector’s list"
 msgstr ""
-"Tipus d'activitat que l'usuari ha utilitzat recentment, que es mostraran "
-"primer a la llista del selector de tipus d'activitat"
+"Tipus d'activitat que l'usuari ha fet recentment, que es mostraran primer a "
+"la llista del selector de tipus d'activitat"
 
 #: data/dev.Cogitri.Health.gschema.xml:46
 msgid "Google Fit Sync-Provider setup"
@@ -99,8 +99,8 @@ msgstr "Sistema d'unitats utilitzat"
 #: data/dev.Cogitri.Health.gschema.xml:57
 msgid "The unit system the user chose, e.g. for cm vs inch for height"
 msgstr ""
-"El sistema d'unitats que l'usuari va triar, per exemple, per cm vs polzada "
-"per a l'alçada"
+"El sistema d'unitats que l'usuari ha triat, per exemple, cm vs polzada per a "
+"l'alçada"
 
 #: data/dev.Cogitri.Health.gschema.xml:61
 msgid "User age"
@@ -112,7 +112,7 @@ msgstr "Edat de l'usuari (obsoleta)."
 
 #: data/dev.Cogitri.Health.gschema.xml:66
 msgid "Absolute user age"
-msgstr "Edat de l'usuari"
+msgstr "Data de naixement"
 
 #: data/dev.Cogitri.Health.gschema.xml:67
 msgid "The age of the user in absolute terms (like 01/01/1970)"
@@ -164,7 +164,7 @@ msgstr "Amplada de la finestra"
 
 #: data/dev.Cogitri.Health.gschema.xml:97
 msgid "The width of the window."
-msgstr "Amplada de la finestra."
+msgstr "L'amplada de la finestra."
 
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
@@ -173,31 +173,25 @@ msgstr "Amplada de la finestra."
 msgid "Health"
 msgstr "Salut"
 
-#: data/dev.Cogitri.Health.Autostart.desktop.in.in:5
-#: data/dev.Cogitri.Health.desktop.in.in:5
-msgid "@APPLICATION_ID@"
-msgstr "@APPLICATION_ID@"
-
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:167
-msgid "A health tracking app for the GNOME desktop."
-msgstr "Una aplicació de seguiment de la salut per a l'escriptori GNOME."
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9
+msgid "Track your fitness goals"
+msgstr "Faci un seguiment dels seus objectius de fitness"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
 msgid ""
-"A health tracking app for the GNOME desktop. Health can visualize how many "
-"steps you've made daily, your weight development over time and your daily "
-"activities. Data can be synched from Google Fit or manually entered into "
-"Health. Afterwards, it can be viewed and edited in Health."
+"Health can visualize how many steps you’ve made daily, your weight "
+"development over time and your daily activities. Data can be synched from "
+"Google Fit or manually entered into Health. Afterwards, it can be viewed and "
+"edited in Health."
 msgstr ""
-"Una aplicació de seguiment de salut per a l'escriptori GNOME. Salut pot "
-"visualitzar quants passos heu fet cada dia, el vostre desenvolupament de pes"
-" amb el temps i les vostres activitats diàries. Les dades es poden "
-"sincronitzar des de Google Fit o bé introduir-les manualment al Salut. "
-"Després, es poden veure i editar al Salut."
+"Salut pot visualitzar quants passos heu fet diàriament, el seu canvi de pes "
+"al llarg del temps i les seves activitats diàries. Les dades es poden "
+"sincronitzar des de Google Fit o introduir-les manualment a Salut. "
+"Posteriorment, es poden veure i editar a Salut."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:37
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:36
 msgid "Rasmus “Cogitri” Thomsen"
-msgstr "Rasmus \"Cogitri\" Thomsen"
+msgstr "Rasmus «Cogitri» Thomsen"
 
 #: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
 #: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
@@ -210,63 +204,63 @@ msgstr "_Cancel·la"
 msgid "_Save"
 msgstr "De_sa"
 
-#: data/ui/date_selector.blp:17
+#: data/ui/date_selector.blp:18
 msgid "January"
 msgstr "gener"
 
-#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:223
+#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:223
 msgid "February"
 msgstr "febrer"
 
-#: data/ui/date_selector.blp:19
+#: data/ui/date_selector.blp:20
 msgid "March"
 msgstr "març"
 
-#: data/ui/date_selector.blp:20
+#: data/ui/date_selector.blp:21
 msgid "April"
 msgstr "abril"
 
-#: data/ui/date_selector.blp:21
+#: data/ui/date_selector.blp:22
 msgid "May"
 msgstr "maig"
 
-#: data/ui/date_selector.blp:22
+#: data/ui/date_selector.blp:23
 msgid "June"
 msgstr "juny"
 
-#: data/ui/date_selector.blp:23
+#: data/ui/date_selector.blp:24
 msgid "July"
 msgstr "juliol"
 
-#: data/ui/date_selector.blp:24
+#: data/ui/date_selector.blp:25
 msgid "August"
 msgstr "agost"
 
-#: data/ui/date_selector.blp:25
+#: data/ui/date_selector.blp:26
 msgid "September"
 msgstr "setembre"
 
-#: data/ui/date_selector.blp:26
+#: data/ui/date_selector.blp:27
 msgid "October"
 msgstr "octubre"
 
-#: data/ui/date_selector.blp:27
+#: data/ui/date_selector.blp:28
 msgid "November"
 msgstr "novembre"
 
-#: data/ui/date_selector.blp:28
+#: data/ui/date_selector.blp:29
 msgid "December"
 msgstr "desembre"
 
-#: data/ui/date_selector.blp:34
+#: data/ui/date_selector.blp:35
 msgid "Day"
 msgstr "Dia"
 
-#: data/ui/date_selector.blp:60
+#: data/ui/date_selector.blp:61
 msgid "Month"
 msgstr "Mes"
 
-#: data/ui/date_selector.blp:83
+#: data/ui/date_selector.blp:84
 msgid "Year"
 msgstr "Any"
 
@@ -297,7 +291,7 @@ msgstr "_Confirmeu la contrasenya"
 #: data/ui/plugins/activities/details.blp:5
 #: data/ui/plugins/calories/details.blp:4 data/ui/plugins/steps/details.blp:4
 msgid "You can use the <b>+</b> button to add a new activity."
-msgstr "Podeu utilitzar el botó <b>+</b> per afegir una activitat nova."
+msgstr "Podeu utilitzar el botó <b>+</b> per a afegir una activitat nova."
 
 #: data/ui/plugins/activities/details.blp:8
 msgid "Recent Activities"
@@ -320,8 +314,8 @@ msgid ""
 "This is a preview of how the plugin presents data. Enable the plugin to see "
 "your actual, live data."
 msgstr ""
-"Aquesta és una vista prèvia de com el connector presenta dades. Habiliteu el"
-" connector per a veure les vostres dades reals i en viu."
+"Aquesta és una vista prèvia de com el connector presenta dades. Habiliteu el "
+"connector per a veure les vostres dades reals i en viu."
 
 #: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
 #: data/ui/preferences_window.blp:166 src/plugins/steps/plugin.rs:39
@@ -330,7 +324,7 @@ msgstr "Passos"
 
 #: data/ui/plugins/weight/details.blp:5
 msgid "You can use the <b>+</b> button to add a new weight measurement."
-msgstr "Podeu utilitzar el botó <b>+</b> per afegir una nova mesura de pes."
+msgstr "Podeu utilitzar el botó <b>+</b> per a afegir una nova mesura de pes."
 
 #: data/ui/plugins/weight/details.blp:8
 msgid "Weight Measurements"
@@ -407,16 +401,16 @@ msgid "Step goal"
 msgstr "Passos a fer"
 
 #: data/ui/preferences_window.blp:170
-msgid "The WHO recommends 10,000 steps per day."
-msgstr "L'OMS recomana fer 10.000 passos al dia."
+msgid "7,500 steps per day are recommended."
+msgstr "Es recomanen 7.500 passos al dia."
 
 #: data/ui/preferences_window.blp:184 data/ui/preferences_window.blp:187
 msgid "Weight Goal"
 msgstr "Objectiu de pes"
 
-#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
+#: data/ui/preferences_window.blp:188
 msgid "The WHO recommends a BMI of 18.5-24.9."
-msgstr "L'OMS recomana un IMC de 18,5-24,9."
+msgstr "L'OMS recomana un IMC entre 18,5-24,9."
 
 #: data/ui/preferences_window.blp:212
 msgid "Sync"
@@ -472,7 +466,7 @@ msgstr "Us donem la benvinguda a Salut!"
 
 #: data/ui/setup_window.blp:128
 msgid "Please enter some information to get setup."
-msgstr "Introduïu informació per a obtenir la configuració."
+msgstr "Introduïu informació per a configurar."
 
 #: data/ui/setup_window.blp:212
 msgid "Please enter your daily step goal."
@@ -485,6 +479,10 @@ msgstr "L'OMS recomana fer 10.000 passos al dia."
 #: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
 msgstr "Introduïu l'objectiu de pes."
+
+#: data/ui/setup_window.blp:286
+msgid "The WHO recommends a BMI of 18.5–24.9."
+msgstr "L'OMS recomana un IMC entre 18,5-24,9."
 
 #: data/ui/setup_window.blp:314
 msgid "Current weight"
@@ -561,7 +559,7 @@ msgstr "Per a vós"
 msgid ""
 "No plugins enabled. Enable one from the list below to start using Health."
 msgstr ""
-"No s'ha activat cap connector. Habiliteu-ne un de la llista de sota per "
+"No s'ha activat cap connector. Habiliteu-ne un de la llista de sota per a "
 "començar a utilitzar el Salut."
 
 #: data/ui/view_home_page.blp:107
@@ -588,14 +586,18 @@ msgstr "_Quant a Salut"
 msgid "Enable plugin"
 msgstr "Habilita el connector"
 
-#: src/core/application.rs:169
+#: src/core/application.rs:175
+msgid "A health tracking app for the GNOME desktop."
+msgstr "Una aplicació de seguiment de la salut per a l'escriptori GNOME."
+
+#: src/core/application.rs:177
 msgid "translator-credits"
 msgstr ""
 "Marc Riera <marcriera@softcatala.org>\n"
-"Maite Guix <maite.guix@me.com>\n"
+"Maite Guix <maite.guix@me.com>, 2022\n"
 "Jordi Mas i Hernàndez <jmas@softcatala.org>"
 
-#: src/core/application.rs:171
+#: src/core/application.rs:179
 msgid "Websites"
 msgstr "Llocs web"
 
@@ -686,8 +688,8 @@ msgstr "Salut: recordatori de caminar"
 #: src/model/model_notification.rs:250
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
-msgstr[0] "queda {} pas per a completar el vostre objectiu diari"
-msgstr[1] "queden {} passos per a completar el vostre objectiu diari"
+msgstr[0] "queda {} pas per a completar el vostre objectiu diari."
+msgstr[1] "queden {} passos per a completar el vostre objectiu diari."
 
 #: src/plugins/activities/plugin.rs:39
 msgid "Activities"
@@ -724,35 +726,39 @@ msgstr[0] "{} caloria cremada avui"
 msgstr[1] "{} calories cremades avui"
 
 #: src/plugins/steps/details.rs:186
-msgid "Today's steps: {}"
+msgid "Today’s steps: {}"
 msgstr "Passos d'avui: {}"
 
 #: src/plugins/steps/details.rs:201
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
-"Encara no esteu en ratxa. Aconseguiu el vostre objectiu de passos durant diversos"
-" dies per a començar una ratxa!"
+"Encara no esteu en ratxa. Aconseguiu el vostre objectiu de passos durant "
+"diversos dies per a començar una ratxa!"
 
 #: src/plugins/steps/details.rs:205
 msgid ""
-"You're on a streak for {} day. Reach your step goal today to continue it!"
+"You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
-"You're on a streak for {} days. Reach your step goal today to continue it!"
+"You’re on a streak for {} days. Reach your step goal today to continue it!"
 msgstr[0] ""
-"Esteu en ratxa d'{} dia. Assoliu el vostre objectiu d'avui per a continuaren ratxa!"
+"Esteu en ratxa d'{} dia. Assoliu el vostre objectiu d'avui per a continuar "
+"en ratxa!"
 msgstr[1] ""
-"Esteus en ratxa de {} dies. Assoliu el vostre objectiu d'avui per a continuar en ratxa!"
+"Esteus en ratxa de {} dies. Assoliu el vostre objectiu d'avui per a "
+"continuar en ratxa!"
 
 #: src/plugins/steps/details.rs:213
-msgid "You've reached your step goal today. Keep going to start a streak!"
-msgstr "Avui heu aconseguit el vostre objectiu de passos. Continueu per començar a estar en ratxa!"
+msgid "You’ve reached your step goal today. Keep going to start a streak!"
+msgstr ""
+"Avui heu aconseguit el vostre objectiu de passos. Continueu per a estar en "
+"ratxa!"
 
 #: src/plugins/steps/details.rs:216
-msgid "You're on a streak for {} day. Good job!"
-msgid_plural "You're on a streak for {} days. Good job!"
-msgstr[0] "Esteu en ratxa d'{} dia. Bon treball!"
-msgstr[1] "Esteu en ratxa de {} dies. Bon treball!"
+msgid "You’re on a streak for {} day. Good job!"
+msgid_plural "You’re on a streak for {} days. Good job!"
+msgstr[0] "Esteu en ratxa d'{} dia. Bona feina!"
+msgstr[1] "Esteu en ratxa de {} dies. Bona feina!"
 
 #. TRANSLATORS: X step(s) on DATE
 #: src/plugins/steps/details.rs:233
@@ -770,8 +776,8 @@ msgstr[1] "{} passos que s'han fet avui"
 #: src/plugins/steps/summary.rs:105
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
-msgstr[0] "Heu assolit {}% de l'objectiu de passos diari."
-msgstr[1] "Heu assolit {}% de l'objectiu de passos diari."
+msgstr[0] "Heu assolit l'{}% de l'objectiu de passos diari"
+msgstr[1] "Heu assolit el {}% de l'objectiu de passos diari"
 
 #: src/plugins/steps/summary.rs:112
 msgid "Well done! You have reached your daily step goal!"
@@ -799,7 +805,7 @@ msgstr[1] "{} quilograms a {}"
 msgid "Unknown BMI"
 msgstr "IMC desconegut"
 
-#: src/plugins/weight/details.rs:270
+#: src/plugins/weight/details.rs:268
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -807,13 +813,13 @@ msgid_plural ""
 "Your weight goal is {} pounds. Add a first weight measurement to see how "
 "close you are to reaching it."
 msgstr[0] ""
-"L'objectiu de pes és d'{} lliura. Afegiu una primera mesura de pes per a veure"
-" com de prop esteu per a arribar-hi."
+"L'objectiu de pes és d'{} lliura. Afegiu una primera mesura de pes per a "
+"veure com de prop esteu."
 msgstr[1] ""
 "L'objectiu de pes és de {} lliures. Afegiu una primera mesura de pes per a "
-"veure com de prop esteu per a arribar-hi."
+"veure com de prop esteu."
 
-#: src/plugins/weight/details.rs:277
+#: src/plugins/weight/details.rs:275
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -821,51 +827,45 @@ msgid_plural ""
 "Your weight goal is {} kilograms. Add a first weight measurement to see how "
 "close you are to reaching it."
 msgstr[0] ""
-"L'objectiu de pes és d'{} quilogram. Afegiu una primera mesura de pes per "
-"a veure com de prop esteu per a arribar-hi."
+"L'objectiu de pes és d'{} quilogram. Afegiu una primera mesura de pes per a "
+"veure com de prop esteu."
 msgstr[1] ""
 "L'objectiu de pes és de {} quilograms. Afegiu una primera mesura de pes per "
-"a veure com de prop esteu per a arribar-hi."
+"a veure com de prop esteu."
 
-#: src/plugins/weight/details.rs:286
-msgid "You've reached your weight goal. Great job!"
-msgstr "Has aconseguit el pes objectiu. Bona feina!"
+#: src/plugins/weight/details.rs:284
+msgid "You’ve reached your weight goal. Great job!"
+msgstr "Heu aconseguit el pes objectiu. Bona feina!"
 
-#. TRANSLATORS: First part of message, ends with [...] you have {} pound left
-#. to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:302
-msgid "Your weight goal is {} pound,"
-msgid_plural "Your weight goal is {} pounds,"
-msgstr[0] "L'objectiu de pes és d'{} lliura,"
-msgstr[1] "L'objectiu de pes és de {} lliures,"
+#: src/plugins/weight/details.rs:300
+msgid "Your weight goal is {} pound."
+msgid_plural "Your weight goal is {} pounds."
+msgstr[0] "L'objectiu de pes és d'{} lliura."
+msgstr[1] "L'objectiu de pes és de {} lliures."
 
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:307
-msgid "you have {} pound left to reach it"
-msgid_plural "you have {} pounds left to reach it"
-msgstr[0] "us queda {} lliure per a arribar-hi"
-msgstr[1] "us queden {} lliures per a arribar-hi"
+#: src/plugins/weight/details.rs:305
+msgid "You have {} pound left to reach it."
+msgid_plural "You have {} pounds left to reach it."
+msgstr[0] "Us queda {} lliura per a arribar-hi."
+msgstr[1] "Us queden {} lliures per a arribar-hi."
 
-#. TRANSLATORS: First part of message, ends with [...] you have {} kilogram
-#. left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:314
-msgid "Your weight goal is {} kilogram,"
-msgid_plural "Your weight goal is {} kilograms,"
-msgstr[0] "El seu objectiu de pes és d'{} quilogram,"
-msgstr[1] "El seu objectiu de pes és de {} quilograms,"
+#: src/plugins/weight/details.rs:312
+msgid "Your weight goal is {} kilogram."
+msgid_plural "Your weight goal is {} kilograms."
+msgstr[0] "El seu objectiu de pes és d'{} quilogram."
+msgstr[1] "El seu objectiu de pes és de {} quilograms."
 
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:320
-msgid "you have {} kilogram left to reach it"
-msgid_plural "you have {} kilograms left to reach it"
-msgstr[0] "us queda {} quilogram per a arribar-hi"
-msgstr[1] "us queden {} quilograms per a arribar-hi"
+#: src/plugins/weight/details.rs:318
+msgid "You have {} kilogram left to reach it"
+msgid_plural "You have {} kilograms left to reach it"
+msgstr[0] "Us queda {} quilogram per a arribar-hi"
+msgstr[1] "Us queden {} quilograms per a arribar-hi"
 
-#: src/plugins/weight/details.rs:330
-msgid "No weight goal set yet. You can set it in Health's preferences."
+#: src/plugins/weight/details.rs:328
+msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr ""
-"Encara no s'ha fixat el pes objectiu. Podeu configurar-lo a les preferències"
-" de Salut."
+"Encara no s'ha fixat el pes objectiu. Podeu configurar-lo a les preferències "
+"de Salut."
 
 #: src/plugins/weight/summary.rs:119
 msgid "{} pound"
@@ -912,40 +912,40 @@ msgid "No weight data available"
 msgstr "No hi ha dades de pes disponibles"
 
 #: src/sync/csv.rs:81 src/sync/csv.rs:370
-msgid "No activities added yet; can't create empty export!"
+msgid "No activities added yet; can’t create empty export!"
 msgstr ""
-"Encara no s'han afegit activitats; No es pot crear una exportació buida!"
+"Encara no s'han afegit activitats; no es pot crear una exportació buida!"
 
 #: src/sync/csv.rs:111 src/sync/csv.rs:388
-msgid "No weight measurements added yet; can't create empty export!"
+msgid "No weight measurements added yet; can’t create empty export!"
 msgstr ""
-"Encara no s'han afegit mesures de pes; No es pot crear una exportació buida!"
+"Encara no s'han afegit mesures de pes; no es pot crear una exportació buida!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:332
-msgid "Can't parse encrypted backup without encryption key!"
+msgid "Can’t parse encrypted backup without encryption key!"
 msgstr ""
 "No es pot analitzar la còpia de seguretat xifrada sense clau de xifrat!"
 
 #: src/sync/csv.rs:195 src/sync/csv.rs:352
 msgid ""
-"Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
+"Couldn’t parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
 msgstr ""
 "No s'ha pogut analitzar CSV. Esteu intentant llegir una còpia de seguretat "
 "sense xifrar com a xifrada?"
 
 #: src/sync/csv.rs:208
-msgid "Couldn't decrypt data. Are you sure you're using the right key?"
+msgid "Couldn’t decrypt data. Are you sure you’re using the right key?"
 msgstr ""
 "No s'han pogut desxifrar les dades. Esteu segurs que utilitzeu la clau "
 "correcta?"
 
 #: src/sync/database_receiver.rs:46
-msgid "Couldn't synchronize steps due to error {}"
+msgid "Couldn’t synchronize steps due to error {}"
 msgstr "No s'han pogut sincronitzar els passos a causa d'un error {}"
 
 #: src/sync/database_receiver.rs:60
-msgid "Couldn't synchronize weight measurements due to error {}"
+msgid "Couldn’t synchronize weight measurements due to error {}"
 msgstr "No s'han pogut sincronitzar les mesures de pes a causa d'un error {}"
 
 #: src/sync/google_fit.rs:211
@@ -958,7 +958,7 @@ msgstr "La sol·licitud de testimoni OAuth2 ha fallat a causa de l'error {}"
 
 #: src/sync/sync_provider.rs:109
 msgid ""
-"Can't retrieve OAuth2 token when no refresh token is set! Please re-"
+"Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
 "authenticate with your sync provider."
 msgstr ""
 "No es pot recuperar el testimoni OAuth2 quan no s'estableix cap testimoni "
@@ -966,19 +966,20 @@ msgstr ""
 
 #: src/sync/sync_provider.rs:157
 msgid "Token for Health sync provider {}"
-msgstr "Testimoni per al proveïdor de sincronització de salut {}"
+msgstr "Testimoni per al proveïdor de sincronització {} de Salut"
 
 #: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
 msgstr "Autenticat correctament, si us plau, torneu a Salut."
 
 #: src/sync/sync_provider.rs:228
-msgid "Couldn't parse OAuth2 response"
+msgid "Couldn’t parse OAuth2 response"
 msgstr "No s'ha pogut analitzar la resposta d'OAuth2"
 
 #: src/views/bar_graph_view.rs:583
 msgid "Enter weight record to calculate idle calories"
-msgstr "Introduïu el registre de pes per calcular les calories no utilitzades"
+msgstr ""
+"Introduïu el registre de pes per a calcular les calories no utilitzades"
 
 #: src/views/bar_graph_view.rs:587
 msgid "Idle calories"
@@ -1032,15 +1033,15 @@ msgstr "<small>IMC actual: {}</small>"
 
 #: src/widgets/distance_action_row.rs:303
 msgid "KM"
-msgstr "KM"
+msgstr "km"
 
 #: src/widgets/distance_action_row.rs:304
 msgid "Meters"
-msgstr "Metres"
+msgstr "metres"
 
 #: src/widgets/distance_action_row.rs:306
 msgid "Miles"
-msgstr "Milles"
+msgstr "milles"
 
 #: src/widgets/distance_action_row.rs:307
 msgid "Feet"
@@ -1069,7 +1070,7 @@ msgstr "kg"
 #. TRANSLATORS: Unit abbreviation (inch)
 #: src/widgets/unit_spinbutton.rs:483 src/widgets/unit_spinbutton.rs:637
 msgid "in"
-msgstr "a"
+msgstr "polçades"
 
 #. TRANSLATORS: Unit abbreviation (feet)
 #: src/widgets/unit_spinbutton.rs:485
@@ -1079,7 +1080,7 @@ msgstr "peus"
 #. TRANSLATORS: Unit abbreviation (miles)
 #: src/widgets/unit_spinbutton.rs:487
 msgid "mi"
-msgstr "mi"
+msgstr "milles"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
 #: src/widgets/unit_spinbutton.rs:489
@@ -1098,7 +1099,12 @@ msgstr "Activities.csv.encrypted"
 #. TRANSLATORS: Please keep the file extension (.csv)
 #: src/windows/export_dialog.rs:63
 msgid "Activities.csv"
-msgstr "Activitats.csv"
+msgstr "Activities.csv"
+
+#: src/windows/export_dialog.rs:75 src/windows/export_dialog.rs:109
+#: src/windows/import_dialog.rs:68 src/windows/import_dialog.rs:97
+msgid "No file selected."
+msgstr "No s'ha seleccionat cap fitxer."
 
 #: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
@@ -1162,14 +1168,19 @@ msgstr "Tanca"
 
 #: src/windows/preferences_window.rs:409 src/windows/setup_window.rs:249
 msgid "Target BMI"
-msgstr "IMC destí"
+msgstr "IMC objectiu"
 
 #: src/windows/window.rs:97
 msgid "Failed to migrate database to new version due to error {}"
 msgstr ""
-"No s'ha pogut migrar la base de dades a una versió nova a causa d'un error "
-"{}"
+"No s'ha pogut migrar la base de dades a una versió nova a causa d'un error {}"
 
 #: src/windows/window.rs:267
-msgid "Couldn't sync Google Fit data due to error: {}"
+msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "No s'han pogut sincronitzar les dades de Google Fit per error: {}"
+
+#~ msgid "@APPLICATION_ID@"
+#~ msgstr "@APPLICATION_ID@"
+
+#~ msgid "The WHO recommends 10,000 steps per day."
+#~ msgstr "L'OMS recomana fer 10.000 passos al dia."
