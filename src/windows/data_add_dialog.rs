@@ -142,7 +142,7 @@ impl DataAddDialog {
     /// * `parent` - The [GtkWindow](gtk::Window) who is the transient parent of this dialog.
     pub fn new(parent: &gtk::Window, current_plugin: String) -> Self {
         glib::Object::new(&[
-            ("use-header-bar", &1),
+            ("use-header-bar", &1.to_value()),
             ("transient-for", &Some(parent)),
             ("current-plugin", &current_plugin),
         ])

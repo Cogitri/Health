@@ -105,13 +105,14 @@ impl GraphModelCalories {
             }
             Ok(v) => v,
         };
+        let user_id = self.settings.active_user_id() as i64;
+        let user = &self.database.users(Some(user_id)).await.unwrap()[0];
         let weight = weights
             .last()
             .map_or_else(|| Mass::new::<kilogram>(0.0), |w| w.weight)
             .get::<kilogram>() as f32;
-        let height = self.settings.user_height().get::<centimeter>() as f32;
-        let age = self
-            .settings
+        let height = user.user_height().unwrap().get::<centimeter>() as f32;
+        let age = user
             .user_birthday()
             .unwrap()
             .difference(&glib::DateTime::local())

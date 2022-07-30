@@ -18,8 +18,7 @@
 
 use crate::{
     core::{i18n, UnitSystem},
-    model::ModelNotification,
-    prelude::*,
+    model::{ModelNotification, User},
     windows::{PreferencesWindow, Window},
 };
 use anyhow::Result;
@@ -34,7 +33,7 @@ use std::{path::Path, str::FromStr};
 mod imp {
     use crate::{
         config,
-        core::Settings,
+        core::{Database, Settings},
         model::ModelNotification,
         windows::{SetupWindow, Window},
     };
@@ -50,6 +49,7 @@ mod imp {
     pub struct Application {
         pub notification_model: RefCell<Option<ModelNotification>>,
         pub settings: Settings,
+        pub database: Database,
         pub window: RefCell<Option<glib::WeakRef<Window>>>,
     }
 
@@ -70,11 +70,20 @@ mod imp {
                 return;
             }
 
-            if self.settings.did_initial_setup() {
-                let window = Window::new(obj);
-                window.show();
-                self.window
-                    .replace(Some(glib::ObjectExt::downgrade(&window)));
+            if self.settings.active_user_id() > 0 || self.settings.did_initial_setup() {
+                self.settings.set_did_initial_setup(false);
+                gtk_macros::spawn!(glib::clone!(@weak obj => async move {
+                    if let Err(e) = Database::instance().migrate().await {
+                        glib::g_warning!(
+                            crate::config::APPLICATION_ID,
+                            "Failed to migrate database to new version due to error {e}",
+                        );
+                    }
+                    let window = Window::new(&obj);
+                    window.show();
+                    obj.imp().window
+                        .replace(Some(glib::ObjectExt::downgrade(&window)));
+                }));
             } else {
                 let setup_window = SetupWindow::new(obj);
                 obj.hold();
@@ -102,12 +111,16 @@ mod imp {
             gtk::IconTheme::for_display(&gtk::gdk::Display::default().unwrap())
                 .add_resource_path("/dev/Cogitri/Health/icons");
 
-            obj.migrate_gsettings();
             obj.setup_actions();
             obj.setup_accels();
 
             if obj.flags().contains(gio::ApplicationFlags::IS_SERVICE) {
-                obj.setup_notifications();
+                if self.settings.active_user_id() > 0 {
+                    gtk_macros::spawn!(glib::clone!(@weak obj => async move {
+                        obj.setup_notifications().await;
+                    }));
+                }
+
                 // Hold onto this application to send notifications
                 obj.hold();
             }
@@ -184,14 +197,22 @@ impl Application {
             .show()
     }
 
-    fn handle_enable_notifications_changed(&self) {
+    pub async fn get_user(&self) -> User {
         let imp = self.imp();
+        let user_id = imp.settings.active_user_id() as i64;
+        let user = &imp.database.users(Some(user_id)).await.unwrap()[0];
+        user.clone()
+    }
+
+    async fn handle_enable_notifications_changed(&self) {
+        let imp = self.imp();
+        let user = self.get_user().await;
         if imp.settings.enable_notifications() {
             let model = ModelNotification::new(
                 self,
                 imp.settings.notification_frequency(),
                 imp.settings.notification_time(),
-                imp.settings.user_step_goal(),
+                user.user_stepgoal().unwrap() as u32,
             );
             model.register_periodic_notify();
             imp.notification_model.replace(Some(model));
@@ -238,7 +259,6 @@ impl Application {
 
     fn handle_setup_window_setup_done(&self) {
         let imp = self.imp();
-        imp.settings.set_did_initial_setup(true);
         let window = Window::new(self);
         window.show();
         imp.window
@@ -275,15 +295,6 @@ impl Application {
         }
 
         Ok(())
-    }
-
-    fn migrate_gsettings(&self) {
-        let imp = self.imp();
-        if imp.settings.user_birthday().is_none() {
-            let age: i32 = imp.settings.user_age().try_into().unwrap();
-            let datetime = glib::DateTime::local().add_years(-age).unwrap();
-            imp.settings.set_user_birthday(datetime);
-        }
     }
 
     fn setup_accels(&self) {
@@ -337,22 +348,25 @@ impl Application {
         );
     }
 
-    fn setup_notifications(&self) {
+    async fn setup_notifications(&self) {
         let imp = self.imp();
+        let user = self.get_user().await;
 
-        self.handle_enable_notifications_changed();
+        self.handle_enable_notifications_changed().await;
 
         imp.settings.connect_enable_notifications_changed(
-            clone!(@weak self as obj =>  move |_, _| {
-                obj.handle_enable_notifications_changed();
+            clone!(@weak self as obj => move |_, _| {
+                 glib::MainContext::default().spawn_local(async move {
+                    obj.handle_enable_notifications_changed().await;
+                });
             }),
         );
 
-        imp.settings
-            .connect_user_step_goal_changed(clone!(@weak self as obj => move |_, _| {
+        imp.database
+            .connect_user_updated(clone!(@weak self as obj => move |_| {
                 let imp = obj.imp();
                 if let Some(model) = &*imp.notification_model.borrow() {
-                    model.set_step_goal(imp.settings.user_step_goal());
+                    model.set_step_goal(user.user_stepgoal().unwrap_or(0) as u32);
                 };
             }));
         imp.settings.connect_notification_frequency_changed(
@@ -376,40 +390,11 @@ impl Application {
 #[cfg(test)]
 mod test {
     use super::Application;
-    use crate::{
-        core::{utils::init_gschema, Settings},
-        prelude::*,
-    };
-    use gtk::glib;
+    use crate::core::utils::init_gschema;
 
     #[test]
     fn new() {
         let _tmp = init_gschema();
         Application::new();
-    }
-
-    #[test]
-    fn migrate_gsettings() {
-        let _tmp = init_gschema();
-
-        let app = Application::new();
-        let settings = Settings::instance();
-        settings.set_user_age(50);
-        assert_eq!(settings.user_birthday(), None);
-        app.migrate_gsettings();
-        assert_eq!(
-            settings
-                .user_birthday()
-                .unwrap()
-                .format("%Y-%m-%d")
-                .unwrap()
-                .to_string(),
-            glib::DateTime::utc()
-                .add_years(-50)
-                .unwrap()
-                .format("%Y-%m-%d")
-                .unwrap()
-                .to_string(),
-        );
     }
 }

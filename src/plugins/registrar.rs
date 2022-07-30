@@ -1,15 +1,13 @@
 static mut REGISTRAR: Option<Registrar> = None;
 
-use crate::plugins::{Plugin, PluginList, PluginName};
+use crate::{
+    core::{Settings, Database},
+    plugins::{Plugin, PluginList, PluginName, ActivitiesPlugin, CaloriesPlugin, StepsPlugin, WeightPlugin}
+};
 use gtk::{glib, prelude::*, subclass::prelude::*};
 
 mod imp {
-    use crate::{
-        core::Settings,
-        plugins::{
-            ActivitiesPlugin, CaloriesPlugin, Plugin, PluginList, StepsPlugin, WeightPlugin,
-        },
-    };
+    use crate::plugins::PluginList;
     use gtk::glib::{
         self,
         subclass::{prelude::*, Signal},
@@ -39,20 +37,10 @@ mod imp {
 
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
-
-            let enabled_plugins = Settings::instance().enabled_plugins();
-            for plugin in [
-                Box::new(ActivitiesPlugin::new()) as Box<dyn Plugin>,
-                Box::new(CaloriesPlugin::new()) as Box<dyn Plugin>,
-                Box::new(StepsPlugin::new()) as Box<dyn Plugin>,
-                Box::new(WeightPlugin::new()) as Box<dyn Plugin>,
-            ] {
-                if enabled_plugins.contains(&plugin.name()) {
-                    self.enabled_plugins.push(plugin);
-                } else {
-                    self.disabled_plugins.push(plugin);
-                }
-            }
+            gtk_macros::spawn!(glib::clone!(@weak obj => async move {
+                obj.enabled_plugins_list().await;
+                println!("Requesting for plugins");
+            }));          
         }
     }
 }
@@ -87,6 +75,44 @@ impl Registrar {
 
             self.emit_by_name::<()>("plugins-changed", &[]);
         }
+    }
+    
+    /// Connect to the `plugins-changed` signal.
+    ///
+    /// # Arguments
+    /// * `callback` - The callback which should be invoked when `plugins-changed` is emitted.
+    ///
+    /// # Returns
+    /// A [glib::SignalHandlerId] that can be used for disconnecting the signal if so desired.
+    pub fn connect_plugins_updated<F: Fn(&Self) + 'static>(
+        &self,
+        callback: F,
+    ) -> glib::SignalHandlerId {
+        self.connect_local("plugins-changed", false, move |values| {
+            callback(&values[0].get().unwrap());
+            None
+        })
+    }
+
+    /// Push enabled plugins and disabled plugins.
+    pub async fn enabled_plugins_list(&self) -> () {
+        let imp = self.imp();
+        let user_id = Settings::instance().active_user_id() as i64;
+        let user = &Database::instance().users(Some(user_id)).await.unwrap()[0];
+        let enabled_plugins = user.enabled_plugins().unwrap();
+        for plugin in [
+            Box::new(ActivitiesPlugin::new()) as Box<dyn Plugin>,
+            Box::new(CaloriesPlugin::new()) as Box<dyn Plugin>,
+            Box::new(StepsPlugin::new()) as Box<dyn Plugin>,
+            Box::new(WeightPlugin::new()) as Box<dyn Plugin>,
+        ] {
+            if enabled_plugins.contains(&plugin.name()) {
+                imp.enabled_plugins.push(plugin);
+            } else {
+                imp.disabled_plugins.push(plugin);
+            }
+        }
+        
     }
 
     /// Get a list of disabled [Plugin]s

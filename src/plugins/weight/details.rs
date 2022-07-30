@@ -18,6 +18,7 @@
 
 use crate::{
     core::{i18n, i18n_f, ni18n_f, UnitSystem},
+    model::User,
     plugins::{
         weight::{GraphModelWeight, GraphModelWeightMocked},
         PluginDetails,
@@ -59,6 +60,7 @@ mod imp {
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         pub settings: Settings,
+        pub database: Database,
         pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
         pub weight_graph_view: OnceCell<GraphView>,
         pub weight_graph_model: RefCell<Option<DataProvider>>,
@@ -176,11 +178,19 @@ impl PluginWeightDetails {
         .expect("Failed to create PluginWeightDetails")
     }
 
+    pub async fn get_user(&self) -> User {
+        let imp = self.imp();
+        let user_id = imp.settings.active_user_id() as i64;
+        let user = &imp.database.users(Some(user_id)).await.unwrap()[0];
+        user.clone()
+    }
+
     // TRANSLATORS notes have to be on the same line, so we cant split them
     #[rustfmt::skip]
     /// Reload the [GraphModelWeight]'s data and refresh labels & reload the [GraphView].
     pub async fn update(&self) {
         let imp = self.imp();
+        let user = self.get_user().await;
         let mut weight_graph_model = { imp.weight_graph_model.borrow_mut().take().unwrap() };
         if let Err(e) = weight_graph_model.reload(glib::TimeSpan::from_days(30)).await {
             glib::g_warning!(
@@ -189,8 +199,8 @@ impl PluginWeightDetails {
             );
         }
 
-        self.set_filled_title(&i18n_f("Current BMI: {}", &[&self.bmi(&weight_graph_model)]));
-        self.update_weight_goal_label(&weight_graph_model);
+        self.set_filled_title(&i18n_f("Current BMI: {}", &[&self.bmi(&weight_graph_model).await]));
+        self.update_weight_goal_label(&weight_graph_model).await;
 
         if let Some(view) = imp.weight_graph_view.get() {
             view.set_points(weight_graph_model.to_points());
@@ -210,7 +220,7 @@ impl PluginWeightDetails {
                     ni18n_f("{} kilogram on {}", "{} kilograms on {}", p.value as u32, &[&p.value.to_string(), &p.date.format_local()])
                 }
             })));
-            if let Some(unit_goal) = imp.settings.user_weight_goal() {
+            if let Some(unit_goal) = user.user_weightgoal() {
                 let weight_goal = if imp.settings.unit_system() == UnitSystem::Imperial {
                     unit_goal.get::<pound>()
                 } else {
@@ -226,8 +236,8 @@ impl PluginWeightDetails {
             imp.weight_graph_view.set(weight_graph_view).unwrap();
 
             imp.settings_handler_id.replace(Some(
-                imp.settings.connect_user_weight_goal_changed(
-                    glib::clone!(@weak self as obj => move |_,_| {
+                imp.database.connect_user_updated(
+                    glib::clone!(@weak self as obj => move |_| {
                         gtk_macros::spawn!(async move {
                             obj.update().await;
                         });
@@ -239,9 +249,10 @@ impl PluginWeightDetails {
         imp.weight_graph_model.replace(Some(weight_graph_model));
     }
 
-    fn bmi(&self, model: &DataProvider) -> String {
+    async fn bmi(&self, model: &DataProvider) -> String {
+        let user = self.get_user().await;
         if let Some(last_weight) = model.last_weight() {
-            let height = self.imp().settings.user_height().get::<meter>();
+            let height = user.user_height().unwrap().get::<meter>();
             if height == 0.0 || last_weight.get::<kilogram>() == 0.0 {
                 return i18n("Unknown BMI");
             }
@@ -252,9 +263,10 @@ impl PluginWeightDetails {
         }
     }
 
-    fn update_weight_goal_label(&self, model: &DataProvider) {
+    async fn update_weight_goal_label(&self, model: &DataProvider) {
         let imp = self.imp();
-        if let Some(weight_goal) = imp.settings.user_weight_goal() {
+        let user = self.get_user().await;
+        if let Some(weight_goal) = user.user_weightgoal() {
             let unit_system = imp.settings.unit_system();
             let weight_value = if unit_system == UnitSystem::Imperial {
                 weight_goal.get::<pound>()

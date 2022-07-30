@@ -19,6 +19,7 @@
 use crate::{
     core::{Settings, UnitSystem},
     model::ActivityType,
+    plugins::PluginName,
 };
 use gtk::glib;
 use serde::{de, Deserialize, Deserializer, Serializer};
@@ -38,6 +39,15 @@ where
     ActivityType::from_str(buf.as_str()).map_err(serde::de::Error::custom)
 }
 
+pub fn deserialize_plugin<'de, D>(deserializer: D) -> Result<PluginName, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let buf = String::deserialize(deserializer)?;
+
+    PluginName::from_str(buf.as_str()).map_err(serde::de::Error::custom)
+}
+
 pub fn deserialize_date<'de, D>(deserializer: D) -> Result<glib::DateTime, D::Error>
 where
     D: Deserializer<'de>,
@@ -45,6 +55,15 @@ where
     let buf = String::deserialize(deserializer)?;
 
     glib::DateTime::from_iso8601(&buf, None).map_err(serde::de::Error::custom)
+}
+
+pub fn deserialize_datetime<'de, D>(deserializer: D) -> Result<Option<glib::DateTime>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let buf = String::deserialize(deserializer)?;
+    let datetime = glib::DateTime::from_iso8601(&buf, None).map_err(serde::de::Error::custom)?;
+    Ok(Some(datetime))
 }
 
 pub fn deserialize_distance<'de, D>(deserializer: D) -> Result<Option<Length>, D::Error>
@@ -62,6 +81,24 @@ where
         Ok(None)
     } else {
         Ok(Some(Length::new::<yard>(val)))
+    }
+}
+
+pub fn deserialize_weight<'de, D>(deserializer: D) -> Result<Option<Mass>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let val = f32::deserialize(deserializer)?;
+    if Settings::instance().unit_system() == UnitSystem::Metric {
+        if val == 0.0 {
+            Ok(None)
+        } else {
+            Ok(Some(Mass::new::<kilogram>(val)))
+        }
+    } else if val == 0.0 {
+        Ok(None)
+    } else {
+        Ok(Some(Mass::new::<pound>(val)))
     }
 }
 
@@ -103,11 +140,31 @@ where
     s.serialize_str(val.as_ref())
 }
 
+pub fn serialize_enabled_plugins<S>(val: &PluginName, s: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    s.serialize_str(val.as_ref())
+}
+
 pub fn serialize_date<S>(d: &glib::DateTime, s: S) -> Result<S::Ok, S::Error>
 where
     S: Serializer,
 {
     s.serialize_str(d.format_iso8601().unwrap().as_str())
+}
+
+#[allow(clippy::trivially_copy_pass_by_ref)]
+#[allow(clippy::option_if_let_else)]
+pub fn serialize_datetime<S>(d: &Option<glib::DateTime>, s: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    if let Some(date) = d {
+        s.serialize_str(date.format_iso8601().unwrap().as_str())
+    } else {
+        s.serialize_str("")
+    }
 }
 
 #[allow(clippy::trivially_copy_pass_by_ref)]
@@ -124,6 +181,25 @@ where
         }
     } else if let Some(length) = l {
         s.serialize_f32(length.get::<yard>())
+    } else {
+        s.serialize_f32(0.0)
+    }
+}
+
+#[allow(clippy::trivially_copy_pass_by_ref)]
+#[allow(clippy::option_if_let_else)]
+pub fn serialize_weight<S>(l: &Option<Mass>, s: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    if Settings::instance().unit_system() == UnitSystem::Metric {
+        if let Some(mass) = l {
+            s.serialize_f32(mass.get::<kilogram>())
+        } else {
+            s.serialize_f32(0.0)
+        }
+    } else if let Some(mass) = l {
+        s.serialize_f32(mass.get::<pound>())
     } else {
         s.serialize_f32(0.0)
     }

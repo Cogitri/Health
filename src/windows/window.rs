@@ -30,7 +30,7 @@ use gtk_macros::action;
 
 mod imp {
     use crate::{
-        core::{Database, Settings},
+        core::Settings,
         views::ViewHomePage,
     };
     use gtk::{
@@ -56,6 +56,8 @@ mod imp {
 
         #[template_child]
         pub add_data_button: TemplateChild<gtk::Button>,
+        // #[template_child]
+        // pub add_user_button: TemplateChild<gtk::Button>,
         #[template_child]
         pub back_button: TemplateChild<gtk::Button>,
         #[template_child]
@@ -91,16 +93,7 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            gtk_macros::spawn!(glib::clone!(@weak obj => async move {
-                if let Err(e) = Database::instance().migrate().await {
-                    obj.show_error(&crate::core::i18n_f(
-                        "Failed to migrate database to new version due to error {}",
-                        &[&e.to_string()],
-                    ))
-                }
-                obj.setup();
-            }));
-
+            obj.setup();
             obj.setup_actions();
         }
     }
@@ -165,6 +158,11 @@ impl Window {
         dialog.present();
     }
 
+    // #[template_callback]
+    // fn handle_add_user_button_clicked(&self) {
+
+    // }
+
     #[template_callback]
     fn handle_back_button_clicked(&self) {
         let imp = self.imp();
@@ -197,16 +195,28 @@ impl Window {
         false
     }
 
+    pub async fn disbale_plugin(&self) {
+        self.imp().view_home_page.disable_current_plugin().await;
+    }
+
+    pub async fn enable_plugin(&self) {
+        self.imp().view_home_page.enable_current_plugin().await;
+    }
+
     #[template_callback]
     fn handle_disable_current_plugin(&self) {
-        self.imp().view_home_page.disable_current_plugin();
+        glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
+            obj.disbale_plugin().await;
+        }));
         self.imp().view_home_page.back();
     }
 
     #[template_callback]
     fn handle_enable_plugin_button_clicked(&self) {
         let imp = self.imp();
-        imp.view_home_page.enable_current_plugin();
+        glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
+            obj.enable_plugin().await;
+        }));
         imp.view_home_page.back();
         imp.enable_plugin_button.set_visible(false);
     }

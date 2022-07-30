@@ -23,10 +23,7 @@ use gtk::{
 };
 use std::convert::TryInto;
 mod imp {
-    use crate::{
-        core::{Database, Settings},
-        model::Activity,
-    };
+    use crate::{core::Database, model::Activity};
     use gtk::subclass::prelude::*;
     use gtk::{
         gio,
@@ -46,7 +43,6 @@ mod imp {
     pub struct ModelActivity {
         pub database: Database,
         pub inner: RefCell<ModelActivityMut>,
-        pub settings: Settings,
     }
 
     #[glib::object_subclass]

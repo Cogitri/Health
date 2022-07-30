@@ -18,7 +18,8 @@
 
 use crate::{
     core::{i18n, UnitSystem},
-    model::Weight,
+    model::{User, Weight},
+    plugins::PluginName,
     prelude::*,
 };
 use adw::prelude::*;
@@ -80,6 +81,8 @@ mod imp {
         #[template_child]
         pub setup_left_stack: TemplateChild<gtk::Stack>,
         #[template_child]
+        pub user_name_entry: TemplateChild<gtk::Entry>,
+        #[template_child]
         pub birthday_selector: TemplateChild<DateSelector>,
         #[template_child]
         pub height_spin_button: TemplateChild<UnitSpinButton>,
@@ -130,6 +133,7 @@ mod imp {
                 setup_previous_page_button: TemplateChild::default(),
                 setup_right_stack: TemplateChild::default(),
                 setup_left_stack: TemplateChild::default(),
+                user_name_entry: TemplateChild::default(),
                 birthday_selector: TemplateChild::default(),
                 height_spin_button: TemplateChild::default(),
                 step_goal_spin_button: TemplateChild::default(),
@@ -160,7 +164,7 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            self.step_goal_spin_button.set_value(7500.0);
+            self.step_goal_spin_button.set_value(10000.0);
 
             obj.connect_handlers();
             obj.setup_actions();
@@ -271,6 +275,57 @@ impl SetupWindow {
         }
     }
 
+    pub async fn handle_response(&self, id: gtk::ResponseType) {
+        if id == gtk::ResponseType::Ok {
+            let imp = self.imp();
+            let top_unused_user_id = imp.database.get_top_unused_user_id().await.unwrap();
+
+            let unitless_height = imp.height_spin_button.raw_value().unwrap_or_default();
+
+            let height = if imp.current_unit_system.get() == UnitSystem::Metric {
+                imp.settings.set_unit_system(UnitSystem::Metric);
+                Length::new::<centimeter>(unitless_height)
+            } else {
+                imp.settings.set_unit_system(UnitSystem::Imperial);
+                Length::new::<inch>(unitless_height)
+            };
+
+            let unitless_weight_goal = imp.weight_goal_spin_button.raw_value().unwrap_or_default();
+            let weight_goal = if imp.current_unit_system.get() == UnitSystem::Metric {
+                Mass::new::<kilogram>(unitless_weight_goal)
+            } else {
+                Mass::new::<pound>(unitless_weight_goal)
+            };
+
+            let mut user_builder = User::builder();
+            user_builder
+                .user_id(top_unused_user_id)
+                .user_name(imp.user_name_entry.text().as_str())
+                .user_birthday(imp.birthday_selector.selected_date())
+                .user_height(height)
+                .user_weightgoal(weight_goal)
+                .user_stepgoal(imp.step_goal_spin_button.raw_value().unwrap_or_default())
+                .enabled_plugins(vec![
+                    PluginName::Activities,
+                    PluginName::Calories,
+                    PluginName::Weight,
+                    PluginName::Steps,
+                ])
+                .recent_activity_types(vec![])
+                .did_initial_setup(true);
+
+            let user = user_builder.build();
+
+            if let Err(e) = imp.database.save_user(user).await {
+                glib::g_warning!(
+                    crate::config::LOG_DOMAIN,
+                    "Failed to save new data due to error {e}",
+                )
+            }
+            imp.settings.set_active_user_id(top_unused_user_id as u32);
+        }
+    }
+
     pub async fn add_weight(&self) {
         let imp = self.imp();
         let unitless_weight = imp.weight_spin_button.raw_value().unwrap_or_default();
@@ -293,31 +348,8 @@ impl SetupWindow {
 
     #[template_callback]
     fn handle_setup_done_button_clicked(&self) {
-        let imp = self.imp();
-        let unitless_height = imp.height_spin_button.raw_value().unwrap_or_default();
-        let height = if imp.current_unit_system.get() == UnitSystem::Metric {
-            imp.settings.set_unit_system(UnitSystem::Metric);
-            Length::new::<centimeter>(unitless_height)
-        } else {
-            imp.settings.set_unit_system(UnitSystem::Imperial);
-            Length::new::<inch>(unitless_height)
-        };
-
-        imp.settings
-            .set_user_birthday(imp.birthday_selector.selected_date());
-        imp.settings.set_user_height(height);
-        imp.settings
-            .set_user_step_goal(imp.step_goal_spin_button.raw_value().unwrap_or_default());
-
-        let unitless_weight_goal = imp.weight_goal_spin_button.raw_value().unwrap_or_default();
-        let weight_goal = if imp.current_unit_system.get() == UnitSystem::Metric {
-            Mass::new::<kilogram>(unitless_weight_goal)
-        } else {
-            Mass::new::<pound>(unitless_weight_goal)
-        };
-        imp.settings.set_user_weight_goal(weight_goal);
-
         glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
+            obj.handle_response(gtk::ResponseType::Ok).await;
             obj.add_weight().await;
             obj.emit_by_name::<()>("setup-done", &[]);
         }));

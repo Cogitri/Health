@@ -18,7 +18,7 @@
 
 use crate::{
     core::UnitSystem,
-    model::NotificationFrequency,
+    model::{NotificationFrequency, User},
     prelude::*,
     windows::{ExportDialog, ImportDialog},
 };
@@ -37,29 +37,27 @@ use uom::si::{
 
 mod imp {
     use crate::{
-        core::{Settings, UnitSystem},
+        core::{Database, Settings, UnitSystem},
         model::NotificationFrequency,
         widgets::{BmiLevelBar, DateSelector, SyncListBox, UnitSpinButton},
     };
     use adw::prelude::*;
     use gtk::{glib, subclass::prelude::*, CompositeTemplate};
     use std::{cell::Cell, str::FromStr};
-    use uom::si::{
-        f32::Mass,
-        length::{centimeter, inch},
-        mass::{kilogram, pound},
-    };
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/preferences_window.ui")]
     pub struct PreferencesWindow {
         pub current_unit_system: Cell<UnitSystem>,
         pub settings: Settings,
+        pub database: Database,
 
         #[template_child]
         pub height_actionrow: TemplateChild<adw::ActionRow>,
         #[template_child]
         pub weight_goal_actionrow: TemplateChild<adw::ActionRow>,
+        #[template_child]
+        pub user_name_entry: TemplateChild<gtk::Entry>,
         #[template_child]
         pub birthday_selector: TemplateChild<DateSelector>,
         #[template_child]
@@ -100,11 +98,14 @@ mod imp {
 
         fn new() -> Self {
             let settings = Settings::instance();
+            let database = Database::instance();
             Self {
                 current_unit_system: Cell::new(settings.unit_system()),
                 settings,
+                database,
                 height_actionrow: TemplateChild::default(),
                 weight_goal_actionrow: TemplateChild::default(),
+                user_name_entry: TemplateChild::default(),
                 birthday_selector: TemplateChild::default(),
                 height_spin_button: TemplateChild::default(),
                 step_goal_spin_button: TemplateChild::default(),
@@ -138,38 +139,10 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            if self.current_unit_system.get() == UnitSystem::Metric {
-                self.height_spin_button
-                    .set_value(f64::from(self.settings.user_height().get::<centimeter>()));
-                self.weight_goal_spin_button.set_value(f64::from(
-                    self.settings
-                        .user_weight_goal()
-                        .unwrap_or_else(|| Mass::new::<kilogram>(-1.0))
-                        .get::<kilogram>(),
-                ));
-            } else {
-                self.height_spin_button
-                    .set_value(f64::from(self.settings.user_height().get::<inch>()));
-                self.weight_goal_spin_button.set_value(f64::from(
-                    self.settings
-                        .user_weight_goal()
-                        .unwrap_or_else(|| Mass::new::<pound>(-1.0))
-                        .get::<pound>(),
-                ));
-            }
+            gtk_macros::spawn!(glib::clone!(@weak obj => async move {
+                obj.construct_user().await;
+            }));
 
-            self.step_goal_spin_button
-                .set_value(f64::from(self.settings.user_step_goal()));
-            if let Some(date) = self.settings.user_birthday() {
-                self.birthday_selector.set_selected_date(date);
-            }
-            self.bmi_levelbar.set_height(self.settings.user_height());
-
-            self.bmi_levelbar.set_weight(
-                self.settings
-                    .user_weight_goal()
-                    .unwrap_or_else(|| Mass::new::<kilogram>(1.0)),
-            );
             obj.setup_actions();
             obj.connect_handlers();
             obj.handle_enable_notify_changed(true);
@@ -280,6 +253,57 @@ impl PreferencesWindow {
         self.insert_action_group("notification", Some(&action_group));
     }
 
+    pub async fn get_user(&self) -> User {
+        let imp = self.imp();
+        let user_id = imp.settings.active_user_id() as i64;
+        let user = &imp.database.users(Some(user_id)).await.unwrap()[0];
+        user.clone()
+    }
+
+    pub async fn construct_user(&self) {
+        let imp = self.imp();
+        let user = self.get_user().await;
+        if imp.current_unit_system.get() == UnitSystem::Metric {
+            imp.height_spin_button.set_value(f64::from(
+                user.user_height()
+                    .unwrap_or_else(|| Length::new::<centimeter>(-1.0))
+                    .get::<centimeter>(),
+            ));
+            imp.weight_goal_spin_button.set_value(f64::from(
+                user.user_weightgoal()
+                    .unwrap_or_else(|| Mass::new::<kilogram>(-1.0))
+                    .get::<kilogram>(),
+            ));
+        } else {
+            imp.height_spin_button.set_value(f64::from(
+                user.user_height()
+                    .unwrap_or_else(|| Length::new::<inch>(-1.0))
+                    .get::<inch>(),
+            ));
+            imp.weight_goal_spin_button.set_value(f64::from(
+                user.user_weightgoal()
+                    .unwrap_or_else(|| Mass::new::<pound>(-1.0))
+                    .get::<pound>(),
+            ));
+        }
+        imp.user_name_entry
+            .set_text(user.user_name().unwrap_or_else(|| "".to_string()).as_str());
+        imp.step_goal_spin_button
+            .set_value(f64::from(user.user_stepgoal().unwrap() as i32));
+        if let Some(date) = user.user_birthday() {
+            imp.birthday_selector.set_selected_date(date);
+        }
+        imp.bmi_levelbar.set_height(
+            user.user_height()
+                .unwrap_or_else(|| Length::new::<centimeter>(1.0)),
+        );
+
+        imp.bmi_levelbar.set_weight(
+            user.user_weightgoal()
+                .unwrap_or_else(|| Mass::new::<kilogram>(1.0)),
+        );
+    }
+
     fn set_notification_frequency(&self, frequency: NotificationFrequency) {
         self.set_property("notification-frequency", frequency)
     }
@@ -293,11 +317,36 @@ impl PreferencesWindow {
             }));
     }
 
+    pub async fn update_user(&self, user: User) {
+        let imp = self.imp();
+        if let Err(e) = imp.database.update_user(user).await {
+            glib::g_warning!(
+                crate::config::LOG_DOMAIN,
+                "Failed to update the user data due to error {e}",
+            )
+        }
+    }
+
+    #[template_callback]
+    fn handle_user_name_entry_changed(&self) {
+        let imp = self.imp();
+        let user_name = imp.user_name_entry.text().to_string();
+        glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
+            let user = obj.get_user().await;
+            user.set_user_name(Some(user_name.as_str()));
+            obj.update_user(user).await;
+        }));
+    }
+
     #[template_callback]
     fn handle_birthday_selector_changed(&self) {
         let imp = self.imp();
-        imp.settings
-            .set_user_birthday(imp.birthday_selector.selected_date());
+        let user_birthday = imp.birthday_selector.selected_date();
+        glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
+            let user = obj.get_user().await;
+            user.set_user_birthday(Some(user_birthday));
+            obj.update_user(user).await;
+        }));
     }
 
     fn handle_enable_notify_changed(&self, initializing: bool) {
@@ -337,7 +386,11 @@ impl PreferencesWindow {
                 Length::new::<inch>(val)
             };
 
-            imp.settings.set_user_height(height);
+            glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
+                let user = obj.get_user().await;
+                user.set_user_height(Some(height));
+                obj.update_user(user).await;
+            }));
             imp.bmi_levelbar.set_height(height);
         }
     }
@@ -352,7 +405,11 @@ impl PreferencesWindow {
     fn handle_step_goal_spin_button_changed(&self) {
         let imp = self.imp();
         if let Some(val) = imp.step_goal_spin_button.raw_value::<u32>() {
-            imp.settings.set_user_step_goal(val);
+            glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
+                let user = obj.get_user().await;
+                user.set_user_stepgoal(Some(val as i64));
+                obj.update_user(user).await;
+            }));
         }
     }
 
@@ -403,7 +460,11 @@ impl PreferencesWindow {
                 Mass::new::<pound>(val)
             };
 
-            imp.settings.set_user_weight_goal(weight);
+            glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
+                let user = obj.get_user().await;
+                user.set_user_weightgoal(Some(weight));
+                obj.update_user(user).await;
+            }));
             imp.bmi_levelbar.set_weight(weight);
             imp.bmi_levelbar
                 .set_bmi_label(&crate::core::i18n("Target BMI"));

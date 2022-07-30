@@ -17,7 +17,7 @@
  */
 
 use crate::core::i18n;
-use gtk::glib;
+use gtk::{glib, prelude::ToValue};
 
 mod imp {
     use crate::{
@@ -116,7 +116,7 @@ impl ImportDialog {
     /// * `parent` - The [GtkWindow](gtk::Window) which is the transient parent of this dialog.
     pub fn new(parent: Option<&gtk::Window>) -> Self {
         glib::Object::new(&[
-            ("use-header-bar", &1),
+            ("use-header-bar", &1.to_value()),
             ("is-import", &true),
             ("title", &i18n("Import data")),
             ("transient-for", &parent),

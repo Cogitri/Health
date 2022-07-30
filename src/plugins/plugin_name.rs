@@ -1,7 +1,15 @@
 use gtk::glib;
 
 #[derive(
-    PartialEq, Debug, Clone, Copy, strum::EnumString, strum::AsRefStr, num_derive::ToPrimitive,
+    PartialEq,
+    Debug,
+    Clone,
+    Copy,
+    strum::EnumString,
+    strum::AsRefStr,
+    num_derive::ToPrimitive,
+    serde::Deserialize,
+    serde::Serialize,
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum PluginName {

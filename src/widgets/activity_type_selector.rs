@@ -17,29 +17,28 @@
  */
 
 use crate::{
-    model::{ActivityInfo, ActivityInfoBoxed},
+    core::{Database, Settings},
+    model::{ActivityInfo, ActivityInfoBoxed, ActivityType, ActivityTypeRowData},
     widgets::ActivityTypeRow,
 };
 use gtk::{
     gio::{prelude::*, subclass::prelude::*},
-    glib::{self, SignalHandlerId},
+    glib::{self, g_warning, SignalHandlerId},
     prelude::*,
 };
+use num_traits::cast::FromPrimitive;
 use std::convert::TryFrom;
 
 mod imp {
     use crate::{
-        core::Settings,
         model::{ActivityInfo, ActivityInfoBoxed, ActivityType, ActivityTypeRowData},
         widgets::ActivityTypeRow,
     };
     use gtk::{
-        gio,
-        glib::{self, g_warning},
+        gio, glib,
         {prelude::*, subclass::prelude::*, CompositeTemplate},
     };
-    use num_traits::cast::FromPrimitive;
-    use std::{cell::RefCell, convert::TryFrom};
+    use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate)]
     #[template(resource = "/dev/Cogitri/Health/ui/activity_type_selector.ui")]
@@ -86,40 +85,9 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
 
-            let recent_activity_types = Settings::instance().recent_activity_types();
-
-            if !recent_activity_types.is_empty() {
-                self.recents_box.set_visible(true);
-
-                for activity in recent_activity_types.iter().rev() {
-                    if let Ok(info) = ActivityInfo::try_from(activity.as_str()) {
-                        self.recent_activity_types_model
-                            .append(&ActivityTypeRowData::new(info.id, &info.name));
-                    } else {
-                        g_warning!(crate::config::LOG_DOMAIN, "Unknown activity {activity}!");
-                    }
-                }
-                let last_activity = recent_activity_types.last().unwrap().as_str();
-                if let Ok(info) = ActivityInfo::try_from(last_activity) {
-                    self.selected_activity.replace(info);
-                } else {
-                    g_warning!(
-                        crate::config::LOG_DOMAIN,
-                        "Unknown Activity {last_activity}, falling back to walking.",
-                    );
-                }
-            }
-
-            let mut i = 0;
-            while let Some(a) = ActivityType::from_i32(i) {
-                let info = ActivityInfo::from(a);
-                if !recent_activity_types.contains(&info.id.to_string()) {
-                    self.activity_types_model
-                        .append(&ActivityTypeRowData::new(info.id, &info.name));
-                }
-
-                i += 1;
-            }
+            gtk_macros::spawn!(glib::clone!(@weak obj => async move {
+                obj.construct_activity().await;
+            }));
 
             let create_list_box_row = glib::clone!(@weak obj => @default-panic, move |o: &glib::Object| {
                 let data = o.downcast_ref::<ActivityTypeRowData>().unwrap();
@@ -201,6 +169,49 @@ impl ActivityTypeSelector {
         f: F,
     ) -> SignalHandlerId {
         self.connect_notify_local(Some("selected-activity"), move |s, _| f(s))
+    }
+
+    pub async fn construct_activity(&self) {
+        let imp = self.imp();
+        let user_id = Settings::instance().active_user_id() as i64;
+        let user = &Database::instance().users(Some(user_id)).await.unwrap()[0];
+
+        let recent_activity_types = user.recent_activity_types().unwrap();
+
+        if !recent_activity_types.is_empty() {
+            imp.recents_box.set_visible(true);
+
+            for activity in recent_activity_types.iter().rev() {
+                if let Ok(info) = ActivityInfo::try_from(*activity) {
+                    imp.recent_activity_types_model
+                        .append(&ActivityTypeRowData::new(info.id, &info.name));
+                } else {
+                    let name = activity.as_ref();
+                    g_warning!(crate::config::LOG_DOMAIN, "Unknown activity {name}!");
+                }
+            }
+            let last_activity = recent_activity_types.last().unwrap();
+            if let Ok(info) = ActivityInfo::try_from(*last_activity) {
+                imp.selected_activity.replace(info);
+            } else {
+                let name = last_activity.as_ref();
+                g_warning!(
+                    crate::config::LOG_DOMAIN,
+                    "Unknown Activity {name}, falling back to walking.",
+                );
+            }
+        }
+
+        let mut i = 0;
+        while let Some(a) = ActivityType::from_i32(i) {
+            let info = ActivityInfo::from(a);
+            if !recent_activity_types.contains(&info.activity_type) {
+                imp.activity_types_model
+                    .append(&ActivityTypeRowData::new(info.id, &info.name));
+            }
+
+            i += 1;
+        }
     }
 
     /// Get the currently selected [ActivityInfo].

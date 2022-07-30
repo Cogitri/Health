@@ -6,12 +6,107 @@
 
 health: a nrl:Namespace, nrl:Ontology ;
     nrl:prefix "health" ;
-    nrl:lastModified "2021-02-04T08:19:00Z" .
+    nrl:lastModified "2022-07-28T08:19:00Z" .
+
+health:Version a rdfs:Class ;
+    rdfs:comment "Represents the version of the database" ;
+    rdfs:subClassOf rdfs:Resource ;
+    nrl:notify true .
+
+health:version a rdf:Property ;
+    rdfs:domain health:Version ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:User a rdfs:Class ;
+    rdfs:comment "Represents a particular user" ;
+    rdfs:subClassOf rdfs:Resource ;
+    nrl:notify true .
+
+health:user_id a rdf:Property ;
+    rdfs:domain health:User ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:user_name a rdf:Property ;
+    rdfs:domain health:User ;
+    rdfs:range xsd:string ;
+    nrl:maxCardinality 1 .
+
+health:user_birthday a rdf:Property ;
+    rdfs:domain health:User ;
+    rdfs:range xsd:dateTime ;
+    nrl:maxCardinality 1 .
+
+health:user_height a rdf:Property ;
+    rdfs:domain health:User ;
+    rdfs:range xsd:double ;
+    nrl:maxCardinality 1 .
+
+health:user_weightgoal a rdf:Property ;
+    rdfs:domain health:User ;
+    rdfs:range xsd:double ;
+    nrl:maxCardinality 1 .
+
+health:user_stepgoal a rdf:Property ;
+    rdfs:domain health:User ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:enabled_plugins a rdf:Property ;
+    rdfs:domain health:User ;
+    rdfs:range xsd:string ;
+    nrl:maxCardinality 1 .
+
+health:recent_activity_types a rdf:Property ;
+    rdfs:domain health:User ;
+    rdfs:range xsd:string ;
+    nrl:maxCardinality 1 .
+
+health:did_initial_setup a rdf:Property ;
+    rdfs:domain health:User ;
+    rdfs:range xsd:boolean ;
+    nrl:maxCardinality 1 .
+
+health:SyncProvider a rdfs:Class ;
+    rdfs:comment "Represents the sync providers used by a particular user for a particular health data category" ;
+    rdfs:subClassOf rdfs:Resource ;
+    nrl:notify true .
+
+health:sync_user_id a rdf:Property ;
+    rdfs:domain health:SyncProvider ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
+
+health:health_data_category a rdf:Property ;
+    rdfs:domain health:SyncProvider ;
+    rdfs:range xsd:string ;
+    nrl:maxCardinality 1 .
+
+health:sync_provider_name a rdf:Property ;
+    rdfs:domain health:SyncProvider ;
+    rdfs:range xsd:string ;
+    nrl:maxCardinality 1 .
+
+health:sync_connect_timestamp a rdf:Property ;
+    rdfs:domain health:SyncProvider ;
+    rdfs:range xsd:dateTime ;
+    nrl:maxCardinality 1 .
+
+health:sync_enabled a rdf:Property ;
+    rdfs:domain health:SyncProvider ;
+    rdfs:range xsd:boolean ;
+    nrl:maxCardinality 1 .
 
 health:Activity a rdfs:Class ;
     rdfs:comment "Represents a single activity entry" ;
     rdfs:subClassOf rdfs:Resource ;
     nrl:notify true .
+
+health:activity_user_id a rdf:Property ;
+    rdfs:domain health:Activity ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
 
 health:activity_date a rdf:Property ;
     rdfs:domain health:Activity ;
@@ -66,6 +161,11 @@ health:WeightMeasurement a rdfs:Class ;
     rdfs:comment "Represents a single weight measurement" ;
     rdfs:subClassOf rdfs:Resource ;
     nrl:notify true .
+
+health:weight_user_id a rdf:Property ;
+    rdfs:domain health:WeightMeasurement ;
+    rdfs:range xsd:integer ;
+    nrl:maxCardinality 1 .
 
 health:weight_date a rdf:Property, nrl:InverseFunctionalProperty;
     rdfs:domain health:WeightMeasurement ;

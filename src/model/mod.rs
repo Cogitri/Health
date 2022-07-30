@@ -9,6 +9,8 @@ pub mod activity_type;
 #[doc(hidden)]
 pub mod activity_type_row_data;
 #[doc(hidden)]
+pub mod data_category;
+#[doc(hidden)]
 pub mod fn_boxed;
 #[doc(hidden)]
 pub mod model_notification;
@@ -18,6 +20,8 @@ pub mod notification_frequency;
 pub mod steps;
 #[doc(hidden)]
 pub mod unitsize;
+#[doc(hidden)]
+pub mod user;
 #[doc(hidden)]
 pub mod weight;
 #[doc(hidden)]
@@ -34,6 +38,8 @@ pub use activity_type::*;
 #[doc(inline)]
 pub use activity_type_row_data::*;
 #[doc(inline)]
+pub use data_category::*;
+#[doc(inline)]
 pub use fn_boxed::*;
 #[doc(inline)]
 pub use model_notification::*;
@@ -43,6 +49,8 @@ pub use notification_frequency::*;
 pub use steps::*;
 #[doc(inline)]
 pub use unitsize::*;
+#[doc(inline)]
+pub use user::*;
 #[doc(inline)]
 pub use weight::*;
 #[doc(inline)]

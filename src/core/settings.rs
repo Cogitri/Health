@@ -50,6 +50,7 @@ impl Settings {
     settings_getter_setter!(i32, window_height, "window-height");
     settings_getter_setter!(bool, window_is_maximized, "window-is-maximized");
     settings_getter_setter!(i32, window_width, "window-width");
+    settings_getter_setter!(u32, active_user_id, "active-user-id");
 
     delegate::delegate! {
         to self.0 {

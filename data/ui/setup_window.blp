@@ -35,7 +35,7 @@ SizeGroup {
 
 template HealthSetupWindow : Adw.ApplicationWindow {
   default-width: 750;
-  default-height: 500;
+  default-height: 550;
   title: _("Health Setup");
 
   Box {
@@ -128,9 +128,11 @@ template HealthSetupWindow : Adw.ApplicationWindow {
           label: _("Please enter some information to get setup.");
           wrap: true;
           wrap-mode: word_char;
+          margin-bottom: 25;
 
           styles [
             "title-2",
+            "width-fill",
           ]
         }
 
@@ -169,6 +171,16 @@ template HealthSetupWindow : Adw.ApplicationWindow {
                   action-name: "app.unit-system";
                   action-target: "\'metric\'";
                 }
+              }
+            }
+
+            Adw.ActionRow user_name_actionrow {
+              title: _("Username");
+
+              Entry user_name_entry {
+                valign: center;
+
+                placeholder-text: _("User");
               }
             }
 

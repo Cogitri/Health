@@ -3,9 +3,7 @@
   "runtime": "org.gnome.Platform",
   "runtime-version": "42",
   "sdk": "org.gnome.Sdk",
-  "sdk-extensions": [
-    "org.freedesktop.Sdk.Extension.rust-stable"
-  ],
+  "sdk-extensions": ["org.freedesktop.Sdk.Extension.rust-stable"],
   "command": "dev.Cogitri.Health.Devel",
   "finish-args": [
     "--share=network",
@@ -14,11 +12,7 @@
     "--socket=wayland",
     "--device=dri"
   ],
-  "tags": [
-    "devel",
-    "development",
-    "nightly"
-  ],
+  "tags": ["devel", "development", "nightly"],
   "cleanup": [
     "/include",
     "/lib/pkgconfig",
@@ -35,9 +29,7 @@
   ],
   "build-options": {
     "append-path": "/usr/lib/sdk/rust-stable/bin",
-    "build-args": [
-      "--share=network"
-    ],
+    "build-args": ["--share=network"],
     "env": {
       "RUST_BACKTRACE": "1"
     }
@@ -59,15 +51,16 @@
       "name": "tracker",
       "buildsystem": "meson",
       "builddir": true,
-      "config-opts": [
-        "-Dman=false",
-        "-Dsystemd_user_services=false"
-      ],
+      "config-opts": ["-Dman=false", "-Dsystemd_user_services=false"],
       "sources": [
         {
           "type": "archive",
           "url": "https://download.gnome.org/sources/tracker/3.3/tracker-3.3.2.tar.xz",
           "sha512": "2009c7a9b82fd278e38bc71cb41ef1fccb23493bd84a71456c7568ed7a025ce68bab689b8f14b8008479a203a5fdc02acea1862f4f482467ed5c295bde3d4ad8"
+        },
+        {
+          "type": "patch",
+          "path": "build-aux/tracker-529.patch"
         }
       ]
     },
@@ -75,12 +68,8 @@
       "name": "health",
       "builddir": true,
       "buildsystem": "meson",
-      "cleanup": [
-        "/usr/"
-      ],
-      "config-opts": [
-        "-Dprofile=development"
-      ],
+      "cleanup": ["/usr/"],
+      "config-opts": ["-Dprofile=development"],
       "sources": [
         {
           "type": "dir",

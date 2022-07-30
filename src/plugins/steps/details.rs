@@ -51,6 +51,7 @@ mod imp {
         #[template_child]
         pub scrolled_window: TemplateChild<gtk::ScrolledWindow>,
         pub settings: Settings,
+        pub database: Database,
         pub settings_handler_id: RefCell<Option<glib::SignalHandlerId>>,
         pub steps_graph_view: OnceCell<GraphView>,
         pub steps_graph_model: RefCell<Option<DataProvider>>,
@@ -190,12 +191,16 @@ impl PluginStepsDetails {
                 .to_string()],
         ));
 
-        let streak_count = steps_graph_model.streak_count_today(imp.settings.user_step_goal());
+        let user_id = imp.settings.active_user_id() as i64;
+        let user = &imp.database.users(Some(user_id)).await.unwrap()[0];
+
+
+        let streak_count = steps_graph_model.streak_count_today(user.user_stepgoal().unwrap_or(0) as u32);
 
         match streak_count {
             0 => {
                 let previous_streak =
-                    steps_graph_model.streak_count_yesterday(imp.settings.user_step_goal());
+                    steps_graph_model.streak_count_yesterday(user.user_stepgoal().unwrap_or(0) as u32);
                 if previous_streak == 0 {
                     self.set_filled_subtitle(&i18n(
                         "No streak yet. Reach your step goal for multiple days to start a streak!",
@@ -236,7 +241,7 @@ impl PluginStepsDetails {
                     &[&p.value.to_string(), &p.date.format_local()],
                 )
             })));
-            steps_graph_view.set_limit(Some(imp.settings.user_step_goal() as f32));
+            steps_graph_view.set_limit(Some(user.user_stepgoal().unwrap_or(0) as u32 as f32));
             steps_graph_view.set_limit_label(Some(i18n("Step goal")));
 
             imp.scrolled_window.set_child(Some(&steps_graph_view));
@@ -246,8 +251,8 @@ impl PluginStepsDetails {
 
             imp
                 .settings_handler_id
-                .replace(Some(imp.settings.connect_user_step_goal_changed(
-                    glib::clone!(@weak self as obj => move |_,_| {
+                .replace(Some(imp.database.connect_user_updated(
+                    glib::clone!(@weak self as obj => move |_| {
                         gtk_macros::spawn!(async move {
                             obj.update().await;
                         });

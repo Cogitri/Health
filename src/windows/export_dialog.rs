@@ -17,7 +17,7 @@
  */
 
 use crate::core::i18n;
-use gtk::glib;
+use gtk::{glib, prelude::ToValue};
 
 mod imp {
     use crate::{
@@ -128,7 +128,7 @@ impl ExportDialog {
     /// * `parent` - The [GtkWindow](gtk::Window) which is the transient parent of this dialog.
     pub fn new(parent: Option<&gtk::Window>) -> Self {
         glib::Object::new(&[
-            ("use-header-bar", &1),
+            ("use-header-bar", &1.to_value()),
             ("title", &i18n("Export data")),
             ("is-import", &false),
             ("transient-for", &parent),

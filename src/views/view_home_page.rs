@@ -18,6 +18,7 @@
 
 use crate::{
     plugins::{PluginDetails, PluginName, PluginObject, PluginSummaryRow, Registrar},
+    model::User,
     prelude::*,
 };
 use adw::prelude::*;
@@ -26,7 +27,7 @@ use std::str::FromStr;
 
 mod imp {
     use crate::{
-        core::Settings,
+        core::{Settings, Database},
         plugins::{PluginObject, PluginOverviewRow, PluginSummaryRow, Registrar},
         prelude::*,
     };
@@ -41,6 +42,7 @@ mod imp {
     #[template(resource = "/dev/Cogitri/Health/ui/view_home_page.ui")]
     pub struct ViewHomePage {
         pub settings: Settings,
+        pub database: Database,
 
         #[template_child]
         pub stack: TemplateChild<gtk::Stack>,
@@ -208,6 +210,13 @@ impl ViewHomePage {
         self.imp().stack.visible_child_name().unwrap().to_string()
     }
 
+    pub async fn get_user(&self) -> User {
+        let imp = self.imp();
+        let user_id = imp.settings.active_user_id() as i64;
+        let user = &imp.database.users(Some(user_id)).await.unwrap()[0];
+        user.clone()
+    }
+
     pub fn is_current_plugin_enabled(&self) -> bool {
         let registrar = Registrar::instance();
         let current_page = self.current_page();
@@ -217,20 +226,23 @@ impl ViewHomePage {
             .any(|p| p.name().as_ref() == current_page.as_str())
     }
 
-    pub fn disable_current_plugin(&self) {
+    pub async fn disable_current_plugin(&self) {
         let imp = self.imp();
         let registrar = Registrar::instance();
+        let user = self.get_user().await;
 
         if let Ok(current_plugin) = PluginName::from_str(&self.current_page()) {
             registrar.disable_plugin(current_plugin);
             imp.all_data_box.set_visible(true);
-            imp.settings.set_enabled_plugins(
-                imp.settings
+            user.set_enabled_plugins(Some(
+                user
                     .enabled_plugins()
+                    .unwrap()
                     .drain(..)
                     .filter(|s| *s != current_plugin)
                     .collect::<Vec<PluginName>>()
-                    .as_slice(),
+                    .as_slice().to_vec()
+            ),
             );
             if registrar.enabled_plugins().is_empty() {
                 imp.enabled_plugins_stack
@@ -239,15 +251,16 @@ impl ViewHomePage {
         }
     }
 
-    pub fn enable_current_plugin(&self) {
+    pub async fn enable_current_plugin(&self) {
         let imp = self.imp();
         let registrar = Registrar::instance();
+        let user = self.get_user().await;
 
         if let Ok(current_plugin) = PluginName::from_str(&self.current_page()) {
-            let mut enabled_plugins = imp.settings.enabled_plugins();
+            let mut enabled_plugins = user.enabled_plugins().unwrap();
             enabled_plugins.push(current_plugin);
             registrar.enable_plugin(current_plugin);
-            imp.settings.set_enabled_plugins(&enabled_plugins);
+            user.set_enabled_plugins(Some(enabled_plugins));
             imp.enabled_plugins_stack
                 .set_visible_child_name("plugin-list");
             if registrar.disabled_plugins().is_empty() {

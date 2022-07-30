@@ -95,6 +95,16 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
         }
       }
 
+      Adw.ActionRow user_name_actionrow {
+        title: _("Username");
+
+        Entry user_name_entry {
+          valign: center;
+          changed => handle_user_name_entry_changed() swapped;
+          placeholder-text: _("User");
+        }
+      }
+
       Adw.ActionRow age_actionrow {
         title: _("Birthday");
 

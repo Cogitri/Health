@@ -479,35 +479,36 @@ impl ViewAddActivity {
                     "Failed to save new data due to error {e}",
                 )
             }
-            self.save_recent_activity();
+            self.save_recent_activity().await;
         }
     }
 
-    fn save_recent_activity(&self) {
+    async fn save_recent_activity(&self) {
         let imp = self.imp();
         let inner = imp.inner.borrow();
+        let user_id = imp.settings.active_user_id() as i64;
+        let user = &imp.database.users(Some(user_id)).await.unwrap()[0];
 
-        let mut recent_activities = imp.settings.recent_activity_types();
+        let mut recent_activities = user.recent_activity_types().unwrap();
         if !recent_activities
             .iter()
-            .any(|s| inner.selected_activity.id == s)
+            .any(|s| inner.selected_activity.activity_type == *s)
         {
-            recent_activities.push(inner.selected_activity.id.to_string());
+            recent_activities.push(inner.selected_activity.activity_type.clone());
             if recent_activities.len() > 4 {
-                imp.settings.set_recent_activity_types(
-                    &recent_activities[1..recent_activities.len()]
-                        .iter()
-                        .map(std::string::String::as_str)
-                        .collect::<Vec<&str>>(),
-                );
+                user.set_recent_activity_types(Some(
+                    recent_activities[1..recent_activities.len()].to_vec(),
+                ));
             } else {
-                imp.settings.set_recent_activity_types(
-                    &recent_activities
-                        .iter()
-                        .map(std::string::String::as_str)
-                        .collect::<Vec<&str>>(),
-                );
+                user.set_recent_activity_types(Some(recent_activities.to_vec()));
             }
+        }
+
+        if let Err(e) = imp.database.update_user(user.clone()).await {
+            glib::g_warning!(
+                crate::config::LOG_DOMAIN,
+                "Failed to update the user data due to error {e}",
+            )
         }
     }
 

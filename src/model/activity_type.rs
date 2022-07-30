@@ -31,6 +31,8 @@ use gtk::glib;
     strum::EnumString,
     strum::IntoStaticStr,
     strum::AsRefStr,
+    serde::Deserialize,
+    serde::Serialize,
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum ActivityType {
