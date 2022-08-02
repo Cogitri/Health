@@ -17,8 +17,8 @@
  */
 
 use crate::{
-    plugins::{PluginDetails, PluginName, PluginObject, PluginSummaryRow, Registrar},
     model::User,
+    plugins::{PluginDetails, PluginName, PluginObject, PluginSummaryRow, Registrar},
     prelude::*,
 };
 use adw::prelude::*;
@@ -27,7 +27,7 @@ use std::str::FromStr;
 
 mod imp {
     use crate::{
-        core::{Settings, Database},
+        core::{Database, Settings},
         plugins::{PluginObject, PluginOverviewRow, PluginSummaryRow, Registrar},
         prelude::*,
     };
@@ -134,14 +134,10 @@ mod imp {
                 }),
             );
 
-            if disabled_model.is_empty() {
-                self.all_data_box.set_visible(false);
-            }
-
-            if enabled_model.is_empty() {
-                self.enabled_plugins_stack
-                    .set_visible_child_name("no-plugins-enabled");
-            }
+            obj.handle_registrar_plugins_changed();
+            registrar.connect_plugins_updated(glib::clone!(@weak obj => move |_| {
+                obj.handle_registrar_plugins_changed();
+            }));
         }
     }
 
@@ -235,15 +231,14 @@ impl ViewHomePage {
             registrar.disable_plugin(current_plugin);
             imp.all_data_box.set_visible(true);
             user.set_enabled_plugins(Some(
-                user
-                    .enabled_plugins()
+                user.enabled_plugins()
                     .unwrap()
                     .drain(..)
                     .filter(|s| *s != current_plugin)
                     .collect::<Vec<PluginName>>()
-                    .as_slice().to_vec()
-            ),
-            );
+                    .as_slice()
+                    .to_vec(),
+            ));
             if registrar.enabled_plugins().is_empty() {
                 imp.enabled_plugins_stack
                     .set_visible_child_name("no-plugins-enabled")
@@ -358,6 +353,23 @@ impl ViewHomePage {
         imp.stack.set_visible_child_name(plugin_name.as_ref());
         self.emit_by_name::<()>("view-changed", &[&plugin_name.as_ref()]);
         list_box.unselect_all();
+    }
+
+    fn handle_registrar_plugins_changed(&self) {
+        let imp = self.imp();
+        let registrar = Registrar::instance();
+        let disabled_model = registrar.disabled_plugins();
+        let enabled_model = registrar.enabled_plugins();
+
+        imp.all_data_box.set_visible(!disabled_model.is_empty());
+
+        if enabled_model.is_empty() {
+            imp.enabled_plugins_stack
+                .set_visible_child_name("no-plugins-enabled");
+        } else {
+            imp.enabled_plugins_stack
+                .set_visible_child_name("plugin-list")
+        }
     }
 }
 

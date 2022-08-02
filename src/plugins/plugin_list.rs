@@ -120,12 +120,12 @@ impl PluginList {
     }
 
     pub fn push(&self, plugin: Box<dyn Plugin>) {
-        let len;
-        {
+        println!("Adding plugin {}", plugin.name().as_ref());
+        let len = {
             let mut vec = self.imp().vec.borrow_mut();
-            len = vec.len();
             vec.push(plugin);
-        }
+            vec.len() - 1
+        };
         self.items_changed(len.try_into().unwrap(), 0, 1);
     }
 

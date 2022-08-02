@@ -1,8 +1,10 @@
 static mut REGISTRAR: Option<Registrar> = None;
 
 use crate::{
-    core::{Settings, Database},
-    plugins::{Plugin, PluginList, PluginName, ActivitiesPlugin, CaloriesPlugin, StepsPlugin, WeightPlugin}
+    core::{Database, Settings},
+    plugins::{
+        ActivitiesPlugin, CaloriesPlugin, Plugin, PluginList, PluginName, StepsPlugin, WeightPlugin,
+    },
 };
 use gtk::{glib, prelude::*, subclass::prelude::*};
 
@@ -39,8 +41,7 @@ mod imp {
             self.parent_constructed(obj);
             gtk_macros::spawn!(glib::clone!(@weak obj => async move {
                 obj.enabled_plugins_list().await;
-                println!("Requesting for plugins");
-            }));          
+            }));
         }
     }
 }
@@ -76,7 +77,7 @@ impl Registrar {
             self.emit_by_name::<()>("plugins-changed", &[]);
         }
     }
-    
+
     /// Connect to the `plugins-changed` signal.
     ///
     /// # Arguments
@@ -112,7 +113,8 @@ impl Registrar {
                 imp.disabled_plugins.push(plugin);
             }
         }
-        
+
+        self.emit_by_name::<()>("plugins-changed", &[]);
     }
 
     /// Get a list of disabled [Plugin]s
