@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
 "POT-Creation-Date: 2022-08-15 13:18+0000\n"
-"PO-Revision-Date: 2022-08-15 17:10+0200\n"
+"PO-Revision-Date: 2022-08-15 17:23+0200\n"
 "Last-Translator: gogo <trebelnik2@gmail.com>\n"
 "Language-Team: Croatian <hr@li.org>\n"
 "Language: hr\n"
@@ -837,7 +837,7 @@ msgstr[1] ""
 "Vaša ciljana težina je {} funte. Dodajte početno mjerenje težine kako bi "
 "vidjeli koliko ste blizu zadanog cilja."
 msgstr[2] ""
-"Vaša ciljana težina je {} funta. Dodajte početno mjerenje težine kako bi "
+"Vaša ciljana težina je {} funti. Dodajte početno mjerenje težine kako bi "
 "vidjeli koliko ste blizu zadanog cilja."
 
 #: src/plugins/weight/details.rs:275
@@ -975,7 +975,7 @@ msgstr "Nemoguće sinkronizacija koraka uslijed greške {}"
 
 #: src/sync/database_receiver.rs:60
 msgid "Couldn’t synchronize weight measurements due to error {}"
-msgstr "Nemoguće sinkronizacija mjerenja težine uslijed greške {}"
+msgstr "Nemoguća sinkronizacija mjerenja težine uslijed greške {}"
 
 #: src/sync/google_fit.rs:211
 msgid "CRSF Verification failed, got {}, expected {}"
