@@ -8,3 +8,5 @@ Categories=GNOME;GTK;Utility;MedicalSoftware;
 StartupNotify=true
 DBusActivatable=true
 X-GNOME-UsesNotifications=true
+# Translators: Do NOT translate or transliterate this text (these are enum types)!
+X-Purism-FormFactor=Workstation;Mobile;
