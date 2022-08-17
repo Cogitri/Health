@@ -18,7 +18,7 @@
 
 use crate::{core::i18n, core::Database};
 use anyhow::Result;
-use chacha20poly1305::aead::{Aead, NewAead};
+use chacha20poly1305::aead::{Aead, KeyInit};
 use chacha20poly1305::{Key, XChaCha20Poly1305, XNonce};
 use gtk::{
     gio::{self, prelude::*},
