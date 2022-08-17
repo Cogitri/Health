@@ -1,0 +1,21 @@
+
+MR https://gitlab.gnome.org/GNOME/tracker/-/merge_requests/524 backported to 3.3.x
+diff --git a/src/libtracker-data/tracker-data-update.c b/src/libtracker-data/tracker-data-update.c
+index 6aa65c911..7e233767e 100644
+--- a/src/libtracker-data/tracker-data-update.c
++++ b/src/libtracker-data/tracker-data-update.c
+@@ -3220,7 +3220,13 @@ update_resource_single (TrackerData      *data,
+ 		if (!subject)
+ 			return FALSE;
+ 	} else {
+-		subject = tracker_data_update_ensure_resource (data, subject_str, error);
++		gchar *subject_uri;
++
++		tracker_data_manager_expand_prefix (data->manager,
++		                                    subject_str, NULL, NULL,
++		                                    &subject_uri);
++		subject = tracker_data_update_ensure_resource (data, subject_uri, error);
++		g_free (subject_uri);
+ 		if (subject == 0)
+ 			return FALSE;
+ 	}

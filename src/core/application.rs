@@ -210,8 +210,8 @@ impl Application {
 
     pub async fn get_user(&self) -> User {
         let imp = self.imp();
-        let user_id = imp.settings.active_user_id() as i64;
-        let user = &imp.database.users(Some(user_id)).await.unwrap()[0];
+        let user_id = i64::from(imp.settings.active_user_id());
+        let user = &imp.database.user(user_id).await.unwrap();
         user.clone()
     }
 

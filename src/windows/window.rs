@@ -56,8 +56,6 @@ mod imp {
 
         #[template_child]
         pub add_data_button: TemplateChild<gtk::Button>,
-        // #[template_child]
-        // pub add_user_button: TemplateChild<gtk::Button>,
         #[template_child]
         pub back_button: TemplateChild<gtk::Button>,
         #[template_child]
@@ -158,11 +156,6 @@ impl Window {
         dialog.present();
     }
 
-    // #[template_callback]
-    // fn handle_add_user_button_clicked(&self) {
-
-    // }
-
     #[template_callback]
     fn handle_back_button_clicked(&self) {
         let imp = self.imp();
@@ -195,7 +188,7 @@ impl Window {
         false
     }
 
-    pub async fn disbale_plugin(&self) {
+    pub async fn disable_plugin(&self) {
         self.imp().view_home_page.disable_current_plugin().await;
     }
 
@@ -206,7 +199,7 @@ impl Window {
     #[template_callback]
     fn handle_disable_current_plugin(&self) {
         glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
-            obj.disbale_plugin().await;
+            obj.disable_plugin().await;
         }));
         self.imp().view_home_page.back();
     }

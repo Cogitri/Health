@@ -173,8 +173,8 @@ impl ActivityTypeSelector {
 
     pub async fn construct_activity(&self) {
         let imp = self.imp();
-        let user_id = Settings::instance().active_user_id() as i64;
-        let user = &Database::instance().users(Some(user_id)).await.unwrap()[0];
+        let user_id = i64::from(Settings::instance().active_user_id());
+        let user = &Database::instance().user(user_id).await.unwrap();
 
         let recent_activity_types = user.recent_activity_types().unwrap();
 

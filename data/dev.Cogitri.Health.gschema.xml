@@ -14,92 +14,74 @@
     <key name="did-initial-setup" type="b">
       <default>false</default>
       <summary>First time setup done</summary>
-      <description>[Deprecated]Whether the user has completed the setup wizard</description>
     </key>
     <key name="enable-notifications" type="b">
       <default>true</default>
       <summary>Toggle notifications</summary>
-      <description>Whether to enable notifications.</description>
     </key>
     <key name="enabled-plugins" type="as">
       <default>['activities', 'calories', 'steps', 'weight']</default>
       <summary>Set enabled plugins</summary>
-      <description>[Deprecated]Sets all data source plugins that are enabled in Health.</description>
     </key>
     <key name="notification-time" type="s">
       <default>"00:00:00"</default>
       <summary>Notification time</summary>
-      <description>The time at which Health should remind the user of their step goal</description>
     </key>
     <key name="notification-frequency" enum="dev.Cogitri.Health.Notification-Frequency">
       <default>'hourly'</default>
       <summary>notification frequency</summary>
-      <description>How frequent should the user be notified to complete their daily step-goal.</description>
     </key>
     <key name="recent-activity-types" type="as">
       <default>[]</default>
       <summary>List of recent activity types</summary>
-      <description>[Deprecated]Activity types the user used recently, to be shown first in the activity types selector’s list</description>
     </key>
     <key name="sync-provider-setup-google-fit" type="b">
       <default>false</default>
       <summary>Google Fit Sync-Provider setup</summary>
-      <description>[Deprecated]Whether Google Fit has been setup as sync provider</description>
     </key>
     <key name="timestamp-last-sync-google-fit" type="s">
       <default>"1970-01-01T00:00:01Z"</default>
       <summary>Last sync with Google Fit</summary>
-      <description>[Deprecated]The last time we synched steps, weight etc. with Google Fit</description>
     </key>
     <key name="unitsystem" enum="dev.Cogitri.Health.Units">
       <default>'metric'</default>
       <summary>Unit system used</summary>
-      <description>The unit system the user chose, e.g. for cm vs inch for height</description>
     </key>
     <key name="user-age" type="u">
       <default>0</default>
       <summary>User age</summary>
-      <description>[Deprecated]The age of the user (deprecated).</description>
     </key>
     <key name="user-birthday" type="s">
       <default>""</default>
       <summary>Absolute user age</summary>
-      <description>[Deprecated]The age of the user in absolute terms (like 01/01/1970)</description>
     </key>
     <key name="user-height" type="u">
       <default>0</default>
       <summary>User height</summary>
-      <description>[Deprecated]The height of the user.</description>
     </key>
     <key name="user-stepgoal" type="u">
       <default>7500</default>
       <summary>User step goal</summary>
-      <description>[Deprecated]The amount of steps the user wants to reach daily.</description>
     </key>
     <key name="user-weightgoal" type="d">
       <default>-1</default>
       <summary>User weight goal</summary>
-      <description>[Deprecated]The weight the user wants to reach.</description>
     </key>
     <key name="window-height" type="i">
       <default>-1</default>
       <summary>Window height</summary>
-      <description>The height of the window.</description>
     </key>
     <key name="window-is-maximized" type="b">
       <default>false</default>
       <summary>Window maximized</summary>
-      <description>Whether the window is maximized.</description>
     </key>
     <key name="window-width" type="i">
       <default>-1</default>
       <summary>Window width</summary>
-      <description>The width of the window.</description>
     </key>
     <key name="active-user-id" type="u">
       <default>0</default>
       <summary>Active User ID</summary>
-      <description>The user id of the user using the platform.</description>
     </key>
   </schema>
 </schemalist>

@@ -486,8 +486,8 @@ impl ViewAddActivity {
     async fn save_recent_activity(&self) {
         let imp = self.imp();
         let inner = imp.inner.borrow();
-        let user_id = imp.settings.active_user_id() as i64;
-        let user = &imp.database.users(Some(user_id)).await.unwrap()[0];
+        let user_id = i64::from(imp.settings.active_user_id());
+        let user = &imp.database.user(user_id).await.unwrap();
 
         let mut recent_activities = user.recent_activity_types().unwrap();
         if !recent_activities

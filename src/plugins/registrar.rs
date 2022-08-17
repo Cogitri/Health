@@ -40,7 +40,7 @@ mod imp {
         fn constructed(&self, obj: &Self::Type) {
             self.parent_constructed(obj);
             gtk_macros::spawn!(glib::clone!(@weak obj => async move {
-                obj.enabled_plugins_list().await;
+                obj.load_plugins().await;
             }));
         }
     }
@@ -96,10 +96,10 @@ impl Registrar {
     }
 
     /// Push enabled plugins and disabled plugins.
-    pub async fn enabled_plugins_list(&self) -> () {
+    pub async fn load_plugins(&self) -> () {
         let imp = self.imp();
-        let user_id = Settings::instance().active_user_id() as i64;
-        let user = &Database::instance().users(Some(user_id)).await.unwrap()[0];
+        let user_id = i64::from(Settings::instance().active_user_id());
+        let user = &Database::instance().user(user_id).await.unwrap();
         let enabled_plugins = user.enabled_plugins().unwrap();
         for plugin in [
             Box::new(ActivitiesPlugin::new()) as Box<dyn Plugin>,

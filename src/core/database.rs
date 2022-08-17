@@ -39,6 +39,8 @@ use uom::si::{
     mass::{kilogram, Mass},
 };
 
+use crate::core::i18n;
+
 mod imp {
     use crate::core::Settings;
     use gtk::{
@@ -171,7 +173,7 @@ impl Database {
     /// An array of [Activity]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn activities(&self, date_opt: Option<glib::DateTime>) -> Result<Vec<Activity>> {
         let imp = self.imp();
-        let user_id = imp.settings.active_user_id() as i64;
+        let user_id = i64::from(imp.settings.active_user_id());
 
         let connection = imp.connection.get().unwrap();
         let cursor = if let Some(date) = date_opt {
@@ -248,8 +250,9 @@ impl Database {
     /// # Returns
     /// An array of [SplitBar]s that are within the given timeframe or a [glib::Error] if querying the DB goes wrong.
     pub async fn calories(&self, minimum_date: glib::DateTime) -> Result<Vec<SplitBar>> {
-        let connection = self.imp().connection.get().unwrap();
-        let user_id = self.imp().settings.active_user_id() as i64;
+        let imp = self.imp();
+        let connection = imp.connection.get().unwrap();
+        let user_id = i64::from(imp.settings.active_user_id());
 
         let statement = connection.query_statement("SELECT ?date ?id ?calories_burned WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned ; health:activity_user_id ?user_id . FILTER  (?date >= ~date^^xsd:dateTime && ?user_id = ~user^^xsd:integer) }}", None::<&gio::Cancellable>).unwrap().unwrap();
         statement.bind_string("date", minimum_date.format_iso8601().unwrap().as_str());
@@ -307,10 +310,11 @@ impl Database {
         &self,
         minimum_date: glib::DateTime,
     ) -> Result<Vec<ActivityType>> {
-        let connection = self.imp().connection.get().unwrap();
+        let imp = self.imp();
+        let connection = imp.connection.get().unwrap();
         let mut most_frequent = Vec::new();
 
-        let user_id = self.imp().settings.active_user_id() as i64;
+        let user_id = i64::from(imp.settings.active_user_id());
         let statement = connection.query_statement("SELECT ?id WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:activity_id ?id ; health:calories_burned ?calories_burned; health:activity_user_id ?user_id . FILTER  (?date >= ~date^^xsd:dateTime && ?user_id = ~user^^xsd:integer) }} GROUP BY ?id ORDER BY DESC (SUM(?calories_burned))", None::<&gio::Cancellable>).unwrap().unwrap();
         statement.bind_string("date", minimum_date.format_iso8601().unwrap().as_str());
         statement.bind_int("user", user_id);
@@ -373,7 +377,7 @@ impl Database {
         let imp = self.imp();
 
         let connection = imp.connection.get().unwrap();
-        let user_id = self.imp().settings.active_user_id() as i64;
+        let user_id = i64::from(self.imp().settings.active_user_id());
 
         let statement = connection.query_statement("SELECT ?date ?steps WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps ; health:activity_user_id ?user_id . FILTER  (?date >= ~date^^xsd:dateTime && ?user_id = ~user^^xsd:integer)}}  ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
         statement.bind_string("date", &date.format_iso8601().unwrap());
@@ -407,7 +411,7 @@ impl Database {
     pub async fn todays_steps(&self) -> Result<i64> {
         let imp = self.imp();
         let date = glib::DateTime::today();
-        let user_id = self.imp().settings.active_user_id() as i64;
+        let user_id = i64::from(imp.settings.active_user_id());
 
         let connection = imp.connection.get().unwrap();
         let statement = connection.query_statement("SELECT SUM(?steps) WHERE {{ ?datapoint a health:Activity ; health:activity_datetime ?date ; health:steps ?steps ; health:activity_user_id ?user_id . FILTER  (?date >= ~date^^xsd:dateTime && ?user_id = ~user^^xsd:integer)}}", None::<&gio::Cancellable>).unwrap().unwrap();
@@ -435,12 +439,16 @@ impl Database {
         let imp = self.imp();
 
         let connection = imp.connection.get().unwrap();
+        let user_id = i64::from(imp.settings.active_user_id());
         let cursor = if let Some(date) = date_opt {
-            let statement = connection.query_statement("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . FILTER  (?date >= ~date^^xsd:dateTime)}} ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
+            let statement = connection.query_statement("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight ; health:weight_user_id ?user_id . FILTER  (?date >= ~date^^xsd:dateTime && ?user_id = ~user^^xsd:integer)}} ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
             statement.bind_string("date", date.format_iso8601().unwrap().as_str());
+            statement.bind_int("user", user_id);
             statement.execute_future().await?
         } else {
-            connection.query_future("SELECT ?date ?weight WHERE { ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date  ; health:weight ?weight . } ORDER BY ?date").await?
+            let statement = connection.query_statement("SELECT ?date ?weight WHERE {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight_user_id ?user_id  ; health:weight ?weight . FILTER (?user_id = ~user^^xsd:integer)}} ORDER BY ?date", None::<&gio::Cancellable>).unwrap().unwrap();
+            statement.bind_int("user", user_id);
+            statement.execute_future().await?
         };
         let mut ret = Vec::new();
 
@@ -468,7 +476,8 @@ impl Database {
         let imp = self.imp();
 
         let connection = imp.connection.get().unwrap();
-        let statement = connection.query_statement("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight ?weight . FILTER(?date >= ~date^^xsd:dateTime && ?date < ~nextdate^^xsd:dateTime) }}", None::<&gio::Cancellable>).unwrap().unwrap();
+        let user_id = i64::from(imp.settings.active_user_id());
+        let statement = connection.query_statement("ASK {{ ?datapoint a health:WeightMeasurement ; health:weight_datetime ?date ; health:weight ?weight ; health:weight_user_id ?user_id . FILTER(?date >= ~date^^xsd:dateTime && ?date < ~nextdate^^xsd:dateTime && ?user_id = ~user^^xsd:integer) }}", None::<&gio::Cancellable>).unwrap().unwrap();
         statement.bind_string("date", date.reset_hms().format_iso8601().unwrap().as_str());
         statement.bind_string(
             "nextdate",
@@ -479,6 +488,7 @@ impl Database {
                 .unwrap()
                 .as_str(),
         );
+        statement.bind_int("user", user_id);
         let cursor = statement.execute_future().await?;
 
         assert!(cursor.next_future().await?);
@@ -502,10 +512,12 @@ impl Database {
 
         let connection = imp.connection.get().unwrap();
         let manager = imp.manager.get().unwrap();
+        let user_id = i64::from(imp.settings.active_user_id());
 
         for s in steps {
             let resource = tracker::Resource::new(None);
             resource.set_uri("rdf:type", "health:Activity");
+            resource.set_int64("health:activity_user_id", user_id);
             resource.set_string(
                 "health:activity_datetime",
                 s.date.format_iso8601().unwrap().as_str(),
@@ -548,10 +560,12 @@ impl Database {
 
         let connection = imp.connection.get().unwrap();
         let manager = imp.manager.get().unwrap();
+        let user_id = i64::from(imp.settings.active_user_id());
 
         for w in weights {
             let resource = tracker::Resource::new(None);
             resource.set_uri("rdf:type", "health:WeightMeasurement");
+            resource.set_int64("health:activity_user_id", user_id);
             resource.set_string(
                 "health:weight_datetime",
                 w.date.format_iso8601().unwrap().as_str(),
@@ -572,6 +586,96 @@ impl Database {
         Ok(())
     }
 
+    /// Get user with a particular user ID.
+    ///
+    /// # Arguments
+    /// * `id` - Get a user with the particular user ID.
+    ///
+    /// # Returns
+    /// An array of [User]s or a [User] with a particular user ID, or a [glib::Error] if querying the DB goes wrong.
+    pub async fn user(&self, user_id: i64) -> Result<User> {
+        let imp = self.imp();
+        let connection = imp.connection.get().unwrap();
+
+        let statement = connection.query_statement("SELECT ?user_id ?user_name ?user_birthday ?user_height ?user_weightgoal ?user_stepgoal ?enabled_plugins ?recent_activity_types ?did_initial_setup WHERE {{ ?datapoint a health:User ; health:user_id ?user_id . OPTIONAL {{  ?datapoint health:user_name ?user_name . }} OPTIONAL {{ ?datapoint health:user_birthday ?user_birthday . }} OPTIONAL {{ ?datapoint health:user_height ?user_height . }} OPTIONAL {{ ?datapoint health:user_weightgoal ?user_weightgoal . }} OPTIONAL {{ ?datapoint health:user_stepgoal ?user_stepgoal . }} OPTIONAL {{ ?datapoint health:enabled_plugins ?enabled_plugins . }} OPTIONAL {{ ?datapoint health:recent_activity_types ?recent_activity_types . }} OPTIONAL {{ ?datapoint health:did_initial_setup ?did_intitial_setup }} FILTER  (?user_id = ~user_id^^xsd:integer)}}", None::<&gio::Cancellable>).unwrap().unwrap();
+        statement.bind_int("user_id", user_id);
+        let cursor = statement.execute_future().await?;
+        cursor.next_future().await?;
+
+        let mut user = User::builder();
+        for i in 0..cursor.n_columns() {
+            match cursor.variable_name(i).unwrap().as_str() {
+                "user_id" => {
+                    println!("user_id: {}", cursor.integer(i));
+                    user.user_id(cursor.integer(i).try_into().unwrap());
+                }
+                "user_name" => {
+                    println!("user_name: {}", cursor.string(i).unwrap().as_str());
+                    user.user_name(cursor.string(i).unwrap().as_str());
+                }
+                "user_birthday" => {
+                    println!("user_birthday: {}", cursor.string(i).unwrap().as_str());
+                    user.user_birthday(glib::DateTime::from_iso8601(
+                        cursor.string(i).unwrap().as_str(),
+                        None,
+                    )?);
+                }
+                "user_height" => {
+                    println!("height with get user: {}", cursor.double(i));
+                    user.user_height(Length::new::<meter>(cursor.double(i) as f32));
+                }
+                "user_weightgoal" => {
+                    println!("weightgoal with get user: {}", cursor.double(i));
+                    user.user_weightgoal(Mass::new::<kilogram>(cursor.double(i) as f32));
+                }
+                "user_stepgoal" => {
+                    println!("stepgoal with get user: {}", cursor.integer(i));
+                    user.user_stepgoal(cursor.integer(i).try_into().unwrap());
+                }
+                "enabled_plugins" => {
+                    println!("enabled_plugins: {}", cursor.string(i).unwrap().as_str());
+                    user.enabled_plugins(
+                        cursor
+                            .string(i)
+                            .unwrap()
+                            .as_str()
+                            .split(',')
+                            .filter_map(|s| PluginName::from_str(s.trim()).ok())
+                            .collect(),
+                    );
+                }
+                "recent_activity_types" => {
+                    println!(
+                        "recent_activity_types: {}",
+                        cursor.string(i).unwrap().as_str()
+                    );
+                    user.recent_activity_types(
+                        cursor
+                            .string(i)
+                            .unwrap()
+                            .as_str()
+                            .split(',')
+                            .filter_map(|s| ActivityType::from_str(s.trim()).ok())
+                            .collect(),
+                    );
+                }
+                "did_initial_setup" => {
+                    println!("did_initial_setup with get user: {}", cursor.integer(i));
+                    user.did_initial_setup(cursor.is_boolean(i));
+                }
+                _ => {
+                    glib::g_error!(
+                        crate::config::APPLICATION_ID,
+                        "Unknown variable name {}",
+                        cursor.variable_name(i).unwrap()
+                    );
+                    unimplemented!();
+                }
+            }
+        }
+        Ok(user.build())
+    }
+
     /// Get users.
     ///
     /// # Arguments
@@ -579,17 +683,11 @@ impl Database {
     ///
     /// # Returns
     /// An array of [User]s or a [User] with a particular user ID, or a [glib::Error] if querying the DB goes wrong.
-    pub async fn users(&self, id_opt: Option<i64>) -> Result<Vec<User>> {
+    pub async fn users(&self) -> Result<Vec<User>> {
         let imp = self.imp();
         let connection = imp.connection.get().unwrap();
 
-        let cursor = if let Some(id) = id_opt {
-            let statement = connection.query_statement("SELECT ?user_id ?user_name ?user_birthday ?user_height ?user_weightgoal ?user_stepgoal ?enabled_plugins ?recent_activity_types ?did_initial_setup WHERE {{ ?datapoint a health:User ; health:user_id ?user_id . OPTIONAL {{  ?datapoint health:user_name ?user_name . }} OPTIONAL {{ ?datapoint health:user_birthday ?user_birthday . }} OPTIONAL {{ ?datapoint health:user_height ?user_height . }} OPTIONAL {{ ?datapoint health:user_weightgoal ?user_weightgoal . }} OPTIONAL {{ ?datapoint health:user_stepgoal ?user_stepgoal . }} OPTIONAL {{ ?datapoint health:enabled_plugins ?enabled_plugins . }} OPTIONAL {{ ?datapoint health:recent_activity_types ?recent_activity_types . }} OPTIONAL {{ ?datapoint health:did_initial_setup ?did_intitial_setup }} FILTER  (?user_id = ~id^^xsd:integer)}}", None::<&gio::Cancellable>).unwrap().unwrap();
-            statement.bind_int("id", id);
-            statement.execute_future().await?
-        } else {
-            connection.query_future("SELECT ?user_id ?user_name ?user_birthday ?user_height ?user_weightgoal ?user_stepgoal ?enabled_plugins ?recent_activity_types ?did_initial_setup WHERE {{ ?datapoint a health:User ; health:user_id ?user_id . OPTIONAL {{  ?datapoint health:user_name ?user_name . }} OPTIONAL {{ ?datapoint health:user_birthday ?user_birthday . }} OPTIONAL {{ ?datapoint health:user_height ?user_height . }} OPTIONAL {{ ?datapoint health:user_weightgoal ?user_weightgoal . }} OPTIONAL {{ ?datapoint health:user_stepgoal ?user_stepgoal . }} OPTIONAL {{ ?datapoint health:enabled_plugins ?enabled_plugins . }} OPTIONAL {{ ?datapoint health:recent_activity_types ?recent_activity_types . }} OPTIONAL {{ ?datapoint health:did_initial_setup ?did_intitial_setup }} }}").await?
-        };
+        let cursor = connection.query_future("SELECT ?user_id ?user_name ?user_birthday ?user_height ?user_weightgoal ?user_stepgoal ?enabled_plugins ?recent_activity_types ?did_initial_setup WHERE {{ ?datapoint a health:User ; health:user_id ?user_id . OPTIONAL {{  ?datapoint health:user_name ?user_name . }} OPTIONAL {{ ?datapoint health:user_birthday ?user_birthday . }} OPTIONAL {{ ?datapoint health:user_height ?user_height . }} OPTIONAL {{ ?datapoint health:user_weightgoal ?user_weightgoal . }} OPTIONAL {{ ?datapoint health:user_stepgoal ?user_stepgoal . }} OPTIONAL {{ ?datapoint health:enabled_plugins ?enabled_plugins . }} OPTIONAL {{ ?datapoint health:recent_activity_types ?recent_activity_types . }} OPTIONAL {{ ?datapoint health:did_initial_setup ?did_intitial_setup }} }}").await?;
 
         let mut ret = Vec::new();
 
@@ -665,7 +763,7 @@ impl Database {
     pub async fn get_top_unused_user_id(&self) -> Result<i64> {
         if self.has_users().await? {
             let mut max_id = 0;
-            for user in self.users(None).await? {
+            for user in self.users().await? {
                 if user.user_id() > max_id {
                     max_id = user.user_id();
                 }
@@ -696,7 +794,7 @@ impl Database {
     pub async fn update_user(&self, user: User) -> Result<()> {
         let imp = self.imp();
         let connection = imp.connection.get().unwrap();
-        let current_user_id = imp.settings.active_user_id() as i64;
+        let current_user_id = i64::from(imp.settings.active_user_id());
         let resource =
             tracker::Resource::new(Some(format!("health:User{}", current_user_id).as_str()));
         resource.add_uri("rdf:type", "health:User");
@@ -1021,7 +1119,7 @@ impl Database {
         let mut user_builder = User::builder();
         user_builder
             .user_id(top_unused_user_id)
-            .user_name("User")
+            .user_name(&i18n("User"))
             .user_birthday(datetime)
             .user_height(imp.settings.user_height())
             .user_weightgoal(imp.settings.user_weight_goal().unwrap())

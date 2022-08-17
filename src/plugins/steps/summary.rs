@@ -87,8 +87,8 @@ impl PluginStepsSummaryRow {
     pub async fn update(&self) {
         let imp = self.imp();
         let db = Database::instance();
-        let user_id = Settings::instance().active_user_id() as i64;
-        let user = &db.users(Some(user_id)).await.unwrap()[0];
+        let user_id = i64::from(Settings::instance().active_user_id());
+        let user = &db.user(user_id).await.unwrap();
         let step_count = db.todays_steps().await.unwrap_or(0);
         let step_goal = user.user_stepgoal().unwrap_or(0) as u32;
 

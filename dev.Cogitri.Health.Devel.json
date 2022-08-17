@@ -60,6 +60,10 @@
         },
         {
           "type": "patch",
+          "path": "build-aux/tracker-524.patch"
+        },
+        {
+          "type": "patch",
           "path": "build-aux/tracker-529.patch"
         }
       ]

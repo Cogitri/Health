@@ -105,8 +105,8 @@ impl GraphModelCalories {
             }
             Ok(v) => v,
         };
-        let user_id = self.settings.active_user_id() as i64;
-        let user = &self.database.users(Some(user_id)).await.unwrap()[0];
+        let user_id = i64::from(self.settings.active_user_id());
+        let user = &self.database.user(user_id).await.unwrap();
         let weight = weights
             .last()
             .map_or_else(|| Mass::new::<kilogram>(0.0), |w| w.weight)
