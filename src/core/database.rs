@@ -597,7 +597,7 @@ impl Database {
         let imp = self.imp();
         let connection = imp.connection.get().unwrap();
 
-        let statement = connection.query_statement("SELECT ?user_id ?user_name ?user_birthday ?user_height ?user_weightgoal ?user_stepgoal ?enabled_plugins ?recent_activity_types ?did_initial_setup WHERE {{ ?datapoint a health:User ; health:user_id ?user_id . OPTIONAL {{  ?datapoint health:user_name ?user_name . }} OPTIONAL {{ ?datapoint health:user_birthday ?user_birthday . }} OPTIONAL {{ ?datapoint health:user_height ?user_height . }} OPTIONAL {{ ?datapoint health:user_weightgoal ?user_weightgoal . }} OPTIONAL {{ ?datapoint health:user_stepgoal ?user_stepgoal . }} OPTIONAL {{ ?datapoint health:enabled_plugins ?enabled_plugins . }} OPTIONAL {{ ?datapoint health:recent_activity_types ?recent_activity_types . }} OPTIONAL {{ ?datapoint health:did_initial_setup ?did_intitial_setup }} FILTER  (?user_id = ~user_id^^xsd:integer)}}", None::<&gio::Cancellable>).unwrap().unwrap();
+        let statement = connection.query_statement("SELECT ?user_id ?user_name ?user_birthday ?user_height ?user_weightgoal ?user_stepgoal ?enabled_plugins ?recent_activity_types ?did_initial_setup WHERE {{ ?datapoint a health:User ; health:user_id ?user_id; health:did_initial_setup ?did_initial_setup . OPTIONAL {{  ?datapoint health:user_name ?user_name . }} OPTIONAL {{ ?datapoint health:user_birthday ?user_birthday . }} OPTIONAL {{ ?datapoint health:user_height ?user_height . }} OPTIONAL {{ ?datapoint health:user_weightgoal ?user_weightgoal . }} OPTIONAL {{ ?datapoint health:user_stepgoal ?user_stepgoal . }} OPTIONAL {{ ?datapoint health:enabled_plugins ?enabled_plugins . }} OPTIONAL {{ ?datapoint health:recent_activity_types ?recent_activity_types . }} FILTER  (?user_id = ~user_id^^xsd:integer)}}", None::<&gio::Cancellable>).unwrap().unwrap();
         statement.bind_int("user_id", user_id);
         let cursor = statement.execute_future().await?;
         cursor.next_future().await?;
@@ -660,7 +660,7 @@ impl Database {
                     );
                 }
                 "did_initial_setup" => {
-                    println!("did_initial_setup with get user: {}", cursor.integer(i));
+                    println!("did_initial_setup with get user: {}", cursor.is_boolean(i));
                     user.did_initial_setup(cursor.is_boolean(i));
                 }
                 _ => {
@@ -687,7 +687,7 @@ impl Database {
         let imp = self.imp();
         let connection = imp.connection.get().unwrap();
 
-        let cursor = connection.query_future("SELECT ?user_id ?user_name ?user_birthday ?user_height ?user_weightgoal ?user_stepgoal ?enabled_plugins ?recent_activity_types ?did_initial_setup WHERE {{ ?datapoint a health:User ; health:user_id ?user_id . OPTIONAL {{  ?datapoint health:user_name ?user_name . }} OPTIONAL {{ ?datapoint health:user_birthday ?user_birthday . }} OPTIONAL {{ ?datapoint health:user_height ?user_height . }} OPTIONAL {{ ?datapoint health:user_weightgoal ?user_weightgoal . }} OPTIONAL {{ ?datapoint health:user_stepgoal ?user_stepgoal . }} OPTIONAL {{ ?datapoint health:enabled_plugins ?enabled_plugins . }} OPTIONAL {{ ?datapoint health:recent_activity_types ?recent_activity_types . }} OPTIONAL {{ ?datapoint health:did_initial_setup ?did_intitial_setup }} }}").await?;
+        let cursor = connection.query_future("SELECT ?user_id ?user_name ?user_birthday ?user_height ?user_weightgoal ?user_stepgoal ?enabled_plugins ?recent_activity_types ?did_initial_setup WHERE {{ ?datapoint a health:User ; health:user_id ?user_id; health:did_initial_setup ?did_intitial_setup . OPTIONAL {{  ?datapoint health:user_name ?user_name . }} OPTIONAL {{ ?datapoint health:user_birthday ?user_birthday . }} OPTIONAL {{ ?datapoint health:user_height ?user_height . }} OPTIONAL {{ ?datapoint health:user_weightgoal ?user_weightgoal . }} OPTIONAL {{ ?datapoint health:user_stepgoal ?user_stepgoal . }} OPTIONAL {{ ?datapoint health:enabled_plugins ?enabled_plugins . }} OPTIONAL {{ ?datapoint health:recent_activity_types ?recent_activity_types . }} }}").await?;
 
         let mut ret = Vec::new();
 
