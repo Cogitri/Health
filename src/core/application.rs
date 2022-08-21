@@ -71,7 +71,14 @@ mod imp {
             }
 
             if self.settings.active_user_id() > 0 || self.settings.did_initial_setup() {
+                glib::g_info!(
+                    crate::config::APPLICATION_ID,
+                    "Migrating DB and starting main window..."
+                );
+
                 self.settings.set_did_initial_setup(false);
+                // Make sure we don't exit while the migration is running because we haven't opened a window yet
+                obj.hold();
                 gtk_macros::spawn!(glib::clone!(@weak obj => async move {
                     if let Err(e) = Database::instance().migrate().await {
                         glib::g_warning!(
@@ -83,8 +90,12 @@ mod imp {
                     window.show();
                     obj.imp().window
                         .replace(Some(glib::ObjectExt::downgrade(&window)));
+                    // Since the window is shown now we can release the hold, the application will exit once the window is closed (if notifications are disabled)
+                    obj.release();
                 }));
             } else {
+                glib::g_info!(crate::config::APPLICATION_ID, "Starting setup...");
+
                 let setup_window = SetupWindow::new(obj);
                 obj.hold();
 
