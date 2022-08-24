@@ -315,6 +315,18 @@ impl PreferencesWindow {
             .connect_unit_system_changed(clone!(@weak self as obj => move |_, _| {
                 obj.handle_unit_system_changed();
             }));
+        imp.height_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                obj.handle_height_spin_button_changed();
+            }));
+        imp.weight_goal_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                obj.handle_weight_goal_spin_button_changed();
+            }));
+        imp.step_goal_spin_button
+            .connect_changed(clone!(@weak self as obj => move |_| {
+                obj.handle_step_goal_spin_button_changed();
+            }));
     }
 
     pub async fn update_user(&self, user: User) {
@@ -376,7 +388,6 @@ impl PreferencesWindow {
         dialog.show();
     }
 
-    #[template_callback]
     fn handle_height_spin_button_changed(&self) {
         let imp = self.imp();
         if let Some(val) = imp.height_spin_button.raw_value::<f32>() {
@@ -401,7 +412,6 @@ impl PreferencesWindow {
         dialog.show();
     }
 
-    #[template_callback]
     fn handle_step_goal_spin_button_changed(&self) {
         let imp = self.imp();
         if let Some(val) = imp.step_goal_spin_button.raw_value::<u32>() {
@@ -450,7 +460,6 @@ impl PreferencesWindow {
         }
     }
 
-    #[template_callback]
     fn handle_weight_goal_spin_button_changed(&self) {
         let imp = self.imp();
         if let Some(val) = imp.weight_goal_spin_button.raw_value::<f32>() {

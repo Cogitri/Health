@@ -123,7 +123,6 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
           text: "0";
           adjustment: "height_adjustment";
           valign: center;
-          changed => handle_height_spin_button_changed() swapped;
         }
       }
     }
@@ -185,7 +184,6 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
           adjustment: step_goal_adjustment;
           numeric: true;
           valign: center;
-          changed => handle_step_goal_spin_button_changed() swapped;
         }
       }
     }
@@ -211,7 +209,6 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
             width-chars: 5;
             adjustment: weight_goal_adjustment;
             valign: center;
-            changed => handle_weight_goal_spin_button_changed() swapped;
           }
         }
       }
