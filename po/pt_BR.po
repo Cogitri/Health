@@ -1,25 +1,25 @@
 # Brazilian Portuguese translation for health.
 # Copyright (C) 2022 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
-# Enrico Nicoletto <liverig@gmail.com>, 2021.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2021-2022.
 # Matheus Barbosa <mdpb.matheus@gmail.com>, 2022.
 # Diogo Leal <diogo@diogoleal.com>, 2022.
+# Enrico Nicoletto <hiko@duck.com>, 2021-2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-07-07 16:42+0000\n"
-"PO-Revision-Date: 2022-07-09 00:31-0300\n"
-"Last-Translator: Diogo Leal <diogo@diogoleal.com>\n"
+"POT-Creation-Date: 2022-07-24 21:36+0000\n"
+"PO-Revision-Date: 2022-09-06 22:06-0300\n"
+"Last-Translator: Enrico Nicoletto <hiko@duck.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 42.0\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-DL-Team: pt_BR\n"
 "X-DL-Module: health\n"
 "X-DL-Branch: master\n"
@@ -485,8 +485,8 @@ msgstr "Por favor, insira sua meta diária de passos."
 
 # WHO = OMS = Organização Mundial da Saúde
 #: data/ui/setup_window.blp:224
-msgid "The WHO recommends 10.000 steps per day."
-msgstr "A OMS recomenda 10.000 passos por dia."
+msgid "The WHO recommends 7.500 steps per day."
+msgstr "A OMS recomenda 7.500 passos por dia."
 
 #: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
@@ -600,18 +600,18 @@ msgstr "_Sobre o Saúde"
 msgid "Enable plugin"
 msgstr "Habilitar plugin"
 
-#: src/core/application.rs:169
+#: src/core/application.rs:176
 msgid "A health tracking app for the GNOME desktop."
 msgstr "Um aplicativo de monitoramento de saúde para o ambiente GNOME."
 
-#: src/core/application.rs:171
+#: src/core/application.rs:178
 msgid "translator-credits"
 msgstr ""
 "Rafael Fontenelle <rafaelff@gnome.org>\n"
-"Enrico Nicoletto <liverig@gmail.com>\n"
+"Enrico Nicoletto <hiko@duck.com>\n"
 "Matheus Barbosa <mdpb.matheus@gmail.com>"
 
-#: src/core/application.rs:173
+#: src/core/application.rs:180
 msgid "Websites"
 msgstr "Sites"
 
@@ -875,8 +875,8 @@ msgstr[1] "Faltam {} quilogramas para atingi-la"
 #: src/plugins/weight/details.rs:328
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr ""
-"Nenhuma meta de peso definida ainda. Você pode defini-la nas preferências "
-"do aplicativo."
+"Nenhuma meta de peso definida ainda. Você pode defini-la nas preferências do "
+"aplicativo."
 
 #: src/plugins/weight/summary.rs:119
 msgid "{} pound"
@@ -1060,42 +1060,42 @@ msgid "Feet"
 msgstr "Pés"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:475 src/widgets/unit_spinbutton.rs:635
+#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:654
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:477
+#: src/widgets/unit_spinbutton.rs:490
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:479
+#: src/widgets/unit_spinbutton.rs:492
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:481
+#: src/widgets/unit_spinbutton.rs:494
 msgid "kg"
 msgstr "kg"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:483 src/widgets/unit_spinbutton.rs:637
+#: src/widgets/unit_spinbutton.rs:496 src/widgets/unit_spinbutton.rs:656
 msgid "in"
 msgstr "pol"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:485
+#: src/widgets/unit_spinbutton.rs:498
 msgid "ft"
 msgstr "ft"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:487
+#: src/widgets/unit_spinbutton.rs:500
 msgid "mi"
 msgstr "mi"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:489
+#: src/widgets/unit_spinbutton.rs:502
 msgid "lb"
 msgstr "lb"
 
@@ -1112,6 +1112,11 @@ msgstr "Atividades.csv.encrypted"
 #: src/windows/export_dialog.rs:63
 msgid "Activities.csv"
 msgstr "Atividades.csv"
+
+#: src/windows/export_dialog.rs:75 src/windows/export_dialog.rs:109
+#: src/windows/import_dialog.rs:68 src/windows/import_dialog.rs:97
+msgid "No file selected."
+msgstr "Nenhum arquivo selecionado."
 
 #: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
@@ -1185,70 +1190,3 @@ msgstr "Falha ao migrar o banco de dados para a nova versão devido ao erro {}"
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr ""
 "Não foi possível sincronizar os dados do Google Fit devido a um erro: {}"
-
-#~ msgid "@APPLICATION_ID@"
-#~ msgstr "@APPLICATION_ID@"
-
-# WHO  = OMS = Organização Mundial da Saúde
-#~ msgid "The WHO recommends 10,000 steps per day."
-#~ msgstr "A OMS recomenda 10.000 passos por dia."
-
-#~ msgid "of {} step"
-#~ msgid_plural "of {} steps"
-#~ msgstr[0] "de {} passo"
-#~ msgstr[1] "de {} passos"
-
-#~ msgid "Remind you of your step goals"
-#~ msgstr "Lembrar de suas metas de passos"
-
-#~ msgid "Health Daemon"
-#~ msgstr "Daemon do app Saúde"
-
-#~ msgid "Distance in Meters"
-#~ msgstr "Distância em metros"
-
-#~ msgid "Add new activity"
-#~ msgstr "Adicionar nova atividade"
-
-#~ msgid "Add weight record"
-#~ msgstr "Adicionar registro de peso"
-
-#~ msgid "{} Calorie"
-#~ msgid_plural "{} Calories"
-#~ msgstr[0] "{} caloria"
-#~ msgstr[1] "{} calorias"
-
-#~ msgid "Last opened view"
-#~ msgstr "Visto pela última vez"
-
-#~ msgid "The last view the user had opened, for restoring it on start"
-#~ msgstr ""
-#~ "A última visualização que o usuário abriu, para restaurá-la no início"
-
-#~ msgid "+ {} pound"
-#~ msgid_plural "+ {} pounds"
-#~ msgstr[0] "+ {} libra"
-#~ msgstr[1] "+ {} libras"
-
-#~ msgid "+ {} kilogram"
-#~ msgid_plural "+ {} kilograms"
-#~ msgstr[0] "+ {} quilograma"
-#~ msgstr[1] "+ {} quilogramas"
-
-#~ msgid "use + to add a weight record"
-#~ msgstr "use + para adicionar um registro de peso"
-
-#~ msgid "Add An Activity"
-#~ msgstr "Adicionar uma atividade"
-
-#~ msgid "Home Page"
-#~ msgstr "Site"
-
-#~ msgid "Today"
-#~ msgstr "Hoje"
-
-#~ msgid "No step goal set"
-#~ msgstr "Nenhuma meta de passos definida"
-
-#~ msgid "{}%"
-#~ msgstr "{}%"
