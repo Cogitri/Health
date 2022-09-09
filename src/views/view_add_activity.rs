@@ -485,16 +485,15 @@ impl ViewAddActivity {
 
     async fn save_recent_activity(&self) {
         let imp = self.imp();
-        let inner = imp.inner.borrow();
         let user_id = i64::from(imp.settings.active_user_id());
         let user = &imp.database.user(user_id).await.unwrap();
 
         let mut recent_activities = user.recent_activity_types().unwrap();
         if !recent_activities
             .iter()
-            .any(|s| inner.selected_activity.activity_type == *s)
+            .any(|s| imp.inner.borrow().selected_activity.activity_type == *s)
         {
-            recent_activities.push(inner.selected_activity.activity_type.clone());
+            recent_activities.push(imp.inner.borrow().selected_activity.activity_type);
             if recent_activities.len() > 4 {
                 user.set_recent_activity_types(Some(
                     recent_activities[1..recent_activities.len()].to_vec(),

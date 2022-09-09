@@ -38,7 +38,7 @@ mod imp {
     use super::{ActivityTypes, PluginNames};
     use crate::{model::ActivityType, plugins::PluginName, prelude::*, sync::serialize};
     use gtk::{glib, prelude::*, subclass::prelude::*};
-    use std::{cell::RefCell, convert::TryInto};
+    use std::cell::RefCell;
     use uom::si::{
         f32::{Length, Mass},
         length::meter,
@@ -186,8 +186,8 @@ mod imp {
                     self.inner.borrow_mut().user_id = value.get::<i64>().unwrap();
                 }
                 "user-name" => {
-                    self.inner.borrow_mut().user_name =
-                        value.get::<&str>().unwrap().to_string().try_into().ok();
+                    let value = value.get::<&str>().unwrap().to_string();
+                    self.inner.borrow_mut().user_name = Some(value);
                 }
                 "user-birthday" => {
                     let value = value.get().unwrap();
@@ -375,15 +375,12 @@ impl User {
     }
 
     pub fn set_enabled_plugins(&self, value: Option<Vec<PluginName>>) -> &Self {
-        self.set_property("enabled-plugins", PluginNames(value.unwrap_or(vec![])));
+        self.set_property("enabled-plugins", PluginNames(value.unwrap()));
         self
     }
 
     pub fn set_recent_activity_types(&self, value: Option<Vec<ActivityType>>) -> &Self {
-        self.set_property(
-            "recent-activity-types",
-            ActivityTypes(value.unwrap_or(vec![])),
-        );
+        self.set_property("recent-activity-types", ActivityTypes(value.unwrap()));
         self
     }
 
@@ -477,7 +474,7 @@ impl UserBuilder {
     }
 
     pub fn user_id(&mut self, user_id: i64) -> &mut Self {
-        self.user_id = Some(user_id.into());
+        self.user_id = Some(user_id);
         self
     }
 
@@ -502,7 +499,7 @@ impl UserBuilder {
     }
 
     pub fn user_stepgoal(&mut self, user_stepgoal: i64) -> &mut Self {
-        self.user_stepgoal = Some(user_stepgoal.into());
+        self.user_stepgoal = Some(user_stepgoal);
         self
     }
 

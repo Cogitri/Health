@@ -96,7 +96,7 @@ impl Registrar {
     }
 
     /// Push enabled plugins and disabled plugins.
-    pub async fn load_plugins(&self) -> () {
+    pub async fn load_plugins(&self) {
         let imp = self.imp();
         let user_id = i64::from(Settings::instance().active_user_id());
         let user = &Database::instance().user(user_id).await.unwrap();

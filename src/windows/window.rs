@@ -29,10 +29,7 @@ use gtk::{
 use gtk_macros::action;
 
 mod imp {
-    use crate::{
-        core::Settings,
-        views::ViewHomePage,
-    };
+    use crate::{core::Settings, views::ViewHomePage};
     use gtk::{
         glib::{self, SourceId},
         prelude::*,

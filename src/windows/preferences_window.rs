@@ -141,12 +141,11 @@ mod imp {
 
             gtk_macros::spawn!(glib::clone!(@weak obj => async move {
                 obj.construct_user().await;
+                obj.setup_actions();
+                obj.connect_handlers();
+                obj.handle_enable_notify_changed(true);
+                obj.init_time_buttons();
             }));
-
-            obj.setup_actions();
-            obj.connect_handlers();
-            obj.handle_enable_notify_changed(true);
-            obj.init_time_buttons();
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -417,7 +416,7 @@ impl PreferencesWindow {
         if let Some(val) = imp.step_goal_spin_button.raw_value::<u32>() {
             glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
                 let user = obj.get_user().await;
-                user.set_user_stepgoal(Some(val as i64));
+                user.set_user_stepgoal(Some(i64::from(val)));
                 obj.update_user(user).await;
             }));
         }

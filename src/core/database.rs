@@ -606,34 +606,27 @@ impl Database {
         for i in 0..cursor.n_columns() {
             match cursor.variable_name(i).unwrap().as_str() {
                 "user_id" => {
-                    println!("user_id: {}", cursor.integer(i));
-                    user.user_id(cursor.integer(i).try_into().unwrap());
+                    user.user_id(cursor.integer(i));
                 }
                 "user_name" => {
-                    println!("user_name: {}", cursor.string(i).unwrap().as_str());
                     user.user_name(cursor.string(i).unwrap().as_str());
                 }
                 "user_birthday" => {
-                    println!("user_birthday: {}", cursor.string(i).unwrap().as_str());
                     user.user_birthday(glib::DateTime::from_iso8601(
                         cursor.string(i).unwrap().as_str(),
                         None,
                     )?);
                 }
                 "user_height" => {
-                    println!("height with get user: {}", cursor.double(i));
                     user.user_height(Length::new::<meter>(cursor.double(i) as f32));
                 }
                 "user_weightgoal" => {
-                    println!("weightgoal with get user: {}", cursor.double(i));
                     user.user_weightgoal(Mass::new::<kilogram>(cursor.double(i) as f32));
                 }
                 "user_stepgoal" => {
-                    println!("stepgoal with get user: {}", cursor.integer(i));
-                    user.user_stepgoal(cursor.integer(i).try_into().unwrap());
+                    user.user_stepgoal(cursor.integer(i));
                 }
                 "enabled_plugins" => {
-                    println!("enabled_plugins: {}", cursor.string(i).unwrap().as_str());
                     user.enabled_plugins(
                         cursor
                             .string(i)
@@ -645,10 +638,6 @@ impl Database {
                     );
                 }
                 "recent_activity_types" => {
-                    println!(
-                        "recent_activity_types: {}",
-                        cursor.string(i).unwrap().as_str()
-                    );
                     user.recent_activity_types(
                         cursor
                             .string(i)
@@ -660,7 +649,6 @@ impl Database {
                     );
                 }
                 "did_initial_setup" => {
-                    println!("did_initial_setup with get user: {}", cursor.is_boolean(i));
                     user.did_initial_setup(cursor.is_boolean(i));
                 }
                 _ => {
@@ -696,7 +684,7 @@ impl Database {
             for i in 0..cursor.n_columns() {
                 match cursor.variable_name(i).unwrap().as_str() {
                     "user_id" => {
-                        user.user_id(cursor.integer(i).try_into().unwrap());
+                        user.user_id(cursor.integer(i));
                     }
                     "user_name" => {
                         user.user_name(cursor.string(i).unwrap().as_str());
@@ -714,7 +702,7 @@ impl Database {
                         user.user_weightgoal(Mass::new::<kilogram>(cursor.double(i) as f32));
                     }
                     "user_stepgoal" => {
-                        user.user_stepgoal(cursor.integer(i).try_into().unwrap());
+                        user.user_stepgoal(cursor.integer(i));
                     }
                     "enabled_plugins" => {
                         user.enabled_plugins(
@@ -811,13 +799,13 @@ impl Database {
                 .as_str(),
         );
         if let Some(height) = user.user_height() {
-            resource.set_double("health:user_height", height.get::<meter>() as f64);
+            resource.set_double("health:user_height", f64::from(height.get::<meter>()));
         }
         if let Some(weight) = user.user_weightgoal() {
             resource.set_double("health:user_weightgoal", weight.get::<kilogram>().into());
         }
         if let Some(stepgoal) = user.user_stepgoal() {
-            resource.set_int64("health:user_stepgoal", stepgoal.into());
+            resource.set_int64("health:user_stepgoal", stepgoal);
         }
         if let Some(plugins) = user.enabled_plugins() {
             resource.set_string(
@@ -864,7 +852,7 @@ impl Database {
         let cursor = statement.execute_future().await?;
 
         if let Ok(true) = cursor.next_future().await {
-            db_version = cursor.integer(0).try_into().unwrap();
+            db_version = cursor.integer(0);
         }
 
         Ok(db_version)
@@ -910,7 +898,7 @@ impl Database {
         let imp = self.imp();
         let resource = tracker::Resource::new(Some("health"));
         resource.set_uri("rdf:type", "health:Version");
-        resource.set_int64("health:version", DB_VERSION.into());
+        resource.set_int64("health:version", DB_VERSION);
         let connection = imp.connection.get().unwrap();
         let manager = imp.manager.get().unwrap();
 
@@ -1110,8 +1098,7 @@ impl Database {
 
         let datetime = if imp.settings.user_birthday().is_none() {
             let age: i32 = imp.settings.user_age().try_into().unwrap();
-            let datetime = glib::DateTime::local().add_years(-age).unwrap();
-            datetime
+            glib::DateTime::local().add_years(-age).unwrap()
         } else {
             imp.settings.user_birthday().unwrap()
         };
@@ -1123,7 +1110,7 @@ impl Database {
             .user_birthday(datetime)
             .user_height(imp.settings.user_height())
             .user_weightgoal(imp.settings.user_weight_goal().unwrap())
-            .user_stepgoal(imp.settings.user_step_goal() as i64)
+            .user_stepgoal(i64::from(imp.settings.user_step_goal()))
             .enabled_plugins(imp.settings.enabled_plugins())
             .recent_activity_types(
                 imp.settings
@@ -1315,7 +1302,7 @@ impl Database {
         );
         resource.set_int64(
             "health:activity_user_id",
-            imp.settings.active_user_id() as i64,
+            i64::from(imp.settings.active_user_id()),
         );
         resource.set_int64(
             "health:activity_id",
@@ -1378,7 +1365,7 @@ impl Database {
         resource.set_double("health:weight", weight.weight.get::<kilogram>().into());
         resource.set_int64(
             "health:weight_user_id",
-            imp.settings.active_user_id() as i64,
+            i64::from(imp.settings.active_user_id()),
         );
 
         let connection = imp.connection.get().unwrap();
@@ -1422,13 +1409,13 @@ impl Database {
                 .as_str(),
         );
         if let Some(height) = user.user_height() {
-            resource.set_double("health:user_height", height.get::<meter>() as f64);
+            resource.set_double("health:user_height", f64::from(height.get::<meter>()));
         }
         if let Some(weight) = user.user_weightgoal() {
             resource.set_double("health:user_weightgoal", weight.get::<kilogram>().into());
         }
         if let Some(stepgoal) = user.user_stepgoal() {
-            resource.set_int64("health:user_stepgoal", stepgoal.into());
+            resource.set_int64("health:user_stepgoal", stepgoal);
         }
         if let Some(plugins) = user.enabled_plugins() {
             resource.set_string(
