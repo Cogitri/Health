@@ -1122,7 +1122,7 @@ impl Database {
             .did_initial_setup(true);
 
         let user = user_builder.build();
-        if let Err(e) = self.save_user(user).await {
+        if let Err(e) = self.create_user(user).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
                 "Failed to migrate user data due to error {e}",
@@ -1391,7 +1391,7 @@ impl Database {
     ///
     /// # Returns
     /// An error if querying the DB goes wrong.
-    pub async fn save_user(&self, user: User) -> Result<()> {
+    pub async fn create_user(&self, user: User) -> Result<()> {
         let imp = self.imp();
         let top_user_id = self.get_top_unused_user_id().await?;
         let resource = tracker::Resource::new(Some(format!("health:User{}", top_user_id).as_str()));

@@ -316,7 +316,7 @@ impl SetupWindow {
 
             let user = user_builder.build();
 
-            if let Err(e) = imp.database.save_user(user).await {
+            if let Err(e) = imp.database.create_user(user).await {
                 glib::g_warning!(
                     crate::config::LOG_DOMAIN,
                     "Failed to save new data due to error {e}",

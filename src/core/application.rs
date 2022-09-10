@@ -211,8 +211,7 @@ impl Application {
     pub async fn get_user(&self) -> User {
         let imp = self.imp();
         let user_id = i64::from(imp.settings.active_user_id());
-        let user = &imp.database.user(user_id).await.unwrap();
-        user.clone()
+        imp.database.user(user_id).await.unwrap()
     }
 
     async fn handle_enable_notifications_changed(&self) {

@@ -86,7 +86,7 @@ mod imp {
             self.parent_constructed(obj);
 
             gtk_macros::spawn!(glib::clone!(@weak obj => async move {
-                obj.construct_activity().await;
+                obj.load_recent_activities().await;
             }));
 
             let create_list_box_row = glib::clone!(@weak obj => @default-panic, move |o: &glib::Object| {
@@ -171,7 +171,7 @@ impl ActivityTypeSelector {
         self.connect_notify_local(Some("selected-activity"), move |s, _| f(s))
     }
 
-    pub async fn construct_activity(&self) {
+    pub async fn load_recent_activities(&self) {
         let imp = self.imp();
         let user_id = i64::from(Settings::instance().active_user_id());
         let user = &Database::instance().user(user_id).await.unwrap();

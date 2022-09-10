@@ -81,7 +81,7 @@
     </key>
     <key name="active-user-id" type="u">
       <default>0</default>
-      <summary>Active User ID</summary>
+      <summary>Active user ID</summary>
     </key>
   </schema>
 </schemalist>
