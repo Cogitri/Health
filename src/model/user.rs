@@ -24,11 +24,11 @@ use uom::si::{
     mass::kilogram,
 };
 
-#[derive(Clone, glib::Boxed, PartialEq, serde::Deserialize, serde::Serialize)]
+#[derive(Clone, glib::Boxed, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
 #[boxed_type(name = "PluginNames")]
 pub struct PluginNames(pub Vec<PluginName>);
 
-#[derive(Clone, glib::Boxed, PartialEq, serde::Deserialize, serde::Serialize)]
+#[derive(Clone, glib::Boxed, PartialEq, Eq, serde::Deserialize, serde::Serialize)]
 #[boxed_type(name = "ActivityTypes")]
 pub struct ActivityTypes(pub Vec<ActivityType>);
 

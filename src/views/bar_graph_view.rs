@@ -25,7 +25,7 @@ use gtk::{gdk, gio::subclass::prelude::*, glib, pango, prelude::*};
 use std::{collections::HashMap, convert::TryInto};
 
 /// A [Tuple] describes a single segment in a [BarGraphView]
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Tuple {
     pub activity_name: String,
     pub calories: i64,

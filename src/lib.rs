@@ -62,6 +62,7 @@
 //!     * Personally, I prefer to not `use` gtk and other GObject crates, but you do you.
 // We don't want default methods for all GObject types
 #![allow(clippy::new_without_default)]
+#![allow(clippy::type_complexity)]
 #![warn(clippy::await_holding_refcell_ref)]
 #![warn(clippy::cast_lossless)]
 #![warn(clippy::comparison_to_empty)]

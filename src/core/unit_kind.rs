@@ -2,6 +2,7 @@ use gtk::glib;
 
 #[derive(
     PartialEq,
+    Eq,
     Debug,
     Clone,
     Copy,
