@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-07-09 18:01+0000\n"
-"PO-Revision-Date: 2022-07-10 10:38+0800\n"
+"POT-Creation-Date: 2022-08-15 18:30+0000\n"
+"PO-Revision-Date: 2022-09-10 19:09+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -461,8 +461,8 @@ msgid "Please enter your daily step goal."
 msgstr "请输入您的每日步数目标。"
 
 #: data/ui/setup_window.blp:224
-msgid "The WHO recommends 10.000 steps per day."
-msgstr "世界卫生组织建议每天 10000 步。"
+msgid "The WHO recommends 7.500 steps per day."
+msgstr "世界卫生组织建议每天 7500 步。"
 
 #: data/ui/setup_window.blp:274
 msgid "Please enter your weight goal."
@@ -570,15 +570,15 @@ msgstr "关于健康(_A)"
 msgid "Enable plugin"
 msgstr "启用插件"
 
-#: src/core/application.rs:169
+#: src/core/application.rs:176
 msgid "A health tracking app for the GNOME desktop."
 msgstr "GNOME 桌面的健康追踪应用。"
 
-#: src/core/application.rs:171
+#: src/core/application.rs:178
 msgid "translator-credits"
 msgstr "D <afecr@foxmail.com>, 2021"
 
-#: src/core/application.rs:173
+#: src/core/application.rs:180
 msgid "Websites"
 msgstr "网站"
 
@@ -974,42 +974,42 @@ msgid "Feet"
 msgstr "英尺"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:475 src/widgets/unit_spinbutton.rs:635
+#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:654
 msgid "cm"
 msgstr "厘米"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:477
+#: src/widgets/unit_spinbutton.rs:490
 msgid "m"
 msgstr "米"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:479
+#: src/widgets/unit_spinbutton.rs:492
 msgid "km"
 msgstr "公里"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:481
+#: src/widgets/unit_spinbutton.rs:494
 msgid "kg"
 msgstr "公斤"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:483 src/widgets/unit_spinbutton.rs:637
+#: src/widgets/unit_spinbutton.rs:496 src/widgets/unit_spinbutton.rs:656
 msgid "in"
 msgstr "英寸"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:485
+#: src/widgets/unit_spinbutton.rs:498
 msgid "ft"
 msgstr "英尺"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:487
+#: src/widgets/unit_spinbutton.rs:500
 msgid "mi"
 msgstr "英里"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:489
+#: src/widgets/unit_spinbutton.rs:502
 msgid "lb"
 msgstr "磅"
 
@@ -1026,6 +1026,11 @@ msgstr "活动.csv.encrypted"
 #: src/windows/export_dialog.rs:63
 msgid "Activities.csv"
 msgstr "活动.csv"
+
+#: src/windows/export_dialog.rs:75 src/windows/export_dialog.rs:109
+#: src/windows/import_dialog.rs:68 src/windows/import_dialog.rs:97
+msgid "No file selected."
+msgstr "未选择文件。"
 
 #: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
