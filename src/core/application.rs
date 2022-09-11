@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, UnitSystem},
+    core::{i18n, Database, UnitSystem},
     model::{ModelNotification, User},
     windows::{PreferencesWindow, Window},
 };
@@ -80,18 +80,7 @@ mod imp {
                 // Make sure we don't exit while the migration is running because we haven't opened a window yet
                 obj.hold();
                 gtk_macros::spawn!(glib::clone!(@weak obj => async move {
-                    if let Err(e) = Database::instance().migrate().await {
-                        glib::g_warning!(
-                            crate::config::APPLICATION_ID,
-                            "Failed to migrate database to new version due to error {e}",
-                        );
-                    }
-                    let window = Window::new(&obj);
-                    window.show();
-                    obj.imp().window
-                        .replace(Some(glib::ObjectExt::downgrade(&window)));
-                    // Since the window is shown now we can release the hold, the application will exit once the window is closed (if notifications are disabled)
-                    obj.release();
+                    obj.create_main_window().await;
                 }));
             } else {
                 glib::g_info!(crate::config::APPLICATION_ID, "Starting setup...");
@@ -212,6 +201,22 @@ impl Application {
         let imp = self.imp();
         let user_id = i64::from(imp.settings.active_user_id());
         imp.database.user(user_id).await.unwrap()
+    }
+
+    async fn create_main_window(&self) {
+        if let Err(e) = Database::instance().migrate().await {
+            glib::g_warning!(
+                crate::config::APPLICATION_ID,
+                "Failed to migrate database to new version due to error {e}",
+            );
+        }
+        let window = Window::new(self);
+        window.show();
+        self.imp()
+            .window
+            .replace(Some(glib::ObjectExt::downgrade(&window)));
+        // Since the window is shown now we can release the hold, the application will exit once the window is closed (if notifications are disabled)
+        self.release();
     }
 
     async fn handle_enable_notifications_changed(&self) {
