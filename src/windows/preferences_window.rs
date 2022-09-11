@@ -474,8 +474,6 @@ impl PreferencesWindow {
                 obj.update_user(user).await;
             }));
             imp.bmi_levelbar.set_weight(weight);
-            imp.bmi_levelbar
-                .set_bmi_label(&crate::core::i18n("Target BMI"));
         }
     }
 

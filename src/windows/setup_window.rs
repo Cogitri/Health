@@ -17,7 +17,7 @@
  */
 
 use crate::{
-    core::{i18n, UnitSystem},
+    core::UnitSystem,
     model::{User, Weight},
     plugins::PluginName,
     prelude::*,
@@ -248,9 +248,6 @@ impl SetupWindow {
         };
         imp.current_bmi_levelbar.set_height(height);
         imp.target_bmi_levelbar.set_height(height);
-
-        imp.current_bmi_levelbar.set_bmi_label(&i18n("Current BMI"));
-        imp.target_bmi_levelbar.set_bmi_label(&i18n("Target BMI"));
     }
 
     #[template_callback]
