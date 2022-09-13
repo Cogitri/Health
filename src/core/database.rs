@@ -1498,11 +1498,10 @@ impl Database {
 
 #[cfg(test)]
 mod test {
-    use std::{cell::Cell, rc::Rc};
-
     use super::*;
-    use crate::model::ActivityType;
+    use crate::{core::Settings, model::ActivityType};
     use num_traits::cast::ToPrimitive;
+    use std::{cell::Cell, rc::Rc};
     use tempfile::tempdir;
     use uom::si::{f32::Mass, mass::kilogram};
 
@@ -1600,6 +1599,7 @@ mod test {
         let date = glib::DateTime::local();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
         let connection = db.connection();
+        Settings::instance().set_user_weight_goal(Mass::new::<kilogram>(50.0));
         let expected_activity = Activity::builder()
             .activity_type(ActivityType::Walking)
             .date(date.clone())
@@ -1658,6 +1658,7 @@ mod test {
         let date = glib::DateTime::local();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
         let connection = db.connection();
+        Settings::instance().set_user_weight_goal(Mass::new::<kilogram>(50.0));
         let expected_weight = Weight::new(date.clone(), Mass::new::<kilogram>(50.0));
         let manager = db.manager();
         let resource = tracker::Resource::new(None);
