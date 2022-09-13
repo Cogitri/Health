@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-07-24 21:36+0000\n"
-"PO-Revision-Date: 2022-07-25 22:40+0300\n"
+"POT-Creation-Date: 2022-09-13 17:26+0000\n"
+"PO-Revision-Date: 2022-09-13 22:47+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -23,152 +23,74 @@ msgstr ""
 msgid "First time setup done"
 msgstr "Перше налаштування виконано"
 
-#: data/dev.Cogitri.Health.gschema.xml:17
-msgid "Whether the user has completed the setup wizard"
-msgstr ""
-"Визначає, чи заповнено користувачем усі дані у майстрі початкового "
-"налаштовування"
-
-#: data/dev.Cogitri.Health.gschema.xml:21
+#: data/dev.Cogitri.Health.gschema.xml:20
 msgid "Toggle notifications"
 msgstr "Увімкнути або вимкнути показ сповіщень"
 
-#: data/dev.Cogitri.Health.gschema.xml:22
-msgid "Whether to enable notifications."
-msgstr "Визначає, чи слід вмикати сповіщення."
-
-#: data/dev.Cogitri.Health.gschema.xml:26
+#: data/dev.Cogitri.Health.gschema.xml:24
 msgid "Set enabled plugins"
 msgstr "Встановити увімкнені додатки"
 
-#: data/dev.Cogitri.Health.gschema.xml:27
-msgid "Sets all data source plugins that are enabled in Health."
-msgstr "Встановлює усі додатки джерел даних, які увімкнено у «Здоров'ї“."
-
-#: data/dev.Cogitri.Health.gschema.xml:31
+#: data/dev.Cogitri.Health.gschema.xml:28
 msgid "Notification time"
 msgstr "Час сповіщення"
 
 #: data/dev.Cogitri.Health.gschema.xml:32
-msgid "The time at which Health should remind the user of their step goal"
-msgstr ""
-"Час, коли «Здоров'я» має нагадати користувачеві про цільову кількість кроків"
-
-#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "notification frequency"
 msgstr "Частота сповіщення"
 
-#: data/dev.Cogitri.Health.gschema.xml:37
-msgid ""
-"How frequent should the user be notified to complete their daily step-goal."
-msgstr ""
-"Наскільки часто слід сповіщати користувача щодо потреби у виконання щоденної "
-"цільової кількості кроків."
-
-#: data/dev.Cogitri.Health.gschema.xml:41
+#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "List of recent activity types"
 msgstr "Список типів нещодавньої фізичної діяльності"
 
-#: data/dev.Cogitri.Health.gschema.xml:42
-msgid ""
-"Activity types the user used recently, to be shown first in the activity "
-"types selector’s list"
-msgstr ""
-"Типи фізичної активності, якими було використано нещодавно, і які слід "
-"показати першими у списку вибору типів фізичної активності"
-
-#: data/dev.Cogitri.Health.gschema.xml:46
+#: data/dev.Cogitri.Health.gschema.xml:40
 msgid "Google Fit Sync-Provider setup"
 msgstr "Налаштовано надавача даних Google Fit"
 
-#: data/dev.Cogitri.Health.gschema.xml:47
-msgid "Whether Google Fit has been setup as sync provider"
-msgstr ""
-"Визначає, чи було налаштовано Google Fit як надавача даних для синхронізації"
-
-#: data/dev.Cogitri.Health.gschema.xml:51
+#: data/dev.Cogitri.Health.gschema.xml:44
 msgid "Last sync with Google Fit"
 msgstr "Остання синхронізація з Google Fit"
 
-#: data/dev.Cogitri.Health.gschema.xml:52
-msgid "The last time we synched steps, weight etc. with Google Fit"
-msgstr ""
-"Час останньої синхронізації даних щодо кроків, ваги та інших параметрів з "
-"Google Fit"
-
-#: data/dev.Cogitri.Health.gschema.xml:56
+#: data/dev.Cogitri.Health.gschema.xml:48
 msgid "Unit system used"
 msgstr "Використана система одиниць"
 
-#: data/dev.Cogitri.Health.gschema.xml:57
-msgid "The unit system the user chose, e.g. for cm vs inch for height"
-msgstr ""
-"Система одиниць користувача, наприклад сантиметри або дюйми для зросту"
-
-#: data/dev.Cogitri.Health.gschema.xml:61
+#: data/dev.Cogitri.Health.gschema.xml:52
 msgid "User age"
 msgstr "Вік користувача"
 
-#: data/dev.Cogitri.Health.gschema.xml:62
-msgid "The age of the user (deprecated)."
-msgstr "Вік користувача (застаріле значення)."
-
-#: data/dev.Cogitri.Health.gschema.xml:66
+#: data/dev.Cogitri.Health.gschema.xml:56
 msgid "Absolute user age"
 msgstr "Абсолютний вік користувача"
 
-#: data/dev.Cogitri.Health.gschema.xml:67
-msgid "The age of the user in absolute terms (like 01/01/1970)"
-msgstr ""
-"Дата народження користувача за абсолютною шкалою (наприклад 01/01/1970)"
-
-#: data/dev.Cogitri.Health.gschema.xml:71
+#: data/dev.Cogitri.Health.gschema.xml:60
 msgid "User height"
 msgstr "Зріст користувача"
 
-#: data/dev.Cogitri.Health.gschema.xml:72
-msgid "The height of the user."
-msgstr "Зріст користувача."
-
-#: data/dev.Cogitri.Health.gschema.xml:76
+#: data/dev.Cogitri.Health.gschema.xml:64
 msgid "User step goal"
 msgstr "Цільова к-ть кроків користувача"
 
-#: data/dev.Cogitri.Health.gschema.xml:77
-msgid "The amount of steps the user wants to reach daily."
-msgstr "Кількість кроків, які користувач хоче проходити щодня."
-
-#: data/dev.Cogitri.Health.gschema.xml:81
+#: data/dev.Cogitri.Health.gschema.xml:68
 msgid "User weight goal"
 msgstr "Цільова вага користувача"
 
-#: data/dev.Cogitri.Health.gschema.xml:82
-msgid "The weight the user wants to reach."
-msgstr "Вага, якої хоче досягти користувач."
-
-#: data/dev.Cogitri.Health.gschema.xml:86
+#: data/dev.Cogitri.Health.gschema.xml:72
 msgid "Window height"
 msgstr "Висота вікна"
 
-#: data/dev.Cogitri.Health.gschema.xml:87
-msgid "The height of the window."
-msgstr "Висота вікна."
-
-#: data/dev.Cogitri.Health.gschema.xml:91
+#: data/dev.Cogitri.Health.gschema.xml:76
 msgid "Window maximized"
 msgstr "Вікно розгорнуто"
 
-#: data/dev.Cogitri.Health.gschema.xml:92
-msgid "Whether the window is maximized."
-msgstr "Чи вікно розгорнуте."
-
-#: data/dev.Cogitri.Health.gschema.xml:96
+#: data/dev.Cogitri.Health.gschema.xml:80
 msgid "Window width"
 msgstr "Ширина вікна"
 
-#: data/dev.Cogitri.Health.gschema.xml:97
-msgid "The width of the window."
-msgstr "Ширина вікна."
+#: data/dev.Cogitri.Health.gschema.xml:84
+#| msgid "Active Minutes"
+msgid "Active user ID"
+msgstr "Ідентифікатор активного користувача"
 
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
@@ -324,7 +246,7 @@ msgstr ""
 "переглянути справжні інтерактивні дані."
 
 #: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
-#: data/ui/preferences_window.blp:166 src/plugins/steps/plugin.rs:39
+#: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
 msgid "Steps"
 msgstr "Кроки"
 
@@ -362,88 +284,98 @@ msgstr "Налаштування «Здоров'я»"
 msgid "General"
 msgstr "Загальне"
 
-#: data/ui/preferences_window.blp:72
+#: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
+#: data/ui/setup_window.blp:183 src/core/database.rs:1109
 msgid "User"
 msgstr "Користувач"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:154
 msgid "Unit system"
 msgstr "Система одиниць"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:164
 msgid "Imperial"
 msgstr "Імперська"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:170
 msgid "Metric"
 msgstr "Метрична"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:178
+#| msgid "User age"
+msgid "Username"
+msgstr "Користувач"
+
+#: data/ui/preferences_window.blp:109 data/ui/setup_window.blp:188
 msgid "Birthday"
 msgstr "День народження"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
+#: data/ui/preferences_window.blp:118 data/ui/setup_window.blp:197
 msgid "Height"
 msgstr "Зріст"
 
-#: data/ui/preferences_window.blp:122
+#: data/ui/preferences_window.blp:131
 msgid "Notifications"
 msgstr "Сповіщення"
 
-#: data/ui/preferences_window.blp:125
+#: data/ui/preferences_window.blp:134
 msgid "Enable notifications"
 msgstr "Увімкнути сповіщення"
 
-#: data/ui/preferences_window.blp:136
+#: data/ui/preferences_window.blp:145
 msgid "Frequency"
 msgstr "Частота"
 
-#: data/ui/preferences_window.blp:149
+#: data/ui/preferences_window.blp:158
 msgid "Daily reminder time"
 msgstr "Час щоденного нагадування"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
-#: src/plugins/steps/details.rs:240
+#: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
+#: src/plugins/steps/details.rs:245
 msgid "Step goal"
 msgstr "Цільова к-ть кроків"
 
-#: data/ui/preferences_window.blp:170
+#: data/ui/preferences_window.blp:179
 msgid "7,500 steps per day are recommended."
 msgstr "Рекомендовано здійснювати по 7500 кроків на день."
 
-#: data/ui/preferences_window.blp:184 data/ui/preferences_window.blp:187
+#: data/ui/preferences_window.blp:192 data/ui/preferences_window.blp:195
 msgid "Weight Goal"
 msgstr "Цільова вага"
 
-#: data/ui/preferences_window.blp:188
+#: data/ui/preferences_window.blp:196
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "Рекомендованим ВОЗ значенням ІМТ є від 18,5 до 24,9."
 
-#: data/ui/preferences_window.blp:212
+#: data/ui/preferences_window.blp:204 data/ui/setup_window.blp:367
+msgid "Target BMI"
+msgstr "Цільовий ІМТ"
+
+#: data/ui/preferences_window.blp:220
 msgid "Sync"
 msgstr "Синхронізувати"
 
-#: data/ui/preferences_window.blp:216
+#: data/ui/preferences_window.blp:224
 msgid "Start sync with third-party providers."
 msgstr "Почати синхронізацію із даними сторонніх надавачів."
 
-#: data/ui/preferences_window.blp:224
+#: data/ui/preferences_window.blp:232
 msgid "Importing and exporting data"
 msgstr "Імпортування та експортування даних"
 
-#: data/ui/preferences_window.blp:227
+#: data/ui/preferences_window.blp:235
 msgid "Export data as CSV"
 msgstr "Експортувати дані як CSV"
 
-#: data/ui/preferences_window.blp:230
+#: data/ui/preferences_window.blp:238
 msgid "Export…"
 msgstr "Експортувати…"
 
-#: data/ui/preferences_window.blp:237
+#: data/ui/preferences_window.blp:245
 msgid "Import data from CSV"
 msgstr "Імпортувати дані з CSV"
 
-#: data/ui/preferences_window.blp:240
+#: data/ui/preferences_window.blp:248
 msgid "Import…"
 msgstr "Імпортувати…"
 
@@ -475,36 +407,39 @@ msgstr "Вітаємо у «Здоров'ї»!"
 msgid "Please enter some information to get setup."
 msgstr "Будь ласка, надайте певні відомості для налаштовування програми."
 
-#: data/ui/setup_window.blp:212
+#: data/ui/setup_window.blp:224
 msgid "Please enter your daily step goal."
 msgstr "Будь ласка, введіть щоденну цільову кількість кроків."
 
-#: data/ui/setup_window.blp:224
-#| msgid "The WHO recommends 10.000 steps per day."
+#: data/ui/setup_window.blp:236
 msgid "The WHO recommends 7.500 steps per day."
 msgstr "ВОЗ рекомендовано виконувати 7500 кроків щодня."
 
-#: data/ui/setup_window.blp:274
+#: data/ui/setup_window.blp:286
 msgid "Please enter your weight goal."
 msgstr "Будь ласка, введіть значення цільової ваги."
 
-#: data/ui/setup_window.blp:286
+#: data/ui/setup_window.blp:298
 msgid "The WHO recommends a BMI of 18.5–24.9."
 msgstr "Рекомендованим ВОЗ значенням ІМТ є від 18,5 до 24,9."
 
-#: data/ui/setup_window.blp:314
+#: data/ui/setup_window.blp:326
 msgid "Current weight"
 msgstr "Поточна вага"
 
-#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:220
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:267
+msgid "Current BMI"
+msgstr "Поточний ІМТ"
+
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:230
 msgid "Weight goal"
 msgstr "Цільова вага"
 
-#: data/ui/setup_window.blp:372
+#: data/ui/setup_window.blp:386
 msgid "Setup sync with third-party providers."
 msgstr "Налаштуйте синхронізацію із даними сторонніх надавачів."
 
-#: data/ui/setup_window.blp:384
+#: data/ui/setup_window.blp:398
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
@@ -594,15 +529,15 @@ msgstr "_Про «Здоров'я»"
 msgid "Enable plugin"
 msgstr "Увімкнути додаток"
 
-#: src/core/application.rs:176
+#: src/core/application.rs:189
 msgid "A health tracking app for the GNOME desktop."
 msgstr "Програма стеження за станом здоров'я для стільниці GNOME."
 
-#: src/core/application.rs:178
+#: src/core/application.rs:191
 msgid "translator-credits"
 msgstr "Юрій Чорноіван <yurchor@ukr.net>, 2021"
 
-#: src/core/application.rs:180
+#: src/core/application.rs:193
 msgid "Websites"
 msgstr "Сайти"
 
@@ -746,18 +681,18 @@ msgstr[1] "Сьогодні спалено {} калорії"
 msgstr[2] "Сьогодні спалено {} калорій"
 msgstr[3] "Сьогодні спалено {} калорію"
 
-#: src/plugins/steps/details.rs:186
+#: src/plugins/steps/details.rs:187
 msgid "Today’s steps: {}"
 msgstr "Сьогодні кроків: {}"
 
-#: src/plugins/steps/details.rs:201
+#: src/plugins/steps/details.rs:206
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
 "Поки не у формі. Виконуйте цільову кількість кроків щодня, щоб повернутися "
 "до форми!"
 
-#: src/plugins/steps/details.rs:205
+#: src/plugins/steps/details.rs:210
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -775,12 +710,12 @@ msgstr[3] ""
 "Ви у формі протягом {} дня. Виконайте сьогодні щоденну цільову кількість "
 "кроків, щоб продовжити перебувати у формі!"
 
-#: src/plugins/steps/details.rs:213
+#: src/plugins/steps/details.rs:218
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr ""
 "Сьогодні ви досягли цільової кількості кроків. Продовжуйте, щоб бути у формі!"
 
-#: src/plugins/steps/details.rs:216
+#: src/plugins/steps/details.rs:221
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "Ви у формі уже {} день. Поздоровляємо!"
@@ -789,7 +724,7 @@ msgstr[2] "Ви у формі уже {} днів. Поздоровляємо!"
 msgstr[3] "Ви у формі уже {} день. Поздоровляємо!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:233
+#: src/plugins/steps/details.rs:238
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} крок на {}"
@@ -797,7 +732,7 @@ msgstr[1] "{} кроки на {}"
 msgstr[2] "{} кроків на {}"
 msgstr[3] "{} крок на {}"
 
-#: src/plugins/steps/summary.rs:94
+#: src/plugins/steps/summary.rs:96
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} крок сьогодні"
@@ -805,7 +740,7 @@ msgstr[1] "{} кроки сьогодні"
 msgstr[2] "{} кроків сьогодні"
 msgstr[3] "{} крок сьогодні"
 
-#: src/plugins/steps/summary.rs:105
+#: src/plugins/steps/summary.rs:107
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Досягнуто {} відсотка цільової кількості кроків за день"
@@ -813,16 +748,16 @@ msgstr[1] "Досягнуто {} відсотків цільової кільк�
 msgstr[2] "Досягнуто {} відсотків цільової кількості кроків за день"
 msgstr[3] "Досягнуто {} відсотка цільової кількості кроків за день"
 
-#: src/plugins/steps/summary.rs:112
+#: src/plugins/steps/summary.rs:114
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Чудово! Ви виконали свою щоденну цільову кількість кроків!"
 
-#: src/plugins/weight/details.rs:192
+#: src/plugins/weight/details.rs:202
 msgid "Current BMI: {}"
 msgstr "Поточний ІМТ: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:207
+#: src/plugins/weight/details.rs:217
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} фунт на {}"
@@ -831,7 +766,7 @@ msgstr[2] "{} фунтів на {}"
 msgstr[3] "{} фунт на {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:210
+#: src/plugins/weight/details.rs:220
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} кг на {}"
@@ -839,11 +774,11 @@ msgstr[1] "{} кг на {}"
 msgstr[2] "{} кг на {}"
 msgstr[3] "{} кг на {}"
 
-#: src/plugins/weight/details.rs:246 src/plugins/weight/details.rs:251
+#: src/plugins/weight/details.rs:257 src/plugins/weight/details.rs:262
 msgid "Unknown BMI"
 msgstr "Невідомий ІМТ"
 
-#: src/plugins/weight/details.rs:268
+#: src/plugins/weight/details.rs:280
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -863,7 +798,7 @@ msgstr[3] ""
 "Вашою цільовою вагою є {} фунт. Додайте перший вимір ваги, щоб побачити, "
 "наскільки близько ви до досягнення цільової ваги."
 
-#: src/plugins/weight/details.rs:275
+#: src/plugins/weight/details.rs:287
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -883,11 +818,11 @@ msgstr[3] ""
 "Вашою цільовою вагою є {} кг. Додайте перший вимір ваги, щоб побачити, "
 "наскільки близько ви до досягнення цільової ваги."
 
-#: src/plugins/weight/details.rs:284
+#: src/plugins/weight/details.rs:296
 msgid "You’ve reached your weight goal. Great job!"
 msgstr "Вами досягнуто цільової ваги. Поздоровляємо!"
 
-#: src/plugins/weight/details.rs:300
+#: src/plugins/weight/details.rs:312
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "Вашою цільова вагою є {} фунт."
@@ -895,7 +830,7 @@ msgstr[1] "Вашою цільова вагою є {} фунти."
 msgstr[2] "Вашою цільова вагою є {} фунтів."
 msgstr[3] "Вашою цільова вагою є {} фунт."
 
-#: src/plugins/weight/details.rs:305
+#: src/plugins/weight/details.rs:317
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "Вам лишився {} фунт до бажаного результату."
@@ -903,7 +838,7 @@ msgstr[1] "Вам лишилося {} фунти до бажаного резу�
 msgstr[2] "Вам лишилося {} фунтів до бажаного результату."
 msgstr[3] "Вам лишився {} фунт до бажаного результату."
 
-#: src/plugins/weight/details.rs:312
+#: src/plugins/weight/details.rs:324
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "Ваша вага складає {} кілограм."
@@ -911,7 +846,7 @@ msgstr[1] "Ваша вага складає {} кілограми."
 msgstr[2] "Ваша вага складає {} кілограмів."
 msgstr[3] "Ваша вага складає {} кілограм."
 
-#: src/plugins/weight/details.rs:318
+#: src/plugins/weight/details.rs:330
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "Вам лишився {} кілограм до досягнення бажаного результату"
@@ -919,7 +854,7 @@ msgstr[1] "Вам лишилося {} кілограми до досягненн
 msgstr[2] "Вам лишилося {} кілограмів до досягнення бажаного результату"
 msgstr[3] "Вам лишився {} кілограм до досягнення бажаного результату"
 
-#: src/plugins/weight/details.rs:328
+#: src/plugins/weight/details.rs:340
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr ""
 "Цільової ваги ще не встановлено. Ви можете встановити її у налаштуваннях "
@@ -1098,10 +1033,6 @@ msgstr[1] "{} ярди"
 msgstr[2] "{} ярдів"
 msgstr[3] "{} ярд"
 
-#: src/widgets/bmi_level_bar.rs:267 src/windows/setup_window.rs:248
-msgid "Current BMI"
-msgstr "Поточний ІМТ"
-
 #: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Поточний ІМТ: {}</small>"
@@ -1241,17 +1172,81 @@ msgstr "Сталася помилка!"
 msgid "Close"
 msgstr "Закрити"
 
-#: src/windows/preferences_window.rs:409 src/windows/setup_window.rs:249
-msgid "Target BMI"
-msgstr "Цільовий ІМТ"
-
-#: src/windows/window.rs:97
-msgid "Failed to migrate database to new version due to error {}"
-msgstr "Не вдалося перенести базу даних до нової версії через помилку {}"
-
 #: src/windows/window.rs:267
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Не вдалося синхронізувати дані із Google Fit через помилку: {}"
+
+#~ msgid "Whether the user has completed the setup wizard"
+#~ msgstr ""
+#~ "Визначає, чи заповнено користувачем усі дані у майстрі початкового "
+#~ "налаштовування"
+
+#~ msgid "Whether to enable notifications."
+#~ msgstr "Визначає, чи слід вмикати сповіщення."
+
+#~ msgid "Sets all data source plugins that are enabled in Health."
+#~ msgstr "Встановлює усі додатки джерел даних, які увімкнено у «Здоров'ї“."
+
+#~ msgid "The time at which Health should remind the user of their step goal"
+#~ msgstr ""
+#~ "Час, коли «Здоров'я» має нагадати користувачеві про цільову кількість "
+#~ "кроків"
+
+#~ msgid ""
+#~ "How frequent should the user be notified to complete their daily step-"
+#~ "goal."
+#~ msgstr ""
+#~ "Наскільки часто слід сповіщати користувача щодо потреби у виконання "
+#~ "щоденної цільової кількості кроків."
+
+#~ msgid ""
+#~ "Activity types the user used recently, to be shown first in the activity "
+#~ "types selector’s list"
+#~ msgstr ""
+#~ "Типи фізичної активності, якими було використано нещодавно, і які слід "
+#~ "показати першими у списку вибору типів фізичної активності"
+
+#~ msgid "Whether Google Fit has been setup as sync provider"
+#~ msgstr ""
+#~ "Визначає, чи було налаштовано Google Fit як надавача даних для "
+#~ "синхронізації"
+
+#~ msgid "The last time we synched steps, weight etc. with Google Fit"
+#~ msgstr ""
+#~ "Час останньої синхронізації даних щодо кроків, ваги та інших параметрів з "
+#~ "Google Fit"
+
+#~ msgid "The unit system the user chose, e.g. for cm vs inch for height"
+#~ msgstr ""
+#~ "Система одиниць користувача, наприклад сантиметри або дюйми для зросту"
+
+#~ msgid "The age of the user (deprecated)."
+#~ msgstr "Вік користувача (застаріле значення)."
+
+#~ msgid "The age of the user in absolute terms (like 01/01/1970)"
+#~ msgstr ""
+#~ "Дата народження користувача за абсолютною шкалою (наприклад 01/01/1970)"
+
+#~ msgid "The height of the user."
+#~ msgstr "Зріст користувача."
+
+#~ msgid "The amount of steps the user wants to reach daily."
+#~ msgstr "Кількість кроків, які користувач хоче проходити щодня."
+
+#~ msgid "The weight the user wants to reach."
+#~ msgstr "Вага, якої хоче досягти користувач."
+
+#~ msgid "The height of the window."
+#~ msgstr "Висота вікна."
+
+#~ msgid "Whether the window is maximized."
+#~ msgstr "Чи вікно розгорнуте."
+
+#~ msgid "The width of the window."
+#~ msgstr "Ширина вікна."
+
+#~ msgid "Failed to migrate database to new version due to error {}"
+#~ msgstr "Не вдалося перенести базу даних до нової версії через помилку {}"
 
 #~ msgid "@APPLICATION_ID@"
 #~ msgstr "@APPLICATION_ID@"
