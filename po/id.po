@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-07-24 21:36+0000\n"
-"PO-Revision-Date: 2022-08-11 11:05+0700\n"
+"POT-Creation-Date: 2022-09-13 17:26+0000\n"
+"PO-Revision-Date: 2022-09-14 15:26+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
@@ -23,146 +23,73 @@ msgstr ""
 msgid "First time setup done"
 msgstr "Penyiapan saat pertama selesai"
 
-#: data/dev.Cogitri.Health.gschema.xml:17
-msgid "Whether the user has completed the setup wizard"
-msgstr "Apakah pengguna telah menyelesaikan wahana pandu penyiapan"
-
-#: data/dev.Cogitri.Health.gschema.xml:21
+#: data/dev.Cogitri.Health.gschema.xml:20
 msgid "Toggle notifications"
 msgstr "Jungkitkan pemberitahuan"
 
-#: data/dev.Cogitri.Health.gschema.xml:22
-msgid "Whether to enable notifications."
-msgstr "Apakah akan memfungsikan pemberitahuan."
-
-#: data/dev.Cogitri.Health.gschema.xml:26
+#: data/dev.Cogitri.Health.gschema.xml:24
 msgid "Set enabled plugins"
 msgstr "Atur pengaya yang diaktifkan"
 
-#: data/dev.Cogitri.Health.gschema.xml:27
-msgid "Sets all data source plugins that are enabled in Health."
-msgstr "Atur semua pengaya sumber data yang diaktifkan di Kesehatan."
-
-#: data/dev.Cogitri.Health.gschema.xml:31
+#: data/dev.Cogitri.Health.gschema.xml:28
 msgid "Notification time"
 msgstr "Waktu pemberitahuan"
 
 #: data/dev.Cogitri.Health.gschema.xml:32
-msgid "The time at which Health should remind the user of their step goal"
-msgstr ""
-"Waktu di mana Kesehatan harus mengingatkan pengguna tentang sararan langkah "
-"mereka"
-
-#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "notification frequency"
 msgstr "frekuensi pemberitahuan"
 
-#: data/dev.Cogitri.Health.gschema.xml:37
-msgid ""
-"How frequent should the user be notified to complete their daily step-goal."
-msgstr ""
-"Seberapa sering pengguna harus diberitahu untuk menyelesaikan sasaran "
-"langkah harian mereka."
-
-#: data/dev.Cogitri.Health.gschema.xml:41
+#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "List of recent activity types"
 msgstr "Daftar tipe aktivitas terbaru"
 
-#: data/dev.Cogitri.Health.gschema.xml:42
-msgid ""
-"Activity types the user used recently, to be shown first in the activity "
-"types selector’s list"
-msgstr ""
-"Tipe aktivitas yang digunakan pengguna baru-baru ini, untuk ditampilkan "
-"terlebih dahulu dalam daftar pemilih tipe aktivitas"
-
-#: data/dev.Cogitri.Health.gschema.xml:46
+#: data/dev.Cogitri.Health.gschema.xml:40
 msgid "Google Fit Sync-Provider setup"
 msgstr "Penyiapan Penyedia-Penyelarasan Google Fit"
 
-#: data/dev.Cogitri.Health.gschema.xml:47
-msgid "Whether Google Fit has been setup as sync provider"
-msgstr "Apakah Google Fit telah disiapkan sebagai penyedia penyelarasan"
-
-#: data/dev.Cogitri.Health.gschema.xml:51
+#: data/dev.Cogitri.Health.gschema.xml:44
 msgid "Last sync with Google Fit"
 msgstr "Penyelarasan terakhir dengan Google Fit"
 
-#: data/dev.Cogitri.Health.gschema.xml:52
-msgid "The last time we synched steps, weight etc. with Google Fit"
-msgstr "Terakhir kali menyelaraskan langkah, berat, dll. dengan Google Fit"
-
-#: data/dev.Cogitri.Health.gschema.xml:56
+#: data/dev.Cogitri.Health.gschema.xml:48
 msgid "Unit system used"
 msgstr "Sistem satuan yang dipakai"
 
-#: data/dev.Cogitri.Health.gschema.xml:57
-msgid "The unit system the user chose, e.g. for cm vs inch for height"
-msgstr "Sistem satuan yang dipilih pengguna, mis. cm vs inci untuk tinggi"
-
-#: data/dev.Cogitri.Health.gschema.xml:61
+#: data/dev.Cogitri.Health.gschema.xml:52
 msgid "User age"
 msgstr "Usia pengguna"
 
-#: data/dev.Cogitri.Health.gschema.xml:62
-msgid "The age of the user (deprecated)."
-msgstr "Usia pengguna (tidak dipakai lagi)."
-
-#: data/dev.Cogitri.Health.gschema.xml:66
+#: data/dev.Cogitri.Health.gschema.xml:56
 msgid "Absolute user age"
 msgstr "Usia absolut pengguna"
 
-#: data/dev.Cogitri.Health.gschema.xml:67
-msgid "The age of the user in absolute terms (like 01/01/1970)"
-msgstr "Usia pengguna dalam satuan absolut (seperti 01/01/1970)"
-
-#: data/dev.Cogitri.Health.gschema.xml:71
+#: data/dev.Cogitri.Health.gschema.xml:60
 msgid "User height"
 msgstr "Tinggi pengguna"
 
-#: data/dev.Cogitri.Health.gschema.xml:72
-msgid "The height of the user."
-msgstr "Tinggi pengguna."
-
-#: data/dev.Cogitri.Health.gschema.xml:76
+#: data/dev.Cogitri.Health.gschema.xml:64
 msgid "User step goal"
 msgstr "Sasaran langkah pengguna"
 
-#: data/dev.Cogitri.Health.gschema.xml:77
-msgid "The amount of steps the user wants to reach daily."
-msgstr "Banyaknya langkah yang ingin pengguna capai setiap hari."
-
-#: data/dev.Cogitri.Health.gschema.xml:81
+#: data/dev.Cogitri.Health.gschema.xml:68
 msgid "User weight goal"
 msgstr "Sasaran berat pengguna"
 
-#: data/dev.Cogitri.Health.gschema.xml:82
-msgid "The weight the user wants to reach."
-msgstr "Berat yang ingin dicapai oleh pengguna."
-
-#: data/dev.Cogitri.Health.gschema.xml:86
+#: data/dev.Cogitri.Health.gschema.xml:72
 msgid "Window height"
 msgstr "Tinggi jendela"
 
-#: data/dev.Cogitri.Health.gschema.xml:87
-msgid "The height of the window."
-msgstr "Tinggi jendela."
-
-#: data/dev.Cogitri.Health.gschema.xml:91
+#: data/dev.Cogitri.Health.gschema.xml:76
 msgid "Window maximized"
 msgstr "Jendela dimaksimalkan"
 
-#: data/dev.Cogitri.Health.gschema.xml:92
-msgid "Whether the window is maximized."
-msgstr "Apakah jendela dimaksimalkan."
-
-#: data/dev.Cogitri.Health.gschema.xml:96
+#: data/dev.Cogitri.Health.gschema.xml:80
 msgid "Window width"
 msgstr "Lebar jendela"
 
-#: data/dev.Cogitri.Health.gschema.xml:97
-msgid "The width of the window."
-msgstr "Lebar jendela."
+#: data/dev.Cogitri.Health.gschema.xml:84
+msgid "Active user ID"
+msgstr "ID pengguna aktif"
 
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
@@ -317,7 +244,7 @@ msgstr ""
 "pengaya untuk melihat data langsung Anda yang sebenarnya."
 
 #: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
-#: data/ui/preferences_window.blp:166 src/plugins/steps/plugin.rs:39
+#: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
 msgid "Steps"
 msgstr "Langkah"
 
@@ -355,88 +282,97 @@ msgstr "Preferensi Kesehatan"
 msgid "General"
 msgstr "Umum"
 
-#: data/ui/preferences_window.blp:72
+#: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
+#: data/ui/setup_window.blp:183 src/core/database.rs:1109
 msgid "User"
 msgstr "Pengguna"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:154
 msgid "Unit system"
 msgstr "Sistem satuan"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:164
 msgid "Imperial"
 msgstr "Imperial"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:170
 msgid "Metric"
 msgstr "Metrik"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:178
+msgid "Username"
+msgstr "Nama pengguna"
+
+#: data/ui/preferences_window.blp:109 data/ui/setup_window.blp:188
 msgid "Birthday"
 msgstr "Ulang Tahun"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
+#: data/ui/preferences_window.blp:118 data/ui/setup_window.blp:197
 msgid "Height"
 msgstr "Tinggi"
 
-#: data/ui/preferences_window.blp:122
+#: data/ui/preferences_window.blp:131
 msgid "Notifications"
 msgstr "Pemberitahuan"
 
-#: data/ui/preferences_window.blp:125
+#: data/ui/preferences_window.blp:134
 msgid "Enable notifications"
 msgstr "Fungsikan pemberitahuan"
 
-#: data/ui/preferences_window.blp:136
+#: data/ui/preferences_window.blp:145
 msgid "Frequency"
 msgstr "Frekuensi"
 
-#: data/ui/preferences_window.blp:149
+#: data/ui/preferences_window.blp:158
 msgid "Daily reminder time"
 msgstr "Waktu pengingat harian"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
-#: src/plugins/steps/details.rs:240
+#: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
+#: src/plugins/steps/details.rs:245
 msgid "Step goal"
 msgstr "Sasaran langkah"
 
-#: data/ui/preferences_window.blp:170
+#: data/ui/preferences_window.blp:179
 msgid "7,500 steps per day are recommended."
 msgstr "7.500 langkah per hari direkomendasikan."
 
-#: data/ui/preferences_window.blp:184 data/ui/preferences_window.blp:187
+#: data/ui/preferences_window.blp:192 data/ui/preferences_window.blp:195
 msgid "Weight Goal"
 msgstr "Sasaran berat"
 
-#: data/ui/preferences_window.blp:188
+#: data/ui/preferences_window.blp:196
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "WHO merekomendasikan BMI 18,5-24,9."
 
-#: data/ui/preferences_window.blp:212
+#: data/ui/preferences_window.blp:204 data/ui/setup_window.blp:367
+msgid "Target BMI"
+msgstr "Target BMI"
+
+#: data/ui/preferences_window.blp:220
 msgid "Sync"
 msgstr "Selaraskan"
 
-#: data/ui/preferences_window.blp:216
+#: data/ui/preferences_window.blp:224
 msgid "Start sync with third-party providers."
 msgstr "Mulai selaraskan dengan penyedia pihak ke tiga."
 
-#: data/ui/preferences_window.blp:224
+#: data/ui/preferences_window.blp:232
 msgid "Importing and exporting data"
 msgstr "Mengimpor dan mengekspor data"
 
-#: data/ui/preferences_window.blp:227
+#: data/ui/preferences_window.blp:235
 msgid "Export data as CSV"
 msgstr "Ekspor data sebagai CSV"
 
-#: data/ui/preferences_window.blp:230
+#: data/ui/preferences_window.blp:238
 msgid "Export…"
 msgstr "Ekspor…"
 
-#: data/ui/preferences_window.blp:237
+#: data/ui/preferences_window.blp:245
 msgid "Import data from CSV"
 msgstr "Impor data dari CSV"
 
-#: data/ui/preferences_window.blp:240
+#: data/ui/preferences_window.blp:248
 msgid "Import…"
 msgstr "Impor…"
 
@@ -468,35 +404,39 @@ msgstr "Selamat datang ke Kesehatan!"
 msgid "Please enter some information to get setup."
 msgstr "Harap masukkan informasi untuk menyiapkan."
 
-#: data/ui/setup_window.blp:212
+#: data/ui/setup_window.blp:224
 msgid "Please enter your daily step goal."
 msgstr "Harap masukkan sasaran langkah harian Anda."
 
-#: data/ui/setup_window.blp:224
+#: data/ui/setup_window.blp:236
 msgid "The WHO recommends 7.500 steps per day."
 msgstr "WHO merekomendasikan 7.500 langkah per hari."
 
-#: data/ui/setup_window.blp:274
+#: data/ui/setup_window.blp:286
 msgid "Please enter your weight goal."
 msgstr "Harap masukkan sasaran berat Anda."
 
-#: data/ui/setup_window.blp:286
+#: data/ui/setup_window.blp:298
 msgid "The WHO recommends a BMI of 18.5–24.9."
 msgstr "WHO merekomendasikan BMI 18,5-24,9."
 
-#: data/ui/setup_window.blp:314
+#: data/ui/setup_window.blp:326
 msgid "Current weight"
 msgstr "Berat saat ini"
 
-#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:220
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:267
+msgid "Current BMI"
+msgstr "BMI kini"
+
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:230
 msgid "Weight goal"
 msgstr "Sasaran berat"
 
-#: data/ui/setup_window.blp:372
+#: data/ui/setup_window.blp:386
 msgid "Setup sync with third-party providers."
 msgstr "Siapkan penyelarasan dengan penyedia pihak ke tiga."
 
-#: data/ui/setup_window.blp:384
+#: data/ui/setup_window.blp:398
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
@@ -586,17 +526,17 @@ msgstr "Tent_ang Kesehatan"
 msgid "Enable plugin"
 msgstr "Aktifkan pengaya"
 
-#: src/core/application.rs:176
+#: src/core/application.rs:189
 msgid "A health tracking app for the GNOME desktop."
 msgstr "Aplikasi pelacakan kesehatan untuk destop GNOME."
 
-#: src/core/application.rs:178
+#: src/core/application.rs:191
 msgid "translator-credits"
 msgstr ""
 "Andika Triwidada <andika@gmail.com>, 2021, 2022.\n"
 "Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2021-2022."
 
-#: src/core/application.rs:180
+#: src/core/application.rs:193
 msgid "Websites"
 msgstr "Situs web"
 
@@ -717,18 +657,18 @@ msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "{} kalori yang terbakar hari ini"
 
-#: src/plugins/steps/details.rs:186
+#: src/plugins/steps/details.rs:187
 msgid "Today’s steps: {}"
 msgstr "Langkah hari ini: {}"
 
-#: src/plugins/steps/details.rs:201
+#: src/plugins/steps/details.rs:206
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
 "Belum ada runtutan. Capailah sasaran langkah Anda selama beberapa hari untuk "
 "memulai beruntun!"
 
-#: src/plugins/steps/details.rs:205
+#: src/plugins/steps/details.rs:210
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -737,58 +677,58 @@ msgstr[0] ""
 "Anda mencapai beruntun selama {} hari. Capailah sasaran langkah Anda hari "
 "ini untuk melanjutkannya!"
 
-#: src/plugins/steps/details.rs:213
+#: src/plugins/steps/details.rs:218
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr ""
 "Anda telah mencapai sasaran langkah Anda hari ini. Teruskan agar memulai "
 "beruntun!"
 
-#: src/plugins/steps/details.rs:216
+#: src/plugins/steps/details.rs:221
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "Anda mencapai beruntun selama {} hari. Kerja yang bagus!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:233
+#: src/plugins/steps/details.rs:238
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} langkah pada {}"
 
-#: src/plugins/steps/summary.rs:94
+#: src/plugins/steps/summary.rs:96
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} langkah ditempuh hari ini"
 
-#: src/plugins/steps/summary.rs:105
+#: src/plugins/steps/summary.rs:107
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Mencapai {} persen dari tujuan langkah harian"
 
-#: src/plugins/steps/summary.rs:112
+#: src/plugins/steps/summary.rs:114
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Bagus! Anda telah mencapai tujuan langkah harian Anda!"
 
-#: src/plugins/weight/details.rs:192
+#: src/plugins/weight/details.rs:202
 msgid "Current BMI: {}"
 msgstr "BMI kini: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:207
+#: src/plugins/weight/details.rs:217
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} pon pada {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:210
+#: src/plugins/weight/details.rs:220
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogram pada {}"
 
-#: src/plugins/weight/details.rs:246 src/plugins/weight/details.rs:251
+#: src/plugins/weight/details.rs:257 src/plugins/weight/details.rs:262
 msgid "Unknown BMI"
 msgstr "BMI tak diketahui"
 
-#: src/plugins/weight/details.rs:268
+#: src/plugins/weight/details.rs:280
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -799,7 +739,7 @@ msgstr[0] ""
 "Sasaran berat badan Anda adalah {} pon. Tambahkan pengukuran berat badan "
 "pertama untuk melihat seberapa dekat Anda untuk mencapainya."
 
-#: src/plugins/weight/details.rs:275
+#: src/plugins/weight/details.rs:287
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -810,31 +750,31 @@ msgstr[0] ""
 "Sasaran berat badan Anda adalah {} kilogram. Tambahkan pengukuran berat "
 "badan pertama untuk melihat seberapa dekat Anda untuk mencapainya."
 
-#: src/plugins/weight/details.rs:284
+#: src/plugins/weight/details.rs:296
 msgid "You’ve reached your weight goal. Great job!"
 msgstr "Anda telah mencapai sasaran berat badan Anda. Kerja yang bagus!"
 
-#: src/plugins/weight/details.rs:300
+#: src/plugins/weight/details.rs:312
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "Sasaran berat badan Anda adalah {} pon."
 
-#: src/plugins/weight/details.rs:305
+#: src/plugins/weight/details.rs:317
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "Tersisa {} pon untuk mencapainya."
 
-#: src/plugins/weight/details.rs:312
+#: src/plugins/weight/details.rs:324
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "Sasaran berat Anda adalah {} kilogram."
 
-#: src/plugins/weight/details.rs:318
+#: src/plugins/weight/details.rs:330
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "Tersisa {} kilogram untuk mencapainya"
 
-#: src/plugins/weight/details.rs:328
+#: src/plugins/weight/details.rs:340
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr ""
 "Belum ada sasaran berat badan yang ditetapkan. Anda dapat mengaturnya dalam "
@@ -985,10 +925,6 @@ msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} yard"
 
-#: src/widgets/bmi_level_bar.rs:267 src/windows/setup_window.rs:248
-msgid "Current BMI"
-msgstr "BMI kini"
-
 #: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>BMI kini: {}</small>"
@@ -1128,17 +1064,73 @@ msgstr "Terjadi kesalahan!"
 msgid "Close"
 msgstr "Tutup"
 
-#: src/windows/preferences_window.rs:409 src/windows/setup_window.rs:249
-msgid "Target BMI"
-msgstr "Target BMI"
-
-#: src/windows/window.rs:97
-msgid "Failed to migrate database to new version due to error {}"
-msgstr "Gagal memigrasikan basis data ke versi baru karena kesalahan {}"
-
 #: src/windows/window.rs:267
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Tak bisa menyelaraskan data Google Fit karena kesalahan: {}"
+
+#~ msgid "Whether the user has completed the setup wizard"
+#~ msgstr "Apakah pengguna telah menyelesaikan wahana pandu penyiapan"
+
+#~ msgid "Whether to enable notifications."
+#~ msgstr "Apakah akan memfungsikan pemberitahuan."
+
+#~ msgid "Sets all data source plugins that are enabled in Health."
+#~ msgstr "Atur semua pengaya sumber data yang diaktifkan di Kesehatan."
+
+#~ msgid "The time at which Health should remind the user of their step goal"
+#~ msgstr ""
+#~ "Waktu di mana Kesehatan harus mengingatkan pengguna tentang sararan "
+#~ "langkah mereka"
+
+#~ msgid ""
+#~ "How frequent should the user be notified to complete their daily step-"
+#~ "goal."
+#~ msgstr ""
+#~ "Seberapa sering pengguna harus diberitahu untuk menyelesaikan sasaran "
+#~ "langkah harian mereka."
+
+#~ msgid ""
+#~ "Activity types the user used recently, to be shown first in the activity "
+#~ "types selector’s list"
+#~ msgstr ""
+#~ "Tipe aktivitas yang digunakan pengguna baru-baru ini, untuk ditampilkan "
+#~ "terlebih dahulu dalam daftar pemilih tipe aktivitas"
+
+#~ msgid "Whether Google Fit has been setup as sync provider"
+#~ msgstr "Apakah Google Fit telah disiapkan sebagai penyedia penyelarasan"
+
+#~ msgid "The last time we synched steps, weight etc. with Google Fit"
+#~ msgstr "Terakhir kali menyelaraskan langkah, berat, dll. dengan Google Fit"
+
+#~ msgid "The unit system the user chose, e.g. for cm vs inch for height"
+#~ msgstr "Sistem satuan yang dipilih pengguna, mis. cm vs inci untuk tinggi"
+
+#~ msgid "The age of the user (deprecated)."
+#~ msgstr "Usia pengguna (tidak dipakai lagi)."
+
+#~ msgid "The age of the user in absolute terms (like 01/01/1970)"
+#~ msgstr "Usia pengguna dalam satuan absolut (seperti 01/01/1970)"
+
+#~ msgid "The height of the user."
+#~ msgstr "Tinggi pengguna."
+
+#~ msgid "The amount of steps the user wants to reach daily."
+#~ msgstr "Banyaknya langkah yang ingin pengguna capai setiap hari."
+
+#~ msgid "The weight the user wants to reach."
+#~ msgstr "Berat yang ingin dicapai oleh pengguna."
+
+#~ msgid "The height of the window."
+#~ msgstr "Tinggi jendela."
+
+#~ msgid "Whether the window is maximized."
+#~ msgstr "Apakah jendela dimaksimalkan."
+
+#~ msgid "The width of the window."
+#~ msgstr "Lebar jendela."
+
+#~ msgid "Failed to migrate database to new version due to error {}"
+#~ msgstr "Gagal memigrasikan basis data ke versi baru karena kesalahan {}"
 
 #~ msgid "The WHO recommends 10,000 steps per day."
 #~ msgstr "WHO merekomendasikan 10.000 langkah per hari."
