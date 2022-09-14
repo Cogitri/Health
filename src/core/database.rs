@@ -30,7 +30,7 @@ use gtk::{
 use num_traits::cast::{FromPrimitive, ToPrimitive};
 use std::{
     convert::{TryFrom, TryInto},
-    path::{Path, PathBuf},
+    path::PathBuf,
     str::FromStr,
 };
 use tracker::prelude::*;
@@ -412,7 +412,6 @@ impl Database {
     /// # Returns
     /// An array of [Steps]s that are within the given timeframe (if set), or a [glib::Error] if querying the DB goes wrong.
     pub async fn steps(&self, date: glib::DateTime) -> Result<Vec<Steps>> {
-        let imp = self.imp();
         let user_id = i64::from(self.imp().settings.active_user_id());
         let statement = self.load_statement_from_gresource("steps");
         statement.bind_string("date", &date.format_iso8601().unwrap());
@@ -539,7 +538,6 @@ impl Database {
         }
 
         let connection = imp.connection.get().unwrap();
-        let manager = imp.manager.get().unwrap();
         let user_id = i64::from(imp.settings.active_user_id());
 
         for s in steps {
@@ -577,7 +575,6 @@ impl Database {
         }
 
         let connection = imp.connection.get().unwrap();
-        let manager = imp.manager.get().unwrap();
         let user_id = i64::from(imp.settings.active_user_id());
 
         for w in weights {
@@ -1550,7 +1547,6 @@ mod test {
 
     #[test]
     fn migration_activities() {
-        let data_dir = tempdir().unwrap();
         let date = glib::DateTime::local();
         let db = Database::new_with_store_path(PathBuf::from("/home/rasmus/tracker")).unwrap();
         let connection = db.connection();
