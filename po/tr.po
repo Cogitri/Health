@@ -3,15 +3,15 @@
 # Copyright (C) 2022 Health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the Health package.
 #
-# Emin Tufan Çetin <etcetin@gmail.com>, 2022.
 # Sabri Ünal <libreajans@gmail.com>, 2022.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-07-26 13:31+0000\n"
-"PO-Revision-Date: 2022-08-08 02:37+0300\n"
+"POT-Creation-Date: 2022-09-13 17:26+0000\n"
+"PO-Revision-Date: 2022-09-14 11:17+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -25,144 +25,73 @@ msgstr ""
 msgid "First time setup done"
 msgstr "İlk kurulum tamamlandı"
 
-#: data/dev.Cogitri.Health.gschema.xml:17
-msgid "Whether the user has completed the setup wizard"
-msgstr "Kullanıcının kurulum sihirbazını tamamlayıp tamamlamadığı"
-
-#: data/dev.Cogitri.Health.gschema.xml:21
+#: data/dev.Cogitri.Health.gschema.xml:20
 msgid "Toggle notifications"
 msgstr "Bildirimleri aç yada kapat"
 
-#: data/dev.Cogitri.Health.gschema.xml:22
-msgid "Whether to enable notifications."
-msgstr "Bildirimlerin etkinleştirilip etkinleştirilmeyeceği."
-
-#: data/dev.Cogitri.Health.gschema.xml:26
+#: data/dev.Cogitri.Health.gschema.xml:24
 msgid "Set enabled plugins"
 msgstr "Etkinleştirilmiş eklentileri ayarla"
 
-#: data/dev.Cogitri.Health.gschema.xml:27
-msgid "Sets all data source plugins that are enabled in Health."
-msgstr "Sağlık’ta etkinleştirilen tüm veri kaynağı eklentilerini ayarlar."
-
-#: data/dev.Cogitri.Health.gschema.xml:31
+#: data/dev.Cogitri.Health.gschema.xml:28
 msgid "Notification time"
 msgstr "Bildirim zamanı"
 
 #: data/dev.Cogitri.Health.gschema.xml:32
-msgid "The time at which Health should remind the user of their step goal"
-msgstr "Sağlık’ın kullanıcıya adım hedeflerini anımsatması gereken zaman"
-
-#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "notification frequency"
 msgstr "bildirim sıklığı"
 
-#: data/dev.Cogitri.Health.gschema.xml:37
-msgid ""
-"How frequent should the user be notified to complete their daily step-goal."
-msgstr ""
-"Kullanıcıya günlük adım hedefini tamamlaması için hangi sıklıkta bilgi "
-"verileceği."
-
-#: data/dev.Cogitri.Health.gschema.xml:41
+#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "List of recent activity types"
 msgstr "Son etkinlik türlerinin listesi"
 
-#: data/dev.Cogitri.Health.gschema.xml:42
-msgid ""
-"Activity types the user used recently, to be shown first in the activity "
-"types selector’s list"
-msgstr ""
-"Kullanıcının son zamanlarda kullandığı etkinlik türleri, etkinlik türleri "
-"seçici listesinde önde olarak gösterilir"
-
-#: data/dev.Cogitri.Health.gschema.xml:46
+#: data/dev.Cogitri.Health.gschema.xml:40
 msgid "Google Fit Sync-Provider setup"
 msgstr "Google Fit Eşzamanlama Sağlayıcı kurulumu"
 
-#: data/dev.Cogitri.Health.gschema.xml:47
-msgid "Whether Google Fit has been setup as sync provider"
-msgstr "Google Fit’in eşzamanlama sağlayıcı olarak kurulup kurulmadığı"
-
-#: data/dev.Cogitri.Health.gschema.xml:51
+#: data/dev.Cogitri.Health.gschema.xml:44
 msgid "Last sync with Google Fit"
 msgstr "Google Fit ile son eşzamanlama"
 
-#: data/dev.Cogitri.Health.gschema.xml:52
-msgid "The last time we synched steps, weight etc. with Google Fit"
-msgstr "Adımları, kiloları vb. Google Fit ile en son eşzamanladığımız zaman"
-
-#: data/dev.Cogitri.Health.gschema.xml:56
+#: data/dev.Cogitri.Health.gschema.xml:48
 msgid "Unit system used"
 msgstr "Kullanılan birim sistemi"
 
-#: data/dev.Cogitri.Health.gschema.xml:57
-msgid "The unit system the user chose, e.g. for cm vs inch for height"
-msgstr "Kullanıcının seçtiği birim sistemi, ör. yükseklik için cm yada inç"
-
-#: data/dev.Cogitri.Health.gschema.xml:61
+#: data/dev.Cogitri.Health.gschema.xml:52
 msgid "User age"
 msgstr "Kullanıcı yaşı"
 
-#: data/dev.Cogitri.Health.gschema.xml:62
-msgid "The age of the user (deprecated)."
-msgstr "Kullanıcının yaşı (kullanımdan kaldırıldı)."
-
-#: data/dev.Cogitri.Health.gschema.xml:66
+#: data/dev.Cogitri.Health.gschema.xml:56
 msgid "Absolute user age"
 msgstr "Tam kullanıcı yaşı"
 
-#: data/dev.Cogitri.Health.gschema.xml:67
-msgid "The age of the user in absolute terms (like 01/01/1970)"
-msgstr "Kullanıcının tam yaşı (01/01/1970 gibi)"
-
-#: data/dev.Cogitri.Health.gschema.xml:71
+#: data/dev.Cogitri.Health.gschema.xml:60
 msgid "User height"
 msgstr "Kullanıcı ağırlığı"
 
-#: data/dev.Cogitri.Health.gschema.xml:72
-msgid "The height of the user."
-msgstr "Kullanıcının ağırlığı."
-
-#: data/dev.Cogitri.Health.gschema.xml:76
+#: data/dev.Cogitri.Health.gschema.xml:64
 msgid "User step goal"
 msgstr "Kullanıcı adım hedefi"
 
-#: data/dev.Cogitri.Health.gschema.xml:77
-msgid "The amount of steps the user wants to reach daily."
-msgstr "Kullanıcının günlük olarak ulaşmak istediği adım sayısı."
-
-#: data/dev.Cogitri.Health.gschema.xml:81
+#: data/dev.Cogitri.Health.gschema.xml:68
 msgid "User weight goal"
 msgstr "Kilo hedefi"
 
-#: data/dev.Cogitri.Health.gschema.xml:82
-msgid "The weight the user wants to reach."
-msgstr "Kullanıcının ulaşmak istediği kilo."
-
-#: data/dev.Cogitri.Health.gschema.xml:86
+#: data/dev.Cogitri.Health.gschema.xml:72
 msgid "Window height"
 msgstr "Pencere yüksekliği"
 
-#: data/dev.Cogitri.Health.gschema.xml:87
-msgid "The height of the window."
-msgstr "Pencerenin yüksekliği."
-
-#: data/dev.Cogitri.Health.gschema.xml:91
+#: data/dev.Cogitri.Health.gschema.xml:76
 msgid "Window maximized"
 msgstr "Pencere ekranı kaplamış"
 
-#: data/dev.Cogitri.Health.gschema.xml:92
-msgid "Whether the window is maximized."
-msgstr "Pencerenin ekranı kapsayıp kapsamadığı."
-
-#: data/dev.Cogitri.Health.gschema.xml:96
+#: data/dev.Cogitri.Health.gschema.xml:80
 msgid "Window width"
 msgstr "Pencere genişliği"
 
-#: data/dev.Cogitri.Health.gschema.xml:97
-msgid "The width of the window."
-msgstr "Pencerenin genişliği."
+#: data/dev.Cogitri.Health.gschema.xml:84
+msgid "Active user ID"
+msgstr "Etkin kullanıcı kimliği"
 
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
@@ -319,7 +248,7 @@ msgstr ""
 
 # Uygulama arayüzde denenmiş ve tekil kullanım tercih edilmiştir.
 #: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
-#: data/ui/preferences_window.blp:166 src/plugins/steps/plugin.rs:39
+#: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
 msgid "Steps"
 msgstr "Adım"
 
@@ -356,89 +285,98 @@ msgstr "Sağlık Tercihleri"
 msgid "General"
 msgstr "Genel"
 
-#: data/ui/preferences_window.blp:72
+#: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
+#: data/ui/setup_window.blp:183 src/core/database.rs:1109
 msgid "User"
 msgstr "Kullanıcı"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:154
 msgid "Unit system"
 msgstr "Birim sistemi"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:164
 msgid "Imperial"
 msgstr "Emperyal"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:170
 msgid "Metric"
 msgstr "Metrik"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:178
+msgid "Username"
+msgstr "Kullanıcı adı"
+
+#: data/ui/preferences_window.blp:109 data/ui/setup_window.blp:188
 msgid "Birthday"
 msgstr "Doğum günü"
 
 # Uygulama üstündeki kullanımı boy anlamındadır. Yükseklik olarak değiştirmeyin.
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
+#: data/ui/preferences_window.blp:118 data/ui/setup_window.blp:197
 msgid "Height"
 msgstr "Boy"
 
-#: data/ui/preferences_window.blp:122
+#: data/ui/preferences_window.blp:131
 msgid "Notifications"
 msgstr "Bildirimler"
 
-#: data/ui/preferences_window.blp:125
+#: data/ui/preferences_window.blp:134
 msgid "Enable notifications"
 msgstr "Bildirimleri etkinleştir"
 
-#: data/ui/preferences_window.blp:136
+#: data/ui/preferences_window.blp:145
 msgid "Frequency"
 msgstr "Sıklık"
 
-#: data/ui/preferences_window.blp:149
+#: data/ui/preferences_window.blp:158
 msgid "Daily reminder time"
 msgstr "Günlük anımsatım zamanı"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
-#: src/plugins/steps/details.rs:240
+#: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
+#: src/plugins/steps/details.rs:245
 msgid "Step goal"
 msgstr "Adım hedefi"
 
-#: data/ui/preferences_window.blp:170
+#: data/ui/preferences_window.blp:179
 msgid "7,500 steps per day are recommended."
 msgstr "Günde 7.500 adım önerilir."
 
-#: data/ui/preferences_window.blp:184 data/ui/preferences_window.blp:187
+#: data/ui/preferences_window.blp:192 data/ui/preferences_window.blp:195
 msgid "Weight Goal"
 msgstr "Kilo Hedefi"
 
-#: data/ui/preferences_window.blp:188
+#: data/ui/preferences_window.blp:196
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "Dünya Sağlık Örgütü, 18.5-24.9 arası VKİ önermektedir."
 
-#: data/ui/preferences_window.blp:212
+#: data/ui/preferences_window.blp:204 data/ui/setup_window.blp:367
+msgid "Target BMI"
+msgstr "Hedef VKİ"
+
+#: data/ui/preferences_window.blp:220
 msgid "Sync"
 msgstr "Eşzamanla"
 
-#: data/ui/preferences_window.blp:216
+#: data/ui/preferences_window.blp:224
 msgid "Start sync with third-party providers."
 msgstr "Üçüncü taraf sağlayıcılarla eşzamanlamayı başlat."
 
-#: data/ui/preferences_window.blp:224
+#: data/ui/preferences_window.blp:232
 msgid "Importing and exporting data"
 msgstr "Verileri içe ya da dışa aktarma"
 
-#: data/ui/preferences_window.blp:227
+#: data/ui/preferences_window.blp:235
 msgid "Export data as CSV"
 msgstr "Verileri CVS olarak dışa aktar"
 
-#: data/ui/preferences_window.blp:230
+#: data/ui/preferences_window.blp:238
 msgid "Export…"
 msgstr "Dışa aktar…"
 
-#: data/ui/preferences_window.blp:237
+#: data/ui/preferences_window.blp:245
 msgid "Import data from CSV"
 msgstr "Verileri CSV’den içe aktar"
 
-#: data/ui/preferences_window.blp:240
+#: data/ui/preferences_window.blp:248
 msgid "Import…"
 msgstr "İçe aktar…"
 
@@ -470,35 +408,39 @@ msgstr "Sağlık’a Hoş Geldiniz!"
 msgid "Please enter some information to get setup."
 msgstr "Kurulum için lütfen bazı bilgiler girin."
 
-#: data/ui/setup_window.blp:212
+#: data/ui/setup_window.blp:224
 msgid "Please enter your daily step goal."
 msgstr "Lütfen günlük adım hedefinizi girin."
 
-#: data/ui/setup_window.blp:224
+#: data/ui/setup_window.blp:236
 msgid "The WHO recommends 7.500 steps per day."
 msgstr "Dünya Sağlık Örgütü günlük 7.500 adım atmayı önermektedir."
 
-#: data/ui/setup_window.blp:274
+#: data/ui/setup_window.blp:286
 msgid "Please enter your weight goal."
 msgstr "Lütfen kilo hedefinizi girin."
 
-#: data/ui/setup_window.blp:286
+#: data/ui/setup_window.blp:298
 msgid "The WHO recommends a BMI of 18.5–24.9."
 msgstr "Dünya Sağlık Örgütü, 18.5–24.9 arası VKİ önermektedir."
 
-#: data/ui/setup_window.blp:314
+#: data/ui/setup_window.blp:326
 msgid "Current weight"
 msgstr "Şu anki kilo"
 
-#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:220
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:267
+msgid "Current BMI"
+msgstr "Geçerli VKİ"
+
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:230
 msgid "Weight goal"
 msgstr "Kilo hedefi"
 
-#: data/ui/setup_window.blp:372
+#: data/ui/setup_window.blp:386
 msgid "Setup sync with third-party providers."
 msgstr "Üçüncü taraf sağlayıcılarla eşzamanlamayı kur."
 
-#: data/ui/setup_window.blp:384
+#: data/ui/setup_window.blp:398
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
@@ -589,17 +531,17 @@ msgstr "Sağlık _Hakkında"
 msgid "Enable plugin"
 msgstr "Eklentiyi etkinleştir"
 
-#: src/core/application.rs:176
+#: src/core/application.rs:189
 msgid "A health tracking app for the GNOME desktop."
 msgstr "GNOME masaüstü için sağlık izleme uygulaması."
 
-#: src/core/application.rs:178
+#: src/core/application.rs:191
 msgid "translator-credits"
 msgstr ""
 "Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Sabri Ünal <libreajans@gmail.com>"
 
-#: src/core/application.rs:180
+#: src/core/application.rs:193
 msgid "Websites"
 msgstr "Web siteleri"
 
@@ -721,75 +663,75 @@ msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "Bugün {} kalori yakıldı"
 
-#: src/plugins/steps/details.rs:186
+#: src/plugins/steps/details.rs:187
 msgid "Today’s steps: {}"
 msgstr "Bugünkü adımlar: {}"
 
-#: src/plugins/steps/details.rs:201
+#: src/plugins/steps/details.rs:206
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
 "Henüz seri yok. Seri olabilmesi için birkaç gün boyunca adım hedefinize "
 "ulaşın!"
 
-#: src/plugins/steps/details.rs:205
+#: src/plugins/steps/details.rs:210
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
 "You’re on a streak for {} days. Reach your step goal today to continue it!"
 msgstr[0] "{} gündür seridesin. Sürdürmek için bugün adım hedefinize ulaşın!"
 
-#: src/plugins/steps/details.rs:213
+#: src/plugins/steps/details.rs:218
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr "Bugün adım hedefinize ulaştınız. Seri için sürdürün!"
 
-#: src/plugins/steps/details.rs:216
+#: src/plugins/steps/details.rs:221
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "{} gündür seridesin. Başarılar!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:233
+#: src/plugins/steps/details.rs:238
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} adım, {} tarihinde"
 
-#: src/plugins/steps/summary.rs:94
+#: src/plugins/steps/summary.rs:96
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "Bugün {} adım atıldı"
 
-#: src/plugins/steps/summary.rs:105
+#: src/plugins/steps/summary.rs:107
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Günlük adım hedefinin yüzde {} bölümüne ulaşıldı"
 
 # Well done için radikal bir çeviri kullandım. Biraz yerelleştirmiş oldum.
-#: src/plugins/steps/summary.rs:112
+#: src/plugins/steps/summary.rs:114
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Nazar değmesin! Günlük adım hedefinize ulaştınız!"
 
-#: src/plugins/weight/details.rs:192
+#: src/plugins/weight/details.rs:202
 msgid "Current BMI: {}"
 msgstr "Geçerli VKİ: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:207
+#: src/plugins/weight/details.rs:217
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} pound, {} tarihinde"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:210
+#: src/plugins/weight/details.rs:220
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogram, {} tarihinde"
 
-#: src/plugins/weight/details.rs:246 src/plugins/weight/details.rs:251
+#: src/plugins/weight/details.rs:257 src/plugins/weight/details.rs:262
 msgid "Unknown BMI"
 msgstr "Bilinmeyen VKİ"
 
-#: src/plugins/weight/details.rs:268
+#: src/plugins/weight/details.rs:280
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -800,7 +742,7 @@ msgstr[0] ""
 "Kilo hedefiniz {} pound. Buna ne kadar yakın olduğunuzu görmek için bir ilk "
 "kilo ölçümünü ekleyin."
 
-#: src/plugins/weight/details.rs:275
+#: src/plugins/weight/details.rs:287
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -811,31 +753,31 @@ msgstr[0] ""
 "Kilo hedefiniz {} kilogram. Buna ne kadar yakın olduğunuzu görmek için bir "
 "ilk kilo ölçümünü ekleyin."
 
-#: src/plugins/weight/details.rs:284
+#: src/plugins/weight/details.rs:296
 msgid "You’ve reached your weight goal. Great job!"
 msgstr "Kilo hedefinize ulaştınız. Harika!"
 
-#: src/plugins/weight/details.rs:300
+#: src/plugins/weight/details.rs:312
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "Kilo hedefiniz {} pound."
 
-#: src/plugins/weight/details.rs:305
+#: src/plugins/weight/details.rs:317
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "Ulaşmanıza {} pound kaldı."
 
-#: src/plugins/weight/details.rs:312
+#: src/plugins/weight/details.rs:324
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "Kilo hedefiniz {} kilogram."
 
-#: src/plugins/weight/details.rs:318
+#: src/plugins/weight/details.rs:330
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "Ulaşmanıza {} kilogram kaldı."
 
-#: src/plugins/weight/details.rs:328
+#: src/plugins/weight/details.rs:340
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr "Henüz kilo hedefi belirlenmedi. Tercihlerden ayarlanabilir."
 
@@ -981,10 +923,6 @@ msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} yard"
 
-#: src/widgets/bmi_level_bar.rs:267 src/windows/setup_window.rs:248
-msgid "Current BMI"
-msgstr "Geçerli VKİ"
-
 #: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Geçerli VKİ: {}</small>"
@@ -1125,14 +1063,68 @@ msgstr "Hata oluştu!"
 msgid "Close"
 msgstr "Kapat"
 
-#: src/windows/preferences_window.rs:409 src/windows/setup_window.rs:249
-msgid "Target BMI"
-msgstr "Hedef VKİ"
-
-#: src/windows/window.rs:97
-msgid "Failed to migrate database to new version due to error {}"
-msgstr "{} hatası nedeniyle veri tabanı yeni sürüme taşınamadı"
-
 #: src/windows/window.rs:267
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Hata nedeniyle Google Fit verileri eşzamanlanamadı: {}"
+
+#~ msgid "Whether the user has completed the setup wizard"
+#~ msgstr "Kullanıcının kurulum sihirbazını tamamlayıp tamamlamadığı"
+
+#~ msgid "Whether to enable notifications."
+#~ msgstr "Bildirimlerin etkinleştirilip etkinleştirilmeyeceği."
+
+#~ msgid "Sets all data source plugins that are enabled in Health."
+#~ msgstr "Sağlık’ta etkinleştirilen tüm veri kaynağı eklentilerini ayarlar."
+
+#~ msgid "The time at which Health should remind the user of their step goal"
+#~ msgstr "Sağlık’ın kullanıcıya adım hedeflerini anımsatması gereken zaman"
+
+#~ msgid ""
+#~ "How frequent should the user be notified to complete their daily step-"
+#~ "goal."
+#~ msgstr ""
+#~ "Kullanıcıya günlük adım hedefini tamamlaması için hangi sıklıkta bilgi "
+#~ "verileceği."
+
+#~ msgid ""
+#~ "Activity types the user used recently, to be shown first in the activity "
+#~ "types selector’s list"
+#~ msgstr ""
+#~ "Kullanıcının son zamanlarda kullandığı etkinlik türleri, etkinlik türleri "
+#~ "seçici listesinde önde olarak gösterilir"
+
+#~ msgid "Whether Google Fit has been setup as sync provider"
+#~ msgstr "Google Fit’in eşzamanlama sağlayıcı olarak kurulup kurulmadığı"
+
+#~ msgid "The last time we synched steps, weight etc. with Google Fit"
+#~ msgstr "Adımları, kiloları vb. Google Fit ile en son eşzamanladığımız zaman"
+
+#~ msgid "The unit system the user chose, e.g. for cm vs inch for height"
+#~ msgstr "Kullanıcının seçtiği birim sistemi, ör. yükseklik için cm yada inç"
+
+#~ msgid "The age of the user (deprecated)."
+#~ msgstr "Kullanıcının yaşı (kullanımdan kaldırıldı)."
+
+#~ msgid "The age of the user in absolute terms (like 01/01/1970)"
+#~ msgstr "Kullanıcının tam yaşı (01/01/1970 gibi)"
+
+#~ msgid "The height of the user."
+#~ msgstr "Kullanıcının ağırlığı."
+
+#~ msgid "The amount of steps the user wants to reach daily."
+#~ msgstr "Kullanıcının günlük olarak ulaşmak istediği adım sayısı."
+
+#~ msgid "The weight the user wants to reach."
+#~ msgstr "Kullanıcının ulaşmak istediği kilo."
+
+#~ msgid "The height of the window."
+#~ msgstr "Pencerenin yüksekliği."
+
+#~ msgid "Whether the window is maximized."
+#~ msgstr "Pencerenin ekranı kapsayıp kapsamadığı."
+
+#~ msgid "The width of the window."
+#~ msgstr "Pencerenin genişliği."
+
+#~ msgid "Failed to migrate database to new version due to error {}"
+#~ msgstr "{} hatası nedeniyle veri tabanı yeni sürüme taşınamadı"
