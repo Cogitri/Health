@@ -405,11 +405,12 @@ impl Application {
 #[cfg(test)]
 mod test {
     use super::Application;
-    use crate::core::utils::init_gschema;
+    use crate::core::utils::{init_gresources, init_gschema};
 
     #[test]
     fn new() {
         let _tmp = init_gschema();
+        init_gresources();
         Application::new();
     }
 }
