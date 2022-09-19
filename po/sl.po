@@ -3,245 +3,192 @@
 # This file is distributed under the same license as the health package.
 #
 # Matej Urbančič <mateju@src.gnome.org>, 2020–2022.
+# Martin Srebotnjak <miles@filmsi.net>, 2022-.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-03-20 18:37+0000\n"
-"PO-Revision-Date: 2022-03-20 19:58+0100\n"
-"Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
+"POT-Creation-Date: 2022-09-13 17:26+0000\n"
+"PO-Revision-Date: 2022-09-19 09:58+0200\n"
+"Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
+"%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
 msgstr "Prvič opravljena nastavitev"
 
-#: data/dev.Cogitri.Health.gschema.xml:17
-msgid "Whether the user has completed the setup wizard"
-msgstr "Ali je uporabnik dokončal začetno namestitev z uporabo čarovnika."
-
-#: data/dev.Cogitri.Health.gschema.xml:21
+#: data/dev.Cogitri.Health.gschema.xml:20
 msgid "Toggle notifications"
 msgstr "Preklopi obvestila"
 
-#: data/dev.Cogitri.Health.gschema.xml:22
-msgid "Whether to enable notifications."
-msgstr "Ali naj bodo obvestila omogočena."
-
-#: data/dev.Cogitri.Health.gschema.xml:26
+#: data/dev.Cogitri.Health.gschema.xml:24
 msgid "Set enabled plugins"
 msgstr "Nastavi omogočene vstavke"
 
-#: data/dev.Cogitri.Health.gschema.xml:27
-msgid "Sets all data source plugins that are enabled in Health."
-msgstr "Nastavi vse vstavke podatkovnih virov, omogočenih v programu."
-
-#: data/dev.Cogitri.Health.gschema.xml:31
+#: data/dev.Cogitri.Health.gschema.xml:28
 msgid "Notification time"
 msgstr "Čas obveščanja"
 
 #: data/dev.Cogitri.Health.gschema.xml:32
-msgid "The time at which Health should remind the user of their step goal"
-msgstr "Čas, po katerem naj program znova opozori uporabnika na zastavljene cilje hoje"
-
-#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "notification frequency"
 msgstr "pogostost obveščanja"
 
-#: data/dev.Cogitri.Health.gschema.xml:37
-msgid "How frequent should the user be notified to complete their daily step-goal."
-msgstr "Kako pogosto naj bo uporabnik opomnjen na dejavnost za doseganje zastavljenega cilja."
-
-#: data/dev.Cogitri.Health.gschema.xml:41
+#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "List of recent activity types"
 msgstr "Seznam nedavnih dejavnosti"
 
-#: data/dev.Cogitri.Health.gschema.xml:42
-msgid "Activity types the user used recently, to be shown first in the activity types selector's list"
-msgstr "Vrste nedavno uporabljenih dejavnosti, ki bodo prikazane na seznamu hitrega izbiranja"
-
-#: data/dev.Cogitri.Health.gschema.xml:46
+#: data/dev.Cogitri.Health.gschema.xml:40
 msgid "Google Fit Sync-Provider setup"
 msgstr "Nastavitev usklajevanja s programom Google Fit"
 
-#: data/dev.Cogitri.Health.gschema.xml:47
-msgid "Whether Google Fit has been setup as sync provider"
-msgstr "Ali je program Google Fit nastavljen kot ponudnik za usklajevanje podatkov."
-
-#: data/dev.Cogitri.Health.gschema.xml:51
+#: data/dev.Cogitri.Health.gschema.xml:44
 msgid "Last sync with Google Fit"
 msgstr "Zadnje usklajevanje s programom Google Fit"
 
-#: data/dev.Cogitri.Health.gschema.xml:52
-msgid "The last time we synched steps, weight etc. with Google Fit"
-msgstr "Zadnje zabeleženo usklajevanje korakov, mase … kot jih beleži program Google Fit."
-
-#: data/dev.Cogitri.Health.gschema.xml:56
+#: data/dev.Cogitri.Health.gschema.xml:48
 msgid "Unit system used"
 msgstr "Uporabljen sistem enot"
 
-#: data/dev.Cogitri.Health.gschema.xml:57
-msgid "The unit system the user chose, e.g. for cm vs inch for height"
-msgstr "Sistem enot, ki ga izbere uporabnik, na primer za višino cm"
-
-#: data/dev.Cogitri.Health.gschema.xml:61
+#: data/dev.Cogitri.Health.gschema.xml:52
 msgid "User age"
 msgstr "Starost"
 
-#: data/dev.Cogitri.Health.gschema.xml:62
-msgid "The age of the user (deprecated)."
-msgstr "Starost uporabnika (opuščeno)."
-
-#: data/dev.Cogitri.Health.gschema.xml:66
+#: data/dev.Cogitri.Health.gschema.xml:56
 msgid "Absolute user age"
 msgstr "Starost"
 
-#: data/dev.Cogitri.Health.gschema.xml:67
-msgid "The age of the user in absolute terms (like 01/01/1970)"
-msgstr "Starost uporabnika, zapisana z datumom rojstva (na primer 01/01/1970)"
-
-#: data/dev.Cogitri.Health.gschema.xml:71
+#: data/dev.Cogitri.Health.gschema.xml:60
 msgid "User height"
 msgstr "Višina"
 
-#: data/dev.Cogitri.Health.gschema.xml:72
-msgid "The height of the user."
-msgstr "Višina uporabnika"
-
-#: data/dev.Cogitri.Health.gschema.xml:76
+#: data/dev.Cogitri.Health.gschema.xml:64
 msgid "User step goal"
 msgstr "Cilj dnevno opravljenih korakov"
 
-#: data/dev.Cogitri.Health.gschema.xml:77
-msgid "The amount of steps the user wants to reach daily."
-msgstr "Število korakov, ki jih uporabnik želi opraviti dnevno."
-
-#: data/dev.Cogitri.Health.gschema.xml:81
+#: data/dev.Cogitri.Health.gschema.xml:68
 msgid "User weight goal"
 msgstr "Ciljna telesna masa"
 
-#: data/dev.Cogitri.Health.gschema.xml:82
-msgid "The weight the user wants to reach."
-msgstr "Telesna masa, ki jo uporabnik želi doseči."
-
-#: data/dev.Cogitri.Health.gschema.xml:86
+#: data/dev.Cogitri.Health.gschema.xml:72
 msgid "Window height"
 msgstr "Višina okna"
 
-#: data/dev.Cogitri.Health.gschema.xml:87
-msgid "The height of the window."
-msgstr "Višina okna."
-
-#: data/dev.Cogitri.Health.gschema.xml:91
+#: data/dev.Cogitri.Health.gschema.xml:76
 msgid "Window maximized"
 msgstr "Razpeto okno"
 
-#: data/dev.Cogitri.Health.gschema.xml:92
-msgid "Whether the window is maximized."
-msgstr "Ali je okno razpeto."
-
-#: data/dev.Cogitri.Health.gschema.xml:96
+#: data/dev.Cogitri.Health.gschema.xml:80
 msgid "Window width"
 msgstr "Širina okna"
 
-#: data/dev.Cogitri.Health.gschema.xml:97
-msgid "The width of the window."
-msgstr "Širina okna."
+#: data/dev.Cogitri.Health.gschema.xml:84
+msgid "Active user ID"
+msgstr "ID aktivnega uporabnika"
 
-#: data/dev.Cogitri.Health.Autostart.desktop.in.in:3 data/dev.Cogitri.Health.desktop.in.in:3 data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37 src/main.rs:31
+#: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
+#: data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37
+#: src/main.rs:31
 msgid "Health"
 msgstr "Zdravje"
 
-#: data/dev.Cogitri.Health.Autostart.desktop.in.in:5 data/dev.Cogitri.Health.desktop.in.in:5
-msgid "@APPLICATION_ID@"
-msgstr "@APPLICATION_ID@"
-
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:167
-msgid "A health tracking app for the GNOME desktop."
-msgstr "Program za spremljanje telesnih podatkov za namizje GNOME."
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9
+msgid "Track your fitness goals"
+msgstr "Sledite svojim zastavljenim ciljem telesne vadbe"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
-msgid "A health tracking app for the GNOME desktop. Health can visualize how many steps you've made daily, your weight development over time and your daily activities. Data can be synched from Google Fit or manually entered into Health. Afterwards, it can be viewed and edited in Health."
+msgid ""
+"Health can visualize how many steps you’ve made daily, your weight "
+"development over time and your daily activities. Data can be synched from "
+"Google Fit or manually entered into Health. Afterwards, it can be viewed and "
+"edited in Health."
 msgstr ""
-"Program za sledenje gibalne dejavnosti za namizje GNOME. Program omogoča grafično prikazovanje opravljenih korakov, doseganje zastavljenih ciljev zmanjševanja telesne teže in nasploh vsakodnevne dejavnosti. Podatke je mogoče uskladiti z orodjem Google Fit ali z ročnim vnosom. Nato so za pregledovanje in urejanje na voljo v programu."
+"Program omogoča grafično prikazovanje opravljenih korakov, doseganje "
+"zastavljenih ciljev zmanjševanja telesne teže in nasploh vsakodnevne "
+"dejavnosti. Podatke je mogoče uskladiti z orodjem Google Fit ali z ročnim "
+"vnosom v program. Nato so za pregledovanje in urejanje na voljo v programu."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:37
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:36
 msgid "Rasmus “Cogitri” Thomsen"
-msgstr "Rasmus “Cogitri” Thomsen"
+msgstr "Rasmus »Cogitri« Thomsen"
 
-#: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5 src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89 src/windows/import_dialog.rs:53 src/windows/import_dialog.rs:82
+#: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
+#: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
+#: src/windows/import_dialog.rs:53 src/windows/import_dialog.rs:82
 msgid "_Cancel"
 msgstr "_Prekliči"
 
-#: data/ui/data_add_dialog.blp:10 src/windows/export_dialog.rs:52 src/windows/export_dialog.rs:88
+#: data/ui/data_add_dialog.blp:10 src/windows/export_dialog.rs:52
+#: src/windows/export_dialog.rs:88
 msgid "_Save"
 msgstr "_Shrani"
 
-#: data/ui/date_selector.blp:17
+#: data/ui/date_selector.blp:18
 msgid "January"
 msgstr "januar"
 
-#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:223
+#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:223
 msgid "February"
 msgstr "februar"
 
-#: data/ui/date_selector.blp:19
+#: data/ui/date_selector.blp:20
 msgid "March"
 msgstr "marec"
 
-#: data/ui/date_selector.blp:20
+#: data/ui/date_selector.blp:21
 msgid "April"
 msgstr "april"
 
-#: data/ui/date_selector.blp:21
+#: data/ui/date_selector.blp:22
 msgid "May"
 msgstr "maj"
 
-#: data/ui/date_selector.blp:22
+#: data/ui/date_selector.blp:23
 msgid "June"
 msgstr "junij"
 
-#: data/ui/date_selector.blp:23
+#: data/ui/date_selector.blp:24
 msgid "July"
 msgstr "julij"
 
-#: data/ui/date_selector.blp:24
+#: data/ui/date_selector.blp:25
 msgid "August"
 msgstr "avgust"
 
-#: data/ui/date_selector.blp:25
+#: data/ui/date_selector.blp:26
 msgid "September"
 msgstr "september"
 
-#: data/ui/date_selector.blp:26
+#: data/ui/date_selector.blp:27
 msgid "October"
 msgstr "oktober"
 
-#: data/ui/date_selector.blp:27
+#: data/ui/date_selector.blp:28
 msgid "November"
 msgstr "november"
 
-#: data/ui/date_selector.blp:28
+#: data/ui/date_selector.blp:29
 msgid "December"
 msgstr "december"
 
-#: data/ui/date_selector.blp:34
+#: data/ui/date_selector.blp:35
 msgid "Day"
 msgstr "Dan"
 
-#: data/ui/date_selector.blp:60
+#: data/ui/date_selector.blp:61
 msgid "Month"
 msgstr "Mesec"
 
-#: data/ui/date_selector.blp:83
+#: data/ui/date_selector.blp:84
 msgid "Year"
 msgstr "Leto"
 
@@ -269,7 +216,8 @@ msgstr "_Geslo"
 msgid "_Confirm password"
 msgstr "_Potrdi geslo"
 
-#: data/ui/plugins/activities/details.blp:5 data/ui/plugins/calories/details.blp:4 data/ui/plugins/steps/details.blp:4
+#: data/ui/plugins/activities/details.blp:5
+#: data/ui/plugins/calories/details.blp:4 data/ui/plugins/steps/details.blp:4
 msgid "You can use the <b>+</b> button to add a new activity."
 msgstr "Z uporabo gumba <b>+</b> je mogoče dodati novo dejavnost."
 
@@ -290,10 +238,15 @@ msgid "Calories Burned"
 msgstr "Porabljene kalorije"
 
 #: data/ui/plugins/details.blp:68
-msgid "This is a preview of how the plugin presents data. Enable the plugin to see your actual, live data."
-msgstr "Predogled predstavitve podatkov omogoča prikaz pravih podatkov v usklajevalnem načinu."
+msgid ""
+"This is a preview of how the plugin presents data. Enable the plugin to see "
+"your actual, live data."
+msgstr ""
+"Predogled predstavitve podatkov omogoča prikaz pravih podatkov v "
+"usklajevalnem načinu."
 
-#: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5 data/ui/preferences_window.blp:166 src/plugins/steps/plugin.rs:39
+#: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
+#: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
 msgid "Steps"
 msgstr "Koraki"
 
@@ -305,7 +258,8 @@ msgstr "Z gumbom <b>+</b> lahko dodate novo merjenje teže."
 msgid "Weight Measurements"
 msgstr "Enote telesne mase"
 
-#: data/ui/plugins/weight/summary.blp:5 data/ui/view_add_weight.blp:38 src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
+#: data/ui/plugins/weight/summary.blp:5 data/ui/view_add_weight.blp:38
+#: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
 msgid "Weight"
 msgstr "Masa"
 
@@ -329,87 +283,99 @@ msgstr "Lastnosti"
 msgid "General"
 msgstr "Splošno"
 
-#: data/ui/preferences_window.blp:72
+#: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
+#: data/ui/setup_window.blp:183 src/core/database.rs:1109
 msgid "User"
 msgstr "Uporabnik"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:154
 msgid "Unit system"
 msgstr "Sistem enot"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:164
 msgid "Imperial"
 msgstr "Imperialni"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:170
 msgid "Metric"
 msgstr "Metrični"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:178
+msgid "Username"
+msgstr "Uporabniško ime"
+
+#: data/ui/preferences_window.blp:109 data/ui/setup_window.blp:188
 msgid "Birthday"
 msgstr "Rojstni dan"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
+#: data/ui/preferences_window.blp:118 data/ui/setup_window.blp:197
 msgid "Height"
 msgstr "Višina"
 
-#: data/ui/preferences_window.blp:122
+#: data/ui/preferences_window.blp:131
 msgid "Notifications"
 msgstr "Obvestila"
 
-#: data/ui/preferences_window.blp:125
+#: data/ui/preferences_window.blp:134
 msgid "Enable notifications"
 msgstr "Omogoči obvestila"
 
-#: data/ui/preferences_window.blp:136
+#: data/ui/preferences_window.blp:145
 msgid "Frequency"
 msgstr "Frekvenca"
 
-#: data/ui/preferences_window.blp:149
+#: data/ui/preferences_window.blp:158
 msgid "Daily reminder time"
 msgstr "Čas dnevnega opomnika"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248 src/plugins/steps/details.rs:240
+#: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
+#: src/plugins/steps/details.rs:245
 msgid "Step goal"
 msgstr "Cilj korakov"
 
-#: data/ui/preferences_window.blp:170
-msgid "The WHO recommends 10,000 steps per day."
-msgstr "Svetovna zdravstvena organizacija (WHO) predlaga 10.000 korakov dnevno."
+#: data/ui/preferences_window.blp:179
+msgid "7,500 steps per day are recommended."
+msgstr "Priporočeno je 7 500 korakov na dan."
 
-#: data/ui/preferences_window.blp:184 data/ui/preferences_window.blp:187
+#: data/ui/preferences_window.blp:192 data/ui/preferences_window.blp:195
 msgid "Weight Goal"
 msgstr "Cilj telesne mase"
 
-#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
+#: data/ui/preferences_window.blp:196
 msgid "The WHO recommends a BMI of 18.5-24.9."
-msgstr "Svetovna zdravstvena organizacija opredeljuje kot najustreznejši ITM med 18,5 in 24,9."
+msgstr ""
+"Svetovna zdravstvena organizacija opredeljuje kot najustreznejši ITM med "
+"18,5 in 24,9."
 
-#: data/ui/preferences_window.blp:212
+#: data/ui/preferences_window.blp:204 data/ui/setup_window.blp:367
+msgid "Target BMI"
+msgstr "Ciljni ITM"
+
+#: data/ui/preferences_window.blp:220
 msgid "Sync"
 msgstr "Uskladi"
 
-#: data/ui/preferences_window.blp:216
+#: data/ui/preferences_window.blp:224
 msgid "Start sync with third-party providers."
 msgstr "Začni usklajevanje z zunanjimi ponudniki."
 
-#: data/ui/preferences_window.blp:224
+#: data/ui/preferences_window.blp:232
 msgid "Importing and exporting data"
 msgstr "Uvažanje in izvažanje podatkov"
 
-#: data/ui/preferences_window.blp:227
+#: data/ui/preferences_window.blp:235
 msgid "Export data as CSV"
 msgstr "Izvozi podatke v datoteko CSV"
 
-#: data/ui/preferences_window.blp:230
+#: data/ui/preferences_window.blp:238
 msgid "Export…"
 msgstr "Izvozi …"
 
-#: data/ui/preferences_window.blp:237
+#: data/ui/preferences_window.blp:245
 msgid "Import data from CSV"
 msgstr "Uvozi podatke iz datoteke CSV"
 
-#: data/ui/preferences_window.blp:240
+#: data/ui/preferences_window.blp:248
 msgid "Import…"
 msgstr "Uvozi …"
 
@@ -441,33 +407,43 @@ msgstr "Dobrodošli!"
 msgid "Please enter some information to get setup."
 msgstr "Vpisati je treba nekaj podatkov za osnovne nastavitve delovanja."
 
-#: data/ui/setup_window.blp:212
+#: data/ui/setup_window.blp:224
 msgid "Please enter your daily step goal."
 msgstr "Cilj doseženih dnevnih korakov."
 
-#: data/ui/setup_window.blp:224
-msgid "The WHO recommends 10.000 steps per day."
-msgstr "Svetovna zdravstvena organizacija predlaga 10.000 korakov dnevno."
+#: data/ui/setup_window.blp:236
+msgid "The WHO recommends 7.500 steps per day."
+msgstr "Svetovna zdravstvena organizacija priporoča 7 500 korakov dnevno."
 
-#: data/ui/setup_window.blp:274
+#: data/ui/setup_window.blp:286
 msgid "Please enter your weight goal."
 msgstr "Cilj dosežene telesne mase."
 
-#: data/ui/setup_window.blp:314
+#: data/ui/setup_window.blp:298
+msgid "The WHO recommends a BMI of 18.5–24.9."
+msgstr "Svetovna zdravstvena organizacija priporoča ITM med 18,5 in 24,9."
+
+#: data/ui/setup_window.blp:326
 msgid "Current weight"
 msgstr "Trenutna telesna masa"
 
-#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:220
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:267
+msgid "Current BMI"
+msgstr "Trenutni ITM"
+
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:230
 msgid "Weight goal"
 msgstr "Cilj teleske mase"
 
-#: data/ui/setup_window.blp:372
+#: data/ui/setup_window.blp:386
 msgid "Setup sync with third-party providers."
 msgstr "Nastavi z usklajevanjem z drugimi ponudniki."
 
-#: data/ui/setup_window.blp:384
-msgid "You can sync steps and weight measurements from/to third-party providers."
-msgstr "Korake in podatke telesne teže je mogoče usklajevati z zunanjimi ponudniki."
+#: data/ui/setup_window.blp:398
+msgid ""
+"You can sync steps and weight measurements from/to third-party providers."
+msgstr ""
+"Korake in podatke telesne teže je mogoče usklajevati z zunanjimi ponudniki."
 
 #: data/ui/shortcuts_window.blp:15
 msgid "Quit the application"
@@ -522,8 +498,11 @@ msgid "For you"
 msgstr "Za vas"
 
 #: data/ui/view_home_page.blp:86
-msgid "No plugins enabled. Enable one from the list below to start using Health."
-msgstr "Ni omogočenih vstavkov. Vsaj enega s spodnjega seznama je treba omogočiti za uporabo programa."
+msgid ""
+"No plugins enabled. Enable one from the list below to start using Health."
+msgstr ""
+"Ni omogočenih vstavkov. Vsaj enega s spodnjega seznama je treba omogočiti za "
+"uporabo programa."
 
 #: data/ui/view_home_page.blp:107
 msgid "All data"
@@ -549,11 +528,17 @@ msgstr "_O programu"
 msgid "Enable plugin"
 msgstr "Omogoči vstavek"
 
-#: src/core/application.rs:169
-msgid "translator-credits"
-msgstr "Matej Urbančič <mateju@src.gnome.org>"
+#: src/core/application.rs:189
+msgid "A health tracking app for the GNOME desktop."
+msgstr "Program za spremljanje telesnih podatkov za namizje GNOME."
 
-#: src/core/application.rs:171
+#: src/core/application.rs:191
+msgid "translator-credits"
+msgstr ""
+"Matej Urbančič <mateju@src.gnome.org>\n"
+"Martin Srebotnjak <miles@filmsi.net>"
+
+#: src/core/application.rs:193
 msgid "Websites"
 msgstr "Spletne strani"
 
@@ -695,36 +680,51 @@ msgstr[1] "Danes ste porabili {} kalorijo"
 msgstr[2] "Danes ste porabili {} kaloriji"
 msgstr[3] "Danes ste porabili {} kalorije"
 
-#: src/plugins/steps/details.rs:186
-msgid "Today's steps: {}"
+#: src/plugins/steps/details.rs:187
+msgid "Today’s steps: {}"
 msgstr "Današnje število korakov: {}"
 
-#: src/plugins/steps/details.rs:201
-msgid "No streak yet. Reach your step goal for multiple days to start a streak!"
-msgstr "Ni še zabeleženih več zaporednih ciljev. Za želeni učinek je treba vztrajati več dni zapored!"
+#: src/plugins/steps/details.rs:206
+msgid ""
+"No streak yet. Reach your step goal for multiple days to start a streak!"
+msgstr ""
+"Ni še zabeleženih več zaporednih ciljev. Za želeni učinek je treba vztrajati "
+"več dni zapored!"
 
-#: src/plugins/steps/details.rs:205
-msgid "You're on a streak for {} day. Reach your step goal today to continue it!"
-msgid_plural "You're on a streak for {} days. Reach your step goal today to continue it!"
-msgstr[0] "Vztrajate neprestano že {} dni. Potrudite se tudi danes, da nadaljujete začeto!"
-msgstr[1] "Vztrajate neprestano že {} dan. Potrudite se tudi danes, da nadaljujete začeto!"
-msgstr[2] "Vztrajate neprestano že {} dni. Potrudite se tudi danes, da nadaljujete začeto!"
-msgstr[3] "Vztrajate neprestano že {} dni. Potrudite se tudi danes, da nadaljujete začeto!"
+#: src/plugins/steps/details.rs:210
+msgid ""
+"You’re on a streak for {} day. Reach your step goal today to continue it!"
+msgid_plural ""
+"You’re on a streak for {} days. Reach your step goal today to continue it!"
+msgstr[0] ""
+"Vztrajate neprestano že {} dni. Dosezite število korakov tudi danes, da niz "
+"nadaljujete!"
+msgstr[1] ""
+"Vztrajate neprestano že {} dan. Dosezite število korakov tudi danes, da niz "
+"nadaljujete!"
+msgstr[2] ""
+"Vztrajate neprestano že {} dni. Dosezite število korakov tudi danes, da niz "
+"nadaljujete!"
+msgstr[3] ""
+"Vztrajate neprestano že {} dni. Dosezite število korakov tudi danes, da niz "
+"nadaljujete!"
 
-#: src/plugins/steps/details.rs:213
-msgid "You've reached your step goal today. Keep going to start a streak!"
-msgstr "Danes ste dosegli ciljno število korakov. Nadaljujte tako tudi jutri!"
+#: src/plugins/steps/details.rs:218
+msgid "You’ve reached your step goal today. Keep going to start a streak!"
+msgstr ""
+"Danes ste dosegli ciljno število korakov. Nadaljujte tako tudi jutri, da to "
+"postane navada!"
 
-#: src/plugins/steps/details.rs:216
-msgid "You're on a streak for {} day. Good job!"
-msgid_plural "You're on a streak for {} days. Good job!"
+#: src/plugins/steps/details.rs:221
+msgid "You’re on a streak for {} day. Good job!"
+msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "Vztrajate neprestano že {} dni. Odlično!"
 msgstr[1] "Vztrajate neprestano že {} dan. Odlično!"
 msgstr[2] "Vztrajate neprestano že {} dni. Odlično!"
 msgstr[3] "Vztrajate neprestano že {} dni. Odlično!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:233
+#: src/plugins/steps/details.rs:238
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} korakov {}"
@@ -732,7 +732,7 @@ msgstr[1] "{} korak {}"
 msgstr[2] "{} koraka {}"
 msgstr[3] "{} koraki {}"
 
-#: src/plugins/steps/summary.rs:94
+#: src/plugins/steps/summary.rs:96
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} korakov danes"
@@ -740,7 +740,7 @@ msgstr[1] "{} korak danes"
 msgstr[2] "{} koraka danes"
 msgstr[3] "{} koraki danes"
 
-#: src/plugins/steps/summary.rs:105
+#: src/plugins/steps/summary.rs:107
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Doseženih je {} odstotkov cilja dnevno opravljenih korakov."
@@ -748,16 +748,16 @@ msgstr[1] "Dosežen je {} odstotke cilja dnevno opravljenih korakov."
 msgstr[2] "Dosežena sta {} odstotka cilja dnevno opravljenih korakov."
 msgstr[3] "Doseženi so {} odstotki cilja dnevno opravljenih korakov."
 
-#: src/plugins/steps/summary.rs:112
+#: src/plugins/steps/summary.rs:114
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Zelo dobro! Dosegli ste cilj opravljenih dnevnih korakov!"
 
-#: src/plugins/weight/details.rs:192
+#: src/plugins/weight/details.rs:202
 msgid "Current BMI: {}"
 msgstr "Trenutni ITM: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:207
+#: src/plugins/weight/details.rs:217
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} funtov na {}"
@@ -766,7 +766,7 @@ msgstr[2] "{} funta na {}"
 msgstr[3] "{} funti na {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:210
+#: src/plugins/weight/details.rs:220
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogramov na {}"
@@ -774,69 +774,90 @@ msgstr[1] "{} kilogram na {}"
 msgstr[2] "{} kilograma na {}"
 msgstr[3] "{} kilogrami na {}"
 
-#: src/plugins/weight/details.rs:246 src/plugins/weight/details.rs:251
+#: src/plugins/weight/details.rs:257 src/plugins/weight/details.rs:262
 msgid "Unknown BMI"
 msgstr "Neznan ITM"
 
-#: src/plugins/weight/details.rs:270
-msgid "Your weight goal is {} pound. Add a first weight measurement to see how close you are to reaching it."
-msgid_plural "Your weight goal is {} pounds. Add a first weight measurement to see how close you are to reaching it."
-msgstr[0] "Zastavili ste si cilj doseči telesno maso {} funtov. Dodajte prvo meritev mase in spremljajte napredek."
-msgstr[1] "Zastavili ste si cilj doseči telesno maso {} funt. Dodajte prvo meritev mase in spremljajte napredek."
-msgstr[2] "Zastavili ste si cilj doseči telesno maso {} funta. Dodajte prvo meritev mase in spremljajte napredek."
-msgstr[3] "Zastavili ste si cilj doseči telesno maso {} funte. Dodajte prvo meritev mase in spremljajte napredek."
+#: src/plugins/weight/details.rs:280
+msgid ""
+"Your weight goal is {} pound. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} pounds. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Zastavili ste si cilj doseči telesno maso {} funtov. Dodajte prvo meritev "
+"mase in spremljajte napredek."
+msgstr[1] ""
+"Zastavili ste si cilj doseči telesno maso {} funt. Dodajte prvo meritev mase "
+"in spremljajte napredek."
+msgstr[2] ""
+"Zastavili ste si cilj doseči telesno maso {} funta. Dodajte prvo meritev "
+"mase in spremljajte napredek."
+msgstr[3] ""
+"Zastavili ste si cilj doseči telesno maso {} funte. Dodajte prvo meritev "
+"mase in spremljajte napredek."
 
-#: src/plugins/weight/details.rs:277
-msgid "Your weight goal is {} kilogram. Add a first weight measurement to see how close you are to reaching it."
-msgid_plural "Your weight goal is {} kilograms. Add a first weight measurement to see how close you are to reaching it."
-msgstr[0] "Zastavili ste si cilj doseči telesno maso {} kilogramov. Dodajte prvo meritev mase in spremljajte napredek."
-msgstr[1] "Zastavili ste si cilj doseči telesno maso {} kilogram. Dodajte prvo meritev mase in spremljajte napredek."
-msgstr[2] "Zastavili ste si cilj doseči telesno maso {} kilograma. Dodajte prvo meritev mase in spremljajte napredek."
-msgstr[3] "Zastavili ste si cilj doseči telesno maso {} kilograme. Dodajte prvo meritev mase in spremljajte napredek."
+#: src/plugins/weight/details.rs:287
+msgid ""
+"Your weight goal is {} kilogram. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} kilograms. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Zastavili ste si cilj doseči telesno maso {} kilogramov. Dodajte prvo "
+"meritev mase in spremljajte napredek."
+msgstr[1] ""
+"Zastavili ste si cilj doseči telesno maso {} kilogram. Dodajte prvo meritev "
+"mase in spremljajte napredek."
+msgstr[2] ""
+"Zastavili ste si cilj doseči telesno maso {} kilograma. Dodajte prvo meritev "
+"mase in spremljajte napredek."
+msgstr[3] ""
+"Zastavili ste si cilj doseči telesno maso {} kilograme. Dodajte prvo meritev "
+"mase in spremljajte napredek."
 
-#: src/plugins/weight/details.rs:286
-msgid "You've reached your weight goal. Great job!"
+#: src/plugins/weight/details.rs:296
+msgid "You’ve reached your weight goal. Great job!"
 msgstr "Dosegli ste ciljno težo! Čestitke!"
 
-#. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:302
-msgid "Your weight goal is {} pound,"
-msgid_plural "Your weight goal is {} pounds,"
+#: src/plugins/weight/details.rs:312
+msgid "Your weight goal is {} pound."
+msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "Ciljna telesna masa je {} funtov,"
 msgstr[1] "Ciljna telesna masa je {} funt,"
 msgstr[2] "Ciljna telesna masa je {} funta,"
 msgstr[3] "Ciljna telesna masa je {} funte,"
 
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:307
-msgid "you have {} pound left to reach it"
-msgid_plural "you have {} pounds left to reach it"
-msgstr[0] "torej jih morete izgubiti še {}."
-msgstr[1] "torej morete izgubiti še {}."
-msgstr[2] "torej morete izgubiti še {}."
-msgstr[3] "torej morete izgubiti še {}."
+#: src/plugins/weight/details.rs:317
+msgid "You have {} pound left to reach it."
+msgid_plural "You have {} pounds left to reach it."
+msgstr[0] "torej jih morate izgubiti še {}."
+msgstr[1] "torej morate izgubiti še {}."
+msgstr[2] "torej morate izgubiti še {}."
+msgstr[3] "torej morate izgubiti še {}."
 
-#. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:314
-msgid "Your weight goal is {} kilogram,"
-msgid_plural "Your weight goal is {} kilograms,"
+#: src/plugins/weight/details.rs:324
+msgid "Your weight goal is {} kilogram."
+msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "Ciljna telesna masa je {} kilogramov,"
 msgstr[1] "Ciljna telesna masa je {} kilogram,"
 msgstr[2] "Ciljna telesna masa je {} kilograma,"
 msgstr[3] "Ciljna telesna masa je {} kilograme,"
 
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:320
-msgid "you have {} kilogram left to reach it"
-msgid_plural "you have {} kilograms left to reach it"
-msgstr[0] "torej jih morete izgubiti še {}."
-msgstr[1] "torej morete izgubiti še {}."
-msgstr[2] "torej morete izgubiti še {}."
-msgstr[3] "torej morete izgubiti še {}."
-
 #: src/plugins/weight/details.rs:330
-msgid "No weight goal set yet. You can set it in Health's preferences."
-msgstr "Ni še nastavljenega cilja telesne mase. Določite ga med nastavitvami programa."
+msgid "You have {} kilogram left to reach it"
+msgid_plural "You have {} kilograms left to reach it"
+msgstr[0] "torej jih morate izgubiti še {}."
+msgstr[1] "torej morate izgubiti še {}."
+msgstr[2] "torej morate izgubiti še {}."
+msgstr[3] "torej morate izgubiti še {}."
+
+#: src/plugins/weight/details.rs:340
+msgid "No weight goal set yet. You can set it in Health’s preferences."
+msgstr ""
+"Ni še nastavljenega cilja telesne mase. Določite ga med nastavitvami zdravja."
 
 #: src/plugins/weight/summary.rs:119
 msgid "{} pound"
@@ -895,55 +916,70 @@ msgid "No weight data available"
 msgstr "Ni podatkov telesne mase"
 
 #: src/sync/csv.rs:81 src/sync/csv.rs:370
-msgid "No activities added yet; can't create empty export!"
-msgstr "Ni še dodanih dejavnosti in ni mogoče ustvariti prazne datoteke izvoza!"
+msgid "No activities added yet; can’t create empty export!"
+msgstr ""
+"Ni še dodanih dejavnosti in ni mogoče ustvariti prazne datoteke izvoza!"
 
 #: src/sync/csv.rs:111 src/sync/csv.rs:388
-msgid "No weight measurements added yet; can't create empty export!"
-msgstr "Ni še vpisanih meritev telesne mase, zato izvoza ni mogoče izvesti!"
+msgid "No weight measurements added yet; can’t create empty export!"
+msgstr ""
+"Ni še vpisanih meritev telesne mase, praznega izvoza pa ni mogoče izvesti!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:332
-msgid "Can't parse encrypted backup without encryption key!"
-msgstr "Brez šifrirnega ključa šifrirane varnostne kopije ni mogoče razčleniti!"
+msgid "Can’t parse encrypted backup without encryption key!"
+msgstr ""
+"Brez šifrirnega ključa šifrirane varnostne kopije ni mogoče razčleniti!"
 
 #: src/sync/csv.rs:195 src/sync/csv.rs:352
-msgid "Couldn't parse CSV. Are you trying to read an unencrypted backup as an encrypted one?"
-msgstr "Datoteke CSV ni mogoče razčleniti. Ali morda poskušate prebrati nešifrirano varnostno kopijo kot šifrirano?"
+msgid ""
+"Couldn’t parse CSV. Are you trying to read an unencrypted backup as an "
+"encrypted one?"
+msgstr ""
+"Datoteke CSV ni mogoče razčleniti. Ali morda poskušate prebrati nešifrirano "
+"varnostno kopijo kot šifrirano?"
 
 #: src/sync/csv.rs:208
-msgid "Couldn't decrypt data. Are you sure you're using the right key?"
-msgstr "Podatkov ni mogoče odšifrirati. Ali ste prepričani, da uporabljate ustrezen šifrirni ključ?"
+msgid "Couldn’t decrypt data. Are you sure you’re using the right key?"
+msgstr ""
+"Podatkov ni mogoče odšifrirati. Ali ste prepričani, da uporabljate ustrezen "
+"šifrirni ključ?"
 
 #: src/sync/database_receiver.rs:46
-msgid "Couldn't synchronize steps due to error {}"
+msgid "Couldn’t synchronize steps due to error {}"
 msgstr "Zaradi napake {} ni mogoče uskladiti podatkov korakov"
 
 #: src/sync/database_receiver.rs:60
-msgid "Couldn't synchronize weight measurements due to error {}"
-msgstr "Zaradi napake {} ni mogoče uskladiti podatkov meritev telesne mase."
+msgid "Couldn’t synchronize weight measurements due to error {}"
+msgstr "Zaradi napake {} ni mogoče uskladiti podatkov meritev telesne mase"
 
 #: src/sync/google_fit.rs:211
 msgid "CRSF Verification failed, got {}, expected {}"
-msgstr "Overite CRSF je spodletela. Pridobljen je odziv {}, pričakovan pa je {}"
+msgstr ""
+"Overite CRSF je spodletela. Pridobljen je odziv {}, pričakovan pa je {}"
 
 #: src/sync/google_fit.rs:227
 msgid "Requesting OAuth2 token failed due to error {}"
 msgstr "Zahteva za pridobivanje žetona OAuth2 je spodletela zaradi napake {}."
 
 #: src/sync/sync_provider.rs:109
-msgid "Can't retrieve OAuth2 token when no refresh token is set! Please re-authenticate with your sync provider."
-msgstr "Žetona OAuth2 ni mogoče pridobiti, če žeton za osvežitev ni nastavljen! Ponovno overite račun z zunanjim ponudnikom in poskusite znova uskladiti podatke."
+msgid ""
+"Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
+"authenticate with your sync provider."
+msgstr ""
+"Žetona OAuth2 ni mogoče pridobiti, če žeton za osvežitev ni nastavljen! "
+"Ponovno overite račun s ponudnikom usklajevanja."
 
 #: src/sync/sync_provider.rs:157
 msgid "Token for Health sync provider {}"
-msgstr "Žeton za ponudnika usklajevanja Health {}"
+msgstr "Žeton za ponudnika usklajevanja Zdravja {}"
 
 #: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
-msgstr "Opravilo je uspešno overjeno in je mogoče nadaljevanje dela s programom."
+msgstr ""
+"Opravilo je uspešno overjeno in je mogoče nadaljevanje dela s programom."
 
 #: src/sync/sync_provider.rs:228
-msgid "Couldn't parse OAuth2 response"
+msgid "Couldn’t parse OAuth2 response"
 msgstr "Ni mogoče razčleniti odziva OAuth2"
 
 #: src/views/bar_graph_view.rs:583
@@ -998,10 +1034,6 @@ msgstr[1] "{} jard"
 msgstr[2] "{} jarda"
 msgstr[3] "{} jarde"
 
-#: src/widgets/bmi_level_bar.rs:267 src/windows/setup_window.rs:248
-msgid "Current BMI"
-msgstr "Trenutni ITM"
-
 #: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Trenutni ITM: {}</small>"
@@ -1023,42 +1055,42 @@ msgid "Feet"
 msgstr "čevelji"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:475 src/widgets/unit_spinbutton.rs:635
+#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:654
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:477
+#: src/widgets/unit_spinbutton.rs:490
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:479
+#: src/widgets/unit_spinbutton.rs:492
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:481
+#: src/widgets/unit_spinbutton.rs:494
 msgid "kg"
 msgstr "kg"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:483 src/widgets/unit_spinbutton.rs:637
+#: src/widgets/unit_spinbutton.rs:496 src/widgets/unit_spinbutton.rs:656
 msgid "in"
 msgstr "in"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:485
+#: src/widgets/unit_spinbutton.rs:498
 msgid "ft"
 msgstr "čev"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:487
+#: src/widgets/unit_spinbutton.rs:500
 msgid "mi"
 msgstr "mi"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:489
+#: src/widgets/unit_spinbutton.rs:502
 msgid "lb"
 msgstr "lb"
 
@@ -1075,6 +1107,11 @@ msgstr "dejavnosti.csv.encrypted"
 #: src/windows/export_dialog.rs:63
 msgid "Activities.csv"
 msgstr "dejavnosti.csv"
+
+#: src/windows/export_dialog.rs:75 src/windows/export_dialog.rs:109
+#: src/windows/import_dialog.rs:68 src/windows/import_dialog.rs:97
+msgid "No file selected."
+msgstr "Izbrana ni nobena datoteka."
 
 #: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
@@ -1136,84 +1173,6 @@ msgstr "Prišlo je do napake!"
 msgid "Close"
 msgstr "Zapri"
 
-#: src/windows/preferences_window.rs:409 src/windows/setup_window.rs:249
-msgid "Target BMI"
-msgstr "Ciljni ITM"
-
-#: src/windows/window.rs:97
-msgid "Failed to migrate database to new version due to error {}"
-msgstr "Zaradi napake je spodletelo nadgrajevanje podatkovne zbirke na novejšo različico {}"
-
 #: src/windows/window.rs:267
-msgid "Couldn't sync Google Fit data due to error: {}"
+msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Usklajevanje podatkov z Google Fit zaradi napake ni mogoče: {}"
-
-#~ msgid "Last opened view"
-#~ msgstr "Nazadnje odprt pogled"
-
-#~ msgid "The last view the user had opened, for restoring it on start"
-#~ msgstr "Nazadnje nastavljen pogled, ki ga je uporabnik uporabil."
-
-#~ msgid "Add An Activity"
-#~ msgstr "Dodaj dejavnost"
-
-#~ msgid "Distance in Meters"
-#~ msgstr "Razdalja v metrih"
-
-#~ msgid "Home Page"
-#~ msgstr "Osnovna stran"
-
-#~ msgid "Today"
-#~ msgstr "Danes"
-
-#~ msgid "of daily step goal"
-#~ msgstr "opravljene dejavnosti"
-
-#~ msgid "Add Weight Record"
-#~ msgstr "Dodaj vpis telesne mase"
-
-#~ msgid "Health Daemon"
-#~ msgstr "Ozadnji program"
-
-#~ msgid "of {} step"
-#~ msgid_plural "of {} steps"
-#~ msgstr[0] "od skupno {} korakov."
-#~ msgstr[1] "od skupno {} koraka."
-#~ msgstr[2] "od skupno {} korakov."
-#~ msgstr[3] "od skupno {} korakov."
-
-#~ msgid "No activities on or after {}"
-#~ msgstr "Ni dejavnosti na ali po {}"
-
-#~ msgid "No step goal set"
-#~ msgstr "Ni nastavljenega korakov do cilja"
-
-#~ msgid "{}%"
-#~ msgstr "{}%"
-
-#~ msgid "+ {} pound"
-#~ msgid_plural "+ {} pounds"
-#~ msgstr[0] "+ {} funtov"
-#~ msgstr[1] "+ {} funt"
-#~ msgstr[2] "+ {} funta"
-#~ msgstr[3] "+ {} funti"
-
-#~ msgid "+ {} kilogram"
-#~ msgid_plural "+ {} kilograms"
-#~ msgstr[0] "+ {} kilogramov"
-#~ msgstr[1] "+ {} kilogram"
-#~ msgstr[2] "+ {} kilograma"
-#~ msgstr[3] "+ {} kilogrami"
-
-#~ msgid "use + to add a weight record"
-#~ msgstr "uporabite + za dodajanje podatkov telesne mase"
-
-#~ msgid "{} Calorie"
-#~ msgid_plural "{} Calories"
-#~ msgstr[0] "{} kalorij"
-#~ msgstr[1] "{} kalorija"
-#~ msgstr[2] "{} kaloriji"
-#~ msgstr[3] "{} kalorije"
-
-#~ msgid "Remind you of your step goals"
-#~ msgstr "Opomnik za doseganje ciljev"
