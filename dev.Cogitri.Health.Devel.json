@@ -4,7 +4,8 @@
   "runtime-version": "42",
   "sdk": "org.gnome.Sdk",
   "sdk-extensions": [
-    "org.freedesktop.Sdk.Extension.rust-stable"
+    "org.freedesktop.Sdk.Extension.rust-stable",
+    "org.freedesktop.Sdk.Extension.llvm12"
   ],
   "command": "dev.Cogitri.Health.Devel",
   "finish-args": [
@@ -34,13 +35,18 @@
     "/share/gir-1.0"
   ],
   "build-options": {
-    "append-path": "/usr/lib/sdk/rust-stable/bin",
+    "append-ld-library-path": "/usr/lib/sdk/llvm12/lib",
+    "append-path": "/usr/lib/sdk/llvm12/bin:/usr/lib/sdk/rust-stable/bin",
+    "env": {
+      "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER": "clang",
+      "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS": "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold",
+      "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER": "clang",
+      "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUSTFLAGS": "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold",
+      "RUST_BACKTRACE": "1"
+    },
     "build-args": [
       "--share=network"
-    ],
-    "env": {
-      "RUST_BACKTRACE": "1"
-    }
+    ]
   },
   "modules": [
     {
@@ -61,21 +67,19 @@
       "builddir": true,
       "config-opts": [
         "-Dman=false",
-        "-Dsystemd_user_services=false"
+        "-Dsystemd_user_services=false",
+        "-Ddocs=false",
+        "-Dbash_completion=false",
+        "-Dtests=false",
+        "-Dtest_utils=false",
+        "-Dintrospection=disabled",
+        "-Dsoup=soup3"
       ],
       "sources": [
         {
           "type": "archive",
-          "url": "https://download.gnome.org/sources/tracker/3.3/tracker-3.3.3.tar.xz",
-          "sha512": "0f8ad998a5de6914d1e24da1b2021967339a2e637996b3e672fe4991177e69b750cdd9eb894e5e6f5f394d991b680d40afc05b95f69171ec38278e30c9729a15"
-        },
-        {
-          "type": "patch",
-          "path": "build-aux/tracker-524.patch"
-        },
-        {
-          "type": "patch",
-          "path": "build-aux/tracker-529.patch"
+          "url": "https://download.gnome.org/sources/tracker/3.4/tracker-3.4.0.tar.xz",
+          "sha512": "0a765d93cbe737a9cf902d1dc1ca00463065c1e7b3f93a7a8132919dfed97acdf80d99cf8f49b61e1a2bfc77a115f74e88731b3b0739651d2f727215c83f077f"
         }
       ]
     },
@@ -84,7 +88,14 @@
       "builddir": true,
       "buildsystem": "meson",
       "cleanup": [
-        "/usr/"
+        "/usr/",
+        "/app/share/gir-1.0",
+        "/app/share/vala",
+        "/app/share/blueprint-compiler",
+        "/app/lib/pkgconfig",
+        "/app/lib/girepository-1.0",
+        "/app/libexec",
+        "/app/lib/tracker-3.0"
       ],
       "config-opts": [
         "-Dprofile=development"
