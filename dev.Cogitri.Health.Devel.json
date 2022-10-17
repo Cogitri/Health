@@ -1,11 +1,11 @@
 {
   "id": "dev.Cogitri.Health.Devel",
   "runtime": "org.gnome.Platform",
-  "runtime-version": "42",
+  "runtime-version": "43",
   "sdk": "org.gnome.Sdk",
   "sdk-extensions": [
     "org.freedesktop.Sdk.Extension.rust-stable",
-    "org.freedesktop.Sdk.Extension.llvm12"
+    "org.freedesktop.Sdk.Extension.llvm14"
   ],
   "command": "dev.Cogitri.Health.Devel",
   "finish-args": [
@@ -35,8 +35,8 @@
     "/share/gir-1.0"
   ],
   "build-options": {
-    "append-ld-library-path": "/usr/lib/sdk/llvm12/lib",
-    "append-path": "/usr/lib/sdk/llvm12/bin:/usr/lib/sdk/rust-stable/bin",
+    "append-ld-library-path": "/usr/lib/sdk/llvm14/lib",
+    "append-path": "/usr/lib/sdk/llvm14/bin:/usr/lib/sdk/rust-stable/bin",
     "env": {
       "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER": "clang",
       "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS": "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold",
@@ -58,28 +58,6 @@
           "type": "git",
           "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler",
           "commit": "87cedc2c7e48b01dc1b07aef937e2fe02111b18c"
-        }
-      ]
-    },
-    {
-      "name": "tracker",
-      "buildsystem": "meson",
-      "builddir": true,
-      "config-opts": [
-        "-Dman=false",
-        "-Dsystemd_user_services=false",
-        "-Ddocs=false",
-        "-Dbash_completion=false",
-        "-Dtests=false",
-        "-Dtest_utils=false",
-        "-Dintrospection=disabled",
-        "-Dsoup=soup3"
-      ],
-      "sources": [
-        {
-          "type": "archive",
-          "url": "https://download.gnome.org/sources/tracker/3.4/tracker-3.4.0.tar.xz",
-          "sha512": "0a765d93cbe737a9cf902d1dc1ca00463065c1e7b3f93a7a8132919dfed97acdf80d99cf8f49b61e1a2bfc77a115f74e88731b3b0739651d2f727215c83f077f"
         }
       ]
     },
