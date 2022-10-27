@@ -27,7 +27,7 @@ mod imp {
         prelude::*,
     };
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{glib, subclass::prelude::*};
+    use gtk::glib;
     use once_cell::unsync::OnceCell;
     use std::convert::TryInto;
     use uom::si::length::{meter, yard};
@@ -48,20 +48,15 @@ mod imp {
     impl ObjectImpl for ActivityRow {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecObject::builder("activity", Activity::static_type()).build()]
-            });
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
+                Lazy::new(|| vec![glib::ParamSpecObject::builder::<Activity>("activity").build()]);
 
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "activity" => {
                     let activity = value.get::<Activity>().unwrap();
@@ -132,7 +127,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "activity" => self.activity.get().unwrap().to_value(),
                 _ => unimplemented!(),
@@ -156,7 +151,7 @@ glib::wrapper! {
 impl ActivityRow {
     /// Create a new [ActivityRow].
     pub fn new(activity: &Activity) -> Self {
-        glib::Object::new(&[("activity", activity)]).expect("Failed to create ActivityRow")
+        glib::Object::new(&[("activity", activity)])
     }
 
     pub fn activity(&self) -> Activity {

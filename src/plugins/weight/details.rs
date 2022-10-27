@@ -49,7 +49,7 @@ mod imp {
     use gtk::{
         gio,
         glib::{self, Cast},
-        {subclass::prelude::*, CompositeTemplate},
+        CompositeTemplate,
     };
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
@@ -82,8 +82,10 @@ mod imp {
     }
 
     impl ObjectImpl for PluginWeightDetails {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+
+            let obj = self.obj();
 
             Database::instance().connect_weights_updated(glib::clone!(@weak obj => move |_| {
                 gtk_macros::spawn!(async move {
@@ -92,7 +94,7 @@ mod imp {
             }));
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             if let Some(id) = self.settings_handler_id.borrow_mut().take() {
                 self.settings.disconnect(id);
             }
@@ -101,23 +103,16 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoxed::builder(
-                    "data-provider",
-                    DataProviderBoxed::static_type(),
-                )
-                .flags(glib::ParamFlags::CONSTRUCT | glib::ParamFlags::WRITABLE)
-                .build()]
+                vec![
+                    glib::ParamSpecBoxed::builder::<DataProviderBoxed>("data-provider")
+                        .flags(glib::ParamFlags::CONSTRUCT | glib::ParamFlags::WRITABLE)
+                        .build(),
+                ]
             });
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "data-provider" => {
                     self.weight_graph_model.replace(Some(
@@ -174,7 +169,6 @@ impl PluginWeightDetails {
                 &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
             ),
         ])
-        .expect("Failed to create PluginWeightDetails")
     }
 
     pub async fn get_user(&self) -> User {

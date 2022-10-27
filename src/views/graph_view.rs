@@ -107,8 +107,9 @@ mod imp {
     }
 
     impl WidgetImpl for GraphView {
-        fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
+        fn snapshot(&self, snapshot: &gtk::Snapshot) {
             let mut inner = self.inner.borrow_mut();
+            let widget = self.obj();
 
             inner.height = widget.height() as f32 - HALF_Y_PADDING * 2.0;
             inner.width = widget.width() as f32 - HALF_X_PADDING * 2.0;
@@ -395,9 +396,10 @@ mod imp {
     }
 
     impl ObjectImpl for GraphView {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
+            let obj = self.obj();
             obj.set_hexpand(true);
             obj.set_vexpand(true);
             let gesture_controller = gtk::GestureClick::new();
@@ -423,7 +425,7 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoxed::builder("hover-func", FnBoxedPoint::static_type())
+                    glib::ParamSpecBoxed::builder::<FnBoxedPoint>("hover-func")
                         .flags(glib::ParamFlags::WRITABLE)
                         .build(),
                     glib::ParamSpecFloat::builder("limit")
@@ -440,13 +442,8 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
             match pspec.name() {
                 "hover-func" => {
                     self.inner.borrow_mut().hover_func =
@@ -478,7 +475,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "limit" => self.inner.borrow().limit.unwrap_or(-1.0).to_value(),
                 "limit-label" => self.inner.borrow().limit_label.to_value(),
@@ -498,7 +495,7 @@ glib::wrapper! {
 
 impl GraphView {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create GraphView")
+        glib::Object::new(&[])
     }
 
     pub fn limit(&self) -> Option<f32> {

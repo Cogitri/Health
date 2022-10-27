@@ -70,7 +70,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "id" => self.activity_type_id.get().unwrap().to_value(),
                 "label" => self.activity_type_label.label().to_string().to_value(),
@@ -79,13 +79,7 @@ mod imp {
             }
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "id" => self.activity_type_id.set(value.get().unwrap()).unwrap(),
                 "label" => self.activity_type_label.set_label(value.get().unwrap()),
@@ -133,7 +127,6 @@ impl ActivityTypeRow {
             ("label", &data.label()),
             ("selected", &selected),
         ])
-        .expect("Failed to create ActivityTypeRow")
     }
 
     pub fn set_selected(&self, selected: bool) {

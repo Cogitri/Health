@@ -62,9 +62,10 @@ mod imp {
     }
 
     impl ObjectImpl for DataAddDialog {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
+            let obj = self.obj();
             obj.add_action_widget(&*self.button_cancel, gtk::ResponseType::Cancel);
             obj.add_action_widget(&*self.button_ok, gtk::ResponseType::Ok);
 
@@ -98,7 +99,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "current-plugin" => self.current_plugin.get().unwrap().to_value(),
                 _ => unimplemented!(),
@@ -107,7 +108,6 @@ mod imp {
 
         fn set_property(
             &self,
-            _obj: &Self::Type,
             _id: usize,
             value: &glib::Value,
             pspec: &glib::ParamSpec,
@@ -142,7 +142,6 @@ impl DataAddDialog {
             ("transient-for", &Some(parent)),
             ("current-plugin", &current_plugin),
         ])
-        .expect("Failed to create DataAddDialog")
     }
 
     fn handle_is_responsive_notify(&self, view: &ViewAdd) {

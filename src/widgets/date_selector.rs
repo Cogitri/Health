@@ -55,11 +55,11 @@ mod imp {
     }
 
     impl ObjectImpl for DateSelector {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
             let now = glib::DateTime::local();
-            obj.set_selected_date(now.clone());
+            self.obj().set_selected_date(now.clone());
             self.day_adjustment
                 .set_upper(glib::DateTime::days_of_month(now.year(), now.month()) as f64);
         }
@@ -68,14 +68,16 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoxed::builder("selected-date", glib::DateTime::static_type())
+                    glib::ParamSpecBoxed::builder::<glib::DateTime>("selected-date")
                         .build(),
                 ]
             });
             &PROPERTIES
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "selected-date" => {
                     let year = self.year_spinner.value_as_int();
@@ -114,7 +116,6 @@ mod imp {
 
         fn set_property(
             &self,
-            _obj: &Self::Type,
             _id: usize,
             value: &glib::Value,
             pspec: &glib::ParamSpec,
@@ -178,7 +179,7 @@ impl DateSelector {
 
     /// Create a new [DateSelector]
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create DateSelector")
+        glib::Object::new(&[])
     }
 
     /// Set the currently selected date.

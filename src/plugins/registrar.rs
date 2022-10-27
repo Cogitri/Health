@@ -30,15 +30,16 @@ mod imp {
     impl ObjectImpl for Registrar {
         fn signals() -> &'static [glib::subclass::Signal] {
             use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("plugins-changed", &[], glib::Type::UNIT.into()).build()]
-            });
+            static SIGNALS: Lazy<Vec<Signal>> =
+                Lazy::new(|| vec![Signal::builder("plugins-changed").build()]);
 
             SIGNALS.as_ref()
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
+
             gtk_macros::spawn!(glib::clone!(@weak obj => async move {
                 obj.load_plugins().await;
             }));
@@ -160,7 +161,7 @@ impl Registrar {
     }
 
     fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create Registrar")
+        glib::Object::new(&[])
     }
 }
 

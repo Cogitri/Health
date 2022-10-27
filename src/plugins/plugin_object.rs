@@ -29,33 +29,25 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecBoxed::builder("plugin", PluginBoxed::static_type())
-                        .flags(
-                            glib::ParamFlags::READABLE
-                                | glib::ParamFlags::WRITABLE
-                                | glib::ParamFlags::CONSTRUCT_ONLY,
-                        )
-                        .build(),
-                ]
+                vec![glib::ParamSpecBoxed::builder::<PluginBoxed>("plugin")
+                    .flags(
+                        glib::ParamFlags::READABLE
+                            | glib::ParamFlags::WRITABLE
+                            | glib::ParamFlags::CONSTRUCT_ONLY,
+                    )
+                    .build()]
             });
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "plugin" => self.plugin.set(value.get().unwrap()).unwrap(),
                 _ => unimplemented!(),
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "plugin" => self.plugin.get().unwrap().to_value(),
                 _ => unimplemented!(),
@@ -72,7 +64,6 @@ glib::wrapper! {
 impl PluginObject {
     pub fn new(plugin: Box<dyn Plugin>) -> Self {
         glib::Object::new(&[("plugin", &PluginBoxed(plugin))])
-            .expect("Failed to create PluginObject")
     }
 
     pub fn plugin(&self) -> Box<dyn Plugin> {

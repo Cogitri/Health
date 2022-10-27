@@ -85,8 +85,9 @@ mod imp {
     }
 
     impl ObjectImpl for Window {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             obj.setup();
             obj.setup_actions();
@@ -113,7 +114,7 @@ impl Window {
     /// # Arguments
     /// * `app` - The application to use.
     pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
-        glib::Object::new(&[("application", app)]).expect("Failed to create Window")
+        glib::Object::new(&[("application", app)])
     }
 
     pub fn open_hamburger_menu(&self) {

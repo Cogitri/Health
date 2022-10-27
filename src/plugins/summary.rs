@@ -30,7 +30,7 @@ use std::str::FromStr;
 mod imp {
     use crate::{plugins::PluginName, prelude::*};
     use adw::subclass::prelude::*;
-    use gtk::{gio, glib, prelude::*, subclass::prelude::*};
+    use gtk::{gio, glib, prelude::*};
     use once_cell::unsync::OnceCell;
     use std::str::FromStr;
 
@@ -107,20 +107,14 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "plugin-name" => self.plugin_name.get().unwrap().to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "plugin-name" => self
                     .plugin_name
@@ -150,7 +144,6 @@ impl PluginSummaryRow {
     /// Create a new [PluginSummaryRow]
     pub fn new(plugin_name: PluginName) -> Self {
         glib::Object::new(&[("plugin-name", &plugin_name)])
-            .expect("Failed to create PluginSummaryRow")
     }
 }
 

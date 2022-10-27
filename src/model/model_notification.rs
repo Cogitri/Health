@@ -64,13 +64,13 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::builder("application", gio::Application::static_type())
+                    glib::ParamSpecObject::builder::<gio::Application>("application")
                         .flags(glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE)
                         .build(),
                     glib::ParamSpecString::builder("notification-frequency")
                         .default_value(Some(NotificationFrequency::default().as_ref()))
                         .build(),
-                    glib::ParamSpecBoxed::builder("notification-time", TimeBoxed::static_type())
+                    glib::ParamSpecBoxed::builder::<TimeBoxed>("notification-time")
                         .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
                         .build(),
                     glib::ParamSpecUInt::builder("step-goal").build(),
@@ -80,13 +80,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "application" => self.application.set(value.get().unwrap()).unwrap(),
                 "notification-frequency" => {
@@ -102,7 +96,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "application" => self.application.get().unwrap().to_value(),
                 "notification-frequency" => self
@@ -145,7 +139,6 @@ impl ModelNotification {
             ("notification-time", &TimeBoxed(notification_time)),
             ("step-goal", &step_goal),
         ])
-        .expect("Failed to create ModelNotification")
     }
 
     pub fn notification_frequency(&self) -> NotificationFrequency {

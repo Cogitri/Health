@@ -38,11 +38,11 @@ mod imp {
         windows::{SetupWindow, Window},
     };
     use adw::subclass::prelude::*;
+    use gtk::prelude::*;
     use gtk::{
         gio,
         glib::{self, clone, g_warning},
     };
-    use gtk::{prelude::*, subclass::prelude::*};
     use std::cell::RefCell;
 
     #[derive(Debug, Default)]
@@ -51,6 +51,7 @@ mod imp {
         pub settings: Settings,
         pub database: Database,
         pub window: RefCell<Option<glib::WeakRef<Window>>>,
+        pub hold_guard: RefCell<Option<gio::ApplicationHoldGuard>>,
     }
 
     #[glib::object_subclass]
@@ -62,8 +63,9 @@ mod imp {
 
     impl ObjectImpl for Application {}
     impl ApplicationImpl for Application {
-        fn activate(&self, obj: &Self::Type) {
-            self.parent_activate(obj);
+        fn activate(&self) {
+            self.parent_activate();
+            let obj = self.obj();
 
             if let Some(window) = self.window.borrow().clone().and_then(|s| s.upgrade()) {
                 window.present();
@@ -78,15 +80,15 @@ mod imp {
 
                 self.settings.set_did_initial_setup(false);
                 // Make sure we don't exit while the migration is running because we haven't opened a window yet
-                obj.hold();
+                self.hold_guard.replace(Some(obj.hold()));
                 gtk_macros::spawn!(glib::clone!(@weak obj => async move {
                     obj.create_main_window().await;
                 }));
             } else {
                 glib::g_info!(crate::config::APPLICATION_ID, "Starting setup...");
 
-                let setup_window = SetupWindow::new(obj);
-                obj.hold();
+                let setup_window = SetupWindow::new(obj.as_ref());
+                self.hold_guard.replace(Some(obj.hold()));
 
                 setup_window.connect_setup_done(clone!(@weak obj => move |_| {
                     obj.handle_setup_window_setup_done();
@@ -96,10 +98,11 @@ mod imp {
             }
         }
 
-        fn startup(&self, obj: &Self::Type) {
+        fn startup(&self) {
+            let obj = self.obj();
             obj.set_resource_base_path(Some("/dev/Cogitri/Health"));
 
-            self.parent_startup(obj);
+            self.parent_startup();
 
             if let Some(true) = gtk::Settings::default()
                 .and_then(|s| s.gtk_theme_name())
@@ -122,7 +125,7 @@ mod imp {
                 }
 
                 // Hold onto this application to send notifications
-                obj.hold();
+                self.hold_guard.replace(Some(obj.hold()));
             }
         }
     }
@@ -169,7 +172,6 @@ impl Application {
             ("application-id", &crate::config::APPLICATION_ID),
             ("flags", &gio::ApplicationFlags::FLAGS_NONE),
         ])
-        .expect("Failed to create Application")
     }
 
     fn handle_about(&self) {
@@ -195,6 +197,10 @@ impl Application {
             .license_type(gtk::License::Gpl30)
             .build()
             .show()
+    }
+
+    fn release(&self) {
+        self.imp().hold_guard.replace(None);
     }
 
     pub async fn get_user(&self) -> User {

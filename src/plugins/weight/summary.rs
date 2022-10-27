@@ -12,7 +12,7 @@ use uom::si::mass::{kilogram, pound};
 mod imp {
     use crate::{core::Database, plugins::PluginSummaryRow, prelude::*, widgets::Arrows};
     use adw::subclass::prelude::*;
-    use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{gio, glib, prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/weight/summary.ui")]
@@ -39,8 +39,10 @@ mod imp {
     }
 
     impl ObjectImpl for PluginWeightSummaryRow {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+
+            let obj = self.obj();
 
             Database::instance().connect_weights_updated(glib::clone!(@weak obj => move |_| {
                 gtk_macros::spawn!(async move {
@@ -81,7 +83,6 @@ glib::wrapper! {
 impl PluginWeightSummaryRow {
     pub fn new(name: PluginName) -> Self {
         glib::Object::new(&[("plugin-name", &name), ("activatable", &true)])
-            .expect("Failed to create PluginWeightSummaryRow")
     }
 
     pub async fn update(&self) {

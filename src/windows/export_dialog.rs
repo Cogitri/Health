@@ -133,7 +133,6 @@ impl ExportDialog {
             ("is-import", &false),
             ("transient-for", &parent),
         ])
-        .expect("Failed to create ExportDialog")
     }
 }
 

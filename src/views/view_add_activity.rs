@@ -43,7 +43,6 @@ mod imp {
     use gtk::{
         gio,
         glib::{self, clone},
-        subclass::prelude::*,
         CompositeTemplate,
     };
     use std::cell::RefCell;
@@ -144,9 +143,10 @@ mod imp {
     }
 
     impl ObjectImpl for ViewAddActivity {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
+            let obj = self.obj();
             let model = gio::ListStore::new(gtk::Widget::static_type());
             model.splice(
                 0,
@@ -189,13 +189,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "selected-activity-name" => self
                     .activity_type_menu_button
@@ -204,7 +198,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "selected-activity-name" => self.activity_type_menu_button.label().to_value(),
                 _ => unimplemented!(),
@@ -230,7 +224,6 @@ impl ViewAddActivity {
             ("icon-name", &"walking-symbolic"),
             ("view-title", &i18n("Activity")),
         ])
-        .expect("Failed to create ViewAddActivity")
     }
 
     fn connect_handlers(&self) {

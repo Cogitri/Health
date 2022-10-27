@@ -20,7 +20,7 @@ use gtk::{gdk, glib, prelude::*};
 
 mod imp {
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{gdk, glib, subclass::prelude::*};
+    use gtk::{gdk, glib};
     use std::{cell::RefCell, f64::consts::PI};
 
     pub struct ColorCircle {
@@ -50,20 +50,15 @@ mod imp {
     impl ObjectImpl for ColorCircle {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoxed::builder("color", gdk::RGBA::static_type()).build()]
-            });
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> =
+                Lazy::new(|| vec![glib::ParamSpecBoxed::builder::<gdk::RGBA>("color").build()]);
 
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "color" => {
                     self.color.replace(value.get().unwrap());
@@ -73,7 +68,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "color" => self.color.borrow().to_value(),
                 _ => unimplemented!(),
@@ -82,7 +77,8 @@ mod imp {
     }
 
     impl WidgetImpl for ColorCircle {
-        fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
+        fn snapshot(&self, snapshot: &gtk::Snapshot) {
+            let widget = self.obj();
             let cr = snapshot.append_cairo(&gtk::graphene::Rect::new(
                 0.0,
                 0.0,
@@ -119,7 +115,7 @@ impl ColorCircle {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ColorCircle")
+        glib::Object::new(&[])
     }
     pub fn set_color(&self, color: gdk::RGBA) {
         self.set_property("color", color);

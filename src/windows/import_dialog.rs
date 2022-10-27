@@ -121,7 +121,6 @@ impl ImportDialog {
             ("title", &i18n("Import data")),
             ("transient-for", &parent),
         ])
-        .expect("Failed to create ImportDialog")
     }
 }
 

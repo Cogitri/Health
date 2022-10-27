@@ -23,7 +23,7 @@ use crate::model::WeightChange;
 mod imp {
     use crate::model::WeightChange;
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{glib, subclass::prelude::*};
+    use gtk::glib;
     use std::{cell::Cell, str::FromStr};
 
     #[derive(Debug, Default)]
@@ -51,13 +51,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "weight-change" => {
                     self.weight_change
@@ -68,7 +64,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "weight-change" => self.weight_change.get().to_value(),
                 _ => unimplemented!(),
@@ -77,7 +73,8 @@ mod imp {
     }
 
     impl WidgetImpl for Arrows {
-        fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
+        fn snapshot(&self, snapshot: &gtk::Snapshot) {
+            let widget = self.obj();
             let cr = snapshot.append_cairo(&gtk::graphene::Rect::new(
                 0.0,
                 0.0,
@@ -146,7 +143,7 @@ glib::wrapper! {
 
 impl Arrows {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create Arrows")
+        glib::Object::new(&[])
     }
 
     pub fn set_weight_change(&self, change: WeightChange) {

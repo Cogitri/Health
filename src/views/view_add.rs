@@ -20,7 +20,7 @@ use adw::subclass::prelude::*;
 use gtk::glib::{self, prelude::*};
 mod imp {
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{glib, subclass::prelude::*};
+    use gtk::glib;
     use once_cell::unsync::OnceCell;
     use std::cell::Cell;
 
@@ -58,13 +58,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "icon-name" => self.icon_name.set(value.get().unwrap()).unwrap(),
                 "view-title" => self.view_title.set(value.get().unwrap()).unwrap(),
@@ -73,7 +67,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "icon-name" => self.icon_name.get().unwrap().to_value(),
                 "view-title" => self.view_title.get().unwrap().to_value(),
@@ -96,7 +90,6 @@ glib::wrapper! {
 impl ViewAdd {
     pub fn new(icon_name: &str, view_title: &str) -> Self {
         glib::Object::new(&[("icon-name", &icon_name), ("view-title", &view_title)])
-            .expect("Failed to create ViewAdd")
     }
 }
 

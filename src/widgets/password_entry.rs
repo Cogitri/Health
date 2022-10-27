@@ -21,7 +21,7 @@ use gtk::prelude::*;
 
 mod imp {
     use adw::subclass::prelude::*;
-    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/password_entry.ui")]
@@ -54,8 +54,8 @@ mod imp {
     }
 
     impl ObjectImpl for PasswordEntry {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
             self.password_strength_bar
                 .add_offset_value(&gtk::LEVEL_BAR_OFFSET_LOW, 1.0);
@@ -84,7 +84,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            let obj = self.obj();
+
             match pspec.name() {
                 "password" => {
                     let entry_text = self.password_entry.text();
@@ -104,13 +106,7 @@ mod imp {
             }
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "show-password-repeat" => {
                     let val = value.get().unwrap();
@@ -143,7 +139,6 @@ impl PasswordEntry {
             ("show-password-repeat", &show_password_repeat),
             ("show-password-strength", &show_password_strength),
         ])
-        .expect("Failed to create PasswordEntry")
     }
 
     /// Connect to the entered password changing.

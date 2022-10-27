@@ -136,8 +136,9 @@ mod imp {
     }
 
     impl ObjectImpl for PreferencesWindow {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             gtk_macros::spawn!(glib::clone!(@weak obj => async move {
                 obj.construct_user().await;
@@ -162,7 +163,6 @@ mod imp {
 
         fn set_property(
             &self,
-            _obj: &Self::Type,
             _id: usize,
             value: &glib::Value,
             pspec: &glib::ParamSpec,
@@ -222,7 +222,6 @@ impl PreferencesWindow {
                     .as_ref(),
             ),
         ])
-        .expect("Failed to create PreferencesWindow")
     }
 
     fn handle_frequency(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {

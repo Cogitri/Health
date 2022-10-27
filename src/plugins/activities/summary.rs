@@ -8,7 +8,7 @@ use gtk::{glib, subclass::prelude::*};
 mod imp {
     use crate::{core::Database, plugins::PluginSummaryRow, prelude::*};
     use adw::subclass::prelude::*;
-    use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{gio, glib, prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/activities/summary.ui")]
@@ -33,8 +33,9 @@ mod imp {
     }
 
     impl ObjectImpl for PluginActivitiesSummaryRow {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             Database::instance().connect_activities_updated(glib::clone!(@weak obj => move |_| {
                 gtk_macros::spawn!(async move {
@@ -75,7 +76,6 @@ glib::wrapper! {
 impl PluginActivitiesSummaryRow {
     pub fn new(name: PluginName) -> Self {
         glib::Object::new(&[("plugin-name", &name.as_ref()), ("activatable", &true)])
-            .expect("Failed to create PluginActivitiesSummaryRow")
     }
 
     pub async fn update(&self) {

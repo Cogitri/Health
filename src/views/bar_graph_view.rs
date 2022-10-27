@@ -116,8 +116,9 @@ mod imp {
     }
 
     impl WidgetImpl for BarGraphView {
-        fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
+        fn snapshot(&self, snapshot: &gtk::Snapshot) {
             let mut inner = self.inner.borrow_mut();
+            let widget = self.obj();
 
             inner.height = widget.height() as f32 - HALF_Y_PADDING * 2.0;
             inner.width = widget.width() as f32
@@ -348,9 +349,10 @@ mod imp {
     }
 
     impl ObjectImpl for BarGraphView {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
+            let obj = self.obj();
             obj.set_hexpand(true);
             obj.set_vexpand(true);
             let gesture_controller = gtk::GestureClick::new();
@@ -377,7 +379,7 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecBoxed::builder("hover-func", FnBoxedTuple::static_type())
+                    glib::ParamSpecBoxed::builder::<FnBoxedTuple>("hover-func")
                         .flags(glib::ParamFlags::WRITABLE)
                         .build(),
                     glib::ParamSpecFloat::builder("rmr")
@@ -393,13 +395,8 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
             match pspec.name() {
                 "hover-func" => {
                     self.inner.borrow_mut().hover_func =
@@ -417,7 +414,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "rmr" => self.inner.borrow().rmr.to_value(),
                 "x-lines-interval" => self.inner.borrow().x_lines_interval.to_value(),
@@ -436,7 +433,7 @@ glib::wrapper! {
 
 impl BarGraphView {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create BarGraphView")
+        glib::Object::new(&[])
     }
 
     pub fn rmr(&self) -> f32 {

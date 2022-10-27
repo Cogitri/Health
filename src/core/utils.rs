@@ -183,7 +183,7 @@ pub fn init_gtk() {
     init_gresources();
 
     gtk::init().unwrap();
-    adw::init();
+    adw::init().unwrap();
 }
 
 /// Initialise some environment variables for testing GSchemas and compile the GSchema

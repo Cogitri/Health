@@ -68,10 +68,10 @@ mod imp {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                 vec![
-                    Signal::builder("activities-updated", &[], glib::Type::UNIT.into()).build(),
-                    Signal::builder("weights-updated", &[], glib::Type::UNIT.into()).build(),
-                    Signal::builder("user-updated", &[], glib::Type::UNIT.into()).build(),
-                    Signal::builder("version-updated", &[], glib::Type::UNIT.into()).build(),
+                    Signal::builder("activities-updated").build(),
+                    Signal::builder("weights-updated").build(),
+                    Signal::builder("user-updated").build(),
+                    Signal::builder("version-updated").build(),
                 ]
             });
 
@@ -1229,7 +1229,7 @@ impl Database {
     /// # Returns
     /// Either [Database], or [glib::Error] if connecting to Tracker failed.
     fn new() -> Result<Self> {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
+        let o: Self = glib::Object::new(&[]);
 
         o.connect(None)?;
 
@@ -1245,7 +1245,7 @@ impl Database {
     /// Either [Database], or [glib::Error] if connecting to Tracker failed.
     #[cfg(test)]
     pub fn new_with_store_path(store_path: PathBuf) -> Result<Self> {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create Database");
+        let o: Self = glib::Object::new(&[]);
 
         crate::utils::init_gresources();
         o.connect(Some(store_path))?;

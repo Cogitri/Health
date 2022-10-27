@@ -34,7 +34,7 @@ mod imp {
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
         glib::{self, subclass::Signal, Cast},
-        {subclass::prelude::*, CompositeTemplate},
+        CompositeTemplate,
     };
     use num_traits::cast::ToPrimitive;
 
@@ -82,20 +82,18 @@ mod imp {
         fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder(
-                    "view-changed",
-                    &[String::static_type().into()],
-                    glib::Type::UNIT.into(),
-                )
-                .build()]
+                vec![Signal::builder("view-changed")
+                    .param_types([String::static_type()])
+                    .build()]
             });
 
             SIGNALS.as_ref()
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
+            let obj = self.obj();
             let registrar = Registrar::instance();
             let disabled_model = registrar.disabled_plugins();
             let enabled_model = registrar.enabled_plugins();
@@ -266,7 +264,7 @@ impl ViewHomePage {
 
     /// Create a new [ViewHomePage] to display previous activities.
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ViewHomePage")
+        glib::Object::new(&[])
     }
 
     fn handle_user_selected_data_bind_model(&self, object: &glib::Object) -> gtk::Widget {

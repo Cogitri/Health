@@ -161,9 +161,10 @@ mod imp {
     }
 
     impl ObjectImpl for SetupWindow {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
+            let obj = self.obj();
             self.step_goal_spin_button.set_value(10000.0);
 
             obj.connect_handlers();
@@ -174,7 +175,7 @@ mod imp {
         fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("setup-done", &[], glib::Type::UNIT.into()).build()]
+                vec![Signal::builder("setup-done").build()]
             });
 
             SIGNALS.as_ref()
@@ -215,7 +216,7 @@ impl SetupWindow {
     /// # Arguments
     /// * `app` - The [GtkApplication](gtk::Application) to use.
     pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
-        glib::Object::new(&[("application", app)]).expect("Failed to create SetupWindow")
+        glib::Object::new(&[("application", app)])
     }
 
     fn connect_handlers(&self) {

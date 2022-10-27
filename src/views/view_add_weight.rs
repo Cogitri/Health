@@ -35,7 +35,7 @@ mod imp {
         widgets::{DateSelector, UnitSpinButton},
     };
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{glib, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/view_add_weight.ui")]
@@ -86,7 +86,6 @@ impl ViewAddWeight {
             ("icon-name", &"weight-scale-symbolic"),
             ("view-title", &i18n("Weight")),
         ])
-        .expect("Failed to create ViewAddWeight")
     }
 
     pub async fn handle_response(&self, id: gtk::ResponseType) {

@@ -26,7 +26,7 @@ use std::str::FromStr;
 mod imp {
     use crate::plugins::PluginName;
     use adw::subclass::prelude::*;
-    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::str::FromStr;
 
@@ -64,7 +64,7 @@ mod imp {
                     glib::ParamSpecString::builder("plugin-name")
                         .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY)
                         .build(),
-                    glib::ParamSpecObject::builder("icon-widget", gtk::Image::static_type())
+                    glib::ParamSpecObject::builder::<gtk::Image>("icon-widget")
                         .flags(glib::ParamFlags::READABLE)
                         .build(),
                 ]
@@ -73,13 +73,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "icon-name" => self.icon.set_icon_name(value.get().unwrap()),
                 "plugin-name" => {
@@ -91,7 +85,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "icon-name" => self.icon.icon_name().to_value(),
                 "plugin-name" => self.plugin_name.get().unwrap().to_value(),
@@ -122,7 +116,6 @@ impl PluginOverviewRow {
             ("plugin-name", &plugin_name),
             ("activatable", &true),
         ])
-        .expect("Failed to create PluginOverviewRow")
     }
 }
 

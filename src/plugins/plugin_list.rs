@@ -53,15 +53,15 @@ mod imp {
 
     impl ObjectImpl for PluginList {}
     impl ListModelImpl for PluginList {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             PluginObject::static_type()
         }
 
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.vec.borrow().len().try_into().unwrap()
         }
 
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             self.vec
                 .borrow()
                 .get(usize::try_from(position).unwrap())
@@ -114,7 +114,7 @@ impl PluginList {
     }
 
     pub fn new(plugin_list: Vec<Box<dyn Plugin>>) -> Self {
-        let o: Self = glib::Object::new(&[]).expect("Failed to create PluginList");
+        let o: Self = glib::Object::new(&[]);
         o.imp().vec.replace(plugin_list);
         o
     }

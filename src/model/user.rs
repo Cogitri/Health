@@ -174,13 +174,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "user-id" => {
                     self.inner.borrow_mut().user_id = value.get::<i64>().unwrap();
@@ -221,7 +215,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "user-id" => self.inner.borrow().user_id.to_value(),
                 "user-name" => self
@@ -291,7 +285,6 @@ impl User {
     /// Creates a new [User].
     pub fn new() -> Self {
         glib::Object::new(&[("user-birthday", &glib::DateTime::local())])
-            .expect("Failed to create a new User")
     }
 
     pub fn builder() -> UserBuilder {
@@ -470,7 +463,7 @@ impl UserBuilder {
             properties.push(("did-initial-setup", did_initial_setup));
         }
 
-        glib::Object::new::<User>(&properties).expect("Failed to create a new User")
+        glib::Object::new::<User>(&properties)
     }
 
     pub fn user_id(&mut self, user_id: i64) -> &mut Self {

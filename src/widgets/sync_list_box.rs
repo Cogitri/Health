@@ -29,7 +29,7 @@ use gtk_macros::spawn;
 mod imp {
     use crate::core::Settings;
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{glib, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, CompositeTemplate};
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate, Default)]
@@ -67,8 +67,8 @@ mod imp {
     }
 
     impl ObjectImpl for SyncListBox {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
             if Settings::instance().sync_provider_setup_google_fit() {
                 self.google_fit_selected_image.set_visible(true);
@@ -82,7 +82,7 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::builder("parent-window", gtk::Window::static_type())
+                    glib::ParamSpecObject::builder::<gtk::Window>("parent-window")
                         .flags(glib::ParamFlags::CONSTRUCT | glib::ParamFlags::READWRITE)
                         .build(),
                 ]
@@ -91,13 +91,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "parent-window" => {
                     self.parent_window.replace(value.get().unwrap());
@@ -106,7 +100,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "parent-window" => self.parent_window.borrow().to_value(),
                 _ => unimplemented!(),
@@ -132,7 +126,6 @@ impl SyncListBox {
     /// * `parent_window` - The [GtkWindow](gtk::Window) that should be the transient parent for error dialogs (or none).
     pub fn new(parent_window: Option<gtk::Window>) -> Self {
         glib::Object::new(&[("parent-window", &parent_window)])
-            .expect("Failed to create SyncListBox")
     }
 
     fn handle_db_receiver_received(&self, res: Result<()>) -> glib::Continue {

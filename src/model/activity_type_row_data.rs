@@ -51,7 +51,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "id" => self.id.get().unwrap().to_value(),
                 "label" => self.label.get().unwrap().to_value(),
@@ -59,13 +59,7 @@ mod imp {
             }
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "id" => self.id.set(value.get().unwrap()).unwrap(),
                 "label" => self.label.set(value.get().unwrap()).unwrap(),
@@ -85,7 +79,6 @@ glib::wrapper! {
 impl ActivityTypeRowData {
     pub fn new(id: &str, label: &str) -> Self {
         glib::Object::new(&[("id", &id), ("label", &label)])
-            .expect("Failed to create ActivityTypeRowData")
     }
 
     pub fn id(&self) -> String {

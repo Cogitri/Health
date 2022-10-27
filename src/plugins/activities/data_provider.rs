@@ -57,15 +57,15 @@ mod imp {
 
     impl ObjectImpl for ModelActivity {}
     impl ListModelImpl for ModelActivity {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             Activity::static_type()
         }
 
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.inner.borrow().vec.len().try_into().unwrap()
         }
 
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             self.inner
                 .borrow()
                 .vec
@@ -93,7 +93,7 @@ impl ModelActivity {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ModelActivity")
+        glib::Object::new(&[])
     }
 
     /// Reload the data from the Tracker Database.

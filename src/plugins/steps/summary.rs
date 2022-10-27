@@ -12,7 +12,7 @@ mod imp {
         core::Database, plugins::PluginSummaryRow, prelude::*, widgets::CircularProgressBar,
     };
     use adw::subclass::prelude::*;
-    use gtk::{gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{gio, glib, prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/steps/summary.ui")]
@@ -39,8 +39,10 @@ mod imp {
     }
 
     impl ObjectImpl for PluginStepsSummaryRow {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+
+            let obj = self.obj();
 
             Database::instance().connect_activities_updated(glib::clone!(@weak obj => move |_| {
                 gtk_macros::spawn!(async move {
@@ -81,7 +83,6 @@ glib::wrapper! {
 impl PluginStepsSummaryRow {
     pub fn new(name: PluginName) -> Self {
         glib::Object::new(&[("plugin-name", &name), ("activatable", &true)])
-            .expect("Failed to create PluginStepsSummaryRow")
     }
 
     pub async fn update(&self) {

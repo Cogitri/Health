@@ -82,8 +82,9 @@ mod imp {
     }
 
     impl ObjectImpl for ActivityTypeSelector {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             gtk_macros::spawn!(glib::clone!(@weak obj => async move {
                 obj.load_recent_activities().await;
@@ -107,16 +108,14 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoxed::builder(
-                    "selected-activity",
-                    ActivityInfoBoxed::static_type(),
-                )
-                .build()]
+                vec![
+                    glib::ParamSpecBoxed::builder::<ActivityInfoBoxed>("selected-activity").build(),
+                ]
             });
             &PROPERTIES
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "selected-activity" => {
                     ActivityInfoBoxed(self.selected_activity.borrow().clone()).to_value()
@@ -125,13 +124,7 @@ mod imp {
             }
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "selected-activity" => {
                     self.selected_activity
@@ -219,7 +212,7 @@ impl ActivityTypeSelector {
 
     /// Create a new [ActivityTypeSelector].
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ActivityTypeSelector")
+        glib::Object::new(&[])
     }
 
     #[template_callback]

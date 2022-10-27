@@ -48,7 +48,8 @@ mod imp {
     }
 
     impl ObjectImpl for ModelActivityMocked {
-        fn constructed(&self, obj: &Self::Type) {
+        fn constructed(&self) {
+            let obj = self.obj();
             let now = glib::DateTime::local();
             let a = Activity::new();
             a.set_activity_type(ActivityType::Walking);
@@ -70,15 +71,15 @@ mod imp {
     }
 
     impl ListModelImpl for ModelActivityMocked {
-        fn item_type(&self, _list_model: &Self::Type) -> glib::Type {
+        fn item_type(&self) -> glib::Type {
             Activity::static_type()
         }
 
-        fn n_items(&self, _list_model: &Self::Type) -> u32 {
+        fn n_items(&self) -> u32 {
             self.vec.get().unwrap().len().try_into().unwrap()
         }
 
-        fn item(&self, _list_model: &Self::Type, position: u32) -> Option<glib::Object> {
+        fn item(&self, position: u32) -> Option<glib::Object> {
             self.vec
                 .get()
                 .unwrap()
@@ -106,7 +107,7 @@ impl ModelActivityMocked {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create ModelActivityMocked")
+        glib::Object::new(&[])
     }
 
     pub async fn activity_present(&self) -> bool {

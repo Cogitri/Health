@@ -39,7 +39,6 @@ mod imp {
     use gtk::{
         glib::{self, clone, subclass::Signal},
         prelude::*,
-        subclass::prelude::*,
         CompositeTemplate,
     };
     use std::{cell::RefCell, str::FromStr};
@@ -88,9 +87,10 @@ mod imp {
     }
 
     impl ObjectImpl for DistanceActionRow {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
 
+            let obj = self.obj();
             obj.set_togglebutton_text();
             self.settings_handler_id
                 .replace(Some(self.settings.connect_unit_system_changed(
@@ -102,15 +102,15 @@ mod imp {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
                 vec![
-                    Signal::builder("input", &[], glib::Type::UNIT.into()).build(),
-                    Signal::builder("changed", &[], glib::Type::UNIT.into()).build(),
+                    Signal::builder("input").build(),
+                    Signal::builder("changed").build(),
                 ]
             });
 
             SIGNALS.as_ref()
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             self.settings
                 .disconnect(self.settings_handler_id.borrow_mut().take().unwrap())
         }
@@ -131,13 +131,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "unitsize" => {
                     let adjustment = &self.distance_adjustment;
@@ -190,7 +184,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "unitsize" => self.inner.borrow().unitsize.to_value(),
                 "value-meter" => self.inner.borrow().value.get::<meter>().to_value(),
@@ -243,7 +237,7 @@ impl DistanceActionRow {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create DistanceActionRow")
+        glib::Object::new(&[])
     }
 
     pub fn set_unitsize(&self, unitsize: Unitsize) {

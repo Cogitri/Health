@@ -24,7 +24,7 @@ use gtk::{
 mod imp {
     use crate::widgets::ColorCircle;
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{gdk, glib, subclass::prelude::*, CompositeTemplate};
+    use gtk::{gdk, glib, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/legend_row.ui")]
@@ -56,20 +56,14 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecString::builder("activity-name").build(),
-                    glib::ParamSpecBoxed::builder("color", gdk::RGBA::static_type()).build(),
+                    glib::ParamSpecBoxed::builder::<gdk::RGBA>("color").build(),
                 ]
             });
 
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "activity-name" => self.activity_name.set_label(value.get().unwrap()),
                 "color" => self.color_circle.set_color(value.get().unwrap()),
@@ -77,7 +71,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "activity-name" => self.activity_name.label().to_value(),
                 "color" => self.color_circle.color().to_value(),
@@ -106,7 +100,7 @@ impl LegendRow {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create LegendRow")
+        glib::Object::new(&[])
     }
 
     pub fn set_activity_name(&self, activity_name: &str) {

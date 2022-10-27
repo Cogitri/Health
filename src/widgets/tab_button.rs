@@ -22,7 +22,7 @@ use gtk::glib;
 mod imp {
     use super::Card;
     use adw::subclass::prelude::*;
-    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{glib, prelude::*, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/tab_button.ui")]
@@ -66,13 +66,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "tab-name" => self.tab_name.set_label(value.get::<&str>().unwrap_or("")),
                 "icon-name" => self
@@ -95,7 +89,7 @@ glib::wrapper! {
 
 impl TabButton {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create TabButton")
+        glib::Object::new(&[])
     }
 }
 

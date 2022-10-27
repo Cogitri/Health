@@ -39,7 +39,6 @@ mod imp {
     use gtk::{
         glib::{self, clone, subclass::Signal},
         prelude::*,
-        subclass::prelude::*,
     };
     use std::{cell::RefCell, str::FromStr};
 
@@ -71,15 +70,16 @@ mod imp {
     }
 
     impl ObjectImpl for UnitSpinButton {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-            self.spin_button.init_delegate();
+        fn constructed(&self) {
+            self.parent_constructed();
 
+            let obj = self.obj();
+            self.spin_button.init_delegate();
             obj.set_property("child", &self.spin_button);
             obj.connect_handlers();
         }
 
-        fn dispose(&self, _obj: &Self::Type) {
+        fn dispose(&self) {
             self.spin_button.finish_delegate();
         }
 
@@ -87,7 +87,7 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::builder("adjustment", gtk::Adjustment::static_type())
+                    glib::ParamSpecObject::builder::<gtk::Adjustment>("adjustment")
                         .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
                         .build(),
                     glib::ParamSpecBoolean::builder("auto-update-unit-system")
@@ -116,16 +116,11 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
-            if self.delegate_set_property(obj, id, value, pspec) {
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            if self.delegate_set_property(id, value, pspec) {
                 return;
             }
+            let obj = self.obj();
 
             match pspec.name() {
                 "adjustment" => self
@@ -159,8 +154,8 @@ mod imp {
             }
         }
 
-        fn property(&self, obj: &Self::Type, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            if let Some(value) = self.delegate_get_property(obj, id, pspec) {
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            if let Some(value) = self.delegate_get_property(id, pspec) {
                 return value;
             }
 
@@ -195,7 +190,7 @@ mod imp {
         fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<Vec<Signal>> =
-                Lazy::new(|| vec![Signal::builder("input", &[], glib::Type::UNIT.into()).build()]);
+                Lazy::new(|| vec![Signal::builder("input").build()]);
 
             SIGNALS.as_ref()
         }
@@ -204,19 +199,19 @@ mod imp {
     impl WidgetImpl for UnitSpinButton {}
     impl BinImpl for UnitSpinButton {}
     impl EditableImpl for UnitSpinButton {
-        fn delegate(&self, _editable: &Self::Type) -> Option<gtk::Editable> {
+        fn delegate(&self) -> Option<gtk::Editable> {
             Some(self.spin_button.clone().upcast())
         }
     }
 
     impl CellEditableImpl for UnitSpinButton {
-        fn editing_done(&self, _cell_editable: &Self::Type) {
+        fn editing_done(&self) {
             self.spin_button.editing_done()
         }
-        fn remove_widget(&self, _cell_editable: &Self::Type) {
+        fn remove_widget(&self) {
             self.spin_button.remove_widget()
         }
-        fn start_editing(&self, _cell_editable: &Self::Type, event: Option<&gtk::gdk::Event>) {
+        fn start_editing(&self, event: Option<&gtk::gdk::Event>) {
             self.spin_button.start_editing(event)
         }
     }
@@ -291,7 +286,6 @@ impl UnitSpinButton {
             ("auto-update-unit-system", &auto_update_unit_system),
             ("unit-kind", &unit_kind),
         ])
-        .expect("Failed to create UnitSpinButton")
     }
 
     pub fn has_default_value(&self) -> bool {

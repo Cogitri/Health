@@ -166,8 +166,9 @@ mod imp {
     }
 
     impl ObjectImpl for ImportExportDialogBase {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            self.parent_constructed();
+            let obj = self.obj();
 
             obj.add_action_widget(&*self.button_cancel, gtk::ResponseType::Cancel);
             obj.add_action_widget(&*self.button_ok, gtk::ResponseType::Ok);
@@ -185,20 +186,14 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "is-import" => (!self.password_entry.show_password_repeat()).to_value(),
                 _ => unimplemented!(),
             }
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "is-import" => {
                     let val: bool = value.get().unwrap();

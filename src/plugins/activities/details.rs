@@ -34,7 +34,6 @@ mod imp {
     use gtk::{
         self, gio,
         glib::{self, Cast},
-        subclass::prelude::*,
         CompositeTemplate,
     };
     use std::cell::RefCell;
@@ -65,8 +64,9 @@ mod imp {
     }
 
     impl ObjectImpl for PluginActivitiesDetails {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            let obj = self.obj();
+            self.parent_constructed();
 
             let m: gio::ListModel = match &*self.activity_model.borrow() {
                 Some(DataProvider::Actual(m)) => m.clone().upcast(),
@@ -87,23 +87,16 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpecBoxed::builder(
-                    "data-provider",
-                    DataProviderBoxed::static_type(),
-                )
-                .flags(glib::ParamFlags::CONSTRUCT | glib::ParamFlags::WRITABLE)
-                .build()]
+                vec![
+                    glib::ParamSpecBoxed::builder::<DataProviderBoxed>("data-provider")
+                        .flags(glib::ParamFlags::CONSTRUCT | glib::ParamFlags::WRITABLE)
+                        .build(),
+                ]
             });
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "data-provider" => {
                     self.activity_model
@@ -151,7 +144,6 @@ impl PluginActivitiesDetails {
             ),
             ("data-provider", &DataProviderBoxed(data_provider)),
         ])
-        .expect("Failed to create PluginActivitiesDetails")
     }
 
     /// Reload the [ModelActivity](crate::plugins::activities::ModelActivity)'s data and refresh the list of activities

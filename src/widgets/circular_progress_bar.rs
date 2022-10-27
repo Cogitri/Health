@@ -20,7 +20,7 @@ use gtk::{glib, prelude::*};
 
 mod imp {
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{glib, subclass::prelude::*};
+    use gtk::glib;
     use std::{cell::RefCell, f64::consts::PI};
 
     pub struct CircularProgressBarMut {
@@ -52,9 +52,10 @@ mod imp {
     }
 
     impl ObjectImpl for CircularProgressBar {
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
-            obj.set_size_request(75, 75);
+        fn constructed(&self) {
+            self.parent_constructed();
+
+            self.obj().set_size_request(75, 75);
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -69,13 +70,9 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
+
             match pspec.name() {
                 "step-count" => {
                     self.inner.borrow_mut().step_count = value.get().unwrap();
@@ -89,7 +86,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "step-count" => self.inner.borrow().step_count.to_value(),
                 "step-goal" => self.inner.borrow().step_goal.to_value(),
@@ -99,7 +96,8 @@ mod imp {
     }
 
     impl WidgetImpl for CircularProgressBar {
-        fn snapshot(&self, widget: &Self::Type, snapshot: &gtk::Snapshot) {
+        fn snapshot(&self, snapshot: &gtk::Snapshot) {
+            let widget = self.obj();
             let cr = snapshot.append_cairo(&gtk::graphene::Rect::new(
                 0.0,
                 0.0,
@@ -149,7 +147,7 @@ glib::wrapper! {
 
 impl CircularProgressBar {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create CircularProgressBar")
+        glib::Object::new(&[])
     }
 
     pub fn set_step_count(&self, step_count: u32) {

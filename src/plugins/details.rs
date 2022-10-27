@@ -23,7 +23,7 @@ use gtk::glib::{self, prelude::*};
 mod imp {
     use crate::prelude::*;
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{gio, glib, subclass::prelude::*, CompositeTemplate};
+    use gtk::{gio, glib, CompositeTemplate};
     use std::cell::Cell;
 
     #[repr(C)]
@@ -113,7 +113,7 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecObject::builder("content-widget", gtk::Widget::static_type())
+                    glib::ParamSpecObject::builder::<gtk::Widget>("content-widget")
                         .flags(glib::ParamFlags::WRITABLE)
                         .build(),
                     glib::ParamSpecString::builder("empty-label").build(),
@@ -129,13 +129,7 @@ mod imp {
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "content-widget" => self.main_box.append(&value.get::<gtk::Widget>().unwrap()),
                 "empty-label" => self.empty_label.set_label(value.get::<&str>().unwrap()),
@@ -153,7 +147,7 @@ mod imp {
             }
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "empty-label" => self.empty_label.label().to_value(),
                 "empty-icon-name" => self.empty_icon.icon_name().to_value(),
@@ -177,7 +171,7 @@ glib::wrapper! {
 
 impl PluginDetails {
     pub fn new() -> Self {
-        glib::Object::new(&[]).expect("Failed to create PluginDetails")
+        glib::Object::new(&[])
     }
 }
 
