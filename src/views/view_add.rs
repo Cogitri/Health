@@ -44,13 +44,16 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecString::builder("icon-name")
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY)
+                        .construct_only()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecString::builder("view-title")
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY)
+                        .construct_only()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecBoolean::builder("is-responsive")
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .construct()
+                        .readwrite()
                         .build(),
                 ]
             });

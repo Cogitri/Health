@@ -67,10 +67,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecBoxed::builder::<glib::DateTime>("selected-date")
-                        .build(),
-                ]
+                vec![glib::ParamSpecBoxed::builder::<glib::DateTime>("selected-date").build()]
             });
             &PROPERTIES
         }
@@ -114,12 +111,7 @@ mod imp {
             }
         }
 
-        fn set_property(
-            &self,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "selected-date" => {
                     let datetime = value.get::<glib::DateTime>().unwrap();

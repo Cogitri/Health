@@ -83,7 +83,8 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecObject::builder::<gtk::Window>("parent-window")
-                        .flags(glib::ParamFlags::CONSTRUCT | glib::ParamFlags::READWRITE)
+                        .construct()
+                        .readwrite()
                         .build(),
                 ]
             });

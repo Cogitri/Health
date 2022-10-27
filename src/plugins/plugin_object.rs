@@ -30,11 +30,8 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![glib::ParamSpecBoxed::builder::<PluginBoxed>("plugin")
-                    .flags(
-                        glib::ParamFlags::READABLE
-                            | glib::ParamFlags::WRITABLE
-                            | glib::ParamFlags::CONSTRUCT_ONLY,
-                    )
+                    .construct_only()
+                    .readwrite()
                     .build()]
             });
             PROPERTIES.as_ref()

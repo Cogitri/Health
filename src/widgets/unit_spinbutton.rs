@@ -88,23 +88,27 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecObject::builder::<gtk::Adjustment>("adjustment")
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .readwrite()
+                        .construct()
                         .build(),
                     glib::ParamSpecBoolean::builder("auto-update-unit-system")
                         .default_value(true)
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .readwrite()
+                        .construct()
                         .build(),
                     glib::ParamSpecUInt::builder("digits")
                         .maximum(20)
                         .default_value(1)
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .readwrite()
+                        .construct()
                         .build(),
                     glib::ParamSpecBoolean::builder("has-default-value")
                         .default_value(true)
-                        .flags(glib::ParamFlags::READABLE)
+                        .read_only()
                         .build(),
                     glib::ParamSpecString::builder("unit-kind")
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .readwrite()
+                        .construct()
                         .build(),
                     glib::ParamSpecString::builder("unit-system").build(),
                     glib::ParamSpecDouble::builder("value")

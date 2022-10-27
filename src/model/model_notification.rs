@@ -65,13 +65,15 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecObject::builder::<gio::Application>("application")
-                        .flags(glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE)
+                        .construct_only()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecString::builder("notification-frequency")
                         .default_value(Some(NotificationFrequency::default().as_ref()))
                         .build(),
                     glib::ParamSpecBoxed::builder::<TimeBoxed>("notification-time")
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .construct()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecUInt::builder("step-goal").build(),
                 ]

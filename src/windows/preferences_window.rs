@@ -154,19 +154,14 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![glib::ParamSpecString::builder("notification-frequency")
                     .default_value(Some("every_4_hrs"))
-                    .flags(glib::ParamFlags::WRITABLE)
+                    .write_only()
                     .build()]
             });
 
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "notification-frequency" => {
                     let frequency =

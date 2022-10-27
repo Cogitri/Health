@@ -93,7 +93,8 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![glib::ParamSpecString::builder("current-plugin")
-                    .flags(glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE)
+                    .construct_only()
+                    .readwrite()
                     .build()]
             });
             PROPERTIES.as_ref()
@@ -106,12 +107,7 @@ mod imp {
             }
         }
 
-        fn set_property(
-            &self,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "current-plugin" => self.current_plugin.set(value.get().unwrap()).unwrap(),
                 _ => unimplemented!(),

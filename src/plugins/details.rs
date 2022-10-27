@@ -114,14 +114,15 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecObject::builder::<gtk::Widget>("content-widget")
-                        .flags(glib::ParamFlags::WRITABLE)
+                        .write_only()
                         .build(),
                     glib::ParamSpecString::builder("empty-label").build(),
                     glib::ParamSpecString::builder("empty-icon-name").build(),
                     glib::ParamSpecString::builder("filled-title").build(),
                     glib::ParamSpecString::builder("filled-subtitle").build(),
                     glib::ParamSpecBoolean::builder("is-mocked")
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY)
+                        .construct_only()
+                        .readwrite()
                         .build(),
                 ]
             });

@@ -97,7 +97,8 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecBoxed::builder::<DataProviderBoxed>("data-provider")
-                        .flags(glib::ParamFlags::CONSTRUCT | glib::ParamFlags::WRITABLE)
+                        .construct()
+                        .write_only()
                         .build(),
                 ]
             });

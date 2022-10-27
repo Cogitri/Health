@@ -41,10 +41,12 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecString::builder("id")
-                        .flags(glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE)
+                        .construct_only()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecString::builder("label")
-                        .flags(glib::ParamFlags::CONSTRUCT_ONLY | glib::ParamFlags::READWRITE)
+                        .construct_only()
+                        .readwrite()
                         .build(),
                 ]
             });

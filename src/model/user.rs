@@ -97,77 +97,52 @@ mod imp {
 
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
-                    glib::ParamSpecInt64::new(
-                        "user-id",
-                        "user-id",
-                        "user-id",
-                        0,
-                        u32::MAX.into(),
-                        0,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecString::new(
-                        "user-name",
-                        "user-name",
-                        "user-name",
-                        Some("User"),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecBoxed::new(
-                        "user-birthday",
-                        "user-birthday",
-                        "user-birthday",
-                        glib::DateTime::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecFloat::new(
-                        "user-height",
-                        "user-height",
-                        "user-height",
-                        -1.0,
-                        f32::MAX,
-                        -1.0,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecFloat::new(
-                        "user-weightgoal",
-                        "user-weightgoal",
-                        "user-weightgoal",
-                        -1.0,
-                        f32::MAX,
-                        -1.0,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecInt64::new(
-                        "user-stepgoal",
-                        "user-stepgoal",
-                        "user-stepgoal",
-                        i64::MIN,
-                        i64::MAX,
-                        0,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecBoxed::new(
-                        "enabled-plugins",
-                        "enabled-plugins",
-                        "enabled-plugins",
-                        PluginNames::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecBoxed::new(
-                        "recent-activity-types",
-                        "recent-activity-types",
-                        "recent-activity-types",
-                        ActivityTypes::static_type(),
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
-                    glib::ParamSpecBoolean::new(
-                        "did-initial-setup",
-                        "did-initial-setup",
-                        "did-initial-setup",
-                        false,
-                        glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT,
-                    ),
+                    glib::ParamSpecInt64::builder("user-id")
+                        .minimum(0)
+                        .default_value(0)
+                        .maximum(u32::MAX.into())
+                        .readwrite()
+                        .construct()
+                        .build(),
+                    glib::ParamSpecString::builder("user-name")
+                        .default_value(Some("User"))
+                        .readwrite()
+                        .construct()
+                        .build(),
+                    glib::ParamSpecBoxed::builder::<glib::DateTime>("user-birthday")
+                        .readwrite()
+                        .construct()
+                        .build(),
+                    glib::ParamSpecFloat::builder("user-height")
+                        .minimum(-1.0)
+                        .maximum(f32::MAX)
+                        .default_value(-1.0)
+                        .readwrite()
+                        .construct()
+                        .build(),
+                    glib::ParamSpecFloat::builder("user-weightgoal")
+                        .minimum(-1.0)
+                        .maximum(f32::MAX)
+                        .default_value(-1.0)
+                        .readwrite()
+                        .construct()
+                        .build(),
+                    glib::ParamSpecInt64::builder("user-stepgoal")
+                        .readwrite()
+                        .construct()
+                        .build(),
+                    glib::ParamSpecBoxed::builder::<PluginNames>("enabled-plugins")
+                        .readwrite()
+                        .construct()
+                        .build(),
+                    glib::ParamSpecBoxed::builder::<ActivityTypes>("recent-activity-types")
+                        .construct()
+                        .readwrite()
+                        .build(),
+                    glib::ParamSpecBoolean::builder("did-initial-setup")
+                        .construct()
+                        .readwrite()
+                        .build(),
                 ]
             });
 

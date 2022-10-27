@@ -44,7 +44,8 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![glib::ParamSpecString::builder("weight-change")
                     .default_value(Some("no_change"))
-                    .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                    .construct()
+                    .readwrite()
                     .build()]
             });
 

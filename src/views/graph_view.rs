@@ -426,7 +426,7 @@ mod imp {
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![
                     glib::ParamSpecBoxed::builder::<FnBoxedPoint>("hover-func")
-                        .flags(glib::ParamFlags::WRITABLE)
+                        .write_only()
                         .build(),
                     glib::ParamSpecFloat::builder("limit")
                         .minimum(-1.0)

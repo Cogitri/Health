@@ -100,49 +100,58 @@ mod imp {
                 vec![
                     glib::ParamSpecString::builder("activity-type")
                         .default_value(Some("walking"))
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .construct()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecInt64::builder("calories-burned")
                         .minimum(-1)
                         .maximum(u32::MAX.into())
                         .default_value(-1)
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .construct()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecBoxed::builder::<glib::DateTime>("date")
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .construct()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecFloat::builder("distance-meter")
                         .minimum(-1.0)
                         .maximum(f32::MAX)
                         .default_value(-1.0)
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .construct()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecInt64::builder("duration-seconds")
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .construct()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecInt64::builder("heart-rate-avg")
                         .minimum(-1)
                         .maximum(u32::MAX.into())
                         .default_value(-1)
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .construct()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecInt64::builder("heart-rate-max")
                         .minimum(-1)
                         .maximum(u32::MAX.into())
                         .default_value(-1)
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .construct()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecInt64::builder("heart-rate-min")
                         .minimum(-1)
                         .maximum(u32::MAX.into())
                         .default_value(-1)
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .construct()
+                        .readwrite()
                         .build(),
                     glib::ParamSpecInt64::builder("steps")
                         .minimum(-1)
                         .maximum(u32::MAX.into())
                         .default_value(-1)
-                        .flags(glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT)
+                        .construct()
+                        .readwrite()
                         .build(),
                 ]
             });
