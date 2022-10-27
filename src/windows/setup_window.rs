@@ -165,7 +165,7 @@ mod imp {
             self.parent_constructed();
 
             let obj = self.obj();
-            self.step_goal_spin_button.set_value(10000.0);
+            self.step_goal_spin_button.set_value(7500.0);
 
             obj.connect_handlers();
             obj.setup_actions();
