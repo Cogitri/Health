@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: dev.Cogitri.Health\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-03-15 08:58+0000\n"
-"PO-Revision-Date: 2022-03-25 17:55+0100\n"
+"POT-Creation-Date: 2022-09-13 17:26+0000\n"
+"PO-Revision-Date: 2022-11-02 19:08+0100\n"
 "Last-Translator: Nathan Follens <nfollens@gnome.org>\n"
 "Language-Team: Dutch <gnome-nl-list@gnome.org>\n"
 "Language: nl\n"
@@ -17,155 +17,79 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
 msgstr "Instelhulp afgerond"
 
-#: data/dev.Cogitri.Health.gschema.xml:17
-msgid "Whether the user has completed the setup wizard"
-msgstr "Of de gebruiker de instelhulp heeft doorlopen"
-
-#: data/dev.Cogitri.Health.gschema.xml:21
+#: data/dev.Cogitri.Health.gschema.xml:20
 msgid "Toggle notifications"
 msgstr "Meldingen aan/uit"
 
-#: data/dev.Cogitri.Health.gschema.xml:22
-msgid "Whether to enable notifications."
-msgstr "Of meldingen getoond moeten worden."
-
-#: data/dev.Cogitri.Health.gschema.xml:26
+#: data/dev.Cogitri.Health.gschema.xml:24
 msgid "Set enabled plugins"
 msgstr "Ingeschakelde plug-ins instellen"
 
-#: data/dev.Cogitri.Health.gschema.xml:27
-msgid "Sets all data source plugins that are enabled in Health."
-msgstr ""
-"Stelt alle gegevensbronplug-ins in die in Gezondheid ingeschakeld zijn."
-
-#: data/dev.Cogitri.Health.gschema.xml:31
+#: data/dev.Cogitri.Health.gschema.xml:28
 msgid "Notification time"
 msgstr "Meldingstijdstip"
 
 #: data/dev.Cogitri.Health.gschema.xml:32
-msgid "The time at which Health should remind the user of their step goal"
-msgstr ""
-"Het tijdstip waarop een dagelijkse herinnering omtrent het aantal stappen "
-"wordt getoond"
-
-#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "notification frequency"
 msgstr "meldingsfrequentie"
 
-#: data/dev.Cogitri.Health.gschema.xml:37
-msgid ""
-"How frequent should the user be notified to complete their daily step-goal."
-msgstr "Hoe vaak meldingen omtrent het aantal stappen getoond moeten worden."
-
-#: data/dev.Cogitri.Health.gschema.xml:41
+#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "List of recent activity types"
 msgstr "Lijst met recente activiteiten"
 
-#: data/dev.Cogitri.Health.gschema.xml:42
-msgid ""
-"Activity types the user used recently, to be shown first in the activity "
-"types selector's list"
-msgstr ""
-"De activiteiten die de gebruiker onlangs heeft uitgevoerd en bovenaan de "
-"activiteitenlijst moeten worden getoond"
-
-#: data/dev.Cogitri.Health.gschema.xml:46
+#: data/dev.Cogitri.Health.gschema.xml:40
 msgid "Google Fit Sync-Provider setup"
 msgstr "Google Fit-synchronisatie"
 
-#: data/dev.Cogitri.Health.gschema.xml:47
-msgid "Whether Google Fit has been setup as sync provider"
-msgstr "Of Google Fit is ingesteld als synchronisatiedienst"
-
-#: data/dev.Cogitri.Health.gschema.xml:51
+#: data/dev.Cogitri.Health.gschema.xml:44
 msgid "Last sync with Google Fit"
 msgstr "Recentste Google Fit-synchronisatie"
 
-#: data/dev.Cogitri.Health.gschema.xml:52
-msgid "The last time we synched steps, weight etc. with Google Fit"
-msgstr ""
-"Het tijdstip waarop er voor het laatst met Google Fit gesynchroniseerd is"
-
-#: data/dev.Cogitri.Health.gschema.xml:56
+#: data/dev.Cogitri.Health.gschema.xml:48
 msgid "Unit system used"
 msgstr "De gebruikte eenheden"
 
-#: data/dev.Cogitri.Health.gschema.xml:57
-msgid "The unit system the user chose, e.g. for cm vs inch for height"
-msgstr ""
-"De eenheden die de gebruiker gekozen heeft, bijv. cm of inch in het geval "
-"van de lengte"
-
-#: data/dev.Cogitri.Health.gschema.xml:61
+#: data/dev.Cogitri.Health.gschema.xml:52
 msgid "User age"
 msgstr "Leeftijd"
 
-#: data/dev.Cogitri.Health.gschema.xml:62
-msgid "The age of the user (deprecated)."
-msgstr "De leeftijd van de gebruiker (verouderd)."
-
-#: data/dev.Cogitri.Health.gschema.xml:66
+#: data/dev.Cogitri.Health.gschema.xml:56
 msgid "Absolute user age"
 msgstr "Geboortedatum"
 
-#: data/dev.Cogitri.Health.gschema.xml:67
-msgid "The age of the user in absolute terms (like 01/01/1970)"
-msgstr ""
-"De leeftijd van de gebruiker als geboortedatumnotatie (bijv. 01-01-1970)"
-
-#: data/dev.Cogitri.Health.gschema.xml:71
+#: data/dev.Cogitri.Health.gschema.xml:60
 msgid "User height"
 msgstr "Lengte"
 
-#: data/dev.Cogitri.Health.gschema.xml:72
-msgid "The height of the user."
-msgstr "De lengte van de gebruiker."
-
-#: data/dev.Cogitri.Health.gschema.xml:76
+#: data/dev.Cogitri.Health.gschema.xml:64
 msgid "User step goal"
 msgstr "Dagelijks aantal stappen"
 
-#: data/dev.Cogitri.Health.gschema.xml:77
-msgid "The amount of steps the user wants to reach daily."
-msgstr "Het aantal stappen dat de gebruiker dagelijks wil zetten."
-
-#: data/dev.Cogitri.Health.gschema.xml:81
+#: data/dev.Cogitri.Health.gschema.xml:68
 msgid "User weight goal"
 msgstr "Streefgewicht"
 
-#: data/dev.Cogitri.Health.gschema.xml:82
-msgid "The weight the user wants to reach."
-msgstr "Het gewicht dat de gebruiker wil bereiken."
-
-#: data/dev.Cogitri.Health.gschema.xml:86
+#: data/dev.Cogitri.Health.gschema.xml:72
 msgid "Window height"
 msgstr "Vensterhoogte"
 
-#: data/dev.Cogitri.Health.gschema.xml:87
-msgid "The height of the window."
-msgstr "De hoogte van het venster."
-
-#: data/dev.Cogitri.Health.gschema.xml:91
+#: data/dev.Cogitri.Health.gschema.xml:76
 msgid "Window maximized"
 msgstr "Venster gemaximaliseerd"
 
-#: data/dev.Cogitri.Health.gschema.xml:92
-msgid "Whether the window is maximized."
-msgstr "Of het venster gemaximaliseerd moet zijn."
-
-#: data/dev.Cogitri.Health.gschema.xml:96
+#: data/dev.Cogitri.Health.gschema.xml:80
 msgid "Window width"
 msgstr "Vensterbreedte"
 
-#: data/dev.Cogitri.Health.gschema.xml:97
-msgid "The width of the window."
-msgstr "De breedte van het venster."
+#: data/dev.Cogitri.Health.gschema.xml:84
+msgid "Active user ID"
+msgstr "Actieve gebruikers-ID"
 
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
@@ -174,29 +98,23 @@ msgstr "De breedte van het venster."
 msgid "Health"
 msgstr "Gezondheid"
 
-#: data/dev.Cogitri.Health.Autostart.desktop.in.in:5
-#: data/dev.Cogitri.Health.desktop.in.in:5
-msgid "@APPLICATION_ID@"
-msgstr "@APPLICATION_ID@"
-
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:167
-msgid "A health tracking app for the GNOME desktop."
-msgstr "Een gezondheidstoepassing voor de Gnome-werkomgeving."
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:9
+msgid "Track your fitness goals"
+msgstr "Houd uw fitnessdoelen bij"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
 msgid ""
-"A health tracking app for the GNOME desktop. Health can visualize how many "
-"steps you've made daily, your weight development over time and your daily "
-"activities. Data can be synched from Google Fit or manually entered into "
-"Health. Afterwards, it can be viewed and edited in Health."
+"Health can visualize how many steps you’ve made daily, your weight "
+"development over time and your daily activities. Data can be synched from "
+"Google Fit or manually entered into Health. Afterwards, it can be viewed and "
+"edited in Health."
 msgstr ""
-"Een gezondheidstoepassing voor de Gnome-werkomgeving. Met deze toepassing "
-"kunt u bijhouden hoeveel stappen u dagelijks zet en welke activiteiten u "
+"Gezondheid kan tonen hoeveel stappen u dagelijks zet en welke activiteiten u "
 "doet, alsmede uw gewicht monitoren. Gegevens kunnen gesynchroniseerd worden "
 "van Google Fit of handmatig ingevoerd worden in Gezondheid. Daarna kunt u ze "
 "in Gezondheid bekijken en bewerken."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:37
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:36
 msgid "Rasmus “Cogitri” Thomsen"
 msgstr "Rasmus “Cogitri” Thomsen"
 
@@ -211,63 +129,63 @@ msgstr "_Annuleren"
 msgid "_Save"
 msgstr "Op_slaan"
 
-#: data/ui/date_selector.blp:17
+#: data/ui/date_selector.blp:18
 msgid "January"
 msgstr "januari"
 
-#: data/ui/date_selector.blp:18 src/widgets/date_selector.rs:223
+#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:223
 msgid "February"
 msgstr "februari"
 
-#: data/ui/date_selector.blp:19
+#: data/ui/date_selector.blp:20
 msgid "March"
 msgstr "maart"
 
-#: data/ui/date_selector.blp:20
+#: data/ui/date_selector.blp:21
 msgid "April"
 msgstr "april"
 
-#: data/ui/date_selector.blp:21
+#: data/ui/date_selector.blp:22
 msgid "May"
 msgstr "mei"
 
-#: data/ui/date_selector.blp:22
+#: data/ui/date_selector.blp:23
 msgid "June"
 msgstr "juni"
 
-#: data/ui/date_selector.blp:23
+#: data/ui/date_selector.blp:24
 msgid "July"
 msgstr "juli"
 
-#: data/ui/date_selector.blp:24
+#: data/ui/date_selector.blp:25
 msgid "August"
 msgstr "augustus"
 
-#: data/ui/date_selector.blp:25
+#: data/ui/date_selector.blp:26
 msgid "September"
 msgstr "september"
 
-#: data/ui/date_selector.blp:26
+#: data/ui/date_selector.blp:27
 msgid "October"
 msgstr "oktober"
 
-#: data/ui/date_selector.blp:27
+#: data/ui/date_selector.blp:28
 msgid "November"
 msgstr "november"
 
-#: data/ui/date_selector.blp:28
+#: data/ui/date_selector.blp:29
 msgid "December"
 msgstr "december"
 
-#: data/ui/date_selector.blp:34
+#: data/ui/date_selector.blp:35
 msgid "Day"
 msgstr "Dag"
 
-#: data/ui/date_selector.blp:60
+#: data/ui/date_selector.blp:61
 msgid "Month"
 msgstr "Maand"
 
-#: data/ui/date_selector.blp:83
+#: data/ui/date_selector.blp:84
 msgid "Year"
 msgstr "Jaar"
 
@@ -325,7 +243,7 @@ msgstr ""
 "in in om uw echte, live gegevens te bekijken."
 
 #: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
-#: data/ui/preferences_window.blp:166 src/plugins/steps/plugin.rs:39
+#: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
 msgid "Steps"
 msgstr "Aantal stappen"
 
@@ -362,90 +280,98 @@ msgstr "Gezondheid-voorkeuren"
 msgid "General"
 msgstr "Algemeen"
 
-#: data/ui/preferences_window.blp:72
+#: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
+#: data/ui/setup_window.blp:183 src/core/database.rs:1109
 msgid "User"
 msgstr "Gebruiker"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:154
 msgid "Unit system"
 msgstr "Eenheden"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:164
 msgid "Imperial"
 msgstr "Imperiaal"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:170
 msgid "Metric"
 msgstr "Metrisch"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:178
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+#: data/ui/preferences_window.blp:109 data/ui/setup_window.blp:188
 msgid "Birthday"
 msgstr "Geboortedatum"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
+#: data/ui/preferences_window.blp:118 data/ui/setup_window.blp:197
 msgid "Height"
 msgstr "Lengte"
 
-#: data/ui/preferences_window.blp:122
+#: data/ui/preferences_window.blp:131
 msgid "Notifications"
 msgstr "Meldingen"
 
-#: data/ui/preferences_window.blp:125
+#: data/ui/preferences_window.blp:134
 msgid "Enable notifications"
 msgstr "Meldingen tonen"
 
-#: data/ui/preferences_window.blp:136
+#: data/ui/preferences_window.blp:145
 msgid "Frequency"
 msgstr "Frequentie"
 
-#: data/ui/preferences_window.blp:149
+#: data/ui/preferences_window.blp:158
 msgid "Daily reminder time"
 msgstr "Dagelijks herinneren om"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
-#: src/plugins/steps/details.rs:240
+#: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
+#: src/plugins/steps/details.rs:245
 msgid "Step goal"
 msgstr "Aantal stappen"
 
-#: data/ui/preferences_window.blp:170
-msgid "The WHO recommends 10,000 steps per day."
-msgstr ""
-"De Wereldgezondheidsorganisatie adviseert dagelijks 10.000 stappen te zetten."
+#: data/ui/preferences_window.blp:179
+msgid "7,500 steps per day are recommended."
+msgstr "Het wordt aanbevolen dagelijks 7.500 stappen te zetten."
 
-#: data/ui/preferences_window.blp:184 data/ui/preferences_window.blp:187
+#: data/ui/preferences_window.blp:192 data/ui/preferences_window.blp:195
 msgid "Weight Goal"
 msgstr "Streefgewicht"
 
-#: data/ui/preferences_window.blp:188 data/ui/setup_window.blp:286
+#: data/ui/preferences_window.blp:196
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "De WHO adviseert een BMI tussen de 18,5 en 24,9."
 
-#: data/ui/preferences_window.blp:212
+#: data/ui/preferences_window.blp:204 data/ui/setup_window.blp:367
+msgid "Target BMI"
+msgstr "Doel-BMI"
+
+#: data/ui/preferences_window.blp:220
 msgid "Sync"
 msgstr "Synchronisatie"
 
-#: data/ui/preferences_window.blp:216
+#: data/ui/preferences_window.blp:224
 msgid "Start sync with third-party providers."
 msgstr "Synchroniseer met externe diensten."
 
 # 'im- en exporteren' ziet er te vreemd uit - Nathan
-#: data/ui/preferences_window.blp:224
+#: data/ui/preferences_window.blp:232
 msgid "Importing and exporting data"
 msgstr "Gegevens importeren en exporteren"
 
-#: data/ui/preferences_window.blp:227
+#: data/ui/preferences_window.blp:235
 msgid "Export data as CSV"
 msgstr "Exporteren naar csv-bestand"
 
-#: data/ui/preferences_window.blp:230
+#: data/ui/preferences_window.blp:238
 msgid "Export…"
 msgstr "Exporteren…"
 
-#: data/ui/preferences_window.blp:237
+#: data/ui/preferences_window.blp:245
 msgid "Import data from CSV"
 msgstr "Importeren uit csv-bestand"
 
-#: data/ui/preferences_window.blp:240
+#: data/ui/preferences_window.blp:248
 msgid "Import…"
 msgstr "Importeren…"
 
@@ -477,31 +403,39 @@ msgstr "Welkom bij Gezondheid!"
 msgid "Please enter some information to get setup."
 msgstr "Voer enkele gegevens in om aan de slag te gaan."
 
-#: data/ui/setup_window.blp:212
+#: data/ui/setup_window.blp:224
 msgid "Please enter your daily step goal."
 msgstr "Voer het aantal stappen in dat u dagelijks wilt zetten."
 
-#: data/ui/setup_window.blp:224
-msgid "The WHO recommends 10.000 steps per day."
-msgstr "De WHO adviseert dagelijks 10.000 stappen te zetten."
+#: data/ui/setup_window.blp:236
+msgid "The WHO recommends 7.500 steps per day."
+msgstr "De WHO adviseert dagelijks 7.500 stappen te zetten."
 
-#: data/ui/setup_window.blp:274
+#: data/ui/setup_window.blp:286
 msgid "Please enter your weight goal."
 msgstr "Voer uw streefgewicht in."
 
-#: data/ui/setup_window.blp:314
+#: data/ui/setup_window.blp:298
+msgid "The WHO recommends a BMI of 18.5–24.9."
+msgstr "De WHO adviseert een BMI tussen de 18,5 en 24,9."
+
+#: data/ui/setup_window.blp:326
 msgid "Current weight"
 msgstr "Huidig gewicht"
 
-#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:220
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:267
+msgid "Current BMI"
+msgstr "Huidige BMI"
+
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:230
 msgid "Weight goal"
 msgstr "Streefgewicht"
 
-#: data/ui/setup_window.blp:372
+#: data/ui/setup_window.blp:386
 msgid "Setup sync with third-party providers."
 msgstr "Stel synchronisatie met externe diensten in."
 
-#: data/ui/setup_window.blp:384
+#: data/ui/setup_window.blp:398
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr "U kunt uw stappen en gewicht synchroniseren met externe diensten."
@@ -589,7 +523,11 @@ msgstr "_Over Gezondheid"
 msgid "Enable plugin"
 msgstr "Plug-in inschakelen"
 
-#: src/core/application.rs:169
+#: src/core/application.rs:189
+msgid "A health tracking app for the GNOME desktop."
+msgstr "Een gezondheidstoepassing voor de Gnome-werkomgeving."
+
+#: src/core/application.rs:191
 msgid "translator-credits"
 msgstr ""
 "Heimen Stoffels <vistausss@fastmail.com>\n"
@@ -597,7 +535,7 @@ msgstr ""
 "\n"
 "Meer info over Gnome-NL https://nl.gnome.org"
 
-#: src/core/application.rs:171
+#: src/core/application.rs:193
 msgid "Websites"
 msgstr "Websites"
 
@@ -727,85 +665,85 @@ msgid_plural "{} calories burned today"
 msgstr[0] "U hebt vandaag {} calorie verbrand"
 msgstr[1] "U hebt vandaag {} calorieën verbrand"
 
-#: src/plugins/steps/details.rs:186
-msgid "Today's steps: {}"
+#: src/plugins/steps/details.rs:187
+msgid "Today’s steps: {}"
 msgstr "Aantal stappen vandaag: {}"
 
-#: src/plugins/steps/details.rs:201
+#: src/plugins/steps/details.rs:206
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
 "U hebt nog geen reeks genoteerd. Behaal meermaals uw doel om een reeks te "
 "noteren!"
 
-#: src/plugins/steps/details.rs:205
+#: src/plugins/steps/details.rs:210
 msgid ""
-"You're on a streak for {} day. Reach your step goal today to continue it!"
+"You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
-"You're on a streak for {} days. Reach your step goal today to continue it!"
+"You’re on a streak for {} days. Reach your step goal today to continue it!"
 msgstr[0] ""
-"Uw reeks staat al {} dag genoteerd. Behaal óók vandaag uw doel om de notatie "
+"Uw reeks staat al {} dag genoteerd. Behaal ook vandaag uw doel om de notatie "
 "te behouden!"
 msgstr[1] ""
-"Uw reeks staat al {} dagen genoteerd. Behaal óók vandaag uw doel om de "
+"Uw reeks staat al {} dagen genoteerd. Behaal ook vandaag uw doel om de "
 "notatie te behouden!"
 
-#: src/plugins/steps/details.rs:213
-msgid "You've reached your step goal today. Keep going to start a streak!"
+#: src/plugins/steps/details.rs:218
+msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr "U hebt vandaag uw doel bereikt. Ga zo door om een reeks te noteren!"
 
-#: src/plugins/steps/details.rs:216
-msgid "You're on a streak for {} day. Good job!"
-msgid_plural "You're on a streak for {} days. Good job!"
+#: src/plugins/steps/details.rs:221
+msgid "You’re on a streak for {} day. Good job!"
+msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "Uw reeks staat al {} dag genoteerd. Ga zo door!"
 msgstr[1] "Uw reeks staat al {} dagen genoteerd. Ga zo door!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:233
+#: src/plugins/steps/details.rs:238
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} stap op {}"
 msgstr[1] "{} stappen op {}"
 
-#: src/plugins/steps/summary.rs:94
+#: src/plugins/steps/summary.rs:96
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "U hebt vandaag {} stap gezet"
 msgstr[1] "U hebt vandaag {} stappen gezet"
 
-#: src/plugins/steps/summary.rs:105
+#: src/plugins/steps/summary.rs:107
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "U hebt {} procent van uw dagelijks aantal stappen bereikt"
 msgstr[1] "U hebt {} procent van uw dagelijks aantal stappen bereikt"
 
-#: src/plugins/steps/summary.rs:112
+#: src/plugins/steps/summary.rs:114
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Goed gedaan! U hebt uw dagelijks aantal stappen bereikt!"
 
-#: src/plugins/weight/details.rs:192
+#: src/plugins/weight/details.rs:202
 msgid "Current BMI: {}"
 msgstr "Huidige BMI: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:207
+#: src/plugins/weight/details.rs:217
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} pond op {}"
 msgstr[1] "{} pond op {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:210
+#: src/plugins/weight/details.rs:220
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogram op {}"
 msgstr[1] "{} kilogram op {}"
 
-#: src/plugins/weight/details.rs:246 src/plugins/weight/details.rs:251
+#: src/plugins/weight/details.rs:257 src/plugins/weight/details.rs:262
 msgid "Unknown BMI"
 msgstr "Onbekende BMI"
 
-#: src/plugins/weight/details.rs:270
+#: src/plugins/weight/details.rs:280
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -819,7 +757,7 @@ msgstr[1] ""
 "Uw streefgewicht is {} pond. Voeg een gewicht toe om te zien hoe ver u al "
 "bent gekomen!"
 
-#: src/plugins/weight/details.rs:277
+#: src/plugins/weight/details.rs:287
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -833,40 +771,36 @@ msgstr[1] ""
 "Uw streefgewicht is {} kilogram. Voeg een gewicht toe om te zien hoe ver u "
 "al bent gekomen!"
 
-#: src/plugins/weight/details.rs:286
-msgid "You've reached your weight goal. Great job!"
+#: src/plugins/weight/details.rs:296
+msgid "You’ve reached your weight goal. Great job!"
 msgstr "U hebt uw streefgewicht bereikt. Goed gedaan!"
 
-#. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:302
-msgid "Your weight goal is {} pound,"
-msgid_plural "Your weight goal is {} pounds,"
-msgstr[0] "Uw streefgewicht is {} pond,"
-msgstr[1] "Uw streefgewicht is {} pond,"
+#: src/plugins/weight/details.rs:312
+msgid "Your weight goal is {} pound."
+msgid_plural "Your weight goal is {} pounds."
+msgstr[0] "Uw streefgewicht is {} pond."
+msgstr[1] "Uw streefgewicht is {} pond."
 
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:307
-msgid "you have {} pound left to reach it"
-msgid_plural "you have {} pounds left to reach it"
-msgstr[0] "nog {} pond te gaan om het te bereiken"
-msgstr[1] "nog {} pond te gaan om het te bereiken"
+#: src/plugins/weight/details.rs:317
+msgid "You have {} pound left to reach it."
+msgid_plural "You have {} pounds left to reach it."
+msgstr[0] "Nog {} pond te gaan om het te bereiken."
+msgstr[1] "Nog {} pond te gaan om het te bereiken."
 
-#. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/plugins/weight/details.rs:314
-msgid "Your weight goal is {} kilogram,"
-msgid_plural "Your weight goal is {} kilograms,"
-msgstr[0] "Uw streefgewicht is {} kilogram,"
-msgstr[1] "Uw streefgewicht is {} kilogram,"
-
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/plugins/weight/details.rs:320
-msgid "you have {} kilogram left to reach it"
-msgid_plural "you have {} kilograms left to reach it"
-msgstr[0] "nog {} kilogram te gaan om het te bereiken"
-msgstr[1] "nog {} kilogram te gaan om het te bereiken"
+#: src/plugins/weight/details.rs:324
+msgid "Your weight goal is {} kilogram."
+msgid_plural "Your weight goal is {} kilograms."
+msgstr[0] "Uw streefgewicht is {} kilogram."
+msgstr[1] "Uw streefgewicht is {} kilogram."
 
 #: src/plugins/weight/details.rs:330
-msgid "No weight goal set yet. You can set it in Health's preferences."
+msgid "You have {} kilogram left to reach it"
+msgid_plural "You have {} kilograms left to reach it"
+msgstr[0] "Nog {} kilogram te gaan om het te bereiken"
+msgstr[1] "Nog {} kilogram te gaan om het te bereiken"
+
+#: src/plugins/weight/details.rs:340
+msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr ""
 "U hebt nog geen streefgewicht ingesteld. Open de voorkeuren om dit in te "
 "stellen."
@@ -916,41 +850,41 @@ msgid "No weight data available"
 msgstr "Geen gegevens over gewicht beschikbaar"
 
 #: src/sync/csv.rs:81 src/sync/csv.rs:370
-msgid "No activities added yet; can't create empty export!"
+msgid "No activities added yet; can’t create empty export!"
 msgstr "Voeg activiteiten toe om ze te kunnen exporteren!"
 
 #: src/sync/csv.rs:111 src/sync/csv.rs:388
-msgid "No weight measurements added yet; can't create empty export!"
+msgid "No weight measurements added yet; can’t create empty export!"
 msgstr "Voeg gewichten toe om ze te kunnen exporteren!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:332
-msgid "Can't parse encrypted backup without encryption key!"
+msgid "Can’t parse encrypted backup without encryption key!"
 msgstr ""
-"Onversleutelde back-ups kunnen niet worden verwerkt zonder toegangssleutel!"
+"Onversleutelde back-ups kunnen niet verwerkt worden zonder toegangssleutel!"
 
 #: src/sync/csv.rs:195 src/sync/csv.rs:352
 msgid ""
-"Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
+"Couldn’t parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
 msgstr ""
-"Het csv-bestand kan niet worden verwerkt. Probeert u een onversleutelde back-"
+"Het CSV-bestand kan niet verwerkt worden. Probeert u een onversleutelde back-"
 "up uit te lezen als een versleutelde?"
 
 #: src/sync/csv.rs:208
-msgid "Couldn't decrypt data. Are you sure you're using the right key?"
+msgid "Couldn’t decrypt data. Are you sure you’re using the right key?"
 msgstr ""
-"De gegevens kunnen niet worden ontsleuteld. Weet u zeker dat de sleutel "
+"De gegevens kunnen niet ontsleuteld worden. Weet u zeker dat de sleutel "
 "klopt?"
 
 #: src/sync/database_receiver.rs:46
-msgid "Couldn't synchronize steps due to error {}"
+msgid "Couldn’t synchronize steps due to error {}"
 msgstr ""
-"De stappen kunnen niet worden gesynchroniseerd wegens een foutmelding: {}"
+"De stappen kunnen niet gesynchroniseerd worden wegens een foutmelding: {}"
 
 #: src/sync/database_receiver.rs:60
-msgid "Couldn't synchronize weight measurements due to error {}"
+msgid "Couldn’t synchronize weight measurements due to error {}"
 msgstr ""
-"De gewichten kunnen niet worden gesynchroniseerd wegens een foutmelding: {}"
+"De gewichten kunnen niet gesynchroniseerd worden wegens een foutmelding: {}"
 
 #: src/sync/google_fit.rs:211
 msgid "CRSF Verification failed, got {}, expected {}"
@@ -964,7 +898,7 @@ msgstr ""
 
 #: src/sync/sync_provider.rs:109
 msgid ""
-"Can't retrieve OAuth2 token when no refresh token is set! Please re-"
+"Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
 "authenticate with your sync provider."
 msgstr ""
 "De OAuth2-toegangssleutel kan niet worden opgehaald omdat er geen "
@@ -980,8 +914,8 @@ msgid "Successfully authenticated, please return to Health."
 msgstr "De dienst is goedgekeurd - keer terug naar Gezondheid."
 
 #: src/sync/sync_provider.rs:228
-msgid "Couldn't parse OAuth2 response"
-msgstr "Het OAuth2-antwoord kan niet worden verwerkt"
+msgid "Couldn’t parse OAuth2 response"
+msgstr "Het OAuth2-antwoord kan niet verwerkt worden"
 
 #: src/views/bar_graph_view.rs:583
 msgid "Enter weight record to calculate idle calories"
@@ -996,8 +930,6 @@ msgid "Activity"
 msgstr "Activiteit"
 
 #: src/widgets/activity_row.rs:79
-#| msgid "{} Minute"
-#| msgid_plural "{} Minutes"
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} voor {} minuut"
@@ -1031,10 +963,6 @@ msgid_plural "{} yards"
 msgstr[0] "{} yard"
 msgstr[1] "{} yards"
 
-#: src/widgets/bmi_level_bar.rs:267 src/windows/setup_window.rs:248
-msgid "Current BMI"
-msgstr "Huidige BMI"
-
 #: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Huidige BMI: {}</small>"
@@ -1056,42 +984,42 @@ msgid "Feet"
 msgstr "Voet"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:475 src/widgets/unit_spinbutton.rs:635
+#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:654
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:477
+#: src/widgets/unit_spinbutton.rs:490
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:479
+#: src/widgets/unit_spinbutton.rs:492
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:481
+#: src/widgets/unit_spinbutton.rs:494
 msgid "kg"
 msgstr "kg"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:483 src/widgets/unit_spinbutton.rs:637
+#: src/widgets/unit_spinbutton.rs:496 src/widgets/unit_spinbutton.rs:656
 msgid "in"
 msgstr "in"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:485
+#: src/widgets/unit_spinbutton.rs:498
 msgid "ft"
 msgstr "ft"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:487
+#: src/widgets/unit_spinbutton.rs:500
 msgid "mi"
 msgstr "mi"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:489
+#: src/widgets/unit_spinbutton.rs:502
 msgid "lb"
 msgstr "lb"
 
@@ -1108,6 +1036,11 @@ msgstr "Activiteiten.csv.encrypted"
 #: src/windows/export_dialog.rs:63
 msgid "Activities.csv"
 msgstr "Activiteiten.csv"
+
+#: src/windows/export_dialog.rs:75 src/windows/export_dialog.rs:109
+#: src/windows/import_dialog.rs:68 src/windows/import_dialog.rs:97
+msgid "No file selected."
+msgstr "Geen bestand geselecteerd."
 
 #: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
@@ -1169,20 +1102,88 @@ msgstr "Er is een fout opgetreden."
 msgid "Close"
 msgstr "Sluiten"
 
-#: src/windows/preferences_window.rs:409 src/windows/setup_window.rs:249
-msgid "Target BMI"
-msgstr "Doel-BMI"
-
-#: src/windows/window.rs:97
-msgid "Failed to migrate database to new version due to error {}"
-msgstr ""
-"De databank kan niet worden gemigreerd omdat er een fout is opgetreden: {}"
-
 #: src/windows/window.rs:267
-msgid "Couldn't sync Google Fit data due to error: {}"
+msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr ""
 "De synchronisatie met Google Fit is mislukt omdat er een fout is opgetreden: "
 "{}"
+
+#~ msgid "Whether the user has completed the setup wizard"
+#~ msgstr "Of de gebruiker de instelhulp heeft doorlopen"
+
+#~ msgid "Whether to enable notifications."
+#~ msgstr "Of meldingen getoond moeten worden."
+
+#~ msgid "Sets all data source plugins that are enabled in Health."
+#~ msgstr ""
+#~ "Stelt alle gegevensbronplug-ins in die in Gezondheid ingeschakeld zijn."
+
+#~ msgid "The time at which Health should remind the user of their step goal"
+#~ msgstr ""
+#~ "Het tijdstip waarop een dagelijkse herinnering omtrent het aantal stappen "
+#~ "wordt getoond"
+
+#~ msgid ""
+#~ "How frequent should the user be notified to complete their daily step-"
+#~ "goal."
+#~ msgstr ""
+#~ "Hoe vaak meldingen omtrent het aantal stappen getoond moeten worden."
+
+#~ msgid ""
+#~ "Activity types the user used recently, to be shown first in the activity "
+#~ "types selector's list"
+#~ msgstr ""
+#~ "De activiteiten die de gebruiker onlangs heeft uitgevoerd en bovenaan de "
+#~ "activiteitenlijst moeten worden getoond"
+
+#~ msgid "Whether Google Fit has been setup as sync provider"
+#~ msgstr "Of Google Fit is ingesteld als synchronisatiedienst"
+
+#~ msgid "The last time we synched steps, weight etc. with Google Fit"
+#~ msgstr ""
+#~ "Het tijdstip waarop er voor het laatst met Google Fit gesynchroniseerd is"
+
+#~ msgid "The unit system the user chose, e.g. for cm vs inch for height"
+#~ msgstr ""
+#~ "De eenheden die de gebruiker gekozen heeft, bijv. cm of inch in het geval "
+#~ "van de lengte"
+
+#~ msgid "The age of the user (deprecated)."
+#~ msgstr "De leeftijd van de gebruiker (verouderd)."
+
+#~ msgid "The age of the user in absolute terms (like 01/01/1970)"
+#~ msgstr ""
+#~ "De leeftijd van de gebruiker als geboortedatumnotatie (bijv. 01-01-1970)"
+
+#~ msgid "The height of the user."
+#~ msgstr "De lengte van de gebruiker."
+
+#~ msgid "The amount of steps the user wants to reach daily."
+#~ msgstr "Het aantal stappen dat de gebruiker dagelijks wil zetten."
+
+#~ msgid "The weight the user wants to reach."
+#~ msgstr "Het gewicht dat de gebruiker wil bereiken."
+
+#~ msgid "The height of the window."
+#~ msgstr "De hoogte van het venster."
+
+#~ msgid "Whether the window is maximized."
+#~ msgstr "Of het venster gemaximaliseerd moet zijn."
+
+#~ msgid "The width of the window."
+#~ msgstr "De breedte van het venster."
+
+#~ msgid "@APPLICATION_ID@"
+#~ msgstr "@APPLICATION_ID@"
+
+#~ msgid "The WHO recommends 10,000 steps per day."
+#~ msgstr ""
+#~ "De Wereldgezondheidsorganisatie adviseert dagelijks 10.000 stappen te "
+#~ "zetten."
+
+#~ msgid "Failed to migrate database to new version due to error {}"
+#~ msgstr ""
+#~ "De databank kan niet worden gemigreerd omdat er een fout is opgetreden: {}"
 
 #~ msgid "Last opened view"
 #~ msgstr "Vorige weergave"
