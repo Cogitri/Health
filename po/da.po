@@ -1,14 +1,14 @@
 # Danish translation for health.
-# Copyright (C) 2022 health's COPYRIGHT HOLDER
+# Copyright (C) 2022-2023 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
-# Ask Hjorth Larsen <asklarsen@gmail.com>, 2022.
+# Ask Hjorth Larsen <asklarsen@gmail.com>, 2022-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-07-24 21:36+0000\n"
-"PO-Revision-Date: 2022-07-29 14:51+0200\n"
+"POT-Creation-Date: 2022-09-13 17:26+0000\n"
+"PO-Revision-Date: 2023-01-01 18:42+0100\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -21,146 +21,73 @@ msgstr ""
 msgid "First time setup done"
 msgstr "Førstegangsopsætning er fuldført"
 
-#: data/dev.Cogitri.Health.gschema.xml:17
-msgid "Whether the user has completed the setup wizard"
-msgstr "Om brugeren har færdiggjort opsætningsguiden"
-
-#: data/dev.Cogitri.Health.gschema.xml:21
+#: data/dev.Cogitri.Health.gschema.xml:20
 msgid "Toggle notifications"
 msgstr "Slå påmindelser til/fra"
 
-#: data/dev.Cogitri.Health.gschema.xml:22
-msgid "Whether to enable notifications."
-msgstr "Om påmindelser skal slås til."
-
-#: data/dev.Cogitri.Health.gschema.xml:26
+#: data/dev.Cogitri.Health.gschema.xml:24
 msgid "Set enabled plugins"
 msgstr "Angiv aktiverede udvidelsesmoduler"
 
-#: data/dev.Cogitri.Health.gschema.xml:27
-msgid "Sets all data source plugins that are enabled in Health."
-msgstr ""
-"Angiver alle udgivelsesmodulerne med datakilder, som er slået til i Health."
-
-#: data/dev.Cogitri.Health.gschema.xml:31
+#: data/dev.Cogitri.Health.gschema.xml:28
 msgid "Notification time"
 msgstr "Påmindelsestidspunkt"
 
 #: data/dev.Cogitri.Health.gschema.xml:32
-msgid "The time at which Health should remind the user of their step goal"
-msgstr "Hvornår Health skal minde brugeren om målet for antallet af skridt"
-
-#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "notification frequency"
 msgstr "påmindelsesfrekvens"
 
-#: data/dev.Cogitri.Health.gschema.xml:37
-msgid ""
-"How frequent should the user be notified to complete their daily step-goal."
-msgstr ""
-"Hvor ofte brugeren skal mindes om at fuldføre det daglige mål for antal "
-"skridt."
-
-#: data/dev.Cogitri.Health.gschema.xml:41
+#: data/dev.Cogitri.Health.gschema.xml:36
 msgid "List of recent activity types"
 msgstr "Liste over seneste typer aktivitet"
 
-#: data/dev.Cogitri.Health.gschema.xml:42
-msgid ""
-"Activity types the user used recently, to be shown first in the activity "
-"types selector’s list"
-msgstr ""
-"Aktiviteterne som brugeren senest har brugt, og som vises først i listen "
-"over aktivitetsvalg"
-
-#: data/dev.Cogitri.Health.gschema.xml:46
+#: data/dev.Cogitri.Health.gschema.xml:40
 msgid "Google Fit Sync-Provider setup"
 msgstr "Opsætning af synkroniseringsudbyderen Google Fit"
 
-#: data/dev.Cogitri.Health.gschema.xml:47
-msgid "Whether Google Fit has been setup as sync provider"
-msgstr "Om Google Fit er blevet konfigureret som synkroniseringsudbyder"
-
-#: data/dev.Cogitri.Health.gschema.xml:51
+#: data/dev.Cogitri.Health.gschema.xml:44
 msgid "Last sync with Google Fit"
 msgstr "Sidste synkronisering med Google Fit"
 
-#: data/dev.Cogitri.Health.gschema.xml:52
-msgid "The last time we synched steps, weight etc. with Google Fit"
-msgstr "Sidste gang vi synkroniserede antal skridt, vægt osv. med Google Fit"
-
-#: data/dev.Cogitri.Health.gschema.xml:56
+#: data/dev.Cogitri.Health.gschema.xml:48
 msgid "Unit system used"
 msgstr "Måleenheder"
 
-#: data/dev.Cogitri.Health.gschema.xml:57
-msgid "The unit system the user chose, e.g. for cm vs inch for height"
-msgstr ""
-"Hvilket måleenhedssystem brugeren valgte, f.eks. cm versus inch for højde"
-
-#: data/dev.Cogitri.Health.gschema.xml:61
+#: data/dev.Cogitri.Health.gschema.xml:52
 msgid "User age"
 msgstr "Brugerens alder"
 
-#: data/dev.Cogitri.Health.gschema.xml:62
-msgid "The age of the user (deprecated)."
-msgstr "Brugerens alder (forældet)."
-
-#: data/dev.Cogitri.Health.gschema.xml:66
+#: data/dev.Cogitri.Health.gschema.xml:56
 msgid "Absolute user age"
 msgstr "Brugerens absolutte alder"
 
-#: data/dev.Cogitri.Health.gschema.xml:67
-msgid "The age of the user in absolute terms (like 01/01/1970)"
-msgstr "Brugerens alder som absolut angivelse (f.eks. 01/01/1970)"
-
-#: data/dev.Cogitri.Health.gschema.xml:71
+#: data/dev.Cogitri.Health.gschema.xml:60
 msgid "User height"
 msgstr "Brugerens højde"
 
-#: data/dev.Cogitri.Health.gschema.xml:72
-msgid "The height of the user."
-msgstr "Brugerens højde."
-
-#: data/dev.Cogitri.Health.gschema.xml:76
+#: data/dev.Cogitri.Health.gschema.xml:64
 msgid "User step goal"
 msgstr "Brugerens mål for antal skridt"
 
-#: data/dev.Cogitri.Health.gschema.xml:77
-msgid "The amount of steps the user wants to reach daily."
-msgstr "Antal daglige skridt brugeren vil nå."
-
-#: data/dev.Cogitri.Health.gschema.xml:81
+#: data/dev.Cogitri.Health.gschema.xml:68
 msgid "User weight goal"
 msgstr "Brugerens ønskede vægt"
 
-#: data/dev.Cogitri.Health.gschema.xml:82
-msgid "The weight the user wants to reach."
-msgstr "Den vægt brugeren ønsker at nå."
-
-#: data/dev.Cogitri.Health.gschema.xml:86
+#: data/dev.Cogitri.Health.gschema.xml:72
 msgid "Window height"
 msgstr "Vindueshøjde"
 
-#: data/dev.Cogitri.Health.gschema.xml:87
-msgid "The height of the window."
-msgstr "Vinduets højde."
-
-#: data/dev.Cogitri.Health.gschema.xml:91
+#: data/dev.Cogitri.Health.gschema.xml:76
 msgid "Window maximized"
 msgstr "Vindue maksimeret"
 
-#: data/dev.Cogitri.Health.gschema.xml:92
-msgid "Whether the window is maximized."
-msgstr "Om vinduet er maksimeret."
-
-#: data/dev.Cogitri.Health.gschema.xml:96
+#: data/dev.Cogitri.Health.gschema.xml:80
 msgid "Window width"
 msgstr "Vinduesbredde"
 
-#: data/dev.Cogitri.Health.gschema.xml:97
-msgid "The width of the window."
-msgstr "Vinduets bredde."
+#: data/dev.Cogitri.Health.gschema.xml:84
+msgid "Active user ID"
+msgstr "ID for aktiv bruger"
 
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
@@ -179,7 +106,10 @@ msgid ""
 "development over time and your daily activities. Data can be synched from "
 "Google Fit or manually entered into Health. Afterwards, it can be viewed and "
 "edited in Health."
-msgstr "Health kan vise, hvor mange skridt du går hver dag, din vægtændring over tid samt dine daglige aktiviteter. Data kan synroniseres med Google Fit eller indtastes manuelt i Health. Bagefter kan data vises og redigeres i Health."
+msgstr ""
+"Health kan vise, hvor mange skridt du går hver dag, din vægtændring over tid "
+"samt dine daglige aktiviteter. Data kan synroniseres med Google Fit eller "
+"indtastes manuelt i Health. Bagefter kan data vises og redigeres i Health."
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:36
 msgid "Rasmus “Cogitri” Thomsen"
@@ -310,7 +240,7 @@ msgstr ""
 "Aktivér udvidelsesmodulet for at se de faktiske data."
 
 #: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
-#: data/ui/preferences_window.blp:166 src/plugins/steps/plugin.rs:39
+#: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
 msgid "Steps"
 msgstr "Skridt"
 
@@ -348,89 +278,98 @@ msgstr "Indstillinger for Health"
 msgid "General"
 msgstr "Generelle"
 
-#: data/ui/preferences_window.blp:72
+#: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
+#: data/ui/setup_window.blp:183 src/core/database.rs:1109
 msgid "User"
 msgstr "Bruger"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:152
+#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:154
 msgid "Unit system"
 msgstr "Enheder"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:162
+#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:164
 msgid "Imperial"
 msgstr "Britiske"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:168
+#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:170
 msgid "Metric"
 msgstr "SI"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:176
+#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:178
+msgid "Username"
+msgstr "Brugernavn"
+
+#: data/ui/preferences_window.blp:109 data/ui/setup_window.blp:188
 msgid "Birthday"
 msgstr "Fødselsdag"
 
-#: data/ui/preferences_window.blp:108 data/ui/setup_window.blp:185
+#: data/ui/preferences_window.blp:118 data/ui/setup_window.blp:197
 msgid "Height"
 msgstr "Højde"
 
-#: data/ui/preferences_window.blp:122
+#: data/ui/preferences_window.blp:131
 msgid "Notifications"
 msgstr "Påmindelser"
 
-#: data/ui/preferences_window.blp:125
+#: data/ui/preferences_window.blp:134
 msgid "Enable notifications"
 msgstr "Slå påmindelser til"
 
-#: data/ui/preferences_window.blp:136
+#: data/ui/preferences_window.blp:145
 msgid "Frequency"
 msgstr "Frekvens"
 
-#: data/ui/preferences_window.blp:149
+#: data/ui/preferences_window.blp:158
 msgid "Daily reminder time"
 msgstr "Tidspunkt for daglig påmindelse"
 
-#: data/ui/preferences_window.blp:169 data/ui/setup_window.blp:248
-#: src/plugins/steps/details.rs:240
+#: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
+#: src/plugins/steps/details.rs:245
 msgid "Step goal"
 msgstr "Mål for antal skridt"
 
-#: data/ui/preferences_window.blp:170
+#: data/ui/preferences_window.blp:179
 msgid "7,500 steps per day are recommended."
 msgstr "Det anbefales at gå 7500 skridt om dagen."
 
 # Undgår ordet "mål" her, da det bliver forvirrende når man også kan "måle" vægt
-#: data/ui/preferences_window.blp:184 data/ui/preferences_window.blp:187
+#: data/ui/preferences_window.blp:192 data/ui/preferences_window.blp:195
 msgid "Weight Goal"
 msgstr "Ønsket vægt"
 
-#: data/ui/preferences_window.blp:188
+#: data/ui/preferences_window.blp:196
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "WHO anbefaler en BMI mellem 18,5 og 24,9."
 
-#: data/ui/preferences_window.blp:212
+#: data/ui/preferences_window.blp:204 data/ui/setup_window.blp:367
+msgid "Target BMI"
+msgstr "Ønsket BMI"
+
+#: data/ui/preferences_window.blp:220
 msgid "Sync"
 msgstr "Synkronisering"
 
-#: data/ui/preferences_window.blp:216
+#: data/ui/preferences_window.blp:224
 msgid "Start sync with third-party providers."
 msgstr "Start synkronisering med tredjepartsudbydere."
 
-#: data/ui/preferences_window.blp:224
+#: data/ui/preferences_window.blp:232
 msgid "Importing and exporting data"
 msgstr "Dataimport og -eksport"
 
-#: data/ui/preferences_window.blp:227
+#: data/ui/preferences_window.blp:235
 msgid "Export data as CSV"
 msgstr "Eksportér data som CSV"
 
-#: data/ui/preferences_window.blp:230
+#: data/ui/preferences_window.blp:238
 msgid "Export…"
 msgstr "Eksportér …"
 
-#: data/ui/preferences_window.blp:237
+#: data/ui/preferences_window.blp:245
 msgid "Import data from CSV"
 msgstr "Importér data fra CSV"
 
-#: data/ui/preferences_window.blp:240
+#: data/ui/preferences_window.blp:248
 msgid "Import…"
 msgstr "Importér …"
 
@@ -462,36 +401,40 @@ msgstr "Velkommen til Health!"
 msgid "Please enter some information to get setup."
 msgstr "Indtast venligst nogle oplysninger for at komme i gang."
 
-#: data/ui/setup_window.blp:212
+#: data/ui/setup_window.blp:224
 msgid "Please enter your daily step goal."
 msgstr "Indtast venligst dit mål for antal skridt per dag."
 
-#: data/ui/setup_window.blp:224
+#: data/ui/setup_window.blp:236
 msgid "The WHO recommends 7.500 steps per day."
 msgstr "WHO anbefaler 7500 skridt hver dag."
 
-#: data/ui/setup_window.blp:274
+#: data/ui/setup_window.blp:286
 msgid "Please enter your weight goal."
 msgstr "Indtast venligst den vægt, du vil opnå."
 
-#: data/ui/setup_window.blp:286
+#: data/ui/setup_window.blp:298
 msgid "The WHO recommends a BMI of 18.5–24.9."
 msgstr "WHO anbefaler en BMI mellem 18,5 og 24,9."
 
-#: data/ui/setup_window.blp:314
+#: data/ui/setup_window.blp:326
 msgid "Current weight"
 msgstr "Nuværende vægt"
 
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:267
+msgid "Current BMI"
+msgstr "Nuværende BMI"
+
 # Undgår ordet "mål" her, da det bliver forvirrende når man også kan "måle" vægt
-#: data/ui/setup_window.blp:337 src/plugins/weight/details.rs:220
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:230
 msgid "Weight goal"
 msgstr "Ønsket vægt"
 
-#: data/ui/setup_window.blp:372
+#: data/ui/setup_window.blp:386
 msgid "Setup sync with third-party providers."
 msgstr "Konfigurér synkronisering med tredjepartsudbydere."
 
-#: data/ui/setup_window.blp:384
+#: data/ui/setup_window.blp:398
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
@@ -580,12 +523,12 @@ msgstr "_Om Health"
 msgid "Enable plugin"
 msgstr "Aktivér udvidelsesmodul"
 
-#: src/core/application.rs:176
+#: src/core/application.rs:189
 msgid "A health tracking app for the GNOME desktop."
 msgstr ""
 "Et program der holder styr på motion og helbred til GNOME-skrivebordet."
 
-#: src/core/application.rs:178
+#: src/core/application.rs:191
 msgid "translator-credits"
 msgstr ""
 "Ask Hjorth Larsen <asklarsen@gmail.com>, 2022\n"
@@ -594,7 +537,7 @@ msgstr ""
 "Websted http://dansk-gruppen.dk\n"
 "E-mail <dansk@dansk-gruppen.dk>"
 
-#: src/core/application.rs:180
+#: src/core/application.rs:193
 msgid "Websites"
 msgstr "Websteder"
 
@@ -724,18 +667,18 @@ msgid_plural "{} calories burned today"
 msgstr[0] "{} kalorie forbrændt i dag"
 msgstr[1] "{} kalorier forbrændt i dag"
 
-#: src/plugins/steps/details.rs:186
+#: src/plugins/steps/details.rs:187
 msgid "Today’s steps: {}"
 msgstr "Antal skridt i dag: {}"
 
 # Ideer til "streak"?
-#: src/plugins/steps/details.rs:201
+#: src/plugins/steps/details.rs:206
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr "Prøv at nå dit mål for antal skridt flere dage i træk!"
 
 # Ideer til "streak"?
-#: src/plugins/steps/details.rs:205
+#: src/plugins/steps/details.rs:210
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -744,64 +687,64 @@ msgstr[0] "Du har nået målet {} dag. Prøv at nå dit mål i dag også!"
 msgstr[1] "Du har nået målet {} dage i træk. Prøv at nå dit mål i dag også!"
 
 # Ideer til "streak"?
-#: src/plugins/steps/details.rs:213
+#: src/plugins/steps/details.rs:218
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr ""
 "Du har nået dagens mål for antal skridt. Fortsæt med at nå målet så mange "
 "dage i træk som muligt!"
 
-#: src/plugins/steps/details.rs:216
+#: src/plugins/steps/details.rs:221
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "Du har nået målet {} dag. Godt arbejde!"
 msgstr[1] "Du har nået målet {} dage i træk. Godt arbejde!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:233
+#: src/plugins/steps/details.rs:238
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} skridt {}"
 msgstr[1] "{} skridt {}"
 
-#: src/plugins/steps/summary.rs:94
+#: src/plugins/steps/summary.rs:96
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} skridt i dag"
 msgstr[1] "{} skridt i dag"
 
-#: src/plugins/steps/summary.rs:105
+#: src/plugins/steps/summary.rs:107
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "{} procent af dagens mål er nået"
 msgstr[1] "{} procent af dagens mål er nået"
 
-#: src/plugins/steps/summary.rs:112
+#: src/plugins/steps/summary.rs:114
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Godt klaret! Dagens mål for antal skridt er nået."
 
-#: src/plugins/weight/details.rs:192
+#: src/plugins/weight/details.rs:202
 msgid "Current BMI: {}"
 msgstr "Nuværende BMI: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:207
+#: src/plugins/weight/details.rs:217
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} pund {}"
 msgstr[1] "{} pund {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:210
+#: src/plugins/weight/details.rs:220
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogram {}"
 msgstr[1] "{} kilogram {}"
 
-#: src/plugins/weight/details.rs:246 src/plugins/weight/details.rs:251
+#: src/plugins/weight/details.rs:257 src/plugins/weight/details.rs:262
 msgid "Unknown BMI"
 msgstr "Ukendt BMI"
 
-#: src/plugins/weight/details.rs:268
+#: src/plugins/weight/details.rs:280
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -815,7 +758,7 @@ msgstr[1] ""
 "Din ønskede vægt er {} pund. Tilføj den første vægtmåling for at se, hvor "
 "tæt på målet du er."
 
-#: src/plugins/weight/details.rs:275
+#: src/plugins/weight/details.rs:287
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -829,35 +772,35 @@ msgstr[1] ""
 "Din ønskede vægt er {} kilogram. Tilføj den første vægtmåling for at se, "
 "hvor tæt på målet du er."
 
-#: src/plugins/weight/details.rs:284
+#: src/plugins/weight/details.rs:296
 msgid "You’ve reached your weight goal. Great job!"
 msgstr "Du har nået din ønskede vægt. Godt klaret!"
 
-#: src/plugins/weight/details.rs:300
+#: src/plugins/weight/details.rs:312
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "Din ønskede vægt er {} pund."
 msgstr[1] "Din ønskede vægt er {} pund."
 
-#: src/plugins/weight/details.rs:305
+#: src/plugins/weight/details.rs:317
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "Du er {} pund fra at nå målet."
 msgstr[1] "Du er {} pund fra at nå målet."
 
-#: src/plugins/weight/details.rs:312
+#: src/plugins/weight/details.rs:324
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "Din ønskede vægt er {} kilogram."
 msgstr[1] "Din ønskede vægt er {} kilogram."
 
-#: src/plugins/weight/details.rs:318
+#: src/plugins/weight/details.rs:330
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "Du er {} kilogram fra at nå målet"
 msgstr[1] "Du er {} kilogram fra at nå målet"
 
-#: src/plugins/weight/details.rs:328
+#: src/plugins/weight/details.rs:340
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr ""
 "Ingen ønsket vægt er angivet. Du kan angive den i indstillingerne for Health."
@@ -1015,10 +958,6 @@ msgid_plural "{} yards"
 msgstr[0] "{} yard"
 msgstr[1] "{} yards"
 
-#: src/widgets/bmi_level_bar.rs:267 src/windows/setup_window.rs:248
-msgid "Current BMI"
-msgstr "Nuværende BMI"
-
 #: src/widgets/bmi_level_bar.rs:274
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Nuværende BMI: {}</small>"
@@ -1158,17 +1097,75 @@ msgstr "Der opstod en fejl!"
 msgid "Close"
 msgstr "Luk"
 
-#: src/windows/preferences_window.rs:409 src/windows/setup_window.rs:249
-msgid "Target BMI"
-msgstr "Ønsket BMI"
-
-#: src/windows/window.rs:97
-msgid "Failed to migrate database to new version due to error {}"
-msgstr "Kunne ikke migrere databasen til ny version på grund af fejlen {}"
-
 #: src/windows/window.rs:267
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Kunne ikke synkronisere data fra Google Fit på grund af fejl: {}"
+
+#~ msgid "Whether the user has completed the setup wizard"
+#~ msgstr "Om brugeren har færdiggjort opsætningsguiden"
+
+#~ msgid "Whether to enable notifications."
+#~ msgstr "Om påmindelser skal slås til."
+
+#~ msgid "Sets all data source plugins that are enabled in Health."
+#~ msgstr ""
+#~ "Angiver alle udgivelsesmodulerne med datakilder, som er slået til i "
+#~ "Health."
+
+#~ msgid "The time at which Health should remind the user of their step goal"
+#~ msgstr "Hvornår Health skal minde brugeren om målet for antallet af skridt"
+
+#~ msgid ""
+#~ "How frequent should the user be notified to complete their daily step-"
+#~ "goal."
+#~ msgstr ""
+#~ "Hvor ofte brugeren skal mindes om at fuldføre det daglige mål for antal "
+#~ "skridt."
+
+#~ msgid ""
+#~ "Activity types the user used recently, to be shown first in the activity "
+#~ "types selector’s list"
+#~ msgstr ""
+#~ "Aktiviteterne som brugeren senest har brugt, og som vises først i listen "
+#~ "over aktivitetsvalg"
+
+#~ msgid "Whether Google Fit has been setup as sync provider"
+#~ msgstr "Om Google Fit er blevet konfigureret som synkroniseringsudbyder"
+
+#~ msgid "The last time we synched steps, weight etc. with Google Fit"
+#~ msgstr ""
+#~ "Sidste gang vi synkroniserede antal skridt, vægt osv. med Google Fit"
+
+#~ msgid "The unit system the user chose, e.g. for cm vs inch for height"
+#~ msgstr ""
+#~ "Hvilket måleenhedssystem brugeren valgte, f.eks. cm versus inch for højde"
+
+#~ msgid "The age of the user (deprecated)."
+#~ msgstr "Brugerens alder (forældet)."
+
+#~ msgid "The age of the user in absolute terms (like 01/01/1970)"
+#~ msgstr "Brugerens alder som absolut angivelse (f.eks. 01/01/1970)"
+
+#~ msgid "The height of the user."
+#~ msgstr "Brugerens højde."
+
+#~ msgid "The amount of steps the user wants to reach daily."
+#~ msgstr "Antal daglige skridt brugeren vil nå."
+
+#~ msgid "The weight the user wants to reach."
+#~ msgstr "Den vægt brugeren ønsker at nå."
+
+#~ msgid "The height of the window."
+#~ msgstr "Vinduets højde."
+
+#~ msgid "Whether the window is maximized."
+#~ msgstr "Om vinduet er maksimeret."
+
+#~ msgid "The width of the window."
+#~ msgstr "Vinduets bredde."
+
+#~ msgid "Failed to migrate database to new version due to error {}"
+#~ msgstr "Kunne ikke migrere databasen til ny version på grund af fejlen {}"
 
 #~ msgid "@APPLICATION_ID@"
 #~ msgstr "@APPLICATION_ID@"
