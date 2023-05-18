@@ -75,7 +75,7 @@
             {
               name = "Health-shell";
               inherit nativeBuildInputs buildInputs;
-              RUST_SRC_PATH = "${rustSrc}/lib/rustlib/src/rust/src";
+              RUST_SRC_PATH = "${rustSrc}/lib/rustlib/src/rust/library";
               RUSTFLAGS = "-C linker=clang -C link-arg=--ld-path=${pkgs.lld_13}/bin/ld.lld";
               LD_LIBRARY_PATH = "${pkgs.lib.makeLibraryPath buildInputs}";
               #LD_PRELOAD = "${pkgs.libfaketime}/lib/libfaketime.so.1";
