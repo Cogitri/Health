@@ -151,7 +151,7 @@ impl Application {
             .unwrap();
         let mut autostart_user_file = glib::user_config_dir();
         autostart_user_file.push("autostart");
-        autostart_user_file.push(&desktop_file_name);
+        autostart_user_file.push(desktop_file_name);
 
         std::fs::remove_file(autostart_user_file)?;
 
@@ -310,7 +310,7 @@ impl Application {
         if !autostart_user_folder.exists() {
             std::fs::create_dir_all(&autostart_user_folder)?;
         }
-        autostart_user_folder.push(&desktop_file_name);
+        autostart_user_folder.push(desktop_file_name);
         if !autostart_user_folder.exists() {
             std::fs::copy(autostart_desktop_file, autostart_user_folder)?;
         }

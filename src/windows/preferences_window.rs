@@ -277,7 +277,7 @@ impl PreferencesWindow {
             ));
         }
         imp.user_name_entry
-            .set_text(user.user_name().unwrap_or_else(|| "".to_string()).as_str());
+            .set_text(user.user_name().unwrap_or_default().as_str());
         imp.step_goal_spin_button
             .set_value(f64::from(user.user_stepgoal().unwrap() as i32));
         if let Some(date) = user.user_birthday() {

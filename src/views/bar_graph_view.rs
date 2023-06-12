@@ -137,7 +137,7 @@ mod imp {
                 inner.scale_x = if inner.split_bars.len() > 1 {
                     inner.width / (inner.split_bars.len() - 1) as f32
                 } else {
-                    inner.width as f32
+                    inner.width
                 };
 
                 inner.scale_y = inner.height / biggest_value;
@@ -520,7 +520,7 @@ impl BarGraphView {
         // find which bar we are touching, if any
         for i in 0..inner.split_bars.len() {
             let point_x = i as f32 * inner.scale_x + 2.0 * HALF_X_PADDING;
-            if (point_x - x as f32 as f32).abs() <= 10.0 {
+            if (point_x - x as f32).abs() <= 10.0 {
                 bar_index = Some(i);
                 break;
             }

@@ -128,7 +128,7 @@ mod imp {
                 inner.scale_x = if inner.points.len() > 1 {
                     inner.width / (inner.points.len() - 1) as f32
                 } else {
-                    inner.width as f32
+                    inner.width
                 };
                 inner.scale_y = inner.height / biggest_value;
 

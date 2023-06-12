@@ -110,8 +110,8 @@ impl GraphModelCalories {
         let weight = weights
             .last()
             .map_or_else(|| Mass::new::<kilogram>(0.0), |w| w.weight)
-            .get::<kilogram>() as f32;
-        let height = user.user_height().unwrap().get::<centimeter>() as f32;
+            .get::<kilogram>();
+        let height = user.user_height().unwrap().get::<centimeter>();
         let age = user
             .user_birthday()
             .unwrap()
