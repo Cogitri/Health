@@ -10,10 +10,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-09-13 17:26+0000\n"
+"POT-Creation-Date: 2022-09-14 08:21+0000\n"
 "PO-Revision-Date: 2022-09-14 11:17+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
-"Language-Team: Türkçe <gnome-turk@gnome.org>\n"
+"Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1066,65 +1066,3 @@ msgstr "Kapat"
 #: src/windows/window.rs:267
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Hata nedeniyle Google Fit verileri eşzamanlanamadı: {}"
-
-#~ msgid "Whether the user has completed the setup wizard"
-#~ msgstr "Kullanıcının kurulum sihirbazını tamamlayıp tamamlamadığı"
-
-#~ msgid "Whether to enable notifications."
-#~ msgstr "Bildirimlerin etkinleştirilip etkinleştirilmeyeceği."
-
-#~ msgid "Sets all data source plugins that are enabled in Health."
-#~ msgstr "Sağlık’ta etkinleştirilen tüm veri kaynağı eklentilerini ayarlar."
-
-#~ msgid "The time at which Health should remind the user of their step goal"
-#~ msgstr "Sağlık’ın kullanıcıya adım hedeflerini anımsatması gereken zaman"
-
-#~ msgid ""
-#~ "How frequent should the user be notified to complete their daily step-"
-#~ "goal."
-#~ msgstr ""
-#~ "Kullanıcıya günlük adım hedefini tamamlaması için hangi sıklıkta bilgi "
-#~ "verileceği."
-
-#~ msgid ""
-#~ "Activity types the user used recently, to be shown first in the activity "
-#~ "types selector’s list"
-#~ msgstr ""
-#~ "Kullanıcının son zamanlarda kullandığı etkinlik türleri, etkinlik türleri "
-#~ "seçici listesinde önde olarak gösterilir"
-
-#~ msgid "Whether Google Fit has been setup as sync provider"
-#~ msgstr "Google Fit’in eşzamanlama sağlayıcı olarak kurulup kurulmadığı"
-
-#~ msgid "The last time we synched steps, weight etc. with Google Fit"
-#~ msgstr "Adımları, kiloları vb. Google Fit ile en son eşzamanladığımız zaman"
-
-#~ msgid "The unit system the user chose, e.g. for cm vs inch for height"
-#~ msgstr "Kullanıcının seçtiği birim sistemi, ör. yükseklik için cm yada inç"
-
-#~ msgid "The age of the user (deprecated)."
-#~ msgstr "Kullanıcının yaşı (kullanımdan kaldırıldı)."
-
-#~ msgid "The age of the user in absolute terms (like 01/01/1970)"
-#~ msgstr "Kullanıcının tam yaşı (01/01/1970 gibi)"
-
-#~ msgid "The height of the user."
-#~ msgstr "Kullanıcının ağırlığı."
-
-#~ msgid "The amount of steps the user wants to reach daily."
-#~ msgstr "Kullanıcının günlük olarak ulaşmak istediği adım sayısı."
-
-#~ msgid "The weight the user wants to reach."
-#~ msgstr "Kullanıcının ulaşmak istediği kilo."
-
-#~ msgid "The height of the window."
-#~ msgstr "Pencerenin yüksekliği."
-
-#~ msgid "Whether the window is maximized."
-#~ msgstr "Pencerenin ekranı kapsayıp kapsamadığı."
-
-#~ msgid "The width of the window."
-#~ msgstr "Pencerenin genişliği."
-
-#~ msgid "Failed to migrate database to new version due to error {}"
-#~ msgstr "{} hatası nedeniyle veri tabanı yeni sürüme taşınamadı"
