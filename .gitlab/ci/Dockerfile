@@ -1,7 +1,8 @@
 FROM fedora:latest
 
 RUN dnf install -y tracker3-devel gtk4-devel meson git xorg-x11-server-Xvfb \
-    gobject-introspection-devel gcc gcc-c++ libsecret-devel libadwaita-devel
+    gobject-introspection-devel gcc gcc-c++ libsecret-devel libadwaita-devel \
+    python3-gobject
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs -o rustup.sh \
     && sh ./rustup.sh -y \
     && rm rustup.sh
