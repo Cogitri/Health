@@ -25,7 +25,7 @@ use gtk::{
     glib,
 };
 use num_traits::{FromPrimitive, ToPrimitive};
-use std::str::FromStr;
+use std::{str::FromStr, sync::Once};
 use uom::si::{
     f32::{Length, Mass},
     length::centimeter,
@@ -36,6 +36,7 @@ use uom::si::{
 pub struct Settings(gio::Settings);
 
 static mut SETTINGS: Option<Settings> = None;
+static SETTINGS_INIT: Once = Once::new();
 
 impl Settings {
     settings_getter_setter!(bool, did_initial_setup, "did-initial-setup");
@@ -97,14 +98,10 @@ impl Default for Settings {
 impl Settings {
     pub fn instance() -> Self {
         unsafe {
-            SETTINGS.as_ref().map_or_else(
-                || {
-                    let settings = Self(gio::Settings::new("dev.Cogitri.Health"));
-                    SETTINGS = Some(settings.clone());
-                    settings
-                },
-                std::clone::Clone::clone,
-            )
+            SETTINGS_INIT.call_once(|| {
+                SETTINGS = Some(Self(gio::Settings::new("dev.Cogitri.Health")));
+            });
+            SETTINGS.clone().unwrap()
         }
     }
 
