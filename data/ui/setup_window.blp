@@ -33,7 +33,7 @@ SizeGroup {
   widgets [setup_quit_button, setup_previous_page_button]
 }
 
-template HealthSetupWindow : Adw.ApplicationWindow {
+template $HealthSetupWindow : Adw.ApplicationWindow {
   default-width: 750;
   default-height: 550;
   title: _("Health Setup");
@@ -53,7 +53,7 @@ template HealthSetupWindow : Adw.ApplicationWindow {
             label: _("_Quit");
             action-name: "app.quit";
             use-underline: true;
-            clicked => handle_setup_quit_button_clicked() swapped;
+            clicked => $handle_setup_quit_button_clicked() swapped;
           };
         }
 
@@ -62,7 +62,7 @@ template HealthSetupWindow : Adw.ApplicationWindow {
             label: _("_Previous");
             use-underline: true;
             visible: false;
-            clicked => handle_setup_previous_page_button_clicked() swapped;
+            clicked => $handle_setup_previous_page_button_clicked() swapped;
           };
         }
       }
@@ -77,7 +77,7 @@ template HealthSetupWindow : Adw.ApplicationWindow {
             label: _("_Next");
             use-underline: true;
             sensitive: false;
-            clicked => handle_setup_next_page_button_clicked() swapped;
+            clicked => $handle_setup_next_page_button_clicked() swapped;
 
             styles [
               "suggested-action",
@@ -90,7 +90,7 @@ template HealthSetupWindow : Adw.ApplicationWindow {
             label: _("_Done");
             use-underline: true;
             visible: false;
-            clicked => handle_setup_done_button_clicked() swapped;
+            clicked => $handle_setup_done_button_clicked() swapped;
 
             styles [
               "suggested-action",
@@ -104,7 +104,7 @@ template HealthSetupWindow : Adw.ApplicationWindow {
       vexpand: true;
       hexpand: true;
       interactive: false;
-      page-changed => handle_setup_carousel_page_changed() swapped;
+      page-changed => $handle_setup_carousel_page_changed() swapped;
 
       Box setup_first_page {
         orientation: vertical;
@@ -187,22 +187,22 @@ template HealthSetupWindow : Adw.ApplicationWindow {
             Adw.ActionRow age_actionrow {
               title: _("Birthday");
 
-              .HealthDateSelector birthday_selector {
+              $HealthDateSelector birthday_selector {
                 valign: center;
-                notify::selected-date => try_enable_next_button_first_page() swapped;
+                notify::selected-date => $try_enable_next_button_first_page() swapped;
               }
             }
 
             Adw.ActionRow height_actionrow {
               title: _("Height");
 
-              .HealthUnitSpinButton height_spin_button {
+              $HealthUnitSpinButton height_spin_button {
                 unit-kind: "like_centimeters";
                 width-chars: 5;
                 text: "0";
                 adjustment: height_adjustment;
                 valign: center;
-                changed => handle_height_spin_button_changed() swapped;
+                changed => $handle_height_spin_button_changed() swapped;
               }
             }
           }
@@ -280,7 +280,7 @@ template HealthSetupWindow : Adw.ApplicationWindow {
         halign: center;
         vexpand: true;
         hexpand: true;
-        notify::selected-value => try_enable_next_button_third_page() swapped;
+        notify::selected-value => $try_enable_next_button_third_page() swapped;
 
         Label {
           label: _("Please enter your weight goal.");
@@ -325,16 +325,16 @@ template HealthSetupWindow : Adw.ApplicationWindow {
               Adw.ActionRow weight_actionrow {
                 title: _("Current weight");
 
-                .HealthUnitSpinButton weight_spin_button {
+                $HealthUnitSpinButton weight_spin_button {
                   unit-kind: "like_kilogram";
                   digits: 1;
                   width-chars: 5;
                   adjustment: weight_adjustment;
                   valign: center;
-                  changed => handle_weight_spin_button_changed() swapped;
+                  changed => $handle_weight_spin_button_changed() swapped;
                 }
               }
-	      .HealthBMILevelBar current_bmi_levelbar {
+	      $HealthBMILevelBar current_bmi_levelbar {
 	        margin-start: 6;
 	        margin-end: 6;
 	        margin-top: 6;
@@ -349,17 +349,17 @@ template HealthSetupWindow : Adw.ApplicationWindow {
               Adw.ActionRow weight_goal_actionrow {
                 title: _("Weight goal");
 
-                .HealthUnitSpinButton weight_goal_spin_button {
+                $HealthUnitSpinButton weight_goal_spin_button {
                   unit-kind: "like_kilogram";
                   digits: 1;
                   width-chars: 5;
                   adjustment: weight_goal_adjustment;
                   valign: center;
-                  changed => handle_weight_goal_spin_button_changed() swapped;
+                  changed => $handle_weight_goal_spin_button_changed() swapped;
                 }
               }
 
-              .HealthBMILevelBar target_bmi_levelbar {
+              $HealthBMILevelBar target_bmi_levelbar {
                 margin-start: 6;
                 margin-end: 6;
                 margin-top: 6;
@@ -412,8 +412,8 @@ template HealthSetupWindow : Adw.ApplicationWindow {
           vexpand: true;
           hexpand: true;
 
-          .HealthSyncListBox sync_list_box {
-            parent-window: HealthSetupWindow;
+          $HealthSyncListBox sync_list_box {
+            parent-window: template;
           }
 
           layout {

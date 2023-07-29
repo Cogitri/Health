@@ -59,10 +59,10 @@ menu notification_frequency_menu {
   }
 }
 
-template HealthPreferencesWindow : Adw.PreferencesWindow {
+template $HealthPreferencesWindow : Adw.PreferencesWindow {
   title: _("Health Preferences");
   destroy-with-parent: true;
-  close-request => handle_close_window() swapped;
+  close-request => $handle_close_window() swapped;
 
   Adw.PreferencesPage {
     icon-name: "emblem-system-symbolic";
@@ -100,7 +100,7 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
 
         Entry user_name_entry {
           valign: center;
-          changed => handle_user_name_entry_changed() swapped;
+          changed => $handle_user_name_entry_changed() swapped;
           placeholder-text: _("User");
         }
       }
@@ -108,16 +108,16 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
       Adw.ActionRow age_actionrow {
         title: _("Birthday");
 
-        .HealthDateSelector birthday_selector {
+        $HealthDateSelector birthday_selector {
           valign: center;
-          notify::selected-date => handle_birthday_selector_changed() swapped;
+          notify::selected-date => $handle_birthday_selector_changed() swapped;
         }
       }
 
       Adw.ActionRow height_actionrow {
         title: _("Height");
 
-        .HealthUnitSpinButton height_spin_button {
+        $HealthUnitSpinButton height_spin_button {
           unit-kind: "like_centimeters";
           width-chars: 5;
           text: "0";
@@ -137,7 +137,7 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
           margin-top: 15;
           margin-bottom: 15;
           margin-end: 10;
-          notify::active => handle_enable_notify_changed_callback() swapped;
+          notify::active => $handle_enable_notify_changed_callback() swapped;
         }
       }
 
@@ -198,13 +198,13 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
         Box {
           spacing: 12;
 
-          .HealthBMILevelBar bmi_levelbar {
+          $HealthBMILevelBar bmi_levelbar {
             valign: center;
             hexpand: true;
             bmi-label: _("Target BMI");
           }
 
-          .HealthUnitSpinButton weight_goal_spin_button {
+          $HealthUnitSpinButton weight_goal_spin_button {
             unit-kind: "like_kilogram";
             digits: 1;
             width-chars: 5;
@@ -223,8 +223,8 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
     Adw.PreferencesGroup {
       title: _("Start sync with third-party providers.");
 
-      .HealthSyncListBox sync_list_box {
-        parent-window: HealthPreferencesWindow;
+      $HealthSyncListBox sync_list_box {
+        parent-window: template;
       }
     }
 
@@ -237,7 +237,7 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
         Button export_csv_button {
           label: _("Export…");
           valign: center;
-          clicked => handle_export_csv_button_clicked() swapped;
+          clicked => $handle_export_csv_button_clicked() swapped;
         }
       }
 
@@ -247,7 +247,7 @@ template HealthPreferencesWindow : Adw.PreferencesWindow {
         Button import_csv_button {
           label: _("Import…");
           valign: center;
-          clicked => handle_import_csv_button_clicked() swapped;
+          clicked => $handle_import_csv_button_clicked() swapped;
         }
       }
     }

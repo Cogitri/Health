@@ -11,9 +11,9 @@ Button button_ok {
   use-underline: true;
 }
 
-template HealthDataAddDialog : Dialog {
+template $HealthDataAddDialog : Dialog {
   modal: true;
-  response => handle_response() swapped;
+  response => $handle_response() swapped;
 
   [titlebar]
   HeaderBar {
@@ -27,7 +27,7 @@ template HealthDataAddDialog : Dialog {
     orientation: vertical;
 
     Adw.ViewStack stack {
-      notify::visible-child => handle_stack_visible_child_notify() swapped;
+      notify::visible-child => $handle_stack_visible_child_notify() swapped;
     }
   }
 }

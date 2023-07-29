@@ -11,11 +11,11 @@ Button button_ok {
   use-underline: true;
 }
 
-template HealthImportExportDialogBase : Dialog {
+template $HealthImportExportDialogBase : Dialog {
   use-header-bar: 1;
   modal: true;
   destroy-with-parent: true;
-  response => handle_response() swapped;
+  response => $handle_response() swapped;
 
   Adw.Clamp {
     maximum-size: 400;
@@ -48,7 +48,7 @@ template HealthImportExportDialogBase : Dialog {
               margin-end: 6;
               margin-top: 12;
               margin-bottom: 12;
-              notify::active => check_activate_response() swapped;
+              notify::active => $check_activate_response() swapped;
             }
           }
 
@@ -61,7 +61,7 @@ template HealthImportExportDialogBase : Dialog {
               margin-end: 6;
               margin-top: 12;
               margin-bottom: 12;
-              notify::active => check_activate_response() swapped;
+              notify::active => $check_activate_response() swapped;
             }
           }
 
@@ -74,16 +74,16 @@ template HealthImportExportDialogBase : Dialog {
               margin-end: 6;
               margin-top: 12;
               margin-bottom: 12;
-              notify::active => handle_encrypt_switch_active_notify() swapped;
+              notify::active => $handle_encrypt_switch_active_notify() swapped;
             }
           }
 
-          .HealthPasswordEntry password_entry {
+          $HealthPasswordEntry password_entry {
             margin-start: 6;
             margin-end: 6;
             margin-top: 6;
             margin-bottom: 6;
-            notify::password => check_activate_response() swapped;
+            notify::password => $check_activate_response() swapped;
           }
         };
       }

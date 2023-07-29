@@ -30,7 +30,7 @@ Gtk.StringList month_model {
   ]
 }
 
-template HealthDateSelector : Grid {
+template $HealthDateSelector : Grid {
   Label {
     label: _("Day");
 
@@ -49,7 +49,7 @@ template HealthDateSelector : Grid {
     margin-end: 6;
     margin-top: 6;
     margin-bottom: 6;
-    changed => handle_date_widget_changed() swapped;
+    changed => $handle_date_widget_changed() swapped;
 
     layout {
       row: 0;
@@ -72,7 +72,7 @@ template HealthDateSelector : Grid {
     margin-top: 6;
     margin-bottom: 6;
     model: month_model;
-    notify::selected => handle_date_widget_changed() swapped;
+    notify::selected => $handle_date_widget_changed() swapped;
 
     layout {
       row: 1;
@@ -98,7 +98,7 @@ template HealthDateSelector : Grid {
     margin-end: 6;
     margin-top: 6;
     margin-bottom: 6;
-    changed => handle_date_widget_changed() swapped;
+    changed => $handle_date_widget_changed() swapped;
 
     layout {
       row: 2;

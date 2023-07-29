@@ -7,7 +7,7 @@ Adjustment weight_adjustment {
   page-increment: 10;
 }
 
-template HealthViewAddWeight : .HealthViewAdd {
+template $HealthViewAddWeight : $HealthViewAdd {
   icon-name: "weight-scale-symbolic";
   name: "Add Weight Data";
 
@@ -29,7 +29,7 @@ template HealthViewAddWeight : .HealthViewAdd {
         Adw.ActionRow {
           title: _("Date");
 
-          .HealthDateSelector date_selector {
+          $HealthDateSelector date_selector {
             valign: center;
           }
         }
@@ -37,14 +37,14 @@ template HealthViewAddWeight : .HealthViewAdd {
         Adw.ActionRow {
           title: _("Weight");
 
-          .HealthUnitSpinButton weight_spin_button {
+          $HealthUnitSpinButton weight_spin_button {
             unit-kind: "like_kilogram";
             width-chars: 5;
             text: "0";
             adjustment: weight_adjustment;
             digits: 1;
             valign: center;
-            changed => handle_weight_spin_button_changed() swapped;
+            changed => $handle_weight_spin_button_changed() swapped;
           }
         }
       }

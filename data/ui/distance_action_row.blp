@@ -7,7 +7,7 @@ Adjustment distance_adjustment {
   page-increment: 1000;
 }
 
-template HealthDistanceActionRow : Adw.ActionRow {
+template $HealthDistanceActionRow : Adw.ActionRow {
   title: _("Distance");
 
   Box {
@@ -39,14 +39,14 @@ template HealthDistanceActionRow : Adw.ActionRow {
       }
     }
 
-    .HealthUnitSpinButton distance_spin_button {
+    $HealthUnitSpinButton distance_spin_button {
       width-chars: 5;
       text: "0";
       adjustment: distance_adjustment;
       valign: center;
       unit-kind: "like_meters";
-      changed => handle_distance_spin_button_changed() swapped;
-      input => handle_distance_spin_button_input() swapped;
+      changed => $handle_distance_spin_button_changed() swapped;
+      input => $handle_distance_spin_button_input() swapped;
     }
   }
 }

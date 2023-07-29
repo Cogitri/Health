@@ -33,13 +33,13 @@ PopoverMenu primary_menu_popover {
   menu-model: primary_menu;
 }
 
-template HealthWindow : Adw.ApplicationWindow {
+template $HealthWindow : Adw.ApplicationWindow {
   title: _("Health");
   default-width: 600;
   default-height: 620;
-  close-request => handle_close_request() swapped;
-  notify::default-height => handle_property_default_height_notify() swapped;
-  notify::default-width => handle_property_default_width_notify() swapped;
+  close-request => $handle_close_request() swapped;
+  notify::default-height => $handle_property_default_height_notify() swapped;
+  notify::default-width => $handle_property_default_width_notify() swapped;
 
   Box {
     orientation: vertical;
@@ -56,18 +56,18 @@ template HealthWindow : Adw.ApplicationWindow {
       Button back_button {
         visible: false;
         icon-name: "go-previous-symbolic";
-        clicked => handle_back_button_clicked() swapped;
+        clicked => $handle_back_button_clicked() swapped;
       }
 
       Button add_data_button {
         icon-name: "list-add-symbolic";
-        clicked => handle_add_data_button_clicked() swapped;
+        clicked => $handle_add_data_button_clicked() swapped;
       }
 
       Button enable_plugin_button {
         visible: false;
         label: _("Enable plugin");
-        clicked => handle_enable_plugin_button_clicked() swapped;
+        clicked => $handle_enable_plugin_button_clicked() swapped;
 
         styles [
           "suggested-action",
@@ -85,7 +85,7 @@ template HealthWindow : Adw.ApplicationWindow {
       revealed: false;
       show-close-button: true;
       message-type: error;
-      response => handle_error_infobar_response() swapped;
+      response => $handle_error_infobar_response() swapped;
 
       Label error_label {
         margin-start: 6;
@@ -96,11 +96,11 @@ template HealthWindow : Adw.ApplicationWindow {
       }
     }
 
-    .HealthViewHomePage view_home_page {
+    $HealthViewHomePage view_home_page {
       width-request: 265;
       height-request: 200;
       vexpand: true;
-      view-changed => handle_view_changed() swapped;
+      view-changed => $handle_view_changed() swapped;
     }
   }
 }

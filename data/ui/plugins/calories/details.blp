@@ -1,6 +1,6 @@
 using Gtk 4.0;
 
-template HealthPluginCaloriesDetails : .HealthPluginDetails {
+template $HealthPluginCaloriesDetails : $HealthPluginDetails {
   empty-label: _("You can use the <b>+</b> button to add a new activity.");
   empty-icon-name: "calories-symbolic";
   name: "Calories";
@@ -27,21 +27,21 @@ template HealthPluginCaloriesDetails : .HealthPluginDetails {
       margin-end: 40;
       margin-top: 5;
 
-      .HealthLegendRow {
+      $HealthLegendRow {
         layout {
           column: 0;
           row: 0;
         }
       }
 
-      .HealthLegendRow {
+      $HealthLegendRow {
         layout {
           column: 0;
           row: 1;
         }
       }
 
-      .HealthLegendRow {
+      $HealthLegendRow {
         layout {
           column: 0;
           row: 2;

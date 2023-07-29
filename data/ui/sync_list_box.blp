@@ -5,7 +5,7 @@ SizeGroup {
   widgets [google_fit_spinner, google_fit_selected_image]
 }
 
-template HealthSyncListBox : Adw.Bin {
+template $HealthSyncListBox : Adw.Bin {
   ListBox sync_list_box {
     selection-mode: none;
 
@@ -13,7 +13,7 @@ template HealthSyncListBox : Adw.Bin {
       "boxed-list",
     ]
 
-    row-activated => handle_row_activated() swapped;
+    row-activated => $handle_row_activated() swapped;
 
     ListBoxRow google_fit_start_sync_row {
       Box {

@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template HealthPluginStepsSummaryRow : .HealthPluginSummaryRow {
+template $HealthPluginStepsSummaryRow : $HealthPluginSummaryRow {
   title: _("Steps");
 
   Adw.Clamp {
@@ -11,7 +11,7 @@ template HealthPluginStepsSummaryRow : .HealthPluginSummaryRow {
       orientation: vertical;
       margin-end: 13;
 
-      .HealthCircularProgressBar circular_progress_bar { }
+      $HealthCircularProgressBar circular_progress_bar { }
 
       Label steps_percentage { }
 

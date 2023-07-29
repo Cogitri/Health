@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template HealthPluginDetails : Adw.Bin {
+template $HealthPluginDetails : Adw.Bin {
   Stack stack {
     StackPage {
       name: "empty_page";
@@ -55,7 +55,7 @@ template HealthPluginDetails : Adw.Bin {
             margin-end: 6;
             wrap: true;
             wrap-mode: word_char;
-            visible: bind HealthPluginDetails.is-mocked inverted;
+            visible: bind template.is-mocked inverted;
           }
 
           Label is_mocked_label {
@@ -66,7 +66,7 @@ template HealthPluginDetails : Adw.Bin {
             wrap: true;
             wrap-mode: word_char;
             label: _("This is a preview of how the plugin presents data. Enable the plugin to see your actual, live data.");
-            visible: bind HealthPluginDetails.is-mocked;
+            visible: bind template.is-mocked;
           }
         }
       };

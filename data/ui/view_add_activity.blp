@@ -44,13 +44,13 @@ SizeGroup {
 Adw.ActionRow date_selector_actionrow {
   title: _("Date");
 
-  .HealthDateSelector date_selector {
+  $HealthDateSelector date_selector {
     valign: center;
   }
 }
 
-.HealthActivityTypeSelector activity_type_selector {
-  notify::selected-activity => handle_activity_type_selector_activity_selected() swapped;
+$HealthActivityTypeSelector activity_type_selector {
+  notify::selected-activity => $handle_activity_type_selector_activity_selected() swapped;
 }
 
 Adw.ActionRow activity_type_actionrow {
@@ -71,13 +71,13 @@ Adw.ActionRow calories_burned_action_row {
     adjustment: calories_burned_adjustment;
     numeric: true;
     valign: center;
-    changed => handle_calories_burned_spin_button_changed() swapped;
+    changed => $handle_calories_burned_spin_button_changed() swapped;
   }
 }
 
-.HealthDistanceActionRow distance_action_row {
-  changed => handle_distance_action_row_changed() swapped;
-  input => handle_distance_action_row_input() swapped;
+$HealthDistanceActionRow distance_action_row {
+  changed => $handle_distance_action_row_changed() swapped;
+  input => $handle_distance_action_row_input() swapped;
 }
 
 Adw.ActionRow duration_action_row {
@@ -89,7 +89,7 @@ Adw.ActionRow duration_action_row {
     adjustment: activity_duration_adjustment;
     numeric: true;
     valign: center;
-    changed => handle_duration_spin_button_changed() swapped;
+    changed => $handle_duration_spin_button_changed() swapped;
   }
 }
 
@@ -138,11 +138,11 @@ Adw.ActionRow stepcount_action_row {
     adjustment: steps_adjustment;
     numeric: true;
     valign: center;
-    changed => handle_steps_spin_button_changed() swapped;
+    changed => $handle_steps_spin_button_changed() swapped;
   }
 }
 
-template HealthViewAddActivity : .HealthViewAdd {
+template $HealthViewAddActivity : $HealthViewAdd {
   icon-name: "walking-symbolic";
   name: "Add Activity Data";
 
