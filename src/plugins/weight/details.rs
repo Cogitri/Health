@@ -160,16 +160,16 @@ glib::wrapper! {
 impl PluginWeightDetails {
     /// Create a new [PluginWeightDetails] to display previous weight measurements.
     pub fn new(data_provider: DataProvider) -> Self {
-        glib::Object::new(&[
-            (
+        glib::Object::builder()
+            .property(
                 "is-mocked",
                 &matches!(data_provider, DataProvider::Mocked(_)),
-            ),
-            (
+            )
+            .property(
                 "data-provider",
                 &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
-            ),
-        ])
+            )
+            .build()
     }
 
     pub async fn get_user(&self) -> User {

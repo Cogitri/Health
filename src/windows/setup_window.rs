@@ -215,7 +215,7 @@ impl SetupWindow {
     /// # Arguments
     /// * `app` - The [GtkApplication](gtk::Application) to use.
     pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
-        glib::Object::new(&[("application", app)])
+        glib::Object::builder().property("application", app).build()
     }
 
     fn connect_handlers(&self) {
@@ -294,8 +294,7 @@ impl SetupWindow {
                 Mass::new::<pound>(unitless_weight_goal)
             };
 
-            let mut user_builder = User::builder();
-            user_builder
+            let user = User::builder()
                 .user_id(top_unused_user_id)
                 .user_name(imp.user_name_entry.text().as_str())
                 .user_birthday(imp.birthday_selector.selected_date())
@@ -309,9 +308,8 @@ impl SetupWindow {
                     PluginName::Steps,
                 ])
                 .recent_activity_types(vec![])
-                .did_initial_setup(true);
-
-            let user = user_builder.build();
+                .did_initial_setup(true)
+                .build();
 
             if let Err(e) = imp.database.create_user(user).await {
                 glib::g_warning!(

@@ -127,12 +127,12 @@ impl ExportDialog {
     /// # Arguments
     /// * `parent` - The [GtkWindow](gtk::Window) which is the transient parent of this dialog.
     pub fn new(parent: Option<&gtk::Window>) -> Self {
-        glib::Object::new(&[
-            ("use-header-bar", &1.to_value()),
-            ("title", &i18n("Export data")),
-            ("is-import", &false),
-            ("transient-for", &parent),
-        ])
+        glib::Object::builder()
+            .property("use-header-bar", &1.to_value())
+            .property("title", &i18n("Export data"))
+            .property("is-import", &false)
+            .property("transient-for", &parent)
+            .build()
     }
 }
 

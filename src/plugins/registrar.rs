@@ -161,7 +161,7 @@ impl Registrar {
     }
 
     fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 }
 

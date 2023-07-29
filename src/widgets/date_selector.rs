@@ -171,7 +171,7 @@ impl DateSelector {
 
     /// Create a new [DateSelector]
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Set the currently selected date.

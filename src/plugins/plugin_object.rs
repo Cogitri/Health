@@ -60,7 +60,9 @@ glib::wrapper! {
 
 impl PluginObject {
     pub fn new(plugin: Box<dyn Plugin>) -> Self {
-        glib::Object::new(&[("plugin", &PluginBoxed(plugin))])
+        glib::Object::builder()
+            .property("plugin", &PluginBoxed(plugin))
+            .build()
     }
 
     pub fn plugin(&self) -> Box<dyn Plugin> {

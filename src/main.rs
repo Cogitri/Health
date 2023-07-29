@@ -35,5 +35,5 @@ fn main() {
     let app = Application::new();
 
     let ret = app.run();
-    std::process::exit(ret);
+    std::process::exit(ret.value());
 }

@@ -135,12 +135,12 @@ impl ModelNotification {
         notification_time: Time,
         step_goal: u32,
     ) -> Self {
-        glib::Object::new(&[
-            ("application", application),
-            ("notification-frequency", &notification_frequency),
-            ("notification-time", &TimeBoxed(notification_time)),
-            ("step-goal", &step_goal),
-        ])
+        glib::Object::builder()
+            .property("application", application)
+            .property("notification-frequency", &notification_frequency)
+            .property("notification-time", &TimeBoxed(notification_time))
+            .property("step-goal", &step_goal)
+            .build()
     }
 
     pub fn notification_frequency(&self) -> NotificationFrequency {
@@ -167,7 +167,7 @@ impl ModelNotification {
     }
 
     pub fn set_notification_frequency(&self, value: NotificationFrequency) {
-        self.set_property("notification-frequency", value);
+        self.set_property("notification-frequency", &value);
     }
 
     pub fn set_notification_time(&self, value: Time) {

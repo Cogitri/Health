@@ -100,7 +100,7 @@ impl LegendRow {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn set_activity_name(&self, activity_name: &str) {

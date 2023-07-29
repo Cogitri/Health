@@ -151,16 +151,15 @@ glib::wrapper! {
 impl PluginStepsDetails {
     /// Create a new [PluginStepsDetails] to display previous step activity.
     pub fn new(data_provider: DataProvider) -> Self {
-        glib::Object::new(&[
+        glib::Object::builder().property
             (
                 "is-mocked",
                 &matches!(data_provider, DataProvider::Mocked(_)),
-            ),
+            ).property
             (
                 "data-provider",
                 &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
-            ),
-        ])
+            ).build()
     }
 
     // TRANSLATORS notes have to be on the same line, so we cant split them

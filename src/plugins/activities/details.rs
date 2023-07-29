@@ -138,13 +138,13 @@ glib::wrapper! {
 impl PluginActivitiesDetails {
     /// Create a new [PluginActivitiesDetails] to display previous activities.
     pub fn new(data_provider: DataProvider) -> Self {
-        glib::Object::new(&[
-            (
+        glib::Object::builder()
+            .property(
                 "is-mocked",
                 &matches!(data_provider, DataProvider::Mocked(_)),
-            ),
-            ("data-provider", &DataProviderBoxed(data_provider)),
-        ])
+            )
+            .property("data-provider", &DataProviderBoxed(data_provider))
+            .build()
     }
 
     /// Reload the [ModelActivity](crate::plugins::activities::ModelActivity)'s data and refresh the list of activities

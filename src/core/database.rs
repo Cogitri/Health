@@ -235,34 +235,37 @@ impl Database {
             for i in 0..cursor.n_columns() {
                 match cursor.variable_name(i).unwrap().as_str() {
                     "id" => {
-                        activity.activity_type(ActivityType::from_i64(cursor.integer(i)).unwrap());
+                        activity = activity
+                            .activity_type(ActivityType::from_i64(cursor.integer(i)).unwrap());
                     }
                     "date" => {
-                        activity.date(glib::DateTime::from_iso8601(
+                        activity = activity.date(glib::DateTime::from_iso8601(
                             cursor.string(i).unwrap().as_str(),
                             None,
                         )?);
                     }
                     "calories_burned" => {
-                        activity.calories_burned(cursor.integer(i).try_into().unwrap());
+                        activity = activity.calories_burned(cursor.integer(i).try_into().unwrap());
                     }
                     "distance" => {
-                        activity.distance(Length::new::<meter>(cursor.integer(i) as f32));
+                        activity =
+                            activity.distance(Length::new::<meter>(cursor.integer(i) as f32));
                     }
                     "heart_rate_avg" => {
-                        activity.heart_rate_avg(cursor.integer(i).try_into().unwrap());
+                        activity = activity.heart_rate_avg(cursor.integer(i).try_into().unwrap());
                     }
                     "heart_rate_max" => {
-                        activity.heart_rate_max(cursor.integer(i).try_into().unwrap());
+                        activity = activity.heart_rate_max(cursor.integer(i).try_into().unwrap());
                     }
                     "heart_rate_min" => {
-                        activity.heart_rate_min(cursor.integer(i).try_into().unwrap());
+                        activity = activity.heart_rate_min(cursor.integer(i).try_into().unwrap());
                     }
                     "minutes" => {
-                        activity.duration(glib::TimeSpan::from_minutes(cursor.integer(i)));
+                        activity =
+                            activity.duration(glib::TimeSpan::from_minutes(cursor.integer(i)));
                     }
                     "steps" => {
-                        activity.steps(cursor.integer(i).try_into().unwrap());
+                        activity = activity.steps(cursor.integer(i).try_into().unwrap());
                     }
                     _ => {
                         glib::g_error!(
@@ -611,28 +614,28 @@ impl Database {
         for i in 0..cursor.n_columns() {
             match cursor.variable_name(i).unwrap().as_str() {
                 "user_id" => {
-                    user.user_id(cursor.integer(i));
+                    user = user.user_id(cursor.integer(i));
                 }
                 "user_name" => {
-                    user.user_name(cursor.string(i).unwrap().as_str());
+                    user = user.user_name(cursor.string(i).unwrap().as_str());
                 }
                 "user_birthday" => {
-                    user.user_birthday(glib::DateTime::from_iso8601(
+                    user = user.user_birthday(glib::DateTime::from_iso8601(
                         cursor.string(i).unwrap().as_str(),
                         None,
                     )?);
                 }
                 "user_height" => {
-                    user.user_height(Length::new::<meter>(cursor.double(i) as f32));
+                    user = user.user_height(Length::new::<meter>(cursor.double(i) as f32));
                 }
                 "user_weightgoal" => {
-                    user.user_weightgoal(Mass::new::<kilogram>(cursor.double(i) as f32));
+                    user = user.user_weightgoal(Mass::new::<kilogram>(cursor.double(i) as f32));
                 }
                 "user_stepgoal" => {
-                    user.user_stepgoal(cursor.integer(i));
+                    user = user.user_stepgoal(cursor.integer(i));
                 }
                 "enabled_plugins" => {
-                    user.enabled_plugins(
+                    user = user.enabled_plugins(
                         cursor
                             .string(i)
                             .unwrap()
@@ -643,7 +646,7 @@ impl Database {
                     );
                 }
                 "recent_activity_types" => {
-                    user.recent_activity_types(
+                    user = user.recent_activity_types(
                         cursor
                             .string(i)
                             .unwrap()
@@ -654,7 +657,7 @@ impl Database {
                     );
                 }
                 "did_initial_setup" => {
-                    user.did_initial_setup(cursor.is_boolean(i));
+                    user = user.did_initial_setup(cursor.is_boolean(i));
                 }
                 _ => {
                     glib::g_error!(
@@ -689,28 +692,28 @@ impl Database {
             for i in 0..cursor.n_columns() {
                 match cursor.variable_name(i).unwrap().as_str() {
                     "user_id" => {
-                        user.user_id(cursor.integer(i));
+                        user = user.user_id(cursor.integer(i));
                     }
                     "user_name" => {
-                        user.user_name(cursor.string(i).unwrap().as_str());
+                        user = user.user_name(cursor.string(i).unwrap().as_str());
                     }
                     "user_birthday" => {
-                        user.user_birthday(glib::DateTime::from_iso8601(
+                        user = user.user_birthday(glib::DateTime::from_iso8601(
                             cursor.string(i).unwrap().as_str(),
                             None,
                         )?);
                     }
                     "user_height" => {
-                        user.user_height(Length::new::<meter>(cursor.double(i) as f32));
+                        user = user.user_height(Length::new::<meter>(cursor.double(i) as f32));
                     }
                     "user_weightgoal" => {
-                        user.user_weightgoal(Mass::new::<kilogram>(cursor.double(i) as f32));
+                        user = user.user_weightgoal(Mass::new::<kilogram>(cursor.double(i) as f32));
                     }
                     "user_stepgoal" => {
-                        user.user_stepgoal(cursor.integer(i));
+                        user = user.user_stepgoal(cursor.integer(i));
                     }
                     "enabled_plugins" => {
-                        user.enabled_plugins(
+                        user = user.enabled_plugins(
                             cursor
                                 .string(i)
                                 .unwrap()
@@ -721,7 +724,7 @@ impl Database {
                         );
                     }
                     "recent_activity_types" => {
-                        user.recent_activity_types(
+                        user = user.recent_activity_types(
                             cursor
                                 .string(i)
                                 .unwrap()
@@ -732,7 +735,7 @@ impl Database {
                         );
                     }
                     "did_initial_setup" => {
-                        user.did_initial_setup(cursor.is_boolean(i));
+                        user = user.did_initial_setup(cursor.is_boolean(i));
                     }
                     _ => {
                         glib::g_error!(
@@ -1091,8 +1094,7 @@ impl Database {
             imp.settings.user_birthday().unwrap()
         };
 
-        let mut user_builder = User::builder();
-        user_builder
+        let user = User::builder()
             .user_id(top_unused_user_id)
             .user_name(&i18n("User"))
             .user_birthday(datetime)
@@ -1107,9 +1109,8 @@ impl Database {
                     .filter_map(|s| ActivityType::from_str(s.trim()).ok())
                     .collect(),
             )
-            .did_initial_setup(true);
-
-        let user = user_builder.build();
+            .did_initial_setup(true)
+            .build();
         if let Err(e) = self.create_user(user).await {
             glib::g_warning!(
                 crate::config::LOG_DOMAIN,
@@ -1139,34 +1140,37 @@ impl Database {
             for i in 0..cursor.n_columns() {
                 match cursor.variable_name(i).unwrap().as_str() {
                     "id" => {
-                        activity.activity_type(ActivityType::from_i64(cursor.integer(i)).unwrap());
+                        activity = activity
+                            .activity_type(ActivityType::from_i64(cursor.integer(i)).unwrap());
                     }
                     "date" => {
-                        activity.date(glib::DateTime::from_iso8601(
+                        activity = activity.date(glib::DateTime::from_iso8601(
                             cursor.string(i).unwrap().as_str(),
                             None,
                         )?);
                     }
                     "calories_burned" => {
-                        activity.calories_burned(cursor.integer(i).try_into().unwrap());
+                        activity = activity.calories_burned(cursor.integer(i).try_into().unwrap());
                     }
                     "distance" => {
-                        activity.distance(Length::new::<meter>(cursor.integer(i) as f32));
+                        activity =
+                            activity.distance(Length::new::<meter>(cursor.integer(i) as f32));
                     }
                     "heart_rate_avg" => {
-                        activity.heart_rate_avg(cursor.integer(i).try_into().unwrap());
+                        activity = activity.heart_rate_avg(cursor.integer(i).try_into().unwrap());
                     }
                     "heart_rate_max" => {
-                        activity.heart_rate_max(cursor.integer(i).try_into().unwrap());
+                        activity = activity.heart_rate_max(cursor.integer(i).try_into().unwrap());
                     }
                     "heart_rate_min" => {
-                        activity.heart_rate_min(cursor.integer(i).try_into().unwrap());
+                        activity = activity.heart_rate_min(cursor.integer(i).try_into().unwrap());
                     }
                     "minutes" => {
-                        activity.duration(glib::TimeSpan::from_minutes(cursor.integer(i)));
+                        activity =
+                            activity.duration(glib::TimeSpan::from_minutes(cursor.integer(i)));
                     }
                     "steps" => {
-                        activity.steps(cursor.integer(i).try_into().unwrap());
+                        activity = activity.steps(cursor.integer(i).try_into().unwrap());
                     }
                     _ => {
                         glib::g_error!(
@@ -1229,7 +1233,7 @@ impl Database {
     /// # Returns
     /// Either [Database], or [glib::Error] if connecting to Tracker failed.
     fn new() -> Result<Self> {
-        let o: Self = glib::Object::new(&[]);
+        let o: Self = glib::Object::new();
 
         o.connect(None)?;
 
@@ -1245,7 +1249,7 @@ impl Database {
     /// Either [Database], or [glib::Error] if connecting to Tracker failed.
     #[cfg(test)]
     pub fn new_with_store_path(store_path: PathBuf) -> Result<Self> {
-        let o: Self = glib::Object::new(&[]);
+        let o: Self = glib::Object::new();
 
         crate::utils::init_gresources();
         o.connect(Some(store_path))?;

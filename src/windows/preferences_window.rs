@@ -20,6 +20,7 @@ use crate::{
     core::UnitSystem,
     model::{NotificationFrequency, User},
     prelude::*,
+    stateful_action,
     windows::{ExportDialog, ImportDialog},
 };
 use adw::prelude::*;
@@ -27,7 +28,6 @@ use gtk::{
     gio,
     glib::{self, clone, subclass::prelude::*},
 };
-use gtk_macros::stateful_action;
 use std::str::FromStr;
 use uom::si::{
     f32::{Length, Mass},
@@ -207,16 +207,16 @@ impl PreferencesWindow {
     /// * `parent_window` - The transient parent of the window.
     ///
     pub fn new(parent_window: Option<gtk::Window>) -> Self {
-        glib::Object::new(&[
-            ("transient-for", &parent_window.as_ref()),
-            (
+        glib::Object::builder()
+            .property("transient-for", &parent_window.as_ref())
+            .property(
                 "application",
                 &parent_window
                     .as_ref()
                     .and_then(gtk::prelude::GtkWindowExt::application)
                     .as_ref(),
-            ),
-        ])
+            )
+            .build()
     }
 
     fn handle_frequency(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
@@ -224,7 +224,7 @@ impl PreferencesWindow {
         self.set_notification_frequency(
             NotificationFrequency::from_str(parameter.get::<String>().unwrap().as_str()).unwrap(),
         );
-        action.set_state(parameter);
+        action.set_state(parameter.clone());
     }
 
     fn setup_actions(&self) {
@@ -295,7 +295,7 @@ impl PreferencesWindow {
     }
 
     fn set_notification_frequency(&self, frequency: NotificationFrequency) {
-        self.set_property("notification-frequency", frequency)
+        self.set_property("notification-frequency", &frequency)
     }
 
     fn connect_handlers(&self) {

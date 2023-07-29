@@ -73,7 +73,7 @@ impl Settings {
 
             fn get<U: glib::FromVariant>(&self, key: &str) -> U;
 
-            fn set<U: ToVariant>(&self, key: &str, value: &U) -> Result<(), glib::BoolError>;
+            fn set<U: Into<glib::Variant>>(&self, key: &str, value: U) -> Result<(), glib::BoolError>;
 
             fn set_enum(&self, key: &str, value: i32) -> Result<(), glib::BoolError>;
 
@@ -83,7 +83,7 @@ impl Settings {
 
             fn string(&self, key: &str) -> glib::GString;
 
-            fn strv(&self, key: &str) -> Vec<glib::GString>;
+            fn strv(&self, key: &str) -> glib::StrV;
         }
     }
 }
@@ -112,7 +112,7 @@ impl Settings {
     pub fn enabled_plugins(&self) -> Vec<PluginName> {
         self.strv("enabled-plugins")
             .iter()
-            .filter_map(|s| PluginName::from_str(s.as_str()).ok())
+            .filter_map(|s| PluginName::from_str(s.to_str()).ok())
             .collect()
     }
 

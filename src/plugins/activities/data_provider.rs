@@ -93,7 +93,7 @@ impl ModelActivity {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Reload the data from the Tracker Database.

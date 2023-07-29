@@ -285,11 +285,11 @@ impl UnitSpinButton {
         auto_update_unit_system: bool,
         unit_kind: UnitKind,
     ) -> Self {
-        glib::Object::new(&[
-            ("adjustment", adjustment),
-            ("auto-update-unit-system", &auto_update_unit_system),
-            ("unit-kind", &unit_kind),
-        ])
+        glib::Object::builder()
+            .property("adjustment", adjustment)
+            .property("auto-update-unit-system", &auto_update_unit_system)
+            .property("unit-kind", &unit_kind)
+            .build()
     }
 
     pub fn has_default_value(&self) -> bool {
@@ -297,11 +297,11 @@ impl UnitSpinButton {
     }
 
     pub fn set_unit_kind(&self, unit_kind: UnitKind) {
-        self.set_property("unit-kind", unit_kind);
+        self.set_property("unit-kind", &unit_kind);
     }
 
     pub fn set_unit_system(&self, unit_system: UnitSystem) {
-        self.set_property("unit-system", unit_system);
+        self.set_property("unit-system", &unit_system);
     }
 
     pub fn set_value(&self, value: f64) {

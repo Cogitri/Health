@@ -95,14 +95,14 @@ mod imp {
         this: &super::ImportExportDialogBase,
         password: Option<String>,
     ) -> PinnedResultFuture<()> {
-        ImportExportDialogBase::from_instance(this).on_activities(this, password)
+        ImportExportDialogBase::from_obj(this).on_activities(this, password)
     }
 
     fn on_weights_default_trampoline(
         this: &super::ImportExportDialogBase,
         password: Option<String>,
     ) -> PinnedResultFuture<()> {
-        ImportExportDialogBase::from_instance(this).on_weights(this, password)
+        ImportExportDialogBase::from_obj(this).on_weights(this, password)
     }
 
     pub(super) fn import_export_dialog_base_on_activities(
@@ -402,7 +402,7 @@ fn on_activities_trampoline<T: ObjectSubclass>(
 where
     T: ImportExportDialogBaseImpl,
 {
-    let imp = T::from_instance(this.dynamic_cast_ref::<T::Type>().unwrap());
+    let imp = T::from_obj(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.on_activities(this, password)
 }
 
@@ -413,6 +413,6 @@ fn on_weights_trampoline<T: ObjectSubclass>(
 where
     T: ImportExportDialogBaseImpl,
 {
-    let imp = T::from_instance(this.dynamic_cast_ref::<T::Type>().unwrap());
+    let imp = T::from_obj(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.on_weights(this, password)
 }

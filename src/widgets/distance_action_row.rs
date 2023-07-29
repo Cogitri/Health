@@ -237,11 +237,11 @@ impl DistanceActionRow {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn set_unitsize(&self, unitsize: Unitsize) {
-        self.set_property("unitsize", unitsize)
+        self.set_property("unitsize", &unitsize)
     }
 
     pub fn set_value(&self, value: Length) {

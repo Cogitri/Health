@@ -114,7 +114,7 @@ impl Window {
     /// # Arguments
     /// * `app` - The application to use.
     pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
-        glib::Object::new(&[("application", app)])
+        glib::Object::builder().property("application", app).build()
     }
 
     pub fn open_hamburger_menu(&self) {

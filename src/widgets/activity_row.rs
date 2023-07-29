@@ -151,7 +151,9 @@ glib::wrapper! {
 impl ActivityRow {
     /// Create a new [ActivityRow].
     pub fn new(activity: &Activity) -> Self {
-        glib::Object::new(&[("activity", activity)])
+        glib::Object::builder()
+            .property("activity", activity)
+            .build()
     }
 
     pub fn activity(&self) -> Activity {

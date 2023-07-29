@@ -21,7 +21,7 @@ use gtk::glib;
 
 mod imp {
     use adw::subclass::prelude::*;
-    use gtk::{glib, prelude::*, CompositeTemplate};
+    use gtk::{glib, CompositeTemplate};
 
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/card.ui")]
@@ -56,7 +56,7 @@ glib::wrapper! {
 
 impl Card {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 }
 

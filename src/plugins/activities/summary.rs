@@ -75,7 +75,10 @@ glib::wrapper! {
 
 impl PluginActivitiesSummaryRow {
     pub fn new(name: PluginName) -> Self {
-        glib::Object::new(&[("plugin-name", &name.as_ref()), ("activatable", &true)])
+        glib::Object::builder()
+            .property("plugin-name", &name.as_ref())
+            .property("activatable", &true)
+            .build()
     }
 
     pub async fn update(&self) {

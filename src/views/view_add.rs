@@ -92,7 +92,7 @@ glib::wrapper! {
 
 impl ViewAdd {
     pub fn new(icon_name: &str, view_title: &str) -> Self {
-        glib::Object::new(&[("icon-name", &icon_name), ("view-title", &view_title)])
+        glib::Object::builder().property("icon-name", &icon_name).property("view-title", &view_title).build()
     }
 }
 

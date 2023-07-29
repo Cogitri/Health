@@ -115,7 +115,7 @@ impl ColorCircle {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
     pub fn set_color(&self, color: gdk::RGBA) {
         self.set_property("color", color);

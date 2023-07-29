@@ -126,7 +126,9 @@ impl SyncListBox {
     /// # Arguments
     /// * `parent_window` - The [GtkWindow](gtk::Window) that should be the transient parent for error dialogs (or none).
     pub fn new(parent_window: Option<gtk::Window>) -> Self {
-        glib::Object::new(&[("parent-window", &parent_window)])
+        glib::Object::builder()
+            .property("parent-window", &parent_window)
+            .build()
     }
 
     fn handle_db_receiver_received(&self, res: Result<()>) -> glib::Continue {

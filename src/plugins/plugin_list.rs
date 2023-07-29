@@ -114,7 +114,7 @@ impl PluginList {
     }
 
     pub fn new(plugin_list: Vec<Box<dyn Plugin>>) -> Self {
-        let o: Self = glib::Object::new(&[]);
+        let o: Self = glib::Object::new();
         o.imp().vec.replace(plugin_list);
         o
     }

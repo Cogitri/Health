@@ -65,7 +65,7 @@ mod imp {
 
     // Virtual method default implementation trampolines
     fn update_default_trampoline(this: &super::PluginSummaryRow) -> PinnedResultFuture<()> {
-        PluginSummaryRow::from_instance(this).update(this)
+        PluginSummaryRow::from_obj(this).update(this)
     }
 
     pub(super) fn plugin_summary_row_update(
@@ -144,7 +144,9 @@ glib::wrapper! {
 impl PluginSummaryRow {
     /// Create a new [PluginSummaryRow]
     pub fn new(plugin_name: PluginName) -> Self {
-        glib::Object::new(&[("plugin-name", &plugin_name)])
+        glib::Object::builder()
+            .property("plugin-name", &plugin_name)
+            .build()
     }
 }
 
@@ -204,7 +206,7 @@ fn update_trampoline<T: ObjectSubclass>(this: &PluginSummaryRow) -> PinnedResult
 where
     T: PluginSummaryRowImpl,
 {
-    let imp = T::from_instance(this.dynamic_cast_ref::<T::Type>().unwrap());
+    let imp = T::from_obj(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.update(this)
 }
 

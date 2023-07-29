@@ -181,7 +181,7 @@ impl BmiLevelBar {
 
     /// Create a new [BmiLevelBar].
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     /// Set the height of the user.

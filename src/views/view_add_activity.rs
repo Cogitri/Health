@@ -20,6 +20,7 @@ use crate::{
     core::i18n,
     model::{Activity, ActivityDataPoints, Unitsize},
     prelude::*,
+    stateful_action,
     views::ViewAdd,
 };
 use gtk::{
@@ -27,7 +28,6 @@ use gtk::{
     glib::{self, clone, subclass::prelude::*},
     prelude::*,
 };
-use gtk_macros::stateful_action;
 use imp::spin_button_value_if_datapoint;
 use std::str::FromStr;
 
@@ -167,7 +167,7 @@ mod imp {
             let filter = gtk::CustomFilter::new(clone!(@weak obj => @default-panic, move |o| {
                 obj.filter_activity_entry(o)
             }));
-            let filter_model = gtk::FilterListModel::new(Some(&model), Some(&filter));
+            let filter_model = gtk::FilterListModel::new(Some(model), Some(filter));
             self.activities_list_box
                 .bind_model(Some(&filter_model), |o| {
                     o.clone().downcast::<gtk::Widget>().unwrap()
@@ -220,10 +220,10 @@ glib::wrapper! {
 impl ViewAddActivity {
     /// Create a new [ViewAddActivity].
     pub fn new() -> Self {
-        glib::Object::new(&[
-            ("icon-name", &"walking-symbolic"),
-            ("view-title", &i18n("Activity")),
-        ])
+        glib::Object::builder()
+            .property("icon-name", &"walking-symbolic")
+            .property("view-title", &i18n("Activity"))
+            .build()
     }
 
     fn connect_handlers(&self) {
@@ -257,7 +257,7 @@ impl ViewAddActivity {
 
                 obj.imp().distance_action_row.set_unitsize(Unitsize::from_str(parameter.get::<String>().unwrap().as_str()).unwrap());
 
-                a.set_state(parameter);
+                a.set_state(parameter.clone());
             })
         );
 

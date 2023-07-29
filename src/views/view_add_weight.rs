@@ -82,10 +82,10 @@ glib::wrapper! {
 impl ViewAddWeight {
     /// Create a new [ViewAddWeight]
     pub fn new() -> Self {
-        glib::Object::new(&[
-            ("icon-name", &"weight-scale-symbolic"),
-            ("view-title", &i18n("Weight")),
-        ])
+        glib::Object::builder()
+            .property("icon-name", &"weight-scale-symbolic")
+            .property("view-title", &i18n("Weight"))
+            .build()
     }
 
     pub async fn handle_response(&self, id: gtk::ResponseType) {

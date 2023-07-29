@@ -407,7 +407,7 @@ mod imp {
             gesture_controller.connect_pressed(
                 clone!(@weak obj => move |c, _, x, y| obj.on_motion_event(x, y, true, c)),
             );
-            obj.add_controller(&gesture_controller);
+            obj.add_controller(gesture_controller);
 
             let motion_controller = gtk::EventControllerMotion::new();
             motion_controller.connect_enter(
@@ -416,7 +416,7 @@ mod imp {
             motion_controller.connect_motion(
                 clone!(@weak obj => move|c, x, y| obj.on_motion_event(x, y, false, c)),
             );
-            obj.add_controller(&motion_controller);
+            obj.add_controller(motion_controller);
 
             let mut inner = self.inner.borrow_mut();
             inner.hover_max_pointer_deviation = (8 * obj.scale_factor()).try_into().unwrap();
@@ -495,7 +495,7 @@ glib::wrapper! {
 
 impl GraphView {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn limit(&self) -> Option<f32> {

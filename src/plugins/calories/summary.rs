@@ -81,7 +81,10 @@ glib::wrapper! {
 
 impl PluginCaloriesSummaryRow {
     pub fn new(name: PluginName) -> Self {
-        glib::Object::new(&[("plugin-name", &name), ("activatable", &true)])
+        glib::Object::builder()
+            .property("plugin-name", &name)
+            .property("activatable", &true)
+            .build()
     }
 
     pub async fn update(&self) {

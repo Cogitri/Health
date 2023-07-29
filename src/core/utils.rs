@@ -19,6 +19,7 @@
 #[cfg(test)]
 use gtk::gio;
 
+#[macro_use]
 pub mod prelude {
     use gtk::{glib, prelude::*};
     use std::future::Future;
@@ -163,6 +164,21 @@ pub mod prelude {
                 alternative
             }
         }
+    }
+
+    #[macro_export]
+    macro_rules! stateful_action {
+        ($actions_group:expr, $name:expr, $state:expr, $callback:expr) => {
+            let simple_action = gio::SimpleAction::new_stateful($name, None, $state.to_variant());
+            simple_action.connect_activate($callback);
+            $actions_group.add_action(&simple_action);
+        };
+        ($actions_group:expr, $name:expr, $param_type:expr, $state:expr, $callback:expr) => {
+            let simple_action =
+                gio::SimpleAction::new_stateful($name, $param_type, $state.to_variant());
+            simple_action.connect_activate($callback);
+            $actions_group.add_action(&simple_action);
+        };
     }
 }
 

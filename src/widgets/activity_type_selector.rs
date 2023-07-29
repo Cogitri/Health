@@ -212,7 +212,7 @@ impl ActivityTypeSelector {
 
     /// Create a new [ActivityTypeSelector].
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     #[template_callback]

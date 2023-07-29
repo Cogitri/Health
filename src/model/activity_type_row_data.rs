@@ -80,7 +80,10 @@ glib::wrapper! {
 
 impl ActivityTypeRowData {
     pub fn new(id: &str, label: &str) -> Self {
-        glib::Object::new(&[("id", &id), ("label", &label)])
+        glib::Object::builder()
+            .property("id", &id)
+            .property("label", &label)
+            .build()
     }
 
     pub fn id(&self) -> String {

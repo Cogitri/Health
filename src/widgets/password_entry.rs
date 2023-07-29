@@ -135,10 +135,10 @@ glib::wrapper! {
 impl PasswordEntry {
     /// Create a new [PasswordEntry]
     pub fn new(show_password_repeat: bool, show_password_strength: bool) -> Self {
-        glib::Object::new(&[
-            ("show-password-repeat", &show_password_repeat),
-            ("show-password-strength", &show_password_strength),
-        ])
+        glib::Object::builder()
+            .property("show-password-repeat", &show_password_repeat)
+            .property("show-password-strength", &show_password_strength)
+            .build()
     }
 
     /// Connect to the entered password changing.

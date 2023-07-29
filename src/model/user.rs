@@ -259,7 +259,9 @@ impl Default for User {
 impl User {
     /// Creates a new [User].
     pub fn new() -> Self {
-        glib::Object::new(&[("user-birthday", &glib::DateTime::local())])
+        glib::Object::builder()
+            .property("user-birthday", &glib::DateTime::local())
+            .build()
     }
 
     pub fn builder() -> UserBuilder {
@@ -383,106 +385,81 @@ impl<'de> serde::Deserialize<'de> for User {
     }
 }
 
-#[derive(Clone, Default)]
 /// A [builder-pattern] type to construct [`User`] objects.
 ///
 /// [builder-pattern]: https://doc.rust-lang.org/1.0.0/style/ownership/builders.html
 #[must_use = "The builder must be built to be used"]
 pub struct UserBuilder {
-    user_id: Option<i64>,
-    user_name: Option<String>,
-    user_birthday: Option<glib::DateTime>,
-    user_height: Option<f32>,
-    user_weightgoal: Option<f32>,
-    user_stepgoal: Option<i64>,
-    enabled_plugins: Option<PluginNames>,
-    recent_activity_types: Option<ActivityTypes>,
-    did_initial_setup: Option<bool>,
+    builder: glib::object::ObjectBuilder<'static, User>,
 }
 
 impl UserBuilder {
     /// Create a new [`UserBuilder`].
     pub fn new() -> Self {
-        Self::default()
+        Self {
+            builder: glib::Object::builder(),
+        }
     }
 
     /// Build the [`UserBuilder`].
     #[must_use = "Building the object from the builder is usually expensive and is not expected to have side effects"]
-    pub fn build(&mut self) -> User {
-        let mut properties: Vec<(&str, &dyn ToValue)> = vec![];
-        if let Some(ref user_id) = self.user_id {
-            properties.push(("user-id", user_id));
-        }
-        if let Some(ref user_name) = self.user_name {
-            properties.push(("user-name", user_name));
-        }
-        if let Some(ref user_birthday) = self.user_birthday {
-            properties.push(("user-birthday", user_birthday));
-        }
-        if let Some(ref user_height) = self.user_height {
-            properties.push(("user-height", user_height));
-        }
-        if let Some(ref user_weightgoal) = self.user_weightgoal {
-            properties.push(("user-weightgoal", user_weightgoal));
-        }
-        if let Some(ref user_stepgoal) = self.user_stepgoal {
-            properties.push(("user-stepgoal", user_stepgoal));
-        }
-        if let Some(ref enabled_plugins) = self.enabled_plugins {
-            properties.push(("enabled-plugins", enabled_plugins));
-        }
-        if let Some(ref recent_activity_types) = self.recent_activity_types {
-            properties.push(("recent-activity-types", recent_activity_types));
-        }
-        if let Some(ref did_initial_setup) = self.did_initial_setup {
-            properties.push(("did-initial-setup", did_initial_setup));
-        }
-
-        glib::Object::new::<User>(&properties)
+    pub fn build(self) -> User {
+        self.builder.build()
     }
 
-    pub fn user_id(&mut self, user_id: i64) -> &mut Self {
-        self.user_id = Some(user_id);
+    pub fn user_id(mut self, user_id: i64) -> Self {
+        self.builder = self.builder.property("user-id", &user_id);
         self
     }
 
-    pub fn user_name(&mut self, user_name: &str) -> &mut Self {
-        self.user_name = Some(user_name.to_string());
+    pub fn user_name(mut self, user_name: &str) -> Self {
+        self.builder = self.builder.property("user-name", &user_name);
         self
     }
 
-    pub fn user_birthday(&mut self, user_birthday: glib::DateTime) -> &mut Self {
-        self.user_birthday = Some(user_birthday);
+    pub fn user_birthday(mut self, user_birthday: glib::DateTime) -> Self {
+        self.builder = self.builder.property("user-birthday", &user_birthday);
         self
     }
 
-    pub fn user_height(&mut self, user_height: Length) -> &mut Self {
-        self.user_height = Some(user_height.get::<meter>());
+    pub fn user_height(mut self, user_height: Length) -> Self {
+        self.builder = self
+            .builder
+            .property("user-height", &user_height.get::<meter>());
         self
     }
 
-    pub fn user_weightgoal(&mut self, user_weightgoal: Mass) -> &mut Self {
-        self.user_weightgoal = Some(user_weightgoal.get::<kilogram>());
+    pub fn user_weightgoal(mut self, user_weightgoal: Mass) -> Self {
+        self.builder = self
+            .builder
+            .property("user-weightgoal", &user_weightgoal.get::<kilogram>());
         self
     }
 
-    pub fn user_stepgoal(&mut self, user_stepgoal: i64) -> &mut Self {
-        self.user_stepgoal = Some(user_stepgoal);
+    pub fn user_stepgoal(mut self, user_stepgoal: i64) -> Self {
+        self.builder = self.builder.property("user-stepgoal", &user_stepgoal);
         self
     }
 
-    pub fn enabled_plugins(&mut self, enabled_plugins: Vec<PluginName>) -> &mut Self {
-        self.enabled_plugins = Some(PluginNames(enabled_plugins));
+    pub fn enabled_plugins(mut self, enabled_plugins: Vec<PluginName>) -> Self {
+        self.builder = self
+            .builder
+            .property("enabled-plugins", &PluginNames(enabled_plugins));
         self
     }
 
-    pub fn recent_activity_types(&mut self, recent_activity_types: Vec<ActivityType>) -> &mut Self {
-        self.recent_activity_types = Some(ActivityTypes(recent_activity_types));
+    pub fn recent_activity_types(mut self, recent_activity_types: Vec<ActivityType>) -> Self {
+        self.builder = self.builder.property(
+            "recent-activity-types",
+            &ActivityTypes(recent_activity_types),
+        );
         self
     }
 
-    pub fn did_initial_setup(&mut self, did_initial_setup: bool) -> &mut Self {
-        self.did_initial_setup = Some(did_initial_setup);
+    pub fn did_initial_setup(mut self, did_initial_setup: bool) -> Self {
+        self.builder = self
+            .builder
+            .property("did-initial-setup", &did_initial_setup);
         self
     }
 }

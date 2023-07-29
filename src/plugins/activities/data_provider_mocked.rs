@@ -107,7 +107,7 @@ impl ModelActivityMocked {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub async fn activity_present(&self) -> bool {

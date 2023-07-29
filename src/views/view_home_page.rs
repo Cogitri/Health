@@ -115,9 +115,9 @@ mod imp {
                     )
                     .into()
             });
-            let enabled_model_sorted = gtk::SortListModel::new(Some(&enabled_model), Some(&sorter));
-            let disabled_model_sorted =
-                gtk::SortListModel::new(Some(&disabled_model), Some(&sorter));
+            let enabled_model_sorted =
+                gtk::SortListModel::new(Some(enabled_model), Some(sorter.clone()));
+            let disabled_model_sorted = gtk::SortListModel::new(Some(disabled_model), Some(sorter));
 
             self.user_selected_data.bind_model(
                 Some(&enabled_model_sorted),
@@ -151,16 +151,14 @@ mod imp {
         ) {
             let summary = row.downcast_ref::<PluginSummaryRow>().unwrap();
             let plugin_name = summary.plugin_name();
-            self.instance()
-                .open_plugin_details(list_box, plugin_name, true);
+            self.obj().open_plugin_details(list_box, plugin_name, true);
         }
 
         #[template_callback]
         fn handle_all_data_row_activated(&self, row: gtk::ListBoxRow, list_box: gtk::ListBox) {
             let overview = row.downcast_ref::<PluginOverviewRow>().unwrap();
             let plugin_name = overview.plugin_name();
-            self.instance()
-                .open_plugin_details(list_box, plugin_name, false);
+            self.obj().open_plugin_details(list_box, plugin_name, false);
         }
     }
 }
@@ -264,7 +262,7 @@ impl ViewHomePage {
 
     /// Create a new [ViewHomePage] to display previous activities.
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     fn handle_user_selected_data_bind_model(&self, object: &glib::Object) -> gtk::Widget {

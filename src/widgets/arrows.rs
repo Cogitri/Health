@@ -144,11 +144,11 @@ glib::wrapper! {
 
 impl Arrows {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 
     pub fn set_weight_change(&self, change: WeightChange) {
-        self.set_property("weight-change", change)
+        self.set_property("weight-change", &change)
     }
 }
 

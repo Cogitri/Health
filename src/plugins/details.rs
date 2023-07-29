@@ -72,7 +72,7 @@ mod imp {
 
     // Virtual method default implementation trampolines
     fn update_default_trampoline(this: &super::PluginDetails) -> PinnedResultFuture<()> {
-        PluginDetails::from_instance(this).update(this)
+        PluginDetails::from_obj(this).update(this)
     }
 
     pub(super) fn plugin_details_update(this: &super::PluginDetails) -> PinnedResultFuture<()> {
@@ -172,7 +172,7 @@ glib::wrapper! {
 
 impl PluginDetails {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 }
 
@@ -302,7 +302,7 @@ fn update_trampoline<T: ObjectSubclass>(this: &PluginDetails) -> PinnedResultFut
 where
     T: PluginDetailsImpl,
 {
-    let imp = T::from_instance(this.dynamic_cast_ref::<T::Type>().unwrap());
+    let imp = T::from_obj(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.update(this)
 }
 

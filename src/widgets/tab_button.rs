@@ -89,7 +89,7 @@ glib::wrapper! {
 
 impl TabButton {
     pub fn new() -> Self {
-        glib::Object::new(&[])
+        glib::Object::new()
     }
 }
 

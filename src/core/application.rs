@@ -19,6 +19,7 @@
 use crate::{
     core::{i18n, Database, UnitSystem},
     model::{ModelNotification, User},
+    stateful_action,
     windows::{PreferencesWindow, Window},
 };
 use anyhow::Result;
@@ -27,7 +28,7 @@ use gtk::{
     glib::{self, clone, subclass::prelude::*},
     prelude::*,
 };
-use gtk_macros::{action, stateful_action};
+use gtk_macros::action;
 use std::{path::Path, str::FromStr};
 
 mod imp {
@@ -168,10 +169,10 @@ impl Application {
     }
 
     pub fn new() -> Self {
-        glib::Object::new(&[
-            ("application-id", &crate::config::APPLICATION_ID),
-            ("flags", &gio::ApplicationFlags::FLAGS_NONE),
-        ])
+        glib::Object::builder()
+            .property("application-id", &crate::config::APPLICATION_ID)
+            .property("flags", &gio::ApplicationFlags::FLAGS_NONE)
+            .build()
     }
 
     fn handle_about(&self) {
@@ -294,7 +295,7 @@ impl Application {
             UnitSystem::from_str(parameter.to_string().replace('\'', "").as_str()).unwrap(),
         );
 
-        action.set_state(parameter);
+        action.set_state(parameter.clone());
     }
 
     fn install_autostart_file(&self) -> Result<()> {
