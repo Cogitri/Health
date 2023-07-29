@@ -20,8 +20,8 @@ pub mod steps;
 pub mod summary;
 pub mod weight;
 
-pub use activities::*;
-pub use calories::*;
+pub use activities::{ActivitiesPlugin, PluginActivitiesSummaryRow};
+pub use calories::{CaloriesPlugin, PluginCaloriesSummaryRow};
 #[doc(inline)]
 pub use details::*;
 #[doc(inline)]
@@ -36,7 +36,7 @@ pub use plugin_name::*;
 pub use plugin_object::*;
 #[doc(inline)]
 pub use registrar::*;
-pub use steps::*;
+pub use steps::{PluginStepsSummaryRow, StepsPlugin};
 #[doc(inline)]
 pub use summary::*;
-pub use weight::*;
+pub use weight::{PluginWeightSummaryRow, WeightPlugin};
