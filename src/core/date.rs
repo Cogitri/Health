@@ -240,10 +240,13 @@ mod test {
 
     #[test]
     fn test_format_local() {
-        gettextrs::setlocale(gettextrs::LocaleCategory::LcAll, "en_US.UTF-8");
         let date = glib::DateTime::from_unix_utc(1_000_000_000).unwrap();
-        assert_eq!(date.format_local(), "09/09/2001");
-        gettextrs::setlocale(gettextrs::LocaleCategory::LcAll, "de_DE.UTF-8");
-        assert_eq!(date.format_local(), "09.09.2001");
+
+        if gettextrs::setlocale(gettextrs::LocaleCategory::LcAll, "en_US.UTF-8").is_some() {
+            assert_eq!(date.format_local(), "09/09/2001");
+        }
+        if gettextrs::setlocale(gettextrs::LocaleCategory::LcAll, "de_DE.UTF-8").is_some() {
+            assert_eq!(date.format_local(), "09.09.2001");
+        }
     }
 }
