@@ -19,12 +19,19 @@
 use gtk::{glib, prelude::*};
 
 mod imp {
-    use gtk::{glib, prelude::*, subclass::prelude::*};
+    use gtk::{
+        glib::{self, Properties},
+        prelude::*,
+        subclass::prelude::*,
+    };
     use once_cell::unsync::OnceCell;
 
-    #[derive(Debug, Default)]
+    #[derive(Debug, Default, Properties)]
+    #[properties(wrapper_type = super::ActivityTypeRowData)]
     pub struct ActivityTypeRowData {
+        #[property(get, set, construct_only)]
         pub id: OnceCell<String>,
+        #[property(get, set, construct_only)]
         pub label: OnceCell<String>,
     }
 
@@ -37,36 +44,15 @@ mod imp {
 
     impl ObjectImpl for ActivityTypeRowData {
         fn properties() -> &'static [glib::ParamSpec] {
-            use once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![
-                    glib::ParamSpecString::builder("id")
-                        .construct_only()
-                        .readwrite()
-                        .build(),
-                    glib::ParamSpecString::builder("label")
-                        .construct_only()
-                        .readwrite()
-                        .build(),
-                ]
-            });
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
 
-        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "id" => self.id.get().unwrap().to_value(),
-                "label" => self.label.get().unwrap().to_value(),
-                _ => unimplemented!(),
-            }
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec)
         }
 
-        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            match pspec.name() {
-                "id" => self.id.set(value.get().unwrap()).unwrap(),
-                "label" => self.label.set(value.get().unwrap()).unwrap(),
-                _ => unimplemented!(),
-            }
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
         }
     }
 }
@@ -84,14 +70,6 @@ impl ActivityTypeRowData {
             .property("id", id)
             .property("label", label)
             .build()
-    }
-
-    pub fn id(&self) -> String {
-        self.property("id")
-    }
-
-    pub fn label(&self) -> String {
-        self.property("label")
     }
 }
 

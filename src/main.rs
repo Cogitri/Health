@@ -13,13 +13,17 @@
 #![warn(clippy::option_if_let_else)]
 
 use gettextrs::{bindtextdomain, setlocale, textdomain, LocaleCategory};
-use gtk::{gio, glib, prelude::*};
+use gtk::{
+    gio,
+    glib::{self, ExitCode},
+    prelude::*,
+};
 use libhealth::{
     config,
     core::{i18n, Application},
 };
 
-fn main() {
+fn main() -> ExitCode {
     setlocale(LocaleCategory::LcAll, "");
     if let Err(e) = bindtextdomain(config::GETTEXT_PACKAGE, config::LOCALEDIR) {
         glib::g_warning!(config::LOG_DOMAIN, "Couldn't bind textdomain: {e}")
@@ -34,6 +38,5 @@ fn main() {
 
     let app = Application::new();
 
-    let ret = app.run();
-    std::process::exit(ret.value());
+    app.run()
 }
