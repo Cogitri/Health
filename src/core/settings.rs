@@ -244,7 +244,7 @@ impl Settings {
 
     /// Set the user's height.
     pub fn set_user_height(&self, value: Length) {
-        self.set("user-height", &(value.get::<centimeter>() as u32))
+        self.set("user-height", value.get::<centimeter>() as u32)
             .unwrap();
     }
 
@@ -270,7 +270,7 @@ impl Settings {
 
     /// Set the user's current weightgoal.
     pub fn set_user_weight_goal(&self, value: Mass) {
-        self.set("user-weightgoal", &f64::from(value.get::<kilogram>()))
+        self.set("user-weightgoal", f64::from(value.get::<kilogram>()))
             .unwrap();
     }
 }

@@ -277,7 +277,7 @@ mod test {
                         value: 8400.0
                     },
                     Point {
-                        date: date,
+                        date,
                         value: 5000.0
                     }
                 ]

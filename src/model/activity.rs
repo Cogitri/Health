@@ -602,7 +602,9 @@ impl ActivityBuilder {
     }
 
     pub fn calories_burned(mut self, calories_burned: u32) -> Self {
-        self.builder = self.builder.property("calories-burned", &calories_burned);
+        self.builder = self
+            .builder
+            .property("calories-burned", i64::from(calories_burned));
         self
     }
 
@@ -614,34 +616,40 @@ impl ActivityBuilder {
     pub fn distance(mut self, distance: Length) -> Self {
         self.builder = self
             .builder
-            .property("distance-meter", &distance.get::<meter>());
+            .property("distance-meter", distance.get::<meter>());
         self
     }
 
     pub fn duration(mut self, duration: glib::TimeSpan) -> Self {
         self.builder = self
             .builder
-            .property("duration-seconds", &duration.as_seconds());
+            .property("duration-seconds", duration.as_seconds());
         self
     }
 
     pub fn heart_rate_avg(mut self, heart_rate_avg: u32) -> Self {
-        self.builder = self.builder.property("heart-rate-avg", &heart_rate_avg);
+        self.builder = self
+            .builder
+            .property("heart-rate-avg", i64::from(heart_rate_avg));
         self
     }
 
     pub fn heart_rate_max(mut self, heart_rate_max: u32) -> Self {
-        self.builder = self.builder.property("heart-rate-max", &heart_rate_max);
+        self.builder = self
+            .builder
+            .property("heart-rate-max", i64::from(heart_rate_max));
         self
     }
 
     pub fn heart_rate_min(mut self, heart_rate_min: u32) -> Self {
-        self.builder = self.builder.property("heart-rate-min", &heart_rate_min);
+        self.builder = self
+            .builder
+            .property("heart-rate-min", i64::from(heart_rate_min));
         self
     }
 
     pub fn steps(mut self, steps: u32) -> Self {
-        self.builder = self.builder.property("steps", &steps);
+        self.builder = self.builder.property("steps", i64::from(steps));
         self
     }
 }

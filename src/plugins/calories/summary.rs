@@ -83,7 +83,7 @@ impl PluginCaloriesSummaryRow {
     pub fn new(name: PluginName) -> Self {
         glib::Object::builder()
             .property("plugin-name", &name)
-            .property("activatable", &true)
+            .property("activatable", true)
             .build()
     }
 

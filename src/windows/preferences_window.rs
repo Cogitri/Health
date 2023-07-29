@@ -208,10 +208,10 @@ impl PreferencesWindow {
     ///
     pub fn new(parent_window: Option<gtk::Window>) -> Self {
         glib::Object::builder()
-            .property("transient-for", &parent_window.as_ref())
+            .property("transient-for", parent_window.as_ref())
             .property(
                 "application",
-                &parent_window
+                parent_window
                     .as_ref()
                     .and_then(gtk::prelude::GtkWindowExt::application)
                     .as_ref(),

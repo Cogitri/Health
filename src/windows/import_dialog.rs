@@ -48,9 +48,9 @@ mod imp {
             password: Option<String>,
         ) -> PinnedResultFuture<()> {
             let file_chooser = gtk::FileChooserNative::builder()
-                .title(&i18n("Open Activities"))
-                .accept_label(&i18n("_Open"))
-                .cancel_label(&i18n("_Cancel"))
+                .title(i18n("Open Activities"))
+                .accept_label(i18n("_Open"))
+                .cancel_label(i18n("_Cancel"))
                 .modal(true)
                 .transient_for(obj)
                 .action(gtk::FileChooserAction::Open)
@@ -77,9 +77,9 @@ mod imp {
             password: Option<String>,
         ) -> PinnedResultFuture<()> {
             let file_chooser = gtk::FileChooserNative::builder()
-                .title(&i18n("Open Weight Measurement"))
-                .accept_label(&i18n("_Open"))
-                .cancel_label(&i18n("_Cancel"))
+                .title(i18n("Open Weight Measurement"))
+                .accept_label(i18n("_Open"))
+                .cancel_label(i18n("_Cancel"))
                 .modal(true)
                 .transient_for(obj)
                 .action(gtk::FileChooserAction::Open)
@@ -115,11 +115,12 @@ impl ImportDialog {
     /// # Arguments
     /// * `parent` - The [GtkWindow](gtk::Window) which is the transient parent of this dialog.
     pub fn new(parent: Option<&gtk::Window>) -> Self {
-        glib::Object::builder().property
-            ("use-header-bar", &1.to_value()).property
-            ("is-import", &true).property
-            ("title", &i18n("Import data")).property
-            ("transient-for", &parent).build()
+        glib::Object::builder()
+            .property("use-header-bar", &1.to_value())
+            .property("is-import", true)
+            .property("title", &i18n("Import data"))
+            .property("transient-for", parent)
+            .build()
     }
 }
 

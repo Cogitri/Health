@@ -139,7 +139,7 @@ impl ModelNotification {
             .property("application", application)
             .property("notification-frequency", &notification_frequency)
             .property("notification-time", &TimeBoxed(notification_time))
-            .property("step-goal", &step_goal)
+            .property("step-goal", step_goal)
             .build()
     }
 

@@ -81,8 +81,8 @@ glib::wrapper! {
 impl ActivityTypeRowData {
     pub fn new(id: &str, label: &str) -> Self {
         glib::Object::builder()
-            .property("id", &id)
-            .property("label", &label)
+            .property("id", id)
+            .property("label", label)
             .build()
     }
 

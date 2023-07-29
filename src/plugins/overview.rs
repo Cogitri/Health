@@ -113,10 +113,10 @@ glib::wrapper! {
 impl PluginOverviewRow {
     pub fn new(plugin_name: PluginName, icon_name: &str, title: &str) -> Self {
         glib::Object::builder()
-            .property("icon-name", &icon_name)
-            .property("title", &title)
+            .property("icon-name", icon_name)
+            .property("title", title)
             .property("plugin-name", &plugin_name)
-            .property("activatable", &true)
+            .property("activatable", true)
             .build()
     }
 }

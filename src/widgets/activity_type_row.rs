@@ -125,10 +125,11 @@ impl ActivityTypeRow {
     /// * `data` - The [ActivityTypeRowData] to populate the [ActivityTypeRow] from.
     /// * `selected` - Whether or not the row is elected.
     pub fn new(data: &ActivityTypeRowData, selected: bool) -> Self {
-        glib::Object::builder().property
-            ("id", &data.id()).property
-            ("label", &data.label()).property
-            ("selected", &selected).build()
+        glib::Object::builder()
+            .property("id", &data.id())
+            .property("label", &data.label())
+            .property("selected", selected)
+            .build()
     }
 
     pub fn set_selected(&self, selected: bool) {

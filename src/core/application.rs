@@ -170,8 +170,8 @@ impl Application {
 
     pub fn new() -> Self {
         glib::Object::builder()
-            .property("application-id", &crate::config::APPLICATION_ID)
-            .property("flags", &gio::ApplicationFlags::FLAGS_NONE)
+            .property("application-id", crate::config::APPLICATION_ID)
+            .property("flags", gio::ApplicationFlags::FLAGS_NONE)
             .build()
     }
 
@@ -189,11 +189,11 @@ impl Application {
             .modal(true)
             .logo_icon_name(crate::config::APPLICATION_ID)
             .program_name("Health")
-            .comments(&i18n("A health tracking app for the GNOME desktop."))
+            .comments(i18n("A health tracking app for the GNOME desktop."))
             .authors(vec!["Rasmus Thomsen <oss@cogitri.dev>".to_string()])
-            .translator_credits(&i18n("translator-credits"))
+            .translator_credits(i18n("translator-credits"))
             .website("https://gitlab.gnome.org/World/Health")
-            .website_label(&i18n("Websites"))
+            .website_label(i18n("Websites"))
             .version(crate::config::VERSION)
             .license_type(gtk::License::Gpl30)
             .build()

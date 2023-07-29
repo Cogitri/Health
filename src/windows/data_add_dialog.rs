@@ -135,7 +135,7 @@ impl DataAddDialog {
     pub fn new(parent: &gtk::Window, current_plugin: String) -> Self {
         glib::Object::builder()
             .property("use-header-bar", &1.to_value())
-            .property("transient-for", &Some(parent))
+            .property("transient-for", Some(parent))
             .property("current-plugin", &current_plugin)
             .build()
     }

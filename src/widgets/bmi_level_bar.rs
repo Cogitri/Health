@@ -83,11 +83,11 @@ mod imp {
                 .set_orientation(gtk::Orientation::Vertical);
 
             self.level_bar
-                .remove_offset_value(Some(&gtk::LEVEL_BAR_OFFSET_LOW));
+                .remove_offset_value(Some(gtk::LEVEL_BAR_OFFSET_LOW));
             self.level_bar
-                .remove_offset_value(Some(&gtk::LEVEL_BAR_OFFSET_HIGH));
+                .remove_offset_value(Some(gtk::LEVEL_BAR_OFFSET_HIGH));
             self.level_bar
-                .remove_offset_value(Some(&gtk::LEVEL_BAR_OFFSET_FULL));
+                .remove_offset_value(Some(gtk::LEVEL_BAR_OFFSET_FULL));
 
             self.level_bar.add_offset_value(
                 "severly-underweight-bmi",

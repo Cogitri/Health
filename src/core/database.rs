@@ -1674,7 +1674,7 @@ mod test {
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
         let was_called = Rc::new(Cell::new(false));
         let date = glib::DateTime::local();
-        let weight = Weight::new(date.into(), Mass::new::<kilogram>(50.0));
+        let weight = Weight::new(date, Mass::new::<kilogram>(50.0));
 
         db.connect_weights_updated(glib::clone!(@weak was_called => move |_| {
             was_called.set(true);

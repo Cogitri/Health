@@ -152,15 +152,16 @@ glib::wrapper! {
 impl PluginCaloriesDetails {
     /// Create a new [PluginCaloriesDetails] to display previous calorie data.
     pub fn new(data_provider: DataProvider) -> Self {
-        glib::Object::builder().property
-            (
+        glib::Object::builder()
+            .property(
                 "is-mocked",
-                &matches!(data_provider, DataProvider::Mocked(_)),
-            ).property
-            (
+                matches!(data_provider, DataProvider::Mocked(_)),
+            )
+            .property(
                 "data-provider",
                 &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
-            ).build()
+            )
+            .build()
     }
 
     /// Reload the [GraphModelcalories](crate::plugins::calories::GraphModelCalories)'s data and refresh labels & the [BarGraphView](crate::views::BarGraphView).

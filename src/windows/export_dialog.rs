@@ -48,9 +48,9 @@ mod imp {
             password: Option<String>,
         ) -> PinnedResultFuture<()> {
             let file_chooser = gtk::FileChooserNative::builder()
-                .title(&i18n("Save Activities"))
-                .accept_label(&i18n("_Save"))
-                .cancel_label(&i18n("_Cancel"))
+                .title(i18n("Save Activities"))
+                .accept_label(i18n("_Save"))
+                .cancel_label(i18n("_Cancel"))
                 .modal(true)
                 .transient_for(obj)
                 .action(gtk::FileChooserAction::Save)
@@ -84,9 +84,9 @@ mod imp {
             password: Option<String>,
         ) -> PinnedResultFuture<()> {
             let file_chooser = gtk::FileChooserNative::builder()
-                .title(&i18n("Save Weight Measurement"))
-                .accept_label(&i18n("_Save"))
-                .cancel_label(&i18n("_Cancel"))
+                .title(i18n("Save Weight Measurement"))
+                .accept_label(i18n("_Save"))
+                .cancel_label(i18n("_Cancel"))
                 .modal(true)
                 .transient_for(obj)
                 .action(gtk::FileChooserAction::Save)
@@ -130,8 +130,8 @@ impl ExportDialog {
         glib::Object::builder()
             .property("use-header-bar", &1.to_value())
             .property("title", &i18n("Export data"))
-            .property("is-import", &false)
-            .property("transient-for", &parent)
+            .property("is-import", false)
+            .property("transient-for", parent)
             .build()
     }
 }

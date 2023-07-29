@@ -58,11 +58,11 @@ mod imp {
             self.parent_constructed();
 
             self.password_strength_bar
-                .add_offset_value(&gtk::LEVEL_BAR_OFFSET_LOW, 1.0);
+                .add_offset_value(gtk::LEVEL_BAR_OFFSET_LOW, 1.0);
             self.password_strength_bar
-                .add_offset_value(&gtk::LEVEL_BAR_OFFSET_HIGH, 3.0);
+                .add_offset_value(gtk::LEVEL_BAR_OFFSET_HIGH, 3.0);
             self.password_strength_bar
-                .add_offset_value(&gtk::LEVEL_BAR_OFFSET_FULL, 4.0);
+                .add_offset_value(gtk::LEVEL_BAR_OFFSET_FULL, 4.0);
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -136,8 +136,8 @@ impl PasswordEntry {
     /// Create a new [PasswordEntry]
     pub fn new(show_password_repeat: bool, show_password_strength: bool) -> Self {
         glib::Object::builder()
-            .property("show-password-repeat", &show_password_repeat)
-            .property("show-password-strength", &show_password_strength)
+            .property("show-password-repeat", show_password_repeat)
+            .property("show-password-strength", show_password_strength)
             .build()
     }
 

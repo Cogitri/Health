@@ -153,7 +153,7 @@ pub trait SyncProvider {
         libsecret::password_store_sync(
             Some(&self.schema()),
             [("provider", self.provider_name())].into_iter().collect(),
-            Some(&libsecret::COLLECTION_DEFAULT),
+            Some(libsecret::COLLECTION_DEFAULT),
             &i18n_f("Token for Health sync provider {}", &[self.provider_name()]),
             value.secret(),
             None::<&gio::Cancellable>,

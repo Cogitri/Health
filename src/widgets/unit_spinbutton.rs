@@ -287,7 +287,7 @@ impl UnitSpinButton {
     ) -> Self {
         glib::Object::builder()
             .property("adjustment", adjustment)
-            .property("auto-update-unit-system", &auto_update_unit_system)
+            .property("auto-update-unit-system", auto_update_unit_system)
             .property("unit-kind", &unit_kind)
             .build()
     }

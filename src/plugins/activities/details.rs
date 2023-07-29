@@ -141,7 +141,7 @@ impl PluginActivitiesDetails {
         glib::Object::builder()
             .property(
                 "is-mocked",
-                &matches!(data_provider, DataProvider::Mocked(_)),
+                matches!(data_provider, DataProvider::Mocked(_)),
             )
             .property("data-provider", &DataProviderBoxed(data_provider))
             .build()

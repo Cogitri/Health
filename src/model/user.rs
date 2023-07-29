@@ -408,12 +408,12 @@ impl UserBuilder {
     }
 
     pub fn user_id(mut self, user_id: i64) -> Self {
-        self.builder = self.builder.property("user-id", &user_id);
+        self.builder = self.builder.property("user-id", user_id);
         self
     }
 
     pub fn user_name(mut self, user_name: &str) -> Self {
-        self.builder = self.builder.property("user-name", &user_name);
+        self.builder = self.builder.property("user-name", user_name);
         self
     }
 
@@ -425,19 +425,19 @@ impl UserBuilder {
     pub fn user_height(mut self, user_height: Length) -> Self {
         self.builder = self
             .builder
-            .property("user-height", &user_height.get::<meter>());
+            .property("user-height", user_height.get::<meter>());
         self
     }
 
     pub fn user_weightgoal(mut self, user_weightgoal: Mass) -> Self {
         self.builder = self
             .builder
-            .property("user-weightgoal", &user_weightgoal.get::<kilogram>());
+            .property("user-weightgoal", user_weightgoal.get::<kilogram>());
         self
     }
 
     pub fn user_stepgoal(mut self, user_stepgoal: i64) -> Self {
-        self.builder = self.builder.property("user-stepgoal", &user_stepgoal);
+        self.builder = self.builder.property("user-stepgoal", user_stepgoal);
         self
     }
 
@@ -459,7 +459,7 @@ impl UserBuilder {
     pub fn did_initial_setup(mut self, did_initial_setup: bool) -> Self {
         self.builder = self
             .builder
-            .property("did-initial-setup", &did_initial_setup);
+            .property("did-initial-setup", did_initial_setup);
         self
     }
 }
