@@ -178,7 +178,7 @@ mod test {
     use crate::{model::Activity, utils::init_gtk};
     use uom::si::{f32::Length, length::kilometer};
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
 

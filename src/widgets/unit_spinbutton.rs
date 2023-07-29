@@ -529,7 +529,7 @@ mod test {
         };
     }
 
-    #[test]
+    #[gtk::test]
     fn test_change_unit_system_small() {
         test_from_to!(
             UnitSystem::Metric,
@@ -539,7 +539,7 @@ mod test {
         );
     }
 
-    #[test]
+    #[gtk::test]
     fn test_change_unit_system_big() {
         test_from_to!(
             UnitSystem::Metric,
@@ -549,7 +549,7 @@ mod test {
         );
     }
 
-    #[test]
+    #[gtk::test]
     fn test_change_unit_system_very_big() {
         test_from_to!(
             UnitSystem::Metric,
@@ -559,7 +559,7 @@ mod test {
         );
     }
 
-    #[test]
+    #[gtk::test]
     fn test_change_unit_system_mass_big() {
         test_from_to!(
             UnitSystem::Metric,
@@ -569,7 +569,7 @@ mod test {
         );
     }
 
-    #[test]
+    #[gtk::test]
     fn test_change_unit_system_small_imperal() {
         test_from_to!(
             UnitSystem::Imperial,
@@ -579,7 +579,7 @@ mod test {
         );
     }
 
-    #[test]
+    #[gtk::test]
     fn test_change_unit_system_big_imperial() {
         test_from_to!(
             UnitSystem::Imperial,
@@ -589,7 +589,7 @@ mod test {
         );
     }
 
-    #[test]
+    #[gtk::test]
     fn test_change_unit_system_very_big_imperial() {
         test_from_to!(
             UnitSystem::Imperial,
@@ -599,7 +599,7 @@ mod test {
         );
     }
 
-    #[test]
+    #[gtk::test]
     fn test_change_unit_system_mass_big_imperial() {
         test_from_to!(
             UnitSystem::Imperial,
@@ -609,7 +609,7 @@ mod test {
         );
     }
 
-    #[test]
+    #[gtk::test]
     fn test_output() {
         crate::utils::init_gtk();
 
@@ -624,7 +624,7 @@ mod test {
         assert_eq!(btn.text(), format!("3.9 {}", i18n("in")));
     }
 
-    #[test]
+    #[gtk::test]
     fn test_change_unit_kind_small_big() {
         crate::utils::init_gtk();
 
@@ -640,7 +640,7 @@ mod test {
         assert_eq!(btn.value(), 0.0010000000474974513);
     }
 
-    #[test]
+    #[gtk::test]
     #[should_panic]
     fn test_change_unit_kind_invalid() {
         crate::utils::init_gtk();

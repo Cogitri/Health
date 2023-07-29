@@ -202,7 +202,7 @@ mod test {
     use super::PasswordEntry;
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         PasswordEntry::new(false, false);

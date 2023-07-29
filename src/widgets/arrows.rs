@@ -157,7 +157,7 @@ mod test {
     use super::Arrows;
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         Arrows::new();

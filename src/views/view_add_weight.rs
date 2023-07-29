@@ -121,7 +121,7 @@ mod test {
     use super::ViewAddWeight;
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         ViewAddWeight::new();

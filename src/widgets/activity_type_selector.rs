@@ -259,7 +259,7 @@ mod test {
     use super::ActivityTypeSelector;
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         ActivityTypeSelector::new();

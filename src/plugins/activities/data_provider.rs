@@ -140,7 +140,7 @@ mod test {
         ModelActivity::new();
     }
 
-    #[test]
+    #[gtk::test]
     fn is_empty() {
         let _dir = init_gschema();
 

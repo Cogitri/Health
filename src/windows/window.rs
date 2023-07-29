@@ -321,7 +321,7 @@ mod test {
     use crate::{core::Application, utils::init_gtk};
     use gtk::{gio, prelude::*};
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
 

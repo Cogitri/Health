@@ -104,7 +104,7 @@ mod test {
     use super::{PluginActivitiesSummaryRow, PluginName};
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         PluginActivitiesSummaryRow::new(PluginName::Activities);

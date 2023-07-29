@@ -586,13 +586,13 @@ mod test {
     use super::BarGraphView;
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         BarGraphView::new();
     }
 
-    #[test]
+    #[gtk::test]
     fn properties() {
         init_gtk();
         let b = BarGraphView::new();

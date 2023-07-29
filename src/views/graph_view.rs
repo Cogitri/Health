@@ -620,13 +620,13 @@ mod test {
     use super::GraphView;
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         GraphView::new();
     }
 
-    #[test]
+    #[gtk::test]
     fn properties() {
         init_gtk();
         let g = GraphView::new();

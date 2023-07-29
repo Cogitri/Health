@@ -186,14 +186,14 @@ mod test {
     use crate::{core::i18n, prelude::*, utils::init_gtk};
     use gtk::subclass::prelude::*;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
 
         DateSelector::new();
     }
 
-    #[test]
+    #[gtk::test]
     fn selected_date() {
         init_gtk();
 
@@ -219,7 +219,7 @@ mod test {
         );
     }
 
-    #[test]
+    #[gtk::test]
     fn set_selected_date() {
         init_gtk();
         let selector = DateSelector::new();
@@ -235,7 +235,7 @@ mod test {
         assert_eq!(selector_.day_adjustment.upper(), 28.0);
     }
 
-    #[test]
+    #[gtk::test]
     fn set_invalid_day() {
         init_gtk();
         let selector = DateSelector::new();

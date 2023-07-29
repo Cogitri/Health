@@ -194,7 +194,7 @@ mod test {
     use super::DataAddDialog;
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
 

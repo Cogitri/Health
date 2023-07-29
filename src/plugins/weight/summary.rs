@@ -189,7 +189,7 @@ mod test {
     use super::{PluginName, PluginWeightSummaryRow};
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         PluginWeightSummaryRow::new(PluginName::Weight);

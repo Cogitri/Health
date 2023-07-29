@@ -233,13 +233,13 @@ mod test {
         mass::kilogram,
     };
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         BmiLevelBar::new();
     }
 
-    #[test]
+    #[gtk::test]
     fn recalculate_bmi() {
         init_gtk();
 

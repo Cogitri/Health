@@ -145,7 +145,7 @@ mod test {
     use super::ViewAdd;
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         ViewAdd::new("test", "test");

@@ -169,7 +169,7 @@ impl Registrar {
 mod test {
     use super::Registrar;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         Registrar::new();
     }

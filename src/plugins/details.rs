@@ -311,7 +311,7 @@ mod test {
     use super::PluginDetails;
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         PluginDetails::new();

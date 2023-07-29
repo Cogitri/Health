@@ -142,7 +142,7 @@ mod test {
     use super::{ActivityTypeRow, ActivityTypeRowData};
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         ActivityTypeRow::new(&ActivityTypeRowData::new("", ""), false);

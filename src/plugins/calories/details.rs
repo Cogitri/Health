@@ -283,7 +283,7 @@ mod test {
     use super::{DataProvider, PluginCaloriesDetails};
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         PluginCaloriesDetails::new(DataProvider::mocked());

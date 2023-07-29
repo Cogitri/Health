@@ -300,14 +300,14 @@ mod test {
     use gtk::subclass::prelude::*;
     use uom::si::{f32::Length, length::meter};
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
 
         DistanceActionRow::new();
     }
 
-    #[test]
+    #[gtk::test]
     pub fn set_unitsize() {
         init_gtk();
 

@@ -374,7 +374,7 @@ mod test {
     use super::ViewHomePage;
     use crate::utils::init_gtk;
 
-    #[test]
+    #[gtk::test]
     fn new() {
         init_gtk();
         ViewHomePage::new();
