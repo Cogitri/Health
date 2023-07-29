@@ -1552,7 +1552,8 @@ mod test {
     #[test]
     fn migration_activities() {
         let date = glib::DateTime::local();
-        let db = Database::new_with_store_path(PathBuf::from("/home/rasmus/tracker")).unwrap();
+        let data_dir = tempdir().unwrap();
+        let db = Database::new_with_store_path(data_dir.into_path()).unwrap();
         let connection = db.connection();
         Settings::instance().set_user_weight_goal(Mass::new::<kilogram>(50.0));
         let expected_activity = Activity::builder()
