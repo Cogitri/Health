@@ -1,11 +1,11 @@
 {
   "id": "dev.Cogitri.Health.Devel",
   "runtime": "org.gnome.Platform",
-  "runtime-version": "43",
+  "runtime-version": "44",
   "sdk": "org.gnome.Sdk",
   "sdk-extensions": [
     "org.freedesktop.Sdk.Extension.rust-stable",
-    "org.freedesktop.Sdk.Extension.llvm14"
+    "org.freedesktop.Sdk.Extension.llvm15"
   ],
   "command": "dev.Cogitri.Health.Devel",
   "finish-args": [
@@ -35,15 +35,19 @@
     "/share/gir-1.0"
   ],
   "build-options": {
-    "append-ld-library-path": "/usr/lib/sdk/llvm14/lib",
-    "append-path": "/usr/lib/sdk/llvm14/bin:/usr/lib/sdk/rust-stable/bin",
+    "append-path": "/usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/llvm15/bin",
     "env": {
+      "CARGO_REGISTRIES_CRATES_IO_PROTOCOL": "sparse",
       "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER": "clang",
       "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_RUSTFLAGS": "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold",
       "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER": "clang",
       "CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_RUSTFLAGS": "-C link-arg=-fuse-ld=/usr/lib/sdk/rust-stable/bin/mold",
       "RUST_BACKTRACE": "1"
     },
+    "test-args": [
+      "--socket=x11",
+      "--share=network"
+    ],
     "build-args": [
       "--share=network"
     ]
@@ -57,7 +61,7 @@
         {
           "type": "git",
           "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler",
-          "commit": "87cedc2c7e48b01dc1b07aef937e2fe02111b18c"
+          "commit": "2a39a16391122af2f3d812e478c1c1398c98b972"
         }
       ]
     },
