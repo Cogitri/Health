@@ -16,6 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#[cfg(test)]
+use crate::utils::init_gschema;
 use crate::{
     core::UnitSystem, model::NotificationFrequency, plugins::PluginName, prelude::*,
     settings_getter_setter,
@@ -37,6 +39,8 @@ pub struct Settings(gio::Settings);
 
 static mut SETTINGS: Option<Settings> = None;
 static SETTINGS_INIT: Once = Once::new();
+#[cfg(test)]
+static mut SETTINGS_DIR: Option<tempfile::TempDir> = None;
 
 impl Settings {
     settings_getter_setter!(bool, did_initial_setup, "did-initial-setup");
@@ -99,6 +103,11 @@ impl Settings {
     pub fn instance() -> Self {
         unsafe {
             SETTINGS_INIT.call_once(|| {
+                #[cfg(test)]
+                {
+                    SETTINGS_DIR = init_gschema();
+                }
+
                 SETTINGS = Some(Self(gio::Settings::new("dev.Cogitri.Health")));
             });
             SETTINGS.clone().unwrap()

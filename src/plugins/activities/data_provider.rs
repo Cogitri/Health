@@ -131,7 +131,6 @@ mod test {
         core::Database,
         model::{Activity, ActivityType},
         prelude::*,
-        utils::*,
     };
     use gtk::{glib, prelude::*};
 
@@ -142,8 +141,6 @@ mod test {
 
     #[gtk::test]
     fn is_empty() {
-        let _dir = init_gschema();
-
         let data_dir = tempfile::tempdir().unwrap();
         Database::set_instance(
             Database::new_with_store_path(data_dir.path().to_path_buf()).unwrap(),
