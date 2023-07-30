@@ -104,14 +104,13 @@ pages:
 
 create-dist-tarball:
   stage: release-tarball
-  image: "$FLATPAK_IMAGE"
+  extends: ".flatpak-run"
   rules:
     - if: $CI_COMMIT_TAG
   tags:
     - flatpak
   script:
-    - flatpak-builder --keep-build-dirs --user --disable-rofiles-fuse --stop-at=${FLATPAK_MODULE} flatpak_app --repo=repo ${BRANCH:+--default-branch=$BRANCH} ${MANIFEST_PATH}
-    - echo "git status; meson dist --no-tests" | flatpak-builder --disable-rofiles-fuse --build-shell=${FLATPAK_MODULE} flatpak_app ${MANIFEST_PATH}
+    - ./.gitlab/ci/run-in-flatpak.sh meson dist --no-tests
     - mv .flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-dist tarball
     - |
       curl --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file tarball/${TARBALL} ${PACKAGE_REGISTRY_URL}/${TARBALL}

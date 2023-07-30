@@ -51,6 +51,9 @@
 	</custom>
 
 	<releases>
+                <release version="0.95.0" date="2023-07-30">
+                        <p>This release updates the gtk-rs stack and fixes crashes.</p>
+                </release>
 		<release version="0.94.0" date="2022-07-17">
 			<p>
 				The 0.94.0 release includes a major update to the main view of the app,
