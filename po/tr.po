@@ -10,16 +10,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-09-14 08:21+0000\n"
-"PO-Revision-Date: 2022-09-14 11:17+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2023-07-15 15:31+0000\n"
+"PO-Revision-Date: 2023-10-13 15:07+0300\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.4\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -126,7 +126,7 @@ msgstr "Rasmus “Cogitri” Thomsen"
 #: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
 #: src/windows/import_dialog.rs:53 src/windows/import_dialog.rs:82
 msgid "_Cancel"
-msgstr "İptal _Et"
+msgstr "İ_ptal"
 
 #: data/ui/data_add_dialog.blp:10 src/windows/export_dialog.rs:52
 #: src/windows/export_dialog.rs:88
@@ -137,7 +137,7 @@ msgstr "Kayd_et"
 msgid "January"
 msgstr "Ocak"
 
-#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:223
+#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:213
 msgid "February"
 msgstr "Şubat"
 
@@ -193,7 +193,7 @@ msgstr "Ay"
 msgid "Year"
 msgstr "Yıl"
 
-#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:131
+#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:120
 msgid "Distance"
 msgstr "Uzaklık"
 
@@ -286,7 +286,7 @@ msgid "General"
 msgstr "Genel"
 
 #: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
-#: data/ui/setup_window.blp:183 src/core/database.rs:1109
+#: data/ui/setup_window.blp:183 src/core/database.rs:1097
 msgid "User"
 msgstr "Kullanıcı"
 
@@ -332,7 +332,7 @@ msgid "Daily reminder time"
 msgstr "Günlük anımsatım zamanı"
 
 #: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
-#: src/plugins/steps/details.rs:245
+#: src/plugins/steps/details.rs:239
 msgid "Step goal"
 msgstr "Adım hedefi"
 
@@ -428,11 +428,11 @@ msgstr "Dünya Sağlık Örgütü, 18.5–24.9 arası VKİ önermektedir."
 msgid "Current weight"
 msgstr "Şu anki kilo"
 
-#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:267
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:249
 msgid "Current BMI"
 msgstr "Geçerli VKİ"
 
-#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:230
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:224
 msgid "Weight goal"
 msgstr "Kilo hedefi"
 
@@ -531,17 +531,17 @@ msgstr "Sağlık _Hakkında"
 msgid "Enable plugin"
 msgstr "Eklentiyi etkinleştir"
 
-#: src/core/application.rs:189
+#: src/core/application.rs:191
 msgid "A health tracking app for the GNOME desktop."
 msgstr "GNOME masaüstü için sağlık izleme uygulaması."
 
-#: src/core/application.rs:191
+#: src/core/application.rs:193
 msgid "translator-credits"
 msgstr ""
 "Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Sabri Ünal <libreajans@gmail.com>"
 
-#: src/core/application.rs:193
+#: src/core/application.rs:195
 msgid "Websites"
 msgstr "Web siteleri"
 
@@ -626,11 +626,11 @@ msgstr "Voleybol"
 msgid "Walking"
 msgstr "Yürüyüş"
 
-#: src/model/model_notification.rs:234
+#: src/model/model_notification.rs:209
 msgid "Health: walking reminder"
 msgstr "Sağlık: yürüyüş anımsatıcı"
 
-#: src/model/model_notification.rs:250
+#: src/model/model_notification.rs:225
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "Günlük adım hedefinizi bitirmenize {} adım kaldı."
@@ -644,7 +644,7 @@ msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "Bugün {} aktif dakika"
 
-#: src/plugins/calories/details.rs:217
+#: src/plugins/calories/details.rs:210
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -663,75 +663,75 @@ msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "Bugün {} kalori yakıldı"
 
-#: src/plugins/steps/details.rs:187
+#: src/plugins/steps/details.rs:181
 msgid "Today’s steps: {}"
 msgstr "Bugünkü adımlar: {}"
 
-#: src/plugins/steps/details.rs:206
+#: src/plugins/steps/details.rs:200
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
 "Henüz seri yok. Seri olabilmesi için birkaç gün boyunca adım hedefinize "
 "ulaşın!"
 
-#: src/plugins/steps/details.rs:210
+#: src/plugins/steps/details.rs:204
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
 "You’re on a streak for {} days. Reach your step goal today to continue it!"
 msgstr[0] "{} gündür seridesin. Sürdürmek için bugün adım hedefinize ulaşın!"
 
-#: src/plugins/steps/details.rs:218
+#: src/plugins/steps/details.rs:212
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr "Bugün adım hedefinize ulaştınız. Seri için sürdürün!"
 
-#: src/plugins/steps/details.rs:221
+#: src/plugins/steps/details.rs:215
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "{} gündür seridesin. Başarılar!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:238
+#: src/plugins/steps/details.rs:232
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} adım, {} tarihinde"
 
-#: src/plugins/steps/summary.rs:96
+#: src/plugins/steps/summary.rs:97
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "Bugün {} adım atıldı"
 
-#: src/plugins/steps/summary.rs:107
+#: src/plugins/steps/summary.rs:108
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Günlük adım hedefinin yüzde {} bölümüne ulaşıldı"
 
 # Well done için radikal bir çeviri kullandım. Biraz yerelleştirmiş oldum.
-#: src/plugins/steps/summary.rs:114
+#: src/plugins/steps/summary.rs:115
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Nazar değmesin! Günlük adım hedefinize ulaştınız!"
 
-#: src/plugins/weight/details.rs:202
+#: src/plugins/weight/details.rs:196
 msgid "Current BMI: {}"
 msgstr "Geçerli VKİ: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:217
+#: src/plugins/weight/details.rs:211
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} pound, {} tarihinde"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:220
+#: src/plugins/weight/details.rs:214
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogram, {} tarihinde"
 
-#: src/plugins/weight/details.rs:257 src/plugins/weight/details.rs:262
+#: src/plugins/weight/details.rs:251 src/plugins/weight/details.rs:256
 msgid "Unknown BMI"
 msgstr "Bilinmeyen VKİ"
 
-#: src/plugins/weight/details.rs:280
+#: src/plugins/weight/details.rs:274
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -742,7 +742,7 @@ msgstr[0] ""
 "Kilo hedefiniz {} pound. Buna ne kadar yakın olduğunuzu görmek için bir ilk "
 "kilo ölçümünü ekleyin."
 
-#: src/plugins/weight/details.rs:287
+#: src/plugins/weight/details.rs:281
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -753,69 +753,69 @@ msgstr[0] ""
 "Kilo hedefiniz {} kilogram. Buna ne kadar yakın olduğunuzu görmek için bir "
 "ilk kilo ölçümünü ekleyin."
 
-#: src/plugins/weight/details.rs:296
+#: src/plugins/weight/details.rs:290
 msgid "You’ve reached your weight goal. Great job!"
 msgstr "Kilo hedefinize ulaştınız. Harika!"
 
-#: src/plugins/weight/details.rs:312
+#: src/plugins/weight/details.rs:306
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "Kilo hedefiniz {} pound."
 
-#: src/plugins/weight/details.rs:317
+#: src/plugins/weight/details.rs:311
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "Ulaşmanıza {} pound kaldı."
 
-#: src/plugins/weight/details.rs:324
+#: src/plugins/weight/details.rs:318
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "Kilo hedefiniz {} kilogram."
 
-#: src/plugins/weight/details.rs:330
+#: src/plugins/weight/details.rs:324
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "Ulaşmanıza {} kilogram kaldı."
 
-#: src/plugins/weight/details.rs:340
+#: src/plugins/weight/details.rs:334
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr "Henüz kilo hedefi belirlenmedi. Tercihlerden ayarlanabilir."
 
-#: src/plugins/weight/summary.rs:119
+#: src/plugins/weight/summary.rs:120
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} pound"
 
-#: src/plugins/weight/summary.rs:127
+#: src/plugins/weight/summary.rs:128
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} kilogram"
 
-#: src/plugins/weight/summary.rs:138
+#: src/plugins/weight/summary.rs:139
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "Önceki ölçüme kıyasla + {} pound"
 
-#: src/plugins/weight/summary.rs:146
+#: src/plugins/weight/summary.rs:147
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "Önceki ölçüme kıyasla + {} kilogram"
 
-#: src/plugins/weight/summary.rs:157
+#: src/plugins/weight/summary.rs:158
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "Önceki ölçüme kıyasla {} pound"
 
-#: src/plugins/weight/summary.rs:165
+#: src/plugins/weight/summary.rs:166
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "Önceki ölçüme kıyasla {} kilogram"
 
-#: src/plugins/weight/summary.rs:173
+#: src/plugins/weight/summary.rs:174
 msgid "No change in weight"
 msgstr "Kilo değişmemiş"
 
-#: src/plugins/weight/summary.rs:178
+#: src/plugins/weight/summary.rs:179
 msgid "No weight data available"
 msgstr "Kilo verisi yok"
 
@@ -880,107 +880,107 @@ msgstr "Kimlik doğrulaması başarıyla yapıldı, lütfen Sağlık’a geri d�
 msgid "Couldn’t parse OAuth2 response"
 msgstr "OAuth2 yanıtı ayrıştırılamadı"
 
-#: src/views/bar_graph_view.rs:583
+#: src/views/bar_graph_view.rs:565
 msgid "Enter weight record to calculate idle calories"
 msgstr "Boşta kalan kalorileri hesaplamak için kilo kaydı gir"
 
-#: src/views/bar_graph_view.rs:587
+#: src/views/bar_graph_view.rs:569
 msgid "Idle calories"
 msgstr "Boşta kalan kaloriler"
 
-#: src/views/view_add_activity.rs:236
+#: src/views/view_add_activity.rs:225
 msgid "Activity"
 msgstr "Etkinlik"
 
-#: src/widgets/activity_row.rs:79
+#: src/widgets/activity_row.rs:68
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{}, {} dakika"
 
-#: src/widgets/activity_row.rs:91
+#: src/widgets/activity_row.rs:80
 msgid "Calories burned"
 msgstr "Yakılan kalori"
 
-#: src/widgets/activity_row.rs:101
+#: src/widgets/activity_row.rs:90
 msgid "Average heart rate"
 msgstr "Ortalama kalp ritmi"
 
-#: src/widgets/activity_row.rs:107
+#: src/widgets/activity_row.rs:96
 msgid "Maximum heart rate"
 msgstr "En çok kalp ritmi"
 
-#: src/widgets/activity_row.rs:113
+#: src/widgets/activity_row.rs:102
 msgid "Minimum heart rate"
 msgstr "En az kalp ritmi"
 
-#: src/widgets/activity_row.rs:126
+#: src/widgets/activity_row.rs:115
 msgid "{} meter"
 msgid_plural "{} meters"
 msgstr[0] "{} metre"
 
-#: src/widgets/activity_row.rs:129
+#: src/widgets/activity_row.rs:118
 msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} yard"
 
-#: src/widgets/bmi_level_bar.rs:274
+#: src/widgets/bmi_level_bar.rs:256
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Geçerli VKİ: {}</small>"
 
-#: src/widgets/distance_action_row.rs:303
+#: src/widgets/distance_action_row.rs:287
 msgid "KM"
 msgstr "KM"
 
-#: src/widgets/distance_action_row.rs:304
+#: src/widgets/distance_action_row.rs:288
 msgid "Meters"
 msgstr "Metre"
 
-#: src/widgets/distance_action_row.rs:306
+#: src/widgets/distance_action_row.rs:290
 msgid "Miles"
 msgstr "Mil"
 
 # Imperyal ölçü birimi olarak Feet, ayak değil.
-#: src/widgets/distance_action_row.rs:307
+#: src/widgets/distance_action_row.rs:291
 msgid "Feet"
 msgstr "Feet"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:654
+#: src/widgets/unit_spinbutton.rs:456 src/widgets/unit_spinbutton.rs:622
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:490
+#: src/widgets/unit_spinbutton.rs:458
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:492
+#: src/widgets/unit_spinbutton.rs:460
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:494
+#: src/widgets/unit_spinbutton.rs:462
 msgid "kg"
 msgstr "kg"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:496 src/widgets/unit_spinbutton.rs:656
+#: src/widgets/unit_spinbutton.rs:464 src/widgets/unit_spinbutton.rs:624
 msgid "in"
 msgstr "inç"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:498
+#: src/widgets/unit_spinbutton.rs:466
 msgid "ft"
 msgstr "ft"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:500
+#: src/widgets/unit_spinbutton.rs:468
 msgid "mi"
 msgstr "mil"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:502
+#: src/widgets/unit_spinbutton.rs:470
 msgid "lb"
 msgstr "lb"
 
@@ -1035,34 +1035,34 @@ msgstr "Kilo Ölçümünü Aç"
 msgid "Import data"
 msgstr "Verileri içeri aktar"
 
-#: src/windows/import_export_dialog_base.rs:214
+#: src/windows/import_export_dialog_base.rs:206
 msgid "Import activities"
 msgstr "Etkinlikleri içe aktar"
 
-#: src/windows/import_export_dialog_base.rs:216
+#: src/windows/import_export_dialog_base.rs:208
 msgid "Import is encrypted"
 msgstr "İçe aktarma şifreli"
 
-#: src/windows/import_export_dialog_base.rs:217
+#: src/windows/import_export_dialog_base.rs:209
 msgid "Import weights"
 msgstr "Kiloları içe aktar"
 
-#: src/windows/import_export_dialog_base.rs:218
+#: src/windows/import_export_dialog_base.rs:210
 msgid "Import"
 msgstr "İçe aktar"
 
-#: src/windows/import_export_dialog_base.rs:296
+#: src/windows/import_export_dialog_base.rs:288
 msgid "Success!"
 msgstr "Başarılı!"
 
-#: src/windows/import_export_dialog_base.rs:300
+#: src/windows/import_export_dialog_base.rs:292
 msgid "An error occurred!"
 msgstr "Hata oluştu!"
 
-#: src/windows/import_export_dialog_base.rs:305
+#: src/windows/import_export_dialog_base.rs:297
 msgid "Close"
 msgstr "Kapat"
 
-#: src/windows/window.rs:267
+#: src/windows/window.rs:268
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Hata nedeniyle Google Fit verileri eşzamanlanamadı: {}"
