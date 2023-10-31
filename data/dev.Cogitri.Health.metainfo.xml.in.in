@@ -4,6 +4,9 @@
 	<name>Health</name>
 	<url type="homepage">https://gitlab.gnome.org/World/Health</url>
 	<url type="bugtracker">https://gitlab.gnome.org/World/Health/issues</url>
+	<url type="vcs-browser">https://gitlab.gnome.org/World/Health</url>
+	<url type="translate">https://l10n.gnome.org/module/health/</url>
+	<url type="contribute">https://gitlab.gnome.org/World/Health/-/blob/master/CONTRIBUTING.md</url>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
 	<summary>Track your fitness goals</summary>
@@ -33,12 +36,21 @@
 			<image>https://gitlab.gnome.org/World/Health/raw/master/docs/screenshot_activities.png</image>
 		</screenshot>
 	</screenshots>
-	<developer_name>Rasmus “Cogitri” Thomsen</developer_name>
+	<developer_name translatable="no">Rasmus “Cogitri” Thomsen</developer_name>
 	<update_contact>oss@cogitri.dev</update_contact>
 	<provides>
 		<binary>@APPLICATION_ID@</binary>
 	</provides>
-
+	<categories>
+		<category>GTK</category>
+		<category>GNOME</category>
+		<category>Utility</category>
+		<category>MedicalSoftware</category>
+	</categories>
+	<keywords>
+		<keyword>health</keyword>
+		<keyword>fitness</keyword>
+	</keywords>
 	<kudos>
 		<kudo>AppMenu</kudo>
 		<kudo>HiDpiIcon</kudo>
@@ -46,7 +58,6 @@
 	</kudos>
 
 	<custom>
-		<value key="Purism::form_factor">workstation</value>
 		<value key="Purism::form_factor">mobile</value>
 	</custom>
 
