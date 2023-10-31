@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2023-10-31 02:48+0000\n"
-"PO-Revision-Date: 2023-10-31 12:58+0200\n"
+"POT-Creation-Date: 2023-10-31 13:32+0000\n"
+"PO-Revision-Date: 2023-10-31 15:40+0200\n"
 "Last-Translator: Florentina Mușat <florentina [dot] musat [dot] 28 [at] "
 "gmail [dot] com>\n"
 "Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
@@ -100,7 +100,7 @@ msgid "Health"
 msgstr "Sănătate"
 
 #: data/dev.Cogitri.Health.desktop.in.in:9
-msgid "health;fitnes;"
+msgid "health;fitness;"
 msgstr "health;fitness;sănătate;"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:12
