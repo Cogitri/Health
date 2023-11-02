@@ -2,22 +2,22 @@
 # Copyright (C) 2021 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
 # D <afecr@foxmail.com>, 2021.
-# lumingzh <lumingzh@qq.com>, 2022.
+# lumingzh <lumingzh@qq.com>, 2022-2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-09-13 17:26+0000\n"
-"PO-Revision-Date: 2022-09-13 14:08-0400\n"
-"Last-Translator: Boyuan Yang <073plan@gmail.com>\n"
+"POT-Creation-Date: 2023-10-31 13:32+0000\n"
+"PO-Revision-Date: 2023-11-02 09:11+0800\n"
+"Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese - China <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.1.1\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: Gtranslator 45.3\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -94,15 +94,19 @@ msgstr "活跃用户标识"
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37
-#: src/main.rs:31
+#: src/main.rs:35
 msgid "Health"
 msgstr "健康"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9
+#: data/dev.Cogitri.Health.desktop.in.in:9
+msgid "health;fitness;"
+msgstr "health;fitness;健康;健身;锻炼;"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:12
 msgid "Track your fitness goals"
 msgstr "追踪您的健康目标"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:14
 msgid ""
 "Health can visualize how many steps you’ve made daily, your weight "
 "development over time and your daily activities. Data can be synched from "
@@ -111,10 +115,6 @@ msgid ""
 msgstr ""
 "健康可以可视化您每天走了多少步，随着时间推移您的体重的发展，以及您每天的活"
 "动。数据可以从谷歌 Fit 同步或手动输入。之后可以在健康中查阅和编辑这些数据。"
-
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:36
-msgid "Rasmus “Cogitri” Thomsen"
-msgstr "Rasmus “Cogitri” Thomsen"
 
 #: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
 #: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
@@ -131,7 +131,7 @@ msgstr "保存(_S)"
 msgid "January"
 msgstr "一月"
 
-#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:223
+#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:213
 msgid "February"
 msgstr "二月"
 
@@ -187,7 +187,7 @@ msgstr "月"
 msgid "Year"
 msgstr "年"
 
-#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:131
+#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:120
 msgid "Distance"
 msgstr "距离"
 
@@ -277,7 +277,7 @@ msgid "General"
 msgstr "常规"
 
 #: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
-#: data/ui/setup_window.blp:183 src/core/database.rs:1109
+#: data/ui/setup_window.blp:183 src/core/database.rs:1099
 msgid "User"
 msgstr "用户"
 
@@ -322,7 +322,7 @@ msgid "Daily reminder time"
 msgstr "每日提醒时间"
 
 #: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
-#: src/plugins/steps/details.rs:245
+#: src/plugins/steps/details.rs:239
 msgid "Step goal"
 msgstr "步数目标"
 
@@ -418,11 +418,11 @@ msgstr "世界卫生组织建议 BMI 为 18.5-24.9。"
 msgid "Current weight"
 msgstr "当前体重"
 
-#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:267
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:249
 msgid "Current BMI"
 msgstr "当前 BMI"
 
-#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:230
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:224
 msgid "Weight goal"
 msgstr "体重目标"
 
@@ -516,15 +516,15 @@ msgstr "关于健康(_A)"
 msgid "Enable plugin"
 msgstr "启用插件"
 
-#: src/core/application.rs:189
+#: src/core/application.rs:192
 msgid "A health tracking app for the GNOME desktop."
 msgstr "GNOME 桌面的健康追踪应用。"
 
-#: src/core/application.rs:191
+#: src/core/application.rs:194
 msgid "translator-credits"
 msgstr "D <afecr@foxmail.com>, 2021"
 
-#: src/core/application.rs:193
+#: src/core/application.rs:196
 msgid "Websites"
 msgstr "网站"
 
@@ -608,11 +608,11 @@ msgstr "排球"
 msgid "Walking"
 msgstr "步行"
 
-#: src/model/model_notification.rs:234
+#: src/model/model_notification.rs:209
 msgid "Health: walking reminder"
 msgstr "健康：步行提醒"
 
-#: src/model/model_notification.rs:250
+#: src/model/model_notification.rs:225
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "还剩 {} 步完成您的每日步数目标。"
@@ -621,12 +621,12 @@ msgstr[0] "还剩 {} 步完成您的每日步数目标。"
 msgid "Activities"
 msgstr "活动"
 
-#: src/plugins/activities/summary.rs:91
+#: src/plugins/activities/summary.rs:94
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "今天活动了 {} 分钟"
 
-#: src/plugins/calories/details.rs:217
+#: src/plugins/calories/details.rs:210
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -640,77 +640,77 @@ msgstr[0] ""
 "{} 卡路里\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:97 src/plugins/calories/summary.rs:104
+#: src/plugins/calories/summary.rs:100 src/plugins/calories/summary.rs:107
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "今天消耗了 {} 卡路里"
 
-#: src/plugins/steps/details.rs:187
+#: src/plugins/steps/details.rs:181
 msgid "Today’s steps: {}"
 msgstr "今天的步数：{}"
 
-#: src/plugins/steps/details.rs:206
+#: src/plugins/steps/details.rs:200
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr "还没有连胜。连续几天达到您的步数目标，开始连胜！"
 
-#: src/plugins/steps/details.rs:210
+#: src/plugins/steps/details.rs:204
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
 "You’re on a streak for {} days. Reach your step goal today to continue it!"
 msgstr[0] "您已经连胜 {} 天。今天达到您的步数目标以继续！"
 
-#: src/plugins/steps/details.rs:218
+#: src/plugins/steps/details.rs:212
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr "您今天已经达到您的步数目标。继续以开始连胜！"
 
-#: src/plugins/steps/details.rs:221
+#: src/plugins/steps/details.rs:215
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "您已经连胜 {} 天。干得好！"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:238
+#: src/plugins/steps/details.rs:232
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} 步（{}）"
 
-#: src/plugins/steps/summary.rs:96
+#: src/plugins/steps/summary.rs:100
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "今天走了 {} 步"
 
-#: src/plugins/steps/summary.rs:107
+#: src/plugins/steps/summary.rs:111
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "已达到您每日步数目标的百分之 {}"
 
-#: src/plugins/steps/summary.rs:114
+#: src/plugins/steps/summary.rs:118
 msgid "Well done! You have reached your daily step goal!"
 msgstr "干得好！您已达到每日步数目标！"
 
-#: src/plugins/weight/details.rs:202
+#: src/plugins/weight/details.rs:196
 msgid "Current BMI: {}"
 msgstr "当前 BMI：{}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:217
+#: src/plugins/weight/details.rs:211
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} 磅（{}）"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:220
+#: src/plugins/weight/details.rs:214
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} 公斤（{}）"
 
-#: src/plugins/weight/details.rs:257 src/plugins/weight/details.rs:262
+#: src/plugins/weight/details.rs:251 src/plugins/weight/details.rs:256
 msgid "Unknown BMI"
 msgstr "未知 BMI"
 
-#: src/plugins/weight/details.rs:280
+#: src/plugins/weight/details.rs:274
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -720,7 +720,7 @@ msgid_plural ""
 msgstr[0] ""
 "您的体重目标是 {} 磅。添加第一个体重测量结果，看看您有多接近达到目标。"
 
-#: src/plugins/weight/details.rs:287
+#: src/plugins/weight/details.rs:281
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -730,69 +730,69 @@ msgid_plural ""
 msgstr[0] ""
 "您的体重目标是 {} 公斤。添加第一个体重测量结果，看看您有多接近达到目标。"
 
-#: src/plugins/weight/details.rs:296
+#: src/plugins/weight/details.rs:290
 msgid "You’ve reached your weight goal. Great job!"
 msgstr "您已经达到了您的体重目标。干得好！"
 
-#: src/plugins/weight/details.rs:312
+#: src/plugins/weight/details.rs:306
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "您的体重目标是 {} 磅。"
 
-#: src/plugins/weight/details.rs:317
+#: src/plugins/weight/details.rs:311
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "您还剩 {} 磅才能达到目标。"
 
-#: src/plugins/weight/details.rs:324
+#: src/plugins/weight/details.rs:318
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "您的体重目标是 {} 公斤。"
 
-#: src/plugins/weight/details.rs:330
+#: src/plugins/weight/details.rs:324
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "您还剩 {} 公斤才能达到目标"
 
-#: src/plugins/weight/details.rs:340
+#: src/plugins/weight/details.rs:334
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr "尚未设置体重目标。您可以在健康的首选项中进行设置。"
 
-#: src/plugins/weight/summary.rs:119
+#: src/plugins/weight/summary.rs:123
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} 磅"
 
-#: src/plugins/weight/summary.rs:127
+#: src/plugins/weight/summary.rs:131
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} 公斤"
 
-#: src/plugins/weight/summary.rs:138
+#: src/plugins/weight/summary.rs:142
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "与以前的测量相比 + {} 磅"
 
-#: src/plugins/weight/summary.rs:146
+#: src/plugins/weight/summary.rs:150
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "与以前的测量相比 + {} 公斤"
 
-#: src/plugins/weight/summary.rs:157
+#: src/plugins/weight/summary.rs:161
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "与以前的测量相比 {} 磅"
 
-#: src/plugins/weight/summary.rs:165
+#: src/plugins/weight/summary.rs:169
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "与以前的测量相比 {} 公斤"
 
-#: src/plugins/weight/summary.rs:173
+#: src/plugins/weight/summary.rs:177
 msgid "No change in weight"
 msgstr "体重无变化"
 
-#: src/plugins/weight/summary.rs:178
+#: src/plugins/weight/summary.rs:182
 msgid "No weight data available"
 msgstr "无可用体重数据"
 
@@ -852,106 +852,106 @@ msgstr "已成功认证，请返回到健康。"
 msgid "Couldn’t parse OAuth2 response"
 msgstr "无法解析 OAuth2 响应"
 
-#: src/views/bar_graph_view.rs:583
+#: src/views/bar_graph_view.rs:565
 msgid "Enter weight record to calculate idle calories"
 msgstr "输入体重记录以计算空闲卡路里"
 
-#: src/views/bar_graph_view.rs:587
+#: src/views/bar_graph_view.rs:569
 msgid "Idle calories"
 msgstr "空闲卡路里"
 
-#: src/views/view_add_activity.rs:236
+#: src/views/view_add_activity.rs:225
 msgid "Activity"
 msgstr "活动"
 
-#: src/widgets/activity_row.rs:79
+#: src/widgets/activity_row.rs:68
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} 了 {} 分钟"
 
-#: src/widgets/activity_row.rs:91
+#: src/widgets/activity_row.rs:80
 msgid "Calories burned"
 msgstr "消耗的卡路里"
 
-#: src/widgets/activity_row.rs:101
+#: src/widgets/activity_row.rs:90
 msgid "Average heart rate"
 msgstr "平均心率"
 
-#: src/widgets/activity_row.rs:107
+#: src/widgets/activity_row.rs:96
 msgid "Maximum heart rate"
 msgstr "最大心率"
 
-#: src/widgets/activity_row.rs:113
+#: src/widgets/activity_row.rs:102
 msgid "Minimum heart rate"
 msgstr "最小心率"
 
-#: src/widgets/activity_row.rs:126
+#: src/widgets/activity_row.rs:115
 msgid "{} meter"
 msgid_plural "{} meters"
 msgstr[0] "{} 米"
 
-#: src/widgets/activity_row.rs:129
+#: src/widgets/activity_row.rs:118
 msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} 码"
 
-#: src/widgets/bmi_level_bar.rs:274
+#: src/widgets/bmi_level_bar.rs:256
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>当前 BMI：{}</small>"
 
-#: src/widgets/distance_action_row.rs:303
+#: src/widgets/distance_action_row.rs:287
 msgid "KM"
 msgstr "公里"
 
-#: src/widgets/distance_action_row.rs:304
+#: src/widgets/distance_action_row.rs:288
 msgid "Meters"
 msgstr "米"
 
-#: src/widgets/distance_action_row.rs:306
+#: src/widgets/distance_action_row.rs:290
 msgid "Miles"
 msgstr "英里"
 
-#: src/widgets/distance_action_row.rs:307
+#: src/widgets/distance_action_row.rs:291
 msgid "Feet"
 msgstr "英尺"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:654
+#: src/widgets/unit_spinbutton.rs:456 src/widgets/unit_spinbutton.rs:622
 msgid "cm"
 msgstr "厘米"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:490
+#: src/widgets/unit_spinbutton.rs:458
 msgid "m"
 msgstr "米"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:492
+#: src/widgets/unit_spinbutton.rs:460
 msgid "km"
 msgstr "公里"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:494
+#: src/widgets/unit_spinbutton.rs:462
 msgid "kg"
 msgstr "公斤"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:496 src/widgets/unit_spinbutton.rs:656
+#: src/widgets/unit_spinbutton.rs:464 src/widgets/unit_spinbutton.rs:624
 msgid "in"
 msgstr "英寸"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:498
+#: src/widgets/unit_spinbutton.rs:466
 msgid "ft"
 msgstr "英尺"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:500
+#: src/widgets/unit_spinbutton.rs:468
 msgid "mi"
 msgstr "英里"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:502
+#: src/widgets/unit_spinbutton.rs:470
 msgid "lb"
 msgstr "磅"
 
@@ -1006,37 +1006,40 @@ msgstr "打开体重测量结果"
 msgid "Import data"
 msgstr "导入数据"
 
-#: src/windows/import_export_dialog_base.rs:214
+#: src/windows/import_export_dialog_base.rs:206
 msgid "Import activities"
 msgstr "导入活动"
 
-#: src/windows/import_export_dialog_base.rs:216
+#: src/windows/import_export_dialog_base.rs:208
 msgid "Import is encrypted"
 msgstr "导入已加密"
 
-#: src/windows/import_export_dialog_base.rs:217
+#: src/windows/import_export_dialog_base.rs:209
 msgid "Import weights"
 msgstr "导入体重"
 
-#: src/windows/import_export_dialog_base.rs:218
+#: src/windows/import_export_dialog_base.rs:210
 msgid "Import"
 msgstr "导入"
 
-#: src/windows/import_export_dialog_base.rs:296
+#: src/windows/import_export_dialog_base.rs:288
 msgid "Success!"
 msgstr "成功！"
 
-#: src/windows/import_export_dialog_base.rs:300
+#: src/windows/import_export_dialog_base.rs:292
 msgid "An error occurred!"
 msgstr "发生了错误！"
 
-#: src/windows/import_export_dialog_base.rs:305
+#: src/windows/import_export_dialog_base.rs:297
 msgid "Close"
 msgstr "关闭"
 
-#: src/windows/window.rs:267
+#: src/windows/window.rs:268
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "由于错误无法同步 Google Fit 数据：{}"
+
+#~ msgid "Rasmus “Cogitri” Thomsen"
+#~ msgstr "Rasmus “Cogitri” Thomsen"
 
 #~ msgid "Whether the user has completed the setup wizard"
 #~ msgstr "用户是否已完成设置向导"
