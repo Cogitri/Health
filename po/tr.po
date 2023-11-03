@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2023-07-15 15:31+0000\n"
-"PO-Revision-Date: 2023-10-13 15:07+0300\n"
+"POT-Creation-Date: 2023-10-31 13:32+0000\n"
+"PO-Revision-Date: 2023-10-31 06:13+0300\n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Poedit 3.4.1\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -96,16 +96,20 @@ msgstr "Etkin kullanıcı kimliği"
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37
-#: src/main.rs:31
+#: src/main.rs:35
 msgid "Health"
 msgstr "Sağlık"
 
-# Fitness kelimesine uygun çeviri bulamadığım için spor olarak kullandım.
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9
-msgid "Track your fitness goals"
-msgstr "Spor hedeflerini takip et"
+#: data/dev.Cogitri.Health.desktop.in.in:9
+msgid "health;fitness;"
+msgstr "health;fitness;form;sağlık;"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+# Fitness kelimesine uygun çeviri bulamadığım için spor olarak kullandım.
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:12
+msgid "Track your fitness goals"
+msgstr "Spor hedeflerini izle"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:14
 msgid ""
 "Health can visualize how many steps you’ve made daily, your weight "
 "development over time and your daily activities. Data can be synched from "
@@ -116,11 +120,6 @@ msgstr ""
 "etkinliklerinizi görselleştirebilir. Veriler Google Fit ile eşzamanlanabilir "
 "veya Sağlık’a elle girilebilir. Daha sonra Sağlık’ta görüntülenebilir ve "
 "düzenlenebilir."
-
-# İsim olup çevrilmemeli
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:36
-msgid "Rasmus “Cogitri” Thomsen"
-msgstr "Rasmus “Cogitri” Thomsen"
 
 #: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
 #: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
@@ -286,7 +285,7 @@ msgid "General"
 msgstr "Genel"
 
 #: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
-#: data/ui/setup_window.blp:183 src/core/database.rs:1097
+#: data/ui/setup_window.blp:183 src/core/database.rs:1099
 msgid "User"
 msgstr "Kullanıcı"
 
@@ -531,17 +530,17 @@ msgstr "Sağlık _Hakkında"
 msgid "Enable plugin"
 msgstr "Eklentiyi etkinleştir"
 
-#: src/core/application.rs:191
+#: src/core/application.rs:192
 msgid "A health tracking app for the GNOME desktop."
 msgstr "GNOME masaüstü için sağlık izleme uygulaması."
 
-#: src/core/application.rs:193
+#: src/core/application.rs:194
 msgid "translator-credits"
 msgstr ""
 "Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Sabri Ünal <libreajans@gmail.com>"
 
-#: src/core/application.rs:195
+#: src/core/application.rs:196
 msgid "Websites"
 msgstr "Web siteleri"
 
@@ -639,7 +638,7 @@ msgstr[0] "Günlük adım hedefinizi bitirmenize {} adım kaldı."
 msgid "Activities"
 msgstr "Etkinlikler"
 
-#: src/plugins/activities/summary.rs:91
+#: src/plugins/activities/summary.rs:94
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "Bugün {} aktif dakika"
@@ -658,7 +657,7 @@ msgstr[0] ""
 "{} kalori\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:97 src/plugins/calories/summary.rs:104
+#: src/plugins/calories/summary.rs:100 src/plugins/calories/summary.rs:107
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "Bugün {} kalori yakıldı"
@@ -696,18 +695,18 @@ msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} adım, {} tarihinde"
 
-#: src/plugins/steps/summary.rs:97
+#: src/plugins/steps/summary.rs:100
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "Bugün {} adım atıldı"
 
-#: src/plugins/steps/summary.rs:108
+#: src/plugins/steps/summary.rs:111
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Günlük adım hedefinin yüzde {} bölümüne ulaşıldı"
 
 # Well done için radikal bir çeviri kullandım. Biraz yerelleştirmiş oldum.
-#: src/plugins/steps/summary.rs:115
+#: src/plugins/steps/summary.rs:118
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Nazar değmesin! Günlük adım hedefinize ulaştınız!"
 
@@ -781,41 +780,41 @@ msgstr[0] "Ulaşmanıza {} kilogram kaldı."
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr "Henüz kilo hedefi belirlenmedi. Tercihlerden ayarlanabilir."
 
-#: src/plugins/weight/summary.rs:120
+#: src/plugins/weight/summary.rs:123
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} pound"
 
-#: src/plugins/weight/summary.rs:128
+#: src/plugins/weight/summary.rs:131
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} kilogram"
 
-#: src/plugins/weight/summary.rs:139
+#: src/plugins/weight/summary.rs:142
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "Önceki ölçüme kıyasla + {} pound"
 
-#: src/plugins/weight/summary.rs:147
+#: src/plugins/weight/summary.rs:150
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "Önceki ölçüme kıyasla + {} kilogram"
 
-#: src/plugins/weight/summary.rs:158
+#: src/plugins/weight/summary.rs:161
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "Önceki ölçüme kıyasla {} pound"
 
-#: src/plugins/weight/summary.rs:166
+#: src/plugins/weight/summary.rs:169
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "Önceki ölçüme kıyasla {} kilogram"
 
-#: src/plugins/weight/summary.rs:174
+#: src/plugins/weight/summary.rs:177
 msgid "No change in weight"
 msgstr "Kilo değişmemiş"
 
-#: src/plugins/weight/summary.rs:179
+#: src/plugins/weight/summary.rs:182
 msgid "No weight data available"
 msgstr "Kilo verisi yok"
 
@@ -1066,3 +1065,7 @@ msgstr "Kapat"
 #: src/windows/window.rs:268
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Hata nedeniyle Google Fit verileri eşzamanlanamadı: {}"
+
+# İsim olup çevrilmemeli
+#~ msgid "Rasmus “Cogitri” Thomsen"
+#~ msgstr "Rasmus “Cogitri” Thomsen"
