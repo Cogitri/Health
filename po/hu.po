@@ -1,22 +1,22 @@
 # Hungarian translation for health.
-# Copyright (C) 2022 Free Software Foundation, Inc.
+# Copyright (C) 2022, 2024 Free Software Foundation, Inc.
 # This file is distributed under the same license as the health package.
 #
-# Balázs Úr <ur.balazs at fsf dot hu>, 2022.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2022, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-09-18 08:43+0000\n"
-"PO-Revision-Date: 2022-09-18 16:28+0200\n"
+"POT-Creation-Date: 2023-10-31 13:32+0000\n"
+"PO-Revision-Date: 2024-02-22 02:03+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
-"Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
+"Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 23.08.4\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -93,29 +93,29 @@ msgstr "Aktív felhasználó azonosítója"
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37
-#: src/main.rs:31
+#: src/main.rs:35
 msgid "Health"
 msgstr "Egészség"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9
+#: data/dev.Cogitri.Health.desktop.in.in:9
+msgid "health;fitness;"
+msgstr "egészség;fitness;"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:12
 msgid "Track your fitness goals"
 msgstr "Fitneszcélok követése"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:14
 msgid ""
 "Health can visualize how many steps you’ve made daily, your weight "
 "development over time and your daily activities. Data can be synched from "
 "Google Fit or manually entered into Health. Afterwards, it can be viewed and "
 "edited in Health."
 msgstr ""
-"Az Egészség megjelenítheti, hogy hány lépést tett meg naponta, a testsúlyának"
-" időbeli alakulását és a napi tevékenységeit. Az adatok szinkronizálhatók a"
-" Google Fitből, vagy kézzel is beírhatók az Egészségbe. Ezt követően az"
-" adatok megtekinthetők és szerkeszthetők az Egészségben."
-
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:36
-msgid "Rasmus “Cogitri” Thomsen"
-msgstr "Rasmus „Cogitri” Thomsen"
+"Az Egészség megjelenítheti, hogy hány lépést tett meg naponta, a "
+"testsúlyának időbeli alakulását és a napi tevékenységeit. Az adatok "
+"szinkronizálhatók a Google Fitből, vagy kézzel is beírhatók az Egészségbe. "
+"Ezt követően az adatok megtekinthetők és szerkeszthetők az Egészségben."
 
 #: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
 #: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
@@ -132,7 +132,7 @@ msgstr "_Mentés"
 msgid "January"
 msgstr "Január"
 
-#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:223
+#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:213
 msgid "February"
 msgstr "Február"
 
@@ -188,7 +188,7 @@ msgstr "Hónap"
 msgid "Year"
 msgstr "Év"
 
-#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:131
+#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:120
 msgid "Distance"
 msgstr "Távolság"
 
@@ -238,8 +238,8 @@ msgid ""
 "This is a preview of how the plugin presents data. Enable the plugin to see "
 "your actual, live data."
 msgstr ""
-"Ez annak az előnézete, hogy a bővítmény hogyan jeleníti meg az adatokat."
-" Engedélyezze a bővítményt, hogy láthassa a tényleges, élő adatokat."
+"Ez annak az előnézete, hogy a bővítmény hogyan jeleníti meg az adatokat. "
+"Engedélyezze a bővítményt, hogy láthassa a tényleges, élő adatokat."
 
 #: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
 #: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
@@ -280,7 +280,7 @@ msgid "General"
 msgstr "Általános"
 
 #: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
-#: data/ui/setup_window.blp:183 src/core/database.rs:1109
+#: data/ui/setup_window.blp:183 src/core/database.rs:1099
 msgid "User"
 msgstr "Felhasználó"
 
@@ -325,7 +325,7 @@ msgid "Daily reminder time"
 msgstr "Napi emlékeztető ideje"
 
 #: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
-#: src/plugins/steps/details.rs:245
+#: src/plugins/steps/details.rs:239
 msgid "Step goal"
 msgstr "Lépéscél"
 
@@ -423,11 +423,11 @@ msgstr ""
 msgid "Current weight"
 msgstr "Jelenlegi súly"
 
-#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:267
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:249
 msgid "Current BMI"
 msgstr "Jelenlegi testtömegindex"
 
-#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:230
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:224
 msgid "Weight goal"
 msgstr "Súlycél"
 
@@ -439,8 +439,8 @@ msgstr "Szinkronizálás beállítása harmadik fél szolgáltatókkal."
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
-"Szinkronizálhatja a lépés- és súlyméréseket harmadik fél szolgáltatóktól vagy"
-" szolgáltatókhoz."
+"Szinkronizálhatja a lépés- és súlyméréseket harmadik fél szolgáltatóktól "
+"vagy szolgáltatókhoz."
 
 #: data/ui/shortcuts_window.blp:15
 msgid "Quit the application"
@@ -498,8 +498,8 @@ msgstr "Önnek"
 msgid ""
 "No plugins enabled. Enable one from the list below to start using Health."
 msgstr ""
-"Nincsenek engedélyezett bővítmények. Engedélyezzen egyet az alábbi listából"
-" az Egészség használatának megkezdéséhez."
+"Nincsenek engedélyezett bővítmények. Engedélyezzen egyet az alábbi listából "
+"az Egészség használatának megkezdéséhez."
 
 #: data/ui/view_home_page.blp:107
 msgid "All data"
@@ -525,16 +525,17 @@ msgstr "Az Egészség _névjegye"
 msgid "Enable plugin"
 msgstr "Bővítmény engedélyezése"
 
-#: src/core/application.rs:189
+#: src/core/application.rs:192
 msgid "A health tracking app for the GNOME desktop."
 msgstr ""
-"Egy egészségi állapotot nyomon követő alkalmazás a GNOME asztali környezethez."
+"Egy egészségi állapotot nyomon követő alkalmazás a GNOME asztali "
+"környezethez."
 
-#: src/core/application.rs:191
+#: src/core/application.rs:194
 msgid "translator-credits"
 msgstr "Úr Balázs <ur dot balazs at fsf dot hu>, 2022."
 
-#: src/core/application.rs:193
+#: src/core/application.rs:196
 msgid "Websites"
 msgstr "Weboldalak"
 
@@ -618,11 +619,11 @@ msgstr "Röplabda"
 msgid "Walking"
 msgstr "Sétálás"
 
-#: src/model/model_notification.rs:234
+#: src/model/model_notification.rs:209
 msgid "Health: walking reminder"
 msgstr "Egészség: sétálási emlékeztető"
 
-#: src/model/model_notification.rs:250
+#: src/model/model_notification.rs:225
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "{} lépés van hátra a napi lépéscél teljesítéséhez."
@@ -632,13 +633,13 @@ msgstr[1] "{} lépés van hátra a napi lépéscél teljesítéséhez."
 msgid "Activities"
 msgstr "Tevékenységek"
 
-#: src/plugins/activities/summary.rs:91
+#: src/plugins/activities/summary.rs:94
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "{} aktív perc a mai napon"
 msgstr[1] "{} aktív perc a mai napon"
 
-#: src/plugins/calories/details.rs:217
+#: src/plugins/calories/details.rs:210
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -656,91 +657,91 @@ msgstr[1] ""
 "{} kalória\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:97 src/plugins/calories/summary.rs:104
+#: src/plugins/calories/summary.rs:100 src/plugins/calories/summary.rs:107
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "{} kalória lett elégetve ma"
 msgstr[1] "{} kalória lett elégetve ma"
 
-#: src/plugins/steps/details.rs:187
+#: src/plugins/steps/details.rs:181
 msgid "Today’s steps: {}"
 msgstr "Mai lépések: {}"
 
-#: src/plugins/steps/details.rs:206
+#: src/plugins/steps/details.rs:200
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
-"Még nincs sorozat. Érje el a lépéscélját több napon keresztül, hogy"
-" elindítson egy sorozatot!"
+"Még nincs sorozat. Érje el a lépéscélját több napon keresztül, hogy "
+"elindítson egy sorozatot!"
 
-#: src/plugins/steps/details.rs:210
+#: src/plugins/steps/details.rs:204
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
 "You’re on a streak for {} days. Reach your step goal today to continue it!"
 msgstr[0] ""
-"Ön {} napja csinál egy sorozatot. Érje el a lépéscélját ma, hogy folytassa"
-" azt!"
+"Ön {} napja csinál egy sorozatot. Érje el a lépéscélját ma, hogy folytassa "
+"azt!"
 msgstr[1] ""
-"Ön {} napja csinál egy sorozatot. Érje el a lépéscélját ma, hogy folytassa"
-" azt!"
+"Ön {} napja csinál egy sorozatot. Érje el a lépéscélját ma, hogy folytassa "
+"azt!"
 
-#: src/plugins/steps/details.rs:218
+#: src/plugins/steps/details.rs:212
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr "Ön elérte a lépéscélját ma. Folytassa egy sorozat indításához!"
 
-#: src/plugins/steps/details.rs:221
+#: src/plugins/steps/details.rs:215
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "Ön {} napja csinál egy sorozatot. Szép munka!"
 msgstr[1] "Ön {} napja csinál egy sorozatot. Szép munka!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:238
+#: src/plugins/steps/details.rs:232
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} lépés ekkor: {}"
 msgstr[1] "{} lépés ekkor: {}"
 
-#: src/plugins/steps/summary.rs:96
+#: src/plugins/steps/summary.rs:100
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} lépés megtéve ma"
 msgstr[1] "{} lépés megtéve ma"
 
-#: src/plugins/steps/summary.rs:107
+#: src/plugins/steps/summary.rs:111
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "A napi lépéscél {} százaléka elérve"
 msgstr[1] "A napi lépéscél {} százaléka elérve"
 
-#: src/plugins/steps/summary.rs:114
+#: src/plugins/steps/summary.rs:118
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Szép munka! Elérte a napi lépéscélját!"
 
-#: src/plugins/weight/details.rs:202
+#: src/plugins/weight/details.rs:196
 msgid "Current BMI: {}"
 msgstr "Jelenlegi testtömegindex: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:217
+#: src/plugins/weight/details.rs:211
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} font ekkor: {}"
 msgstr[1] "{} font ekkor: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:220
+#: src/plugins/weight/details.rs:214
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogram ekkor: {}"
 msgstr[1] "{} kilogram ekkor: {}"
 
-#: src/plugins/weight/details.rs:257 src/plugins/weight/details.rs:262
+#: src/plugins/weight/details.rs:251 src/plugins/weight/details.rs:256
 msgid "Unknown BMI"
 msgstr "Ismeretlen testtömegindex"
 
-#: src/plugins/weight/details.rs:280
+#: src/plugins/weight/details.rs:274
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -748,13 +749,13 @@ msgid_plural ""
 "Your weight goal is {} pounds. Add a first weight measurement to see how "
 "close you are to reaching it."
 msgstr[0] ""
-"A súlycélja {} font. Adja hozzá az első súlymérést, hogy lássa, milyen közel"
-" van a cél eléréséhez."
+"A súlycélja {} font. Adja hozzá az első súlymérést, hogy lássa, milyen közel "
+"van a cél eléréséhez."
 msgstr[1] ""
-"A súlycélja {} font. Adja hozzá az első súlymérést, hogy lássa, milyen közel"
-" van a cél eléréséhez."
+"A súlycélja {} font. Adja hozzá az első súlymérést, hogy lássa, milyen közel "
+"van a cél eléréséhez."
 
-#: src/plugins/weight/details.rs:287
+#: src/plugins/weight/details.rs:281
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -762,92 +763,93 @@ msgid_plural ""
 "Your weight goal is {} kilograms. Add a first weight measurement to see how "
 "close you are to reaching it."
 msgstr[0] ""
-"A súlycélja {} kilogram. Adja hozzá az első súlymérést, hogy lássa, milyen"
-" közel van a cél eléréséhez."
+"A súlycélja {} kilogram. Adja hozzá az első súlymérést, hogy lássa, milyen "
+"közel van a cél eléréséhez."
 msgstr[1] ""
-"A súlycélja {} kilogram. Adja hozzá az első súlymérést, hogy lássa, milyen"
-" közel van a cél eléréséhez."
+"A súlycélja {} kilogram. Adja hozzá az első súlymérést, hogy lássa, milyen "
+"közel van a cél eléréséhez."
 
-#: src/plugins/weight/details.rs:296
+#: src/plugins/weight/details.rs:290
 msgid "You’ve reached your weight goal. Great job!"
 msgstr "Elérte a súlycélját. Szép munka!"
 
-#: src/plugins/weight/details.rs:312
+#: src/plugins/weight/details.rs:306
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "A súlycélja {} font."
 msgstr[1] "A súlycélja {} font."
 
-#: src/plugins/weight/details.rs:317
+#: src/plugins/weight/details.rs:311
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "{} font van hátra az eléréséhez."
 msgstr[1] "{} font van hátra az eléréséhez."
 
-#: src/plugins/weight/details.rs:324
+#: src/plugins/weight/details.rs:318
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "A súlycélja {} kilogram."
 msgstr[1] "A súlycélja {} kilogram."
 
-#: src/plugins/weight/details.rs:330
+#: src/plugins/weight/details.rs:324
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "{} kilogram van hátra az eléréséhez"
 msgstr[1] "{} kilogram van hátra az eléréséhez"
 
-#: src/plugins/weight/details.rs:340
+#: src/plugins/weight/details.rs:334
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr "Még nincs súlycél beállítva. Az Egészség beállításaiban állíthatja be."
 
-#: src/plugins/weight/summary.rs:119
+#: src/plugins/weight/summary.rs:123
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} font"
 msgstr[1] "{} font"
 
-#: src/plugins/weight/summary.rs:127
+#: src/plugins/weight/summary.rs:131
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} kilogram"
 msgstr[1] "{} kilogram"
 
-#: src/plugins/weight/summary.rs:138
+#: src/plugins/weight/summary.rs:142
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "+{} font az előző méréshez képest"
 msgstr[1] "+{} font az előző méréshez képest"
 
-#: src/plugins/weight/summary.rs:146
+#: src/plugins/weight/summary.rs:150
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "+{} kilogram az előző méréshez képest"
 msgstr[1] "+{} kilogram az előző méréshez képest"
 
-#: src/plugins/weight/summary.rs:157
+#: src/plugins/weight/summary.rs:161
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "{} font az előző méréshez képest"
 msgstr[1] "{} font az előző méréshez képest"
 
-#: src/plugins/weight/summary.rs:165
+#: src/plugins/weight/summary.rs:169
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "{} kilogram az előző méréshez képest"
 msgstr[1] "{} kilogram az előző méréshez képest"
 
-#: src/plugins/weight/summary.rs:173
+#: src/plugins/weight/summary.rs:177
 msgid "No change in weight"
 msgstr "Nincs változás a súlyban"
 
-#: src/plugins/weight/summary.rs:178
+#: src/plugins/weight/summary.rs:182
 msgid "No weight data available"
 msgstr "Nem érhetők el súlyadatok"
 
 #: src/sync/csv.rs:81 src/sync/csv.rs:370
 msgid "No activities added yet; can’t create empty export!"
 msgstr ""
-"Még nem lettek tevékenységek hozzáadva. Nem lehet üres exportálást létrehozni!"
+"Még nem lettek tevékenységek hozzáadva. Nem lehet üres exportálást "
+"létrehozni!"
 
 #: src/sync/csv.rs:111 src/sync/csv.rs:388
 msgid "No weight measurements added yet; can’t create empty export!"
@@ -857,22 +859,22 @@ msgstr ""
 #: src/sync/csv.rs:184 src/sync/csv.rs:332
 msgid "Can’t parse encrypted backup without encryption key!"
 msgstr ""
-"Nem lehet feldolgozni a titkosított biztonsági mentést titkosítási kulcs"
-" nélkül!"
+"Nem lehet feldolgozni a titkosított biztonsági mentést titkosítási kulcs "
+"nélkül!"
 
 #: src/sync/csv.rs:195 src/sync/csv.rs:352
 msgid ""
 "Couldn’t parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
 msgstr ""
-"Nem sikerült feldolgozni a CSV-t. Egy titkosítatlan biztonsági mentést próbál"
-" titkosítottként beolvasni?"
+"Nem sikerült feldolgozni a CSV-t. Egy titkosítatlan biztonsági mentést "
+"próbál titkosítottként beolvasni?"
 
 #: src/sync/csv.rs:208
 msgid "Couldn’t decrypt data. Are you sure you’re using the right key?"
 msgstr ""
-"Nem sikerült visszafejteni az adatokat. Biztos benne, hogy a megfelelő"
-" kulcsot használja?"
+"Nem sikerült visszafejteni az adatokat. Biztos benne, hogy a megfelelő "
+"kulcsot használja?"
 
 #: src/sync/database_receiver.rs:46
 msgid "Couldn’t synchronize steps due to error {}"
@@ -895,8 +897,8 @@ msgid ""
 "Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
 "authenticate with your sync provider."
 msgstr ""
-"Nem lehet lekérni az OAuth2 jelsort, ha nincs frissítési jelsor beállítva!"
-" Hitelesítsen újra a szinkronizációs szolgáltatójával."
+"Nem lehet lekérni az OAuth2 jelsort, ha nincs frissítési jelsor beállítva! "
+"Hitelesítsen újra a szinkronizációs szolgáltatójával."
 
 #: src/sync/sync_provider.rs:157
 msgid "Token for Health sync provider {}"
@@ -910,109 +912,109 @@ msgstr "Sikeresen hitelesítve, térjen vissza az Egészség alkalmazáshoz."
 msgid "Couldn’t parse OAuth2 response"
 msgstr "Nem sikerült feldolgozni az OAuth2 választ"
 
-#: src/views/bar_graph_view.rs:583
+#: src/views/bar_graph_view.rs:565
 msgid "Enter weight record to calculate idle calories"
 msgstr "Adja meg a súlyrekordot a tétlenségi kalóriák kiszámításához"
 
-#: src/views/bar_graph_view.rs:587
+#: src/views/bar_graph_view.rs:569
 msgid "Idle calories"
 msgstr "Tétlenségi kalóriák"
 
-#: src/views/view_add_activity.rs:236
+#: src/views/view_add_activity.rs:225
 msgid "Activity"
 msgstr "Tevékenység"
 
-#: src/widgets/activity_row.rs:79
+#: src/widgets/activity_row.rs:68
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} {} percre"
 msgstr[1] "{} {} percre"
 
-#: src/widgets/activity_row.rs:91
+#: src/widgets/activity_row.rs:80
 msgid "Calories burned"
 msgstr "Elégetett kalóriák"
 
-#: src/widgets/activity_row.rs:101
+#: src/widgets/activity_row.rs:90
 msgid "Average heart rate"
 msgstr "Átlagos pulzusszám"
 
-#: src/widgets/activity_row.rs:107
+#: src/widgets/activity_row.rs:96
 msgid "Maximum heart rate"
 msgstr "Legnagyobb pulzusszám"
 
-#: src/widgets/activity_row.rs:113
+#: src/widgets/activity_row.rs:102
 msgid "Minimum heart rate"
 msgstr "Legkisebb pulzusszám"
 
-#: src/widgets/activity_row.rs:126
+#: src/widgets/activity_row.rs:115
 msgid "{} meter"
 msgid_plural "{} meters"
 msgstr[0] "{} méter"
 msgstr[1] "{} méter"
 
-#: src/widgets/activity_row.rs:129
+#: src/widgets/activity_row.rs:118
 msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} yard"
 msgstr[1] "{} yard"
 
-#: src/widgets/bmi_level_bar.rs:274
+#: src/widgets/bmi_level_bar.rs:256
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Jelenlegi testtömegindex: {}</small>"
 
-#: src/widgets/distance_action_row.rs:303
+#: src/widgets/distance_action_row.rs:287
 msgid "KM"
 msgstr "Kilométer"
 
-#: src/widgets/distance_action_row.rs:304
+#: src/widgets/distance_action_row.rs:288
 msgid "Meters"
 msgstr "Méter"
 
-#: src/widgets/distance_action_row.rs:306
+#: src/widgets/distance_action_row.rs:290
 msgid "Miles"
 msgstr "Mérföld"
 
-#: src/widgets/distance_action_row.rs:307
+#: src/widgets/distance_action_row.rs:291
 msgid "Feet"
 msgstr "Láb"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:654
+#: src/widgets/unit_spinbutton.rs:456 src/widgets/unit_spinbutton.rs:622
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:490
+#: src/widgets/unit_spinbutton.rs:458
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:492
+#: src/widgets/unit_spinbutton.rs:460
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:494
+#: src/widgets/unit_spinbutton.rs:462
 msgid "kg"
 msgstr "kg"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:496 src/widgets/unit_spinbutton.rs:656
+#: src/widgets/unit_spinbutton.rs:464 src/widgets/unit_spinbutton.rs:624
 msgid "in"
 msgstr "in"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:498
+#: src/widgets/unit_spinbutton.rs:466
 msgid "ft"
 msgstr "ft"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:500
+#: src/widgets/unit_spinbutton.rs:468
 msgid "mi"
 msgstr "mi"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:502
+#: src/widgets/unit_spinbutton.rs:470
 msgid "lb"
 msgstr "lb"
 
@@ -1067,35 +1069,35 @@ msgstr "Súlymérés megnyitása"
 msgid "Import data"
 msgstr "Adatok importálása"
 
-#: src/windows/import_export_dialog_base.rs:214
+#: src/windows/import_export_dialog_base.rs:206
 msgid "Import activities"
 msgstr "Tevékenységek importálása"
 
-#: src/windows/import_export_dialog_base.rs:216
+#: src/windows/import_export_dialog_base.rs:208
 msgid "Import is encrypted"
 msgstr "Az importálás titkosított"
 
-#: src/windows/import_export_dialog_base.rs:217
+#: src/windows/import_export_dialog_base.rs:209
 msgid "Import weights"
 msgstr "Súlyok importálása"
 
-#: src/windows/import_export_dialog_base.rs:218
+#: src/windows/import_export_dialog_base.rs:210
 msgid "Import"
 msgstr "Importálás"
 
-#: src/windows/import_export_dialog_base.rs:296
+#: src/windows/import_export_dialog_base.rs:288
 msgid "Success!"
 msgstr "Sikeres!"
 
-#: src/windows/import_export_dialog_base.rs:300
+#: src/windows/import_export_dialog_base.rs:292
 msgid "An error occurred!"
 msgstr "Hiba történt!"
 
-#: src/windows/import_export_dialog_base.rs:305
+#: src/windows/import_export_dialog_base.rs:297
 msgid "Close"
 msgstr "Bezárás"
 
-#: src/windows/window.rs:267
+#: src/windows/window.rs:268
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr ""
 "Nem sikerült szinkronizálni a Google Fit adatait a következő hiba miatt: {}"
