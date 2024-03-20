@@ -52,111 +52,125 @@
 	</custom>
 
 	<releases>
-                <release version="0.95.0" date="2023-07-30">
-                        <p>This release updates the gtk-rs stack and fixes crashes.</p>
-                </release>
+		<release version="0.95.0" date="2023-07-30">
+			<description>
+				<p>This release updates the gtk-rs stack and fixes crashes.</p>
+			</description>
+		</release>
 		<release version="0.94.0" date="2022-07-17">
-			<p>
-				The 0.94.0 release includes a major update to the main view of the app,
-				fixes bugs with date handling and makes notifications more reliable.
-			</p>
+			<description>
+				<p>
+					The 0.94.0 release includes a major update to the main view of the app,
+					fixes bugs with date handling and makes notifications more reliable.
+				</p>
+			</description>
 		</release>
 		<release version="0.93.3" date="2021-11-06">
-			<p>
-				This release includes a number of fixes, including:
-			</p>
-			<ul>
-				<li>Make Health adaptive to smaller screens again</li>
-				<li>Update calories view after adding a new weight record</li>
-				<li>Avoid crashing when setting the step goal to 0</li>
-				<li>Fix some typos</li>
-			</ul>
+			<description>
+				<p>This release includes a number of fixes, including:</p>
+				<ul>
+					<li>Make Health adaptive to smaller screens again</li>
+					<li>Update calories view after adding a new weight record</li>
+					<li>Avoid crashing when setting the step goal to 0</li>
+					<li>Fix some typos</li>
+				</ul>
+			</description>
 		</release>
 		<release version="0.93.2" date="2021-10-23">
-			<p>
-				Brown bad release to fix tarball generation.
-			</p>
+			<description>
+				<p>Brown bad release to fix tarball generation.</p>
+			</description>
 		</release>
 		<release version="0.93.1" date="2021-10-22">
-			<p>
-				This patch release updates the screenshots of Health to reflect how it currently looks.
-			</p>
+			<description>
+				<p>This patch release updates the screenshots of Health to reflect how it currently looks.</p>
+			</description>
 		</release>
 		<release version="0.93.0" date="2021-10-22">
-			<p>
-				This release of Health features a reworked main view, a new calories view a daemon
-				to remind users to reach their stepgoal and an updated stylesheet.
-				Additionally, Health's icon have been updated to be thinner and many translations
-				have been added. Thanks to all contributors for making this release possible.
-			</p>
+			<description>
+				<p>
+					This release of Health features a reworked main view, a new calories view a daemon
+					to remind users to reach their stepgoal and an updated stylesheet.
+					Additionally, Health's icon have been updated to be thinner and many translations
+					have been added. Thanks to all contributors for making this release possible.
+				</p>
+			</description>
 		</release>
 		<release version="0.92.6" date="2021-03-23">
-			<p>
-				This release fixes multiple regressions introduced during the port to Rust, like steps not being properly
-				displayed when multiple steps have been added at one date.
-				Screenshots have been updated as well.
-			</p>
+			<description>
+				<p>
+					This release fixes multiple regressions introduced during the port to Rust, like steps not being properly
+					displayed when multiple steps have been added at one date.
+					Screenshots have been updated as well.
+				</p>
+			</description>
 		</release>
 		<release version="0.92.2" date="2021-03-21">
-			<p>
-				Another brown bag release to fix tarball generation.
-			</p>
+			<description>
+				<p>Another brown bag release to fix tarball generation.</p>
+			</description>
 		</release>
 		<release version="0.92.1" date="2021-03-21">
-			<p>
-				Brown bag release to fix a bug where the ViewSteps displayed steps multiple times.
-			</p>
+			<description>
+				<p>Brown bag release to fix a bug where the ViewSteps displayed steps multiple times.</p>
+			</description>
 		</release>
 		<release version="0.92.0" date="2021-03-21">
-			<p>
-				This release ports Health to Rust, making it a fair bit more reliable over the course of the rewrite. Additionally, it also features the following changes:
-			</p>
-			<ul>
-				<li>Improved graph drawing, using theme colours for the graph</li>
-				<li>More reliaable synching with Google Fit</li>
-				<li>Make unit handling a lot more robust</li>
-				<li>Use date and time for activities, not only date</li>
-			</ul>
-			<p>
-				And much more!
-			</p>
+			<description>
+				<p>
+					This release ports Health to Rust, making it a fair bit more reliable over the course of the rewrite.
+					Additionally, it also features the following changes:
+				</p>
+				<ul>
+					<li>Improved graph drawing, using theme colours for the graph</li>
+					<li>More reliaable synching with Google Fit</li>
+					<li>Make unit handling a lot more robust</li>
+					<li>Use date and time for activities, not only date</li>
+				</ul>
+				<p>And much more!</p>
+			</description>
 		</release>
 		<release version="0.91.0" date="2021-01-19">
-			<p>
-				This releases makes error reporting of sync errors less intrusive and makes it possible to enter distances in KM/Miles and Meters/Yards. It also ships lots of bugfixes:
-			</p>
-			<ul>
-				<li>Fix syncing weight measurements when multiple weight measurements have been recorded on the same day</li>
-				<li>Fix BMI measurements when "imperial" is set as unit system</li>
-				<li>Use localized date formats</li>
-				<li>Add border around date picker for better legibility</li>
-				<li>Vendor emblem-synchronizing-icon to make it consistent across icon themes</li>
-				<li>Fix entering data in the spin buttons in Health's preferences</li>
-				<li>Fix Google Fit syncing after initial sync</li>
-				<li>Fix entering data in activity add dialog</li>
-			</ul>
+			<description>
+				<p>
+					This releases makes error reporting of sync errors less intrusive and makes it possible to enter distances
+					in KM/Miles and Meters/Yards. It also ships lots of bugfixes:
+				</p>
+				<ul>
+					<li>Fix syncing weight measurements when multiple weight measurements have been recorded on the same day</li>
+					<li>Fix BMI measurements when "imperial" is set as unit system</li>
+					<li>Use localized date formats</li>
+					<li>Add border around date picker for better legibility</li>
+					<li>Vendor emblem-synchronizing-icon to make it consistent across icon themes</li>
+					<li>Fix entering data in the spin buttons in Health's preferences</li>
+					<li>Fix Google Fit syncing after initial sync</li>
+					<li>Fix entering data in activity add dialog</li>
+				</ul>
+			</description>
 		</release>
 		<release version="0.90.2" date="2021-01-04">
-			<p>
-				This release adds additional metadata to the appdata and desktop file.
-			</p>
+			<description>
+				<p>This release adds additional metadata to the appdata and desktop file.</p>
+			</description>
 		</release>
 		<release version="0.90.1" date="2021-01-03">
-			<p>
-				This release fixes the vertical alignment of the bmi level bar in "Preferences".
-			</p>
+			<description>
+				<p>This release fixes the vertical alignment of the bmi level bar in "Preferences".</p>
+			</description>
 		</release>
 		<release version="0.90.0" date="2021-01-03">
-			<p>
-				With this release Health can track activities instead of steps,
-				the dialog for adding activities and weight measurements has been
-				reworked and the application has received a lot of polish in general.
-			</p>
+			<description>
+				<p>
+					With this release Health can track activities instead of steps,
+					the dialog for adding activities and weight measurements has been
+					reworked and the application has received a lot of polish in general.
+				</p>
+			</description>
 		</release>
 		<release version="0.1.0" date="2020-11-03">
-			<p>
-				Initial release
-			</p>
+			<description>
+				<p>Initial release</p>
+			</description>
 		</release>
 	</releases>
 </component>
