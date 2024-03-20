@@ -41,16 +41,6 @@
 	<provides>
 		<binary>@APPLICATION_ID@</binary>
 	</provides>
-	<categories>
-		<category>GTK</category>
-		<category>GNOME</category>
-		<category>Utility</category>
-		<category>MedicalSoftware</category>
-	</categories>
-	<keywords>
-		<keyword>health</keyword>
-		<keyword>fitness</keyword>
-	</keywords>
 	<kudos>
 		<kudo>AppMenu</kudo>
 		<kudo>HiDpiIcon</kudo>
