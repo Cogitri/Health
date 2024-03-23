@@ -1,14 +1,14 @@
 # Danish translation for health.
-# Copyright (C) 2022-2023 health's COPYRIGHT HOLDER
+# Copyright (C) 2022-2024 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
-# Ask Hjorth Larsen <asklarsen@gmail.com>, 2022-2023.
+# Ask Hjorth Larsen <asklarsen@gmail.com>, 2022-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-09-13 17:26+0000\n"
-"PO-Revision-Date: 2023-01-01 18:42+0100\n"
+"POT-Creation-Date: 2023-10-31 13:32+0000\n"
+"PO-Revision-Date: 2024-03-14 00:48+0100\n"
 "Last-Translator: Ask Hjorth Larsen <asklarsen@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -92,15 +92,19 @@ msgstr "ID for aktiv bruger"
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37
-#: src/main.rs:31
+#: src/main.rs:35
 msgid "Health"
 msgstr "Health"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9
+#: data/dev.Cogitri.Health.desktop.in.in:9
+msgid "health;fitness;"
+msgstr "helbred;fitness;træning;"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:12
 msgid "Track your fitness goals"
 msgstr "Hold styr på motion og helbred"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:14
 msgid ""
 "Health can visualize how many steps you’ve made daily, your weight "
 "development over time and your daily activities. Data can be synched from "
@@ -110,10 +114,6 @@ msgstr ""
 "Health kan vise, hvor mange skridt du går hver dag, din vægtændring over tid "
 "samt dine daglige aktiviteter. Data kan synroniseres med Google Fit eller "
 "indtastes manuelt i Health. Bagefter kan data vises og redigeres i Health."
-
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:36
-msgid "Rasmus “Cogitri” Thomsen"
-msgstr "Rasmus “Cogitri” Thomsen"
 
 #: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
 #: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
@@ -130,7 +130,7 @@ msgstr "_Gem"
 msgid "January"
 msgstr "Januar"
 
-#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:223
+#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:213
 msgid "February"
 msgstr "Februar"
 
@@ -186,7 +186,7 @@ msgstr "Måned"
 msgid "Year"
 msgstr "År"
 
-#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:131
+#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:120
 msgid "Distance"
 msgstr "Afstand"
 
@@ -279,7 +279,7 @@ msgid "General"
 msgstr "Generelle"
 
 #: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
-#: data/ui/setup_window.blp:183 src/core/database.rs:1109
+#: data/ui/setup_window.blp:183 src/core/database.rs:1099
 msgid "User"
 msgstr "Bruger"
 
@@ -324,7 +324,7 @@ msgid "Daily reminder time"
 msgstr "Tidspunkt for daglig påmindelse"
 
 #: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
-#: src/plugins/steps/details.rs:245
+#: src/plugins/steps/details.rs:239
 msgid "Step goal"
 msgstr "Mål for antal skridt"
 
@@ -421,12 +421,12 @@ msgstr "WHO anbefaler en BMI mellem 18,5 og 24,9."
 msgid "Current weight"
 msgstr "Nuværende vægt"
 
-#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:267
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:249
 msgid "Current BMI"
 msgstr "Nuværende BMI"
 
 # Undgår ordet "mål" her, da det bliver forvirrende når man også kan "måle" vægt
-#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:230
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:224
 msgid "Weight goal"
 msgstr "Ønsket vægt"
 
@@ -523,12 +523,12 @@ msgstr "_Om Health"
 msgid "Enable plugin"
 msgstr "Aktivér udvidelsesmodul"
 
-#: src/core/application.rs:189
+#: src/core/application.rs:192
 msgid "A health tracking app for the GNOME desktop."
 msgstr ""
 "Et program der holder styr på motion og helbred til GNOME-skrivebordet."
 
-#: src/core/application.rs:191
+#: src/core/application.rs:194
 msgid "translator-credits"
 msgstr ""
 "Ask Hjorth Larsen <asklarsen@gmail.com>, 2022\n"
@@ -537,7 +537,7 @@ msgstr ""
 "Websted http://dansk-gruppen.dk\n"
 "E-mail <dansk@dansk-gruppen.dk>"
 
-#: src/core/application.rs:193
+#: src/core/application.rs:196
 msgid "Websites"
 msgstr "Websteder"
 
@@ -623,11 +623,11 @@ msgstr "Volleyball"
 msgid "Walking"
 msgstr "Gang"
 
-#: src/model/model_notification.rs:234
+#: src/model/model_notification.rs:209
 msgid "Health: walking reminder"
 msgstr "Health: påmindelse om at gå"
 
-#: src/model/model_notification.rs:250
+#: src/model/model_notification.rs:225
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "Du mangler {} skridt for at nå målet for i dag."
@@ -637,13 +637,13 @@ msgstr[1] "Du mangler {} skridt for at nå målet for i dag."
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: src/plugins/activities/summary.rs:91
+#: src/plugins/activities/summary.rs:94
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "{} minuts aktivitet i dag"
 msgstr[1] "{} minutters aktivitet i dag"
 
-#: src/plugins/calories/details.rs:217
+#: src/plugins/calories/details.rs:210
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -661,24 +661,24 @@ msgstr[1] ""
 "{} kalorier\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:97 src/plugins/calories/summary.rs:104
+#: src/plugins/calories/summary.rs:100 src/plugins/calories/summary.rs:107
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "{} kalorie forbrændt i dag"
 msgstr[1] "{} kalorier forbrændt i dag"
 
-#: src/plugins/steps/details.rs:187
+#: src/plugins/steps/details.rs:181
 msgid "Today’s steps: {}"
 msgstr "Antal skridt i dag: {}"
 
 # Ideer til "streak"?
-#: src/plugins/steps/details.rs:206
+#: src/plugins/steps/details.rs:200
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr "Prøv at nå dit mål for antal skridt flere dage i træk!"
 
 # Ideer til "streak"?
-#: src/plugins/steps/details.rs:210
+#: src/plugins/steps/details.rs:204
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -687,64 +687,64 @@ msgstr[0] "Du har nået målet {} dag. Prøv at nå dit mål i dag også!"
 msgstr[1] "Du har nået målet {} dage i træk. Prøv at nå dit mål i dag også!"
 
 # Ideer til "streak"?
-#: src/plugins/steps/details.rs:218
+#: src/plugins/steps/details.rs:212
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr ""
 "Du har nået dagens mål for antal skridt. Fortsæt med at nå målet så mange "
 "dage i træk som muligt!"
 
-#: src/plugins/steps/details.rs:221
+#: src/plugins/steps/details.rs:215
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "Du har nået målet {} dag. Godt arbejde!"
 msgstr[1] "Du har nået målet {} dage i træk. Godt arbejde!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:238
+#: src/plugins/steps/details.rs:232
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} skridt {}"
 msgstr[1] "{} skridt {}"
 
-#: src/plugins/steps/summary.rs:96
+#: src/plugins/steps/summary.rs:100
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} skridt i dag"
 msgstr[1] "{} skridt i dag"
 
-#: src/plugins/steps/summary.rs:107
+#: src/plugins/steps/summary.rs:111
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "{} procent af dagens mål er nået"
 msgstr[1] "{} procent af dagens mål er nået"
 
-#: src/plugins/steps/summary.rs:114
+#: src/plugins/steps/summary.rs:118
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Godt klaret! Dagens mål for antal skridt er nået."
 
-#: src/plugins/weight/details.rs:202
+#: src/plugins/weight/details.rs:196
 msgid "Current BMI: {}"
 msgstr "Nuværende BMI: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:217
+#: src/plugins/weight/details.rs:211
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} pund {}"
 msgstr[1] "{} pund {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:220
+#: src/plugins/weight/details.rs:214
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogram {}"
 msgstr[1] "{} kilogram {}"
 
-#: src/plugins/weight/details.rs:257 src/plugins/weight/details.rs:262
+#: src/plugins/weight/details.rs:251 src/plugins/weight/details.rs:256
 msgid "Unknown BMI"
 msgstr "Ukendt BMI"
 
-#: src/plugins/weight/details.rs:280
+#: src/plugins/weight/details.rs:274
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -758,7 +758,7 @@ msgstr[1] ""
 "Din ønskede vægt er {} pund. Tilføj den første vægtmåling for at se, hvor "
 "tæt på målet du er."
 
-#: src/plugins/weight/details.rs:287
+#: src/plugins/weight/details.rs:281
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -772,80 +772,80 @@ msgstr[1] ""
 "Din ønskede vægt er {} kilogram. Tilføj den første vægtmåling for at se, "
 "hvor tæt på målet du er."
 
-#: src/plugins/weight/details.rs:296
+#: src/plugins/weight/details.rs:290
 msgid "You’ve reached your weight goal. Great job!"
 msgstr "Du har nået din ønskede vægt. Godt klaret!"
 
-#: src/plugins/weight/details.rs:312
+#: src/plugins/weight/details.rs:306
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "Din ønskede vægt er {} pund."
 msgstr[1] "Din ønskede vægt er {} pund."
 
-#: src/plugins/weight/details.rs:317
+#: src/plugins/weight/details.rs:311
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "Du er {} pund fra at nå målet."
 msgstr[1] "Du er {} pund fra at nå målet."
 
-#: src/plugins/weight/details.rs:324
+#: src/plugins/weight/details.rs:318
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "Din ønskede vægt er {} kilogram."
 msgstr[1] "Din ønskede vægt er {} kilogram."
 
-#: src/plugins/weight/details.rs:330
+#: src/plugins/weight/details.rs:324
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "Du er {} kilogram fra at nå målet"
 msgstr[1] "Du er {} kilogram fra at nå målet"
 
-#: src/plugins/weight/details.rs:340
+#: src/plugins/weight/details.rs:334
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr ""
 "Ingen ønsket vægt er angivet. Du kan angive den i indstillingerne for Health."
 
-#: src/plugins/weight/summary.rs:119
+#: src/plugins/weight/summary.rs:123
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} pund"
 msgstr[1] "{} pund"
 
-#: src/plugins/weight/summary.rs:127
+#: src/plugins/weight/summary.rs:131
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} kilogram"
 msgstr[1] "{} kilogram"
 
-#: src/plugins/weight/summary.rs:138
+#: src/plugins/weight/summary.rs:142
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "+ {} pund sammenlignet med sidste måling"
 msgstr[1] "+ {} pund sammenlignet med sidste måling"
 
-#: src/plugins/weight/summary.rs:146
+#: src/plugins/weight/summary.rs:150
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "+ {} kilogram sammenlignet med sidste måling"
 msgstr[1] "+ {} kilogram sammenlignet med sidste måling"
 
-#: src/plugins/weight/summary.rs:157
+#: src/plugins/weight/summary.rs:161
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "{} pund sammenlignet med sidste måling"
 msgstr[1] "{} pund sammenlignet med sidste måling"
 
-#: src/plugins/weight/summary.rs:165
+#: src/plugins/weight/summary.rs:169
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "{} kilogram sammenlignet med sidste måling"
 msgstr[1] "{} kilogram sammenlignet med sidste måling"
 
-#: src/plugins/weight/summary.rs:173
+#: src/plugins/weight/summary.rs:177
 msgid "No change in weight"
 msgstr "Ingen vægtændring"
 
-#: src/plugins/weight/summary.rs:178
+#: src/plugins/weight/summary.rs:182
 msgid "No weight data available"
 msgstr "Der er ingen vægtdata"
 
@@ -912,109 +912,109 @@ msgstr "Godkendt.  Vend venligst tilbage til Health."
 msgid "Couldn’t parse OAuth2 response"
 msgstr "Kunne ikke fortolke OAuth2-svar"
 
-#: src/views/bar_graph_view.rs:583
+#: src/views/bar_graph_view.rs:565
 msgid "Enter weight record to calculate idle calories"
 msgstr "Indtast vægtmåling for at udregne kalorier ved inaktivitet"
 
-#: src/views/bar_graph_view.rs:587
+#: src/views/bar_graph_view.rs:569
 msgid "Idle calories"
 msgstr "Kalorier ved inaktivitet"
 
-#: src/views/view_add_activity.rs:236
+#: src/views/view_add_activity.rs:225
 msgid "Activity"
 msgstr "Aktivitet"
 
-#: src/widgets/activity_row.rs:79
+#: src/widgets/activity_row.rs:68
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} i {} minut"
 msgstr[1] "{} i {} minutter"
 
-#: src/widgets/activity_row.rs:91
+#: src/widgets/activity_row.rs:80
 msgid "Calories burned"
 msgstr "Kalorier forbrændt"
 
-#: src/widgets/activity_row.rs:101
+#: src/widgets/activity_row.rs:90
 msgid "Average heart rate"
 msgstr "Middelpuls"
 
-#: src/widgets/activity_row.rs:107
+#: src/widgets/activity_row.rs:96
 msgid "Maximum heart rate"
 msgstr "Højeste puls"
 
-#: src/widgets/activity_row.rs:113
+#: src/widgets/activity_row.rs:102
 msgid "Minimum heart rate"
 msgstr "Laveste puls"
 
-#: src/widgets/activity_row.rs:126
+#: src/widgets/activity_row.rs:115
 msgid "{} meter"
 msgid_plural "{} meters"
 msgstr[0] "{} meter"
 msgstr[1] "{} meter"
 
-#: src/widgets/activity_row.rs:129
+#: src/widgets/activity_row.rs:118
 msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} yard"
 msgstr[1] "{} yards"
 
-#: src/widgets/bmi_level_bar.rs:274
+#: src/widgets/bmi_level_bar.rs:256
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Nuværende BMI: {}</small>"
 
-#: src/widgets/distance_action_row.rs:303
+#: src/widgets/distance_action_row.rs:287
 msgid "KM"
 msgstr "km"
 
-#: src/widgets/distance_action_row.rs:304
+#: src/widgets/distance_action_row.rs:288
 msgid "Meters"
 msgstr "meter"
 
-#: src/widgets/distance_action_row.rs:306
+#: src/widgets/distance_action_row.rs:290
 msgid "Miles"
 msgstr "miles"
 
-#: src/widgets/distance_action_row.rs:307
+#: src/widgets/distance_action_row.rs:291
 msgid "Feet"
 msgstr "feet"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:488 src/widgets/unit_spinbutton.rs:654
+#: src/widgets/unit_spinbutton.rs:456 src/widgets/unit_spinbutton.rs:622
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:490
+#: src/widgets/unit_spinbutton.rs:458
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:492
+#: src/widgets/unit_spinbutton.rs:460
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:494
+#: src/widgets/unit_spinbutton.rs:462
 msgid "kg"
 msgstr "kg"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:496 src/widgets/unit_spinbutton.rs:656
+#: src/widgets/unit_spinbutton.rs:464 src/widgets/unit_spinbutton.rs:624
 msgid "in"
 msgstr "in"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:498
+#: src/widgets/unit_spinbutton.rs:466
 msgid "ft"
 msgstr "ft"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:500
+#: src/widgets/unit_spinbutton.rs:468
 msgid "mi"
 msgstr "mi"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:502
+#: src/widgets/unit_spinbutton.rs:470
 msgid "lb"
 msgstr "lb"
 
@@ -1069,37 +1069,40 @@ msgstr "Åbn vægtmåling"
 msgid "Import data"
 msgstr "Importér data"
 
-#: src/windows/import_export_dialog_base.rs:214
+#: src/windows/import_export_dialog_base.rs:206
 msgid "Import activities"
 msgstr "Importér aktiviteter"
 
-#: src/windows/import_export_dialog_base.rs:216
+#: src/windows/import_export_dialog_base.rs:208
 msgid "Import is encrypted"
 msgstr "Import  er krypteret"
 
-#: src/windows/import_export_dialog_base.rs:217
+#: src/windows/import_export_dialog_base.rs:209
 msgid "Import weights"
 msgstr "Importér vægttal"
 
-#: src/windows/import_export_dialog_base.rs:218
+#: src/windows/import_export_dialog_base.rs:210
 msgid "Import"
 msgstr "Importér"
 
-#: src/windows/import_export_dialog_base.rs:296
+#: src/windows/import_export_dialog_base.rs:288
 msgid "Success!"
 msgstr "Fuldført!"
 
-#: src/windows/import_export_dialog_base.rs:300
+#: src/windows/import_export_dialog_base.rs:292
 msgid "An error occurred!"
 msgstr "Der opstod en fejl!"
 
-#: src/windows/import_export_dialog_base.rs:305
+#: src/windows/import_export_dialog_base.rs:297
 msgid "Close"
 msgstr "Luk"
 
-#: src/windows/window.rs:267
+#: src/windows/window.rs:268
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Kunne ikke synkronisere data fra Google Fit på grund af fejl: {}"
+
+#~ msgid "Rasmus “Cogitri” Thomsen"
+#~ msgstr "Rasmus “Cogitri” Thomsen"
 
 #~ msgid "Whether the user has completed the setup wizard"
 #~ msgstr "Om brugeren har færdiggjort opsætningsguiden"
