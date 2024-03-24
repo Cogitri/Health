@@ -1,14 +1,14 @@
 # Georgian translation for health.
 # Copyright (C) 2023 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
-# Ekaterine Papava <papava.e@gtu.ge>, 2023.
+# Ekaterine Papava <papava.e@gtu.ge>, 2023-2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2023-03-22 03:14+0000\n"
-"PO-Revision-Date: 2023-06-19 23:15+0200\n"
+"POT-Creation-Date: 2023-10-31 13:32+0000\n"
+"PO-Revision-Date: 2024-03-24 01:54+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <ka@li.org>\n"
 "Language: ka\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.3.1\n"
+"X-Generator: Poedit 3.3.2\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -93,25 +93,29 @@ msgstr "აქტიური მომხმარებლის ID"
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37
-#: src/main.rs:31
+#: src/main.rs:35
 msgid "Health"
 msgstr "ჯანმრთელობა"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9
+#: data/dev.Cogitri.Health.desktop.in.in:9
+msgid "health;fitness;"
+msgstr "health;fitness;ფიტნესი;"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:12
 msgid "Track your fitness goals"
 msgstr "თვალყური ადევნეთ თქვენს ფიტნეს მიზნებს"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:14
 msgid ""
 "Health can visualize how many steps you’ve made daily, your weight "
 "development over time and your daily activities. Data can be synched from "
 "Google Fit or manually entered into Health. Afterwards, it can be viewed and "
 "edited in Health."
 msgstr ""
-
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:36
-msgid "Rasmus “Cogitri” Thomsen"
-msgstr "Rasmus \"Cogitri\" Thomsen"
+"Health-ს შეუძლია გააკეთოს ვიზუალიზაცია, რამდენი ნაბიჯი გაიარეთ დღეში, თქვენი "
+"წონის ცვლილებები დროსთან ერთად. მონაცემები შეგიძლიათ Google Fit-თან "
+"დაასინქრონოთ, ან ხელით შეიყვანოთ Health-ში. შემდეგ კი ეს მონაცემები, "
+"შეგიძლიათ, Heath-ში ნახოთ და ჩაასწოროთ."
 
 #: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
 #: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
@@ -128,7 +132,7 @@ msgstr "_შენახვა"
 msgid "January"
 msgstr "იანვარი"
 
-#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:220
+#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:213
 msgid "February"
 msgstr "თებერვალი"
 
@@ -184,7 +188,7 @@ msgstr "თვე"
 msgid "Year"
 msgstr "წელი"
 
-#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:125
+#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:120
 msgid "Distance"
 msgstr "მანძილი"
 
@@ -211,7 +215,7 @@ msgstr "პაროლის _დადასტურება"
 #: data/ui/plugins/activities/details.blp:5
 #: data/ui/plugins/calories/details.blp:4 data/ui/plugins/steps/details.blp:4
 msgid "You can use the <b>+</b> button to add a new activity."
-msgstr ""
+msgstr "ახალი აქტივობისა დასამატებლად გამოიყენეთ ღილაკი <b>+</b>."
 
 #: data/ui/plugins/activities/details.blp:8
 msgid "Recent Activities"
@@ -234,6 +238,8 @@ msgid ""
 "This is a preview of how the plugin presents data. Enable the plugin to see "
 "your actual, live data."
 msgstr ""
+"ეს მინიატურაა, როგორ წარმოგიდგენთ დამატება მონაცემებს. ჩართეთ დამატება, რომ "
+"იხილოთ თქვენი მიმდინარე, ცოცხალი მონაცემები."
 
 #: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
 #: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
@@ -242,7 +248,7 @@ msgstr "ნაბიჯები"
 
 #: data/ui/plugins/weight/details.blp:5
 msgid "You can use the <b>+</b> button to add a new weight measurement."
-msgstr ""
+msgstr "ახალი აწონვის პასუხის დასამატებლად გამოიყენეთ ღილაკი <b>+</b>."
 
 #: data/ui/plugins/weight/details.blp:8
 msgid "Weight Measurements"
@@ -274,7 +280,7 @@ msgid "General"
 msgstr "ზოგადი"
 
 #: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
-#: data/ui/setup_window.blp:183 src/core/database.rs:1097
+#: data/ui/setup_window.blp:183 src/core/database.rs:1099
 msgid "User"
 msgstr "მომხმარებელი"
 
@@ -319,7 +325,7 @@ msgid "Daily reminder time"
 msgstr "ყოველდღიური შეხსენების დრო"
 
 #: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
-#: src/plugins/steps/details.rs:244
+#: src/plugins/steps/details.rs:239
 msgid "Step goal"
 msgstr "ნაბიჯების მიზანი"
 
@@ -416,11 +422,11 @@ msgstr "ჯანმრთელობის მსოფლიო ორგა�
 msgid "Current weight"
 msgstr "მიმდინარე წონა"
 
-#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:253
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:249
 msgid "Current BMI"
 msgstr "მიმდინარე BMI"
 
-#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:229
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:224
 msgid "Weight goal"
 msgstr "სამიზნე წონა"
 
@@ -432,6 +438,7 @@ msgstr "სინქრონიზაციის მორგება მე�
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
+"შეგიძლიათ, ნაბიჯებისა და წონის გაზომვის შედეგები მესამე პირებთან ატვირთოთ."
 
 #: data/ui/shortcuts_window.blp:15
 msgid "Quit the application"
@@ -489,6 +496,8 @@ msgstr "თქვენთვის"
 msgid ""
 "No plugins enabled. Enable one from the list below to start using Health."
 msgstr ""
+"დამატებები ჩართული არაა. ჩართეთ ერთი ან რამდენიმე ქვედა სიიდან, რომ Health-"
+"ის გამოყენება დაიწყოთ."
 
 #: data/ui/view_home_page.blp:107
 msgid "All data"
@@ -514,15 +523,15 @@ msgstr "ჯანმრთელობის შესახებ"
 msgid "Enable plugin"
 msgstr "დამატების ჩართვა"
 
-#: src/core/application.rs:189
+#: src/core/application.rs:192
 msgid "A health tracking app for the GNOME desktop."
-msgstr ""
+msgstr "ჯანმრთელობის თვალყურის დევნების აპი GNOME-სთვის."
 
-#: src/core/application.rs:191
+#: src/core/application.rs:194
 msgid "translator-credits"
 msgstr "თემური დოღონაძე"
 
-#: src/core/application.rs:193
+#: src/core/application.rs:196
 msgid "Websites"
 msgstr "ვებგვერდები"
 
@@ -606,11 +615,11 @@ msgstr "ფრენბურთი"
 msgid "Walking"
 msgstr "სიარული"
 
-#: src/model/model_notification.rs:214
+#: src/model/model_notification.rs:209
 msgid "Health: walking reminder"
 msgstr "Health: სეირნობის შეხსენება"
 
-#: src/model/model_notification.rs:230
+#: src/model/model_notification.rs:225
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "დარჩა{} ნაბიჯი, სანამ დღიურ მიზანს მიაღწევთ."
@@ -619,12 +628,12 @@ msgstr[0] "დარჩა{} ნაბიჯი, სანამ დღიურ
 msgid "Activities"
 msgstr "ქმედებები"
 
-#: src/plugins/activities/summary.rs:91
+#: src/plugins/activities/summary.rs:94
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "დღეს {} აქტიური წუთი"
 
-#: src/plugins/calories/details.rs:216
+#: src/plugins/calories/details.rs:210
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -638,77 +647,83 @@ msgstr[0] ""
 "{} კალორია\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:97 src/plugins/calories/summary.rs:104
+#: src/plugins/calories/summary.rs:100 src/plugins/calories/summary.rs:107
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "დღეს დაწვით {} კალორია"
 
-#: src/plugins/steps/details.rs:186
+#: src/plugins/steps/details.rs:181
 msgid "Today’s steps: {}"
 msgstr "ნაბიჯები დღეს: {}"
 
-#: src/plugins/steps/details.rs:205
+#: src/plugins/steps/details.rs:200
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
+"უწყვეტი ვარჯიშების შესახებ. მიაღწიეთ თქვენს ნაბიჯების სამიზნე რაოდენობას "
+"ერთზე მეტი დღისთვის, რათა უწყვეტი ვარჯიშები დაიწყოთ!"
 
-#: src/plugins/steps/details.rs:209
+#: src/plugins/steps/details.rs:204
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
 "You’re on a streak for {} days. Reach your step goal today to continue it!"
 msgstr[0] ""
+"უწყვეტი ვარჯიში {} დღით. მიაღწიეთ თქვენი ნაბიჯების რაოდენობას დღეს, რათა "
+"გააგრძელოთ ის!"
 
-#: src/plugins/steps/details.rs:217
+#: src/plugins/steps/details.rs:212
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr ""
+"დღეს მიაღწიეთ ნაბიჯების სამიზნ რაოდენობას. უწყვეტი ვარჯიშის მისაღწევათ "
+"გაიმეორეთ ეს შედეგი!"
 
-#: src/plugins/steps/details.rs:220
+#: src/plugins/steps/details.rs:215
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
-msgstr[0] ""
+msgstr[0] "უწყვეტად ვარჯიშობთ {} დღეა. კარგი ბიჭი ხარ!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:237
+#: src/plugins/steps/details.rs:232
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} ნაბიჯი {}-ზე"
 
-#: src/plugins/steps/summary.rs:96
+#: src/plugins/steps/summary.rs:100
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "დღეს გადადგით {} ნაბიჯი"
 
-#: src/plugins/steps/summary.rs:107
+#: src/plugins/steps/summary.rs:111
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
-msgstr[0] ""
+msgstr[0] "მიაღწიეთ დღიური ნაბიჯების {} პროცენტს"
 
-#: src/plugins/steps/summary.rs:114
+#: src/plugins/steps/summary.rs:118
 msgid "Well done! You have reached your daily step goal!"
 msgstr "ყოჩაღ! თქვენ მიაღწიეთ თქვენს ყოველდღიურ ნაბიჯების სამიზნე რაოდენობას!"
 
-#: src/plugins/weight/details.rs:201
+#: src/plugins/weight/details.rs:196
 msgid "Current BMI: {}"
 msgstr "მიმდინარე BMI: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:216
+#: src/plugins/weight/details.rs:211
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} ფუნტი {}-ზე"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:219
+#: src/plugins/weight/details.rs:214
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} კილოგრამი {}-ზე"
 
-#: src/plugins/weight/details.rs:256 src/plugins/weight/details.rs:261
+#: src/plugins/weight/details.rs:251 src/plugins/weight/details.rs:256
 msgid "Unknown BMI"
 msgstr "უცნობი BMI"
 
-#: src/plugins/weight/details.rs:279
+#: src/plugins/weight/details.rs:274
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -719,7 +734,7 @@ msgstr[0] ""
 "თქვენი წონის მიზანია {} ფუნტი. დაამატეთ პირველი წონის გაზომვა, რომ ნახოთ "
 "რამდენად ახლოს ხართ მის მიღწევასთან."
 
-#: src/plugins/weight/details.rs:286
+#: src/plugins/weight/details.rs:281
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -730,89 +745,93 @@ msgstr[0] ""
 "თქვენი წონის მიზანი {} კილოგრამია. დაამატეთ პირველი წონის გაზომვა, რომ ნახოთ "
 "რამდენად ახლოს ხართ მის მიღწევასთან."
 
-#: src/plugins/weight/details.rs:295
+#: src/plugins/weight/details.rs:290
 msgid "You’ve reached your weight goal. Great job!"
-msgstr ""
+msgstr "მიაღწიეთ თქვენს სამიზნე წონას. კაი ბიჭი ხარ!"
 
-#: src/plugins/weight/details.rs:311
+#: src/plugins/weight/details.rs:306
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "თქვენი წონის მიზანია {} ფუნტი."
 
-#: src/plugins/weight/details.rs:316
+#: src/plugins/weight/details.rs:311
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "თქვენ {} ფუნტი გაქვთ დარჩენილი მის მისაღწევად."
 
-#: src/plugins/weight/details.rs:323
+#: src/plugins/weight/details.rs:318
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "თქვენი წონის მიზანი {} კილოგრამია."
 
-#: src/plugins/weight/details.rs:329
+#: src/plugins/weight/details.rs:324
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "თქვენ {} კილოგრამი გაქვთ დარჩენილი მის მისაღწევად"
 
-#: src/plugins/weight/details.rs:339
+#: src/plugins/weight/details.rs:334
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr ""
+"სამიზნე წონა მითითებული არაა. მისი დაყენება Health-ის მორგების ფანჯარაში "
+"შეგიძლიათ."
 
-#: src/plugins/weight/summary.rs:119
+#: src/plugins/weight/summary.rs:123
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} ფუნტი"
 
-#: src/plugins/weight/summary.rs:127
+#: src/plugins/weight/summary.rs:131
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} კილოგრამი"
 
-#: src/plugins/weight/summary.rs:138
+#: src/plugins/weight/summary.rs:142
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
-msgstr[0] ""
+msgstr[0] "+ {} ფუნტი წინა გაზომვასთან შედარებით"
 
-#: src/plugins/weight/summary.rs:146
+#: src/plugins/weight/summary.rs:150
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
-msgstr[0] ""
+msgstr[0] "+ {} კილოგრამი წინა გაზომვასთან შედარებით"
 
-#: src/plugins/weight/summary.rs:157
+#: src/plugins/weight/summary.rs:161
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "{} ფუნტი წინა გაზომვასთან შედარებით"
 
-#: src/plugins/weight/summary.rs:165
+#: src/plugins/weight/summary.rs:169
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "{} კილოგრამი წინა გაზომვასთან შედარებით"
 
-#: src/plugins/weight/summary.rs:173
+#: src/plugins/weight/summary.rs:177
 msgid "No change in weight"
 msgstr "წონის ცვლილების გარეშე"
 
-#: src/plugins/weight/summary.rs:178
+#: src/plugins/weight/summary.rs:182
 msgid "No weight data available"
 msgstr "წონის მონაცემები ხელმიუწვდომელია"
 
 #: src/sync/csv.rs:81 src/sync/csv.rs:370
 msgid "No activities added yet; can’t create empty export!"
-msgstr ""
+msgstr "აქტივობები დამატებული არაა. ცარიელი სიის გატანა შეუძლებელია!"
 
 #: src/sync/csv.rs:111 src/sync/csv.rs:388
 msgid "No weight measurements added yet; can’t create empty export!"
-msgstr ""
+msgstr "წონის ანაზომები დამატებული არაა. ცარიელ ანაზომებს ვერ გაიტანთ!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:332
 msgid "Can’t parse encrypted backup without encryption key!"
-msgstr ""
+msgstr "დაშიფრული მარქაფის დამუშავება დაშიფვრის გასაღების გარეშე შეუძლებელია!"
 
 #: src/sync/csv.rs:195 src/sync/csv.rs:352
 msgid ""
 "Couldn’t parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
 msgstr ""
+"CSV ფაილის დამუშავება შეუძლებელია. ცდილობთ, დაუშიფრავი მარქაფი დაშიფრული "
+"სახით წაიკითხოთ?"
 
 #: src/sync/csv.rs:208
 msgid "Couldn’t decrypt data. Are you sure you’re using the right key?"
@@ -841,119 +860,121 @@ msgid ""
 "Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
 "authenticate with your sync provider."
 msgstr ""
+"OAuth2 კოდის მიღება, როცა განახლების კოდი დაყენებული არაა, შეუძლებელია! "
+"გაიარეთ ავტორიზაცია თავიდან თქვენს სინქრონიზაციის მომწოდებელთან."
 
 #: src/sync/sync_provider.rs:157
 msgid "Token for Health sync provider {}"
-msgstr ""
+msgstr "კოდი ჯანმრთელობის სინქრონიზაციის მომწოდებლისთვის {}"
 
 #: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
-msgstr ""
+msgstr "ავთენტიკაცია წარმატებულია. დაბრუნდით Health-ზე."
 
 #: src/sync/sync_provider.rs:228
 msgid "Couldn’t parse OAuth2 response"
 msgstr "OAuth2  პასუხის დამუშავების შეცდომა"
 
-#: src/views/bar_graph_view.rs:568
+#: src/views/bar_graph_view.rs:565
 msgid "Enter weight record to calculate idle calories"
-msgstr ""
+msgstr "შეიყვანეთ წონის ჩასაწერი უქმე კალორიების გამოსათვლელად"
 
-#: src/views/bar_graph_view.rs:572
+#: src/views/bar_graph_view.rs:569
 msgid "Idle calories"
 msgstr "უქმე კალორიები"
 
-#: src/views/view_add_activity.rs:231
+#: src/views/view_add_activity.rs:225
 msgid "Activity"
 msgstr "აქტივობა"
 
-#: src/widgets/activity_row.rs:73
+#: src/widgets/activity_row.rs:68
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} {} წუთში"
 
-#: src/widgets/activity_row.rs:85
+#: src/widgets/activity_row.rs:80
 msgid "Calories burned"
 msgstr "დამწვარი კალორიები"
 
-#: src/widgets/activity_row.rs:95
+#: src/widgets/activity_row.rs:90
 msgid "Average heart rate"
 msgstr "საშუალო გულისცემა"
 
-#: src/widgets/activity_row.rs:101
+#: src/widgets/activity_row.rs:96
 msgid "Maximum heart rate"
 msgstr "მაქსიმალური გულისცემა"
 
-#: src/widgets/activity_row.rs:107
+#: src/widgets/activity_row.rs:102
 msgid "Minimum heart rate"
 msgstr "მინიმალური გულისცემა"
 
-#: src/widgets/activity_row.rs:120
+#: src/widgets/activity_row.rs:115
 msgid "{} meter"
 msgid_plural "{} meters"
 msgstr[0] "{} მეტრი"
 
-#: src/widgets/activity_row.rs:123
+#: src/widgets/activity_row.rs:118
 msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} იარდი"
 
-#: src/widgets/bmi_level_bar.rs:260
+#: src/widgets/bmi_level_bar.rs:256
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>მიმდინარე BMI: {}</small>"
 
-#: src/widgets/distance_action_row.rs:293
+#: src/widgets/distance_action_row.rs:287
 msgid "KM"
 msgstr "KM"
 
-#: src/widgets/distance_action_row.rs:294
+#: src/widgets/distance_action_row.rs:288
 msgid "Meters"
 msgstr "მეტრი"
 
-#: src/widgets/distance_action_row.rs:296
+#: src/widgets/distance_action_row.rs:290
 msgid "Miles"
 msgstr "მილი"
 
-#: src/widgets/distance_action_row.rs:297
+#: src/widgets/distance_action_row.rs:291
 msgid "Feet"
 msgstr "ფუტი"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:458 src/widgets/unit_spinbutton.rs:624
+#: src/widgets/unit_spinbutton.rs:456 src/widgets/unit_spinbutton.rs:622
 msgid "cm"
 msgstr "სმ"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:460
+#: src/widgets/unit_spinbutton.rs:458
 msgid "m"
 msgstr "თვე"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:462
+#: src/widgets/unit_spinbutton.rs:460
 msgid "km"
 msgstr "კმ"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:464
+#: src/widgets/unit_spinbutton.rs:462
 msgid "kg"
 msgstr "კგ"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:466 src/widgets/unit_spinbutton.rs:626
+#: src/widgets/unit_spinbutton.rs:464 src/widgets/unit_spinbutton.rs:624
 msgid "in"
 msgstr "დუიმი"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:468
+#: src/widgets/unit_spinbutton.rs:466
 msgid "ft"
 msgstr "ფტ"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:470
+#: src/widgets/unit_spinbutton.rs:468
 msgid "mi"
 msgstr "მი"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:472
+#: src/widgets/unit_spinbutton.rs:470
 msgid "lb"
 msgstr "ფუნტი"
 
@@ -1008,34 +1029,37 @@ msgstr "წონის გაზომვის გახსნა"
 msgid "Import data"
 msgstr "მონაცემების შემოტანა"
 
-#: src/windows/import_export_dialog_base.rs:210
+#: src/windows/import_export_dialog_base.rs:206
 msgid "Import activities"
 msgstr "აქტივობების შემოტანა"
 
-#: src/windows/import_export_dialog_base.rs:212
+#: src/windows/import_export_dialog_base.rs:208
 msgid "Import is encrypted"
 msgstr "შემოტანა დაშიფრულია"
 
-#: src/windows/import_export_dialog_base.rs:213
+#: src/windows/import_export_dialog_base.rs:209
 msgid "Import weights"
 msgstr "წონების შემოტანა"
 
-#: src/windows/import_export_dialog_base.rs:214
+#: src/windows/import_export_dialog_base.rs:210
 msgid "Import"
 msgstr "შემოტანა"
 
-#: src/windows/import_export_dialog_base.rs:292
+#: src/windows/import_export_dialog_base.rs:288
 msgid "Success!"
 msgstr "წარმატება!"
 
-#: src/windows/import_export_dialog_base.rs:296
+#: src/windows/import_export_dialog_base.rs:292
 msgid "An error occurred!"
 msgstr "აღმოჩენილია შეცდომა!"
 
-#: src/windows/import_export_dialog_base.rs:301
+#: src/windows/import_export_dialog_base.rs:297
 msgid "Close"
 msgstr "დახურვა"
 
-#: src/windows/window.rs:267
+#: src/windows/window.rs:268
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Google Fit-თან სინქრონიზაცია შეუძლებელია შემდეგი შეცდომის გამო: {}"
+
+#~ msgid "Rasmus “Cogitri” Thomsen"
+#~ msgstr "Rasmus \"Cogitri\" Thomsen"
