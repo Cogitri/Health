@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2022-11-02 18:09+0000\n"
-"PO-Revision-Date: 2023-01-11 03:02+0000\n"
+"POT-Creation-Date: 2023-10-31 13:32+0000\n"
+"PO-Revision-Date: 2024-04-24 19:05+0200\n"
 "Last-Translator: Fabio T. <f.t.public@gmail.com>\n"
 "Language-Team: Friulian <f.t.public@gmail.com>\n"
 "Language: fur\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Editor: HaiPO 1.4 beta\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -93,29 +94,29 @@ msgstr "ID utent atîf"
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37
-#: src/main.rs:31
+#: src/main.rs:35
 msgid "Health"
 msgstr "Salût"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9
+#: data/dev.Cogitri.Health.desktop.in.in:9
+msgid "health;fitness;"
+msgstr "salût;forme fisiche;"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:12
 msgid "Track your fitness goals"
 msgstr "Sta daûr ai tiei obietîfs pe forme fisiche"
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:14
 msgid ""
 "Health can visualize how many steps you’ve made daily, your weight "
 "development over time and your daily activities. Data can be synched from "
-"Google Fit or manually entered into Health. Afterwards, it can be viewed and"
-" edited in Health."
+"Google Fit or manually entered into Health. Afterwards, it can be viewed and "
+"edited in Health."
 msgstr ""
 "Salût al pues visualizâ trops pas che tu âs fat ogni dì, l'andament dal pês "
 "cul timp a lâ, e lis tôs ativitâts zornalieris. Al è pussibil sincronizâ i "
 "dâts dal Google Fit o inserîju a man dentri di Salût. Dopo, tu ju puedis "
 "visualizâ e modificâ cun Salût."
-
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:36
-msgid "Rasmus “Cogitri” Thomsen"
-msgstr "Rasmus “Cogitri” Thomsen"
 
 #: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
 #: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
@@ -132,7 +133,7 @@ msgstr "_Salve"
 msgid "January"
 msgstr "Zenâr"
 
-#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:220
+#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:213
 msgid "February"
 msgstr "Fevrâr"
 
@@ -188,7 +189,7 @@ msgstr "Mês"
 msgid "Year"
 msgstr "An"
 
-#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:125
+#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:120
 msgid "Distance"
 msgstr "Distance"
 
@@ -238,8 +239,8 @@ msgid ""
 "This is a preview of how the plugin presents data. Enable the plugin to see "
 "your actual, live data."
 msgstr ""
-"Cheste e je une anteprime di cemût che il plugin al presente i dâts. Abilite"
-" il plugin par viodi i tiei dâts atuâi in timp reâl."
+"Cheste e je une anteprime di cemût che il plugin al presente i dâts. Abilite "
+"il plugin par viodi i tiei dâts atuâi in timp reâl."
 
 #: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
 #: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
@@ -281,7 +282,7 @@ msgid "General"
 msgstr "Gjenerâl"
 
 #: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
-#: data/ui/setup_window.blp:183 src/core/database.rs:1097
+#: data/ui/setup_window.blp:183 src/core/database.rs:1099
 msgid "User"
 msgstr "Utent"
 
@@ -326,7 +327,7 @@ msgid "Daily reminder time"
 msgstr "Orari dal pro memoria zornalîr"
 
 #: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
-#: src/plugins/steps/details.rs:244
+#: src/plugins/steps/details.rs:239
 msgid "Step goal"
 msgstr "Obietîf di pas"
 
@@ -422,18 +423,17 @@ msgstr "La OMS e consee un IMC tra 18,5 e 24,9."
 msgid "Current weight"
 msgstr "Pês atuâl"
 
-#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:253
+#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:249
 msgid "Current BMI"
 msgstr "IMC atuâl"
 
-#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:229
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:224
 msgid "Weight goal"
 msgstr "Obietîf di pês"
 
 #: data/ui/setup_window.blp:386
 msgid "Setup sync with third-party providers."
-msgstr ""
-"Configure la sincronizazion cun gjestôrs dal servizi di tiercis parts."
+msgstr "Configure la sincronizazion cun gjestôrs dal servizi di tiercis parts."
 
 #: data/ui/setup_window.blp:398
 msgid ""
@@ -525,15 +525,15 @@ msgstr "_Informazions su Salût"
 msgid "Enable plugin"
 msgstr "Abilite plugin"
 
-#: src/core/application.rs:189
+#: src/core/application.rs:192
 msgid "A health tracking app for the GNOME desktop."
 msgstr "Une aplicazion par stâ daûr ae salût pal scritori GNOME."
 
-#: src/core/application.rs:191
+#: src/core/application.rs:194
 msgid "translator-credits"
 msgstr "Fabio Tomat <f.t.public@gmail.com>"
 
-#: src/core/application.rs:193
+#: src/core/application.rs:196
 msgid "Websites"
 msgstr "Sîts Web"
 
@@ -617,11 +617,11 @@ msgstr "Bale al svol"
 msgid "Walking"
 msgstr "Cjaminade"
 
-#: src/model/model_notification.rs:214
+#: src/model/model_notification.rs:209
 msgid "Health: walking reminder"
 msgstr "Salût: pro memoria par cjaminâ"
 
-#: src/model/model_notification.rs:230
+#: src/model/model_notification.rs:225
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "Al reste {} pas par completâ il to obietîf di pas zornalîr."
@@ -631,13 +631,13 @@ msgstr[1] "A restin {} pas par completâ il to obietîf di pas zornalîr."
 msgid "Activities"
 msgstr "Ativitâts"
 
-#: src/plugins/activities/summary.rs:91
+#: src/plugins/activities/summary.rs:94
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
 msgstr[0] "{} minût di ativitât vuê"
 msgstr[1] "{} minûts di ativitât vuê"
 
-#: src/plugins/calories/details.rs:216
+#: src/plugins/calories/details.rs:210
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -655,24 +655,24 @@ msgstr[1] ""
 "{} caloriis\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:97 src/plugins/calories/summary.rs:104
+#: src/plugins/calories/summary.rs:100 src/plugins/calories/summary.rs:107
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
 msgstr[0] "{} calorie brusade vuê"
 msgstr[1] "{} caloriis brusadis vuê"
 
-#: src/plugins/steps/details.rs:186
+#: src/plugins/steps/details.rs:181
 msgid "Today’s steps: {}"
 msgstr "Pas di vuê: {}"
 
-#: src/plugins/steps/details.rs:205
+#: src/plugins/steps/details.rs:200
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
 "Ancjemò nissune serie. Rive al to obietîf di pas zornalîr par plui dîs e "
 "scomence une serie!"
 
-#: src/plugins/steps/details.rs:209
+#: src/plugins/steps/details.rs:204
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -684,63 +684,63 @@ msgstr[1] ""
 "Tu stâs fasint une serie di {} dîs. Rive al to obietîf di pas  vuê par "
 "continuâle!"
 
-#: src/plugins/steps/details.rs:217
+#: src/plugins/steps/details.rs:212
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr ""
 "Vuê, l'obietîf di pas al è stât cjapât. Continue par scomençâ une serie!"
 
-#: src/plugins/steps/details.rs:220
+#: src/plugins/steps/details.rs:215
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "Tu stâs fasint une serie di {} dì. Ben fate!"
 msgstr[1] "Tu stâs fasint une serie di {} dîs. Ben fate!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/plugins/steps/details.rs:237
+#: src/plugins/steps/details.rs:232
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} pas al/ai {}"
 msgstr[1] "{} pas al/ai {}"
 
-#: src/plugins/steps/summary.rs:96
+#: src/plugins/steps/summary.rs:100
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
 msgstr[0] "{} pas fat vuê"
 msgstr[1] "{} pas fats vuê"
 
-#: src/plugins/steps/summary.rs:107
+#: src/plugins/steps/summary.rs:111
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "L'obietîf di pas zornalîr al è stât completât al {}%%"
 msgstr[1] "L'obietîf di pas zornalîr al è stât completât al {}%%"
 
-#: src/plugins/steps/summary.rs:114
+#: src/plugins/steps/summary.rs:118
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Ben fate! Il to obietîf di pas zornalîr al è stât completât!"
 
-#: src/plugins/weight/details.rs:201
+#: src/plugins/weight/details.rs:196
 msgid "Current BMI: {}"
 msgstr "IMC atuâl: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:216
+#: src/plugins/weight/details.rs:211
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} lire al/ai {}"
 msgstr[1] "{} liris al/ai {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/plugins/weight/details.rs:219
+#: src/plugins/weight/details.rs:214
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} chilogram al/ai {}"
 msgstr[1] "{} chilograms al/ai {}"
 
-#: src/plugins/weight/details.rs:256 src/plugins/weight/details.rs:261
+#: src/plugins/weight/details.rs:251 src/plugins/weight/details.rs:256
 msgid "Unknown BMI"
 msgstr "IMC no cognossût"
 
-#: src/plugins/weight/details.rs:279
+#: src/plugins/weight/details.rs:274
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -754,7 +754,7 @@ msgstr[1] ""
 "Il to obietîf di pês al è {} liris. Zonte une misurazion dal pês par viodi "
 "trop dongje che tu sês tal cjapâlu."
 
-#: src/plugins/weight/details.rs:286
+#: src/plugins/weight/details.rs:281
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -768,81 +768,81 @@ msgstr[1] ""
 "Il to obietîf di pês al è {} chilos. Zonte une misurazion dal pês par viodi "
 "trop dongje che tu sês tal cjapâlu."
 
-#: src/plugins/weight/details.rs:295
+#: src/plugins/weight/details.rs:290
 msgid "You’ve reached your weight goal. Great job!"
 msgstr "Tu sês rivât al to obietîf di pês. Ben fate!"
 
-#: src/plugins/weight/details.rs:311
+#: src/plugins/weight/details.rs:306
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "Il to obietîf di pês al è {} lire."
 msgstr[1] "Il to obietîf di pês al è {} liris."
 
-#: src/plugins/weight/details.rs:316
+#: src/plugins/weight/details.rs:311
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "Ti mancje {} lire par cjapâlu."
 msgstr[1] "Ti mancjin {} liris par cjapâlu."
 
-#: src/plugins/weight/details.rs:323
+#: src/plugins/weight/details.rs:318
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "Il to obietîf di pês al è {} chilo."
 msgstr[1] "Il to obietîf di pês al è {} chilos."
 
-#: src/plugins/weight/details.rs:329
+#: src/plugins/weight/details.rs:324
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "Ti mancje {} chilo par cjapâlu"
 msgstr[1] "Ti mancjin {} chilos par cjapâlu"
 
-#: src/plugins/weight/details.rs:339
+#: src/plugins/weight/details.rs:334
 msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr ""
 "Nol è stât ancjemò stabilît nissun obietîf di pês. Tu puedis stabilîlu tes "
 "preferencis di Salût."
 
-#: src/plugins/weight/summary.rs:119
+#: src/plugins/weight/summary.rs:123
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} lire"
 msgstr[1] "{} liris"
 
-#: src/plugins/weight/summary.rs:127
+#: src/plugins/weight/summary.rs:131
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} chilo"
 msgstr[1] "{} chilos"
 
-#: src/plugins/weight/summary.rs:138
+#: src/plugins/weight/summary.rs:142
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
 msgstr[0] "+ {} lire in confront ae misurazion precedente"
 msgstr[1] "+ {} liris in confront ae misurazion precedente"
 
-#: src/plugins/weight/summary.rs:146
+#: src/plugins/weight/summary.rs:150
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
 msgstr[0] "+ {} chilo in confront ae misurazion precedente"
 msgstr[1] "+ {} chilos in confront ae misurazion precedente"
 
-#: src/plugins/weight/summary.rs:157
+#: src/plugins/weight/summary.rs:161
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
 msgstr[0] "{} lire in confront ae misurazion precedente"
 msgstr[1] "{} liris in confront ae misurazion precedente"
 
-#: src/plugins/weight/summary.rs:165
+#: src/plugins/weight/summary.rs:169
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
 msgstr[0] "{} chilo in confront ae misurazion precedente"
 msgstr[1] "{} chilos in confront ae misurazion precedente"
 
-#: src/plugins/weight/summary.rs:173
+#: src/plugins/weight/summary.rs:177
 msgid "No change in weight"
 msgstr "Nissune variazion di pês"
 
-#: src/plugins/weight/summary.rs:178
+#: src/plugins/weight/summary.rs:182
 msgid "No weight data available"
 msgstr "Nissun dât sul pês disponibil"
 
@@ -911,109 +911,109 @@ msgstr "Autenticât cun sucès, torne su Salût."
 msgid "Couldn’t parse OAuth2 response"
 msgstr "Impussibil analizâ la rispueste OAuth2"
 
-#: src/views/bar_graph_view.rs:568
+#: src/views/bar_graph_view.rs:565
 msgid "Enter weight record to calculate idle calories"
 msgstr "Inserìs il pês par calcolâ lis caloriis brusadis a ripôs"
 
-#: src/views/bar_graph_view.rs:572
+#: src/views/bar_graph_view.rs:569
 msgid "Idle calories"
 msgstr "Caloriis brusadis a ripôs"
 
-#: src/views/view_add_activity.rs:231
+#: src/views/view_add_activity.rs:225
 msgid "Activity"
 msgstr "Ativitât"
 
-#: src/widgets/activity_row.rs:73
+#: src/widgets/activity_row.rs:68
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} par {} minût"
 msgstr[1] "{} par {} minûts"
 
-#: src/widgets/activity_row.rs:85
+#: src/widgets/activity_row.rs:80
 msgid "Calories burned"
 msgstr "Caloriis brusadis"
 
-#: src/widgets/activity_row.rs:95
+#: src/widgets/activity_row.rs:90
 msgid "Average heart rate"
 msgstr "Bati dal cûr medi"
 
-#: src/widgets/activity_row.rs:101
+#: src/widgets/activity_row.rs:96
 msgid "Maximum heart rate"
 msgstr "Bati dal cûr massim"
 
-#: src/widgets/activity_row.rs:107
+#: src/widgets/activity_row.rs:102
 msgid "Minimum heart rate"
 msgstr "Bati dal cûr minim"
 
-#: src/widgets/activity_row.rs:120
+#: src/widgets/activity_row.rs:115
 msgid "{} meter"
 msgid_plural "{} meters"
 msgstr[0] "{} metri"
 msgstr[1] "{} metris"
 
-#: src/widgets/activity_row.rs:123
+#: src/widgets/activity_row.rs:118
 msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} yard"
 msgstr[1] "{} yards"
 
-#: src/widgets/bmi_level_bar.rs:260
+#: src/widgets/bmi_level_bar.rs:256
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>IMC atuâl: {}</small>"
 
-#: src/widgets/distance_action_row.rs:293
+#: src/widgets/distance_action_row.rs:287
 msgid "KM"
 msgstr "Chilometris"
 
-#: src/widgets/distance_action_row.rs:294
+#: src/widgets/distance_action_row.rs:288
 msgid "Meters"
 msgstr "Metris"
 
-#: src/widgets/distance_action_row.rs:296
+#: src/widgets/distance_action_row.rs:290
 msgid "Miles"
 msgstr "Miis"
 
-#: src/widgets/distance_action_row.rs:297
+#: src/widgets/distance_action_row.rs:291
 msgid "Feet"
 msgstr "Pîts"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:458 src/widgets/unit_spinbutton.rs:624
+#: src/widgets/unit_spinbutton.rs:456 src/widgets/unit_spinbutton.rs:622
 msgid "cm"
 msgstr "cm"
 
 #. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:460
+#: src/widgets/unit_spinbutton.rs:458
 msgid "m"
 msgstr "m"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:462
+#: src/widgets/unit_spinbutton.rs:460
 msgid "km"
 msgstr "km"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:464
+#: src/widgets/unit_spinbutton.rs:462
 msgid "kg"
 msgstr "kg"
 
 #. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:466 src/widgets/unit_spinbutton.rs:626
+#: src/widgets/unit_spinbutton.rs:464 src/widgets/unit_spinbutton.rs:624
 msgid "in"
 msgstr "in"
 
 #. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:468
+#: src/widgets/unit_spinbutton.rs:466
 msgid "ft"
 msgstr "ft"
 
 #. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:470
+#: src/widgets/unit_spinbutton.rs:468
 msgid "mi"
 msgstr "mi"
 
 #. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:472
+#: src/widgets/unit_spinbutton.rs:470
 msgid "lb"
 msgstr "lb"
 
@@ -1068,34 +1068,37 @@ msgstr "Vierç misurazion dal pês"
 msgid "Import data"
 msgstr "Impuarte dâts"
 
-#: src/windows/import_export_dialog_base.rs:210
+#: src/windows/import_export_dialog_base.rs:206
 msgid "Import activities"
 msgstr "Impuarte ativitâts"
 
-#: src/windows/import_export_dialog_base.rs:212
+#: src/windows/import_export_dialog_base.rs:208
 msgid "Import is encrypted"
 msgstr "La importazion e je cifrade"
 
-#: src/windows/import_export_dialog_base.rs:213
+#: src/windows/import_export_dialog_base.rs:209
 msgid "Import weights"
 msgstr "Impuarte pês"
 
-#: src/windows/import_export_dialog_base.rs:214
+#: src/windows/import_export_dialog_base.rs:210
 msgid "Import"
 msgstr "Impuarte"
 
-#: src/windows/import_export_dialog_base.rs:292
+#: src/windows/import_export_dialog_base.rs:288
 msgid "Success!"
 msgstr "Fat!"
 
-#: src/windows/import_export_dialog_base.rs:296
+#: src/windows/import_export_dialog_base.rs:292
 msgid "An error occurred!"
 msgstr "Al è vignût fûr un erôr!"
 
-#: src/windows/import_export_dialog_base.rs:301
+#: src/windows/import_export_dialog_base.rs:297
 msgid "Close"
 msgstr "Siere"
 
-#: src/windows/window.rs:267
+#: src/windows/window.rs:268
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Impussibil sincronizâ i dâts di Google Fit par vie dal erôr: {}"
+
+#~ msgid "Rasmus “Cogitri” Thomsen"
+#~ msgstr "Rasmus “Cogitri” Thomsen"
