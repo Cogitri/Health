@@ -23,7 +23,7 @@ use crate::{
 };
 use gtk::{
     gio::{prelude::*, subclass::prelude::*},
-    glib::{self, g_warning, SignalHandlerId},
+    glib::{self, SignalHandlerId},
     prelude::*,
 };
 use num_traits::cast::FromPrimitive;
@@ -173,24 +173,13 @@ impl ActivityTypeSelector {
             imp.recents_box.set_visible(true);
 
             for activity in recent_activity_types.iter().rev() {
-                if let Ok(info) = ActivityInfo::try_from(*activity) {
-                    imp.recent_activity_types_model
-                        .append(&ActivityTypeRowData::new(info.id, &info.name));
-                } else {
-                    let name = activity.as_ref();
-                    g_warning!(crate::config::LOG_DOMAIN, "Unknown activity {name}!");
-                }
+                let info = ActivityInfo::from(*activity);
+                imp.recent_activity_types_model
+                    .append(&ActivityTypeRowData::new(info.id, &info.name));
             }
             let last_activity = recent_activity_types.last().unwrap();
-            if let Ok(info) = ActivityInfo::try_from(*last_activity) {
-                imp.selected_activity.replace(info);
-            } else {
-                let name = last_activity.as_ref();
-                g_warning!(
-                    crate::config::LOG_DOMAIN,
-                    "Unknown Activity {name}, falling back to walking.",
-                );
-            }
+            let info = ActivityInfo::from(*last_activity);
+            imp.selected_activity.replace(info);
         }
 
         let mut i = 0;

@@ -180,10 +180,9 @@ impl CsvHandler {
         let data = file.load_contents_future().await?.0;
 
         if serde_json::from_slice::<EncryptedValue>(&data).is_ok() {
-            Err(EncryptionError::EncryptedAsUnencrypted(i18n(
-                "Can’t parse encrypted backup without encryption key!",
+            Err(anyhow::Error::msg(EncryptionError::EncryptedAsUnencrypted(
+                i18n("Can’t parse encrypted backup without encryption key!"),
             )))
-            .map_err(anyhow::Error::msg)
         } else {
             Ok(data)
         }

@@ -22,7 +22,7 @@ pub use application::Application;
 #[doc(inline)]
 pub use database::Database;
 pub use i18n::*;
-pub use macros::*;
+
 #[doc(inline)]
 pub use ref_iter::*;
 #[doc(inline)]

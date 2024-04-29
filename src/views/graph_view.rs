@@ -262,7 +262,7 @@ mod imp {
             cr.move_to(
                 f64::from(HALF_X_PADDING),
                 f64::from(
-                    inner.height - inner.points.get(0).unwrap().value * inner.scale_y
+                    inner.height - inner.points.first().unwrap().value * inner.scale_y
                         + HALF_Y_PADDING,
                 ),
             );

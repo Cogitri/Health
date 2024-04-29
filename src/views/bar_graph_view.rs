@@ -216,7 +216,6 @@ mod imp {
                     .calorie_split
                     .clone()
                     .into_iter()
-                    .map(|(id, calorie)| (id, calorie))
                     .collect::<Vec<(ActivityType, i64)>>();
 
                 sorted_by_calories.sort_by(|a, b| b.1.cmp(&a.1));
@@ -532,7 +531,6 @@ impl BarGraphView {
             let mut sorted_by_calories = touched_bar
                 .calorie_split
                 .into_iter()
-                .map(|(id, calorie)| (id, calorie))
                 .collect::<Vec<(ActivityType, i64)>>();
             sorted_by_calories.sort_by(|a, b| b.1.cmp(&a.1));
 

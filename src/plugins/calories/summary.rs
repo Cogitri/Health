@@ -93,7 +93,7 @@ impl PluginCaloriesSummaryRow {
             .calories(glib::DateTime::local().add_days(-1).unwrap())
             .await
             .ok()
-            .and_then(|s| s.get(0).cloned())
+            .and_then(|s| s.first().cloned())
         {
             let calories_burned_today: i64 = bar.calorie_split.values().sum();
             imp.label.set_label(&ni18n_f(
