@@ -1,11 +1,11 @@
 {
   "id": "dev.Cogitri.Health.Devel",
   "runtime": "org.gnome.Platform",
-  "runtime-version": "44",
+  "runtime-version": "46",
   "sdk": "org.gnome.Sdk",
   "sdk-extensions": [
     "org.freedesktop.Sdk.Extension.rust-stable",
-    "org.freedesktop.Sdk.Extension.llvm15"
+    "org.freedesktop.Sdk.Extension.llvm16"
   ],
   "command": "dev.Cogitri.Health.Devel",
   "finish-args": [
@@ -35,7 +35,7 @@
     "/share/gir-1.0"
   ],
   "build-options": {
-    "append-path": "/usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/llvm15/bin",
+    "append-path": "/usr/lib/sdk/rust-stable/bin:/usr/lib/sdk/llvm16/bin",
     "env": {
       "CARGO_REGISTRIES_CRATES_IO_PROTOCOL": "sparse",
       "CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER": "clang",
