@@ -7,52 +7,52 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2024-07-08 11:36+0000\n"
-"PO-Revision-Date: 2024-07-20 21:25+0330\n"
-"Last-Translator: Sohrab Behdani <behdanisohrab@proton.me>\n"
+"POT-Creation-Date: 2024-07-20 18:08+0000\n"
+"PO-Revision-Date: 2024-07-26 15:40+0330\n"
+"Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <kde-i18n-doc@kde.org>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 24.05.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
-msgstr "تنظیم اولیه انجام شد"
+msgstr "نخستین برپاسازی انجام شد"
 
 #: data/dev.Cogitri.Health.gschema.xml:20
 msgid "Toggle notifications"
-msgstr "فعال‌کردن اعلانات"
+msgstr "تغییر وضعیت آگاهی‌ها"
 
 #: data/dev.Cogitri.Health.gschema.xml:24
 msgid "Set enabled plugins"
-msgstr "تنظیم افزونه‌های فعال"
+msgstr "تنظیم افزایه‌های به کار افتاده"
 
 #: data/dev.Cogitri.Health.gschema.xml:28
 msgid "Notification time"
-msgstr "زمان اعلان"
+msgstr "زمان آگاهی"
 
 #: data/dev.Cogitri.Health.gschema.xml:32
 msgid "notification frequency"
-msgstr "بسامد اعلان"
+msgstr "بسامد آگاهی"
 
 #: data/dev.Cogitri.Health.gschema.xml:36
 msgid "List of recent activity types"
-msgstr "سیاهه انواع فعالیت‌های اخیر"
+msgstr "سیاههٔ گونه‌های فعّالیت اخیر"
 
 #: data/dev.Cogitri.Health.gschema.xml:40
 msgid "Google Fit Sync-Provider setup"
-msgstr "تنظیم ارائه‌دهنده همگام‌سازی Google Fit"
+msgstr "برپا سازی فراهم کنندهٔ هم‌گام سازی فیت گوگل"
 
 #: data/dev.Cogitri.Health.gschema.xml:44
 msgid "Last sync with Google Fit"
-msgstr "آخرین همگام‌سازی با Google Fit"
+msgstr "آخرین هم‌گام سازی با فیت گوگل"
 
 #: data/dev.Cogitri.Health.gschema.xml:48
 msgid "Unit system used"
-msgstr "سامانه‌ یکا استفاده شده"
+msgstr "سامانه‌ٔ یکای استفاده شده"
 
 #: data/dev.Cogitri.Health.gschema.xml:52
 msgid "User age"
@@ -68,7 +68,7 @@ msgstr "قد کاربر"
 
 #: data/dev.Cogitri.Health.gschema.xml:64
 msgid "User step goal"
-msgstr "هدف پیاده‌روی کاربر"
+msgstr "قدم هدف کاربر"
 
 #: data/dev.Cogitri.Health.gschema.xml:68
 msgid "User weight goal"
@@ -76,46 +76,44 @@ msgstr "وزن هدف کاربر"
 
 #: data/dev.Cogitri.Health.gschema.xml:72
 msgid "Window height"
-msgstr "ارتفاع پنجره"
+msgstr "بلندای پنجره"
 
 #: data/dev.Cogitri.Health.gschema.xml:76
 msgid "Window maximized"
-msgstr "پنجره بزرگنمایی شد"
+msgstr "پنجره بیشینه شد"
 
 #: data/dev.Cogitri.Health.gschema.xml:80
 msgid "Window width"
-msgstr "طول پنجره"
+msgstr "پهنای پنجره"
 
 #: data/dev.Cogitri.Health.gschema.xml:84
 msgid "Active user ID"
-msgstr "شناسه کاربر فعال"
+msgstr "شناسهٔ کاربر فعّال"
 
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.blp:37
 #: src/main.rs:35
 msgid "Health"
-msgstr "سلامت"
+msgstr "سلامتی"
 
 #: data/dev.Cogitri.Health.desktop.in.in:9
 msgid "health;fitness;"
-msgstr "سلامت;آمادگی‌جسمانی;"
+msgstr "health;fitness;سلامتی;آمادگی‌جسمانی;"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:12
 msgid "Track your fitness goals"
-msgstr "اهداف آمادگی‌جسمانی خود را رصد کنید"
+msgstr "ردیابی هدف‌های آمادگی‌جسمانیتان"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:14
 msgid ""
-"Health can visualize how many steps you’ve made daily, your weight "
-"development over time and your daily activities. Data can be synched from "
-"Google Fit or manually entered into Health. Afterwards, it can be viewed and "
-"edited in Health."
+"Health can visualize how many steps you’ve made daily, your weight development "
+"over time and your daily activities. Data can be synched from Google Fit or "
+"manually entered into Health. Afterwards, it can be viewed and edited in Health."
 msgstr ""
-"سلامت می‌تواند تعداد قدم‌هایی که روزانه انجام داده‌اید، رشد وزن شما در طول"
-" زمان و فعالیت‌های روزانه‌تان را تجسم کند. داده ها را می توان از Google Fit"
-" همگام کرد یا به صورت دستی در سلامت وارد کرد. سپس در سلامت قابل مشاهده و"
-" ویرایش است."
+"سلامتی می‌تواند تعداد قدم‌هایی که روزانه برداشته‌اید، توسعهٔ وزنتان در طول زمان و "
+"فعّالیت‌های روزانه‌تان را نمایش دهد. داده‌ها می‌تواندد با فیت گوگل هم‌گام شده یا به "
+"صورت دستی در سلامتی وارد شوند. پس از آن می‌توانند در سلامتی دیده و ویراسته شوند."
 
 #: data/ui/data_add_dialog.blp:5 data/ui/import_export_dialog_base.blp:5
 #: src/windows/export_dialog.rs:53 src/windows/export_dialog.rs:89
@@ -138,15 +136,15 @@ msgstr "فوریه"
 
 #: data/ui/date_selector.blp:20
 msgid "March"
-msgstr "مارچ"
+msgstr "مارس"
 
 #: data/ui/date_selector.blp:21
 msgid "April"
-msgstr "آپریل"
+msgstr "آوریل"
 
 #: data/ui/date_selector.blp:22
 msgid "May"
-msgstr "می"
+msgstr "مه"
 
 #: data/ui/date_selector.blp:23
 msgid "June"
@@ -154,11 +152,11 @@ msgstr "ژوئن"
 
 #: data/ui/date_selector.blp:24
 msgid "July"
-msgstr "جولای"
+msgstr "ژوئیه"
 
 #: data/ui/date_selector.blp:25
 msgid "August"
-msgstr "آگوست"
+msgstr "اوت"
 
 #: data/ui/date_selector.blp:26
 msgid "September"
@@ -194,67 +192,65 @@ msgstr "فاصله"
 
 #: data/ui/import_export_dialog_base.blp:10
 msgid "_Export"
-msgstr "_صادرکردن"
+msgstr "_برون‌ریزی"
 
 #: data/ui/import_export_dialog_base.blp:56
 msgid "Export weight measurements"
-msgstr "صدور اندازه‌گیری های قد"
+msgstr "برون‌ریزی وزن‌کشی‌ها"
 
 #: data/ui/import_export_dialog_base.blp:69
 msgid "Encrypt export"
-msgstr "صدور رمزنگاری شده"
+msgstr "رمزنگاری برون‌ریزی"
 
 #: data/ui/password_entry.blp:9
 msgid "_Password"
-msgstr "_کلمه‌عبور"
+msgstr "_گذر‌واژه"
 
 #: data/ui/password_entry.blp:40
 msgid "_Confirm password"
-msgstr "_تأیید کلمه‌عبور"
+msgstr "_تأیید گذرواژه"
 
-#: data/ui/plugins/activities/details.blp:5
-#: data/ui/plugins/calories/details.blp:4 data/ui/plugins/steps/details.blp:4
+#: data/ui/plugins/activities/details.blp:5 data/ui/plugins/calories/details.blp:4
+#: data/ui/plugins/steps/details.blp:4
 msgid "You can use the <b>+</b> button to add a new activity."
-msgstr "شما می‌توانید از دکمه <b>+</b> برای افزودن فعالیت جدید استفاده کنید."
+msgstr "برای افزودن فعّالیت جدید می‌توانید از دکمهٔ <b>+</b> استفاده کنید."
 
 #: data/ui/plugins/activities/details.blp:8
 msgid "Recent Activities"
-msgstr "فعالیت‌های اخیر"
+msgstr "فعّالیت‌های اخیر"
 
 #: data/ui/plugins/activities/summary.blp:5 data/ui/view_add_activity.blp:84
 msgid "Active Minutes"
-msgstr "دقایق فعال"
+msgstr "دقیقه‌های فعّال"
 
 #: data/ui/plugins/calories/details.blp:7 src/plugins/calories/plugin.rs:39
 msgid "Calories"
-msgstr "کالری‌ها"
+msgstr "کالری"
 
 #: data/ui/plugins/calories/summary.blp:5 data/ui/view_add_activity.blp:66
 msgid "Calories Burned"
-msgstr "کالری‌های سوزانده شده"
+msgstr "کالری‌های سوزانده"
 
 #: data/ui/plugins/details.blp:68
 msgid ""
 "This is a preview of how the plugin presents data. Enable the plugin to see "
 "your actual, live data."
 msgstr ""
-"این یک پیش‌نمایش از چگونگی کار افزونه با اطلاعات فعلی است. آن را فعال کنید تا"
-" عملکرد آن را با اطلاعات زنده مشاهده کنید."
+"این پیش‌نمایشی از چگونگی نمایش داده‌ها از سوی افزایه است. برای دیدن داده‌های زندهٔ "
+"واقعی به کارش بیندازید."
 
 #: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
 #: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
 msgid "Steps"
-msgstr "قدم‌ها"
+msgstr "قدم"
 
 #: data/ui/plugins/weight/details.blp:5
 msgid "You can use the <b>+</b> button to add a new weight measurement."
-msgstr ""
-"شما می‌توانید از دکمه <b>+</b> استفاده کنید تا یک اندازه‌گیری قد جدید ثبت"
-" کنید."
+msgstr "برای افزودن وزن‌کشی جدید می‌توانید از دکمهٔ <b>+</b> استفاده کنید."
 
 #: data/ui/plugins/weight/details.blp:8
 msgid "Weight Measurements"
-msgstr "اندازه گیری وزن"
+msgstr "وزن‌کشی‌ها"
 
 #: data/ui/plugins/weight/summary.blp:5 data/ui/view_add_weight.blp:38
 #: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
@@ -263,7 +259,7 @@ msgstr "وزن"
 
 #: data/ui/preferences_window.blp:43
 msgid "_Every 1 hour"
-msgstr "_هر یک ساعت"
+msgstr "_هر ۱ ساعت"
 
 #: data/ui/preferences_window.blp:49
 msgid "_Every 4 hours"
@@ -271,11 +267,11 @@ msgstr "_هر ۴ ساعت"
 
 #: data/ui/preferences_window.blp:55
 msgid "_Fixed Time"
-msgstr "_زمان مشخص"
+msgstr "_زمان مشخّص"
 
 #: data/ui/preferences_window.blp:63
 msgid "Health Preferences"
-msgstr "ترجیحات سلامت"
+msgstr "ترجیحات سلامتی"
 
 #: data/ui/preferences_window.blp:69 data/ui/shortcuts_window.blp:11
 msgid "General"
@@ -288,7 +284,7 @@ msgstr "کاربر"
 
 #: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:154
 msgid "Unit system"
-msgstr "سامانه‌ یکا"
+msgstr "سامانه‌ٔ یکا"
 
 #: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:164
 msgid "Imperial"
@@ -312,11 +308,11 @@ msgstr "قد"
 
 #: data/ui/preferences_window.blp:131
 msgid "Notifications"
-msgstr "اعلانات"
+msgstr "آگاهی‌ها"
 
 #: data/ui/preferences_window.blp:134
 msgid "Enable notifications"
-msgstr "فعال‌کردن اعلانات"
+msgstr "به کار انداختن آگاهی‌ها"
 
 #: data/ui/preferences_window.blp:145
 msgid "Frequency"
@@ -324,16 +320,16 @@ msgstr "بسامد"
 
 #: data/ui/preferences_window.blp:158
 msgid "Daily reminder time"
-msgstr "زمان یادآور روزانه"
+msgstr "زمان یادآوری روزانه"
 
 #: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
 #: src/plugins/steps/details.rs:239
 msgid "Step goal"
-msgstr "هدف پیاده‌روی"
+msgstr "قدم هدف"
 
 #: data/ui/preferences_window.blp:179
 msgid "7,500 steps per day are recommended."
-msgstr "۷۵۰۰ قدم در روز پیشهاد می‌شود."
+msgstr "روزانه ۷٬۵۰۰ قدم پیشهاد می‌شود."
 
 #: data/ui/preferences_window.blp:192 data/ui/preferences_window.blp:195
 msgid "Weight Goal"
@@ -341,8 +337,7 @@ msgstr "وزن هدف"
 
 #: data/ui/preferences_window.blp:196
 msgid "The WHO recommends a BMI of 18.5-24.9."
-msgstr ""
-"سازمان جهانی بهداشت داشتن تودهٔ بدنی میان ۱۸.۵ تا ۲۴.۹ را پیشنهاد می‌کند."
+msgstr "سازمان بهداشت جهانی تودهٔ بدنی‌ای بین ۱۸٫۵ تا ۲۴٫۹ را پیشنهاد می‌کند."
 
 #: data/ui/preferences_window.blp:204 data/ui/setup_window.blp:367
 msgid "Target BMI"
@@ -350,35 +345,35 @@ msgstr "تودهٔ بدنی هدف"
 
 #: data/ui/preferences_window.blp:220
 msgid "Sync"
-msgstr "همگام‌سازی"
+msgstr "هم‌گام سازی"
 
 #: data/ui/preferences_window.blp:224
 msgid "Start sync with third-party providers."
-msgstr "شروع همگام‌سازی با ارائه‌دهنده شخص ثالث."
+msgstr "آغاز هم‌گام سازی با فراهم کنندهٔ سوم شخص."
 
 #: data/ui/preferences_window.blp:232
 msgid "Importing and exporting data"
-msgstr "وارد کردن و صادر کردن اطلاعات"
+msgstr "درون‌ریزی و برون‌ریزی داده‌ها"
 
 #: data/ui/preferences_window.blp:235
 msgid "Export data as CSV"
-msgstr "صادر کردن اطلاعات به عنوان CSV"
+msgstr "برون‌ریزی داده‌ها به شکل CSV"
 
 #: data/ui/preferences_window.blp:238
 msgid "Export…"
-msgstr "صادرکردن..."
+msgstr "برون‌ریزی…"
 
 #: data/ui/preferences_window.blp:245
 msgid "Import data from CSV"
-msgstr "واردکردن اطلاعات از CSV"
+msgstr "درون‌ریزی داده‌ها از CSV"
 
 #: data/ui/preferences_window.blp:248
 msgid "Import…"
-msgstr "واردکردن..."
+msgstr "درون‌ریزی…"
 
 #: data/ui/setup_window.blp:39
 msgid "Health Setup"
-msgstr "تنظیم سلامت"
+msgstr "برپایی سلامتی"
 
 #: data/ui/setup_window.blp:53
 msgid "_Quit"
@@ -386,7 +381,7 @@ msgstr "_خروج"
 
 #: data/ui/setup_window.blp:62
 msgid "_Previous"
-msgstr "_قبلی"
+msgstr "_پیشین"
 
 #: data/ui/setup_window.blp:77
 msgid "_Next"
@@ -394,40 +389,39 @@ msgstr "_بعدی"
 
 #: data/ui/setup_window.blp:90
 msgid "_Done"
-msgstr "_انجام‌شد"
+msgstr "انجام _شد"
 
 #: data/ui/setup_window.blp:116
 msgid "Welcome to Health!"
-msgstr "به سلامت خوش آمدید!"
+msgstr "به سلامتی خوش آمدید!"
 
 #: data/ui/setup_window.blp:128
 msgid "Please enter some information to get setup."
-msgstr "لطفاً اطلاعاتی را برای شروع وارد کنید."
+msgstr "لطفاً برای آغاز اطّلاعاتی را وارد کنید."
 
 #: data/ui/setup_window.blp:224
 msgid "Please enter your daily step goal."
-msgstr "لطفاً مقداری را برای هدف قدم‌های روزانه خود وارد کنید."
+msgstr "لطفاً تعداد قدم هدف روانه‌تان را وارد کنید."
 
 #: data/ui/setup_window.blp:236
 msgid "The WHO recommends 7.500 steps per day."
-msgstr "سازمان جهانی بهداشت ۷۵۰۰ قدم در روز را پیشنهاد می‌کند."
+msgstr "سازمان بهداشت جهانی ۷٬۵۰۰ قدم در روز را پیشنهاد می‌کند."
 
 #: data/ui/setup_window.blp:286
 msgid "Please enter your weight goal."
-msgstr "لطفاً وزن هدف خود را وارد کنید."
+msgstr "لطفاً وزن هدفتان را وارد کنید."
 
 #: data/ui/setup_window.blp:298
 msgid "The WHO recommends a BMI of 18.5–24.9."
-msgstr ""
-"سازمان جهانی بهداشت داشتن تودهٔ بدنی میان ۱۸.۵ تا ۲۴.۹ را پیشنهاد می‌کند."
+msgstr "سازمان بهداشت جهانی تودهٔ بدنی‌ای بین ۱۸٫۵ تا ۲۴٫۹ را پیشنهاد می‌کند."
 
 #: data/ui/setup_window.blp:326
 msgid "Current weight"
-msgstr "وزن فعلی"
+msgstr "وزن کنونی"
 
 #: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:249
 msgid "Current BMI"
-msgstr "تودهٔ بدنی فعلی"
+msgstr "تودهٔ بدنی کنونی"
 
 #: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:224
 msgid "Weight goal"
@@ -435,22 +429,20 @@ msgstr "وزن هدف"
 
 #: data/ui/setup_window.blp:386
 msgid "Setup sync with third-party providers."
-msgstr "تنظیم همگام‌سازی با ارائه‌دهندگان شخص ثالث."
+msgstr "برپایی هم‌گام سازی با فراهم کنندگان سوم شخص."
 
 #: data/ui/setup_window.blp:398
-msgid ""
-"You can sync steps and weight measurements from/to third-party providers."
+msgid "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
-"شما می‌توانید مقدار قدم‌ها و وزنتان را با یک ارائه‌دهنده شخص ثالث همگام‌سازی"
-" کنید."
+"شما می‌توانید مقدار قدم‌ها و وزنتان را با یک ارائه‌دهنده شخص ثالث همگام‌سازی کنید."
 
 #: data/ui/shortcuts_window.blp:15
 msgid "Quit the application"
-msgstr "خروج از برنامه"
+msgstr "ترک برنامه"
 
 #: data/ui/shortcuts_window.blp:20
 msgid "Show this shortcuts window"
-msgstr "این پنجره میانبر را نمایش بده"
+msgstr "نمایش این پنجرهٔ میان‌برها"
 
 #: data/ui/shortcuts_window.blp:25
 msgid "Show help"
@@ -458,15 +450,15 @@ msgstr "نمایش راهنما"
 
 #: data/ui/shortcuts_window.blp:30
 msgid "Show primary menu"
-msgstr "نمایش منو اصلی"
+msgstr "نمایش فهرست اصلی"
 
 #: data/ui/shortcuts_window.blp:35
 msgid "Toggle fullscreen mode"
-msgstr "فعال‌کردن حالت تمام‌صفحه"
+msgstr "تغییر وضعیت حالت تمام‌صفحه"
 
 #: data/ui/sync_list_box.blp:30
 msgid "Google Fit"
-msgstr "Google Fit"
+msgstr "فیت گوگل"
 
 #: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:30
 msgid "Date"
@@ -474,7 +466,7 @@ msgstr "تاریخ"
 
 #: data/ui/view_add_activity.blp:57
 msgid "Activity Type"
-msgstr "نوع فعالیت"
+msgstr "گونهٔ فعّالیت"
 
 #: data/ui/view_add_activity.blp:97
 msgid "Average Heart Rate"
@@ -482,34 +474,33 @@ msgstr "میانگین ضربان قلب"
 
 #: data/ui/view_add_activity.blp:109
 msgid "Minimum Heart Rate"
-msgstr "پایین‌ترین ضربان قلب"
+msgstr "کمینهٔ ضربان قلب"
 
 #: data/ui/view_add_activity.blp:121
 msgid "Maximum Heart Rate"
-msgstr "بالاترین ضربان قلب"
+msgstr "بیشینهٔ ضربان قلب"
 
 #: data/ui/view_add_activity.blp:133
 msgid "Stepcount"
-msgstr "میزان‌قدم"
+msgstr "شمار قدم"
 
 #: data/ui/view_home_page.blp:61
 msgid "For you"
 msgstr "برای شما"
 
 #: data/ui/view_home_page.blp:86
-msgid ""
-"No plugins enabled. Enable one from the list below to start using Health."
+msgid "No plugins enabled. Enable one from the list below to start using Health."
 msgstr ""
-"هیچ افزونه‌ای فعال نیست. یکی را از سیاهه پایین فعال کنید و شروع به استفاده از"
-" سلامت کنید."
+"هیچ افزایه‌ای به کار نیفتاده. به کار انداختن یکی از سیاههٔ زیر برای آغاز استفاده "
+"از سلامتی."
 
 #: data/ui/view_home_page.blp:107
 msgid "All data"
-msgstr "تمام اطلاعات"
+msgstr "همهٔ داده‌ها"
 
 #: data/ui/window.blp:8
 msgid "_Disable Current Plugin"
-msgstr "_غیرفعال کردن افزونه فعلی"
+msgstr "_از کار انداختن افزایهٔ کنونی"
 
 #: data/ui/window.blp:15
 msgid "_Preferences"
@@ -517,23 +508,25 @@ msgstr "_ترجیحات"
 
 #: data/ui/window.blp:20
 msgid "_Keyboard Shortcuts"
-msgstr "_میانبرهای صفحه‌کلید"
+msgstr "_میان‌برهای صفحه‌کلید"
 
 #: data/ui/window.blp:27
 msgid "_About Health"
-msgstr "_درباره سلامت"
+msgstr "_دربارهٔ سلامتی"
 
 #: data/ui/window.blp:69
 msgid "Enable plugin"
-msgstr "فعال‌کردن افزونه"
+msgstr "به کار انداختن افزایه"
 
 #: src/core/application.rs:192
 msgid "A health tracking app for the GNOME desktop."
-msgstr "یک برنامه رصد سلامتی برای میزکار گنوم."
+msgstr "کارهٔ ردیابی سلامتی برای میزکار گنوم."
 
 #: src/core/application.rs:194
 msgid "translator-credits"
-msgstr "سهراب بهدانی <behdanisohrab@gmail.com>"
+msgstr ""
+"سهراب بهدانی <behdanisohrab@gmail.com>\n"
+"دانیال بهزادی <dani.behzi@ubuntu.com>"
 
 #: src/core/application.rs:196
 msgid "Websites"
@@ -553,7 +546,7 @@ msgstr "بوکس"
 
 #: src/model/activity_info.rs:111
 msgid "Dancing"
-msgstr "رقصیدن"
+msgstr "رقص"
 
 #: src/model/activity_info.rs:120
 msgid "Football"
@@ -565,7 +558,7 @@ msgstr "گلف"
 
 #: src/model/activity_info.rs:138
 msgid "Hiking"
-msgstr "پیاده‌روی"
+msgstr "پیاده روی"
 
 #: src/model/activity_info.rs:147
 msgid "Hockey"
@@ -573,15 +566,15 @@ msgstr "هاکی"
 
 #: src/model/activity_info.rs:157
 msgid "Horse Riding"
-msgstr "اسب‌سواری"
+msgstr "اسب سواری"
 
 #: src/model/activity_info.rs:166
 msgid "Other Sports"
-msgstr "سایر ورزش‌ها"
+msgstr "دیگر ورزش‌ها"
 
 #: src/model/activity_info.rs:176
 msgid "Rollerblading"
-msgstr "اسکیت‌سواری"
+msgstr "اسکیت"
 
 #: src/model/activity_info.rs:187
 msgid "Running"
@@ -601,7 +594,7 @@ msgstr "سافت‌بال"
 
 #: src/model/activity_info.rs:225
 msgid "Swimming"
-msgstr "شناکردن"
+msgstr "شنا"
 
 #: src/model/activity_info.rs:234
 msgid "Tennis"
@@ -617,27 +610,27 @@ msgstr "والیبال"
 
 #: src/model/activity_info.rs:265
 msgid "Walking"
-msgstr "پیاده‌روی"
+msgstr "قدم زدن"
 
 #: src/model/model_notification.rs:209
 msgid "Health: walking reminder"
-msgstr "سلامت: یادآور پیاده‌روی"
+msgstr "سلامتی: یادآور پیاده‌روی"
 
 #: src/model/model_notification.rs:225
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
-msgstr[0] "{} قدم تا تکمیل هدف روزانه شما باقی‌مانده."
-msgstr[1] "{} قدم تا تکمیل هدف روزانه شما باقی‌مانده."
+msgstr[0] "{} قدم تا رسیدن به هدف روزانه‌تان."
+msgstr[1] "{} قدم تا رسیدن به هدف روزانه‌تان."
 
 #: src/plugins/activities/plugin.rs:39
 msgid "Activities"
-msgstr "فعالیت‌ها"
+msgstr "فعّالیت‌ها"
 
 #: src/plugins/activities/summary.rs:94
 msgid "{} active minute today"
 msgid_plural "{} active minutes today"
-msgstr[0] "{} فعالیت‌های امروز"
-msgstr[1] "{} فعالیت‌های امروز"
+msgstr[0] "امروز {} دقیقه فعّال"
+msgstr[1] "امروز {} دقیقه فعّال"
 
 #: src/plugins/calories/details.rs:210
 msgid ""
@@ -660,66 +653,61 @@ msgstr[1] ""
 #: src/plugins/calories/summary.rs:100 src/plugins/calories/summary.rs:107
 msgid "{} calorie burned today"
 msgid_plural "{} calories burned today"
-msgstr[0] "{} کالری امروز سوزانده شد."
-msgstr[1] "{} کالری امروز سوزانده شد."
+msgstr[0] "امروز {} کالری سوزانده شد"
+msgstr[1] "امروز {} کالری سوزانده شد"
 
 #: src/plugins/steps/details.rs:181
 msgid "Today’s steps: {}"
 msgstr "قدم‌های امروز: {}"
 
 #: src/plugins/steps/details.rs:200
-msgid ""
-"No streak yet. Reach your step goal for multiple days to start a streak!"
+msgid "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
 "هیچ رکوردی وجود ندارد. در طی چندروز به هدف خود برسید تا یک رکورد را شروع کنید!"
 
 #: src/plugins/steps/details.rs:204
-msgid ""
-"You’re on a streak for {} day. Reach your step goal today to continue it!"
+msgid "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
 "You’re on a streak for {} days. Reach your step goal today to continue it!"
-msgstr[0] ""
-"شما برای {} روز روی رکورد هستید. به هدف امروز خود برسید تا آن را ادامه بدید."
-msgstr[1] ""
-"شما برای {} روز روی رکورد هستید. به هدف امروز خود برسید تا آن را ادامه بدید."
+msgstr[0] "برای {} روز روی رکورد هستید. برای ادامه به هدف امروزتان برسید!"
+msgstr[1] "برای {} روز روی رکورد هستید. برای ادامه به هدف امروزتان برسید!"
 
 #: src/plugins/steps/details.rs:212
 msgid "You’ve reached your step goal today. Keep going to start a streak!"
-msgstr ""
-"شما به تعداد قدم هدف امروز خود رسیدید. ادامه بدید تا یک رکورد را شروع کنید!"
+msgstr "به قدم هدف امروزتان رسیدید. برای آغزا رکوردی جدید ادامه دهید!"
 
 #: src/plugins/steps/details.rs:215
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
-msgstr[0] "شما برای {} روز روی رکورد هستید. آفرین!"
-msgstr[1] "شما برای {} روز روی رکورد هستید. آفرین!"
+msgstr[0] "برای {} روز روی رکورد هستید. آفرین!"
+msgstr[1] "برای {} روز روی رکورد هستید. آفرین!"
 
 #. TRANSLATORS: X step(s) on DATE
 #: src/plugins/steps/details.rs:232
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
-msgstr[0] "{} قدم از {}"
-msgstr[1] "{} قدم از {}"
+msgstr[0] "{} قدم در {}"
+msgstr[1] "{} قدم در {}"
 
 #: src/plugins/steps/summary.rs:100
 msgid "{} step taken today"
 msgid_plural "{} steps taken today"
-msgstr[0] "{} قدم امروز برداشه شد"
-msgstr[1] "{} قدم امروز برداشه شد"
+msgstr[0] "امروز {} قدم برداشه شد"
+msgstr[1] "امروز {} قدم برداشه شد"
 
 #: src/plugins/steps/summary.rs:111
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
-msgstr[0] "{} درصد از هدف امروز شما تکمیل شد."
-msgstr[1] "{} درصد از هدف امروز شما تکمیل شد."
+msgstr[0] "به {} درصد از هدف امروزتان رسیدید"
+msgstr[1] "به {} درصد از هدف امروزتان رسیدید"
 
 #: src/plugins/steps/summary.rs:118
 msgid "Well done! You have reached your daily step goal!"
-msgstr "آفرین! شما به میزان هدف قدم امروزتان رسیدید."
+msgstr "آفرین! به هدف روزانه‌تان رسیدید!"
 
 #: src/plugins/weight/details.rs:196
 msgid "Current BMI: {}"
-msgstr "تودهٔ بدنی فعلی: {}"
+msgstr "تودهٔ بدنی کنونی: {}"
 
 #. TRANSLATORS: Weight X on date Y
 #: src/plugins/weight/details.rs:211
@@ -737,21 +725,21 @@ msgstr[1] "{} کیلوگرم در {}"
 
 #: src/plugins/weight/details.rs:251 src/plugins/weight/details.rs:256
 msgid "Unknown BMI"
-msgstr "تودهٔ بدنی ناشناخته"
+msgstr "تودهٔ بدنی نامعلوم"
 
 #: src/plugins/weight/details.rs:274
 msgid ""
-"Your weight goal is {} pound. Add a first weight measurement to see how "
-"close you are to reaching it."
+"Your weight goal is {} pound. Add a first weight measurement to see how close "
+"you are to reaching it."
 msgid_plural ""
-"Your weight goal is {} pounds. Add a first weight measurement to see how "
-"close you are to reaching it."
+"Your weight goal is {} pounds. Add a first weight measurement to see how close "
+"you are to reaching it."
 msgstr[0] ""
-"وزن هدف شما {} پوند است. ابتدا یک میزان وزن را وارد کنید تا ببینیم چقدر به"
-" دستیابی به هدف نزدیک هستید."
+"وزن هدفتان {} پوند است. برای دیدن مقدار نزدیکیتان به هدف، وزن‌کشی نخست را "
+"بیفزایید."
 msgstr[1] ""
-"وزن هدف شما {} پوند است. ابتدا یک میزان وزن را وارد کنید تا ببینیم چقدر به"
-" دستیابی به هدف نزدیک هستید."
+"وزن هدفتان {} پوند است. برای دیدن مقدار نزدیکیتان به هدف، وزن‌کشی نخست را "
+"بیفزایید."
 
 #: src/plugins/weight/details.rs:281
 msgid ""
@@ -761,44 +749,43 @@ msgid_plural ""
 "Your weight goal is {} kilograms. Add a first weight measurement to see how "
 "close you are to reaching it."
 msgstr[0] ""
-"وزن هدف شما {} کیلوگرم است. ابتدا یک میزان وزن را وارد کنید تا ببینیم چقدر به"
-" دستیابی به هدف نزدیک هستید."
+"وزن هدفتان {} کیلوگرم است. برای دیدن مقدار نزدیکیتان به هدف، وزن‌کشی نخست را "
+"بیفزایید."
 msgstr[1] ""
-"وزن هدف شما {} کیلوگرم است. ابتدا یک میزان وزن را وارد کنید تا ببینیم چقدر به"
-" دستیابی به هدف نزدیک هستید."
+"وزن هدفتان {} کیلوگرم است. برای دیدن مقدار نزدیکیتان به هدف، وزن‌کشی نخست را "
+"بیفزایید."
 
 #: src/plugins/weight/details.rs:290
 msgid "You’ve reached your weight goal. Great job!"
-msgstr "شما به وزن هدف خود رسیدید. آفرین!"
+msgstr "به وزن هدفتان رسیدید. آفرین!"
 
 #: src/plugins/weight/details.rs:306
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
-msgstr[0] "وزن هدف شما {} پوند است."
-msgstr[1] "وزن هدف شما {} پوند است."
+msgstr[0] "وزن هدفتان {} پوند است."
+msgstr[1] "وزن هدفتان {} پوند است."
 
 #: src/plugins/weight/details.rs:311
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
-msgstr[0] "شما برای رسیدن به هدف {} پوند اضافه دارید."
-msgstr[1] "شما برای رسیدن به هدف {} پوند اضافه دارید."
+msgstr[0] "{} پوند مانده تا به آن برسید."
+msgstr[1] "{} پوند مانده تا به آن برسید."
 
 #: src/plugins/weight/details.rs:318
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
-msgstr[0] "وزن هدف شما {} کیلوگرم است."
-msgstr[1] "وزن هدف شما {} کیلوگرم است."
+msgstr[0] "وزن هدفتان {} کلیوگرم است."
+msgstr[1] "وزن هدفتان {} کلیوگرم است."
 
 #: src/plugins/weight/details.rs:324
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
-msgstr[0] "شما برای رسیدن به هدف {} کیلوگرم اضافه دارید."
-msgstr[1] "شما برای رسیدن به هدف {} کیلوگرم اضافه دارید."
+msgstr[0] "برای رسیدن به هدف {} کیلوگرم اضافه دارید"
+msgstr[1] "برای رسیدن به هدف {} کیلوگرم اضافه دارید"
 
 #: src/plugins/weight/details.rs:334
 msgid "No weight goal set yet. You can set it in Health’s preferences."
-msgstr ""
-"هیچ وزن هدفی هنوز تنظیم نشده. شما می‌توانید آن را در ترجیحات سلامت تنظیم کنید."
+msgstr "هنوز هیچ وزن هدفی تنظیم نشده. می‌توانید در ترجیحات سلامتی تنظیمش کنید."
 
 #: src/plugins/weight/summary.rs:123
 msgid "{} pound"
@@ -815,109 +802,107 @@ msgstr[1] "{} کیلوگرم"
 #: src/plugins/weight/summary.rs:142
 msgid "+ {} pound compared to previous measurement"
 msgid_plural "+ {} pounds compared to previous measurement"
-msgstr[0] "+ {} پوند در مقایسه به سنجش قبلی."
-msgstr[1] "+ {} پوند در مقایسه به سنجش قبلی."
+msgstr[0] "+ {} پوند در مقایسه با سنجش پیشین"
+msgstr[1] "+ {} پوند در مقایسه با سنجش پیشین"
 
 #: src/plugins/weight/summary.rs:150
 msgid "+ {} kilogram compared to previous measurement"
 msgid_plural "+ {} kilograms compared to previous measurement"
-msgstr[0] "+ {} کیلوگرم در مقایسه به سنجش قبلی."
-msgstr[1] "+ {} کیلوگرم در مقایسه به سنجش قبلی."
+msgstr[0] "+ {} کیلوگرم در مقایسه با سنجش پیشین"
+msgstr[1] "+ {} کیلوگرم در مقایسه با سنجش پیشین"
 
 #: src/plugins/weight/summary.rs:161
 msgid "{} pound compared to previous measurement"
 msgid_plural "{} pounds compared to previous measurement"
-msgstr[0] "{} پوند در مقایسه به سنجش قبلی."
-msgstr[1] "{} پوند در مقایسه به سنجش قبلی."
+msgstr[0] "{} پوند در مقایسه با سنجش پیشین"
+msgstr[1] "{} پوند در مقایسه با سنجش پیشین"
 
 #: src/plugins/weight/summary.rs:169
 msgid "{} kilogram compared to previous measurement"
 msgid_plural "{} kilograms compared to previous measurement"
-msgstr[0] "{} کیلوگرم در مقایسه به سنجش قبلی."
-msgstr[1] "{} کیلوگرم در مقایسه به سنجش قبلی."
+msgstr[0] "{} کیلوگرم در مقایسه با سنجش پیشین"
+msgstr[1] "{} کیلوگرم در مقایسه با سنجش پیشین"
 
 #: src/plugins/weight/summary.rs:177
 msgid "No change in weight"
-msgstr "بدون هیچ تغییری در وزن"
+msgstr "بدون تغییر در وزن"
 
 #: src/plugins/weight/summary.rs:182
 msgid "No weight data available"
-msgstr "هیچ اطلاعاتی از وزن در دسترس نیست"
+msgstr "هیچ دادهٔ وزنی‌ای موجود نیست"
 
 #: src/sync/csv.rs:81 src/sync/csv.rs:369
 msgid "No activities added yet; can’t create empty export!"
-msgstr "هیچ فعالیتی هنوز افزوده نشده؛ شما نمی‌توانید محتوای خالی صادر کنید!"
+msgstr "هنوز هیچ فعّالیتی اضافه نشده. نمی‌توان برون‌ریزی خالی ایجاد کرد!"
 
 #: src/sync/csv.rs:111 src/sync/csv.rs:387
 msgid "No weight measurements added yet; can’t create empty export!"
-msgstr ""
-"هیچ اندازه‌گیری وزنی هنوز افزوده نشده؛ شما نمی‌توانید محتوای خالی صادر کنید!"
+msgstr "هنوز هیچ وزن‌کشی‌ای اضافه نشده. نمی‌توان برون‌ریزی خالی ایجاد کرد!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:331
 msgid "Can’t parse encrypted backup without encryption key!"
-msgstr "نمی‌توان پشتیبان را بدون کلید‌های رمزنگاری تجزیه کرد!"
+msgstr "نمی‌توان پشتیبان رمز شده را بدون کلید رمزنگاری تجزیه کرد!"
 
 #: src/sync/csv.rs:194 src/sync/csv.rs:351
 msgid ""
 "Couldn’t parse CSV. Are you trying to read an unencrypted backup as an "
 "encrypted one?"
 msgstr ""
-"نمی‌توان .CSV را تجزیه کرد. آیا شما قصد دارید تا یک فایل رمزنگاری نشده را"
-" به‌عنوان رمزنگاری شده بخوانید؟"
+"نتوانست CSV را تجزیه کند. قصد دارید پشتیبانی رمز نشده را به‌عنوان رمز شده شده "
+"بخوانید؟"
 
 #: src/sync/csv.rs:207
 msgid "Couldn’t decrypt data. Are you sure you’re using the right key?"
 msgstr ""
-"نمی‌توان اطلاعات را از رمزنگاری خارج کرد. آیا از صحت کلید خود اطمینان دارید؟"
+"نتوانست داده‌ها را رمزگشایی کند. مطمئنید که دارید از کلید درست استفاده می‌کنید؟"
 
 #: src/sync/database_receiver.rs:46
 msgid "Couldn’t synchronize steps due to error {}"
-msgstr "نمی‌توان تعداد قدم‌ها را به علت خطای {} همگام‌سازی کرد."
+msgstr "به خاطر خطا نتوانست قدم‌ها را هم‌گام کند: {}"
 
 #: src/sync/database_receiver.rs:60
 msgid "Couldn’t synchronize weight measurements due to error {}"
-msgstr "نمی‌توان وزن را به علت خطای {} همگام‌سازی کرد."
+msgstr "به خاطر خطا نتوانست وزن‌کشی‌ها را هم‌گام کند: {}"
 
 #: src/sync/google_fit.rs:211
 msgid "CRSF Verification failed, got {}, expected {}"
-msgstr "صحت‌سنجی CRSF ناموفق بود، {} دریافت شد، انتظار می‌رود {}"
+msgstr "صحت‌سنجی CRSF شکست خورد. {} دریافت شد، انتظار {} می‌رفت"
 
 #: src/sync/google_fit.rs:227
 msgid "Requesting OAuth2 token failed due to error {}"
-msgstr "درخواست ژتون OAuth2 به علت خطای {} شکست خورد."
+msgstr "به خاطر خطا درخواست ژتون OAuth2 شکست خورد: {}"
 
 #: src/sync/sync_provider.rs:109
 msgid ""
 "Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
 "authenticate with your sync provider."
 msgstr ""
-"وقتی ژتون بازخوانی تنظیم نشده باشد، نمی توان ژتون OAuth2 را بازیابی کرد! لطفا"
-" دوباره"
-"با ارائه دهنده همگام سازی خود احراز هویت کنید."
+"هنگامی که ژتون نوسازی تنظیم نشده باشد نمی‌توان ژتون OAuth2 را بازیابی کرد! لطفا "
+"دوباره با فراهم کنندهٔ هم‌گام سازیتان احراز هویت کنید."
 
 #: src/sync/sync_provider.rs:157
 msgid "Token for Health sync provider {}"
-msgstr "ژتون برای همگام ساز سلامت {}"
+msgstr "ژتون برای فراهم کنندهٔ هم‌گام سازی سلامتی {}"
 
 #: src/sync/sync_provider.rs:217
 msgid "Successfully authenticated, please return to Health."
-msgstr "با موفقیت صحت‌سنجی شد، لطفاً به سلامت بازگردید."
+msgstr "با موفقیت هویت‌سنجی شد. لطفاً به سلامتی بازگردید."
 
 #: src/sync/sync_provider.rs:228
 msgid "Couldn’t parse OAuth2 response"
-msgstr "نمی‌توان بازخورد OAuth2 را تجزیه کرد."
+msgstr "نتوانست پاسخ OAuth2 را تجزیه کند"
 
 #: src/views/bar_graph_view.rs:563
 msgid "Enter weight record to calculate idle calories"
-msgstr "مقدار وزن را برای سنجش کالری ایده‌آل وارد کنید"
+msgstr "مقدار وزن را برای محاسبهٔ کالری‌های بی‌کار وارد کنید"
 
 #: src/views/bar_graph_view.rs:567
 msgid "Idle calories"
-msgstr "کالری ایده‌آل"
+msgstr "کالری بی‌کار"
 
 #: src/views/view_add_activity.rs:225
 msgid "Activity"
-msgstr "فعالیت"
+msgstr "فعّالیت"
 
 #: src/widgets/activity_row.rs:68
 msgid "{} for {} Minute"
@@ -927,19 +912,19 @@ msgstr[1] "{} برای {} دقیقه"
 
 #: src/widgets/activity_row.rs:80
 msgid "Calories burned"
-msgstr "کالری‌های سوزانده شده"
+msgstr "کالری سوزانده"
 
 #: src/widgets/activity_row.rs:90
 msgid "Average heart rate"
-msgstr "ضربان قلب میانگین"
+msgstr "میانگین ضربان قلب"
 
 #: src/widgets/activity_row.rs:96
 msgid "Maximum heart rate"
-msgstr "بیشینه‌ترین ضربان قلب"
+msgstr "بیشینهٔ ضربان قلب"
 
 #: src/widgets/activity_row.rs:102
 msgid "Minimum heart rate"
-msgstr "کمینه‌ترین ضربان قلب"
+msgstr "کمینهٔ ضربان قلب"
 
 #: src/widgets/activity_row.rs:115
 msgid "{} meter"
@@ -955,11 +940,11 @@ msgstr[1] "{} یارد"
 
 #: src/widgets/bmi_level_bar.rs:256
 msgid "<small>Current BMI: {}</small>"
-msgstr "<small>توده بدنی فعلی: {}</small>"
+msgstr "<small>تودهٔ بدنی کنونی: {}</small>"
 
 #: src/widgets/distance_action_row.rs:287
 msgid "KM"
-msgstr "کیلو‌متر"
+msgstr "ک‌م"
 
 #: src/widgets/distance_action_row.rs:288
 msgid "Meters"
@@ -971,27 +956,27 @@ msgstr "مایل"
 
 #: src/widgets/distance_action_row.rs:291
 msgid "Feet"
-msgstr "فوت"
+msgstr "پا"
 
 #. TRANSLATORS: Unit abbreviation (centimeters)
 #: src/widgets/unit_spinbutton.rs:456 src/widgets/unit_spinbutton.rs:622
 msgid "cm"
-msgstr "سانتی‌متر"
+msgstr "س‌م"
 
 #. TRANSLATORS: Unit abbreviation (meters)
 #: src/widgets/unit_spinbutton.rs:458
 msgid "m"
-msgstr "متر"
+msgstr "م"
 
 #. TRANSLATORS: Unit abbreviation (kilometers)
 #: src/widgets/unit_spinbutton.rs:460
 msgid "km"
-msgstr "کیلومتر"
+msgstr "ک‌م"
 
 #. TRANSLATORS: Unit abbreviation (kilograms)
 #: src/widgets/unit_spinbutton.rs:462
 msgid "kg"
-msgstr "کیلوگرم"
+msgstr "ک‌گ"
 
 #. TRANSLATORS: Unit abbreviation (inch)
 #: src/widgets/unit_spinbutton.rs:464 src/widgets/unit_spinbutton.rs:624
@@ -1001,7 +986,7 @@ msgstr "اینچ"
 #. TRANSLATORS: Unit abbreviation (feet)
 #: src/widgets/unit_spinbutton.rs:466
 msgid "ft"
-msgstr "فوت"
+msgstr "پا"
 
 #. TRANSLATORS: Unit abbreviation (miles)
 #: src/widgets/unit_spinbutton.rs:468
@@ -1015,78 +1000,78 @@ msgstr "پوند"
 
 #: src/windows/export_dialog.rs:51
 msgid "Save Activities"
-msgstr "ذخیره فعالیت‌ها"
+msgstr "ذخیرهٔ فعالیت‌ها"
 
 #. TRANSLATORS: Please keep the file extension (.csv.encrypted)
 #: src/windows/export_dialog.rs:60
 msgid "Activities.csv.encrypted"
-msgstr ""
+msgstr "فعّالیت‌ها.csv.encrypted"
 
 #. TRANSLATORS: Please keep the file extension (.csv)
 #: src/windows/export_dialog.rs:63
 msgid "Activities.csv"
-msgstr ""
+msgstr "فعّالیت‌ها.csv"
 
 #: src/windows/export_dialog.rs:75 src/windows/export_dialog.rs:109
 #: src/windows/import_dialog.rs:68 src/windows/import_dialog.rs:97
 msgid "No file selected."
-msgstr "هیچ پرونده‌ای انتخاب نشده."
+msgstr "هیچ پرونده‌ای گزیده نشده."
 
 #: src/windows/export_dialog.rs:87
 msgid "Save Weight Measurement"
-msgstr "ذخیره اندازه‌گیری وزن"
+msgstr "ذخیرهٔ وزن‌کشی"
 
 #: src/windows/export_dialog.rs:95
 msgid "Weight Measurements.csv.encrypted"
-msgstr ""
+msgstr "سنجش_وزن.csv.encrypted"
 
 #: src/windows/export_dialog.rs:97
 msgid "Weight Measurements.csv"
-msgstr ""
+msgstr "سنجش_وزن.csv"
 
 #: src/windows/export_dialog.rs:132
 msgid "Export data"
-msgstr "صادرکردن اطلاعات"
+msgstr "برون‌ریزی داده‌ها"
 
 #: src/windows/import_dialog.rs:51
 msgid "Open Activities"
-msgstr "بازکردن فعالیت‌ها"
+msgstr "گشودن فعّالیت‌ها"
 
 #: src/windows/import_dialog.rs:52 src/windows/import_dialog.rs:81
 msgid "_Open"
-msgstr "_بازکردن"
+msgstr "_گشودن"
 
 #: src/windows/import_dialog.rs:80
 msgid "Open Weight Measurement"
-msgstr "بازکردن اندازه‌گیری وزن"
+msgstr "گشودن وزن‌کشی"
 
 #: src/windows/import_dialog.rs:121
 msgid "Import data"
-msgstr "واردکردن اطلاعات"
+msgstr "درون‌ریزی داده‌ها"
 
 #: src/windows/import_export_dialog_base.rs:206
 msgid "Import activities"
-msgstr "واردکردن فعالیت‌ها"
+msgstr "درون‌ریزی فعّالیت‌ها"
 
 #: src/windows/import_export_dialog_base.rs:208
 msgid "Import is encrypted"
-msgstr "واردکردن رمزنگاری شده است"
+msgstr "درون‌ریزی رمزنگاری شده است"
 
 #: src/windows/import_export_dialog_base.rs:209
 msgid "Import weights"
-msgstr "واردکردن وزن"
+msgstr "درون‌ریزی وزن‌ها"
 
 #: src/windows/import_export_dialog_base.rs:210
 msgid "Import"
-msgstr "واردکردن"
+msgstr "درون‌ریزی"
 
 #: src/windows/import_export_dialog_base.rs:288
 msgid "Success!"
-msgstr "موفقیت!"
+msgstr "موفّق!"
 
 #: src/windows/import_export_dialog_base.rs:292
 msgid "An error occurred!"
-msgstr "یک خطایی رخ داد!"
+msgstr "خطایی رخ داد!"
 
 #: src/windows/import_export_dialog_base.rs:297
 msgid "Close"
@@ -1094,6 +1079,4 @@ msgstr "بستن"
 
 #: src/windows/window.rs:268
 msgid "Couldn’t sync Google Fit data due to error: {}"
-msgstr "به علت خطای رو‌برو نمی‌توان با Google Fit همگام‌سازی کرد: {}"
-
-
+msgstr "به خاطر خطا نتوانست با فیت گوگل هم‌گام شود: {}"
