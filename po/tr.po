@@ -10,16 +10,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2023-10-31 13:32+0000\n"
-"PO-Revision-Date: 2023-10-31 06:13+0300\n"
-"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"POT-Creation-Date: 2023-11-03 17:56+0000\n"
+"PO-Revision-Date: 2024-05-09 10:47+0300\n"
+"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4.1\n"
+"X-Generator: Poedit 3.4.3\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -102,7 +102,7 @@ msgstr "Sağlık"
 
 #: data/dev.Cogitri.Health.desktop.in.in:9
 msgid "health;fitness;"
-msgstr "health;fitness;form;sağlık;"
+msgstr "health;fitness;form;sağlık;zindelik;"
 
 # Fitness kelimesine uygun çeviri bulamadığım için spor olarak kullandım.
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:12
