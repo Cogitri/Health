@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
+  <metadata_license>CC0-1.0</metadata_license>
+	<project_license>GPL-3.0-or-later</project_license>
+  <developer_name translatable="no">Rasmus “Cogitri” Thomsen</developer_name>
+	<developer id="dev.cogitri">
+		<name translatable="no">Rasmus “Cogitri” Thomsen</name>
+	</developer>
 	<id>@APPLICATION_ID@</id>
 	<name>Health</name>
-	<url type="homepage">https://gitlab.gnome.org/World/Health</url>
-	<url type="bugtracker">https://gitlab.gnome.org/World/Health/issues</url>
-	<url type="vcs-browser">https://gitlab.gnome.org/World/Health</url>
-	<url type="translate">https://l10n.gnome.org/module/health/</url>
-	<url type="contribute">https://gitlab.gnome.org/World/Health/-/blob/master/CONTRIBUTING.md</url>
-	<metadata_license>CC0-1.0</metadata_license>
-	<project_license>GPL-3.0-or-later</project_license>
 	<summary>Track your fitness goals</summary>
 	<description>
 		<p>
@@ -19,9 +18,11 @@
 			Afterwards, it can be viewed and edited in Health.
 		</p>
 	</description>
-	<content_rating type="oars-1.1" />
-	<translation type="gettext">@GETTEXT_PACKAGE@</translation>
-	<launchable type="desktop-id">@APPLICATION_ID@.desktop</launchable>
+	<url type="homepage">https://gitlab.gnome.org/World/Health</url>
+	<url type="bugtracker">https://gitlab.gnome.org/World/Health/issues</url>
+	<url type="vcs-browser">https://gitlab.gnome.org/World/Health</url>
+	<url type="translate">https://l10n.gnome.org/module/health/</url>
+	<url type="contribute">https://gitlab.gnome.org/World/Health/-/blob/master/CONTRIBUTING.md</url>
 	<screenshots>
 		<screenshot type="default">
 			<image>https://gitlab.gnome.org/World/Health/raw/master/docs/screenshot_main.png</image>
@@ -36,24 +37,28 @@
 			<image>https://gitlab.gnome.org/World/Health/raw/master/docs/screenshot_activities.png</image>
 		</screenshot>
 	</screenshots>
-	<developer_name translatable="no">Rasmus “Cogitri” Thomsen</developer_name>
-	<developer id="dev.cogitri">
-		<name translatable="no">Rasmus “Cogitri” Thomsen</name>
-	</developer>
-	<update_contact>oss@cogitri.dev</update_contact>
+	<branding>
+	  <color type="primary" scheme_preference="light">#f66151</color>
+	  <color type="primary" scheme_preference="dark">#c01c28</color>
+	</branding>
+	<content_rating type="oars-1.1" />
+	<requires>
+	  <display_length compare="ge">360</display_length>
+	</requires>
+	<recommends>
+	  <internet>always</internet>
+	</recommends>
+	<supports>
+	  <control>keyboard</control>
+	  <control>pointing</control>
+	  <control>touch</control>
+	</supports>
+	<translation type="gettext">@GETTEXT_PACKAGE@</translation>
+	<launchable type="desktop-id">@APPLICATION_ID@.desktop</launchable>
 	<provides>
 		<binary>@APPLICATION_ID@</binary>
 	</provides>
-	<kudos>
-		<kudo>AppMenu</kudo>
-		<kudo>HiDpiIcon</kudo>
-		<kudo>ModernToolkit</kudo>
-	</kudos>
-
-	<custom>
-		<value key="Purism::form_factor">mobile</value>
-	</custom>
-
+	<update_contact>oss@cogitri.dev</update_contact>
 	<releases>
 		<release version="0.95.0" date="2023-07-30">
 			<description>
