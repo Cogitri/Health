@@ -105,6 +105,8 @@ mod imp {
 
             self.parent_startup();
 
+            gtk::Window::set_default_icon_name(crate::config::APPLICATION_ID);
+
             if let Some(true) = gtk::Settings::default()
                 .and_then(|s| s.gtk_theme_name())
                 .map(|s| s.as_str().contains("-dark"))
