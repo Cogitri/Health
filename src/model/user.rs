@@ -260,7 +260,7 @@ impl User {
     /// Creates a new [User].
     pub fn new() -> Self {
         glib::Object::builder()
-            .property("user-birthday", &glib::DateTime::local())
+            .property("user-birthday", glib::DateTime::local())
             .build()
     }
 
@@ -444,14 +444,14 @@ impl UserBuilder {
     pub fn enabled_plugins(mut self, enabled_plugins: Vec<PluginName>) -> Self {
         self.builder = self
             .builder
-            .property("enabled-plugins", &PluginNames(enabled_plugins));
+            .property("enabled-plugins", PluginNames(enabled_plugins));
         self
     }
 
     pub fn recent_activity_types(mut self, recent_activity_types: Vec<ActivityType>) -> Self {
         self.builder = self.builder.property(
             "recent-activity-types",
-            &ActivityTypes(recent_activity_types),
+            ActivityTypes(recent_activity_types),
         );
         self
     }

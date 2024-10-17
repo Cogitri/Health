@@ -454,7 +454,7 @@ impl Activity {
 
     pub fn new() -> Self {
         glib::Object::builder()
-            .property("date", &glib::DateTime::local())
+            .property("date", glib::DateTime::local())
             .build()
     }
 

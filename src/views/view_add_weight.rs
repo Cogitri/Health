@@ -84,7 +84,7 @@ impl ViewAddWeight {
     pub fn new() -> Self {
         glib::Object::builder()
             .property("icon-name", "weight-scale-symbolic")
-            .property("view-title", &i18n("Weight"))
+            .property("view-title", i18n("Weight"))
             .build()
     }
 

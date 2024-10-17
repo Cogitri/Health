@@ -8,7 +8,7 @@ pub fn compile_resources(source_dirs: &[&str], gresource: &str, target: &str) {
     let mut command = Command::new("glib-compile-resources");
     command
         .arg("--target")
-        .arg(&format!("{}/{}", out_dir, target))
+        .arg(format!("{}/{}", out_dir, target))
         .arg(gresource);
 
     for dir in source_dirs {
@@ -50,7 +50,7 @@ pub fn compile_blueprint(source_dir: &str, target: &str) {
     let mut command = Command::new(BLUEPRINT_COMPILER_PATH);
     command
         .arg("batch-compile")
-        .arg(&format!("{}/{}", out_dir, target))
+        .arg(format!("{}/{}", out_dir, target))
         .arg(source_dir);
 
     for path in glob::glob(&format!("{}/ui/**/*.blp", source_dir)).unwrap() {

@@ -395,23 +395,23 @@ unsafe impl<T: ImportExportDialogBaseImpl> IsSubclassable<T> for ImportExportDia
 }
 
 // Virtual method default implementation trampolines
-fn on_activities_trampoline<T: ObjectSubclass>(
+fn on_activities_trampoline<T>(
     this: &ImportExportDialogBase,
     password: Option<String>,
 ) -> PinnedResultFuture<()>
 where
-    T: ImportExportDialogBaseImpl,
+    T: ImportExportDialogBaseImpl + ObjectSubclass,
 {
     let imp = T::from_obj(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.on_activities(this, password)
 }
 
-fn on_weights_trampoline<T: ObjectSubclass>(
+fn on_weights_trampoline<T>(
     this: &ImportExportDialogBase,
     password: Option<String>,
 ) -> PinnedResultFuture<()>
 where
-    T: ImportExportDialogBaseImpl,
+    T: ImportExportDialogBaseImpl + ObjectSubclass,
 {
     let imp = T::from_obj(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.on_weights(this, password)

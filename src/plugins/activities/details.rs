@@ -143,7 +143,7 @@ impl PluginActivitiesDetails {
                 "is-mocked",
                 matches!(data_provider, DataProvider::Mocked(_)),
             )
-            .property("data-provider", &DataProviderBoxed(data_provider))
+            .property("data-provider", DataProviderBoxed(data_provider))
             .build()
     }
 

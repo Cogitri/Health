@@ -158,7 +158,7 @@ impl PluginStepsDetails {
             )
             .property(
                 "data-provider",
-                &DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
+                DataProviderBoxed(Rc::new(RefCell::new(Some(data_provider)))),
             )
             .build()
     }
