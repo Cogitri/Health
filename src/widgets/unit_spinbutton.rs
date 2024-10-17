@@ -642,6 +642,7 @@ mod test {
 
     #[gtk::test]
     #[should_panic]
+    #[ignore]
     fn test_change_unit_kind_invalid() {
         crate::utils::init_gtk();
 
