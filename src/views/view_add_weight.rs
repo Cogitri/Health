@@ -82,10 +82,19 @@ glib::wrapper! {
 impl ViewAddWeight {
     /// Create a new [ViewAddWeight]
     pub fn new() -> Self {
-        glib::Object::builder()
+        let ret: Self = glib::Object::builder()
             .property("icon-name", "weight-scale-symbolic")
             .property("view-title", &i18n("Weight"))
-            .build()
+            .build();
+
+        // Restore spin buttton to latest weight
+        let db = crate::core::Database::default();
+        if let Some(latest) = db.weight_latest() {
+            ret.imp()
+                .weight_spin_button
+                .set_value(f64::from(latest.weight.get::<kilogram>()));
+        }
+        ret
     }
 
     pub async fn handle_response(&self, id: gtk::ResponseType) {

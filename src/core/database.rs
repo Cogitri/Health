@@ -497,6 +497,24 @@ impl Database {
         Ok(ret)
     }
 
+    pub fn weight_latest(&self) -> Option<Weight> {
+        let user_id = i64::from(self.imp().settings.active_user_id());
+        let statement = self.load_statement_from_gresource("weight_latest");
+        async move {
+            statement.bind_int("user", user_id);
+            let cursor = statement.execute_future().await.ok()?;
+
+            if let Ok(true) = cursor.next_future().await {
+                return Some(Weight::new(
+                    glib::DateTime::from_iso8601(cursor.string(0).unwrap().as_str(), None).unwrap(),
+                    Mass::new::<kilogram>(cursor.double(1) as f32),
+                ));
+            }
+            None
+        }
+        .block()
+    }
+
     /// Check if a [Weight] exists on a given date
     ///
     /// # Arguments

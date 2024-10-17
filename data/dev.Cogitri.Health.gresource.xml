@@ -54,6 +54,7 @@
     <file>tracker/steps.rq</file>
     <file>tracker/todays_steps.rq</file>
     <file>tracker/weight_exists_on_date.rq</file>
+    <file>tracker/weight_latest.rq</file>
     <file>tracker/weights_min.rq</file>
     <file>tracker/weights.rq</file>
 

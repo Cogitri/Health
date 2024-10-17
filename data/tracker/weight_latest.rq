@@ -1,0 +1,13 @@
+SELECT
+    ?date
+    ?weight
+    WHERE {
+        ?datapoint a health:WeightMeasurement ;
+        health:weight_datetime ?date ;
+        health:weight_user_id ?user_id ;
+        health:weight ?weight .
+        FILTER (
+            ?user_id = ~user^^xsd:integer
+        )
+    } ORDER BY DESC(?date)
+      LIMIT 1
