@@ -47,28 +47,34 @@ mod imp {
             obj: &ImportExportDialogBase,
             password: Option<String>,
         ) -> PinnedResultFuture<()> {
-            let file_chooser = gtk::FileChooserNative::builder()
+            let file_chooser = gtk::FileDialog::builder()
                 .title(i18n("Open Activities"))
                 .accept_label(i18n("_Open"))
-                .cancel_label(i18n("_Cancel"))
                 .modal(true)
-                .transient_for(obj)
-                .action(gtk::FileChooserAction::Open)
                 .build();
 
-            Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
-                spawn!(async move {
-                    let res = file_chooser.run_future().await;
-                    if res == gtk::ResponseType::Accept {
-                        let file = file_chooser.file().unwrap();
-                        let pass = password.clone();
-                        let handler = CsvHandler::new();
-                        send.resolve(handler.import_activities_csv(&file, pass.as_deref()).await)
-                    } else {
-                        send.resolve(Err(anyhow::anyhow!(i18n("No file selected."))));
+            Box::pin(gio::GioFuture::new(
+                obj,
+                glib::clone!(
+                    #[weak]
+                    obj,
+                    move |_, _, send| {
+                        let obj = obj.clone().upcast::<gtk::Window>();
+                        spawn!(async move {
+                            let res = file_chooser.open_future(Some(&obj)).await;
+                            if let Ok(file) = res {
+                                let pass = password.clone();
+                                let handler = CsvHandler::new();
+                                send.resolve(
+                                    handler.import_activities_csv(&file, pass.as_deref()).await,
+                                )
+                            } else {
+                                send.resolve(Err(anyhow::anyhow!(i18n("No file selected."))));
+                            }
+                        });
                     }
-                });
-            }))
+                ),
+            ))
         }
 
         fn on_weights(
@@ -76,28 +82,34 @@ mod imp {
             obj: &ImportExportDialogBase,
             password: Option<String>,
         ) -> PinnedResultFuture<()> {
-            let file_chooser = gtk::FileChooserNative::builder()
+            let file_chooser = gtk::FileDialog::builder()
                 .title(i18n("Open Weight Measurement"))
                 .accept_label(i18n("_Open"))
-                .cancel_label(i18n("_Cancel"))
                 .modal(true)
-                .transient_for(obj)
-                .action(gtk::FileChooserAction::Open)
                 .build();
 
-            Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
-                spawn!(async move {
-                    let res = file_chooser.run_future().await;
-                    if res == gtk::ResponseType::Accept {
-                        let file = file_chooser.file().unwrap();
-                        let pass = password.clone();
-                        let handler = CsvHandler::new();
-                        send.resolve(handler.import_weights_csv(&file, pass.as_deref()).await)
-                    } else {
-                        send.resolve(Err(anyhow::anyhow!(i18n("No file selected."))));
+            Box::pin(gio::GioFuture::new(
+                obj,
+                glib::clone!(
+                    #[weak]
+                    obj,
+                    move |_, _, send| {
+                        let obj = obj.clone().upcast::<gtk::Window>();
+                        spawn!(async move {
+                            let res = file_chooser.open_future(Some(&obj)).await;
+                            if let Ok(file) = res {
+                                let pass = password.clone();
+                                let handler = CsvHandler::new();
+                                send.resolve(
+                                    handler.import_weights_csv(&file, pass.as_deref()).await,
+                                )
+                            } else {
+                                send.resolve(Err(anyhow::anyhow!(i18n("No file selected."))));
+                            }
+                        });
                     }
-                });
-            }))
+                ),
+            ))
         }
     }
 }

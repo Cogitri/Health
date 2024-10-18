@@ -47,35 +47,41 @@ mod imp {
             obj: &ImportExportDialogBase,
             password: Option<String>,
         ) -> PinnedResultFuture<()> {
-            let file_chooser = gtk::FileChooserNative::builder()
+            let file_chooser = gtk::FileDialog::builder()
                 .title(i18n("Save Activities"))
                 .accept_label(i18n("_Save"))
-                .cancel_label(i18n("_Cancel"))
                 .modal(true)
-                .transient_for(obj)
-                .action(gtk::FileChooserAction::Save)
+                .initial_name(if password.is_some() {
+                    // TRANSLATORS: Please keep the file extension (.csv.encrypted)
+                    i18n("Activities.csv.encrypted")
+                } else {
+                    // TRANSLATORS: Please keep the file extension (.csv)
+                    i18n("Activities.csv")
+                })
                 .build();
-            if password.is_some() {
-                // TRANSLATORS: Please keep the file extension (.csv.encrypted)
-                file_chooser.set_current_name(&i18n("Activities.csv.encrypted"));
-            } else {
-                // TRANSLATORS: Please keep the file extension (.csv)
-                file_chooser.set_current_name(&i18n("Activities.csv"));
-            }
 
-            Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
-                spawn!(async move {
-                    let res = file_chooser.run_future().await;
-                    if res == gtk::ResponseType::Accept {
-                        let file = file_chooser.file().unwrap();
-                        let pass = password.clone();
-                        let handler = CsvHandler::new();
-                        send.resolve(handler.export_activities_csv(&file, pass.as_deref()).await)
-                    } else {
-                        send.resolve(Err(anyhow::anyhow!(i18n("No file selected."))))
+            Box::pin(gio::GioFuture::new(
+                obj,
+                glib::clone!(
+                    #[weak]
+                    obj,
+                    move |_, _, send| {
+                        let obj = obj.clone().upcast::<gtk::Window>();
+                        spawn!(async move {
+                            let res = file_chooser.save_future(Some(&obj)).await;
+                            if let Ok(file) = res {
+                                let pass = password.clone();
+                                let handler = CsvHandler::new();
+                                send.resolve(
+                                    handler.export_activities_csv(&file, pass.as_deref()).await,
+                                )
+                            } else {
+                                send.resolve(Err(anyhow::anyhow!(i18n("No file selected."))))
+                            }
+                        });
                     }
-                });
-            }))
+                ),
+            ))
         }
 
         fn on_weights(
@@ -83,33 +89,41 @@ mod imp {
             obj: &ImportExportDialogBase,
             password: Option<String>,
         ) -> PinnedResultFuture<()> {
-            let file_chooser = gtk::FileChooserNative::builder()
+            let file_chooser = gtk::FileDialog::builder()
                 .title(i18n("Save Weight Measurement"))
                 .accept_label(i18n("_Save"))
-                .cancel_label(i18n("_Cancel"))
                 .modal(true)
-                .transient_for(obj)
-                .action(gtk::FileChooserAction::Save)
+                .initial_name(if password.is_some() {
+                    // TRANSLATORS: Please keep the file extension (.csv.encrypted)
+                    i18n("Weight Measurements.csv.encrypted")
+                } else {
+                    // TRANSLATORS: Please keep the file extension (.csv)
+                    i18n("Weight Measurements.csv")
+                })
                 .build();
-            if password.is_some() {
-                file_chooser.set_current_name(&i18n("Weight Measurements.csv.encrypted"));
-            } else {
-                file_chooser.set_current_name(&i18n("Weight Measurements.csv"));
-            }
 
-            Box::pin(gio::GioFuture::new(obj, move |_, _, send| {
-                spawn!(async move {
-                    let res = file_chooser.run_future().await;
-                    if res == gtk::ResponseType::Accept {
-                        let file = file_chooser.file().unwrap();
-                        let pass = password.clone();
-                        let handler = CsvHandler::new();
-                        send.resolve(handler.export_weights_csv(&file, pass.as_deref()).await)
-                    } else {
-                        send.resolve(Err(anyhow::anyhow!(i18n("No file selected."))))
+            Box::pin(gio::GioFuture::new(
+                obj,
+                glib::clone!(
+                    #[weak]
+                    obj,
+                    move |_, _, send| {
+                        let obj = obj.clone().upcast::<gtk::Window>();
+                        spawn!(async move {
+                            let res = file_chooser.save_future(Some(&obj)).await;
+                            if let Ok(file) = res {
+                                let pass = password.clone();
+                                let handler = CsvHandler::new();
+                                send.resolve(
+                                    handler.export_weights_csv(&file, pass.as_deref()).await,
+                                )
+                            } else {
+                                send.resolve(Err(anyhow::anyhow!(i18n("No file selected."))))
+                            }
+                        });
                     }
-                });
-            }))
+                ),
+            ))
         }
     }
 }
