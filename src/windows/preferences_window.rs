@@ -153,7 +153,7 @@ mod imp {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
                 vec![glib::ParamSpecString::builder("notification-frequency")
-                    .default_value(Some("every_4_hrs"))
+                    .default_value(Some("every4_hrs"))
                     .write_only()
                     .build()]
             });
