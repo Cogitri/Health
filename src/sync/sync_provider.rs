@@ -27,6 +27,7 @@ use oauth2::{
     TokenResponse,
 };
 use std::{
+    collections::HashMap,
     io::{BufRead, BufReader, Write},
     net::TcpListener,
 };
@@ -114,15 +115,27 @@ pub trait SyncProvider {
         }
     }
 
-    /// Get the libsecret Schema used by Health
-    fn schema(&self) -> libsecret::Schema {
-        libsecret::Schema::new(
-            crate::config::APPLICATION_ID,
-            libsecret::SchemaFlags::NONE,
-            [("provider", libsecret::SchemaAttributeType::String)]
-                .into_iter()
-                .collect(),
-        )
+    fn password_lookup_sync(&self, attributes: HashMap<&str, &str>) -> Option<String> {
+        gtk::glib::MainContext::default().block_on(async move {
+            let keyring = oo7::Keyring::new().await.ok()?;
+            let items = keyring.search_items(&attributes).await.ok()?;
+            let item = items.first()?;
+            let zeroize_bytes = item.secret().await.ok()?;
+            let bytes: &Vec<u8> = zeroize_bytes.as_ref();
+            String::from_utf8(bytes.clone()).ok()
+        })
+    }
+
+    fn password_store_sync(
+        &self,
+        attributes: HashMap<&str, &str>,
+        label: &str,
+        value: impl AsRef<[u8]>,
+    ) -> Result<(), oo7::Error> {
+        gtk::glib::MainContext::default().block_on(async move {
+            let keyring = oo7::Keyring::new().await?;
+            keyring.create_item(label, &attributes, value, true).await
+        })
     }
 
     /// Retrieve the [RefreshToken] from the secret store.
@@ -131,11 +144,9 @@ pub trait SyncProvider {
     /// A `RefreshToken` if a refresh token is set, or `None` if no refresh token is set.
     /// May return an error if querying the secret store fails.
     fn token(&self) -> Result<Option<RefreshToken>> {
-        if let Some(password) = libsecret::password_lookup_sync(
-            Some(&self.schema()),
-            [("provider", self.provider_name())].into_iter().collect(),
-            None::<&gio::Cancellable>,
-        )? {
+        if let Some(password) =
+            self.password_lookup_sync([("provider", self.provider_name())].into_iter().collect())
+        {
             Ok(Some(RefreshToken::new(password.to_string())))
         } else {
             Ok(None)
@@ -150,13 +161,10 @@ pub trait SyncProvider {
     /// # Returns
     /// May return an error if querying the secret store fails.
     fn set_token(&self, value: RefreshToken) -> Result<()> {
-        libsecret::password_store_sync(
-            Some(&self.schema()),
+        self.password_store_sync(
             [("provider", self.provider_name())].into_iter().collect(),
-            Some(libsecret::COLLECTION_DEFAULT),
             &i18n_f("Token for Health sync provider {}", &[self.provider_name()]),
             value.secret(),
-            None::<&gio::Cancellable>,
         )?;
 
         Ok(())
