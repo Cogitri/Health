@@ -298,9 +298,9 @@ unsafe impl<T: PluginDetailsImpl> IsSubclassable<T> for PluginDetails {
 }
 
 // Virtual method default implementation trampolines
-fn update_trampoline<T: ObjectSubclass>(this: &PluginDetails) -> PinnedResultFuture<()>
+fn update_trampoline<T>(this: &PluginDetails) -> PinnedResultFuture<()>
 where
-    T: PluginDetailsImpl,
+    T: PluginDetailsImpl + ObjectSubclass,
 {
     let imp = T::from_obj(this.dynamic_cast_ref::<T::Type>().unwrap());
     imp.update(this)

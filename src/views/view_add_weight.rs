@@ -84,7 +84,7 @@ impl ViewAddWeight {
     pub fn new() -> Self {
         let ret: Self = glib::Object::builder()
             .property("icon-name", "weight-scale-symbolic")
-            .property("view-title", &i18n("Weight"))
+            .property("view-title", i18n("Weight"))
             .build();
 
         // Restore spin buttton to latest weight

@@ -222,7 +222,7 @@ impl ViewAddActivity {
     pub fn new() -> Self {
         glib::Object::builder()
             .property("icon-name", "walking-symbolic")
-            .property("view-title", &i18n("Activity"))
+            .property("view-title", i18n("Activity"))
             .build()
     }
 
