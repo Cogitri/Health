@@ -103,7 +103,7 @@ mod imp {
                     }
                 ));
 
-                setup_window.show();
+                setup_window.present();
             }
         }
 
@@ -230,7 +230,7 @@ impl Application {
             );
         }
         let window = Window::new(self);
-        window.show();
+        window.present();
         self.imp().window.replace(Some(window.downgrade()));
         // Since the window is shown now we can release the hold, the application will exit once the window is closed (if notifications are disabled)
         self.release();
@@ -278,7 +278,7 @@ impl Application {
                 .and_then(|s| s.upgrade())
                 .map(Cast::upcast),
         )
-        .show()
+        .present()
     }
 
     fn handle_quit(&self) {
@@ -292,7 +292,7 @@ impl Application {
     fn handle_setup_window_setup_done(&self) {
         let imp = self.imp();
         let window = Window::new(self);
-        window.show();
+        window.present();
         imp.window.replace(Some(window.downgrade()));
         self.release();
     }
