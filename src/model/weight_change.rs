@@ -3,19 +3,24 @@ use gtk::prelude::*;
 
 /// A [WeightChange] expresses how the weight of the user has changed
 #[derive(
-    Debug, Copy, Clone, PartialEq, Eq, Hash, PartialOrd, Ord, strum::EnumString, strum::AsRefStr,
+    Debug,
+    Default,
+    Copy,
+    Clone,
+    PartialEq,
+    Eq,
+    Hash,
+    PartialOrd,
+    Ord,
+    strum::EnumString,
+    strum::AsRefStr,
 )]
 #[strum(serialize_all = "snake_case")]
 pub enum WeightChange {
     Up,
     Down,
+    #[default]
     NoChange,
-}
-
-impl Default for WeightChange {
-    fn default() -> Self {
-        WeightChange::NoChange
-    }
 }
 
 impl ToValue for WeightChange {

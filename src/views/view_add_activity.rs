@@ -269,7 +269,7 @@ impl ViewAddActivity {
                         Unitsize::from_str(parameter.get::<String>().unwrap().as_str()).unwrap(),
                     );
 
-                    a.set_state(&parameter);
+                    a.set_state(parameter);
                 }
             )
         );
