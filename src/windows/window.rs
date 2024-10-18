@@ -56,7 +56,7 @@ mod imp {
         #[template_child]
         pub back_button: TemplateChild<gtk::Button>,
         #[template_child]
-        pub error_infobar: TemplateChild<gtk::InfoBar>,
+        pub error_infobar: TemplateChild<gtk::Revealer>,
         #[template_child]
         pub error_label: TemplateChild<gtk::Label>,
         #[template_child]
@@ -227,11 +227,8 @@ impl Window {
     }
 
     #[template_callback]
-    fn handle_error_infobar_response(&self, response: i32, bar: &gtk::InfoBar) {
-        let response: gtk::ResponseType = unsafe { glib::translate::from_glib(response) };
-        if response == gtk::ResponseType::Close {
-            bar.set_revealed(false);
-        }
+    fn handle_error_infobar_close(&self) {
+        self.imp().error_infobar.set_reveal_child(false);
     }
 
     fn handle_fullscreen(&self) {
@@ -298,7 +295,7 @@ impl Window {
 
         glib::g_warning!(crate::config::LOG_DOMAIN, "{err_msg}");
         imp.error_label.set_text(err_msg);
-        imp.error_infobar.set_revealed(true);
+        imp.error_infobar.set_reveal_child(true);
     }
 
     fn sync_data(&self) {

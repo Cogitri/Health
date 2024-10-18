@@ -81,18 +81,31 @@ template $HealthWindow : Adw.ApplicationWindow {
       }
     }
 
-    InfoBar error_infobar {
-      revealed: false;
-      show-close-button: true;
-      message-type: error;
-      response => $handle_error_infobar_response() swapped;
+    Revealer error_infobar {
+      reveal-child: false;
+      styles [
+        "error-bar",
+      ]
 
-      Label error_label {
-        margin-start: 6;
-        margin-end: 6;
-        halign: center;
-        hexpand: true;
-        wrap: true;
+      Box {
+        orientation: horizontal;
+
+        Label error_label {
+          margin-start: 6;
+          margin-end: 6;
+          justify: center;
+          hexpand: true;
+          wrap: true;
+        }
+
+        Button {
+          halign: end;
+          clicked => $handle_error_infobar_close() swapped;
+          icon-name: "window-close-symbolic";
+          styles [
+            "flat",
+          ]
+        }
       }
     }
 

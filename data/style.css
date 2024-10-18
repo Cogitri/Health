@@ -74,3 +74,16 @@ list.content.weight-goal > row {
   margin: 6px 12px;
   color: @theme_fg_color;
 }
+
+.error-bar {
+    background: color-mix(in srgb, var(--error-bg-color) var(--dim-opacity), transparent);
+}
+
+.error-bar > box {
+    border-bottom: solid 1px color-mix(in srgb, var(--error-bg-color) var(--border-opacity), transparent);
+}
+
+.error-bar label,
+.error-bar button {
+    color: var(--error-fg-color);
+}
