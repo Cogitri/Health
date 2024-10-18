@@ -131,7 +131,7 @@ impl SyncListBox {
             .build()
     }
 
-    fn handle_db_receiver_received(&self, res: Result<()>) -> glib::Continue {
+    fn handle_db_receiver_received(&self, res: Result<()>) -> glib::ControlFlow {
         let imp = self.imp();
         if let Err(e) = res {
             imp.google_fit_selected_image
@@ -154,7 +154,7 @@ impl SyncListBox {
         }
 
         imp.google_fit_start_sync_row.set_activatable(false);
-        glib::Continue(false)
+        glib::ControlFlow::Break
     }
 
     #[template_callback]

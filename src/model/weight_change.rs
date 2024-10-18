@@ -1,4 +1,5 @@
 use gtk::glib;
+use gtk::prelude::*;
 
 /// A [WeightChange] expresses how the weight of the user has changed
 #[derive(
@@ -17,12 +18,12 @@ impl Default for WeightChange {
     }
 }
 
-impl glib::ToValue for WeightChange {
+impl ToValue for WeightChange {
     fn to_value(&self) -> glib::Value {
         self.as_ref().to_value()
     }
 
     fn value_type(&self) -> glib::Type {
-        <String as glib::StaticType>::static_type()
+        <String as StaticType>::static_type()
     }
 }

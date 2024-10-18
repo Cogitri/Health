@@ -23,7 +23,7 @@ use crate::{
 };
 use gtk::{
     gio,
-    glib::{self, clone, subclass::prelude::*, Cast},
+    glib::{self, clone, subclass::prelude::*},
     prelude::*,
 };
 use gtk_macros::action;
@@ -113,7 +113,7 @@ impl Window {
     ///
     /// # Arguments
     /// * `app` - The application to use.
-    pub fn new<P: glib::IsA<gtk::Application>>(app: &P) -> Self {
+    pub fn new<P: IsA<gtk::Application>>(app: &P) -> Self {
         glib::Object::builder().property("application", app).build()
     }
 
@@ -257,12 +257,12 @@ impl Window {
             clone!(@weak self as obj => @default-panic, move || {
                 obj.sync_data();
 
-                glib::Continue(true)
+                glib::ControlFlow::Continue
             }),
         ));
     }
 
-    fn handle_sync_data_error_received(&self, err_opt: Option<anyhow::Error>) -> glib::Continue {
+    fn handle_sync_data_error_received(&self, err_opt: Option<anyhow::Error>) -> glib::ControlFlow {
         if let Some(e) = err_opt {
             self.show_error(&i18n_f(
                 "Couldn’t sync Google Fit data due to error: {}",
@@ -270,7 +270,7 @@ impl Window {
             ));
         }
 
-        glib::Continue(false)
+        glib::ControlFlow::Break
     }
 
     /// Display an error in a non-intrusive way.

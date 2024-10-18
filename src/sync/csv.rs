@@ -184,7 +184,7 @@ impl CsvHandler {
                 i18n("Can’t parse encrypted backup without encryption key!"),
             )))
         } else {
-            Ok(data)
+            Ok(data.to_vec())
         }
     }
 
@@ -215,7 +215,7 @@ impl CsvHandler {
                 None,
                 false,
                 gio::FileCreateFlags::REPLACE_DESTINATION,
-                glib::PRIORITY_DEFAULT,
+                glib::Priority::default(),
             )
             .await?;
 

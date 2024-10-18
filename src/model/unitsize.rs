@@ -1,4 +1,5 @@
 use gtk::glib;
+use gtk::prelude::*;
 
 /// A [Unitsize] is so the user can choose to enter different unit sizes (e.g. km vs meter).
 #[derive(
@@ -16,13 +17,13 @@ impl Default for Unitsize {
     }
 }
 
-impl glib::ToValue for Unitsize {
+impl ToValue for Unitsize {
     fn to_value(&self) -> glib::Value {
         self.as_ref().to_value()
     }
 
     fn value_type(&self) -> glib::Type {
-        <String as glib::StaticType>::static_type()
+        <String as StaticType>::static_type()
     }
 }
 

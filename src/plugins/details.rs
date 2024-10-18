@@ -17,8 +17,9 @@
  */
 
 use crate::prelude::*;
+use adw::prelude::*;
 use adw::subclass::prelude::*;
-use gtk::glib::{self, prelude::*};
+use gtk::glib;
 
 mod imp {
     use crate::prelude::*;

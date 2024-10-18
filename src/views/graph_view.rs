@@ -144,7 +144,7 @@ mod imp {
             let style_context = widget.style_context();
             let background_color = style_context.lookup_color("insensitive_fg_color").unwrap();
 
-            GdkCairoContextExt::set_source_rgba(&cr, &background_color);
+            GdkCairoContextExt::set_source_color(&cr, &background_color);
             /*
                 Draw outlines
             */
@@ -168,7 +168,7 @@ mod imp {
                 let (_, extents) = layout.extents();
 
                 cr.rel_move_to(0.0, pango::units_to_double(extents.height()) * -1.0);
-                pangocairo::show_layout(&cr, &layout);
+                pangocairo::functions::show_layout(&cr, &layout);
             }
 
             cr.stroke().expect("Couldn't stroke on Cairo Context");
@@ -190,7 +190,7 @@ mod imp {
                     f64::from(inner.height + HALF_Y_PADDING * 1.5)
                         - pango::units_to_double(extents.height()) / 2.0,
                 );
-                pangocairo::show_layout(&cr, &layout);
+                pangocairo::functions::show_layout(&cr, &layout);
             }
 
             cr.stroke().expect("Couldn't stroke on Cairo Context");
@@ -203,7 +203,7 @@ mod imp {
                 cr.save().unwrap();
 
                 let graph_color = style_context.lookup_color("success_color").unwrap();
-                GdkCairoContextExt::set_source_rgba(&cr, &graph_color);
+                GdkCairoContextExt::set_source_color(&cr, &graph_color);
 
                 cr.set_line_width(0.5);
                 cr.set_dash(&[10.0, 5.0], 0.0);
@@ -224,7 +224,7 @@ mod imp {
                     f64::from(inner.height - limit * inner.scale_y + HALF_Y_PADDING)
                         - pango::units_to_double(extents.height()),
                 );
-                pangocairo::show_layout(&cr, &layout);
+                pangocairo::functions::show_layout(&cr, &layout);
 
                 cr.stroke().expect("Couldn't stroke on Cairo Context");
                 cr.restore().unwrap();
@@ -240,7 +240,7 @@ mod imp {
             cr.save().unwrap();
 
             let graph_color = style_context.lookup_color("accent_bg_color").unwrap();
-            GdkCairoContextExt::set_source_rgba(&cr, &graph_color);
+            GdkCairoContextExt::set_source_color(&cr, &graph_color);
             cr.set_line_width(4.0);
             for (i, point) in inner.points.iter().enumerate() {
                 let x = f64::from(i as f32 * inner.scale_x + HALF_X_PADDING);
@@ -258,7 +258,7 @@ mod imp {
             */
             cr.save().unwrap();
 
-            GdkCairoContextExt::set_source_rgba(&cr, &graph_color);
+            GdkCairoContextExt::set_source_color(&cr, &graph_color);
             cr.move_to(
                 f64::from(HALF_X_PADDING),
                 f64::from(
@@ -388,7 +388,7 @@ mod imp {
                         f64::from(hover_point.y) - pango::units_to_double(extents.height()) / 2.0,
                     );
                     cr.set_source_rgba(1.0, 1.0, 1.0, 1.0);
-                    pangocairo::show_layout(&cr, &layout);
+                    pangocairo::functions::show_layout(&cr, &layout);
                     cr.stroke().expect("Couldn't stroke on Cairo Context");
                 }
             }

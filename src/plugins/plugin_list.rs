@@ -28,11 +28,9 @@ use std::{cell::Ref, convert::TryInto};
 
 mod imp {
     use crate::plugins::{Plugin, PluginObject};
+    use gtk::prelude::*;
     use gtk::subclass::prelude::*;
-    use gtk::{
-        gio,
-        glib::{self, Cast, StaticType},
-    };
+    use gtk::{gio, glib};
     use std::{
         cell::RefCell,
         convert::{TryFrom, TryInto},

@@ -112,12 +112,12 @@ mod imp {
             cr.set_line_width(2.5);
             let style_context = widget.style_context();
             let unshaded = style_context.lookup_color("light-blue").unwrap();
-            GdkCairoContextExt::set_source_rgba(&cr, &unshaded);
+            GdkCairoContextExt::set_source_color(&cr, &unshaded);
             cr.move_to(width / 2.0, height / 2.0 - radius);
             cr.arc(width / 2.0, height / 2.0, radius, -0.5 * PI, 1.5 * PI);
             cr.stroke().expect("Couldn't stroke on Cairo Context");
             let shaded = style_context.lookup_color("blue").unwrap();
-            GdkCairoContextExt::set_source_rgba(&cr, &shaded);
+            GdkCairoContextExt::set_source_color(&cr, &shaded);
             if self.inner.borrow().step_goal != 0 {
                 cr.arc(
                     width / 2.0,

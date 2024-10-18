@@ -224,7 +224,7 @@ impl PreferencesWindow {
         self.set_notification_frequency(
             NotificationFrequency::from_str(parameter.get::<String>().unwrap().as_str()).unwrap(),
         );
-        action.set_state(parameter.clone());
+        action.set_state(&parameter);
     }
 
     fn setup_actions(&self) {

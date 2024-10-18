@@ -91,7 +91,7 @@ mod imp {
 
             let style_context = widget.style_context();
             let shaded = style_context.lookup_color("blue").unwrap();
-            GdkCairoContextExt::set_source_rgba(&cr, &shaded);
+            GdkCairoContextExt::set_source_color(&cr, &shaded);
 
             let (arrowhead_position, arrowhead_size) = match weight_change {
                 WeightChange::Down => (height * 0.85, -width / 12.0_f64),

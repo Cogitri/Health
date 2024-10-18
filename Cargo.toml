@@ -3,7 +3,7 @@ name = "health"
 version = "0.95.0"
 edition = "2021"
 license = "GPL-3.0-or-later"
-rust-version = "1.58"
+rust-version = "1.70"
 authors = ["Rasmus Thomsen <oss@cogitri.dev>"]
 description = "Track your fitness goals"
 documentation = "https://world.pages.gitlab.gnome.org/Health/libhealth"
@@ -28,9 +28,9 @@ path = "src/main.rs"
 version = "0.3"
 
 [dependencies.adw]
-version = "0.3"
+version = "0.7"
 package = "libadwaita"
-features = ["gtk_v4_4"]
+features = ["v1_6"]
 
 [dependencies.anyhow]
 version = "1.0"
@@ -67,9 +67,9 @@ features = ["gettext-system"]
 version = "0.3"
 
 [dependencies.gtk]
-version = "0.6"
+version = "0.9"
 package = "gtk4"
-features = ["v4_4"]
+features = ["gnome_47"]
 
 [dependencies.gtk-macros]
 version = "0.3.0"
@@ -98,7 +98,7 @@ version = "1.5"
 version = "0.3"
 
 [dependencies.pangocairo]
-version = "0.17.0"
+version = "0.20"
 
 [dependencies.paste]
 version = "1.0"
@@ -127,7 +127,7 @@ features = ["derive"]
 version = "1.0"
 
 [dependencies.tracker]
-version = "0.4.3"
+version = "0.6"
 package = "tracker-rs"
 features = ["v3_3"]
 

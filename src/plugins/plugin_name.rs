@@ -1,4 +1,5 @@
 use gtk::glib;
+use gtk::prelude::*;
 
 #[derive(
     PartialEq,
@@ -20,12 +21,12 @@ pub enum PluginName {
     Weight,
 }
 
-impl glib::ToValue for PluginName {
+impl ToValue for PluginName {
     fn to_value(&self) -> glib::Value {
         self.as_ref().to_value()
     }
 
     fn value_type(&self) -> glib::Type {
-        <String as glib::StaticType>::static_type()
+        <String as StaticType>::static_type()
     }
 }

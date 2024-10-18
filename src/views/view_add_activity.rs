@@ -147,7 +147,7 @@ mod imp {
             self.parent_constructed();
 
             let obj = self.obj();
-            let model = gio::ListStore::new(gtk::Widget::static_type());
+            let model = gio::ListStore::new::<gtk::Widget>();
             model.splice(
                 0,
                 0,
@@ -257,7 +257,7 @@ impl ViewAddActivity {
 
                 obj.imp().distance_action_row.set_unitsize(Unitsize::from_str(parameter.get::<String>().unwrap().as_str()).unwrap());
 
-                a.set_state(parameter.clone());
+                a.set_state(&parameter);
             })
         );
 

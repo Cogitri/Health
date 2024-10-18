@@ -33,7 +33,7 @@ mod imp {
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
-        glib::{self, subclass::Signal, Cast},
+        glib::{self, subclass::Signal},
         CompositeTemplate,
     };
     use num_traits::cast::ToPrimitive;

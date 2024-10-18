@@ -89,7 +89,7 @@ mod imp {
             let height = f64::from(widget.height());
             let radius = height * 0.3;
             cr.set_line_width(2.5);
-            GdkCairoContextExt::set_source_rgba(&cr, &self.color.borrow());
+            GdkCairoContextExt::set_source_color(&cr, &self.color.borrow());
             cr.arc(width / 2.0, height / 2.0, radius, 0.0, 2.0 * PI);
             cr.stroke_preserve()
                 .expect("Couldn't stroke on Cairo Context");

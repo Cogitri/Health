@@ -28,7 +28,7 @@ use crate::{
 };
 use crate::{model::ActivityInfo, widgets::LegendRow};
 use gtk::{
-    glib::{self, subclass::prelude::*, Boxed, Cast},
+    glib::{self, subclass::prelude::*, Boxed},
     prelude::*,
 };
 use std::{cell::RefCell, convert::TryInto, rc::Rc};
@@ -39,11 +39,7 @@ mod imp {
         core::Database, plugins::PluginDetails, prelude::*, views::BarGraphView, widgets::LegendRow,
     };
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{
-        gio,
-        glib::{self, Cast},
-        CompositeTemplate,
-    };
+    use gtk::{gio, glib, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 

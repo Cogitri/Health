@@ -26,7 +26,7 @@ mod imp {
     use gtk::subclass::prelude::*;
     use gtk::{
         gio,
-        glib::{self, subclass, Cast, StaticType},
+        glib::{self, subclass},
         prelude::*,
     };
     use once_cell::unsync::OnceCell;

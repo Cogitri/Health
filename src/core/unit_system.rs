@@ -1,4 +1,5 @@
 use gtk::glib;
+use gtk::prelude::*;
 
 #[derive(
     PartialEq,
@@ -17,13 +18,13 @@ pub enum UnitSystem {
     Metric,
 }
 
-impl glib::ToValue for UnitSystem {
+impl ToValue for UnitSystem {
     fn to_value(&self) -> glib::Value {
         self.as_ref().to_value()
     }
 
     fn value_type(&self) -> glib::Type {
-        <String as glib::StaticType>::static_type()
+        <String as StaticType>::static_type()
     }
 }
 

@@ -31,11 +31,7 @@ mod imp {
         core::Database, model::Activity, plugins::PluginDetails, prelude::*, widgets::ActivityRow,
     };
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{
-        self, gio,
-        glib::{self, Cast},
-        CompositeTemplate,
-    };
+    use gtk::{self, gio, glib, CompositeTemplate};
     use std::cell::RefCell;
 
     #[derive(Debug, CompositeTemplate, Default)]

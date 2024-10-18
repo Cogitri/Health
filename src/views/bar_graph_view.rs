@@ -154,7 +154,7 @@ mod imp {
             let style_context = widget.style_context();
             let background_color = style_context.lookup_color("insensitive_fg_color").unwrap();
 
-            GdkCairoContextExt::set_source_rgba(&cr, &background_color);
+            GdkCairoContextExt::set_source_color(&cr, &background_color);
             /*
                 Draw outlines
             */
@@ -178,7 +178,7 @@ mod imp {
                 let (_, extents) = layout.extents();
 
                 cr.rel_move_to(0.0, pango::units_to_double(extents.height()) * -1.0);
-                pangocairo::show_layout(&cr, &layout);
+                pangocairo::functions::show_layout(&cr, &layout);
             }
 
             cr.stroke().expect("Couldn't stroke on Cairo Context");
@@ -200,7 +200,7 @@ mod imp {
                     f64::from(inner.height + HALF_Y_PADDING * 1.5)
                         - pango::units_to_double(extents.height()) / 2.0,
                 );
-                pangocairo::show_layout(&cr, &layout);
+                pangocairo::functions::show_layout(&cr, &layout);
             }
 
             cr.stroke().expect("Couldn't stroke on Cairo Context");
@@ -229,7 +229,7 @@ mod imp {
                 };
                 let mut bar_top =
                     f64::from(inner.height + HALF_Y_PADDING) - height - scroll_thickness;
-                GdkCairoContextExt::set_source_rgba(
+                GdkCairoContextExt::set_source_color(
                     &cr,
                     &gtk::gdk::RGBA::builder()
                         .red(0.0)
@@ -245,7 +245,7 @@ mod imp {
                 cr.fill().expect("Couldn't fill on Cairo Context");
 
                 for (activity_id, calories) in sorted_by_calories {
-                    GdkCairoContextExt::set_source_rgba(
+                    GdkCairoContextExt::set_source_color(
                         &cr,
                         &ActivityInfo::from(activity_id).color,
                     );
@@ -340,7 +340,7 @@ mod imp {
                         f64::from(hover_point.y) - pango::units_to_double(extents.height()) / 2.0,
                     );
                     cr.set_source_rgba(1.0, 1.0, 1.0, 1.0);
-                    pangocairo::show_layout(&cr, &layout);
+                    pangocairo::functions::show_layout(&cr, &layout);
                     cr.stroke().expect("Couldn't stroke on Cairo Context");
                 }
             }

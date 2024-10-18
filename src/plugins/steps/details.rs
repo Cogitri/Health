@@ -37,11 +37,7 @@ mod imp {
         views::GraphView,
     };
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{
-        gio,
-        glib::{self, Cast},
-        CompositeTemplate,
-    };
+    use gtk::{gio, glib, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::cell::RefCell;
 

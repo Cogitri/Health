@@ -18,6 +18,7 @@
  */
 
 use gtk::glib;
+use gtk::prelude::*;
 
 #[derive(
     PartialEq,
@@ -43,17 +44,17 @@ impl Default for NotificationFrequency {
     }
 }
 
-impl glib::ToValue for NotificationFrequency {
+impl ToValue for NotificationFrequency {
     fn to_value(&self) -> glib::Value {
         self.as_ref().to_value()
     }
 
     fn value_type(&self) -> glib::Type {
-        <String as glib::StaticType>::static_type()
+        <String as StaticType>::static_type()
     }
 }
 
-impl glib::ToVariant for NotificationFrequency {
+impl ToVariant for NotificationFrequency {
     fn to_variant(&self) -> glib::Variant {
         self.as_ref().to_variant()
     }

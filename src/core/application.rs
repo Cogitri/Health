@@ -221,9 +221,7 @@ impl Application {
         }
         let window = Window::new(self);
         window.show();
-        self.imp()
-            .window
-            .replace(Some(glib::ObjectExt::downgrade(&window)));
+        self.imp().window.replace(Some(window.downgrade()));
         // Since the window is shown now we can release the hold, the application will exit once the window is closed (if notifications are disabled)
         self.release();
     }
@@ -268,7 +266,7 @@ impl Application {
                 .borrow()
                 .clone()
                 .and_then(|s| s.upgrade())
-                .map(glib::Cast::upcast),
+                .map(Cast::upcast),
         )
         .show()
     }
@@ -285,8 +283,7 @@ impl Application {
         let imp = self.imp();
         let window = Window::new(self);
         window.show();
-        imp.window
-            .replace(Some(glib::ObjectExt::downgrade(&window)));
+        imp.window.replace(Some(window.downgrade()));
         self.release();
     }
 
@@ -297,7 +294,7 @@ impl Application {
             UnitSystem::from_str(parameter.to_string().replace('\'', "").as_str()).unwrap(),
         );
 
-        action.set_state(parameter.clone());
+        action.set_state(&parameter);
     }
 
     fn install_autostart_file(&self) -> Result<()> {

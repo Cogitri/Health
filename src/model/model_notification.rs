@@ -159,7 +159,7 @@ impl ModelNotification {
                     obj.periodic_callback().await;
                 }));
 
-                glib::Continue(true)
+                glib::ControlFlow::Continue
             }),
         );
 

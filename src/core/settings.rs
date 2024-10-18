@@ -76,7 +76,7 @@ impl Settings {
 
             fn enum_(&self, key: &str) -> i32;
 
-            fn get<U: glib::FromVariant>(&self, key: &str) -> U;
+            fn get<U: FromVariant>(&self, key: &str) -> U;
 
             fn set<U: Into<glib::Variant>>(&self, key: &str, value: U) -> Result<(), glib::BoolError>;
 

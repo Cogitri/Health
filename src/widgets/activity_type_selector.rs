@@ -62,8 +62,8 @@ mod imp {
 
         fn new() -> Self {
             Self {
-                activity_types_model: gio::ListStore::new(ActivityTypeRowData::static_type()),
-                recent_activity_types_model: gio::ListStore::new(ActivityTypeRowData::static_type()),
+                activity_types_model: gio::ListStore::new::<ActivityTypeRowData>(),
+                recent_activity_types_model: gio::ListStore::new::<ActivityTypeRowData>(),
                 selected_activity: RefCell::new(ActivityInfo::from(ActivityType::Walking)),
                 activity_types_list_box: TemplateChild::default(),
                 recent_activity_types_list_box: TemplateChild::default(),

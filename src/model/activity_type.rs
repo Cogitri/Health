@@ -17,6 +17,7 @@
  */
 
 use gtk::glib;
+use gtk::prelude::*;
 
 /// All supported [ActivityType]s are listed in this enum.
 #[derive(
@@ -64,13 +65,13 @@ impl Default for ActivityType {
     }
 }
 
-impl glib::ToValue for ActivityType {
+impl ToValue for ActivityType {
     fn to_value(&self) -> glib::Value {
         self.as_ref().to_value()
     }
 
     fn value_type(&self) -> glib::Type {
-        <String as glib::StaticType>::static_type()
+        <String as StaticType>::static_type()
     }
 }
 

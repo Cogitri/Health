@@ -472,7 +472,7 @@ impl UnitSpinButton {
         }
     }
 
-    fn handle_spin_button_output(&self) -> gtk::Inhibit {
+    fn handle_spin_button_output(&self) -> glib::Propagation {
         let imp = self.imp();
 
         if let Some(unit_string) = self.unit_string() {
@@ -486,9 +486,9 @@ impl UnitSpinButton {
             if text != imp.spin_button.text() {
                 imp.spin_button.set_text(&text);
             }
-            gtk::Inhibit(true)
+            glib::Propagation::Stop
         } else {
-            gtk::Inhibit(false)
+            glib::Propagation::Proceed
         }
     }
 }

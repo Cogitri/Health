@@ -1,4 +1,5 @@
 use gtk::glib;
+use gtk::prelude::*;
 
 #[derive(
     PartialEq,
@@ -23,12 +24,12 @@ pub enum UnitKind {
     LikeKilogram,
 }
 
-impl glib::ToValue for UnitKind {
+impl ToValue for UnitKind {
     fn to_value(&self) -> glib::Value {
         self.as_ref().to_value()
     }
 
     fn value_type(&self) -> glib::Type {
-        <String as glib::StaticType>::static_type()
+        <String as StaticType>::static_type()
     }
 }

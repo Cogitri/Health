@@ -24,7 +24,7 @@ mod imp {
         prelude::*,
         subclass::prelude::*,
     };
-    use once_cell::unsync::OnceCell;
+    use std::cell::OnceCell;
 
     #[derive(Debug, Default, Properties)]
     #[properties(wrapper_type = super::ActivityTypeRowData)]
