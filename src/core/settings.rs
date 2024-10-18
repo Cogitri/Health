@@ -118,7 +118,7 @@ impl Settings {
     pub fn enabled_plugins(&self) -> Vec<PluginName> {
         self.strv("enabled-plugins")
             .iter()
-            .filter_map(|s| PluginName::from_str(s.to_str()).ok())
+            .filter_map(|s| PluginName::from_str(s.as_str()).ok())
             .collect()
     }
 
