@@ -168,27 +168,27 @@ impl SyncListBox {
             imp.google_fit_stack
                 .set_visible_child(&imp.google_fit_spinner.get());
 
-            let (sender, receiver) =
-                glib::MainContext::channel::<Result<()>>(glib::PRIORITY_DEFAULT);
+            let (sender, receiver) = async_channel::unbounded();
             let db_sender = new_db_receiver();
 
-            receiver.attach(
-                None,
-                clone!(@weak self as obj => @default-panic, move |res| {
-                    obj.handle_db_receiver_received(res)
-                }),
-            );
+            glib::spawn_future_local(clone!(@weak self as obj => @default-panic, async move {
+                while let Ok(res) = receiver.recv().await {
+                    if obj.handle_db_receiver_received(res) == glib::ControlFlow::Break {
+                        break;
+                    }
+                }
+            }));
 
             std::thread::spawn(move || {
                 let mut sync_provider = GoogleFitSyncProvider::new(db_sender);
                 if let Err(e) = sync_provider.initial_authenticate() {
-                    sender.send(Err(e)).unwrap();
+                    sender.send_blocking(Err(e)).unwrap();
                 } else {
                     if let Err(e) = sync_provider.initial_import() {
-                        sender.send(Err(e)).unwrap();
+                        sender.send_blocking(Err(e)).unwrap();
                     }
 
-                    sender.send(Ok(())).unwrap();
+                    sender.send_blocking(Ok(())).unwrap();
                 }
             });
         }

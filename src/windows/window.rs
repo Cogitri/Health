@@ -286,22 +286,23 @@ impl Window {
         let imp = self.imp();
 
         if imp.settings.sync_provider_setup_google_fit() {
-            let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+            let (sender, receiver) = async_channel::unbounded();
             let db_sender = new_db_receiver();
 
-            receiver.attach(
-                None,
-                clone!(@weak self as obj => @default-panic, move |v: Option<anyhow::Error>| {
-                    obj.handle_sync_data_error_received(v)
-                }),
-            );
+            glib::spawn_future_local(clone!(@weak self as obj => @default-panic, async move {
+                while let Ok(v) = receiver.recv().await {
+                    if obj.handle_sync_data_error_received(v) == glib::ControlFlow::Break {
+                        break;
+                    }
+                }
+            }));
 
             std::thread::spawn(move || {
                 let mut sync_proxy = GoogleFitSyncProvider::new(db_sender);
                 if let Err(e) = sync_proxy.sync_data() {
-                    sender.send(Some(e)).unwrap();
+                    sender.send_blocking(Some(e)).unwrap();
                 } else {
-                    sender.send(None).unwrap();
+                    sender.send_blocking(None).unwrap();
                 }
             });
         }

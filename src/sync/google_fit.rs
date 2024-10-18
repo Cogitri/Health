@@ -64,7 +64,7 @@ struct Points {
 
 #[derive(Debug, Clone)]
 pub struct GoogleFitSyncProvider {
-    sender: glib::Sender<DatabaseValue>,
+    sender: async_channel::Sender<DatabaseValue>,
     token: Option<StandardTokenResponse<EmptyExtraTokenFields, BasicTokenType>>,
 }
 
@@ -246,10 +246,14 @@ impl SyncProvider for GoogleFitSyncProvider {
     /// from Google Fit to the Tracker DB.
     fn initial_import(&mut self) -> Result<()> {
         let steps = self.steps(None)?;
-        self.sender.send(DatabaseValue::Steps(steps)).unwrap();
+        self.sender
+            .send_blocking(DatabaseValue::Steps(steps))
+            .unwrap();
 
         let weights = self.weights(None)?;
-        self.sender.send(DatabaseValue::Weights(weights)).unwrap();
+        self.sender
+            .send_blocking(DatabaseValue::Weights(weights))
+            .unwrap();
 
         Ok(())
     }
@@ -262,17 +266,21 @@ impl SyncProvider for GoogleFitSyncProvider {
         settings.set_timestamp_last_sync_google_fit(glib::DateTime::local());
 
         let steps = self.steps(Some(last_sync_date.clone()))?;
-        self.sender.send(DatabaseValue::Steps(steps)).unwrap();
+        self.sender
+            .send_blocking(DatabaseValue::Steps(steps))
+            .unwrap();
 
         let weights = self.weights(Some(last_sync_date))?;
-        self.sender.send(DatabaseValue::Weights(weights)).unwrap();
+        self.sender
+            .send_blocking(DatabaseValue::Weights(weights))
+            .unwrap();
 
         Ok(())
     }
 }
 
 impl GoogleFitSyncProvider {
-    pub fn new(sender: glib::Sender<DatabaseValue>) -> Self {
+    pub fn new(sender: async_channel::Sender<DatabaseValue>) -> Self {
         Self {
             sender,
             token: None,

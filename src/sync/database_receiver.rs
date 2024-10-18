@@ -28,45 +28,45 @@ pub enum DatabaseValue {
     Weights(Vec<Weight>),
 }
 
-/// Create a [glib::Sender] which can be used in threaded scenarios (e.g. sync providers).
+/// Create a [async_channel::Sender] which can be used in threaded scenarios (e.g. sync providers).
 /// Values sent through the sender will automatically import it into the DB.
-pub fn new_db_receiver() -> glib::Sender<DatabaseValue> {
-    let (sender, receiver) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+pub fn new_db_receiver() -> async_channel::Sender<DatabaseValue> {
+    let (sender, receiver) = async_channel::unbounded();
 
-    receiver.attach(None, move |value| {
-        let db = Database::instance();
-        match value {
-            DatabaseValue::Steps(s) => {
-                spawn!(async move {
-                    if let Err(e) = db.import_steps(&s).await {
-                        glib::g_warning!(
-                            crate::config::LOG_DOMAIN,
-                            "{}",
-                            i18n_f(
-                                "Couldn’t synchronize steps due to error {}",
-                                &[&e.to_string()]
-                            )
-                        );
-                    }
-                });
-            }
-            DatabaseValue::Weights(w) => {
-                spawn!(async move {
-                    if let Err(e) = db.import_weights(&w).await {
-                        glib::g_warning!(
-                            crate::config::LOG_DOMAIN,
-                            "{}",
-                            i18n_f(
-                                "Couldn’t synchronize weight measurements due to error {}",
-                                &[&e.to_string()]
-                            )
-                        );
-                    }
-                });
+    glib::spawn_future_local(async move {
+        while let Ok(value) = receiver.recv().await {
+            let db = Database::instance();
+            match value {
+                DatabaseValue::Steps(s) => {
+                    spawn!(async move {
+                        if let Err(e) = db.import_steps(&s).await {
+                            glib::g_warning!(
+                                crate::config::LOG_DOMAIN,
+                                "{}",
+                                i18n_f(
+                                    "Couldn’t synchronize steps due to error {}",
+                                    &[&e.to_string()]
+                                )
+                            );
+                        }
+                    });
+                }
+                DatabaseValue::Weights(w) => {
+                    spawn!(async move {
+                        if let Err(e) = db.import_weights(&w).await {
+                            glib::g_warning!(
+                                crate::config::LOG_DOMAIN,
+                                "{}",
+                                i18n_f(
+                                    "Couldn’t synchronize weight measurements due to error {}",
+                                    &[&e.to_string()]
+                                )
+                            );
+                        }
+                    });
+                }
             }
         }
-
-        glib::Continue(true)
     });
 
     sender
