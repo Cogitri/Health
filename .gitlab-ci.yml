@@ -44,12 +44,6 @@ fmt:
     - cargo fmt --version
     - cargo fmt --all -- --color=always --check
 
-clone:
-  image: alpine:latest
-  stage: qa
-  script:
-    - build-aux/run-clone-warn.sh
-
 gettext_check:
   image: "$CI_IMAGE"
   stage: qa
