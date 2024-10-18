@@ -22,11 +22,11 @@ use crate::{
     stateful_action,
     windows::{PreferencesWindow, Window},
 };
+use adw::prelude::*;
 use anyhow::Result;
 use gtk::{
-    gio::{self, prelude::*},
+    gio,
     glib::{self, clone, subclass::prelude::*},
-    prelude::*,
 };
 use gtk_macros::action;
 use std::{path::Path, str::FromStr};
@@ -190,8 +190,18 @@ impl Application {
     }
 
     fn handle_about(&self) {
-        gtk::AboutDialog::builder()
-            .transient_for(
+        adw::AboutDialog::builder()
+            .application_icon(crate::config::APPLICATION_ID)
+            .application_name("Health")
+            .copyright("Copyright © 2020-2024 Health Developers")
+            .comments(i18n("A health tracking app for the GNOME desktop."))
+            .developers(vec!["Rasmus Thomsen <oss@cogitri.dev>"])
+            .translator_credits(i18n("translator-credits"))
+            .website("https://gitlab.gnome.org/World/Health")
+            .version(crate::config::VERSION)
+            .license_type(gtk::License::Gpl30)
+            .build()
+            .present(Some(
                 &self
                     .imp()
                     .window
@@ -199,19 +209,7 @@ impl Application {
                     .clone()
                     .and_then(|s| s.upgrade())
                     .unwrap(),
-            )
-            .modal(true)
-            .logo_icon_name(crate::config::APPLICATION_ID)
-            .program_name("Health")
-            .comments(i18n("A health tracking app for the GNOME desktop."))
-            .authors(vec!["Rasmus Thomsen <oss@cogitri.dev>".to_string()])
-            .translator_credits(i18n("translator-credits"))
-            .website("https://gitlab.gnome.org/World/Health")
-            .website_label(i18n("Websites"))
-            .version(crate::config::VERSION)
-            .license_type(gtk::License::Gpl30)
-            .build()
-            .show()
+            ))
     }
 
     fn release(&self) {
