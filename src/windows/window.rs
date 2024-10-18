@@ -125,23 +125,29 @@ impl Window {
         action!(
             self,
             "hamburger-menu",
-            clone!(@weak self as obj => move |_, _| {
-                obj.open_hamburger_menu();
-            })
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, _| obj.open_hamburger_menu()
+            )
         );
         action!(
             self,
             "fullscreen",
-            clone!(@weak self as obj => move |_, _| {
-                obj.handle_fullscreen();
-            })
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, _| obj.handle_fullscreen()
+            )
         );
         action!(
             self,
             "disable-current-plugin",
-            clone!(@weak self as obj => move |_, _| {
-                obj.handle_disable_current_plugin();
-            })
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, _| obj.handle_disable_current_plugin()
+            )
         );
         self.action_set_enabled("win.disable-current-plugin", false);
     }
@@ -196,18 +202,26 @@ impl Window {
 
     #[template_callback]
     fn handle_disable_current_plugin(&self) {
-        glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
-            obj.disable_plugin().await;
-        }));
+        glib::MainContext::default().spawn_local(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            async move {
+                obj.disable_plugin().await;
+            }
+        ));
         self.imp().view_home_page.back();
     }
 
     #[template_callback]
     fn handle_enable_plugin_button_clicked(&self) {
         let imp = self.imp();
-        glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
-            obj.enable_plugin().await;
-        }));
+        glib::MainContext::default().spawn_local(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            async move {
+                obj.enable_plugin().await;
+            }
+        ));
         imp.view_home_page.back();
         imp.enable_plugin_button.set_visible(false);
     }
@@ -254,11 +268,16 @@ impl Window {
         // FIXME: Allow setting custom sync interval
         self.imp().inner.borrow_mut().sync_source_id = Some(glib::timeout_add_seconds_local(
             60 * 5,
-            clone!(@weak self as obj => @default-panic, move || {
-                obj.sync_data();
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                #[upgrade_or_panic]
+                move || {
+                    obj.sync_data();
 
-                glib::ControlFlow::Continue
-            }),
+                    glib::ControlFlow::Continue
+                }
+            ),
         ));
     }
 
@@ -289,13 +308,18 @@ impl Window {
             let (sender, receiver) = async_channel::unbounded();
             let db_sender = new_db_receiver();
 
-            glib::spawn_future_local(clone!(@weak self as obj => @default-panic, async move {
-                while let Ok(v) = receiver.recv().await {
-                    if obj.handle_sync_data_error_received(v) == glib::ControlFlow::Break {
-                        break;
+            glib::spawn_future_local(clone!(
+                #[weak(rename_to = obj)]
+                self,
+                #[upgrade_or_panic]
+                async move {
+                    while let Ok(v) = receiver.recv().await {
+                        if obj.handle_sync_data_error_received(v) == glib::ControlFlow::Break {
+                            break;
+                        }
                     }
                 }
-            }));
+            ));
 
             std::thread::spawn(move || {
                 let mut sync_proxy = GoogleFitSyncProvider::new(db_sender);
@@ -310,9 +334,13 @@ impl Window {
 
     pub fn update(&self) {
         let view = self.imp().view_home_page.get();
-        gtk_macros::spawn!(clone!(@weak view => async move {
-            view.update().await;
-        }));
+        gtk_macros::spawn!(clone!(
+            #[weak]
+            view,
+            async move {
+                view.update().await;
+            }
+        ));
     }
 }
 

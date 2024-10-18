@@ -40,9 +40,13 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            gtk_macros::spawn!(glib::clone!(@weak obj => async move {
-                obj.load_plugins().await;
-            }));
+            gtk_macros::spawn!(glib::clone!(
+                #[weak]
+                obj,
+                async move {
+                    obj.load_plugins().await;
+                }
+            ));
         }
     }
 }

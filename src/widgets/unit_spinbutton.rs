@@ -137,10 +137,16 @@ mod imp {
                         }
 
                         let settings = Settings::instance();
-                        self.inner.borrow_mut().settings_handler_id = Some(
-                        settings.connect_unit_system_changed(clone!(@weak obj => move |_, _| {
-                                obj.handle_settings_unit_system_changed(Settings::instance().unit_system())
-                        })));
+                        self.inner.borrow_mut().settings_handler_id =
+                            Some(settings.connect_unit_system_changed(clone!(
+                                #[weak]
+                                obj,
+                                move |_, _| {
+                                    obj.handle_settings_unit_system_changed(
+                                        Settings::instance().unit_system(),
+                                    )
+                                }
+                            )));
                         obj.set_unit_system(settings.unit_system());
                     } else if let Some(id) = self.inner.borrow_mut().settings_handler_id.take() {
                         Settings::instance().disconnect(id);
@@ -315,27 +321,41 @@ impl UnitSpinButton {
     fn connect_handlers(&self) {
         let imp = self.imp();
 
-        imp.spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
+        imp.spin_button.connect_changed(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |_| {
                 obj.emit_by_name::<()>("changed", &[]);
-            }));
+            }
+        ));
 
-        imp.spin_button
-            .connect_text_notify(clone!(@weak self as obj => move |_| {
-                if obj.handle_spin_button_input().map_or(0.0, |s| s.unwrap_or(0.0)) != 0.0 {
+        imp.spin_button.connect_text_notify(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |_| {
+                if obj
+                    .handle_spin_button_input()
+                    .map_or(0.0, |s| s.unwrap_or(0.0))
+                    != 0.0
+                {
                     obj.imp().spin_button.update();
                 }
-            }));
+            }
+        ));
 
-        imp.spin_button
-            .connect_input(clone!(@weak self as obj => @default-panic, move |_| {
-                obj.handle_spin_button_input()
-            }));
+        imp.spin_button.connect_input(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            #[upgrade_or_panic]
+            move |_| obj.handle_spin_button_input()
+        ));
 
-        imp.spin_button
-            .connect_output(clone!(@weak self as obj => @default-panic, move |_| {
-                obj.handle_spin_button_output()
-            }));
+        imp.spin_button.connect_output(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            #[upgrade_or_panic]
+            move |_| obj.handle_spin_button_output()
+        ));
     }
 
     fn handle_conversion(

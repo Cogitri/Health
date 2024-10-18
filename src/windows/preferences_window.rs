@@ -140,13 +140,17 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            gtk_macros::spawn!(glib::clone!(@weak obj => async move {
-                obj.construct_user().await;
-                obj.setup_actions();
-                obj.connect_handlers();
-                obj.handle_enable_notify_changed(true);
-                obj.init_time_buttons();
-            }));
+            gtk_macros::spawn!(glib::clone!(
+                #[weak]
+                obj,
+                async move {
+                    obj.construct_user().await;
+                    obj.setup_actions();
+                    obj.connect_handlers();
+                    obj.handle_enable_notify_changed(true);
+                    obj.init_time_buttons();
+                }
+            ));
         }
 
         fn properties() -> &'static [glib::ParamSpec] {
@@ -235,9 +239,13 @@ impl PreferencesWindow {
             "frequency",
             Some(&String::static_variant_type()),
             self.imp().settings.notification_frequency(),
-            clone!(@weak self as obj => move |a, p| {
-                obj.handle_frequency(a, p);
-            })
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |a, p| {
+                    obj.handle_frequency(a, p);
+                }
+            )
         );
 
         self.insert_action_group("notification", Some(&action_group));
@@ -301,22 +309,26 @@ impl PreferencesWindow {
     fn connect_handlers(&self) {
         let imp = self.imp();
 
-        imp.settings
-            .connect_unit_system_changed(clone!(@weak self as obj => move |_, _| {
-                obj.handle_unit_system_changed();
-            }));
-        imp.height_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_height_spin_button_changed();
-            }));
-        imp.weight_goal_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_weight_goal_spin_button_changed();
-            }));
-        imp.step_goal_spin_button
-            .connect_changed(clone!(@weak self as obj => move |_| {
-                obj.handle_step_goal_spin_button_changed();
-            }));
+        imp.settings.connect_unit_system_changed(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |_, _| obj.handle_unit_system_changed()
+        ));
+        imp.height_spin_button.connect_changed(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |_| obj.handle_height_spin_button_changed()
+        ));
+        imp.weight_goal_spin_button.connect_changed(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |_| obj.handle_weight_goal_spin_button_changed()
+        ));
+        imp.step_goal_spin_button.connect_changed(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |_| obj.handle_step_goal_spin_button_changed()
+        ));
     }
 
     pub async fn update_user(&self, user: User) {
@@ -333,22 +345,30 @@ impl PreferencesWindow {
     fn handle_user_name_entry_changed(&self) {
         let imp = self.imp();
         let user_name = imp.user_name_entry.text().to_string();
-        glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
-            let user = obj.get_user().await;
-            user.set_user_name(Some(user_name.as_str()));
-            obj.update_user(user).await;
-        }));
+        glib::MainContext::default().spawn_local(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            async move {
+                let user = obj.get_user().await;
+                user.set_user_name(Some(user_name.as_str()));
+                obj.update_user(user).await;
+            }
+        ));
     }
 
     #[template_callback]
     fn handle_birthday_selector_changed(&self) {
         let imp = self.imp();
         let user_birthday = imp.birthday_selector.selected_date();
-        glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
-            let user = obj.get_user().await;
-            user.set_user_birthday(Some(user_birthday));
-            obj.update_user(user).await;
-        }));
+        glib::MainContext::default().spawn_local(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            async move {
+                let user = obj.get_user().await;
+                user.set_user_birthday(Some(user_birthday));
+                obj.update_user(user).await;
+            }
+        ));
     }
 
     fn handle_enable_notify_changed(&self, initializing: bool) {
@@ -387,11 +407,15 @@ impl PreferencesWindow {
                 Length::new::<inch>(val)
             };
 
-            glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
-                let user = obj.get_user().await;
-                user.set_user_height(Some(height));
-                obj.update_user(user).await;
-            }));
+            glib::MainContext::default().spawn_local(clone!(
+                #[weak(rename_to = obj)]
+                self,
+                async move {
+                    let user = obj.get_user().await;
+                    user.set_user_height(Some(height));
+                    obj.update_user(user).await;
+                }
+            ));
             imp.bmi_levelbar.set_height(height);
         }
     }
@@ -405,11 +429,15 @@ impl PreferencesWindow {
     fn handle_step_goal_spin_button_changed(&self) {
         let imp = self.imp();
         if let Some(val) = imp.step_goal_spin_button.raw_value::<u32>() {
-            glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
-                let user = obj.get_user().await;
-                user.set_user_stepgoal(Some(i64::from(val)));
-                obj.update_user(user).await;
-            }));
+            glib::MainContext::default().spawn_local(clone!(
+                #[weak(rename_to = obj)]
+                self,
+                async move {
+                    let user = obj.get_user().await;
+                    user.set_user_stepgoal(Some(i64::from(val)));
+                    obj.update_user(user).await;
+                }
+            ));
         }
     }
 
@@ -459,11 +487,15 @@ impl PreferencesWindow {
                 Mass::new::<pound>(val)
             };
 
-            glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
-                let user = obj.get_user().await;
-                user.set_user_weightgoal(Some(weight));
-                obj.update_user(user).await;
-            }));
+            glib::MainContext::default().spawn_local(clone!(
+                #[weak(rename_to = obj)]
+                self,
+                async move {
+                    let user = obj.get_user().await;
+                    user.set_user_weightgoal(Some(weight));
+                    obj.update_user(user).await;
+                }
+            ));
             imp.bmi_levelbar.set_weight(weight);
         }
     }

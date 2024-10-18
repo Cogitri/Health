@@ -86,17 +86,25 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            gtk_macros::spawn!(glib::clone!(@weak obj => async move {
-                obj.load_recent_activities().await;
-            }));
+            gtk_macros::spawn!(glib::clone!(
+                #[weak]
+                obj,
+                async move {
+                    obj.load_recent_activities().await;
+                }
+            ));
 
-            let create_list_box_row = glib::clone!(@weak obj => @default-panic, move |o: &glib::Object| {
-                let data = o.downcast_ref::<ActivityTypeRowData>().unwrap();
-                let selected_activity = obj.imp().selected_activity.borrow();
-                ActivityTypeRow::new(data, data.label() == selected_activity.name)
-                    .upcast::<gtk::Widget>()
-
-            });
+            let create_list_box_row = glib::clone!(
+                #[weak]
+                obj,
+                #[upgrade_or_panic]
+                move |o: &glib::Object| {
+                    let data = o.downcast_ref::<ActivityTypeRowData>().unwrap();
+                    let selected_activity = obj.imp().selected_activity.borrow();
+                    ActivityTypeRow::new(data, data.label() == selected_activity.name)
+                        .upcast::<gtk::Widget>()
+                }
+            );
             self.activity_types_list_box.bind_model(
                 Some(&self.activity_types_model),
                 create_list_box_row.clone(),

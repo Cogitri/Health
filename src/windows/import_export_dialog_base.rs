@@ -258,9 +258,13 @@ impl ImportExportDialogBase {
     #[template_callback]
     fn handle_response(&self, id: i32) {
         let id = unsafe { gtk::ResponseType::from_glib(id) };
-        gtk_macros::spawn!(glib::clone!(@weak self as obj => async move {
-            obj.on_response(id).await;
-        }));
+        gtk_macros::spawn!(glib::clone!(
+            #[weak(rename_to = obj)]
+            self,
+            async move {
+                obj.on_response(id).await;
+            }
+        ));
     }
 
     async fn on_response(&self, id: gtk::ResponseType) {

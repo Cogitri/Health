@@ -121,21 +121,31 @@ mod imp {
 
             self.user_selected_data.bind_model(
                 Some(&enabled_model_sorted),
-                glib::clone!(@weak obj => @default-panic, move |o| {
-                    obj.handle_user_selected_data_bind_model(o)
-                }),
+                glib::clone!(
+                    #[weak]
+                    obj,
+                    #[upgrade_or_panic]
+                    move |o| obj.handle_user_selected_data_bind_model(o)
+                ),
             );
             self.all_data.bind_model(
                 Some(&disabled_model_sorted),
-                glib::clone!(@weak obj => @default-panic, move |o| {
-                    obj.handle_all_data_bind_model(o)
-                }),
+                glib::clone!(
+                    #[weak]
+                    obj,
+                    #[upgrade_or_panic]
+                    move |o| obj.handle_all_data_bind_model(o)
+                ),
             );
 
             obj.handle_registrar_plugins_changed();
-            registrar.connect_plugins_updated(glib::clone!(@weak obj => move |_| {
-                obj.handle_registrar_plugins_changed();
-            }));
+            registrar.connect_plugins_updated(glib::clone!(
+                #[weak]
+                obj,
+                move |_| {
+                    obj.handle_registrar_plugins_changed();
+                }
+            ));
         }
     }
 
@@ -272,11 +282,15 @@ impl ViewHomePage {
             .plugin()
             .summary();
 
-        gtk_macros::spawn!(glib::clone!(@weak summary => async move {
-            if let Err(e) = summary.update().await {
-                glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't update plugin: {e}");
+        gtk_macros::spawn!(glib::clone!(
+            #[weak]
+            summary,
+            async move {
+                if let Err(e) = summary.update().await {
+                    glib::g_warning!(crate::config::LOG_DOMAIN, "Couldn't update plugin: {e}");
+                }
             }
-        }));
+        ));
 
         self.imp().size_group.add_widget(&summary);
 
@@ -310,9 +324,13 @@ impl ViewHomePage {
 
         imp.stack.add_named(&details, Some(plugin_name.as_ref()));
 
-        gtk_macros::spawn!(glib::clone!(@weak self as obj => async move {
-            obj.update_view(details, plugin_name, list_box).await;
-        }));
+        gtk_macros::spawn!(glib::clone!(
+            #[weak(rename_to = obj)]
+            self,
+            async move {
+                obj.update_view(details, plugin_name, list_box).await;
+            }
+        ));
     }
 
     pub async fn update(&self) {

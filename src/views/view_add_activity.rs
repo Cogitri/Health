@@ -164,9 +164,12 @@ mod imp {
                 ],
             );
 
-            let filter = gtk::CustomFilter::new(clone!(@weak obj => @default-panic, move |o| {
-                obj.filter_activity_entry(o)
-            }));
+            let filter = gtk::CustomFilter::new(clone!(
+                #[weak]
+                obj,
+                #[upgrade_or_panic]
+                move |o| obj.filter_activity_entry(o)
+            ));
             let filter_model = gtk::FilterListModel::new(Some(model), Some(filter));
             self.activities_list_box
                 .bind_model(Some(&filter_model), |o| {
@@ -228,20 +231,24 @@ impl ViewAddActivity {
 
     fn connect_handlers(&self) {
         let imp = self.imp();
-        imp.calories_burned_spin_button.connect_input(
-            clone!(@weak self as obj => @default-panic, move |_| {
-                obj.handle_calories_burned_spin_button_input()
-            }),
-        );
-        imp.duration_spin_button.connect_input(
-            clone!(@weak self as obj => @default-panic, move |_| {
-                obj.handle_duration_spin_button_input()
-            }),
-        );
-        imp.steps_spin_button
-            .connect_input(clone!(@weak self as obj => @default-panic, move |_| {
-                obj.handle_steps_spin_button_input()
-            }));
+        imp.calories_burned_spin_button.connect_input(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            #[upgrade_or_panic]
+            move |_| obj.handle_calories_burned_spin_button_input()
+        ));
+        imp.duration_spin_button.connect_input(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            #[upgrade_or_panic]
+            move |_| obj.handle_duration_spin_button_input()
+        ));
+        imp.steps_spin_button.connect_input(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            #[upgrade_or_panic]
+            move |_| obj.handle_steps_spin_button_input()
+        ));
     }
 
     fn setup_actions(&self) {
@@ -252,13 +259,19 @@ impl ViewAddActivity {
             "unitsize",
             Some(&String::static_variant_type()),
             "small",
-            clone!(@weak self as obj => move |a, p| {
-                let parameter = p.unwrap();
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |a, p| {
+                    let parameter = p.unwrap();
 
-                obj.imp().distance_action_row.set_unitsize(Unitsize::from_str(parameter.get::<String>().unwrap().as_str()).unwrap());
+                    obj.imp().distance_action_row.set_unitsize(
+                        Unitsize::from_str(parameter.get::<String>().unwrap().as_str()).unwrap(),
+                    );
 
-                a.set_state(&parameter);
-            })
+                    a.set_state(&parameter);
+                }
+            )
         );
 
         self.insert_action_group("view_add_activity", Some(&action_group));

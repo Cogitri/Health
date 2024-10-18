@@ -82,18 +82,26 @@ mod imp {
                 self.settings.set_did_initial_setup(false);
                 // Make sure we don't exit while the migration is running because we haven't opened a window yet
                 self.hold_guard.replace(Some(obj.hold()));
-                gtk_macros::spawn!(glib::clone!(@weak obj => async move {
-                    obj.create_main_window().await;
-                }));
+                gtk_macros::spawn!(glib::clone!(
+                    #[weak]
+                    obj,
+                    async move {
+                        obj.create_main_window().await;
+                    }
+                ));
             } else {
                 glib::g_info!(crate::config::APPLICATION_ID, "Starting setup...");
 
                 let setup_window = SetupWindow::new(obj.as_ref());
                 self.hold_guard.replace(Some(obj.hold()));
 
-                setup_window.connect_setup_done(clone!(@weak obj => move |_| {
-                    obj.handle_setup_window_setup_done();
-                }));
+                setup_window.connect_setup_done(clone!(
+                    #[weak]
+                    obj,
+                    move |_| {
+                        obj.handle_setup_window_setup_done();
+                    }
+                ));
 
                 setup_window.show();
             }
@@ -122,9 +130,13 @@ mod imp {
 
             if obj.flags().contains(gio::ApplicationFlags::IS_SERVICE) {
                 if self.settings.active_user_id() > 0 {
-                    gtk_macros::spawn!(glib::clone!(@weak obj => async move {
-                        obj.setup_notifications().await;
-                    }));
+                    gtk_macros::spawn!(glib::clone!(
+                        #[weak]
+                        obj,
+                        async move {
+                            obj.setup_notifications().await;
+                        }
+                    ));
                 }
 
                 // Hold onto this application to send notifications
@@ -329,33 +341,49 @@ impl Application {
         action!(
             self,
             "about",
-            clone!(@weak self as obj => move |_, _| {
-                obj.handle_about();
-            })
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, _| {
+                    obj.handle_about();
+                }
+            )
         );
 
         action!(
             self,
             "help",
-            clone!(@weak self as obj => move |_, _| {
-                obj.handle_help();
-            })
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, _| {
+                    obj.handle_help();
+                }
+            )
         );
 
         action!(
             self,
             "preferences",
-            clone!(@weak self as obj => move |_, _| {
-                obj.handle_preferences();
-            })
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, _| {
+                    obj.handle_preferences();
+                }
+            )
         );
 
         action!(
             self,
             "quit",
-            clone!(@weak self as obj => move |_, _| {
-                obj.handle_quit();
-            })
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, _| {
+                    obj.handle_quit();
+                }
+            )
         );
 
         stateful_action!(
@@ -363,9 +391,13 @@ impl Application {
             "unit-system",
             Some(&String::static_variant_type()),
             self.imp().settings.unit_system().as_ref(),
-            clone!(@weak self as obj => move |a, p| {
-                obj.handle_unit_system(a, p);
-            })
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |a, p| {
+                    obj.handle_unit_system(a, p);
+                }
+            )
         );
     }
 
@@ -375,36 +407,46 @@ impl Application {
 
         self.handle_enable_notifications_changed().await;
 
-        imp.settings.connect_enable_notifications_changed(
-            clone!(@weak self as obj => move |_, _| {
-                 glib::MainContext::default().spawn_local(async move {
+        imp.settings.connect_enable_notifications_changed(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |_, _| {
+                glib::MainContext::default().spawn_local(async move {
                     obj.handle_enable_notifications_changed().await;
                 });
-            }),
-        );
+            }
+        ));
 
-        imp.database
-            .connect_user_updated(clone!(@weak self as obj => move |_| {
+        imp.database.connect_user_updated(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |_| {
                 let imp = obj.imp();
                 if let Some(model) = &*imp.notification_model.borrow() {
                     model.set_step_goal(user.user_stepgoal().unwrap_or(0) as u32);
                 };
-            }));
-        imp.settings.connect_notification_frequency_changed(
-            clone!(@weak self as obj => move |_, _| {
+            }
+        ));
+        imp.settings.connect_notification_frequency_changed(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |_, _| {
                 let imp = obj.imp();
                 if let Some(model) = &*imp.notification_model.borrow() {
                     model.set_notification_frequency(imp.settings.notification_frequency())
                 };
-            }),
-        );
-        imp.settings
-            .connect_notification_time_changed(clone!(@weak self as obj => move |_, _| {
+            }
+        ));
+        imp.settings.connect_notification_time_changed(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |_, _| {
                 let imp = obj.imp();
                 if let Some(model) = &*imp.notification_model.borrow() {
                     model.set_notification_time(imp.settings.notification_time())
                 };
-            }));
+            }
+        ));
     }
 }
 

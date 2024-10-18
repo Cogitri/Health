@@ -148,27 +148,33 @@ mod test {
         );
         let a = ModelActivity::new();
         assert!(a.is_empty());
-        glib::clone!(@weak a => async move {
-            a.reload().await.unwrap();
-            assert!(a.is_empty());
-            assert_eq!(a.n_items(), 0);
-            assert_eq!(a.item(0), None);
-            let activity = Activity::builder()
-                .activity_type(ActivityType::Walking)
-                .duration(glib::TimeSpan::from_minutes(1))
-                .date(glib::DateTime::from_unix_utc(1_000_000_000).unwrap())
-                .build();
-            Database::instance().save_activity(activity.clone()).await.unwrap();
-            a.reload().await.unwrap();
-            assert!(!a.is_empty());
-            assert_eq!(a.n_items(), 1);
-            let new_act = a.item(0).unwrap().downcast::<Activity>().unwrap();
-            assert_eq!(activity.activity_type(), new_act.activity_type());
-            assert_eq!(activity.duration(), new_act.duration());
-            assert_eq!(activity.date(), new_act.date());
-            assert_eq!(a.item(1), None);
-
-        })
+        glib::clone!(
+            #[weak]
+            a,
+            async move {
+                a.reload().await.unwrap();
+                assert!(a.is_empty());
+                assert_eq!(a.n_items(), 0);
+                assert_eq!(a.item(0), None);
+                let activity = Activity::builder()
+                    .activity_type(ActivityType::Walking)
+                    .duration(glib::TimeSpan::from_minutes(1))
+                    .date(glib::DateTime::from_unix_utc(1_000_000_000).unwrap())
+                    .build();
+                Database::instance()
+                    .save_activity(activity.clone())
+                    .await
+                    .unwrap();
+                a.reload().await.unwrap();
+                assert!(!a.is_empty());
+                assert_eq!(a.n_items(), 1);
+                let new_act = a.item(0).unwrap().downcast::<Activity>().unwrap();
+                assert_eq!(activity.activity_type(), new_act.activity_type());
+                assert_eq!(activity.duration(), new_act.duration());
+                assert_eq!(activity.date(), new_act.date());
+                assert_eq!(a.item(1), None);
+            }
+        )
         .block();
     }
 }

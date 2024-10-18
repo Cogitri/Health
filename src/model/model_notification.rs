@@ -154,13 +154,21 @@ impl ModelNotification {
     pub fn register_periodic_notify(&self) {
         let source_id = glib::source::timeout_add_seconds_local(
             60,
-            glib::clone!(@strong self as obj => move || {
-                gtk_macros::spawn!(glib::clone!(@weak obj => async move {
-                    obj.periodic_callback().await;
-                }));
+            glib::clone!(
+                #[strong(rename_to = obj)]
+                self,
+                move || {
+                    gtk_macros::spawn!(glib::clone!(
+                        #[weak]
+                        obj,
+                        async move {
+                            obj.periodic_callback().await;
+                        }
+                    ));
 
-                glib::ControlFlow::Continue
-            }),
+                    glib::ControlFlow::Continue
+                }
+            ),
         );
 
         self.imp().inner.borrow_mut().timeout_source_id = Some(source_id);

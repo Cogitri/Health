@@ -171,13 +171,18 @@ impl SyncListBox {
             let (sender, receiver) = async_channel::unbounded();
             let db_sender = new_db_receiver();
 
-            glib::spawn_future_local(clone!(@weak self as obj => @default-panic, async move {
-                while let Ok(res) = receiver.recv().await {
-                    if obj.handle_db_receiver_received(res) == glib::ControlFlow::Break {
-                        break;
+            glib::spawn_future_local(clone!(
+                #[weak(rename_to = obj)]
+                self,
+                #[upgrade_or_panic]
+                async move {
+                    while let Ok(res) = receiver.recv().await {
+                        if obj.handle_db_receiver_received(res) == glib::ControlFlow::Break {
+                            break;
+                        }
                     }
                 }
-            }));
+            ));
 
             std::thread::spawn(move || {
                 let mut sync_provider = GoogleFitSyncProvider::new(db_sender);

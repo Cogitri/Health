@@ -37,11 +37,15 @@ mod imp {
             self.parent_constructed();
             let obj = self.obj();
 
-            Database::instance().connect_activities_updated(glib::clone!(@weak obj => move |_| {
-                gtk_macros::spawn!(async move {
-                    obj.update().await;
-                });
-            }));
+            Database::instance().connect_activities_updated(glib::clone!(
+                #[weak]
+                obj,
+                move |_| {
+                    gtk_macros::spawn!(async move {
+                        obj.update().await;
+                    });
+                }
+            ));
         }
     }
     impl WidgetImpl for PluginActivitiesSummaryRow {}
@@ -52,15 +56,19 @@ mod imp {
         fn update(&self, obj: &PluginSummaryRow) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
-                glib::clone!(@weak obj => move |_, _, send| {
-                    gtk_macros::spawn!(async move {
-                        obj.downcast_ref::<super::PluginActivitiesSummaryRow>()
-                            .unwrap()
-                            .update()
-                            .await;
-                        send.resolve(Ok(()));
-                    });
-                }),
+                glib::clone!(
+                    #[weak]
+                    obj,
+                    move |_, _, send| {
+                        gtk_macros::spawn!(async move {
+                            obj.downcast_ref::<super::PluginActivitiesSummaryRow>()
+                                .unwrap()
+                                .update()
+                                .await;
+                            send.resolve(Ok(()));
+                        });
+                    }
+                ),
             ))
         }
     }

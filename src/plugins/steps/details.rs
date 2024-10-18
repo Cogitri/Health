@@ -74,11 +74,15 @@ mod imp {
 
             let obj = self.obj();
 
-            Database::instance().connect_activities_updated(glib::clone!(@weak obj => move |_| {
-                gtk_macros::spawn!(async move {
-                    obj.update().await;
-                });
-            }));
+            Database::instance().connect_activities_updated(glib::clone!(
+                #[weak]
+                obj,
+                move |_| {
+                    gtk_macros::spawn!(async move {
+                        obj.update().await;
+                    });
+                }
+            ));
         }
 
         fn dispose(&self) {
@@ -123,15 +127,19 @@ mod imp {
         fn update(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
                 obj,
-                glib::clone!(@weak obj => move |_, _, send| {
-                    gtk_macros::spawn!(async move {
-                        obj.downcast_ref::<super::PluginStepsDetails>()
-                            .unwrap()
-                            .update()
-                            .await;
-                        send.resolve(Ok(()));
-                    });
-                }),
+                glib::clone!(
+                    #[weak]
+                    obj,
+                    move |_, _, send| {
+                        gtk_macros::spawn!(async move {
+                            obj.downcast_ref::<super::PluginStepsDetails>()
+                                .unwrap()
+                                .update()
+                                .await;
+                            send.resolve(Ok(()));
+                        });
+                    }
+                ),
             ))
         }
     }
@@ -242,11 +250,15 @@ impl PluginStepsDetails {
             imp
                 .settings_handler_id
                 .replace(Some(imp.database.connect_user_updated(
-                    glib::clone!(@weak self as obj => move |_| {
-                        gtk_macros::spawn!(async move {
-                            obj.update().await;
-                        });
-                    }),
+                    glib::clone!(
+                        #[weak(rename_to = obj)]
+                        self,
+                        move |_| {
+                            gtk_macros::spawn!(async move {
+                                obj.update().await;
+                            });
+                        }
+                    ),
                 )));
         }
 

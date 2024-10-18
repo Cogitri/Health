@@ -1681,9 +1681,13 @@ mod test {
         let was_called = Rc::new(Cell::new(false));
         let activity = Activity::new();
 
-        db.connect_activities_updated(glib::clone!(@weak was_called => move |_| {
-            was_called.set(true);
-        }));
+        db.connect_activities_updated(glib::clone!(
+            #[weak]
+            was_called,
+            move |_| {
+                was_called.set(true);
+            }
+        ));
         async move {
             db.save_activity(activity).await.unwrap();
         }
@@ -1699,9 +1703,13 @@ mod test {
         let date = glib::DateTime::local();
         let weight = Weight::new(date, Mass::new::<kilogram>(50.0));
 
-        db.connect_weights_updated(glib::clone!(@weak was_called => move |_| {
-            was_called.set(true);
-        }));
+        db.connect_weights_updated(glib::clone!(
+            #[weak]
+            was_called,
+            move |_| {
+                was_called.set(true);
+            }
+        ));
         async move {
             db.save_weight(weight).await.unwrap();
         }
@@ -1718,24 +1726,53 @@ mod test {
         let date = activity.date().add_days(-1).unwrap();
 
         activity.set_calories_burned(Some(500));
-        glib::clone!(@weak db, @weak activity => async move {
+        glib::clone!(
+            #[weak]
+            db,
+            #[weak]
+            activity,
+            async move {
                 db.save_activity(activity).await.unwrap();
             }
         )
         .block();
-        let calories = glib::clone!(@strong db, @strong date => async move { db.calories(date).await.unwrap() }).block();
+        let calories = glib::clone!(
+            #[strong]
+            db,
+            #[strong]
+            date,
+            async move { db.calories(date).await.unwrap() }
+        )
+        .block();
         assert_eq!(*calories[0].calorie_split.values().next().unwrap(), 500);
 
-        glib::clone!(@weak db, @weak activity => async move {
+        glib::clone!(
+            #[weak]
+            db,
+            #[weak]
+            activity,
+            async move {
                 db.save_activity(activity).await.unwrap();
             }
         )
         .block();
-        let calories = glib::clone!(@strong db, @strong date => async move { db.calories(date).await.unwrap() }).block();
+        let calories = glib::clone!(
+            #[strong]
+            db,
+            #[strong]
+            date,
+            async move { db.calories(date).await.unwrap() }
+        )
+        .block();
         assert_eq!(*calories[0].calorie_split.values().next().unwrap(), 1000);
 
         activity.set_date(date.clone());
-        glib::clone!(@weak db, @weak activity => async move {
+        glib::clone!(
+            #[weak]
+            db,
+            #[weak]
+            activity,
+            async move {
                 db.save_activity(activity).await.unwrap();
             }
         )
@@ -1794,10 +1831,19 @@ mod test {
         let prev = now.clone().add_minutes(-1).unwrap();
 
         for (activity, expected_types) in activities {
-            glib::clone!(@weak db, @strong prev => async move {
-                db.save_activity(activity).await.unwrap();
-                assert_eq!(expected_types, db.most_frequent_activities(prev).await.unwrap());
-            })
+            glib::clone!(
+                #[weak]
+                db,
+                #[strong]
+                prev,
+                async move {
+                    db.save_activity(activity).await.unwrap();
+                    assert_eq!(
+                        expected_types,
+                        db.most_frequent_activities(prev).await.unwrap()
+                    );
+                }
+            )
             .block();
         }
     }
@@ -1806,11 +1852,15 @@ mod test {
     fn test_has_activities() {
         let data_dir = tempdir().unwrap();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
-        glib::clone!(@weak db => async move {
-            assert!(!db.has_activities().await.unwrap());
-            db.save_activity(Activity::new()).await.unwrap();
-            assert!(db.has_activities().await.unwrap());
-        })
+        glib::clone!(
+            #[weak]
+            db,
+            async move {
+                assert!(!db.has_activities().await.unwrap());
+                db.save_activity(Activity::new()).await.unwrap();
+                assert!(db.has_activities().await.unwrap());
+            }
+        )
         .block();
     }
 
@@ -1870,14 +1920,22 @@ mod test {
     fn test_weight_exists_on_date() {
         let data_dir = tempdir().unwrap();
         let db = Database::new_with_store_path(data_dir.path().into()).unwrap();
-        glib::clone!(@weak db => async move {
-            let now = glib::DateTime::local();
-            let mass = Mass::new::<kilogram>(70.0);
-            db.save_weight(Weight::new(now.clone().add_days(-1).unwrap(), mass)).await.unwrap();
-            assert!(!db.weight_exists_on_date(now.clone()).await.unwrap());
-            db.save_weight(Weight::new(now.clone(), mass)).await.unwrap();
-            assert!(db.weight_exists_on_date(now).await.unwrap());
-        })
+        glib::clone!(
+            #[weak]
+            db,
+            async move {
+                let now = glib::DateTime::local();
+                let mass = Mass::new::<kilogram>(70.0);
+                db.save_weight(Weight::new(now.clone().add_days(-1).unwrap(), mass))
+                    .await
+                    .unwrap();
+                assert!(!db.weight_exists_on_date(now.clone()).await.unwrap());
+                db.save_weight(Weight::new(now.clone(), mass))
+                    .await
+                    .unwrap();
+                assert!(db.weight_exists_on_date(now).await.unwrap());
+            }
+        )
         .block();
     }
 }

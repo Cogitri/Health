@@ -356,18 +356,24 @@ mod imp {
             obj.set_vexpand(true);
             let gesture_controller = gtk::GestureClick::new();
             gesture_controller.set_touch_only(true);
-            gesture_controller.connect_pressed(
-                clone!(@weak obj => move |c, _, x, y| obj.on_motion_event(x, y, true, c)),
-            );
+            gesture_controller.connect_pressed(clone!(
+                #[weak]
+                obj,
+                move |c, _, x, y| obj.on_motion_event(x, y, true, c)
+            ));
             obj.add_controller(gesture_controller);
 
             let motion_controller = gtk::EventControllerMotion::new();
-            motion_controller.connect_enter(
-                clone!(@weak obj => move|c, x, y| obj.on_motion_event(x, y, false, c)),
-            );
-            motion_controller.connect_motion(
-                clone!(@weak obj => move|c, x, y| obj.on_motion_event(x, y, false, c)),
-            );
+            motion_controller.connect_enter(clone!(
+                #[weak]
+                obj,
+                move |c, x, y| obj.on_motion_event(x, y, false, c)
+            ));
+            motion_controller.connect_motion(clone!(
+                #[weak]
+                obj,
+                move |c, x, y| obj.on_motion_event(x, y, false, c)
+            ));
             obj.add_controller(motion_controller);
 
             let mut inner = self.inner.borrow_mut();

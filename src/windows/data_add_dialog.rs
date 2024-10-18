@@ -80,9 +80,13 @@ mod imp {
                         &stack_page.view_title(),
                     )
                     .set_icon_name(Some(&stack_page.icon_name()));
-                stack_page.connect_is_responsive_notify(glib::clone!(@weak obj => move |v| {
-                    obj.handle_is_responsive_notify(v);
-                }));
+                stack_page.connect_is_responsive_notify(glib::clone!(
+                    #[weak]
+                    obj,
+                    move |v| {
+                        obj.handle_is_responsive_notify(v);
+                    }
+                ));
             }
             if &obj.property::<String>("current-plugin") == "weight" {
                 self.stack.set_visible_child_name("Add Weight Data");

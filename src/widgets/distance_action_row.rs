@@ -93,9 +93,11 @@ mod imp {
             let obj = self.obj();
             obj.set_togglebutton_text();
             self.settings_handler_id
-                .replace(Some(self.settings.connect_unit_system_changed(
-                    clone!(@weak obj => move |_, _| obj.set_togglebutton_text()),
-                )));
+                .replace(Some(self.settings.connect_unit_system_changed(clone!(
+                    #[weak]
+                    obj,
+                    move |_, _| obj.set_togglebutton_text()
+                ))));
         }
 
         fn signals() -> &'static [Signal] {

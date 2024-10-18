@@ -221,10 +221,11 @@ impl SetupWindow {
     fn connect_handlers(&self) {
         let imp = self.imp();
 
-        imp.settings
-            .connect_unit_system_changed(clone!(@weak self as obj => move |_, _| {
-                obj.handle_unit_system_changed();
-            }));
+        imp.settings.connect_unit_system_changed(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |_, _| obj.handle_unit_system_changed()
+        ));
     }
     fn handle_fullscreen(&self) {
         if self.is_fullscreen() {
@@ -343,11 +344,15 @@ impl SetupWindow {
 
     #[template_callback]
     fn handle_setup_done_button_clicked(&self) {
-        glib::MainContext::default().spawn_local(clone!(@weak self as obj => async move {
-            obj.handle_response(gtk::ResponseType::Ok).await;
-            obj.add_weight().await;
-            obj.emit_by_name::<()>("setup-done", &[]);
-        }));
+        glib::MainContext::default().spawn_local(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            async move {
+                obj.handle_response(gtk::ResponseType::Ok).await;
+                obj.add_weight().await;
+                obj.emit_by_name::<()>("setup-done", &[]);
+            }
+        ));
 
         self.destroy();
     }
@@ -452,16 +457,20 @@ impl SetupWindow {
         action!(
             self,
             "quit",
-            clone!(@weak self as obj => move |_, _| {
-                obj.destroy();
-            })
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, _| obj.destroy()
+            )
         );
         action!(
             self,
             "fullscreen",
-            clone!(@weak self as obj => move |_, _| {
-                obj.handle_fullscreen();
-            })
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, _| obj.handle_fullscreen()
+            )
         );
     }
 
