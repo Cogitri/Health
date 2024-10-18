@@ -16,14 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use crate::core::i18n;
 use crate::sync::{
     google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider,
 };
+use adw::prelude::*;
 use anyhow::Result;
-use gtk::{
-    glib::{self, clone, g_warning, subclass::prelude::*},
-    prelude::*,
-};
+use gtk::glib::{self, clone, g_warning, subclass::prelude::*};
 use gtk_macros::spawn;
 
 mod imp {
@@ -202,17 +201,13 @@ impl SyncListBox {
     fn open_sync_error(&self, errmsg: &str) {
         g_warning!(crate::config::LOG_DOMAIN, "{errmsg}");
 
-        let dialog = gtk::MessageDialog::new(
-            self.imp().parent_window.borrow().as_ref(),
-            gtk::DialogFlags::DESTROY_WITH_PARENT | gtk::DialogFlags::MODAL,
-            gtk::MessageType::Error,
-            gtk::ButtonsType::Close,
-            errmsg,
-        );
-        dialog.connect_response(|d, _| {
-            d.destroy();
-        });
-        dialog.show();
+        let dialog = adw::AlertDialog::builder()
+            .heading(i18n("Sync Error"))
+            .body(errmsg)
+            .build();
+        dialog.add_response("close", &i18n("Close"));
+        dialog.set_response_appearance("close", adw::ResponseAppearance::Destructive);
+        dialog.present(self.imp().parent_window.borrow().as_ref());
     }
 }
 
