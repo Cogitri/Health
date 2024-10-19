@@ -1,115 +1,125 @@
 using Gtk 4.0;
 using Adw 1;
 
-Button button_cancel {
-  label: _("_Cancel");
-  use-underline: true;
-}
+template $HealthImportExportDialogBase : Adw.Dialog {
+  can-close: true;
 
-Button button_ok {
-  label: _("_Export");
-  use-underline: true;
-}
+  Box {
+    orientation: vertical;
 
-template $HealthImportExportDialogBase : Dialog {
-  use-header-bar: 1;
-  modal: true;
-  destroy-with-parent: true;
-  response => $handle_response() swapped;
+    Adw.HeaderBar {}
 
-  Adw.Clamp {
-    maximum-size: 400;
-    tightening-threshold: 200;
-    valign: center;
-    halign: center;
-    vexpand: true;
-    hexpand: true;
-    margin-start: 6;
-    margin-end: 6;
-    margin-top: 6;
-    margin-bottom: 6;
+    Adw.Clamp {
+      maximum-size: 400;
+      tightening-threshold: 200;
+      valign: center;
+      halign: center;
+      vexpand: true;
+      hexpand: true;
+      margin-start: 6;
+      margin-end: 6;
+      margin-top: 12;
+      margin-bottom: 6;
 
-    Stack stack {
-      StackPage {
-        name: "begin";
-        child: ListBox {
-          selection-mode: none;
+      Stack stack {
+        StackPage {
+          name: "begin";
+          child: Box {
+            orientation: vertical;
 
-          styles [
-            "boxed-list",
-          ]
+            ListBox {
+              selection-mode: none;
 
-          Adw.ActionRow activities_action_row {
-            title: "Export activities";
+              styles [
+                "boxed-list",
+              ]
 
-            Switch activities_switch {
-              active: true;
-              margin-start: 6;
-              margin-end: 6;
-              margin-top: 12;
-              margin-bottom: 12;
-              notify::active => $check_activate_response() swapped;
+              Adw.ActionRow activities_action_row {
+                title: "Export activities";
+
+                Switch activities_switch {
+                  active: true;
+                  margin-start: 6;
+                  margin-end: 6;
+                  margin-top: 12;
+                  margin-bottom: 12;
+                  notify::active => $check_activate_response() swapped;
+                }
+              }
+
+              Adw.ActionRow weights_action_row {
+                title: _("Export weight measurements");
+
+                Switch weight_switch {
+                  active: true;
+                  margin-start: 6;
+                  margin-end: 6;
+                  margin-top: 12;
+                  margin-bottom: 12;
+                  notify::active => $check_activate_response() swapped;
+                }
+              }
+
+              Adw.ActionRow encrypt_action_row {
+                title: _("Encrypt export");
+
+                Switch encrypt_switch {
+                  active: true;
+                  margin-start: 6;
+                  margin-end: 6;
+                  margin-top: 12;
+                  margin-bottom: 12;
+                  notify::active => $handle_encrypt_switch_active_notify() swapped;
+                }
+              }
+
+              $HealthPasswordEntry password_entry {
+                margin-start: 6;
+                margin-end: 6;
+                margin-top: 6;
+                margin-bottom: 6;
+                notify::password => $check_activate_response() swapped;
+              }
             }
-          }
 
-          Adw.ActionRow weights_action_row {
-            title: _("Export weight measurements");
-
-            Switch weight_switch {
-              active: true;
-              margin-start: 6;
-              margin-end: 6;
+            Button button_ok {
+              halign: end;
               margin-top: 12;
-              margin-bottom: 12;
-              notify::active => $check_activate_response() swapped;
+              margin-bottom: 6;
+              label: _("_Export");
+              use-underline: true;
+              clicked => $handle_ok() swapped;
+              sensitive: false;
+              styles [
+                "suggested-action",
+              ]
             }
-          }
+          };
+        }
 
-          Adw.ActionRow encrypt_action_row {
-            title: _("Encrypt export");
+        StackPage {
+          name: "end";
+          child: Box {
+            halign: center;
+            valign: center;
+            orientation: vertical;
 
-            Switch encrypt_switch {
-              active: true;
-              margin-start: 6;
-              margin-end: 6;
-              margin-top: 12;
-              margin-bottom: 12;
-              notify::active => $handle_encrypt_switch_active_notify() swapped;
+            Image end_icon {
+              pixel-size: 96;
             }
-          }
 
-          $HealthPasswordEntry password_entry {
-            margin-start: 6;
-            margin-end: 6;
-            margin-top: 6;
-            margin-bottom: 6;
-            notify::password => $check_activate_response() swapped;
-          }
-        };
-      }
+            Label end_title_label {
+              styles [
+                "title-1",
+              ]
+            }
 
-      StackPage {
-        name: "end";
-        child: Box {
-          halign: center;
-          valign: center;
-          orientation: vertical;
-
-          Image end_icon {
-            pixel-size: 96;
-          }
-
-          Label end_title_label {
-            styles [
-              "title-1",
-            ]
-          }
-
-          Label end_content_label {
-            wrap: true;
-            justify: center;
-          }
-        };
+            Label end_content_label {
+              wrap: true;
+              justify: center;
+            }
+          };
+        }
       }
     }
   }

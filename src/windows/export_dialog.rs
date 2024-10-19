@@ -17,14 +17,15 @@
  */
 
 use crate::core::i18n;
-use gtk::{glib, prelude::ToValue};
+use gtk::glib;
 
 mod imp {
     use crate::{
         core::i18n, prelude::*, sync::csv::CsvHandler,
         windows::import_export_dialog_base::ImportExportDialogBase,
     };
-    use gtk::{gio, glib, prelude::*, subclass::prelude::*};
+    use adw::subclass::prelude::*;
+    use gtk::{gio, glib, prelude::*};
     use gtk_macros::spawn;
 
     #[derive(Debug, Default)]
@@ -39,8 +40,7 @@ mod imp {
 
     impl ObjectImpl for ExportDialog {}
     impl WidgetImpl for ExportDialog {}
-    impl WindowImpl for ExportDialog {}
-    impl DialogImpl for ExportDialog {}
+    impl AdwDialogImpl for ExportDialog {}
     impl ImportExportDialogBaseImpl for ExportDialog {
         fn on_activities(
             &self,
@@ -66,9 +66,9 @@ mod imp {
                     #[weak]
                     obj,
                     move |_, _, send| {
-                        let obj = obj.clone().upcast::<gtk::Window>();
+                        let parent = obj.root().and_then(|o| o.downcast::<gtk::Window>().ok());
                         spawn!(async move {
-                            let res = file_chooser.save_future(Some(&obj)).await;
+                            let res = file_chooser.save_future(parent.as_ref()).await;
                             if let Ok(file) = res {
                                 let pass = password.clone();
                                 let handler = CsvHandler::new();
@@ -108,9 +108,9 @@ mod imp {
                     #[weak]
                     obj,
                     move |_, _, send| {
-                        let obj = obj.clone().upcast::<gtk::Window>();
+                        let parent = obj.root().and_then(|o| o.downcast::<gtk::Window>().ok());
                         spawn!(async move {
-                            let res = file_chooser.save_future(Some(&obj)).await;
+                            let res = file_chooser.save_future(parent.as_ref()).await;
                             if let Ok(file) = res {
                                 let pass = password.clone();
                                 let handler = CsvHandler::new();
@@ -131,21 +131,16 @@ mod imp {
 glib::wrapper! {
     /// A dialog for exporting data
     pub struct ExportDialog(ObjectSubclass<imp::ExportDialog>)
-        @extends gtk::Widget, gtk::Window, gtk::Dialog, crate::windows::import_export_dialog_base::ImportExportDialogBase,
+        @extends gtk::Widget, adw::Dialog, crate::windows::import_export_dialog_base::ImportExportDialogBase,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
 }
 
 impl ExportDialog {
     /// Create a new [ExportDialog]
-    ///
-    /// # Arguments
-    /// * `parent` - The [GtkWindow](gtk::Window) which is the transient parent of this dialog.
-    pub fn new(parent: Option<&gtk::Window>) -> Self {
+    pub fn new() -> Self {
         glib::Object::builder()
-            .property("use-header-bar", 1.to_value())
             .property("title", i18n("Export data"))
             .property("is-import", false)
-            .property("transient-for", parent)
             .build()
     }
 }
@@ -159,6 +154,6 @@ mod test {
     fn new() {
         init_gtk();
 
-        ExportDialog::new(None);
+        ExportDialog::new();
     }
 }

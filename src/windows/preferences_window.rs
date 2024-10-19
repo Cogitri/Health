@@ -394,8 +394,9 @@ impl PreferencesWindow {
 
     #[template_callback]
     fn handle_export_csv_button_clicked(&self) {
-        let dialog = ExportDialog::new(self.transient_for().as_ref());
-        dialog.show();
+        let dialog = ExportDialog::new();
+        let parent = self.clone().upcast::<gtk::Window>();
+        dialog.present(Some(&parent));
     }
 
     fn handle_height_spin_button_changed(&self) {
@@ -422,8 +423,9 @@ impl PreferencesWindow {
 
     #[template_callback]
     fn handle_import_csv_button_clicked(&self) {
-        let dialog = ImportDialog::new(self.transient_for().as_ref());
-        dialog.show();
+        let dialog = ImportDialog::new();
+        let parent = self.clone().upcast::<gtk::Window>();
+        dialog.present(Some(&parent));
     }
 
     fn handle_step_goal_spin_button_changed(&self) {
