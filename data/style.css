@@ -74,6 +74,3 @@ list.content.weight-goal > row {
   margin: 6px 12px;
   color: @theme_fg_color;
 }
-
-@define-color blue #3584e4;
-@define-color light-blue #b8d4f6;

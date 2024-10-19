@@ -89,8 +89,8 @@ mod imp {
 
             cr.set_line_width(2.5);
 
-            let style_context = widget.style_context();
-            let shaded = style_context.lookup_color("blue").unwrap();
+            let style_manager = adw::StyleManager::default();
+            let shaded = style_manager.accent_color_rgba();
             GdkCairoContextExt::set_source_color(&cr, &shaded);
 
             let (arrowhead_position, arrowhead_size) = match weight_change {

@@ -151,9 +151,9 @@ mod imp {
                 widget.width() as f32,
                 widget.height() as f32,
             ));
-            let style_context = widget.style_context();
-            let background_color = style_context.lookup_color("insensitive_fg_color").unwrap();
 
+            let mut background_color = self.obj().color();
+            background_color.set_alpha(0.55);
             GdkCairoContextExt::set_source_color(&cr, &background_color);
             /*
                 Draw outlines

@@ -110,6 +110,11 @@ mod imp {
         fn snapshot(&self, snapshot: &gtk::Snapshot) {
             let mut inner = self.inner.borrow_mut();
             let widget = self.obj();
+            // We still need style context to get the success color
+            // StyleContext will stay around until gtk5.
+            // There is currently no replacement to get other colors, but the widget/accent colors.
+            #[allow(deprecated)]
+            let style_context = widget.style_context();
 
             inner.height = widget.height() as f32 - HALF_Y_PADDING * 2.0;
             inner.width = widget.width() as f32 - HALF_X_PADDING * 2.0;
@@ -141,8 +146,10 @@ mod imp {
                 widget.width() as f32,
                 widget.height() as f32,
             ));
-            let style_context = widget.style_context();
-            let background_color = style_context.lookup_color("insensitive_fg_color").unwrap();
+            let style_manager = adw::StyleManager::default();
+            let accent_color = style_manager.accent_color_rgba();
+            let mut background_color = self.obj().color();
+            background_color.set_alpha(0.55);
 
             GdkCairoContextExt::set_source_color(&cr, &background_color);
             /*
@@ -202,6 +209,7 @@ mod imp {
             if let Some(limit) = inner.limit {
                 cr.save().unwrap();
 
+                #[allow(deprecated)]
                 let graph_color = style_context.lookup_color("success_color").unwrap();
                 GdkCairoContextExt::set_source_color(&cr, &graph_color);
 
@@ -239,8 +247,7 @@ mod imp {
             */
             cr.save().unwrap();
 
-            let graph_color = style_context.lookup_color("accent_bg_color").unwrap();
-            GdkCairoContextExt::set_source_color(&cr, &graph_color);
+            GdkCairoContextExt::set_source_color(&cr, &accent_color);
             cr.set_line_width(4.0);
             for (i, point) in inner.points.iter().enumerate() {
                 let x = f64::from(i as f32 * inner.scale_x + HALF_X_PADDING);
@@ -258,7 +265,7 @@ mod imp {
             */
             cr.save().unwrap();
 
-            GdkCairoContextExt::set_source_color(&cr, &graph_color);
+            GdkCairoContextExt::set_source_color(&cr, &accent_color);
             cr.move_to(
                 f64::from(HALF_X_PADDING),
                 f64::from(
@@ -309,9 +316,9 @@ mod imp {
             cr.close_path();
 
             cr.set_source_rgba(
-                f64::from(graph_color.red()),
-                f64::from(graph_color.green()),
-                f64::from(graph_color.blue()),
+                f64::from(accent_color.red()),
+                f64::from(accent_color.green()),
+                f64::from(accent_color.blue()),
                 0.65,
             );
             cr.stroke_preserve()
