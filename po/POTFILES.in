@@ -26,7 +26,7 @@ data/ui/plugins/steps/details.blp
 data/ui/plugins/steps/summary.blp
 data/ui/plugins/weight/details.blp
 data/ui/plugins/weight/summary.blp
-data/ui/preferences_window.blp
+data/ui/preferences_dialog.blp
 data/ui/setup_window.blp
 data/ui/shortcuts_window.blp
 data/ui/sync_list_box.blp
@@ -132,6 +132,6 @@ src/windows/export_dialog.rs
 src/windows/import_dialog.rs
 src/windows/import_export_dialog_base.rs
 src/windows/mod.rs
-src/windows/preferences_window.rs
+src/windows/preferences_dialog.rs
 src/windows/setup_window.rs
 src/windows/window.rs

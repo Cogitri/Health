@@ -20,7 +20,7 @@ use crate::{
     core::{i18n, Database, UnitSystem},
     model::{ModelNotification, User},
     stateful_action,
-    windows::{PreferencesWindow, Window},
+    windows::{PreferencesDialog, Window},
 };
 use adw::prelude::*;
 use anyhow::Result;
@@ -270,7 +270,7 @@ impl Application {
     fn handle_help(&self) {}
 
     fn handle_preferences(&self) {
-        PreferencesWindow::new().present(
+        PreferencesDialog::new().present(
             self.imp()
                 .window
                 .borrow()

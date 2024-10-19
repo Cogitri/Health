@@ -17,7 +17,7 @@
 //!     * [widgets}(crate::widgets): Widgets are smaller, reusable parts of Health's UI, e.g the [BmiLevelBar](crate::widgets::BmiLevelBar)
 //!       is contained in this module.
 //!     * (windows)[crate::windows]: This directory contains actual windows, like the main [Window](crate::windows::Window) or the
-//!       [PreferencesWindow](crate::windows::PreferencesWindow).
+//!       [PreferencesDialog](crate::windows::PreferencesDialog).
 //! * Health has a rather strict code style to make sure working with the sourcecode is easy:
 //!     * Please make sure `cargo fmt` and `cargo clippy` are happy with any changes you do.
 //!       CI will also run these tests when creating new merge requests.

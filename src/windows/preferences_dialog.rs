@@ -1,4 +1,4 @@
-/* preferences_window.rs
+/* preferences_dialog.rs
  *
  * Copyright 2020-2021 Rasmus Thomsen <oss@cogitri.dev>
  *
@@ -47,8 +47,8 @@ mod imp {
     use std::{cell::Cell, str::FromStr};
 
     #[derive(Debug, CompositeTemplate)]
-    #[template(resource = "/dev/Cogitri/Health/ui/preferences_window.ui")]
-    pub struct PreferencesWindow {
+    #[template(resource = "/dev/Cogitri/Health/ui/preferences_dialog.ui")]
+    pub struct PreferencesDialog {
         pub current_unit_system: Cell<UnitSystem>,
         pub settings: Settings,
         pub database: Database,
@@ -92,10 +92,10 @@ mod imp {
     }
 
     #[glib::object_subclass]
-    impl ObjectSubclass for PreferencesWindow {
-        const NAME: &'static str = "HealthPreferencesWindow";
+    impl ObjectSubclass for PreferencesDialog {
+        const NAME: &'static str = "HealthPreferencesDialog";
         type ParentType = adw::PreferencesDialog;
-        type Type = super::PreferencesWindow;
+        type Type = super::PreferencesDialog;
 
         fn new() -> Self {
             let settings = Settings::instance();
@@ -136,7 +136,7 @@ mod imp {
         }
     }
 
-    impl ObjectImpl for PreferencesWindow {
+    impl ObjectImpl for PreferencesDialog {
         fn constructed(&self) {
             self.parent_constructed();
             let obj = self.obj();
@@ -180,21 +180,21 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for PreferencesWindow {}
-    impl AdwDialogImpl for PreferencesWindow {}
-    impl PreferencesDialogImpl for PreferencesWindow {}
+    impl WidgetImpl for PreferencesDialog {}
+    impl AdwDialogImpl for PreferencesDialog {}
+    impl PreferencesDialogImpl for PreferencesDialog {}
 }
 
 glib::wrapper! {
-    /// The [PreferencesWindow] is presented to the user to set certain settings
+    /// The [PreferencesDialog] is presented to the user to set certain settings
     /// in the application.
-    pub struct PreferencesWindow(ObjectSubclass<imp::PreferencesWindow>)
+    pub struct PreferencesDialog(ObjectSubclass<imp::PreferencesDialog>)
         @extends gtk::Widget, adw::Dialog, adw::PreferencesDialog,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 #[gtk::template_callbacks]
-impl PreferencesWindow {
+impl PreferencesDialog {
     pub fn connect_import_done<F: Fn(&Self) + 'static>(
         &self,
         callback: F,
@@ -205,7 +205,7 @@ impl PreferencesWindow {
         })
     }
 
-    /// Create a new [PreferencesWindow].
+    /// Create a new [PreferencesDialog].
     pub fn new() -> Self {
         glib::Object::builder().build()
     }
@@ -512,13 +512,13 @@ impl PreferencesWindow {
 
 #[cfg(test)]
 mod test {
-    use super::PreferencesWindow;
+    use super::PreferencesDialog;
     use crate::utils::init_gtk;
 
     #[gtk::test]
     fn new() {
         init_gtk();
 
-        PreferencesWindow::new();
+        PreferencesDialog::new();
     }
 }

@@ -59,7 +59,7 @@ menu notification_frequency_menu {
   }
 }
 
-template $HealthPreferencesWindow : Adw.PreferencesDialog {
+template $HealthPreferencesDialog : Adw.PreferencesDialog {
   title: _("Health Preferences");
   closed => $handle_closed() swapped;
   Adw.PreferencesPage {
