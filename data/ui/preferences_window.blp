@@ -59,11 +59,9 @@ menu notification_frequency_menu {
   }
 }
 
-template $HealthPreferencesWindow : Adw.PreferencesWindow {
+template $HealthPreferencesWindow : Adw.PreferencesDialog {
   title: _("Health Preferences");
-  destroy-with-parent: true;
-  close-request => $handle_close_window() swapped;
-
+  closed => $handle_closed() swapped;
   Adw.PreferencesPage {
     icon-name: "emblem-system-symbolic";
     title: _("General");

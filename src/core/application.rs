@@ -270,15 +270,15 @@ impl Application {
     fn handle_help(&self) {}
 
     fn handle_preferences(&self) {
-        PreferencesWindow::new(
+        PreferencesWindow::new().present(
             self.imp()
                 .window
                 .borrow()
                 .clone()
                 .and_then(|s| s.upgrade())
-                .map(Cast::upcast),
+                .map(Cast::upcast::<Window>)
+                .as_ref(),
         )
-        .present()
     }
 
     fn handle_quit(&self) {

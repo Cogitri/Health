@@ -42,7 +42,8 @@ mod imp {
         widgets::{BmiLevelBar, DateSelector, SyncListBox, UnitSpinButton},
     };
     use adw::prelude::*;
-    use gtk::{glib, subclass::prelude::*, CompositeTemplate};
+    use adw::subclass::prelude::*;
+    use gtk::{glib, CompositeTemplate};
     use std::{cell::Cell, str::FromStr};
 
     #[derive(Debug, CompositeTemplate)]
@@ -93,7 +94,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for PreferencesWindow {
         const NAME: &'static str = "HealthPreferencesWindow";
-        type ParentType = adw::PreferencesWindow;
+        type ParentType = adw::PreferencesDialog;
         type Type = super::PreferencesWindow;
 
         fn new() -> Self {
@@ -180,17 +181,16 @@ mod imp {
     }
 
     impl WidgetImpl for PreferencesWindow {}
-    impl WindowImpl for PreferencesWindow {}
-    impl adw::subclass::window::AdwWindowImpl for PreferencesWindow {}
-    impl adw::subclass::preferences_window::PreferencesWindowImpl for PreferencesWindow {}
+    impl AdwDialogImpl for PreferencesWindow {}
+    impl PreferencesDialogImpl for PreferencesWindow {}
 }
 
 glib::wrapper! {
     /// The [PreferencesWindow] is presented to the user to set certain settings
     /// in the application.
     pub struct PreferencesWindow(ObjectSubclass<imp::PreferencesWindow>)
-        @extends gtk::Widget, gtk::Window, adw::Window, adw::PreferencesWindow,
-        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Native, gtk::Root, gtk::ShortcutManager;
+        @extends gtk::Widget, adw::Dialog, adw::PreferencesDialog,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 #[gtk::template_callbacks]
@@ -206,21 +206,8 @@ impl PreferencesWindow {
     }
 
     /// Create a new [PreferencesWindow].
-    ///
-    /// # Arguments
-    /// * `parent_window` - The transient parent of the window.
-    ///
-    pub fn new(parent_window: Option<gtk::Window>) -> Self {
-        glib::Object::builder()
-            .property("transient-for", parent_window.as_ref())
-            .property(
-                "application",
-                parent_window
-                    .as_ref()
-                    .and_then(gtk::prelude::GtkWindowExt::application)
-                    .as_ref(),
-            )
-            .build()
+    pub fn new() -> Self {
+        glib::Object::builder().build()
     }
 
     fn handle_frequency(&self, action: &gio::SimpleAction, parameter: Option<&glib::Variant>) {
@@ -395,8 +382,8 @@ impl PreferencesWindow {
     #[template_callback]
     fn handle_export_csv_button_clicked(&self) {
         let dialog = ExportDialog::new();
-        let parent = self.clone().upcast::<gtk::Window>();
-        dialog.present(Some(&parent));
+        let parent = self.root().and_then(|w| w.downcast::<gtk::Window>().ok());
+        dialog.present(parent.as_ref());
     }
 
     fn handle_height_spin_button_changed(&self) {
@@ -424,8 +411,8 @@ impl PreferencesWindow {
     #[template_callback]
     fn handle_import_csv_button_clicked(&self) {
         let dialog = ImportDialog::new();
-        let parent = self.clone().upcast::<gtk::Window>();
-        dialog.present(Some(&parent));
+        let parent = self.root().and_then(|w| w.downcast::<gtk::Window>().ok());
+        dialog.present(parent.as_ref());
     }
 
     fn handle_step_goal_spin_button_changed(&self) {
@@ -511,7 +498,7 @@ impl PreferencesWindow {
     }
 
     #[template_callback]
-    fn handle_close_window(&self) -> bool {
+    fn handle_closed(&self) {
         let imp = self.imp();
         let remind_time = Time::new(
             imp.reminder_hour.value_as_int().try_into().unwrap(),
@@ -520,7 +507,6 @@ impl PreferencesWindow {
         )
         .unwrap();
         imp.settings.set_notification_time(remind_time);
-        false
     }
 }
 
@@ -533,6 +519,6 @@ mod test {
     fn new() {
         init_gtk();
 
-        PreferencesWindow::new(None);
+        PreferencesWindow::new();
     }
 }
