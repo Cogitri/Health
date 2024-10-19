@@ -214,25 +214,13 @@ mod imp {
         }
     }
 
-    impl CellEditableImpl for UnitSpinButton {
-        fn editing_done(&self) {
-            self.spin_button.editing_done()
-        }
-        fn remove_widget(&self) {
-            self.spin_button.remove_widget()
-        }
-        fn start_editing(&self, event: Option<&gtk::gdk::Event>) {
-            self.spin_button.start_editing(event)
-        }
-    }
-
     impl OrientableImpl for UnitSpinButton {}
 }
 glib::wrapper! {
     /// A Widget for visualizing the color in legend table.
     pub struct UnitSpinButton(ObjectSubclass<imp::UnitSpinButton>)
         @extends gtk::Widget, adw::Bin,
-        @implements gtk::Accessible, gtk::Buildable, gtk::CellEditable, gtk::ConstraintTarget, gtk::Editable, gtk::Orientable;
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Editable, gtk::Orientable;
 }
 
 enum Value {
