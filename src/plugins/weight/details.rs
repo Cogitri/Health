@@ -131,7 +131,7 @@ mod imp {
         }
     }
     impl WidgetImpl for PluginWeightDetails {}
-    impl BinImpl for PluginWeightDetails {}
+    impl NavigationPageImpl for PluginWeightDetails {}
     impl PluginDetailsImpl for PluginWeightDetails {
         fn update(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
@@ -157,7 +157,7 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [PluginDetails] that visualizes BMI and weight development.
     pub struct PluginWeightDetails(ObjectSubclass<imp::PluginWeightDetails>)
-        @extends gtk::Widget, adw::Bin, PluginDetails,
+        @extends gtk::Widget, adw::NavigationPage, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

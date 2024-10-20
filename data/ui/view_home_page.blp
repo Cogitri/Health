@@ -32,98 +32,168 @@ SizeGroup size_group {
 SizeGroup summary_size_group {
 }
 
-template $HealthViewHomePage : Adw.Bin {
-  Stack stack {
-    StackPage {
-      name: "home";
-      child: Adw.Clamp {
-        maximum-size: 800;
-        tightening-threshold: 400;
-        valign: center;
-        vexpand: true;
-        hexpand: true;
-        margin-start: 6;
-        margin-end: 6;
-        margin-top: 6;
-        margin-bottom: 6;
+menu primary_menu {
+  section {
+    item {
+      action: "app.preferences";
+      label: _("_Preferences");
+    }
+
+    item {
+      action: "win.show-help-overlay";
+      label: _("_Keyboard Shortcuts");
+    }
+  }
+
+  section {
+    item {
+      action: "app.about";
+      label: _("_About Health");
+    }
+  }
+}
+
+PopoverMenu primary_menu_popover {
+  menu-model: primary_menu;
+}
+
+template $HealthViewHomePage : Adw.NavigationPage {
+  title: _("Home");
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      [end]
+      MenuButton {
+        icon-name: "open-menu-symbolic";
+        popover: primary_menu_popover;
+        primary: true;
+      }
+    }
+    content: Adw.Clamp {
+      maximum-size: 800;
+      tightening-threshold: 400;
+      valign: center;
+      vexpand: true;
+      hexpand: true;
+      margin-start: 6;
+      margin-end: 6;
+      margin-top: 6;
+      margin-bottom: 6;
+
+      Box {
+        orientation: vertical;
 
         Box {
           orientation: vertical;
 
-          Box {
-            orientation: vertical;
+          Label {
+            can-focus: false;
+            ellipsize: end;
+            use-markup: true;
+            xalign: 0;
+            label: _("For you");
+            margin-bottom: 12;
 
-            Label {
-              can-focus: false;
-              ellipsize: end;
-              use-markup: true;
-              xalign: 0;
-              label: _("For you");
-              margin-bottom: 12;
+            styles [
+              "heading",
+              "h4",
+            ]
+          }
 
-              styles [
-                "heading",
-                "h4",
-              ]
-            }
+          Stack enabled_plugins_stack {
+            StackPage {
+              name: "plugin-list";
+              child: Box {
+                orientation: vertical;
 
-            Stack enabled_plugins_stack {
-              StackPage {
-                name: "plugin-list";
-                child: ListBox user_selected_data {
+                ListBox user_selected_data {
                   selection-mode: none;
                   row-activated => $handle_user_selected_data_row_activated() swapped;
 
                   styles [
                     "boxed-list",
                   ]
-                };
-              }
+                }
 
-              StackPage {
-                name: "no-plugins-enabled";
-                child: Label {
-                  label: _("No plugins enabled. Enable one from the list below to start using Health.");
-                  wrap: true;
+                Box {
+                  halign: end;
+                  margin-top: 12;
+                  Button {
+                    tooltip-text: _("Add Weight Measure");
+                    action-name: "win.go-to-add-weight";
+                    margin-end: 12;
+                    height-request: 64;
+                    width-request: 64;
+                    styles [
+                      "circular",
+                    ]
 
-                  styles [
-                    "dim-label",
-                    "title-1",
-                  ]
-                };
-              }
+                    Image {
+                      icon-name: "weight-scale-symbolic";
+                      pixel-size: 28;
+                    }
+                  }
+                  Button {
+                    tooltip-text: _("Add Activity");
+                    action-name: "win.go-to-add-activity";
+                    height-request: 64;
+                    width-request: 64;
+                    styles [
+                      "circular",
+                    ]
+
+                    Image {
+                      icon-name: "walking-symbolic";
+                      pixel-size: 28;
+                    }
+                  }
+                }
+              };
             }
-          }
 
-          Box all_data_box {
-            margin-top: 24;
-            orientation: vertical;
+            StackPage {
+              name: "no-plugins-enabled";
+              child: Label {
+                label: _("No plugins enabled. Enable one from the list below to start using Health.");
+                wrap: true;
 
-            Label {
-              can-focus: false;
-              ellipsize: end;
-              use-markup: true;
-              xalign: 0;
-              label: _("All data");
-              margin-bottom: 12;
-
-              styles [
-                "heading",
-                "h4",
-              ]
-            }
-
-            ListBox all_data {
-              selection-mode: none;
-              row-activated => $handle_all_data_row_activated() swapped;
-
-              styles [
-                "boxed-list",
-              ]
+                styles [
+                  "dim-label",
+                  "title-1",
+                ]
+              };
             }
           }
         }
-      };
-    }
+
+        Box all_data_box {
+          margin-top: 24;
+          orientation: vertical;
+
+          Label {
+            can-focus: false;
+            ellipsize: end;
+            use-markup: true;
+            xalign: 0;
+            label: _("All data");
+            margin-bottom: 12;
+
+            styles [
+              "heading",
+              "h4",
+            ]
+          }
+
+          ListBox all_data {
+            selection-mode: none;
+            row-activated => $handle_all_data_row_activated() swapped;
+
+            styles [
+              "boxed-list",
+            ]
+          }
+        }
+      }
+    };
   }
 }

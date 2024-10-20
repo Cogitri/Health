@@ -1,6 +1,4 @@
 #[doc(hidden)]
-pub mod data_add_dialog;
-#[doc(hidden)]
 pub mod export_dialog;
 #[doc(hidden)]
 pub mod import_dialog;
@@ -13,8 +11,6 @@ pub mod setup_window;
 #[doc(hidden)]
 pub mod window;
 
-#[doc(inline)]
-pub use data_add_dialog::*;
 #[doc(inline)]
 pub use export_dialog::*;
 #[doc(inline)]

@@ -10,7 +10,6 @@ data/ui/activity_type_row.blp
 data/ui/activity_type_selector.blp
 data/ui/bmi_level_bar.blp
 data/ui/card.blp
-data/ui/data_add_dialog.blp
 data/ui/date_selector.blp
 data/ui/distance_action_row.blp
 data/ui/import_export_dialog_base.blp
@@ -127,7 +126,6 @@ src/widgets/password_entry.rs
 src/widgets/sync_list_box.rs
 src/widgets/tab_button.rs
 src/widgets/unit_spinbutton.rs
-src/windows/data_add_dialog.rs
 src/windows/export_dialog.rs
 src/windows/import_dialog.rs
 src/windows/import_export_dialog_base.rs

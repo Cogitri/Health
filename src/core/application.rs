@@ -330,7 +330,6 @@ impl Application {
 
     fn setup_accels(&self) {
         self.set_accels_for_action("win.fullscreen", &["F11"]);
-        self.set_accels_for_action("win.hamburger-menu", &["F10"]);
         self.set_accels_for_action("app.help", &["F1"]);
         self.set_accels_for_action("app.quit", &["<Primary>q"]);
     }

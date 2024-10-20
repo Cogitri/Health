@@ -34,7 +34,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for ViewAdd {
         const NAME: &'static str = "HealthViewAdd";
-        type ParentType = adw::Bin;
+        type ParentType = adw::NavigationPage;
         type Type = super::ViewAdd;
     }
 
@@ -80,13 +80,13 @@ mod imp {
         }
     }
     impl WidgetImpl for ViewAdd {}
-    impl BinImpl for ViewAdd {}
+    impl NavigationPageImpl for ViewAdd {}
 }
 
 glib::wrapper! {
     /// [ViewAdd] is a toplevel container that is implemented by all other views of Health.
     pub struct ViewAdd(ObjectSubclass<imp::ViewAdd>)
-        @extends gtk::Widget, adw::Bin,
+        @extends gtk::Widget, adw::NavigationPage,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
@@ -130,13 +130,13 @@ impl<O: IsA<ViewAdd>> ViewAddExt for O {
     }
 }
 
-unsafe impl<T: BinImpl> IsSubclassable<T> for ViewAdd {
+unsafe impl<T: NavigationPageImpl> IsSubclassable<T> for ViewAdd {
     fn class_init(class: &mut glib::Class<Self>) {
-        <adw::Bin as IsSubclassable<T>>::class_init(class.upcast_ref_mut());
+        <adw::NavigationPage as IsSubclassable<T>>::class_init(class.upcast_ref_mut());
     }
 
     fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
-        <adw::Bin as IsSubclassable<T>>::instance_init(instance);
+        <adw::NavigationPage as IsSubclassable<T>>::instance_init(instance);
     }
 }
 

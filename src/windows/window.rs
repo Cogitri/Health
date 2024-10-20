@@ -16,10 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use crate::plugins::details::PluginDetailsExt;
+use crate::views::ViewAddActivity;
+use crate::views::ViewAddWeight;
 use crate::{
     core::i18n_f,
+    plugins::{PluginName, Registrar},
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
-    windows::DataAddDialog,
 };
 use gtk::{
     gio,
@@ -52,19 +55,13 @@ mod imp {
         pub settings: Settings,
 
         #[template_child]
-        pub add_data_button: TemplateChild<gtk::Button>,
-        #[template_child]
-        pub back_button: TemplateChild<gtk::Button>,
-        #[template_child]
         pub error_infobar: TemplateChild<gtk::Revealer>,
         #[template_child]
         pub error_label: TemplateChild<gtk::Label>,
         #[template_child]
-        pub primary_menu_popover: TemplateChild<gtk::Popover>,
-        #[template_child]
         pub view_home_page: TemplateChild<ViewHomePage>,
         #[template_child]
-        pub enable_plugin_button: TemplateChild<gtk::Button>,
+        pub navigation_view: TemplateChild<adw::NavigationView>,
     }
 
     #[glib::object_subclass]
@@ -117,20 +114,7 @@ impl Window {
         glib::Object::builder().property("application", app).build()
     }
 
-    pub fn open_hamburger_menu(&self) {
-        self.imp().primary_menu_popover.popup();
-    }
-
     fn setup_actions(&self) {
-        action!(
-            self,
-            "hamburger-menu",
-            clone!(
-                #[weak(rename_to = obj)]
-                self,
-                move |_, _| obj.open_hamburger_menu()
-            )
-        );
         action!(
             self,
             "fullscreen",
@@ -142,31 +126,22 @@ impl Window {
         );
         action!(
             self,
-            "disable-current-plugin",
+            "go-to-add-weight",
             clone!(
                 #[weak(rename_to = obj)]
                 self,
-                move |_, _| obj.handle_disable_current_plugin()
+                move |_, _| obj.got_to_add_weight()
             )
         );
-        self.action_set_enabled("win.disable-current-plugin", false);
-    }
-
-    #[template_callback]
-    fn handle_add_data_button_clicked(&self) {
-        let dialog =
-            DataAddDialog::new(self.upcast_ref(), self.imp().view_home_page.current_page())
-                .upcast::<gtk::Dialog>();
-        dialog.present();
-    }
-
-    #[template_callback]
-    fn handle_back_button_clicked(&self) {
-        let imp = self.imp();
-        imp.view_home_page.back();
-        self.action_set_enabled("win.disable-current-plugin", false);
-        imp.back_button.set_visible(false);
-        imp.enable_plugin_button.set_visible(false);
+        action!(
+            self,
+            "go-to-add-activity",
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, _| obj.got_to_add_activity()
+            )
+        );
     }
 
     #[template_callback]
@@ -192,40 +167,6 @@ impl Window {
         false
     }
 
-    pub async fn disable_plugin(&self) {
-        self.imp().view_home_page.disable_current_plugin().await;
-    }
-
-    pub async fn enable_plugin(&self) {
-        self.imp().view_home_page.enable_current_plugin().await;
-    }
-
-    #[template_callback]
-    fn handle_disable_current_plugin(&self) {
-        glib::MainContext::default().spawn_local(clone!(
-            #[weak(rename_to = obj)]
-            self,
-            async move {
-                obj.disable_plugin().await;
-            }
-        ));
-        self.imp().view_home_page.back();
-    }
-
-    #[template_callback]
-    fn handle_enable_plugin_button_clicked(&self) {
-        let imp = self.imp();
-        glib::MainContext::default().spawn_local(clone!(
-            #[weak(rename_to = obj)]
-            self,
-            async move {
-                obj.enable_plugin().await;
-            }
-        ));
-        imp.view_home_page.back();
-        imp.enable_plugin_button.set_visible(false);
-    }
-
     #[template_callback]
     fn handle_error_infobar_close(&self) {
         self.imp().error_infobar.set_reveal_child(false);
@@ -247,15 +188,6 @@ impl Window {
     #[template_callback]
     fn handle_property_default_width_notify(&self) {
         self.imp().inner.borrow_mut().current_height = self.default_height();
-    }
-
-    #[template_callback]
-    fn handle_view_changed(&self) {
-        let imp = self.imp();
-        let is_enabled = imp.view_home_page.is_current_plugin_enabled();
-        self.action_set_enabled("win.disable-current-plugin", is_enabled);
-        imp.enable_plugin_button.set_visible(!is_enabled);
-        imp.back_button.set_visible(true)
     }
 
     fn setup(&self) {
@@ -338,6 +270,36 @@ impl Window {
                 view.update().await;
             }
         ));
+    }
+
+    pub async fn open_plugin(&self, plugin_name: PluginName, enabled: bool) {
+        let registrar = Registrar::instance();
+        let plugin = if enabled {
+            registrar.enabled_plugin_by_name(plugin_name).unwrap()
+        } else {
+            registrar.disabled_plugin_by_name(plugin_name).unwrap()
+        };
+        let details = plugin.details(!enabled);
+        // self.imp().navigation_view.add(&details);
+
+        if let Err(e) = details.update().await {
+            glib::g_warning!(
+                crate::config::LOG_DOMAIN,
+                "Couldn't update plugin's details: {e}",
+            );
+        }
+
+        self.imp().navigation_view.push(&details);
+    }
+
+    fn got_to_add_weight(&self) {
+        let page = ViewAddWeight::new();
+        self.imp().navigation_view.push(&page);
+    }
+
+    fn got_to_add_activity(&self) {
+        let page = ViewAddActivity::new();
+        self.imp().navigation_view.push(&page);
     }
 }
 

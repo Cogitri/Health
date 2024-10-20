@@ -101,6 +101,8 @@ mod imp {
         pub heart_rate_min_action_row: TemplateChild<adw::ActionRow>,
         #[template_child]
         pub stepcount_action_row: TemplateChild<adw::ActionRow>,
+        #[template_child]
+        pub save_button: TemplateChild<gtk::Button>,
     }
 
     /// Get the value of a spinbutton if the datapoint is set.
@@ -209,13 +211,13 @@ mod imp {
         }
     }
     impl WidgetImpl for ViewAddActivity {}
-    impl BinImpl for ViewAddActivity {}
+    impl NavigationPageImpl for ViewAddActivity {}
 }
 
 glib::wrapper! {
     /// A few widgets for adding a new activity record.
     pub struct ViewAddActivity(ObjectSubclass<imp::ViewAddActivity>)
-        @extends gtk::Widget, adw::Bin, ViewAdd,
+        @extends gtk::Widget, adw::NavigationPage, ViewAdd,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
@@ -420,67 +422,80 @@ impl ViewAddActivity {
         None
     }
 
-    pub async fn handle_response(&self, id: gtk::ResponseType) {
-        if id == gtk::ResponseType::Ok {
-            let imp = self.imp();
-            let selected_activity = imp.activity_type_selector.selected_activity();
-            imp.inner.borrow_mut().selected_activity = selected_activity.clone();
-            let distance = if selected_activity
-                .available_data_points
-                .contains(ActivityDataPoints::DISTANCE)
-            {
-                Some(imp.distance_action_row.value())
-            } else {
-                None
-            };
+    #[template_callback]
+    pub fn handle_save(&self) {
+        self.imp().save_button.set_sensitive(false);
+        glib::MainContext::default().spawn_local(glib::clone!(
+            #[weak(rename_to = this)]
+            self,
+            async move { this.save().await }
+        ));
+    }
 
-            let activity = Activity::new();
-            activity
-                .set_date(imp.date_selector.selected_date())
-                .set_activity_type(selected_activity.activity_type)
-                .set_calories_burned(spin_button_value_if_datapoint(
-                    &imp.calories_burned_spin_button,
-                    &selected_activity,
-                    ActivityDataPoints::CALORIES_BURNED,
-                ))
-                .set_distance(distance)
-                .set_heart_rate_avg(spin_button_value_if_datapoint(
-                    &imp.heart_rate_average_spin_button,
-                    &selected_activity,
-                    ActivityDataPoints::HEART_RATE,
-                ))
-                .set_heart_rate_min(spin_button_value_if_datapoint(
-                    &imp.heart_rate_min_spin_button,
-                    &selected_activity,
-                    ActivityDataPoints::HEART_RATE,
-                ))
-                .set_heart_rate_max(spin_button_value_if_datapoint(
-                    &imp.heart_rate_max_spin_button,
-                    &selected_activity,
-                    ActivityDataPoints::HEART_RATE,
-                ))
-                .set_steps(spin_button_value_if_datapoint(
-                    &imp.steps_spin_button,
-                    &selected_activity,
-                    ActivityDataPoints::STEP_COUNT,
-                ))
-                .set_duration(glib::TimeSpan::from_minutes(
-                    spin_button_value_if_datapoint(
-                        &imp.duration_spin_button,
-                        &selected_activity,
-                        ActivityDataPoints::DURATION,
-                    )
-                    .unwrap_or(0)
-                    .into(),
-                ));
+    pub async fn save(&self) {
+        let imp = self.imp();
+        let selected_activity = imp.activity_type_selector.selected_activity();
+        imp.inner.borrow_mut().selected_activity = selected_activity.clone();
+        let distance = if selected_activity
+            .available_data_points
+            .contains(ActivityDataPoints::DISTANCE)
+        {
+            Some(imp.distance_action_row.value())
+        } else {
+            None
+        };
 
-            if let Err(e) = imp.database.save_activity(activity).await {
-                glib::g_warning!(
-                    crate::config::LOG_DOMAIN,
-                    "Failed to save new data due to error {e}",
+        let activity = Activity::new();
+        activity
+            .set_date(imp.date_selector.selected_date())
+            .set_activity_type(selected_activity.activity_type)
+            .set_calories_burned(spin_button_value_if_datapoint(
+                &imp.calories_burned_spin_button,
+                &selected_activity,
+                ActivityDataPoints::CALORIES_BURNED,
+            ))
+            .set_distance(distance)
+            .set_heart_rate_avg(spin_button_value_if_datapoint(
+                &imp.heart_rate_average_spin_button,
+                &selected_activity,
+                ActivityDataPoints::HEART_RATE,
+            ))
+            .set_heart_rate_min(spin_button_value_if_datapoint(
+                &imp.heart_rate_min_spin_button,
+                &selected_activity,
+                ActivityDataPoints::HEART_RATE,
+            ))
+            .set_heart_rate_max(spin_button_value_if_datapoint(
+                &imp.heart_rate_max_spin_button,
+                &selected_activity,
+                ActivityDataPoints::HEART_RATE,
+            ))
+            .set_steps(spin_button_value_if_datapoint(
+                &imp.steps_spin_button,
+                &selected_activity,
+                ActivityDataPoints::STEP_COUNT,
+            ))
+            .set_duration(glib::TimeSpan::from_minutes(
+                spin_button_value_if_datapoint(
+                    &imp.duration_spin_button,
+                    &selected_activity,
+                    ActivityDataPoints::DURATION,
                 )
-            }
+                .unwrap_or(0)
+                .into(),
+            ));
+
+        if let Err(e) = imp.database.save_activity(activity).await {
+            imp.save_button.set_sensitive(true);
+            glib::g_warning!(
+                crate::config::LOG_DOMAIN,
+                "Failed to save new data due to error {e}",
+            )
+        } else {
             self.save_recent_activity().await;
+            if let Err(e) = self.activate_action("navigation.pop", None) {
+                glib::g_warning!(crate::config::LOG_DOMAIN, "Failed to pop navigation {e}",)
+            }
         }
     }
 

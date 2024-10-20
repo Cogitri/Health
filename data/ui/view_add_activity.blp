@@ -146,27 +146,41 @@ template $HealthViewAddActivity : $HealthViewAdd {
   icon-name: "walking-symbolic";
   name: "Add Activity Data";
 
-  ScrolledWindow {
-    propagate-natural-height: true;
-
-    Adw.Clamp {
-      maximum-size: 400;
-      tightening-threshold: 200;
-      valign: center;
-      vexpand: true;
-      hexpand: true;
-      margin-start: 6;
-      margin-end: 6;
-      margin-top: 6;
-      margin-bottom: 6;
-
-      ListBox activities_list_box {
-        selection-mode: none;
-
+  title: _("Add Weight Data");
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      [end]
+      Button save_button {
+        label: _("Add");
+        clicked => $handle_save() swapped;
         styles [
-          "boxed-list",
+          "suggested-action",
         ]
       }
     }
+    content: ScrolledWindow {
+      propagate-natural-height: true;
+
+      Adw.Clamp {
+        maximum-size: 400;
+        tightening-threshold: 200;
+        valign: center;
+        vexpand: true;
+        hexpand: true;
+        margin-start: 6;
+        margin-end: 6;
+        margin-top: 6;
+        margin-bottom: 6;
+
+        ListBox activities_list_box {
+          selection-mode: none;
+
+          styles [
+            "boxed-list",
+          ]
+        }
+      }
+    };
   }
 }

@@ -29,7 +29,7 @@ mod imp {
 
     #[repr(C)]
     pub struct PluginDetailsClass {
-        pub parent_class: adw::ffi::AdwBinClass,
+        pub parent_class: adw::ffi::AdwNavigationPageClass,
         pub update: fn(&super::PluginDetails) -> PinnedResultFuture<()>,
     }
 
@@ -93,13 +93,13 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for PluginDetails {
         const NAME: &'static str = "HealthPluginDetails";
-        type ParentType = adw::Bin;
+        type ParentType = adw::NavigationPage;
         type Type = super::PluginDetails;
         type Class = PluginDetailsClass;
 
         fn class_init(klass: &mut Self::Class) {
             klass.update = update_default_trampoline;
-            klass.set_layout_manager_type::<gtk::BinLayout>();
+            // klass.set_layout_manager_type::<gtk::BinLayout>();
 
             Self::bind_template(klass);
         }
@@ -161,13 +161,13 @@ mod imp {
         }
     }
     impl WidgetImpl for PluginDetails {}
-    impl BinImpl for PluginDetails {}
+    impl NavigationPageImpl for PluginDetails {}
 }
 
 glib::wrapper! {
     /// [PluginDetails] is a toplevel container that is implemented by all other PluginDetailss of Health. See [PluginExt] for all the methods exposed by [PluginDetails].
     pub struct PluginDetails(ObjectSubclass<imp::PluginDetails>)
-        @extends gtk::Widget, adw::Bin,
+        @extends gtk::Widget, adw::NavigationPage,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
@@ -265,7 +265,7 @@ impl<O: IsA<PluginDetails>> PluginDetailsExt for O {
     }
 }
 
-pub trait PluginDetailsImpl: BinImpl + 'static {
+pub trait PluginDetailsImpl: NavigationPageImpl + 'static {
     fn update(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
         self.parent_update(obj)
     }
@@ -287,14 +287,14 @@ impl<T: PluginDetailsImpl> PluginDetailsImplExt for T {
 
 unsafe impl<T: PluginDetailsImpl> IsSubclassable<T> for PluginDetails {
     fn class_init(class: &mut glib::Class<Self>) {
-        <adw::Bin as IsSubclassable<T>>::class_init(class.upcast_ref_mut());
+        <adw::NavigationPage as IsSubclassable<T>>::class_init(class.upcast_ref_mut());
 
         let klass = class.as_mut();
         klass.update = update_trampoline::<T>;
     }
 
     fn instance_init(instance: &mut glib::subclass::InitializingObject<T>) {
-        <adw::Bin as IsSubclassable<T>>::instance_init(instance);
+        <adw::NavigationPage as IsSubclassable<T>>::instance_init(instance);
     }
 }
 

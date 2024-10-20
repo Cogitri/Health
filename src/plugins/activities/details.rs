@@ -108,7 +108,7 @@ mod imp {
         }
     }
     impl WidgetImpl for PluginActivitiesDetails {}
-    impl BinImpl for PluginActivitiesDetails {}
+    impl NavigationPageImpl for PluginActivitiesDetails {}
 
     impl PluginDetailsImpl for PluginActivitiesDetails {
         fn update(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
@@ -135,7 +135,7 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [PluginDetails] that visualizes activities the user recently did.
     pub struct PluginActivitiesDetails(ObjectSubclass<imp::PluginActivitiesDetails>)
-        @extends gtk::Widget, adw::Bin, PluginDetails,
+        @extends gtk::Widget, adw::NavigationPage, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

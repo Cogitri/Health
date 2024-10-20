@@ -11,43 +11,57 @@ template $HealthViewAddWeight : $HealthViewAdd {
   icon-name: "weight-scale-symbolic";
   name: "Add Weight Data";
 
-  ScrolledWindow {
-    propagate-natural-height: true;
+  title: _("Add Weight Data");
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      [end]
+      Button save_button {
+        label: _("Add");
+        clicked => $handle_save() swapped;
+        styles [
+          "suggested-action",
+        ]
+      }
+    }
+    content: ScrolledWindow {
+      propagate-natural-height: true;
 
-    Adw.Clamp {
-      maximum-size: 400;
-      tightening-threshold: 200;
-      valign: center;
-      vexpand: true;
-      hexpand: true;
-      margin-start: 6;
-      margin-end: 6;
-      margin-top: 6;
-      margin-bottom: 6;
+      Adw.Clamp {
+        maximum-size: 400;
+        tightening-threshold: 200;
+        valign: center;
+        vexpand: true;
+        hexpand: true;
+        margin-start: 6;
+        margin-end: 6;
+        margin-top: 6;
+        margin-bottom: 6;
 
-      Adw.PreferencesGroup {
-        Adw.ActionRow {
-          title: _("Date");
+        Adw.PreferencesGroup {
+          Adw.ActionRow {
+            title: _("Date");
 
-          $HealthDateSelector date_selector {
-            valign: center;
+            $HealthDateSelector date_selector {
+              valign: center;
+            }
           }
-        }
 
-        Adw.ActionRow {
-          title: _("Weight");
+          Adw.ActionRow {
+            title: _("Weight");
 
-          $HealthUnitSpinButton weight_spin_button {
-            unit-kind: "like_kilogram";
-            width-chars: 5;
-            text: "0";
-            adjustment: weight_adjustment;
-            digits: 1;
-            valign: center;
-            changed => $handle_weight_spin_button_changed() swapped;
+            $HealthUnitSpinButton weight_spin_button {
+              unit-kind: "like_kilogram";
+              width-chars: 5;
+              text: "0";
+              adjustment: weight_adjustment;
+              digits: 1;
+              valign: center;
+              changed => $handle_weight_spin_button_changed() swapped;
+            }
           }
         }
       }
-    }
+    };
   }
 }

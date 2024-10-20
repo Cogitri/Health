@@ -127,7 +127,7 @@ mod imp {
         }
     }
     impl WidgetImpl for PluginCaloriesDetails {}
-    impl BinImpl for PluginCaloriesDetails {}
+    impl NavigationPageImpl for PluginCaloriesDetails {}
     impl PluginDetailsImpl for PluginCaloriesDetails {
         fn update(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
@@ -153,7 +153,7 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [PluginDetails] that visualizes calorie spent records.
     pub struct PluginCaloriesDetails(ObjectSubclass<imp::PluginCaloriesDetails>)
-        @extends gtk::Widget, adw::Bin, PluginDetails,
+        @extends gtk::Widget, adw::NavigationPage, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

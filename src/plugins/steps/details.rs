@@ -122,7 +122,7 @@ mod imp {
         }
     }
     impl WidgetImpl for PluginStepsDetails {}
-    impl BinImpl for PluginStepsDetails {}
+    impl NavigationPageImpl for PluginStepsDetails {}
     impl PluginDetailsImpl for PluginStepsDetails {
         fn update(&self, obj: &PluginDetails) -> PinnedResultFuture<()> {
             Box::pin(gio::GioFuture::new(
@@ -148,7 +148,7 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [PluginDetails] that visualizes streak counts and daily step records.
     pub struct PluginStepsDetails(ObjectSubclass<imp::PluginStepsDetails>)
-        @extends gtk::Widget, adw::Bin, PluginDetails,
+        @extends gtk::Widget, adw::NavigationPage, PluginDetails,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 

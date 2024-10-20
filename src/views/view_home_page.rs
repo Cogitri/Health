@@ -17,8 +17,7 @@
  */
 
 use crate::{
-    model::User,
-    plugins::{PluginDetails, PluginName, PluginObject, PluginSummaryRow, Registrar},
+    plugins::{PluginName, PluginObject, PluginSummaryRow, Registrar},
     prelude::*,
 };
 use adw::prelude::*;
@@ -33,19 +32,21 @@ mod imp {
     };
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{
-        glib::{self, subclass::Signal},
+        glib::{self, Properties},
         CompositeTemplate,
     };
     use num_traits::cast::ToPrimitive;
+    use std::cell::RefCell;
 
-    #[derive(Debug, CompositeTemplate, Default)]
+    #[derive(Debug, CompositeTemplate, Default, Properties)]
+    #[properties(wrapper_type = super::ViewHomePage)]
     #[template(resource = "/dev/Cogitri/Health/ui/view_home_page.ui")]
     pub struct ViewHomePage {
         pub settings: Settings,
         pub database: Database,
+        #[property(get, set)]
+        pub window: RefCell<Option<crate::windows::Window>>,
 
-        #[template_child]
-        pub stack: TemplateChild<gtk::Stack>,
         #[template_child]
         pub user_selected_data: TemplateChild<gtk::ListBox>,
         #[template_child]
@@ -63,7 +64,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for ViewHomePage {
         const NAME: &'static str = "HealthViewHomePage";
-        type ParentType = adw::Bin;
+        type ParentType = adw::NavigationPage;
         type Type = super::ViewHomePage;
 
         fn class_init(klass: &mut Self::Class) {
@@ -78,18 +79,8 @@ mod imp {
 
     impl WidgetImpl for ViewHomePage {}
 
+    #[glib::derived_properties]
     impl ObjectImpl for ViewHomePage {
-        fn signals() -> &'static [Signal] {
-            use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<Vec<Signal>> = Lazy::new(|| {
-                vec![Signal::builder("view-changed")
-                    .param_types([String::static_type()])
-                    .build()]
-            });
-
-            SIGNALS.as_ref()
-        }
-
         fn constructed(&self) {
             self.parent_constructed();
 
@@ -149,7 +140,7 @@ mod imp {
         }
     }
 
-    impl BinImpl for ViewHomePage {}
+    impl NavigationPageImpl for ViewHomePage {}
 
     #[gtk::template_callbacks]
     impl ViewHomePage {
@@ -176,18 +167,11 @@ mod imp {
 glib::wrapper! {
     /// An implementation of [View] visualizes activities the user recently did.
     pub struct ViewHomePage(ObjectSubclass<imp::ViewHomePage>)
-        @extends gtk::Widget, adw::Bin,
+        @extends gtk::Widget, adw::NavigationPage,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl ViewHomePage {
-    pub fn back(&self) {
-        let imp = self.imp();
-        imp.stack
-            .remove(&imp.stack.child_by_name(&self.current_page()).unwrap());
-        imp.stack.set_visible_child_name("home");
-    }
-
     /// Connect to the `view-changed` signal.
     ///
     /// # Arguments
@@ -206,68 +190,6 @@ impl ViewHomePage {
             );
             None
         })
-    }
-
-    pub fn current_page(&self) -> String {
-        self.imp().stack.visible_child_name().unwrap().to_string()
-    }
-
-    pub async fn get_user(&self) -> User {
-        let imp = self.imp();
-        let user_id = i64::from(imp.settings.active_user_id());
-        let user = &imp.database.user(user_id).await.unwrap();
-        user.clone()
-    }
-
-    pub fn is_current_plugin_enabled(&self) -> bool {
-        let registrar = Registrar::instance();
-        let current_page = self.current_page();
-        registrar
-            .enabled_plugins()
-            .iter()
-            .any(|p| p.name().as_ref() == current_page.as_str())
-    }
-
-    pub async fn disable_current_plugin(&self) {
-        let imp = self.imp();
-        let registrar = Registrar::instance();
-        let user = self.get_user().await;
-
-        if let Ok(current_plugin) = PluginName::from_str(&self.current_page()) {
-            registrar.disable_plugin(current_plugin);
-            imp.all_data_box.set_visible(true);
-            user.set_enabled_plugins(Some(
-                user.enabled_plugins()
-                    .unwrap()
-                    .drain(..)
-                    .filter(|s| *s != current_plugin)
-                    .collect::<Vec<PluginName>>()
-                    .as_slice()
-                    .to_vec(),
-            ));
-            if registrar.enabled_plugins().is_empty() {
-                imp.enabled_plugins_stack
-                    .set_visible_child_name("no-plugins-enabled")
-            }
-        }
-    }
-
-    pub async fn enable_current_plugin(&self) {
-        let imp = self.imp();
-        let registrar = Registrar::instance();
-        let user = self.get_user().await;
-
-        if let Ok(current_plugin) = PluginName::from_str(&self.current_page()) {
-            let mut enabled_plugins = user.enabled_plugins().unwrap();
-            enabled_plugins.push(current_plugin);
-            registrar.enable_plugin(current_plugin);
-            user.set_enabled_plugins(Some(enabled_plugins));
-            imp.enabled_plugins_stack
-                .set_visible_child_name("plugin-list");
-            if registrar.disabled_plugins().is_empty() {
-                imp.all_data_box.set_visible(false);
-            }
-        }
     }
 
     /// Create a new [ViewHomePage] to display previous activities.
@@ -313,22 +235,16 @@ impl ViewHomePage {
     }
 
     fn open_plugin_details(&self, list_box: gtk::ListBox, plugin_name: PluginName, enabled: bool) {
-        let imp = self.imp();
-        let registrar = Registrar::instance();
-        let plugin = if enabled {
-            registrar.enabled_plugin_by_name(plugin_name).unwrap()
-        } else {
-            registrar.disabled_plugin_by_name(plugin_name).unwrap()
-        };
-        let details = plugin.details(!enabled);
-
-        imp.stack.add_named(&details, Some(plugin_name.as_ref()));
-
         gtk_macros::spawn!(glib::clone!(
+            #[weak]
+            list_box,
             #[weak(rename_to = obj)]
             self,
             async move {
-                obj.update_view(details, plugin_name, list_box).await;
+                if let Some(window) = obj.window() {
+                    window.open_plugin(plugin_name, enabled).await;
+                }
+                list_box.unselect_all();
             }
         ));
     }
@@ -347,26 +263,6 @@ impl ViewHomePage {
             }
             i += 1;
         }
-    }
-
-    async fn update_view(
-        &self,
-        details: PluginDetails,
-        plugin_name: PluginName,
-        list_box: gtk::ListBox,
-    ) {
-        let imp = self.imp();
-
-        if let Err(e) = details.update().await {
-            glib::g_warning!(
-                crate::config::LOG_DOMAIN,
-                "Couldn't update plugin's details: {e}",
-            );
-        }
-
-        imp.stack.set_visible_child_name(plugin_name.as_ref());
-        self.emit_by_name::<()>("view-changed", &[&plugin_name.as_ref()]);
-        list_box.unselect_all();
     }
 
     fn handle_registrar_plugins_changed(&self) {

@@ -22,6 +22,7 @@ use crate::{
     prelude::*,
     views::ViewAdd,
 };
+use adw::prelude::*;
 use gtk::glib::{self, subclass::prelude::*};
 use uom::si::{
     f32::Mass,
@@ -47,6 +48,8 @@ mod imp {
         pub date_selector: TemplateChild<DateSelector>,
         #[template_child]
         pub weight_spin_button: TemplateChild<UnitSpinButton>,
+        #[template_child]
+        pub save_button: TemplateChild<gtk::Button>,
     }
 
     #[glib::object_subclass]
@@ -68,13 +71,13 @@ mod imp {
 
     impl ObjectImpl for ViewAddWeight {}
     impl WidgetImpl for ViewAddWeight {}
-    impl BinImpl for ViewAddWeight {}
+    impl NavigationPageImpl for ViewAddWeight {}
 }
 
 glib::wrapper! {
     /// A few widgets for adding a new weight record.
     pub struct ViewAddWeight(ObjectSubclass<imp::ViewAddWeight>)
-        @extends gtk::Widget, adw::Bin, ViewAdd,
+        @extends gtk::Widget, adw::NavigationPage, ViewAdd,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
@@ -97,24 +100,35 @@ impl ViewAddWeight {
         ret
     }
 
-    pub async fn handle_response(&self, id: gtk::ResponseType) {
-        if id == gtk::ResponseType::Ok {
-            let imp = self.imp();
-            let value = if imp.settings.unit_system() == UnitSystem::Metric {
-                Mass::new::<kilogram>(imp.weight_spin_button.value() as f32)
-            } else {
-                Mass::new::<pound>(imp.weight_spin_button.value() as f32)
-            };
-            if let Err(e) = imp
-                .database
-                .save_weight(Weight::new(imp.date_selector.selected_date(), value))
-                .await
-            {
-                glib::g_warning!(
-                    crate::config::LOG_DOMAIN,
-                    "Failed to save new data due to error {e}",
-                )
-            }
+    #[template_callback]
+    pub fn handle_save(&self) {
+        self.imp().save_button.set_sensitive(false);
+        glib::MainContext::default().spawn_local(glib::clone!(
+            #[weak(rename_to = this)]
+            self,
+            async move { this.save().await }
+        ));
+    }
+
+    pub async fn save(&self) {
+        let imp = self.imp();
+        let value = if imp.settings.unit_system() == UnitSystem::Metric {
+            Mass::new::<kilogram>(imp.weight_spin_button.value() as f32)
+        } else {
+            Mass::new::<pound>(imp.weight_spin_button.value() as f32)
+        };
+        if let Err(e) = imp
+            .database
+            .save_weight(Weight::new(imp.date_selector.selected_date(), value))
+            .await
+        {
+            imp.save_button.set_sensitive(true);
+            glib::g_warning!(
+                crate::config::LOG_DOMAIN,
+                "Failed to save new data due to error {e}",
+            )
+        } else if let Err(e) = self.activate_action("navigation.pop", None) {
+            glib::g_warning!(crate::config::LOG_DOMAIN, "Failed to pop navigation {e}",)
         }
     }
 
