@@ -23,8 +23,9 @@ use crate::{
     },
     prelude::*,
 };
+use adw::prelude::*;
 use adw::subclass::prelude::*;
-use gtk::glib::{self, prelude::*};
+use gtk::glib::{self, clone};
 use std::str::FromStr;
 
 mod imp {
@@ -144,9 +145,12 @@ glib::wrapper! {
 impl PluginSummaryRow {
     /// Create a new [PluginSummaryRow]
     pub fn new(plugin_name: PluginName) -> Self {
-        glib::Object::builder()
+        let obj: Self = glib::Object::builder()
             .property("plugin-name", &plugin_name)
-            .build()
+            .build();
+        obj.bind_right_click();
+
+        obj
     }
 }
 
@@ -156,6 +160,8 @@ pub trait PluginSummaryRowExt {
     fn update(&self) -> PinnedResultFuture<()>;
 
     fn plugin_name(&self) -> PluginName;
+
+    fn bind_right_click(&self);
 }
 
 impl<O: IsA<PluginSummaryRow>> PluginSummaryRowExt for O {
@@ -165,6 +171,49 @@ impl<O: IsA<PluginSummaryRow>> PluginSummaryRowExt for O {
 
     fn plugin_name(&self) -> PluginName {
         PluginName::from_str(&self.property::<String>("plugin-name")).unwrap()
+    }
+
+    fn bind_right_click(&self) {
+        let obj = self.upcast_ref();
+        let on_rightclick = clone!(
+            #[weak]
+            obj,
+            move |(x, y)| {
+                let menu = gio::Menu::new();
+                let plugin_name = obj.property::<String>("plugin-name");
+                menu.append(
+                    Some("Disable Plugin"),
+                    Some(&format!("win.disable-plugin::{plugin_name}")),
+                );
+
+                let popover = gtk::PopoverMenu::builder()
+                    .menu_model(&menu)
+                    .pointing_to(&gtk::gdk::Rectangle::new(x as i32, y as i32, 1, 1))
+                    .build();
+                obj.connect_destroy(clone!(
+                    #[weak]
+                    popover,
+                    move |_| popover.unparent()
+                ));
+                popover.set_parent(&obj);
+                popover.popup();
+            }
+        );
+        let on_long_press = on_rightclick.clone();
+
+        let long_press = gtk::GestureLongPress::new();
+        long_press.connect_pressed(move |_, x, y| {
+            on_long_press((x, y));
+        });
+
+        let right_click = gtk::GestureClick::builder()
+            .button(gtk::gdk::BUTTON_SECONDARY)
+            .build();
+        right_click.connect_pressed(move |_, _, x, y| {
+            on_rightclick((x, y));
+        });
+        obj.add_controller(long_press);
+        obj.add_controller(right_click);
     }
 }
 

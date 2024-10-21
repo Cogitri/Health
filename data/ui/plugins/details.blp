@@ -5,7 +5,11 @@ template $HealthPluginDetails : Adw.NavigationPage {
   Adw.ToolbarView {
     [top]
     Adw.HeaderBar {
-
+       [start]
+       Button add_button {
+         icon-name: "list-add-symbolic";
+         action-name: bind template.add-action-name;
+       }
     }
     content: Stack stack {
       StackPage {

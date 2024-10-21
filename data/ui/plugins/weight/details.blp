@@ -2,6 +2,7 @@ using Gtk 4.0;
 using Adw 1;
 
 template $HealthPluginWeightDetails : $HealthPluginDetails {
+  add-action-name: "win.go-to-add-weight";
   empty-label: _("You can use the <b>+</b> button to add a new weight measurement.");
   empty-icon-name: "weight-scale-symbolic";
   name: "Weight";

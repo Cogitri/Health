@@ -2,7 +2,7 @@ use std::convert::TryInto;
 
 use crate::{
     core::{i18n, ni18n_f, Database, Settings},
-    plugins::{PluginName, PluginSummaryRow},
+    plugins::{PluginName, PluginSummaryRow, PluginSummaryRowExt},
 };
 use adw::prelude::*;
 use gtk::{glib, subclass::prelude::*};
@@ -90,10 +90,14 @@ glib::wrapper! {
 
 impl PluginStepsSummaryRow {
     pub fn new(name: PluginName) -> Self {
-        glib::Object::builder()
+        let obj: Self = glib::Object::builder()
             .property("plugin-name", &name)
             .property("activatable", true)
-            .build()
+            .build();
+
+        obj.bind_right_click();
+
+        obj
     }
 
     pub async fn update(&self) {

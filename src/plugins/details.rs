@@ -26,6 +26,7 @@ mod imp {
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::{gio, glib, CompositeTemplate};
     use std::cell::Cell;
+    use std::cell::RefCell;
 
     #[repr(C)]
     pub struct PluginDetailsClass {
@@ -54,6 +55,7 @@ mod imp {
     #[derive(Debug, CompositeTemplate, Default)]
     #[template(resource = "/dev/Cogitri/Health/ui/plugins/details.ui")]
     pub struct PluginDetails {
+        pub add_action_name: RefCell<Option<String>>,
         pub is_mocked: Cell<bool>,
         #[template_child]
         pub empty_icon: TemplateChild<gtk::Image>,
@@ -117,6 +119,7 @@ mod imp {
                     glib::ParamSpecObject::builder::<gtk::Widget>("content-widget")
                         .write_only()
                         .build(),
+                    glib::ParamSpecString::builder("add-action-name").build(),
                     glib::ParamSpecString::builder("empty-label").build(),
                     glib::ParamSpecString::builder("empty-icon-name").build(),
                     glib::ParamSpecString::builder("filled-title").build(),
@@ -133,6 +136,9 @@ mod imp {
 
         fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
+                "add-action-name" => {
+                    self.add_action_name.replace(value.get().ok());
+                }
                 "content-widget" => self.main_box.append(&value.get::<gtk::Widget>().unwrap()),
                 "empty-label" => self.empty_label.set_label(value.get::<&str>().unwrap()),
                 "empty-icon-name" => self.empty_icon.set_icon_name(value.get().unwrap()),
@@ -151,6 +157,7 @@ mod imp {
 
         fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
+                "add-action-name" => self.add_action_name.borrow().to_value(),
                 "empty-label" => self.empty_label.label().to_value(),
                 "empty-icon-name" => self.empty_icon.icon_name().to_value(),
                 "filled-title" => self.filled_title_label.label().to_value(),

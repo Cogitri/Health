@@ -18,7 +18,9 @@
 
 use crate::plugins::PluginName;
 use gtk::{
-    glib::{self, prelude::*},
+    gio,
+    glib::{self, clone},
+    prelude::*,
     subclass::prelude::*,
 };
 use std::str::FromStr;
@@ -112,12 +114,58 @@ glib::wrapper! {
 
 impl PluginOverviewRow {
     pub fn new(plugin_name: PluginName, icon_name: &str, title: &str) -> Self {
-        glib::Object::builder()
+        let obj: Self = glib::Object::builder()
             .property("icon-name", icon_name)
             .property("title", title)
             .property("plugin-name", &plugin_name)
             .property("activatable", true)
-            .build()
+            .build();
+
+        obj.bind_right_click();
+
+        obj
+    }
+
+    fn bind_right_click(&self) {
+        let on_rightclick = clone!(
+            #[weak(rename_to = obj)]
+            self,
+            move |(x, y)| {
+                let menu = gio::Menu::new();
+                let plugin_name = obj.property::<String>("plugin-name");
+                menu.append(
+                    Some("Enable Plugin"),
+                    Some(&format!("win.enable-plugin::{plugin_name}")),
+                );
+
+                let popover = gtk::PopoverMenu::builder()
+                    .menu_model(&menu)
+                    .pointing_to(&gtk::gdk::Rectangle::new(x as i32, y as i32, 1, 1))
+                    .build();
+                obj.connect_destroy(clone!(
+                    #[weak]
+                    popover,
+                    move |_| popover.unparent()
+                ));
+                popover.set_parent(&obj);
+                popover.popup();
+            }
+        );
+        let on_long_press = on_rightclick.clone();
+
+        let long_press = gtk::GestureLongPress::new();
+        long_press.connect_pressed(move |_, x, y| {
+            on_long_press((x, y));
+        });
+
+        let right_click = gtk::GestureClick::builder()
+            .button(gtk::gdk::BUTTON_SECONDARY)
+            .build();
+        right_click.connect_pressed(move |_, _, x, y| {
+            on_rightclick((x, y));
+        });
+        self.add_controller(long_press);
+        self.add_controller(right_click);
     }
 }
 

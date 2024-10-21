@@ -264,6 +264,24 @@ impl User {
             .build()
     }
 
+    pub fn enable_plugin(&self, plugin_name: PluginName) {
+        let mut enabled_plugins = self.enabled_plugins().unwrap();
+        enabled_plugins.push(plugin_name);
+        self.set_enabled_plugins(Some(enabled_plugins));
+    }
+
+    pub fn disable_plugin(&self, plugin_name: PluginName) {
+        self.set_enabled_plugins(Some(
+            self.enabled_plugins()
+                .unwrap()
+                .drain(..)
+                .filter(|s| *s != plugin_name)
+                .collect::<Vec<PluginName>>()
+                .as_slice()
+                .to_vec(),
+        ));
+    }
+
     pub fn builder() -> UserBuilder {
         UserBuilder::new()
     }

@@ -20,7 +20,8 @@ use crate::plugins::details::PluginDetailsExt;
 use crate::views::ViewAddActivity;
 use crate::views::ViewAddWeight;
 use crate::{
-    core::i18n_f,
+    core::{i18n_f, Database},
+    model::User,
     plugins::{PluginName, Registrar},
     sync::{google_fit::GoogleFitSyncProvider, new_db_receiver, sync_provider::SyncProvider},
 };
@@ -114,6 +115,16 @@ impl Window {
         glib::Object::builder().property("application", app).build()
     }
 
+    fn go_to_add_weight(&self) {
+        let page = ViewAddWeight::new();
+        self.imp().navigation_view.push(&page);
+    }
+
+    fn go_to_add_activity(&self) {
+        let page = ViewAddActivity::new();
+        self.imp().navigation_view.push(&page);
+    }
+
     fn setup_actions(&self) {
         action!(
             self,
@@ -126,20 +137,50 @@ impl Window {
         );
         action!(
             self,
-            "go-to-add-weight",
-            clone!(
-                #[weak(rename_to = obj)]
-                self,
-                move |_, _| obj.got_to_add_weight()
-            )
-        );
-        action!(
-            self,
             "go-to-add-activity",
             clone!(
                 #[weak(rename_to = obj)]
                 self,
-                move |_, _| obj.got_to_add_activity()
+                move |_, _| obj.go_to_add_activity()
+            )
+        );
+        action!(
+            self,
+            "go-to-add-weight",
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, _| obj.go_to_add_weight()
+            )
+        );
+        action!(
+            self,
+            "disable-plugin",
+            Some(glib::VariantTy::STRING),
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, arg| if let Some(plugin_name) =
+                    arg.map(PluginName::try_from).and_then(Result::ok)
+                {
+                    obj.handle_disable_plugin(plugin_name)
+                } else {
+                    glib::g_warning!(crate::config::LOG_DOMAIN, "NO PLUGIN FOR NAME {arg:#?}");
+                }
+            )
+        );
+        action!(
+            self,
+            "enable-plugin",
+            Some(glib::VariantTy::STRING),
+            clone!(
+                #[weak(rename_to = obj)]
+                self,
+                move |_, arg| if let Some(plugin_name) =
+                    arg.map(PluginName::try_from).and_then(Result::ok)
+                {
+                    obj.handle_enable_plugin(plugin_name)
+                }
             )
         );
     }
@@ -280,7 +321,6 @@ impl Window {
             registrar.disabled_plugin_by_name(plugin_name).unwrap()
         };
         let details = plugin.details(!enabled);
-        // self.imp().navigation_view.add(&details);
 
         if let Err(e) = details.update().await {
             glib::g_warning!(
@@ -292,14 +332,55 @@ impl Window {
         self.imp().navigation_view.push(&details);
     }
 
-    fn got_to_add_weight(&self) {
-        let page = ViewAddWeight::new();
-        self.imp().navigation_view.push(&page);
+    fn handle_disable_plugin(&self, plugin_name: PluginName) {
+        gtk_macros::spawn!(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            async move {
+                obj.disable_plugin(plugin_name).await;
+            }
+        ));
     }
 
-    fn got_to_add_activity(&self) {
-        let page = ViewAddActivity::new();
-        self.imp().navigation_view.push(&page);
+    fn handle_enable_plugin(&self, plugin_name: PluginName) {
+        gtk_macros::spawn!(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            async move {
+                obj.enable_plugin(plugin_name).await;
+            }
+        ));
+    }
+
+    pub async fn disable_plugin(&self, plugin_name: PluginName) {
+        let database = Database::instance();
+        let registrar = Registrar::instance();
+        let user = self.get_user(&database).await;
+
+        registrar.disable_plugin(plugin_name);
+        user.disable_plugin(plugin_name);
+        if let Err(err_msg) = database.update_user(user).await {
+            glib::g_warning!(crate::config::LOG_DOMAIN, "{err_msg}");
+        }
+    }
+
+    pub async fn enable_plugin(&self, plugin_name: PluginName) {
+        let database = Database::instance();
+        let registrar = Registrar::instance();
+        let user = self.get_user(&database).await;
+
+        registrar.enable_plugin(plugin_name);
+        user.enable_plugin(plugin_name);
+        if let Err(err_msg) = database.update_user(user).await {
+            glib::g_warning!(crate::config::LOG_DOMAIN, "{err_msg}");
+        }
+    }
+
+    pub async fn get_user(&self, database: &Database) -> User {
+        let imp = self.imp();
+        let user_id = i64::from(imp.settings.active_user_id());
+        let user = &database.user(user_id).await.unwrap();
+        user.clone()
     }
 }
 
