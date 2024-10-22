@@ -1,5 +1,5 @@
 use crate::{
-    core::{i18n, ni18n_f, Settings, UnitSystem},
+    core::{i18n, i18n_f, ni18n_f, Settings, UnitSystem},
     model::WeightChange,
     plugins::weight::GraphModelWeight,
     plugins::{PluginName, PluginSummaryRow},
@@ -138,48 +138,45 @@ impl PluginWeightSummaryRow {
                     &[&last_weight_round.to_string()],
                 )
             } else {
-                // TRANSLATORS: Current user weight
-                ni18n_f(
-                    "{} kilogram",
-                    "{} kilograms",
-                    last_weight_round as u32,
-                    &[&last_weight_round.to_string()],
-                )
+                // TRANSLATORS: Current user weight. kg is short for kilograms
+                i18n_f("{} kg", &[&last_weight_round.to_string()])
             };
             self.set_subtitle(&subtitle);
             if difference > 0.0 {
                 let label = if settings.unit_system() == UnitSystem::Imperial {
                     // TRANSLATORS: Difference to last weight measurement
                     ni18n_f(
-                        "+ {} pound compared to previous measurement",
-                        "+ {} pounds compared to previous measurement",
+                        "+ {} pound",
+                        "+ {} pounds",
                         difference as u32,
                         &[&difference.to_string()],
                     )
                 } else {
                     // TRANSLATORS: Difference to last weight measurement
                     ni18n_f(
-                        "+ {} kilogram compared to previous measurement",
-                        "+ {} kilograms compared to previous measurement",
+                        "+ {} kilogram",
+                        "+ {} kilograms",
                         difference as u32,
                         &[&difference.to_string()],
                     )
                 };
-                imp.weight_change.set_label(&label)
+                imp.weight_change.set_label(&label);
             } else if difference < 0.0 {
                 let label = if settings.unit_system() == UnitSystem::Imperial {
-                    // TRANSLATORS: Difference to last weight measurement
+                    // TRANSLATORS: Difference to last weight measurement.
+                    // {} is a negative number. Example: "-2 pounds"
                     ni18n_f(
-                        "{} pound compared to previous measurement",
-                        "{} pounds compared to previous measurement",
+                        "{} pound",
+                        "{} pounds",
                         difference as u32,
                         &[&difference.to_string()],
                     )
                 } else {
-                    // TRANSLATORS: Difference to last weight measurement
+                    // TRANSLATORS: Difference to last weight measurement.
+                    // {} is a negative number. Example: "-2 kilograms"
                     ni18n_f(
-                        "{} kilogram compared to previous measurement",
-                        "{} kilograms compared to previous measurement",
+                        "{} kilogram",
+                        "{} kilograms",
                         difference as u32,
                         &[&difference.to_string()],
                     )

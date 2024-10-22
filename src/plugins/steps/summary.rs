@@ -19,8 +19,6 @@ mod imp {
     pub struct PluginStepsSummaryRow {
         #[template_child]
         pub circular_progress_bar: TemplateChild<CircularProgressBar>,
-        #[template_child]
-        pub activity_subtext: TemplateChild<gtk::Label>,
     }
 
     #[glib::object_subclass]
@@ -108,9 +106,10 @@ impl PluginStepsSummaryRow {
         let step_count = db.todays_steps().await.unwrap_or(0);
         let step_goal = user.user_stepgoal().unwrap_or(0) as u32;
 
+        // Translators: Steps taken today. Example: "5000 steps"
         self.set_subtitle(&ni18n_f(
-            "{} step taken today",
-            "{} steps taken today",
+            "{} step",
+            "{} steps",
             step_count.try_into().unwrap(),
             &[&step_count.to_string()],
         ));
@@ -119,15 +118,16 @@ impl PluginStepsSummaryRow {
             .set_step_count(step_count.try_into().unwrap());
         let steps_percentage = (step_count as f32 / step_goal.max(1) as f32 * 100.0) as u32;
         if steps_percentage < 100 {
-            imp.activity_subtext.set_text(&ni18n_f(
+            self.set_tooltip_text(Some(&ni18n_f(
                 "Reached {} percent of daily step goal",
                 "Reached {} percent of daily step goal",
                 steps_percentage,
                 &[&steps_percentage.to_string()],
-            ));
+            )));
         } else {
-            imp.activity_subtext
-                .set_text(&i18n("Well done! You have reached your daily step goal!"));
+            self.set_tooltip_text(Some(&i18n(
+                "Well done! You have reached your daily step goal!",
+            )));
         }
     }
 }

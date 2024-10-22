@@ -214,6 +214,7 @@ impl<O: IsA<PluginSummaryRow>> PluginSummaryRowExt for O {
         });
         obj.add_controller(long_press);
         obj.add_controller(right_click);
+        obj.add_css_class("plugin-summary");
     }
 }
 

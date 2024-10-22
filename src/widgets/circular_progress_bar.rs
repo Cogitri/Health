@@ -21,6 +21,7 @@ use gtk::{glib, prelude::*};
 mod imp {
     use adw::{prelude::*, subclass::prelude::*};
     use gtk::glib;
+    use gtk::pango;
     use std::{cell::RefCell, f64::consts::PI};
 
     pub struct CircularProgressBarMut {
@@ -109,7 +110,7 @@ mod imp {
             let height = f64::from(widget.height());
             let radius = width * 0.21;
 
-            cr.set_line_width(2.5);
+            cr.set_line_width(10.5);
             let style_manager = adw::StyleManager::default();
             let shaded = style_manager.accent_color_rgba();
             let mut unshaded = shaded;
@@ -119,20 +120,31 @@ mod imp {
             cr.arc(width / 2.0, height / 2.0, radius, -0.5 * PI, 1.5 * PI);
             cr.stroke().expect("Couldn't stroke on Cairo Context");
             GdkCairoContextExt::set_source_color(&cr, &shaded);
+            let percent = f64::from(self.inner.borrow().step_count)
+                / f64::from(self.inner.borrow().step_goal);
             if self.inner.borrow().step_goal != 0 {
                 cr.arc(
                     width / 2.0,
                     height / 2.0,
                     radius,
                     -0.5 * PI,
-                    (f64::from(self.inner.borrow().step_count)
-                        / f64::from(self.inner.borrow().step_goal))
-                        * 2.0
-                        * PI
-                        - 0.5 * PI,
+                    percent * 2.0 * PI - 0.5 * PI,
                 );
             }
             cr.stroke().expect("Couldn't stroke on Cairo Context");
+
+            // Draw Center label
+            GdkCairoContextExt::set_source_color(&cr, &widget.color());
+            let layout =
+                widget.create_pango_layout(Some(&format!("{}%", (percent * 100.0).floor())));
+            let (_, extents) = layout.extents();
+            cr.move_to(
+                (width - pango::units_to_double(extents.width())) / 2.0,
+                (height - pango::units_to_double(extents.height())) / 2.0,
+            );
+            pangocairo::functions::show_layout(&cr, &layout);
+
+            // Done
             cr.save().unwrap();
         }
     }

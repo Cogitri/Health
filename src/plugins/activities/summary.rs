@@ -1,9 +1,10 @@
 use crate::{
-    core::{ni18n_f, Database},
+    core::{i18n_f, Database},
     plugins::{PluginName, PluginSummaryRow},
     prelude::*,
 };
-use gtk::{glib, subclass::prelude::*};
+use adw::prelude::*;
+use gtk::glib;
 
 mod imp {
     use crate::{core::Database, plugins::PluginSummaryRow, prelude::*};
@@ -94,7 +95,6 @@ impl PluginActivitiesSummaryRow {
     }
 
     pub async fn update(&self) {
-        let imp = self.imp();
         let active_minutes_today: i64 = Database::instance()
             .activities_min(glib::DateTime::local().add_days(-1).unwrap())
             .await
@@ -102,12 +102,8 @@ impl PluginActivitiesSummaryRow {
             .iter()
             .map(|s| s.duration().as_minutes())
             .sum();
-        imp.label.set_label(&ni18n_f(
-            "{} active minute today",
-            "{} active minutes today",
-            active_minutes_today as u32,
-            &[&active_minutes_today.to_string()],
-        ))
+        // Translators: min is short for Minutes active today. Example: "64 min"
+        self.set_subtitle(&i18n_f("{} min", &[&active_minutes_today.to_string()]))
     }
 }
 

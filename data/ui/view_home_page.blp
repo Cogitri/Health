@@ -58,7 +58,7 @@ PopoverMenu primary_menu_popover {
 }
 
 template $HealthViewHomePage : Adw.NavigationPage {
-  title: _("Home");
+  title: _("Health");
   Adw.ToolbarView {
     [top]
     Adw.HeaderBar {
@@ -69,36 +69,14 @@ template $HealthViewHomePage : Adw.NavigationPage {
         primary: true;
       }
     }
-    content: Adw.Clamp {
-      maximum-size: 800;
-      tightening-threshold: 400;
-      valign: center;
-      vexpand: true;
-      hexpand: true;
-      margin-start: 6;
-      margin-end: 6;
-      margin-top: 6;
-      margin-bottom: 6;
+    content: Adw.PreferencesPage {
 
-      Box {
-        orientation: vertical;
+
+      Adw.PreferencesGroup {
+
 
         Box {
           orientation: vertical;
-
-          Label {
-            can-focus: false;
-            ellipsize: end;
-            use-markup: true;
-            xalign: 0;
-            label: _("For you");
-            margin-bottom: 12;
-
-            styles [
-              "heading",
-              "h4",
-            ]
-          }
 
           Stack enabled_plugins_stack {
             StackPage {
@@ -111,7 +89,7 @@ template $HealthViewHomePage : Adw.NavigationPage {
                   row-activated => $handle_user_selected_data_row_activated() swapped;
 
                   styles [
-                    "boxed-list",
+                    "boxed-list-separate",
                   ]
                 }
 
@@ -189,7 +167,7 @@ template $HealthViewHomePage : Adw.NavigationPage {
             row-activated => $handle_all_data_row_activated() swapped;
 
             styles [
-              "boxed-list",
+              "boxed-list-separate",
             ]
           }
         }

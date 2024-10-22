@@ -4,9 +4,16 @@ using Adw 1;
 template $HealthPluginCaloriesSummaryRow : $HealthPluginSummaryRow {
   title: _("Calories Burned");
 
-  Adw.Clamp {
-    maximum-size: 150;
+  Box {
+    Adw.Clamp {
+      maximum-size: 150;
 
-    Label label { }
+        Label label { }
+      }
+    }
+  Image {
+    margin-start: 12;
+    icon-name: "right-large-symbolic";
+    pixel-size: 24;
   }
 }

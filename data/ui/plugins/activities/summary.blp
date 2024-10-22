@@ -4,9 +4,15 @@ using Adw 1;
 template $HealthPluginActivitiesSummaryRow : $HealthPluginSummaryRow {
   title: _("Active Minutes");
 
-  Adw.Clamp {
-    maximum-size: 150;
-
-    Label label { }
+  Box {
+    Adw.Clamp {
+      maximum-size: 150;
+      Label label { }
+    }
+    Image {
+      margin-start: 12;
+      icon-name: "right-large-symbolic";
+      pixel-size: 24;
+    }
   }
 }

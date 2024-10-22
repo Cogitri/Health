@@ -4,26 +4,22 @@ using Adw 1;
 template $HealthPluginStepsSummaryRow : $HealthPluginSummaryRow {
   title: _("Steps");
 
-  Adw.Clamp {
-    maximum-size: 150;
+  Box {
+    Adw.Clamp {
+      maximum-size: 150;
 
-    Box main_box {
-      orientation: vertical;
-      margin-end: 13;
+      Box main_box {
+        orientation: vertical;
+        valign: center;
 
-      $HealthCircularProgressBar circular_progress_bar { }
-
-      Label steps_percentage { }
-
-      Label activity_subtext {
-        wrap: true;
-        max-width-chars: 15;
-        justify: center;
-
-        styles [
-          "caption",
-        ]
+        $HealthCircularProgressBar circular_progress_bar { }
       }
+    }
+
+    Image {
+      margin-start: 12;
+      icon-name: "right-large-symbolic";
+      pixel-size: 24;
     }
   }
 }

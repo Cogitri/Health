@@ -87,40 +87,48 @@ mod imp {
             let height = f64::from(widget.height());
             let weight_change = self.weight_change.get();
 
-            cr.set_line_width(2.5);
+            const STROKE_WIDTH: f64 = 4.5;
+            cr.set_line_width(STROKE_WIDTH);
 
             let style_manager = adw::StyleManager::default();
             let shaded = style_manager.accent_color_rgba();
             GdkCairoContextExt::set_source_color(&cr, &shaded);
 
-            let (arrowhead_position, arrowhead_size) = match weight_change {
-                WeightChange::Down => (height * 0.85, -width / 12.0_f64),
-                WeightChange::Up => (height * 0.1, width / 12.0_f64),
-                WeightChange::NoChange => (width * 0.9, -width / 12.0_f64),
+            const HEAD_LENGTH: f64 = 12.0_f64;
+            let (arrowhead_position, arrowhead_size, tip) = match weight_change {
+                WeightChange::Down => (height * 0.85, -width / HEAD_LENGTH, STROKE_WIDTH / 4.0),
+                WeightChange::Up => (height * 0.1, width / HEAD_LENGTH, -STROKE_WIDTH / 4.0),
+                WeightChange::NoChange => (width * 0.9, -width / HEAD_LENGTH, STROKE_WIDTH / 4.0),
             };
             match weight_change {
                 WeightChange::Down | WeightChange::Up => {
+                    // body
                     cr.move_to(width / 2.0, height * 0.1);
                     cr.line_to(width / 2.0, height * 0.85);
-                    cr.move_to(width / 2.0, arrowhead_position);
+                    // left head
+                    cr.move_to(width / 2.0 - tip, arrowhead_position + tip);
                     cr.line_to(
                         width / 2.0 - arrowhead_size,
                         arrowhead_position + arrowhead_size,
                     );
-                    cr.move_to(width / 2.0, arrowhead_position);
+                    // right head
+                    cr.move_to(width / 2.0 + tip, arrowhead_position + tip);
                     cr.line_to(
                         width / 2.0 + arrowhead_size,
                         arrowhead_position + arrowhead_size,
                     );
                 }
                 WeightChange::NoChange => {
+                    // body
                     cr.move_to(width - width * 0.85, height / 2.0);
                     cr.line_to(width - width * 0.1, height / 2.0);
+                    // upper head
                     cr.move_to(arrowhead_position, height / 2.0);
                     cr.line_to(
                         arrowhead_size + arrowhead_position,
                         height / 2.0 - arrowhead_size,
                     );
+                    // lower head
                     cr.move_to(arrowhead_position, height / 2.0);
                     cr.line_to(
                         arrowhead_position + arrowhead_size,

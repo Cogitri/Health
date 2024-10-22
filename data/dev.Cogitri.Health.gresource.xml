@@ -42,6 +42,7 @@
     <file preprocess="xml-stripblanks">icons/symbolic/apps/walking-thin-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/symbolic/apps/calories-thin-symbolic.svg</file>
     <file preprocess="xml-stripblanks">icons/symbolic/apps/weight-scale-thin-symbolic.svg</file>
+    <file preprocess="xml-stripblanks">icons/scalable/actions/right-large-symbolic.svg</file>
 
     <file>tracker/activities_min.rq</file>
     <file>tracker/activities_min_max.rq</file>

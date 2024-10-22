@@ -87,3 +87,13 @@ list.content.weight-goal > row {
 .error-bar button {
     color: var(--error-fg-color);
 }
+
+.plugin-summary label.title {
+    font-size: 16pt;
+    opacity: var(--dim-opacity);
+}
+
+.plugin-summary .subtitle {
+    font-size: 28pt;
+    opacity: 100%;
+}

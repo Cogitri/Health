@@ -1,10 +1,11 @@
 use crate::{
-    core::ni18n_f,
+    core::i18n_f,
     core::Database,
     plugins::{PluginName, PluginSummaryRow},
     prelude::*,
 };
-use gtk::{glib, subclass::prelude::*};
+use adw::prelude::*;
+use gtk::glib;
 
 mod imp {
     use crate::{core::Database, plugins::PluginSummaryRow, prelude::*};
@@ -104,7 +105,6 @@ impl PluginCaloriesSummaryRow {
     }
 
     pub async fn update(&self) {
-        let imp = self.imp();
         if let Some(bar) = Database::instance()
             .calories(glib::DateTime::local().add_days(-1).unwrap())
             .await
@@ -112,19 +112,11 @@ impl PluginCaloriesSummaryRow {
             .and_then(|s| s.first().cloned())
         {
             let calories_burned_today: i64 = bar.calorie_split.values().sum();
-            imp.label.set_label(&ni18n_f(
-                "{} calorie burned today",
-                "{} calories burned today",
-                calories_burned_today as u32,
-                &[&calories_burned_today.to_string()],
-            ))
+            // Translators: cal is short for calories burned today. Example: "2666 cal"
+            self.set_subtitle(&i18n_f("{} cal", &[&calories_burned_today.to_string()]))
         } else {
-            imp.label.set_label(&ni18n_f(
-                "{} calorie burned today",
-                "{} calories burned today",
-                0,
-                &["0"],
-            ))
+            // Translators: cal is short for calories burned today. Example: "2666 cal"
+            self.set_subtitle(&i18n_f("{} cal", &["0"]))
         }
     }
 }
