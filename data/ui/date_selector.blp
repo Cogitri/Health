@@ -30,15 +30,8 @@ Gtk.StringList month_model {
   ]
 }
 
-template $HealthDateSelector : Grid {
-  Label {
-    label: _("Day");
-
-    layout {
-      row: 0;
-      column: 0;
-    }
-  }
+template $HealthDateSelector : Box {
+  orientation: vertical;
 
   SpinButton day_spinner {
     text: "1";
@@ -50,20 +43,6 @@ template $HealthDateSelector : Grid {
     margin-top: 6;
     margin-bottom: 6;
     changed => $handle_date_widget_changed() swapped;
-
-    layout {
-      row: 0;
-      column: 1;
-    }
-  }
-
-  Label {
-    label: _("Month");
-
-    layout {
-      row: 1;
-      column: 0;
-    }
   }
 
   DropDown month_dropdown {
@@ -74,19 +53,6 @@ template $HealthDateSelector : Grid {
     model: month_model;
     notify::selected => $handle_date_widget_changed() swapped;
 
-    layout {
-      row: 1;
-      column: 1;
-    }
-  }
-
-  Label {
-    label: _("Year");
-
-    layout {
-      row: 2;
-      column: 0;
-    }
   }
 
   SpinButton year_spinner {
@@ -100,9 +66,5 @@ template $HealthDateSelector : Grid {
     margin-bottom: 6;
     changed => $handle_date_widget_changed() swapped;
 
-    layout {
-      row: 2;
-      column: 1;
-    }
   }
 }

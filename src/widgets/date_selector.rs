@@ -41,7 +41,7 @@ mod imp {
     #[glib::object_subclass]
     impl ObjectSubclass for DateSelector {
         const NAME: &'static str = "HealthDateSelector";
-        type ParentType = gtk::Grid;
+        type ParentType = gtk::Box;
         type Type = super::DateSelector;
 
         fn class_init(klass: &mut Self::Class) {
@@ -136,13 +136,13 @@ mod imp {
     }
 
     impl WidgetImpl for DateSelector {}
-    impl GridImpl for DateSelector {}
+    impl BoxImpl for DateSelector {}
 }
 
 glib::wrapper! {
     /// A widget to select a date via a [gtk::Calendar] or by entering a date into a [gtk::Entry].
     pub struct DateSelector(ObjectSubclass<imp::DateSelector>)
-        @extends gtk::Widget, gtk::Grid,
+        @extends gtk::Widget, gtk::Box,
         @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget, gtk::Orientable;
 }
 

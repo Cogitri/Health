@@ -93,9 +93,18 @@ template $HealthViewHomePage : Adw.NavigationPage {
                   ]
                 }
 
+                Label {
+                  margin-top: 24;
+                  margin-start: 2;
+                  xalign: 0;
+                  label: _("Add data:");
+                    styles [
+                      "title-3",
+                    ]
+                }
+
                 Box {
-                  halign: end;
-                  margin-top: 12;
+                  margin-top: 6;
                   Button {
                     tooltip-text: _("Add Weight Measure");
                     action-name: "win.go-to-add-weight";

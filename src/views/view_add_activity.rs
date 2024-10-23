@@ -40,18 +40,14 @@ mod imp {
         widgets::{ActivityTypeSelector, DateSelector, DistanceActionRow},
     };
     use adw::{prelude::*, subclass::prelude::*};
-    use gtk::{
-        gio,
-        glib::{self, clone},
-        CompositeTemplate,
-    };
+    use gtk::{glib, CompositeTemplate};
     use std::cell::RefCell;
 
     #[derive(Debug, Default)]
     pub struct ViewAddActivityMut {
         pub activity: Activity,
         pub user_changed_datapoints: ActivityDataPoints,
-        pub filter_model: Option<gtk::FilterListModel>,
+        pub filter_models: Option<Vec<gtk::FilterListModel>>,
         pub selected_activity: ActivityInfo,
         pub stop_update: bool,
     }
@@ -68,7 +64,13 @@ mod imp {
         #[template_child]
         pub date_selector: TemplateChild<DateSelector>,
         #[template_child]
+        pub date_list_box: TemplateChild<gtk::ListBox>,
+        #[template_child]
         pub activities_list_box: TemplateChild<gtk::ListBox>,
+        #[template_child]
+        pub calories_list_box: TemplateChild<gtk::ListBox>,
+        #[template_child]
+        pub heartrate_list_box: TemplateChild<gtk::ListBox>,
         #[template_child]
         pub activity_type_menu_button: TemplateChild<gtk::MenuButton>,
         #[template_child]
@@ -149,36 +151,35 @@ mod imp {
             self.parent_constructed();
 
             let obj = self.obj();
-            let model = gio::ListStore::new::<gtk::Widget>();
-            model.splice(
-                0,
-                0,
-                &[
-                    self.date_selector_actionrow.get(),
-                    self.activity_type_actionrow.get(),
-                    self.calories_burned_action_row.get(),
-                    self.distance_action_row.get().upcast(),
-                    self.duration_action_row.get(),
-                    self.heart_rate_average_action_row.get(),
-                    self.heart_rate_min_action_row.get(),
-                    self.heart_rate_max_action_row.get(),
-                    self.stepcount_action_row.get(),
-                ],
-            );
+            let filter_models = vec![
+                obj.setup_model(&self.date_list_box, &[self.date_selector_actionrow.get()]),
+                obj.setup_model(
+                    &self.activities_list_box,
+                    &[
+                        self.activity_type_actionrow.get(),
+                        self.duration_action_row.get(),
+                        self.distance_action_row.get().upcast(),
+                        self.stepcount_action_row.get(),
+                    ],
+                ),
+                obj.setup_model(
+                    &self.calories_list_box,
+                    &[self.calories_burned_action_row.get()],
+                ),
+                // Temporarily removed as suggested in #178:
+                // https://gitlab.gnome.org/World/Health/-/issues/178
+                //
+                // obj.setup_model(
+                //     &self.heartrate_list_box,
+                //         &[
+                //             self.heart_rate_average_action_row.get(),
+                //             self.heart_rate_min_action_row.get(),
+                //             self.heart_rate_max_action_row.get(),
+                //         ]
+                // )
+            ];
 
-            let filter = gtk::CustomFilter::new(clone!(
-                #[weak]
-                obj,
-                #[upgrade_or_panic]
-                move |o| obj.filter_activity_entry(o)
-            ));
-            let filter_model = gtk::FilterListModel::new(Some(model), Some(filter));
-            self.activities_list_box
-                .bind_model(Some(&filter_model), |o| {
-                    o.clone().downcast::<gtk::Widget>().unwrap()
-                });
-
-            self.inner.borrow_mut().filter_model = Some(filter_model);
+            self.inner.borrow_mut().filter_models = Some(filter_models);
             obj.connect_handlers();
             obj.set_selected_activity_name(&ActivityInfo::from(ActivityType::Walking).name);
             obj.setup_actions();
@@ -323,9 +324,11 @@ impl ViewAddActivity {
             .activity
             .set_activity_type(inner.selected_activity.activity_type);
 
-        if let Some(model) = &inner.filter_model {
-            if let Some(filter) = model.filter() {
-                filter.changed(gtk::FilterChange::Different);
+        if let Some(models) = &inner.filter_models {
+            for model in models {
+                if let Some(filter) = model.filter() {
+                    filter.changed(gtk::FilterChange::Different);
+                }
             }
         }
     }
@@ -609,6 +612,27 @@ impl ViewAddActivity {
         }
 
         imp.inner.borrow_mut().stop_update = false;
+    }
+
+    fn setup_model(
+        &self,
+        list_box: &gtk::ListBox,
+        rows: &[adw::ActionRow],
+    ) -> gtk::FilterListModel {
+        let model = gio::ListStore::new::<gtk::Widget>();
+        model.splice(0, 0, rows);
+
+        let filter = gtk::CustomFilter::new(clone!(
+            #[weak(rename_to = obj)]
+            self,
+            #[upgrade_or_panic]
+            move |o| obj.filter_activity_entry(o)
+        ));
+        let filter_model = gtk::FilterListModel::new(Some(model), Some(filter));
+        list_box.bind_model(Some(&filter_model), |o| {
+            o.clone().downcast::<gtk::Widget>().unwrap()
+        });
+        filter_model
     }
 }
 
