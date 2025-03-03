@@ -78,7 +78,7 @@ version = "0.3.0"
 version = "0.2"
 
 [dependencies.num-derive]
-version = "0.3"
+version = "0.4"
 
 [dependencies.num-traits]
 version = "0.2"
