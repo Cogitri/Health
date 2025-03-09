@@ -2,6 +2,10 @@
 
 Welcome to Health's first-time contributor docs. This document should help get you up to speed with contributing to Health.
 
+## Code of Conduct
+
+When interacting with the project, the [GNOME Code Of Conduct](https://conduct.gnome.org) applies.
+
 ## Making your first commit
 
 ### Useful documentation
