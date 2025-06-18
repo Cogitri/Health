@@ -1,15 +1,15 @@
 # Swedish translations for health.
-# Copyright © 2021-2024 health's COPYRIGHT HOLDER
+# Copyright © 2021-2025 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2021, 2022, 2023, 2024.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2021, 2022, 2023, 2024, 2025.
 # Luna Jernberg <droidbittin@gmail.com>, 2021, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2024-10-20 20:44+0000\n"
-"PO-Revision-Date: 2024-10-20 23:00+0200\n"
+"POT-Creation-Date: 2025-05-10 19:52+0000\n"
+"PO-Revision-Date: 2025-05-10 22:06+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -93,8 +93,8 @@ msgstr "Aktivt användar-ID"
 
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:10 data/ui/window.blp:37
-#: src/main.rs:35
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:10 data/ui/view_home_page.blp:61
+#: data/ui/window.blp:5 src/main.rs:35
 msgid "Health"
 msgstr "Hälsa"
 
@@ -117,15 +117,6 @@ msgstr ""
 "över tid och dina dagliga aktiviteter. Data kan synkroniseras från Google "
 "Fit eller anges manuellt till Hälsa. Efteråt kan de ses och redigeras i "
 "Hälsa."
-
-#: data/ui/data_add_dialog.blp:5
-msgid "_Cancel"
-msgstr "A_vbryt"
-
-#: data/ui/data_add_dialog.blp:10 src/windows/export_dialog.rs:52
-#: src/windows/export_dialog.rs:94
-msgid "_Save"
-msgstr "_Spara"
 
 #: data/ui/date_selector.blp:18
 msgid "January"
@@ -175,18 +166,6 @@ msgstr "November"
 msgid "December"
 msgstr "December"
 
-#: data/ui/date_selector.blp:35
-msgid "Day"
-msgstr "Dag"
-
-#: data/ui/date_selector.blp:61
-msgid "Month"
-msgstr "Månad"
-
-#: data/ui/date_selector.blp:84
-msgid "Year"
-msgstr "År"
-
 #: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:120
 msgid "Distance"
 msgstr "Avstånd"
@@ -211,12 +190,12 @@ msgstr "_Lösenord"
 msgid "_Confirm password"
 msgstr "_Bekräfta lösenord"
 
-#: data/ui/plugins/activities/details.blp:5
-#: data/ui/plugins/calories/details.blp:4 data/ui/plugins/steps/details.blp:4
+#: data/ui/plugins/activities/details.blp:6
+#: data/ui/plugins/calories/details.blp:5 data/ui/plugins/steps/details.blp:5
 msgid "You can use the <b>+</b> button to add a new activity."
 msgstr "Du kan använda knappen <b>+</b> för att lägga till en ny aktivitet."
 
-#: data/ui/plugins/activities/details.blp:8
+#: data/ui/plugins/activities/details.blp:9
 msgid "Recent Activities"
 msgstr "Senaste aktiviteter"
 
@@ -224,7 +203,7 @@ msgstr "Senaste aktiviteter"
 msgid "Active Minutes"
 msgstr "Aktiva minuter"
 
-#: data/ui/plugins/calories/details.blp:7 src/plugins/calories/plugin.rs:39
+#: data/ui/plugins/calories/details.blp:8 src/plugins/calories/plugin.rs:39
 msgid "Calories"
 msgstr "Kalorier"
 
@@ -232,7 +211,7 @@ msgstr "Kalorier"
 msgid "Calories Burned"
 msgstr "Förbrända kalorier"
 
-#: data/ui/plugins/details.blp:68
+#: data/ui/plugins/details.blp:77
 msgid ""
 "This is a preview of how the plugin presents data. Enable the plugin to see "
 "your actual, live data."
@@ -240,135 +219,140 @@ msgstr ""
 "Detta är en förhandsvisning av hur insticksmodulen presenterar data. "
 "Aktivera insticksmodulen för att se dina faktiska, aktuella data."
 
-#: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
-#: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
+#: data/ui/plugins/steps/details.blp:8 data/ui/plugins/steps/summary.blp:5
+#: data/ui/preferences_dialog.blp:173 src/plugins/steps/plugin.rs:39
 msgid "Steps"
 msgstr "Steg"
 
-#: data/ui/plugins/weight/details.blp:5
+#: data/ui/plugins/weight/details.blp:6
 msgid "You can use the <b>+</b> button to add a new weight measurement."
 msgstr "Du kan använda knappen <b>+</b> för att lägga till en ny viktmätning."
 
-#: data/ui/plugins/weight/details.blp:8
-msgid "Weight Measurements"
-msgstr "Viktmätningar"
-
-#: data/ui/plugins/weight/summary.blp:5 data/ui/view_add_weight.blp:38
-#: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
+#: data/ui/plugins/weight/details.blp:9 data/ui/plugins/weight/summary.blp:5
+#: data/ui/view_add_weight.blp:43 src/plugins/weight/plugin.rs:39
+#: src/views/view_add_weight.rs:90
 msgid "Weight"
 msgstr "Vikt"
 
-#: data/ui/preferences_window.blp:43
+#: data/ui/plugins/weight/details.blp:10
+msgid "Weight Measurements"
+msgstr "Viktmätningar"
+
+#: data/ui/plugins/weight/summary.blp:16
+msgid "Compared to previous measurement."
+msgstr "Jämfört med tidigare mätning."
+
+#: data/ui/preferences_dialog.blp:43
 msgid "_Every 1 hour"
 msgstr "_Varje timme"
 
-#: data/ui/preferences_window.blp:49
+#: data/ui/preferences_dialog.blp:49
 msgid "_Every 4 hours"
 msgstr "_Var 4:e timme"
 
-#: data/ui/preferences_window.blp:55
+#: data/ui/preferences_dialog.blp:55
 msgid "_Fixed Time"
 msgstr "_Fast tid"
 
-#: data/ui/preferences_window.blp:63
+#: data/ui/preferences_dialog.blp:63
 msgid "Health Preferences"
 msgstr "Inställningar för Hälsa"
 
-#: data/ui/preferences_window.blp:69 data/ui/shortcuts_window.blp:11
+#: data/ui/preferences_dialog.blp:67 data/ui/shortcuts_window.blp:11
 msgid "General"
 msgstr "Allmänt"
 
-#: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
+#: data/ui/preferences_dialog.blp:70 data/ui/preferences_dialog.blp:102
 #: data/ui/setup_window.blp:183 src/core/database.rs:1117
 msgid "User"
 msgstr "Användare"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:154
+#: data/ui/preferences_dialog.blp:73 data/ui/setup_window.blp:154
 msgid "Unit system"
 msgstr "Enhetssystem"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:164
+#: data/ui/preferences_dialog.blp:83 data/ui/setup_window.blp:164
 msgid "Imperial"
 msgstr "Brittiskt"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:170
+#: data/ui/preferences_dialog.blp:89 data/ui/setup_window.blp:170
 msgid "Metric"
 msgstr "Metriskt"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:178
+#: data/ui/preferences_dialog.blp:97 data/ui/setup_window.blp:178
 msgid "Username"
 msgstr "Användarnamn"
 
-#: data/ui/preferences_window.blp:109 data/ui/setup_window.blp:188
+#: data/ui/preferences_dialog.blp:107 data/ui/setup_window.blp:188
 msgid "Birthday"
 msgstr "Födelsedag"
 
-#: data/ui/preferences_window.blp:118 data/ui/setup_window.blp:197
+#: data/ui/preferences_dialog.blp:116 data/ui/setup_window.blp:197
 msgid "Height"
 msgstr "Vikt"
 
-#: data/ui/preferences_window.blp:131
+#: data/ui/preferences_dialog.blp:129
 msgid "Notifications"
 msgstr "Aviseringar"
 
-#: data/ui/preferences_window.blp:134
+#: data/ui/preferences_dialog.blp:132
 msgid "Enable notifications"
 msgstr "Aktivera aviseringar"
 
-#: data/ui/preferences_window.blp:145
+#: data/ui/preferences_dialog.blp:143
 msgid "Frequency"
 msgstr "Frekvens"
 
-#: data/ui/preferences_window.blp:158
+#: data/ui/preferences_dialog.blp:156
 msgid "Daily reminder time"
 msgstr "Daglig påminnelsetid"
 
-#: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
+#: data/ui/preferences_dialog.blp:176 data/ui/setup_window.blp:260
 #: src/plugins/steps/details.rs:243
 msgid "Step goal"
 msgstr "Stegmål"
 
-#: data/ui/preferences_window.blp:179
+#: data/ui/preferences_dialog.blp:177
 msgid "7,500 steps per day are recommended."
 msgstr "7 500 steg per dag rekommenderas."
 
-#: data/ui/preferences_window.blp:192 data/ui/preferences_window.blp:195
+#: data/ui/preferences_dialog.blp:190 data/ui/preferences_dialog.blp:193
 msgid "Weight Goal"
 msgstr "Viktmål"
 
-#: data/ui/preferences_window.blp:196
+#: data/ui/preferences_dialog.blp:194
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "WHO rekommenderar ett BMI på 18,5-24,9."
 
-#: data/ui/preferences_window.blp:204 data/ui/setup_window.blp:367
+#: data/ui/preferences_dialog.blp:202 data/ui/setup_window.blp:367
 msgid "Target BMI"
 msgstr "Mål-BMI"
 
-#: data/ui/preferences_window.blp:220
+#: data/ui/preferences_dialog.blp:218
 msgid "Sync"
 msgstr "Synkronisering"
 
-#: data/ui/preferences_window.blp:224
+#: data/ui/preferences_dialog.blp:222
 msgid "Start sync with third-party providers."
 msgstr "Starta synkronisering med tredjepartsleverantörer."
 
-#: data/ui/preferences_window.blp:232
+#: data/ui/preferences_dialog.blp:230
 msgid "Importing and exporting data"
 msgstr "Importera och exportera data"
 
-#: data/ui/preferences_window.blp:235
+#: data/ui/preferences_dialog.blp:233
 msgid "Export data as CSV"
 msgstr "Exportera data som CSV"
 
-#: data/ui/preferences_window.blp:238
+#: data/ui/preferences_dialog.blp:236
 msgid "Export…"
 msgstr "Exportera…"
 
-#: data/ui/preferences_window.blp:245
+#: data/ui/preferences_dialog.blp:243
 msgid "Import data from CSV"
 msgstr "Importera data från CSV"
 
-#: data/ui/preferences_window.blp:248
+#: data/ui/preferences_dialog.blp:246
 msgid "Import…"
 msgstr "Importera…"
 
@@ -463,7 +447,7 @@ msgstr "Växla helskärmsläge"
 msgid "Google Fit"
 msgstr "Google Fit"
 
-#: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:30
+#: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:34
 msgid "Date"
 msgstr "Datum"
 
@@ -487,40 +471,52 @@ msgstr "Högsta hjärtfrekvens"
 msgid "Stepcount"
 msgstr "Stegantal"
 
-#: data/ui/view_home_page.blp:61
-msgid "For you"
-msgstr "För dig"
+#: data/ui/view_add_activity.blp:149
+msgid "Add Activity Data"
+msgstr "Lägg till aktivitetsdata"
 
-#: data/ui/view_home_page.blp:86
+#: data/ui/view_add_activity.blp:155 data/ui/view_add_weight.blp:20
+msgid "Add"
+msgstr "Lägg till"
+
+#: data/ui/view_add_weight.blp:14
+msgid "Add Weight Data"
+msgstr "Lägg till viktdata"
+
+#: data/ui/view_home_page.blp:39
+msgid "_Preferences"
+msgstr "_Inställningar"
+
+#: data/ui/view_home_page.blp:44
+msgid "_Keyboard Shortcuts"
+msgstr "_Tangentbordsgenvägar"
+
+#: data/ui/view_home_page.blp:51
+msgid "_About Health"
+msgstr "_Om Hälsa"
+
+#: data/ui/view_home_page.blp:100
+msgid "Add data:"
+msgstr "Lägg till data:"
+
+#: data/ui/view_home_page.blp:109
+msgid "Add Weight Measure"
+msgstr "Lägg till viktmätning"
+
+#: data/ui/view_home_page.blp:124
+msgid "Add Activity"
+msgstr "Lägg till aktivitet"
+
+#: data/ui/view_home_page.blp:144
 msgid ""
 "No plugins enabled. Enable one from the list below to start using Health."
 msgstr ""
 "Inga insticksmoduler aktiverade. Aktivera en från listan nedan för att börja "
 "använda Health."
 
-#: data/ui/view_home_page.blp:107
+#: data/ui/view_home_page.blp:165
 msgid "All data"
 msgstr "Alla data"
-
-#: data/ui/window.blp:8
-msgid "_Disable Current Plugin"
-msgstr "_Inaktivera aktuell insticksmodul"
-
-#: data/ui/window.blp:15
-msgid "_Preferences"
-msgstr "_Inställningar"
-
-#: data/ui/window.blp:20
-msgid "_Keyboard Shortcuts"
-msgstr "_Tangentbordsgenvägar"
-
-#: data/ui/window.blp:27
-msgid "_About Health"
-msgstr "_Om Hälsa"
-
-#: data/ui/window.blp:69
-msgid "Enable plugin"
-msgstr "Aktivera insticksmodul"
 
 #: src/core/application.rs:197
 msgid "A health tracking app for the GNOME desktop."
@@ -629,11 +625,10 @@ msgstr[1] "{} steg återstår för att för att nå ditt dagliga stegmål."
 msgid "Activities"
 msgstr "Aktiviteter"
 
-#: src/plugins/activities/summary.rs:102
-msgid "{} active minute today"
-msgid_plural "{} active minutes today"
-msgstr[0] "{} aktiv minut idag"
-msgstr[1] "{} aktiva minuter idag"
+#. Translators: min is short for Minutes active today. Example: "64 min"
+#: src/plugins/activities/summary.rs:106
+msgid "{} min"
+msgstr "{} min"
 
 #: src/plugins/calories/details.rs:218
 msgid ""
@@ -653,11 +648,10 @@ msgstr[1] ""
 "{} kalorier\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:112 src/plugins/calories/summary.rs:119
-msgid "{} calorie burned today"
-msgid_plural "{} calories burned today"
-msgstr[0] "{} kalori förbränd idag"
-msgstr[1] "{} kalorier förbrända idag"
+#. Translators: cal is short for calories burned today. Example: "2666 cal"
+#: src/plugins/calories/summary.rs:116 src/plugins/calories/summary.rs:119
+msgid "{} cal"
+msgstr "{} kal"
 
 #: src/plugins/steps/details.rs:185
 msgid "Today’s steps: {}"
@@ -696,19 +690,19 @@ msgid_plural "{} steps on {}"
 msgstr[0] "{} steg {}"
 msgstr[1] "{} steg på {}"
 
-#: src/plugins/steps/summary.rs:108
-msgid "{} step taken today"
-msgid_plural "{} steps taken today"
-msgstr[0] "{} steg taget idag"
-msgstr[1] "{} steg tagna idag"
+#: src/plugins/steps/summary.rs:111
+msgid "{} step"
+msgid_plural "{} steps"
+msgstr[0] "{} steg"
+msgstr[1] "{} steg"
 
-#: src/plugins/steps/summary.rs:119
+#: src/plugins/steps/summary.rs:122
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Nått {} procent av det dagliga stegmålet"
 msgstr[1] "Nått {} procent av det dagliga stegmålet"
 
-#: src/plugins/steps/summary.rs:126
+#: src/plugins/steps/summary.rs:129
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Bra jobbat! Du har nått ditt dagliga stegmål!"
 
@@ -787,8 +781,8 @@ msgstr[1] "Din målvikt är {} kg."
 #: src/plugins/weight/details.rs:332
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
-msgstr[0] "Du har {} kg kvar för att nå den."
-msgstr[1] "Du har {} kg kvar för att nå den."
+msgstr[0] "Du har {} kg kvar för att nå den"
+msgstr[1] "Du har {} kg kvar för att nå den"
 
 #: src/plugins/weight/details.rs:342
 msgid "No weight goal set yet. You can set it in Health’s preferences."
@@ -796,47 +790,40 @@ msgstr ""
 "Ingen målvikt inställd ännu. Du kan ställa in den i inställningarna för "
 "Hälsa."
 
-#: src/plugins/weight/summary.rs:131
+#: src/plugins/weight/summary.rs:135 src/plugins/weight/summary.rs:169
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} pund"
 msgstr[1] "{} pund"
 
-#: src/plugins/weight/summary.rs:139
+#. TRANSLATORS: Current user weight. kg is short for kilograms
+#: src/plugins/weight/summary.rs:142
+msgid "{} kg"
+msgstr "{} kg"
+
+#: src/plugins/weight/summary.rs:149
+msgid "+ {} pound"
+msgid_plural "+ {} pounds"
+msgstr[0] "+ {} pund"
+msgstr[1] "+ {} pund"
+
+#: src/plugins/weight/summary.rs:157
+msgid "+ {} kilogram"
+msgid_plural "+ {} kilograms"
+msgstr[0] "+ {} kilogram"
+msgstr[1] "+ {} kilogram"
+
+#: src/plugins/weight/summary.rs:178
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} kilogram"
 msgstr[1] "{} kilogram"
 
-#: src/plugins/weight/summary.rs:150
-msgid "+ {} pound compared to previous measurement"
-msgid_plural "+ {} pounds compared to previous measurement"
-msgstr[0] "+ {} pund jämfört med tidigare mätning"
-msgstr[1] "+ {} pund jämfört med tidigare mätning"
-
-#: src/plugins/weight/summary.rs:158
-msgid "+ {} kilogram compared to previous measurement"
-msgid_plural "+ {} kilograms compared to previous measurement"
-msgstr[0] "+ {} kilogram jämfört med tidigare mätning"
-msgstr[1] "+ {} kilogram jämfört med tidigare mätning"
-
-#: src/plugins/weight/summary.rs:169
-msgid "{} pound compared to previous measurement"
-msgid_plural "{} pounds compared to previous measurement"
-msgstr[0] "{} pund jämfört med tidigare mätning"
-msgstr[1] "{} pund jämfört med tidigare mätning"
-
-#: src/plugins/weight/summary.rs:177
-msgid "{} kilogram compared to previous measurement"
-msgid_plural "{} kilograms compared to previous measurement"
-msgstr[0] "{} kilogram jämfört med tidigare mätning"
-msgstr[1] "{} kilogram jämfört med tidigare mätning"
-
-#: src/plugins/weight/summary.rs:185
+#: src/plugins/weight/summary.rs:186
 msgid "No change in weight"
 msgstr "Ingen viktförändring"
 
-#: src/plugins/weight/summary.rs:190
+#: src/plugins/weight/summary.rs:191
 msgid "No weight data available"
 msgstr "Inga viktdata tillgängliga"
 
@@ -912,7 +899,7 @@ msgstr "Ange vikt för att beräkna kaloriförbränning i vila"
 msgid "Idle calories"
 msgstr "Vilokalorier"
 
-#: src/views/view_add_activity.rs:228
+#: src/views/view_add_activity.rs:231
 msgid "Activity"
 msgstr "Aktivitet"
 
@@ -1022,6 +1009,10 @@ msgstr "lb"
 msgid "Save Activities"
 msgstr "Spara aktiviteter"
 
+#: src/windows/export_dialog.rs:52 src/windows/export_dialog.rs:94
+msgid "_Save"
+msgstr "_Spara"
+
 #. TRANSLATORS: Please keep the file extension (.csv.encrypted)
 #: src/windows/export_dialog.rs:56
 msgid "Activities.csv.encrypted"
@@ -1095,9 +1086,60 @@ msgstr "Lyckades!"
 msgid "An error occurred!"
 msgstr "Ett fel inträffade!"
 
-#: src/windows/window.rs:287
+#: src/windows/window.rs:257
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Kunde inte synkronisera Google Fit-data på grund av fel: {}"
+
+#~ msgid "_Cancel"
+#~ msgstr "A_vbryt"
+
+#~ msgid "Day"
+#~ msgstr "Dag"
+
+#~ msgid "Month"
+#~ msgstr "Månad"
+
+#~ msgid "Year"
+#~ msgstr "År"
+
+#~ msgid "For you"
+#~ msgstr "För dig"
+
+#~ msgid "_Disable Current Plugin"
+#~ msgstr "_Inaktivera aktuell insticksmodul"
+
+#~ msgid "Enable plugin"
+#~ msgstr "Aktivera insticksmodul"
+
+#~ msgid "{} active minute today"
+#~ msgid_plural "{} active minutes today"
+#~ msgstr[0] "{} aktiv minut idag"
+#~ msgstr[1] "{} aktiva minuter idag"
+
+#~ msgid "{} calorie burned today"
+#~ msgid_plural "{} calories burned today"
+#~ msgstr[0] "{} kalori förbränd idag"
+#~ msgstr[1] "{} kalorier förbrända idag"
+
+#~ msgid "{} step taken today"
+#~ msgid_plural "{} steps taken today"
+#~ msgstr[0] "{} steg taget idag"
+#~ msgstr[1] "{} steg tagna idag"
+
+#~ msgid "+ {} pound compared to previous measurement"
+#~ msgid_plural "+ {} pounds compared to previous measurement"
+#~ msgstr[0] "+ {} pund jämfört med tidigare mätning"
+#~ msgstr[1] "+ {} pund jämfört med tidigare mätning"
+
+#~ msgid "+ {} kilogram compared to previous measurement"
+#~ msgid_plural "+ {} kilograms compared to previous measurement"
+#~ msgstr[0] "+ {} kilogram jämfört med tidigare mätning"
+#~ msgstr[1] "+ {} kilogram jämfört med tidigare mätning"
+
+#~ msgid "{} kilogram compared to previous measurement"
+#~ msgid_plural "{} kilograms compared to previous measurement"
+#~ msgstr[0] "{} kilogram jämfört med tidigare mätning"
+#~ msgstr[1] "{} kilogram jämfört med tidigare mätning"
 
 #~ msgid "Websites"
 #~ msgstr "Webbplatser"
