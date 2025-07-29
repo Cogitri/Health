@@ -1,22 +1,22 @@
 # Bulgarian translation of health po-file.
-# Copyright (C) 2024 health's COPYRIGHT HOLDER
+# Copyright (C) 2024, 2025 twlvnn kraftwerk <kraft_werk@tutanota.com>.
 # This file is distributed under the same license as the health package.
-# twlvnn kraftwerk <kraft_werk@tutanota.com>, 2024.
+# twlvnn kraftwerk <kraft_werk@tutanota.com>, 2024, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2024-11-04 11:43+0000\n"
-"PO-Revision-Date: 2024-11-30 13:03+0100\n"
+"POT-Creation-Date: 2025-05-10 19:52+0000\n"
+"PO-Revision-Date: 2025-07-29 13:25+0200\n"
 "Last-Translator: twlvnn kraftwerk <kraft_werk@tutanota.com>\n"
 "Language-Team: Bulgarian <dict-notifications@fsa-bg.org>\n"
 "Language: bg\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
-"X-Generator: Gtranslator 47.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.6\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -92,8 +92,8 @@ msgstr "Идентификатор на активния потребител"
 
 #: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
 #: data/dev.Cogitri.Health.desktop.in.in:3
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:10 data/ui/window.blp:37
-#: src/main.rs:35
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:10 data/ui/view_home_page.blp:61
+#: data/ui/window.blp:5 src/main.rs:35
 msgid "Health"
 msgstr "Здраве"
 
@@ -116,15 +116,6 @@ msgstr ""
 "теглото ви с течение на времето и ежедневните ви упражнения. Данните може да "
 "се синхронизират от Google Fit или да се въвеждат ръчно в „Здраве“. След "
 "това те може да се преглеждат и редактират в програмата."
-
-#: data/ui/data_add_dialog.blp:5
-msgid "_Cancel"
-msgstr "_Отказване"
-
-#: data/ui/data_add_dialog.blp:10 src/windows/export_dialog.rs:52
-#: src/windows/export_dialog.rs:94
-msgid "_Save"
-msgstr "_Запазване"
 
 #: data/ui/date_selector.blp:18
 msgid "January"
@@ -174,18 +165,6 @@ msgstr "Ноември"
 msgid "December"
 msgstr "Декември"
 
-#: data/ui/date_selector.blp:35
-msgid "Day"
-msgstr "Ден"
-
-#: data/ui/date_selector.blp:61
-msgid "Month"
-msgstr "Месец"
-
-#: data/ui/date_selector.blp:84
-msgid "Year"
-msgstr "Година"
-
 #: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:120
 msgid "Distance"
 msgstr "Разстояние"
@@ -210,12 +189,12 @@ msgstr "_Парола"
 msgid "_Confirm password"
 msgstr "_Потвърждаване на паролата"
 
-#: data/ui/plugins/activities/details.blp:5
-#: data/ui/plugins/calories/details.blp:4 data/ui/plugins/steps/details.blp:4
+#: data/ui/plugins/activities/details.blp:6
+#: data/ui/plugins/calories/details.blp:5 data/ui/plugins/steps/details.blp:5
 msgid "You can use the <b>+</b> button to add a new activity."
 msgstr "Може да използвате бутона <b>+</b>, за да добавите ново упражнение."
 
-#: data/ui/plugins/activities/details.blp:8
+#: data/ui/plugins/activities/details.blp:9
 msgid "Recent Activities"
 msgstr "Скорошни упражнения"
 
@@ -223,7 +202,7 @@ msgstr "Скорошни упражнения"
 msgid "Active Minutes"
 msgstr "Минути с активност"
 
-#: data/ui/plugins/calories/details.blp:7 src/plugins/calories/plugin.rs:39
+#: data/ui/plugins/calories/details.blp:8 src/plugins/calories/plugin.rs:39
 msgid "Calories"
 msgstr "Калории"
 
@@ -231,7 +210,7 @@ msgstr "Калории"
 msgid "Calories Burned"
 msgstr "Изгорени калории"
 
-#: data/ui/plugins/details.blp:68
+#: data/ui/plugins/details.blp:77
 msgid ""
 "This is a preview of how the plugin presents data. Enable the plugin to see "
 "your actual, live data."
@@ -240,136 +219,141 @@ msgstr ""
 "данните. Включете приставката, за да видите действителните данни в реално "
 "време."
 
-#: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
-#: data/ui/preferences_window.blp:175 src/plugins/steps/plugin.rs:39
+#: data/ui/plugins/steps/details.blp:8 data/ui/plugins/steps/summary.blp:5
+#: data/ui/preferences_dialog.blp:173 src/plugins/steps/plugin.rs:39
 msgid "Steps"
 msgstr "Крачки"
 
-#: data/ui/plugins/weight/details.blp:5
+#: data/ui/plugins/weight/details.blp:6
 msgid "You can use the <b>+</b> button to add a new weight measurement."
 msgstr ""
 "Може да използвате бутона <b>+</b>, за да добавите ново измерване на теглото."
 
-#: data/ui/plugins/weight/details.blp:8
-msgid "Weight Measurements"
-msgstr "Измервания на теглото"
-
-#: data/ui/plugins/weight/summary.blp:5 data/ui/view_add_weight.blp:38
-#: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
+#: data/ui/plugins/weight/details.blp:9 data/ui/plugins/weight/summary.blp:5
+#: data/ui/view_add_weight.blp:43 src/plugins/weight/plugin.rs:39
+#: src/views/view_add_weight.rs:90
 msgid "Weight"
 msgstr "Тегло"
 
-#: data/ui/preferences_window.blp:43
+#: data/ui/plugins/weight/details.blp:10
+msgid "Weight Measurements"
+msgstr "Измервания на теглото"
+
+#: data/ui/plugins/weight/summary.blp:16
+msgid "Compared to previous measurement."
+msgstr "Спрямо предишното измерване."
+
+#: data/ui/preferences_dialog.blp:43
 msgid "_Every 1 hour"
 msgstr "_Всеки час"
 
-#: data/ui/preferences_window.blp:49
+#: data/ui/preferences_dialog.blp:49
 msgid "_Every 4 hours"
 msgstr "_Всеки 4 часа"
 
-#: data/ui/preferences_window.blp:55
+#: data/ui/preferences_dialog.blp:55
 msgid "_Fixed Time"
 msgstr "_Фиксирано време"
 
-#: data/ui/preferences_window.blp:63
+#: data/ui/preferences_dialog.blp:63
 msgid "Health Preferences"
 msgstr "Настройки"
 
-#: data/ui/preferences_window.blp:69 data/ui/shortcuts_window.blp:11
+#: data/ui/preferences_dialog.blp:67 data/ui/shortcuts_window.blp:11
 msgid "General"
 msgstr "Общи"
 
-#: data/ui/preferences_window.blp:72 data/ui/preferences_window.blp:104
+#: data/ui/preferences_dialog.blp:70 data/ui/preferences_dialog.blp:102
 #: data/ui/setup_window.blp:183 src/core/database.rs:1117
 msgid "User"
 msgstr "Потребител"
 
-#: data/ui/preferences_window.blp:75 data/ui/setup_window.blp:154
+#: data/ui/preferences_dialog.blp:73 data/ui/setup_window.blp:154
 msgid "Unit system"
 msgstr "Система за единици"
 
-#: data/ui/preferences_window.blp:85 data/ui/setup_window.blp:164
+#: data/ui/preferences_dialog.blp:83 data/ui/setup_window.blp:164
 msgid "Imperial"
 msgstr "Имперска"
 
-#: data/ui/preferences_window.blp:91 data/ui/setup_window.blp:170
+#: data/ui/preferences_dialog.blp:89 data/ui/setup_window.blp:170
 msgid "Metric"
 msgstr "Метрична"
 
-#: data/ui/preferences_window.blp:99 data/ui/setup_window.blp:178
+#: data/ui/preferences_dialog.blp:97 data/ui/setup_window.blp:178
 msgid "Username"
 msgstr "Потребителско име"
 
-#: data/ui/preferences_window.blp:109 data/ui/setup_window.blp:188
+#: data/ui/preferences_dialog.blp:107 data/ui/setup_window.blp:188
 msgid "Birthday"
 msgstr "Дата на раждане"
 
-#: data/ui/preferences_window.blp:118 data/ui/setup_window.blp:197
+#: data/ui/preferences_dialog.blp:116 data/ui/setup_window.blp:197
 msgid "Height"
 msgstr "Височина"
 
-#: data/ui/preferences_window.blp:131
+#: data/ui/preferences_dialog.blp:129
 msgid "Notifications"
 msgstr "Известия"
 
-#: data/ui/preferences_window.blp:134
+#: data/ui/preferences_dialog.blp:132
 msgid "Enable notifications"
 msgstr "Включване на известията"
 
-#: data/ui/preferences_window.blp:145
+#: data/ui/preferences_dialog.blp:143
 msgid "Frequency"
 msgstr "Период"
 
-#: data/ui/preferences_window.blp:158
+#: data/ui/preferences_dialog.blp:156
 msgid "Daily reminder time"
 msgstr "Време за всекидневното напомняне"
 
-#: data/ui/preferences_window.blp:178 data/ui/setup_window.blp:260
+#: data/ui/preferences_dialog.blp:176 data/ui/setup_window.blp:260
 #: src/plugins/steps/details.rs:243
 msgid "Step goal"
 msgstr "Целеви брой стъпки"
 
-#: data/ui/preferences_window.blp:179
+#: data/ui/preferences_dialog.blp:177
 msgid "7,500 steps per day are recommended."
 msgstr "Препоръката е 7 500 крачки на ден."
 
-#: data/ui/preferences_window.blp:192 data/ui/preferences_window.blp:195
+#: data/ui/preferences_dialog.blp:190 data/ui/preferences_dialog.blp:193
 msgid "Weight Goal"
 msgstr "Целево тегло"
 
-#: data/ui/preferences_window.blp:196
+#: data/ui/preferences_dialog.blp:194
 msgid "The WHO recommends a BMI of 18.5-24.9."
 msgstr "СЗО препоръчва ИТМ (индекс на телесната маса) 18,5-24,9."
 
-#: data/ui/preferences_window.blp:204 data/ui/setup_window.blp:367
+#: data/ui/preferences_dialog.blp:202 data/ui/setup_window.blp:367
 msgid "Target BMI"
 msgstr "Целеви ИТМ"
 
-#: data/ui/preferences_window.blp:220
+#: data/ui/preferences_dialog.blp:218
 msgid "Sync"
 msgstr "Синхронизиране"
 
-#: data/ui/preferences_window.blp:224
+#: data/ui/preferences_dialog.blp:222
 msgid "Start sync with third-party providers."
 msgstr "Синхронизиране с услуги от трети лица."
 
-#: data/ui/preferences_window.blp:232
+#: data/ui/preferences_dialog.blp:230
 msgid "Importing and exporting data"
 msgstr "Внасяне и изнасяне на данни"
 
-#: data/ui/preferences_window.blp:235
+#: data/ui/preferences_dialog.blp:233
 msgid "Export data as CSV"
 msgstr "Изнасяне на данните като CSV"
 
-#: data/ui/preferences_window.blp:238
+#: data/ui/preferences_dialog.blp:236
 msgid "Export…"
 msgstr "Изнасяне…"
 
-#: data/ui/preferences_window.blp:245
+#: data/ui/preferences_dialog.blp:243
 msgid "Import data from CSV"
 msgstr "Внасяне на данни от CSV"
 
-#: data/ui/preferences_window.blp:248
+#: data/ui/preferences_dialog.blp:246
 msgid "Import…"
 msgstr "Внасяне…"
 
@@ -407,7 +391,7 @@ msgstr "Въведете всекидневната си цел на крачк�
 
 #: data/ui/setup_window.blp:236
 msgid "The WHO recommends 7.500 steps per day."
-msgstr "СЗИ препоръчва 7 500 крачки на ден."
+msgstr "СЗО препоръчва 7 500 крачки на ден."
 
 #: data/ui/setup_window.blp:286
 msgid "Please enter your weight goal."
@@ -464,7 +448,7 @@ msgstr "Превключване на цял екран"
 msgid "Google Fit"
 msgstr "Google Fit"
 
-#: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:30
+#: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:34
 msgid "Date"
 msgstr "Дата"
 
@@ -488,40 +472,52 @@ msgstr "Максимална сърдечна честота"
 msgid "Stepcount"
 msgstr "Брой крачки"
 
-#: data/ui/view_home_page.blp:61
-msgid "For you"
-msgstr "За вас"
+#: data/ui/view_add_activity.blp:149
+msgid "Add Activity Data"
+msgstr "Добавяне на данни от упражнение"
 
-#: data/ui/view_home_page.blp:86
+#: data/ui/view_add_activity.blp:155 data/ui/view_add_weight.blp:20
+msgid "Add"
+msgstr "Добавяне"
+
+#: data/ui/view_add_weight.blp:14
+msgid "Add Weight Data"
+msgstr "Добавяне на данни за тегло"
+
+#: data/ui/view_home_page.blp:39
+msgid "_Preferences"
+msgstr "_Настройки"
+
+#: data/ui/view_home_page.blp:44
+msgid "_Keyboard Shortcuts"
+msgstr "_Клавишни комбинации"
+
+#: data/ui/view_home_page.blp:51
+msgid "_About Health"
+msgstr "_Относно „Здраве“"
+
+#: data/ui/view_home_page.blp:100
+msgid "Add data:"
+msgstr "Добавяне на данни:"
+
+#: data/ui/view_home_page.blp:109
+msgid "Add Weight Measure"
+msgstr "Добавяне на измервания на тегло"
+
+#: data/ui/view_home_page.blp:124
+msgid "Add Activity"
+msgstr "Добавяне на упражнение"
+
+#: data/ui/view_home_page.blp:144
 msgid ""
 "No plugins enabled. Enable one from the list below to start using Health."
 msgstr ""
 "Никоя приставка не е включена. Включете някоя от списъка по-долу, за да "
 "започнете да използвате „Здраве“."
 
-#: data/ui/view_home_page.blp:107
+#: data/ui/view_home_page.blp:165
 msgid "All data"
 msgstr "Всички данни"
-
-#: data/ui/window.blp:8
-msgid "_Disable Current Plugin"
-msgstr "_Изключване на текущата приставка"
-
-#: data/ui/window.blp:15
-msgid "_Preferences"
-msgstr "_Настройки"
-
-#: data/ui/window.blp:20
-msgid "_Keyboard Shortcuts"
-msgstr "_Клавишни комбинации"
-
-#: data/ui/window.blp:27
-msgid "_About Health"
-msgstr "_Относно „Здраве“"
-
-#: data/ui/window.blp:69
-msgid "Enable plugin"
-msgstr "Включване на приставката"
 
 #: src/core/application.rs:197
 msgid "A health tracking app for the GNOME desktop."
@@ -625,11 +621,10 @@ msgstr[1] "Остават {} крачки до дневната цел."
 msgid "Activities"
 msgstr "Упражнения"
 
-#: src/plugins/activities/summary.rs:102
-msgid "{} active minute today"
-msgid_plural "{} active minutes today"
-msgstr[0] "{} минута с активност за днес"
-msgstr[1] "{} минути с активност за днес"
+#. Translators: min is short for Minutes active today. Example: "64 min"
+#: src/plugins/activities/summary.rs:106
+msgid "{} min"
+msgstr "{} мин."
 
 #: src/plugins/calories/details.rs:218
 msgid ""
@@ -649,11 +644,10 @@ msgstr[1] ""
 "{} калории\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:112 src/plugins/calories/summary.rs:119
-msgid "{} calorie burned today"
-msgid_plural "{} calories burned today"
-msgstr[0] "Днес сте изгорили {} калория"
-msgstr[1] "Днес сте изгорили {} калории"
+#. Translators: cal is short for calories burned today. Example: "2666 cal"
+#: src/plugins/calories/summary.rs:116 src/plugins/calories/summary.rs:119
+msgid "{} cal"
+msgstr "{} кал."
 
 #: src/plugins/steps/details.rs:185
 msgid "Today’s steps: {}"
@@ -697,19 +691,19 @@ msgid_plural "{} steps on {}"
 msgstr[0] "{} крачка на {}"
 msgstr[1] "{} крачки на {}"
 
-#: src/plugins/steps/summary.rs:108
-msgid "{} step taken today"
-msgid_plural "{} steps taken today"
-msgstr[0] "{} крачка днес"
-msgstr[1] "{} крачки днес"
+#: src/plugins/steps/summary.rs:111
+msgid "{} step"
+msgid_plural "{} steps"
+msgstr[0] "{} крачка"
+msgstr[1] "{} крачки"
 
-#: src/plugins/steps/summary.rs:119
+#: src/plugins/steps/summary.rs:122
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Постигнахте {}% от днешната цел за крачки"
 msgstr[1] "Постигнахте {}% от днешната цел за крачки"
 
-#: src/plugins/steps/summary.rs:126
+#: src/plugins/steps/summary.rs:129
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Браво! Постигнахте дневната си цел на крачки!"
 
@@ -797,47 +791,40 @@ msgstr ""
 "Все още не е зададено целево тегло. Може да го зададете в настройките на "
 "„Здраве“."
 
-#: src/plugins/weight/summary.rs:131
+#: src/plugins/weight/summary.rs:135 src/plugins/weight/summary.rs:169
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} фунт"
 msgstr[1] "{} фунта"
 
-#: src/plugins/weight/summary.rs:139
+#. TRANSLATORS: Current user weight. kg is short for kilograms
+#: src/plugins/weight/summary.rs:142
+msgid "{} kg"
+msgstr "{} кг."
+
+#: src/plugins/weight/summary.rs:149
+msgid "+ {} pound"
+msgid_plural "+ {} pounds"
+msgstr[0] "+ {} фунт"
+msgstr[1] "+ {} фунта"
+
+#: src/plugins/weight/summary.rs:157
+msgid "+ {} kilogram"
+msgid_plural "+ {} kilograms"
+msgstr[0] "+ {} килограм"
+msgstr[1] "+ {} килограма"
+
+#: src/plugins/weight/summary.rs:178
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} килограм"
 msgstr[1] "{} килограма"
 
-#: src/plugins/weight/summary.rs:150
-msgid "+ {} pound compared to previous measurement"
-msgid_plural "+ {} pounds compared to previous measurement"
-msgstr[0] "+ {} фунт спрямо предишното измерване"
-msgstr[1] "+ {} фунта спрямо предишното измерване"
-
-#: src/plugins/weight/summary.rs:158
-msgid "+ {} kilogram compared to previous measurement"
-msgid_plural "+ {} kilograms compared to previous measurement"
-msgstr[0] "+ {} килограм спрямо предишното измерване"
-msgstr[1] "+ {} килограма спрямо предишното измерване"
-
-#: src/plugins/weight/summary.rs:169
-msgid "{} pound compared to previous measurement"
-msgid_plural "{} pounds compared to previous measurement"
-msgstr[0] "{} фунт спрямо предишното измерване"
-msgstr[1] "{} фунта спрямо предишното измерване"
-
-#: src/plugins/weight/summary.rs:177
-msgid "{} kilogram compared to previous measurement"
-msgid_plural "{} kilograms compared to previous measurement"
-msgstr[0] "{} килограм спрямо предишното измерване"
-msgstr[1] "{} килограма спрямо предишното измерване"
-
-#: src/plugins/weight/summary.rs:185
+#: src/plugins/weight/summary.rs:186
 msgid "No change in weight"
 msgstr "Без промяна в теглото"
 
-#: src/plugins/weight/summary.rs:190
+#: src/plugins/weight/summary.rs:191
 msgid "No weight data available"
 msgstr "Няма налични данни за теглото"
 
@@ -916,7 +903,7 @@ msgstr "Въведете данни за тегло, за да изчислит�
 msgid "Idle calories"
 msgstr "Калории при бездействие"
 
-#: src/views/view_add_activity.rs:228
+#: src/views/view_add_activity.rs:231
 msgid "Activity"
 msgstr "Упражнение"
 
@@ -1026,6 +1013,10 @@ msgstr "lb"
 msgid "Save Activities"
 msgstr "Запазване на упражненията"
 
+#: src/windows/export_dialog.rs:52 src/windows/export_dialog.rs:94
+msgid "_Save"
+msgstr "_Запазване"
+
 #. TRANSLATORS: Please keep the file extension (.csv.encrypted)
 #: src/windows/export_dialog.rs:56
 msgid "Activities.csv.encrypted"
@@ -1099,6 +1090,6 @@ msgstr "Успех!"
 msgid "An error occurred!"
 msgstr "Възникна грешка!"
 
-#: src/windows/window.rs:287
+#: src/windows/window.rs:257
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Данните за Google Fit не може да се синхронизират поради грешка: {}"
