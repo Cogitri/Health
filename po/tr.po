@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2025-05-10 19:52+0000\n"
+"POT-Creation-Date: 2025-08-10 21:32+0000\n"
 "PO-Revision-Date: 2025-05-11 08:00+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
@@ -92,14 +92,14 @@ msgstr "Pencere genişliği"
 msgid "Active user ID"
 msgstr "Etkin kullanıcı kimliği"
 
-#: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
-#: data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.Autostart.desktop.in.in:2
+#: data/dev.Cogitri.Health.desktop.in.in:2
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:10 data/ui/view_home_page.blp:61
 #: data/ui/window.blp:5 src/main.rs:35
 msgid "Health"
 msgstr "Sağlık"
 
-#: data/dev.Cogitri.Health.desktop.in.in:9
+#: data/dev.Cogitri.Health.desktop.in.in:8
 msgid "health;fitness;"
 msgstr "health;fitness;form;sağlık;zindelik;"
 
@@ -1059,48 +1059,3 @@ msgstr "Hata oluştu!"
 #: src/windows/window.rs:257
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Hata nedeniyle Google Fit verileri eşzamanlanamadı: {}"
-
-#~ msgid "_Cancel"
-#~ msgstr "İ_ptal"
-
-#~ msgid "Day"
-#~ msgstr "Gün"
-
-#~ msgid "Month"
-#~ msgstr "Ay"
-
-#~ msgid "Year"
-#~ msgstr "Yıl"
-
-#~ msgid "For you"
-#~ msgstr "Sizin için"
-
-#~ msgid "_Disable Current Plugin"
-#~ msgstr "_Geçerli Eklentiyi Pasifleştir"
-
-#~ msgid "Enable plugin"
-#~ msgstr "Eklentiyi etkinleştir"
-
-#~ msgid "{} active minute today"
-#~ msgid_plural "{} active minutes today"
-#~ msgstr[0] "Bugün {} aktif dakika"
-
-#~ msgid "{} calorie burned today"
-#~ msgid_plural "{} calories burned today"
-#~ msgstr[0] "Bugün {} kalori yakıldı"
-
-#~ msgid "{} step taken today"
-#~ msgid_plural "{} steps taken today"
-#~ msgstr[0] "Bugün {} adım atıldı"
-
-#~ msgid "+ {} pound compared to previous measurement"
-#~ msgid_plural "+ {} pounds compared to previous measurement"
-#~ msgstr[0] "Önceki ölçüme kıyasla + {} pound"
-
-#~ msgid "+ {} kilogram compared to previous measurement"
-#~ msgid_plural "+ {} kilograms compared to previous measurement"
-#~ msgstr[0] "Önceki ölçüme kıyasla + {} kilogram"
-
-#~ msgid "{} kilogram compared to previous measurement"
-#~ msgid_plural "{} kilograms compared to previous measurement"
-#~ msgstr[0] "Önceki ölçüme kıyasla {} kilogram"
