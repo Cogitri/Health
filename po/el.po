@@ -7,723 +7,270 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2021-09-25 05:59+0000\n"
+"POT-Creation-Date: 2025-10-11 00:21+0000\n"
 "PO-Revision-Date: 2021-09-27 23:17+0300\n"
+"Last-Translator: Efstathios Iosifidis <eiosifidis@gnome.org>\n"
 "Language-Team: Greek <gnome-el-list@gnome.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"Last-Translator: Efstathios Iosifidis <eiosifidis@gnome.org>\n"
 "X-Generator: Poedit 3.0\n"
 
-#: data/dev.Cogitri.Health.desktop.in.in:3
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:4 data/ui/window.ui:45
-#: src/main.rs:31
-msgid "Health"
-msgstr "Υγεία"
-
-#: data/dev.Cogitri.Health.desktop.in.in:5
-msgid "@APPLICATION_ID@"
-msgstr "@APPLICATION_ID@"
-
 #: data/dev.Cogitri.Health.gschema.xml:16
-msgid "Last opened view"
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:17
-msgid "The last view the user had opened, for restoring it on start"
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:21
 msgid "First time setup done"
 msgstr "Ολοκληρώθηκε η πρώτη ρύθμιση"
 
-#: data/dev.Cogitri.Health.gschema.xml:22
-msgid "Whether the user has completed the setup wizard"
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:26
+#: data/dev.Cogitri.Health.gschema.xml:20
 msgid "Toggle notifications"
-msgstr ""
+msgstr "Εναλλαγή ειδοποιήσεων"
 
-#: data/dev.Cogitri.Health.gschema.xml:27
-msgid "Whether to enable notifications."
-msgstr ""
+#: data/dev.Cogitri.Health.gschema.xml:24
+msgid "Set enabled plugins"
+msgstr "Ορισμός ενεργοποιημένων προσθηκών"
 
-#: data/dev.Cogitri.Health.gschema.xml:31
+#: data/dev.Cogitri.Health.gschema.xml:28
 msgid "Notification time"
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:32
-msgid "The time at which Health should remind the user of their step goal"
-msgstr ""
+msgstr "Χρόνος ειδοποίησης"
 
 #: data/dev.Cogitri.Health.gschema.xml:36
-msgid "notification frequency"
-msgstr "συχνότητα ειδοποιήσεων"
-
-#: data/dev.Cogitri.Health.gschema.xml:37
-msgid ""
-"How frequent should the user be notified to complete their daily step-goal."
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:41
 msgid "List of recent activity types"
-msgstr ""
+msgstr "Λίστα πρόσφατων τύπων δραστηριοτήτων"
 
-#: data/dev.Cogitri.Health.gschema.xml:42
-msgid ""
-"Activity types the user used recently, to be shown first in the activity "
-"types selector's list"
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:46
+#: data/dev.Cogitri.Health.gschema.xml:40
 msgid "Google Fit Sync-Provider setup"
-msgstr ""
+msgstr "Ρύθμιση συγχρονισμού Google Fit"
 
-#: data/dev.Cogitri.Health.gschema.xml:47
-msgid "Whether Google Fit has been setup as sync provider"
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:51
-msgid "Last sync with Google Fit"
-msgstr "Τελευταίος συγχρονισμός με το Google Fit"
-
-#: data/dev.Cogitri.Health.gschema.xml:52
-msgid "The last time we synched steps, weight etc. with Google Fit"
-msgstr ""
+#: data/dev.Cogitri.Health.gschema.xml:48
+msgid "Unit system used"
+msgstr "Σύστημα μονάδων που χρησιμοποιείται"
 
 #: data/dev.Cogitri.Health.gschema.xml:56
-msgid "Unit system used"
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:57
-msgid "The unit system the user chose, e.g. for cm vs inch for height"
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:61
-msgid "User age"
-msgstr "Ηλικία χρήστη"
-
-#: data/dev.Cogitri.Health.gschema.xml:62
-msgid "The age of the user (deprecated)."
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:66
 msgid "Absolute user age"
-msgstr ""
+msgstr "Απόλυτη ηλικία χρήστη"
 
-#: data/dev.Cogitri.Health.gschema.xml:67
-msgid "The age of the user in absolute terms (like 01/01/1970)"
-msgstr ""
+#: data/dev.Cogitri.Health.gschema.xml:64
+msgid "User step goal"
+msgstr "Στόχος βημάτων χρήστη"
 
-#: data/dev.Cogitri.Health.gschema.xml:71
-msgid "User height"
-msgstr "Ύψος χρήστη"
-
-#: data/dev.Cogitri.Health.gschema.xml:72
-msgid "The height of the user."
-msgstr ""
+#: data/dev.Cogitri.Health.gschema.xml:68
+msgid "User weight goal"
+msgstr "Στόχος βάρους χρήστη"
 
 #: data/dev.Cogitri.Health.gschema.xml:76
-msgid "User step goal"
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:77
-msgid "The amount of steps the user wants to reach daily."
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:81
-msgid "User weight goal"
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:82
-msgid "The weight the user wants to reach."
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:86
-msgid "Window height"
-msgstr "Ύψος του παραθύρου"
-
-#: data/dev.Cogitri.Health.gschema.xml:87
-msgid "The height of the window."
-msgstr ""
-
-#: data/dev.Cogitri.Health.gschema.xml:91
 msgid "Window maximized"
-msgstr ""
+msgstr "Παράθυρο μεγιστοποιημένο"
 
-#: data/dev.Cogitri.Health.gschema.xml:92
-msgid "Whether the window is maximized."
-msgstr ""
+#: data/dev.Cogitri.Health.gschema.xml:84
+msgid "Active user ID"
+msgstr "Ενεργό ID χρήστη"
 
-#: data/dev.Cogitri.Health.gschema.xml:96
-msgid "Window width"
-msgstr "Πλάτος του παραθύρου"
-
-#: data/dev.Cogitri.Health.gschema.xml:97
-msgid "The width of the window."
-msgstr ""
-
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:9 src/core/application.rs:138
-msgid "A health tracking app for the GNOME desktop."
-msgstr ""
+#: data/dev.Cogitri.Health.desktop.in.in:8
+msgid "health;fitness;"
+msgstr "υγεία;φυσική κατάσταση;"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+msgid "Track your fitness goals"
+msgstr "Παρακολούθηση των στόχων φυσικής σας κατάστασης"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:13
 msgid ""
-"A health tracking app for the GNOME desktop. Health can visualize how many "
-"steps you've made daily, your weight development over time and your daily "
-"activities."
+"Health can visualize how many steps you've made daily, your weight "
+"development over time and your daily activities. Data can be synched from "
+"Google Fit or manually entered into Health. Afterwards, it can be viewed and "
+"edited in Health."
 msgstr ""
+"Η Υγεία μπορεί να απεικονίσει πόσα βήματα έχετε κάνει καθημερινά, την "
+"εξέλιξη του βάρους σας με την πάροδο του χρόνου και τις καθημερινές σας "
+"δραστηριότητες. Τα δεδομένα μπορούν να συγχρονιστούν από το Google Fit ή να "
+"εισαχθούν χειροκίνητα στην Υγεία. Στη συνέχεια, μπορούν να προβληθούν και "
+"να επεξεργαστούν στην Υγεία."
 
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:31
-msgid "Rasmus “Cogitri” Thomsen"
-msgstr ""
-
-#: data/ui/activity_add_dialog.ui:64
-msgid "Add An Activity"
-msgstr "Προσθήκη δραστηριότητας"
-
-#: data/ui/activity_add_dialog.ui:93 data/ui/weight_add_dialog.ui:51
-msgid "Date"
-msgstr "Ημερομηνία"
-
-#: data/ui/activity_add_dialog.ui:102
-msgid "Activity Type"
-msgstr "Τύπος δραστηριότητας"
-
-#: data/ui/activity_add_dialog.ui:111 data/ui/activity_row.ui:75
-msgid "Calories Burned"
-msgstr ""
-
-#: data/ui/activity_add_dialog.ui:124
-msgid "Active Minutes"
-msgstr ""
-
-#: data/ui/activity_add_dialog.ui:136 data/ui/activity_row.ui:102
-msgid "Average Heart Rate"
-msgstr "Μέσος όρος καρδιακού ρυθμού"
-
-#: data/ui/activity_add_dialog.ui:148 data/ui/activity_row.ui:111
-msgid "Minimum Heart Rate"
-msgstr ""
-
-#: data/ui/activity_add_dialog.ui:160 data/ui/activity_row.ui:120
-msgid "Maximum Heart Rate"
-msgstr ""
-
-#: data/ui/activity_add_dialog.ui:172
-msgid "Stepcount"
-msgstr ""
-
-#: data/ui/activity_row.ui:84
-msgid "Distance in Meters"
-msgstr "Απόσταση σε μέτρα"
-
-#: data/ui/activity_row.ui:93 data/ui/home_page.ui:69 data/ui/step_view.ui:26
-#: data/ui/step_view.ui:27
-msgid "Steps"
-msgstr "Βήματα"
-
-#: data/ui/activity_view.ui:24 data/ui/calorie_view.ui:23
-#: data/ui/home_page.ui:24 data/ui/step_view.ui:23
+#: data/ui/plugins/activities/details.blp:6
+#: data/ui/plugins/calories/details.blp:5 data/ui/plugins/steps/details.blp:5
 msgid "You can use the <b>+</b> button to add a new activity."
+msgstr "Μπορείτε να χρησιμοποιήσετε το κουμπί <b>+</b> για να προσθέσετε μια νέα δραστηριότητα."
+
+#: data/ui/plugins/activities/summary.blp:5 data/ui/view_add_activity.blp:84
+msgid "Active Minutes"
+msgstr "Ενεργά Λεπτά"
+
+#: data/ui/plugins/calories/summary.blp:5 data/ui/view_add_activity.blp:66
+msgid "Calories Burned"
+msgstr "Καμένες Θερμίδες"
+
+#: data/ui/plugins/details.blp:77
+msgid ""
+"This is a preview of how the plugin presents data. Enable the plugin to see "
+"your actual, live data."
 msgstr ""
+"Αυτή είναι μια προεπισκόπηση του πώς η πρόσθεση παρουσιάζει δεδομένα. "
+"Ενεργοποιήστε την πρόσθεση για να δείτε τα πραγματικά, ζωντανά δεδομένα σας."
 
-#: data/ui/activity_view.ui:27 data/ui/home_page.ui:27
-msgid "Recent Activities"
-msgstr "Πρόσφατες δραστηριότητες"
+#: data/ui/plugins/weight/details.blp:6
+msgid "You can use the <b>+</b> button to add a new weight measurement."
+msgstr "Μπορείτε να χρησιμοποιήσετε το κουμπί <b>+</b> για να προσθέσετε μια νέα μέτρηση βάρους."
 
-#: data/ui/activity_view.ui:28
-msgid "Activities"
-msgstr "Δραστηριότητες"
+#: data/ui/plugins/weight/details.blp:10
+msgid "Weight Measurements"
+msgstr "Μετρήσεις Βάρους"
 
-#: data/ui/calorie_view.ui:26 data/ui/calorie_view.ui:27
-msgid "Calories"
-msgstr "Θερμίδες"
+#: data/ui/plugins/weight/summary.blp:16
+msgid "Compared to previous measurement."
+msgstr "Σε σύγκριση με την προηγούμενη μέτρηση."
 
-#: data/ui/data_add_dialog.ui:26 data/ui/preferences_window.ui:72
-msgid "Health Preferences"
-msgstr ""
-
-#: data/ui/data_add_dialog.ui:31 data/ui/import_export_dialog_base.ui:29
-#: src/windows/export_dialog.rs:56 src/windows/export_dialog.rs:92
-#: src/windows/import_dialog.rs:56 src/windows/import_dialog.rs:85
-msgid "_Cancel"
-msgstr "Ακύ_ρωση"
-
-#: data/ui/data_add_dialog.ui:37 src/windows/export_dialog.rs:55
-#: src/windows/export_dialog.rs:91
-msgid "_Save"
-msgstr "Απ_οθήκευση"
-
-#: data/ui/date_editor.ui:29
-msgid "January"
-msgstr "Ιανουάριος"
-
-#: data/ui/date_editor.ui:30 src/widgets/date_selector.rs:244
-msgid "February"
-msgstr "Φεβρουάριος"
-
-#: data/ui/date_editor.ui:31
-msgid "March"
-msgstr "Μάρτιος"
-
-#: data/ui/date_editor.ui:32
-msgid "April"
-msgstr "Απρίλιος"
-
-#: data/ui/date_editor.ui:33
-msgid "May"
-msgstr "Μάιος"
-
-#: data/ui/date_editor.ui:34
-msgid "June"
-msgstr "Ιούνιος"
-
-#: data/ui/date_editor.ui:35
-msgid "July"
-msgstr "Ιούλιος"
-
-#: data/ui/date_editor.ui:36
-msgid "August"
-msgstr "Αύγουστος"
-
-#: data/ui/date_editor.ui:37
-msgid "September"
-msgstr "Σεπτέμβριος"
-
-#: data/ui/date_editor.ui:38
-msgid "October"
-msgstr "Οκτώβριος"
-
-#: data/ui/date_editor.ui:39
-msgid "November"
-msgstr "Νοέμβριος"
-
-#: data/ui/date_editor.ui:40
-msgid "December"
-msgstr "Δεκέμβριος"
-
-#: data/ui/date_editor.ui:51
-msgid "Day"
-msgstr "Ημέρα"
-
-#: data/ui/date_editor.ui:76
-msgid "Month"
-msgstr "Μήνας"
-
-#: data/ui/date_editor.ui:98
-msgid "Year"
-msgstr "Έτος"
-
-#: data/ui/distance_action_row.ui:29
-msgid "Distance"
-msgstr "Απόσταση"
-
-#: data/ui/home_page.ui:28
-msgid "Home Page"
-msgstr "Αρχική σελίδα"
-
-#: data/ui/home_page.ui:63 data/ui/preferences_window.ui:82
-#: data/ui/shortcuts_window.ui:30
-msgid "General"
-msgstr "Γενικά"
-
-#: data/ui/home_page.ui:66
-msgid "Today"
-msgstr "Σήμερα"
-
-#. TRANSLATORS: This is displayed via two strings: x% and then this label. E.g. 100% of daily step goal
-#: data/ui/home_page.ui:90
-msgid "of daily step goal"
-msgstr ""
-
-#: data/ui/home_page.ui:103 data/ui/preferences_window.ui:218
-#: data/ui/weight_add_dialog.ui:61 data/ui/weight_view.ui:27
-msgid "Weight"
-msgstr "Βάρος"
-
-#: data/ui/import_export_dialog_base.ui:35
-msgid "_Export"
-msgstr "Ε_ξαγωγή"
-
-#: data/ui/password_entry.ui:28
-msgid "_Password"
-msgstr "_Συνθηματικό"
-
-#: data/ui/password_entry.ui:58
-msgid "_Confirm password"
-msgstr "_Επιβεβαίωση συνθηματικού"
-
-#: data/ui/preferences_window.ui:55
-msgid "_Every 1 hour"
-msgstr "_Κάθε 1 ώρα"
-
-#: data/ui/preferences_window.ui:60
-msgid "_Every 4 hours"
-msgstr "_Κάθε 4 ώρες"
-
-#: data/ui/preferences_window.ui:65
+#: data/ui/preferences_dialog.blp:55
 msgid "_Fixed Time"
-msgstr ""
+msgstr "_Σταθερή Ώρα"
 
-#: data/ui/preferences_window.ui:85
-msgid "User"
-msgstr "Χρήστης"
+#: data/ui/preferences_dialog.blp:63
+msgid "Health Preferences"
+msgstr "Προτιμήσεις Υγείας"
 
-#: data/ui/preferences_window.ui:88 data/ui/setup_window.ui:176
+#: data/ui/preferences_dialog.blp:73 data/ui/setup_window.blp:154
 msgid "Unit system"
-msgstr ""
+msgstr "Σύστημα μονάδων"
 
-#: data/ui/preferences_window.ui:97 data/ui/setup_window.ui:185
+#: data/ui/preferences_dialog.blp:83 data/ui/setup_window.blp:164
 msgid "Imperial"
-msgstr ""
+msgstr "Αυτοκρατορικό"
 
-#: data/ui/preferences_window.ui:104 data/ui/setup_window.ui:192
-msgid "Metric"
-msgstr "Μετρικό"
-
-#: data/ui/preferences_window.ui:115 data/ui/setup_window.ui:203
-msgid "Birthday"
-msgstr "Γενέθλια"
-
-#: data/ui/preferences_window.ui:125 data/ui/setup_window.ui:213
-msgid "Height"
-msgstr "Ύψος"
-
-#: data/ui/preferences_window.ui:141
-msgid "Notifications"
-msgstr "Ειδοποιήσεις"
-
-#: data/ui/preferences_window.ui:144
-msgid "Enable notifications"
-msgstr "Ενεργοποίηση ειδοποιήσεων"
-
-#: data/ui/preferences_window.ui:157
-msgid "Frequency"
-msgstr "Συχνότητα"
-
-#: data/ui/preferences_window.ui:174
+#: data/ui/preferences_dialog.blp:156
 msgid "Daily reminder time"
-msgstr ""
+msgstr "Ώρα καθημερινής υπενθύμισης"
 
-#: data/ui/preferences_window.ui:198 data/ui/setup_window.ui:279
-#: src/views/view_steps.rs:193
+#: data/ui/preferences_dialog.blp:176 data/ui/setup_window.blp:260
+#: src/plugins/steps/details.rs:243
 msgid "Step goal"
-msgstr ""
+msgstr "Στόχος βημάτων"
 
-#: data/ui/preferences_window.ui:199 data/ui/setup_window.ui:256
-msgid "The WHO recommends 10.000 steps per day."
-msgstr ""
-
-#: data/ui/preferences_window.ui:219 data/ui/setup_window.ui:321
-msgid "The WHO recommends a BMI of 18.5-24.9."
-msgstr ""
-
-#: data/ui/preferences_window.ui:248
-msgid "Sync"
-msgstr "Συγχρονισμός"
-
-#: data/ui/preferences_window.ui:252
+#: data/ui/preferences_dialog.blp:222
 msgid "Start sync with third-party providers."
-msgstr ""
+msgstr "Έναρξη συγχρονισμού με τρίτους παρόχους."
 
-#: data/ui/preferences_window.ui:262
+#: data/ui/preferences_dialog.blp:230
 msgid "Importing and exporting data"
-msgstr ""
+msgstr "Εισαγωγή και εξαγωγή δεδομένων"
 
-#: data/ui/preferences_window.ui:265
+#: data/ui/preferences_dialog.blp:233
 msgid "Export data as CSV"
-msgstr ""
+msgstr "Εξαγωγή δεδομένων ως CSV"
 
-#: data/ui/preferences_window.ui:268
-msgid "Export…"
-msgstr "Εξαγωγή…"
-
-#: data/ui/preferences_window.ui:276
+#: data/ui/preferences_dialog.blp:243
 msgid "Import data from CSV"
-msgstr ""
+msgstr "Εισαγωγή δεδομένων από CSV"
 
-#: data/ui/preferences_window.ui:279
-msgid "Import…"
-msgstr ""
-
-#: data/ui/setup_window.ui:55
+#: data/ui/setup_window.blp:39
 msgid "Health Setup"
-msgstr ""
+msgstr "Ρύθμιση Υγείας"
 
-#: data/ui/setup_window.ui:70
-msgid "_Quit"
-msgstr "Έ_ξοδος"
-
-#: data/ui/setup_window.ui:82
-msgid "_Previous"
-msgstr "_Προηγούμενο"
-
-#: data/ui/setup_window.ui:99
-msgid "_Next"
-msgstr "_Επόμενο"
-
-#: data/ui/setup_window.ui:113
-msgid "_Done"
-msgstr "_Ολοκληρώθηκε"
-
-#: data/ui/setup_window.ui:140
+#: data/ui/setup_window.blp:116
 msgid "Welcome to Health!"
-msgstr ""
+msgstr "Καλώς ορίσατε στην Υγεία!"
 
-#: data/ui/setup_window.ui:153
+#: data/ui/setup_window.blp:128
 msgid "Please enter some information to get setup."
-msgstr ""
+msgstr "Παρακαλώ εισάγετε κάποιες πληροφορίες για τη ρύθμιση."
 
-#: data/ui/setup_window.ui:243
+#: data/ui/setup_window.blp:224
 msgid "Please enter your daily step goal."
-msgstr ""
+msgstr "Παρακαλώ εισάγετε τον καθημερινό σας στόχο βημάτων."
 
-#: data/ui/setup_window.ui:308
+#: data/ui/setup_window.blp:236
+msgid "The WHO recommends 7.500 steps per day."
+msgstr "Ο ΠΟΥ συνιστά 7.500 βήματα την ημέρα."
+
+#: data/ui/setup_window.blp:286
 msgid "Please enter your weight goal."
-msgstr ""
+msgstr "Παρακαλώ εισάγετε τον στόχο βάρους σας."
 
-#: data/ui/setup_window.ui:349 src/views/view_weight.rs:171
+#: data/ui/setup_window.blp:298
+msgid "The WHO recommends a BMI of 18.5-24.9."
+msgstr "Ο ΠΟΥ συνιστά ΔΜΙ 18.5-24.9."
+
+#: data/ui/setup_window.blp:326
+msgid "Current weight"
+msgstr "Τρέχον βάρος"
+
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:228
 msgid "Weight goal"
-msgstr ""
+msgstr "Στόχος βάρους"
 
-#: data/ui/setup_window.ui:389
+#: data/ui/setup_window.blp:386
 msgid "Setup sync with third-party providers."
-msgstr ""
+msgstr "Ρύθμιση συγχρονισμού με τρίτους παρόχους."
 
-#: data/ui/setup_window.ui:402
+#: data/ui/setup_window.blp:398
 msgid ""
 "You can sync steps and weight measurements from/to third-party providers."
 msgstr ""
+"Μπορείτε να συγχρονίσετε βήματα και μετρήσεις βάρους από/προς τρίτους παρόχους."
 
-#: data/ui/shortcuts_window.ui:34
-msgid "Quit the application"
-msgstr "Τερματισμός εφαρμογής"
-
-#: data/ui/shortcuts_window.ui:40
+#: data/ui/shortcuts_window.blp:20
 msgid "Show this shortcuts window"
-msgstr ""
+msgstr "Εμφάνιση αυτού του παραθύρου συντομεύσεων"
 
-#: data/ui/shortcuts_window.ui:46
-msgid "Show help"
-msgstr "Εμφάνιση βοήθειας"
-
-#: data/ui/shortcuts_window.ui:52
-msgid "Show primary menu"
-msgstr "Εμφάνιση πρωτεύοντος μενού"
-
-#: data/ui/shortcuts_window.ui:58
+#: data/ui/shortcuts_window.blp:30
 msgid "Toggle fullscreen mode"
-msgstr ""
+msgstr "Εναλλαγή λειτουργίας πλήρους οθόνης"
 
-#: data/ui/weight_add_dialog.ui:31 data/ui/weight_view.ui:26
-msgid "Weight Measurements"
-msgstr ""
+#: data/ui/sync_list_box.blp:30
+msgid "Google Fit"
+msgstr "Google Fit"
 
-#: data/ui/weight_add_dialog.ui:32
-msgid "Add Weight Record"
-msgstr ""
+#: data/ui/view_add_activity.blp:133
+msgid "Stepcount"
+msgstr "Αριθμός βημάτων"
 
-#: data/ui/weight_view.ui:23
-msgid "You can use the <b>+</b> button to add a new weight measurement."
-msgstr ""
+#: data/ui/view_add_activity.blp:149
+msgid "Add An Activity"
+msgstr "Προσθήκη δραστηριότητας"
 
-#: data/ui/window.ui:27
-msgid "_Preferences"
-msgstr "_Προτιμήσεις"
+#: data/ui/view_add_activity.blp:155 data/ui/view_add_weight.blp:20
+msgid "Add"
+msgstr "Προσθήκη"
 
-#: data/ui/window.ui:31
-msgid "_Keyboard Shortcuts"
-msgstr "Συντομεύσεις _πληκτρολογίου"
+#: data/ui/view_add_weight.blp:14
+msgid "Add Weight Data"
+msgstr "Προσθήκη δεδομένων βάρους"
 
-#: data/ui/window.ui:37
+#: data/ui/view_home_page.blp:51
 msgid "_About Health"
-msgstr ""
+msgstr "_Σχετικά με την Υγεία"
 
-#: src/core/application.rs:140
-msgid "translator-credits"
-msgstr ""
-"Ελληνική μεταφραστική ομάδα GNOME\n"
-" Ευστάθιος Ιωσηφίδης <eiosifidis@gnome.org>\n"
-"\n"
-"Για περισσότερες πληροφορίες, επισκεφθείτε τη σελίδα\n"
-"http://gnome.gr/"
+#: data/ui/view_home_page.blp:100
+msgid "Add data:"
+msgstr "Προσθήκη δεδομένων:"
 
-#: src/core/application.rs:142
-msgid "Websites"
-msgstr ""
+#: data/ui/view_home_page.blp:109
+msgid "Add Weight Measure"
+msgstr "Προσθήκη μέτρησης βάρους"
 
-#: src/daemon/main.rs:31
-msgid "Health Daemon"
-msgstr ""
+#: data/ui/view_home_page.blp:165
+msgid "All data"
+msgstr "Όλα τα δεδομένα"
 
-#: src/model/activity_info.rs:74
-msgid "Basketball"
-msgstr "Μπάσκετ"
+#: src/core/application.rs:197
+msgid "A health tracking app for the GNOME desktop."
+msgstr "Μια εφαρμογή παρακολούθησης υγείας για την επιφάνεια εργασίας GNOME."
 
-#: src/model/activity_info.rs:89
-msgid "Bicycling"
-msgstr "Ποδηλασία"
-
-#: src/model/activity_info.rs:103
-msgid "Boxing"
-msgstr "Μποξ"
-
-#: src/model/activity_info.rs:117
-msgid "Dancing"
-msgstr "Χορός"
-
-#: src/model/activity_info.rs:131
-msgid "Football"
-msgstr "Αμερικάνικο ποδόσφαιρο"
-
-#: src/model/activity_info.rs:143
-msgid "Golf"
-msgstr "Γκολφ"
-
-#: src/model/activity_info.rs:159
-msgid "Hiking"
-msgstr ""
-
-#: src/model/activity_info.rs:173
-msgid "Hockey"
-msgstr "Χόκεϋ"
-
-#: src/model/activity_info.rs:188
-msgid "Horse Riding"
-msgstr "Ιππασία"
-
-#: src/model/activity_info.rs:202
-msgid "Other Sports"
-msgstr "Άλλα σπορ"
-
-#: src/model/activity_info.rs:217
-msgid "Rollerblading"
-msgstr "Πατίνια ρόλερ"
-
-#: src/model/activity_info.rs:233
-msgid "Running"
-msgstr "Τρέξιμο"
-
-#: src/model/activity_info.rs:248
-msgid "Skiing"
-msgstr "Σκι"
-
-#: src/model/activity_info.rs:262
-msgid "Soccer"
-msgstr "Ποδόσφαιρο"
-
-#: src/model/activity_info.rs:276
-msgid "Softball"
-msgstr ""
-
-#: src/model/activity_info.rs:291
-msgid "Swimming"
-msgstr "Κολύμπι"
-
-#: src/model/activity_info.rs:305
-msgid "Tennis"
-msgstr "Αντισφαίριση"
-
-#: src/model/activity_info.rs:319
-msgid "Track And Field"
-msgstr ""
-
-#: src/model/activity_info.rs:335
-msgid "Volleyball"
-msgstr "Βόλλεϋ"
-
-#: src/model/activity_info.rs:351
-msgid "Walking"
-msgstr "Περπάτημα"
-
-#: src/model/model_notification.rs:125
+#: src/model/model_notification.rs:217
 msgid "Health: walking reminder"
-msgstr ""
+msgstr "Υγεία: υπενθύμιση περπατήματος"
 
-#. TRANSLATORS: First part of message, ends with [...] of {} steps[.] See next source string.
-#: src/model/model_notification.rs:148
-msgid "{} step remaining to complete your daily step goal"
-msgid_plural "{} steps remaining to complete your daily step goal"
-msgstr[0] ""
-msgstr[1] ""
+#: src/model/model_notification.rs:233
+msgid "{} step remaining to complete your daily step goal."
+msgid_plural "{} steps remaining to complete your daily step goal."
+msgstr[0] "Απομένει {} βήμα για να ολοκληρώσετε τον καθημερινό σας στόχο βημάτων."
+msgstr[1] "Απομένουν {} βήματα για να ολοκληρώσετε τον καθημερινό σας στόχο βημάτων."
 
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/model/model_notification.rs:154
-msgid "of {} step"
-msgid_plural "of {} steps"
-msgstr[0] ""
-msgstr[1] ""
+#. Translators: min is short for Minutes active today. Example: "64 min"
+#: src/plugins/activities/summary.rs:106
+msgid "{} min"
+msgstr "{} λεπ"
 
-#: src/sync/csv.rs:81 src/sync/csv.rs:360
-msgid "No activities added yet; can't create empty export!"
-msgstr ""
-
-#: src/sync/csv.rs:111 src/sync/csv.rs:378
-msgid "No weight measurements added yet; can't create empty export!"
-msgstr ""
-
-#: src/sync/csv.rs:184 src/sync/csv.rs:322
-msgid "Can't parse encrypted backup without encryption key!"
-msgstr ""
-
-#: src/sync/csv.rs:195 src/sync/csv.rs:342
-msgid ""
-"Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
-"encrypted one?"
-msgstr ""
-
-#: src/sync/csv.rs:208
-msgid "Couldn't decrypt data. Are you sure you're using the right key?"
-msgstr ""
-
-#: src/sync/database_receiver.rs:46
-msgid "Couldn't synchronize steps due to error {}"
-msgstr ""
-
-#: src/sync/database_receiver.rs:60
-msgid "Couldn't synchronize weight measurements due to error {}"
-msgstr ""
-
-#: src/sync/google_fit.rs:211
-msgid "CRSF Verification failed, got {}, expected {}"
-msgstr ""
-
-#: src/sync/google_fit.rs:227
-msgid "Requesting OAuth2 token failed due to error {}"
-msgstr ""
-
-#: src/sync/sync_provider.rs:109
-msgid ""
-"Can't retrieve OAuth2 token when no refresh token is set! Please re-"
-"authenticate with your sync provider."
-msgstr ""
-
-#: src/sync/sync_provider.rs:228
-msgid "Successfully authenticated, please return to Health."
-msgstr ""
-
-#: src/sync/sync_provider.rs:240
-msgid "Couldn't parse OAuth2 response"
-msgstr ""
-
-#: src/views/bar_graph_view.rs:518
-msgid "Enter weight record to calculate idle calories"
-msgstr ""
-
-#: src/views/bar_graph_view.rs:522
-msgid "Idle calories"
-msgstr ""
-
-#: src/views/view_activity.rs:184
-msgid "No activities on or after {}"
-msgstr ""
-
-#: src/views/view_calories.rs:169
+#: src/plugins/calories/details.rs:218
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -733,117 +280,99 @@ msgid_plural ""
 "{} calories\n"
 "{}"
 msgstr[0] ""
+"{}:\n"
+"{} θερμίδα\n"
+"{}"
 msgstr[1] ""
+"{}:\n"
+"{} θερμίδες\n"
+"{}"
 
-#: src/views/view_home_page.rs:256
-msgid "{} step taken today"
-msgid_plural "{} steps taken today"
-msgstr[0] ""
-msgstr[1] ""
+#. Translators: cal is short for calories burned today. Example: "2666 cal"
+#: src/plugins/calories/summary.rs:116 src/plugins/calories/summary.rs:119
+msgid "{} cal"
+msgstr "{} θερμ"
 
-#: src/views/view_home_page.rs:262
-msgid "{}%"
-msgstr "{}%"
-
-#. TRANSLATORS: Current user weight
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:297 src/views/view_home_page.rs:331
-msgid "{} pound"
-msgid_plural "{} pounds"
-msgstr[0] ""
-msgstr[1] ""
-
-#. TRANSLATORS: Current user weight
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:304 src/views/view_home_page.rs:338
-msgid "{} kilogram"
-msgid_plural "{} kilograms"
-msgstr[0] ""
-msgstr[1] ""
-
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:314
-msgid "+ {} pound"
-msgid_plural "+ {} pounds"
-msgstr[0] ""
-msgstr[1] ""
-
-#. TRANSLATORS: Difference to last weight measurement
-#: src/views/view_home_page.rs:321
-msgid "+ {} kilogram"
-msgid_plural "+ {} kilograms"
-msgstr[0] ""
-msgstr[1] ""
-
-#: src/views/view_home_page.rs:346
-msgid "No change in weight"
-msgstr ""
-
-#: src/views/view_home_page.rs:351
-msgid "compared to previous weight"
-msgstr ""
-
-#: src/views/view_home_page.rs:355
-msgid "use + to add a weight record"
-msgstr ""
-
-#: src/views/view_steps.rs:140
+#: src/plugins/steps/details.rs:185
 msgid "Today's steps: {}"
-msgstr ""
+msgstr "Σημερινά βήματα: {}"
 
-#: src/views/view_steps.rs:156
+#: src/plugins/steps/details.rs:204
 msgid ""
 "No streak yet. Reach your step goal for multiple days to start a streak!"
 msgstr ""
+"Καμία σειρά ακόμα. Φτάστε τον στόχο βημάτων σας για πολλές ημέρες για να "
+"ξεκινήσετε μια σειρά!"
 
-#: src/views/view_steps.rs:160
+#: src/plugins/steps/details.rs:208
 msgid ""
 "You're on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
 "You're on a streak for {} days. Reach your step goal today to continue it!"
 msgstr[0] ""
+"Βρίσκεστε σε σειρά για {} ημέρα. Φτάστε τον στόχο βημάτων σας σήμερα για να "
+"τη συνεχίσετε!"
 msgstr[1] ""
+"Βρίσκεστε σε σειρά για {} ημέρες. Φτάστε τον στόχο βημάτων σας σήμερα για να "
+"τις συνεχίσετε!"
 
-#: src/views/view_steps.rs:168
+#: src/plugins/steps/details.rs:216
 msgid "You've reached your step goal today. Keep going to start a streak!"
 msgstr ""
+"Φτάσατε τον στόχο βημάτων σας σήμερα. Συνεχίστε για να ξεκινήσετε μια σειρά!"
 
-#: src/views/view_steps.rs:171
+#: src/plugins/steps/details.rs:219
 msgid "You're on a streak for {} day. Good job!"
 msgid_plural "You're on a streak for {} days. Good job!"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "Βρίσκεστε σε σειρά για {} ημέρα. Καλή δουλειά!"
+msgstr[1] "Βρίσκεστε σε σειρά για {} ημέρες. Καλή δουλειά!"
 
 #. TRANSLATORS: X step(s) on DATE
-#: src/views/view_steps.rs:186
+#: src/plugins/steps/details.rs:236
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{} βήμα στις {}"
+msgstr[1] "{} βήματα στις {}"
 
-#: src/views/view_weight.rs:145
+#: src/plugins/steps/summary.rs:111
+msgid "{} step"
+msgid_plural "{} steps"
+msgstr[0] "{} βήμα"
+msgstr[1] "{} βήματα"
+
+#: src/plugins/steps/summary.rs:122
+msgid "Reached {} percent of daily step goal"
+msgid_plural "Reached {} percent of daily step goal"
+msgstr[0] "Φτάσατε το {} τοις εκατό του καθημερινού στόχου βημάτων"
+msgstr[1] "Φτάσατε το {} τοις εκατό του καθημερινού στόχου βημάτων"
+
+#: src/plugins/steps/summary.rs:129
+msgid "Well done! You have reached your daily step goal!"
+msgstr "Μπράβο! Φτάσατε τον καθημερινό σας στόχο βημάτων!"
+
+#: src/plugins/weight/details.rs:200
 msgid "Current BMI: {}"
-msgstr ""
+msgstr "Τρέχων ΔΜΙ: {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/views/view_weight.rs:158
+#: src/plugins/weight/details.rs:215
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{} λίβρα στις {}"
+msgstr[1] "{} λίβρες στις {}"
 
 #. TRANSLATORS: Weight X on date Y
-#: src/views/view_weight.rs:161
+#: src/plugins/weight/details.rs:218
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "{} κιλό στις {}"
+msgstr[1] "{} κιλά στις {}"
 
-#: src/views/view_weight.rs:199
+#: src/plugins/weight/details.rs:259 src/plugins/weight/details.rs:264
 msgid "Unknown BMI"
-msgstr ""
+msgstr "Άγνωστος ΔΜΙ"
 
-#: src/views/view_weight.rs:223
+#: src/plugins/weight/details.rs:282
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -851,9 +380,13 @@ msgid_plural ""
 "Your weight goal is {} pounds. Add a first weight measurement to see how "
 "close you are to reaching it."
 msgstr[0] ""
+"Ο στόχος βάρους σας είναι {} λίβρα. Προσθέστε μια πρώτη μέτρηση βάρους για "
+"να δείτε πόσο κοντά είστε στο να τον φτάσετε."
 msgstr[1] ""
+"Ο στόχος βάρους σας είναι {} λίβρες. Προσθέστε μια πρώτη μέτρηση βάρους για "
+"να δείτε πόσο κοντά είστε στο να τις φτάσετε."
 
-#: src/views/view_weight.rs:230
+#: src/plugins/weight/details.rs:289
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -861,198 +394,261 @@ msgid_plural ""
 "Your weight goal is {} kilograms. Add a first weight measurement to see how "
 "close you are to reaching it."
 msgstr[0] ""
+"Ο στόχος βάρους σας είναι {} κιλό. Προσθέστε μια πρώτη μέτρηση βάρους για "
+"να δείτε πόσο κοντά είστε στο να το φτάσετε."
 msgstr[1] ""
+"Ο στόχος βάρους σας είναι {} κιλά. Προσθέστε μια πρώτη μέτρηση βάρους για "
+"να δείτε πόσο κοντά είστε στο να τα φτάσετε."
 
-#: src/views/view_weight.rs:239
+#: src/plugins/weight/details.rs:298
 msgid "You've reached your weight goal. Great job!"
-msgstr ""
+msgstr "Φτάσατε τον στόχο βάρους σας. Εξαιρετική δουλειά!"
 
-#. TRANSLATORS: First part of message, ends with [...] you have {} pound left to reach it[.] See next source string.
-#: src/views/view_weight.rs:255
-msgid "Your weight goal is {} pound,"
-msgid_plural "Your weight goal is {} pounds,"
-msgstr[0] ""
-msgstr[1] ""
+#: src/plugins/weight/details.rs:314
+msgid "Your weight goal is {} pound."
+msgid_plural "Your weight goal is {} pounds."
+msgstr[0] "Ο στόχος βάρους σας είναι {} λίβρα."
+msgstr[1] "Ο στόχος βάρους σας είναι {} λίβρες."
 
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:261
-msgid "you have {} pound left to reach it"
-msgid_plural "you have {} pounds left to reach it"
-msgstr[0] ""
-msgstr[1] ""
+#: src/plugins/weight/details.rs:319
+msgid "You have {} pound left to reach it."
+msgid_plural "You have {} pounds left to reach it."
+msgstr[0] "Σας απομένει {} λίβρα για να το φτάσετε."
+msgstr[1] "Σας απομένουν {} λίβρες για να το φτάσετε."
 
-#. TRANSLATORS: First part of message, ends with [...] you have {} kilogram left to reach it[.] See next source string.
-#: src/views/view_weight.rs:268
-msgid "Your weight goal is {} kilogram,"
-msgid_plural "Your weight goal is {} kilograms,"
-msgstr[0] ""
-msgstr[1] ""
+#: src/plugins/weight/details.rs:326
+msgid "Your weight goal is {} kilogram."
+msgid_plural "Your weight goal is {} kilograms."
+msgstr[0] "Ο στόχος βάρους σας είναι {} κιλό."
+msgstr[1] "Ο στόχος βάρους σας είναι {} κιλά."
 
-#. TRANSLATORS: Second (final) part of message, see previous source string.
-#: src/views/view_weight.rs:274
-msgid "you have {} kilogram left to reach it"
-msgid_plural "you have {} kilograms left to reach it"
-msgstr[0] ""
-msgstr[1] ""
+#: src/plugins/weight/details.rs:332
+msgid "You have {} kilogram left to reach it"
+msgid_plural "You have {} kilograms left to reach it"
+msgstr[0] "Σας απομένει {} κιλό για να το φτάσετε"
+msgstr[1] "Σας απομένουν {} κιλά για να το φτάσετε"
 
-#: src/views/view_weight.rs:283
+#: src/plugins/weight/details.rs:342
 msgid "No weight goal set yet. You can set it in Health's preferences."
 msgstr ""
+"Δεν έχει οριστεί ακόμα στόχος βάρους. Μπορείτε να τον ορίσετε στις "
+"προτιμήσεις της Υγείας."
 
-#: src/widgets/activity_row.rs:131
-msgid "{} Minute"
-msgid_plural "{} Minutes"
-msgstr[0] ""
-msgstr[1] ""
+#: src/plugins/weight/summary.rs:135 src/plugins/weight/summary.rs:169
+msgid "{} pound"
+msgid_plural "{} pounds"
+msgstr[0] "{} λίβρα"
+msgstr[1] "{} λίβρες"
 
-#: src/widgets/activity_row.rs:147 src/widgets/activity_row.rs:229
-msgid "{} Calorie"
-msgid_plural "{} Calories"
-msgstr[0] ""
-msgstr[1] ""
+#. TRANSLATORS: Current user weight. kg is short for kilograms
+#: src/plugins/weight/summary.rs:142
+msgid "{} kg"
+msgstr "{} κιλ"
 
-#: src/widgets/bmi_level_bar.rs:174 src/widgets/bmi_level_bar.rs:203
+#: src/plugins/weight/summary.rs:149
+msgid "+ {} pound"
+msgid_plural "+ {} pounds"
+msgstr[0] "+ {} λίβρα"
+msgstr[1] "+ {} λίβρες"
+
+#: src/plugins/weight/summary.rs:157
+msgid "+ {} kilogram"
+msgid_plural "+ {} kilograms"
+msgstr[0] "+ {} κιλό"
+msgstr[1] "+ {} κιλά"
+
+#: src/plugins/weight/summary.rs:178
+msgid "{} kilogram"
+msgid_plural "{} kilograms"
+msgstr[0] "{} κιλό"
+msgstr[1] "{} κιλά"
+
+#: src/plugins/weight/summary.rs:186
+msgid "No change in weight"
+msgstr "Καμία αλλαγή στο βάρος"
+
+#: src/plugins/weight/summary.rs:191
+msgid "No weight data available"
+msgstr "Δεν υπάρχουν διαθέσιμα δεδομένα βάρους"
+
+#: src/sync/csv.rs:81 src/sync/csv.rs:369
+msgid "No activities added yet; can't create empty export!"
+msgstr "Δεν έχουν προστεθεί δραστηριότητες ακόμα· αδυναμία δημιουργίας κενής εξαγωγής!"
+
+#: src/sync/csv.rs:111 src/sync/csv.rs:387
+msgid "No weight measurements added yet; can't create empty export!"
+msgstr "Δεν έχουν προστεθεί μετρήσεις βάρους ακόμα· αδυναμία δημιουργίας κενής εξαγωγής!"
+
+#: src/sync/csv.rs:184 src/sync/csv.rs:331
+msgid "Can't parse encrypted backup without encryption key!"
+msgstr "Αδυναμία ανάλυσης κρυπτογραφημένου αντιγράφου ασφαλείας χωρίς κλειδί κρυπτογράφησης!"
+
+#: src/sync/csv.rs:194 src/sync/csv.rs:351
+msgid ""
+"Couldn't parse CSV. Are you trying to read an unencrypted backup as an "
+"encrypted one?"
+msgstr ""
+"Αδυναμία ανάλυσης CSV. Προσπαθείτε να διαβάσετε ένα μη κρυπτογραφημένο "
+"αντίγραφο ασφαλείας ως κρυπτογραφημένο;"
+
+#: src/sync/csv.rs:207
+msgid "Couldn't decrypt data. Are you sure you're using the right key?"
+msgstr "Αδυναμία αποκρυπτογράφησης δεδομένων. Είστε σίγουροι ότι χρησιμοποιείτε το σωστό κλειδί;"
+
+#: src/sync/database_receiver.rs:47
+msgid "Couldn't synchronize steps due to error {}"
+msgstr "Αδυναμία συγχρονισμού βημάτων λόγω σφάλματος {}"
+
+#: src/sync/database_receiver.rs:61
+msgid "Couldn't synchronize weight measurements due to error {}"
+msgstr "Αδυναμία συγχρονισμού μετρήσεων βάρους λόγω σφάλματος {}"
+
+#: src/sync/google_fit.rs:211
+msgid "CRSF Verification failed, got {}, expected {}"
+msgstr "Αποτυχία επαλήθευσης CRSF, λήφθηκε {}, αναμενόταν {}"
+
+#: src/sync/google_fit.rs:227
+msgid "Requesting OAuth2 token failed due to error {}"
+msgstr "Αποτυχία αίτησης διακριτικού OAuth2 λόγω σφάλματος {}"
+
+#: src/sync/sync_provider.rs:110
+msgid ""
+"Can't retrieve OAuth2 token when no refresh token is set! Please re-"
+"authenticate with your sync provider."
+msgstr ""
+"Αδυναμία ανάκτησης διακριτικού OAuth2 όταν δεν έχει οριστεί διακριτικό "
+"ανανέωσης! Παρακαλώ επαναπιστοποιηθείτε με τον πάροχο συγχρονισμού σας."
+
+#: src/sync/sync_provider.rs:166
+msgid "Token for Health sync provider {}"
+msgstr "Διακριτικό για πάροχο συγχρονισμού Υγείας {}"
+
+#: src/sync/sync_provider.rs:225
+msgid "Successfully authenticated, please return to Health."
+msgstr "Επιτυχής πιστοποίηση, παρακαλώ επιστρέψτε στην Υγεία."
+
+#: src/sync/sync_provider.rs:236
+msgid "Couldn't parse OAuth2 response"
+msgstr "Αδυναμία ανάλυσης απόκρισης OAuth2"
+
+#: src/views/bar_graph_view.rs:569
+msgid "Enter weight record to calculate idle calories"
+msgstr "Εισάγετε εγγραφή βάρους για υπολογισμό ανενεργών θερμίδων"
+
+#: src/views/bar_graph_view.rs:573
+msgid "Idle calories"
+msgstr "Ανενεργές θερμίδες"
+
+#: src/widgets/activity_row.rs:68
+msgid "{} for {} Minute"
+msgid_plural "{} for {} Minutes"
+msgstr[0] "{} για {} Λεπτό"
+msgstr[1] "{} για {} Λεπτά"
+
+#: src/widgets/activity_row.rs:115
+msgid "{} meter"
+msgid_plural "{} meters"
+msgstr[0] "{} μέτρο"
+msgstr[1] "{} μέτρα"
+
+#: src/widgets/activity_row.rs:118
+msgid "{} yard"
+msgid_plural "{} yards"
+msgstr[0] "{} γιάρδα"
+msgstr[1] "{} γιάρδες"
+
+#: src/widgets/bmi_level_bar.rs:256
 msgid "<small>Current BMI: {}</small>"
-msgstr ""
+msgstr "<small>Τρέχων ΔΜΙ: {}</small>"
 
-#: src/widgets/distance_action_row.rs:248
-msgid "KM"
-msgstr "ΧΛΜ"
+#: src/widgets/sync_list_box.rs:205
+msgid "Sync Error"
+msgstr "Σφάλμα Συγχρονισμού"
 
-#: src/widgets/distance_action_row.rs:249
-msgid "Meters"
-msgstr "Μέτρα"
-
-#: src/widgets/distance_action_row.rs:251
-msgid "Miles"
-msgstr "Μίλια"
-
-#: src/widgets/distance_action_row.rs:252
-msgid "Feet"
-msgstr "Πόδια"
-
-#. TRANSLATORS: Unit abbreviation (centimeters)
-#: src/widgets/unit_spinbutton.rs:462 src/widgets/unit_spinbutton.rs:625
-msgid "cm"
-msgstr "εκ"
-
-#. TRANSLATORS: Unit abbreviation (meters)
-#: src/widgets/unit_spinbutton.rs:464
-msgid "m"
-msgstr "μ"
-
-#. TRANSLATORS: Unit abbreviation (kilometers)
-#: src/widgets/unit_spinbutton.rs:466
-msgid "km"
-msgstr "χλμ"
-
-#. TRANSLATORS: Unit abbreviation (kilograms)
-#: src/widgets/unit_spinbutton.rs:468
-msgid "kg"
-msgstr "κιλ"
-
-#. TRANSLATORS: Unit abbreviation (inch)
-#: src/widgets/unit_spinbutton.rs:470 src/widgets/unit_spinbutton.rs:627
-msgid "in"
-msgstr "ιν"
-
-#. TRANSLATORS: Unit abbreviation (feet)
-#: src/widgets/unit_spinbutton.rs:472
-msgid "ft"
-msgstr "ποδ"
-
-#. TRANSLATORS: Unit abbreviation (miles)
-#: src/widgets/unit_spinbutton.rs:474
-msgid "mi"
-msgstr "μιλ"
-
-#. TRANSLATORS: Unit abbreviation (pounds)
-#: src/widgets/unit_spinbutton.rs:476
-msgid "lb"
-msgstr "λιβ"
-
-#: src/windows/export_dialog.rs:54
+#: src/windows/export_dialog.rs:51
 msgid "Save Activities"
-msgstr ""
+msgstr "Αποθήκευση Δραστηριοτήτων"
 
 #. TRANSLATORS: Please keep the file extension (.csv.encrypted)
-#: src/windows/export_dialog.rs:63
+#: src/windows/export_dialog.rs:56
 msgid "Activities.csv.encrypted"
-msgstr ""
+msgstr "Δραστηριότητες.csv.κρυπτογραφημένο"
 
 #. TRANSLATORS: Please keep the file extension (.csv)
-#: src/windows/export_dialog.rs:66
+#: src/windows/export_dialog.rs:59
 msgid "Activities.csv"
-msgstr "Activities.csv"
+msgstr "Δραστηριότητες.csv"
 
-#: src/windows/export_dialog.rs:90
+#: src/windows/export_dialog.rs:79 src/windows/export_dialog.rs:121
+#: src/windows/import_dialog.rs:72 src/windows/import_dialog.rs:107
+msgid "No file selected."
+msgstr "Δεν επιλέχθηκε αρχείο."
+
+#: src/windows/export_dialog.rs:93
 msgid "Save Weight Measurement"
-msgstr ""
+msgstr "Αποθήκευση Μέτρησης Βάρους"
 
+#. TRANSLATORS: Please keep the file extension (.csv.encrypted)
 #: src/windows/export_dialog.rs:98
 msgid "Weight Measurements.csv.encrypted"
-msgstr ""
+msgstr "Μετρήσεις_Βάρους.csv.κρυπτογραφημένο"
 
-#: src/windows/export_dialog.rs:100
+#. TRANSLATORS: Please keep the file extension (.csv)
+#: src/windows/export_dialog.rs:101
 msgid "Weight Measurements.csv"
-msgstr ""
+msgstr "Weight Measurements.csv"
 
-#: src/windows/export_dialog.rs:135
+#: src/windows/export_dialog.rs:142
 msgid "Export data"
 msgstr "Εξαγωγή δεδομένων"
 
-#: src/windows/import_dialog.rs:54
+#: src/windows/import_dialog.rs:51
 msgid "Open Activities"
-msgstr ""
+msgstr "Άνοιγμα Δραστηριοτήτων"
 
-#: src/windows/import_dialog.rs:55 src/windows/import_dialog.rs:84
-msgid "_Open"
-msgstr "Ά_νοιγμα"
-
-#: src/windows/import_dialog.rs:83
+#: src/windows/import_dialog.rs:86
 msgid "Open Weight Measurement"
-msgstr ""
+msgstr "Άνοιγμα Μέτρησης Βάρους"
 
-#: src/windows/import_dialog.rs:124
-msgid "Import data"
-msgstr "Εισαγωγή δεδομένων"
-
-#: src/windows/import_export_dialog_base.rs:227
+#: src/windows/import_export_dialog_base.rs:190
 msgid "Import activities"
-msgstr ""
+msgstr "Εισαγωγή δραστηριοτήτων"
 
-#: src/windows/import_export_dialog_base.rs:229
+#: src/windows/import_export_dialog_base.rs:192
 msgid "Import is encrypted"
-msgstr ""
+msgstr "Η εισαγωγή είναι κρυπτογραφημένη"
 
-#: src/windows/import_export_dialog_base.rs:230
+#: src/windows/import_export_dialog_base.rs:193
 msgid "Import weights"
-msgstr ""
+msgstr "Εισαγωγή βαρών"
 
-#: src/windows/import_export_dialog_base.rs:231
-msgid "Import"
-msgstr "Εισαγωγή"
-
-#: src/windows/import_export_dialog_base.rs:328
-msgid "Success!"
-msgstr "Επιτυχία!"
-
-#: src/windows/import_export_dialog_base.rs:332
-msgid "An error occurred!"
-msgstr "Παρουσιάστηκε ένα σφάλμα!"
-
-#: src/windows/import_export_dialog_base.rs:338
-msgid "Close"
-msgstr "Κλείσιμο"
-
-#: src/windows/preferences_window.rs:375
-msgid "Remind you of your step goals"
-msgstr ""
-
-#: src/windows/window.rs:136
-msgid "Failed to migrate database to new version due to error {}"
-msgstr ""
-
-#: src/windows/window.rs:347
+#: src/windows/window.rs:257
 msgid "Couldn't sync Google Fit data due to error: {}"
-msgstr ""
+msgstr "Αδυναμία συγχρονισμού δεδομένων Google Fit λόγω σφάλματος: {}"
+
+#~ msgid "@APPLICATION_ID@"
+#~ msgstr "@APPLICATION_ID@"
+
+#~ msgid "Distance in Meters"
+#~ msgstr "Απόσταση σε μέτρα"
+
+#~ msgid "_Cancel"
+#~ msgstr "Ακύ_ρωση"
+
+#~ msgid "Day"
+#~ msgstr "Ημέρα"
+
+#~ msgid "Month"
+#~ msgstr "Μήνας"
+
+#~ msgid "Year"
+#~ msgstr "Έτος"
+
+#~ msgid "Home Page"
+#~ msgstr "Αρχική σελίδα"
+
+#~ msgid "Today"
+#~ msgstr "Σήμερα"
+
+#~ msgid "{}%"
+#~ msgstr "{}%"
