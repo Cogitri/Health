@@ -4,14 +4,14 @@
 # Philipp Kiemle <philipp.kiemle@gmail.com>, 2022.
 # Tim Sabsch <tim@sabsch.com>, 2022.
 # Christian Kirbach <christian.kirbach@gmail.com>, 2022.
-# Jürgen Benvenuti <gastornis@posteo.org>, 2022-2024.
+# Jürgen Benvenuti <gastornis@posteo.org>, 2022-2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2025-01-13 01:37+0000\n"
-"PO-Revision-Date: 2025-02-07 21:32+0100\n"
+"POT-Creation-Date: 2025-10-11 00:21+0000\n"
+"PO-Revision-Date: 2025-12-05 20:06+0100\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.4\n"
+"X-Generator: Poedit 3.8\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -94,14 +94,14 @@ msgstr "Fensterbreite"
 msgid "Active user ID"
 msgstr "Aktive Nutzerkennung"
 
-#: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
-#: data/dev.Cogitri.Health.desktop.in.in:3
-#: data/dev.Cogitri.Health.metainfo.xml.in.in:10 data/ui/window.blp:37
-#: src/main.rs:35
+#: data/dev.Cogitri.Health.Autostart.desktop.in.in:2
+#: data/dev.Cogitri.Health.desktop.in.in:2
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:10 data/ui/view_home_page.blp:61
+#: data/ui/window.blp:5 src/main.rs:35
 msgid "Health"
 msgstr "Gesundheit"
 
-#: data/dev.Cogitri.Health.desktop.in.in:9
+#: data/dev.Cogitri.Health.desktop.in.in:8
 msgid "health;fitness;"
 msgstr "health;fitness;Gesundheit;Fitness;"
 
@@ -121,15 +121,6 @@ msgstr ""
 "Gewichtsverlauf dokumentieren und Ihre Aktivitäten erfassen. Sie können Ihre "
 "Daten über Google Fit synchronisieren oder manuell in Gesundheit eingeben, "
 "bearbeiten und ansehen."
-
-#: data/ui/data_add_dialog.blp:5
-msgid "_Cancel"
-msgstr "_Abbrechen"
-
-#: data/ui/data_add_dialog.blp:10 src/windows/export_dialog.rs:52
-#: src/windows/export_dialog.rs:94
-msgid "_Save"
-msgstr "_Speichern"
 
 #: data/ui/date_selector.blp:18
 msgid "January"
@@ -179,18 +170,6 @@ msgstr "November"
 msgid "December"
 msgstr "Dezember"
 
-#: data/ui/date_selector.blp:35
-msgid "Day"
-msgstr "Tag"
-
-#: data/ui/date_selector.blp:61
-msgid "Month"
-msgstr "Monat"
-
-#: data/ui/date_selector.blp:84
-msgid "Year"
-msgstr "Jahr"
-
 #: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:120
 msgid "Distance"
 msgstr "Distanz"
@@ -215,13 +194,13 @@ msgstr "_Passwort"
 msgid "_Confirm password"
 msgstr "Passwort _bestätigen"
 
-#: data/ui/plugins/activities/details.blp:5
-#: data/ui/plugins/calories/details.blp:4 data/ui/plugins/steps/details.blp:4
+#: data/ui/plugins/activities/details.blp:6
+#: data/ui/plugins/calories/details.blp:5 data/ui/plugins/steps/details.blp:5
 msgid "You can use the <b>+</b> button to add a new activity."
 msgstr ""
 "Sie können den <b>+</b>-Knopf verwenden, um eine neue Aktivität hinzuzufügen."
 
-#: data/ui/plugins/activities/details.blp:8
+#: data/ui/plugins/activities/details.blp:9
 msgid "Recent Activities"
 msgstr "Kürzliche Aktivitäten"
 
@@ -229,7 +208,7 @@ msgstr "Kürzliche Aktivitäten"
 msgid "Active Minutes"
 msgstr "Aktive Minuten"
 
-#: data/ui/plugins/calories/details.blp:7 src/plugins/calories/plugin.rs:39
+#: data/ui/plugins/calories/details.blp:8 src/plugins/calories/plugin.rs:39
 msgid "Calories"
 msgstr "Kalorien"
 
@@ -237,7 +216,7 @@ msgstr "Kalorien"
 msgid "Calories Burned"
 msgstr "Verbrauchte Kalorien"
 
-#: data/ui/plugins/details.blp:68
+#: data/ui/plugins/details.blp:77
 msgid ""
 "This is a preview of how the plugin presents data. Enable the plugin to see "
 "your actual, live data."
@@ -245,25 +224,30 @@ msgstr ""
 "Dies ist eine Vorschau, wie das Plugin Daten präsentiert. Aktivieren Sie das "
 "Plugin, um Ihre tatsächlichen Daten zu sehen."
 
-#: data/ui/plugins/steps/details.blp:7 data/ui/plugins/steps/summary.blp:5
+#: data/ui/plugins/steps/details.blp:8 data/ui/plugins/steps/summary.blp:5
 #: data/ui/preferences_dialog.blp:173 src/plugins/steps/plugin.rs:39
 msgid "Steps"
 msgstr "Schritte"
 
-#: data/ui/plugins/weight/details.blp:5
+#: data/ui/plugins/weight/details.blp:6
 msgid "You can use the <b>+</b> button to add a new weight measurement."
 msgstr ""
 "Sie können den <b>+</b>-Knopf verwenden, um eine neue Gewichtsmessung "
 "hinzuzufügen."
 
-#: data/ui/plugins/weight/details.blp:8
+#: data/ui/plugins/weight/details.blp:9 data/ui/plugins/weight/summary.blp:5
+#: data/ui/view_add_weight.blp:43 src/plugins/weight/plugin.rs:39
+#: src/views/view_add_weight.rs:90
+msgid "Weight"
+msgstr "Gewicht"
+
+#: data/ui/plugins/weight/details.blp:10
 msgid "Weight Measurements"
 msgstr "Gewichtsmessungen"
 
-#: data/ui/plugins/weight/summary.blp:5 data/ui/view_add_weight.blp:38
-#: src/plugins/weight/plugin.rs:39 src/views/view_add_weight.rs:87
-msgid "Weight"
-msgstr "Gewicht"
+#: data/ui/plugins/weight/summary.blp:16
+msgid "Compared to previous measurement."
+msgstr "Verglichen mit der letzten Messung."
 
 # Oder, um konsistent zu sein: "_Alle 1 Stunde"? -pk
 # Ich finde "Jede Stunde" angenehmer zu lesen - ts
@@ -473,7 +457,7 @@ msgstr "Vollbildmodus umschalten"
 msgid "Google Fit"
 msgstr "Google Fit"
 
-#: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:30
+#: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:34
 msgid "Date"
 msgstr "Datum"
 
@@ -497,40 +481,52 @@ msgstr "Maximale Herzfrequenz"
 msgid "Stepcount"
 msgstr "Schrittzahl"
 
-#: data/ui/view_home_page.blp:61
-msgid "For you"
-msgstr "Für Sie"
+#: data/ui/view_add_activity.blp:149
+msgid "Add Activity Data"
+msgstr "Aktivitätsdaten hinzufügen"
 
-#: data/ui/view_home_page.blp:86
+#: data/ui/view_add_activity.blp:155 data/ui/view_add_weight.blp:20
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: data/ui/view_add_weight.blp:14
+msgid "Add Weight Data"
+msgstr "Gewichtsdaten hinzufügen"
+
+#: data/ui/view_home_page.blp:39
+msgid "_Preferences"
+msgstr "_Einstellungen"
+
+#: data/ui/view_home_page.blp:44
+msgid "_Keyboard Shortcuts"
+msgstr "_Tastenkürzel"
+
+#: data/ui/view_home_page.blp:51
+msgid "_About Health"
+msgstr "_Über Gesundheit"
+
+#: data/ui/view_home_page.blp:100
+msgid "Add data:"
+msgstr "Daten hinzufügen:"
+
+#: data/ui/view_home_page.blp:109
+msgid "Add Weight Measure"
+msgstr "Gewichtsmaß hinzufügen"
+
+#: data/ui/view_home_page.blp:124
+msgid "Add Activity"
+msgstr "Aktivität hinzufügen"
+
+#: data/ui/view_home_page.blp:144
 msgid ""
 "No plugins enabled. Enable one from the list below to start using Health."
 msgstr ""
 "Keine Plugins aktiviert. Aktivieren Sie eines aus der Liste unten und "
 "starten Sie mit Gesundheit."
 
-#: data/ui/view_home_page.blp:107
+#: data/ui/view_home_page.blp:165
 msgid "All data"
 msgstr "Alle Daten"
-
-#: data/ui/window.blp:8
-msgid "_Disable Current Plugin"
-msgstr "Aktuelles Plugin _deaktivieren"
-
-#: data/ui/window.blp:15
-msgid "_Preferences"
-msgstr "_Einstellungen"
-
-#: data/ui/window.blp:20
-msgid "_Keyboard Shortcuts"
-msgstr "_Tastenkürzel"
-
-#: data/ui/window.blp:27
-msgid "_About Health"
-msgstr "_Über Gesundheit"
-
-#: data/ui/window.blp:69
-msgid "Enable plugin"
-msgstr "Plugin aktivieren"
 
 #: src/core/application.rs:197
 msgid "A health tracking app for the GNOME desktop."
@@ -542,7 +538,7 @@ msgstr ""
 "Philipp Kiemle <philipp.kiemle@gmail.com>, 2022\n"
 "Tim Sabsch <tim@sabsch.com>, 2022\n"
 "Christian Kirbach <christian.kirbach@gmail.com>, 2022\n"
-"Jürgen Benvenuti <gastornis@posteo.org>, 2022-2024"
+"Jürgen Benvenuti <gastornis@posteo.org>, 2022-2025"
 
 #: src/model/activity_info.rs:83
 msgid "Basketball"
@@ -638,11 +634,10 @@ msgstr[1] "Noch {} Schritte verbleibend bis zum täglichen Schrittziel."
 msgid "Activities"
 msgstr "Aktivitäten"
 
-#: src/plugins/activities/summary.rs:102
-msgid "{} active minute today"
-msgid_plural "{} active minutes today"
-msgstr[0] "Heute {} Minute aktiv"
-msgstr[1] "Heute {} Minuten aktiv"
+#. Translators: min is short for Minutes active today. Example: "64 min"
+#: src/plugins/activities/summary.rs:106
+msgid "{} min"
+msgstr "{} min"
 
 #: src/plugins/calories/details.rs:218
 msgid ""
@@ -662,11 +657,10 @@ msgstr[1] ""
 "{} Kalorien\n"
 "{}"
 
-#: src/plugins/calories/summary.rs:112 src/plugins/calories/summary.rs:119
-msgid "{} calorie burned today"
-msgid_plural "{} calories burned today"
-msgstr[0] "Heute {} Kalorie verbraucht"
-msgstr[1] "Heute {} Kalorien verbraucht"
+#. Translators: cal is short for calories burned today. Example: "2666 cal"
+#: src/plugins/calories/summary.rs:116 src/plugins/calories/summary.rs:119
+msgid "{} cal"
+msgstr "{} cal"
 
 #: src/plugins/steps/details.rs:185
 msgid "Today’s steps: {}"
@@ -710,19 +704,19 @@ msgid_plural "{} steps on {}"
 msgstr[0] "{} Schritt am {}"
 msgstr[1] "{} Schritte am {}"
 
-#: src/plugins/steps/summary.rs:108
-msgid "{} step taken today"
-msgid_plural "{} steps taken today"
-msgstr[0] "Heute {} Schritt gegangen"
-msgstr[1] "Heute {} Schritte gegangen"
+#: src/plugins/steps/summary.rs:111
+msgid "{} step"
+msgid_plural "{} steps"
+msgstr[0] "{} Schritt"
+msgstr[1] "{} Schritte"
 
-#: src/plugins/steps/summary.rs:119
+#: src/plugins/steps/summary.rs:122
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "{} % des täglichen Schrittziels erreicht"
 msgstr[1] "{} % des täglichen Schrittziels erreicht"
 
-#: src/plugins/steps/summary.rs:126
+#: src/plugins/steps/summary.rs:129
 msgid "Well done! You have reached your daily step goal!"
 msgstr "Gut gemacht! Sie haben Ihr tägliches Schrittziel erreicht!"
 
@@ -741,8 +735,8 @@ msgstr[1] "{} Pfund am {}"
 #: src/plugins/weight/details.rs:218
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
-msgstr[0] "{} Kilo am {}"
-msgstr[1] "{} Kilo am {}"
+msgstr[0] "{} Kilogramm am {}"
+msgstr[1] "{} Kilogramm am {}"
 
 #: src/plugins/weight/details.rs:259 src/plugins/weight/details.rs:264
 msgid "Unknown BMI"
@@ -812,47 +806,40 @@ msgstr ""
 "Bisher wurde kein Zielgewicht festgelegt. Fügen Sie eines in den "
 "Einstellungen hinzu."
 
-#: src/plugins/weight/summary.rs:131
+#: src/plugins/weight/summary.rs:135 src/plugins/weight/summary.rs:169
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} Pfund"
 msgstr[1] "{} Pfund"
 
-#: src/plugins/weight/summary.rs:139
+#. TRANSLATORS: Current user weight. kg is short for kilograms
+#: src/plugins/weight/summary.rs:142
+msgid "{} kg"
+msgstr "{} kg"
+
+#: src/plugins/weight/summary.rs:149
+msgid "+ {} pound"
+msgid_plural "+ {} pounds"
+msgstr[0] "+ {} Pfund"
+msgstr[1] "+ {} Pfund"
+
+#: src/plugins/weight/summary.rs:157
+msgid "+ {} kilogram"
+msgid_plural "+ {} kilograms"
+msgstr[0] "+ {} Kilogramm"
+msgstr[1] "+ {} Kilogramm"
+
+#: src/plugins/weight/summary.rs:178
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
-msgstr[0] "{} Kilo"
-msgstr[1] "{} Kilo"
+msgstr[0] "{} Kilogramm"
+msgstr[1] "{} Kilogramm"
 
-#: src/plugins/weight/summary.rs:150
-msgid "+ {} pound compared to previous measurement"
-msgid_plural "+ {} pounds compared to previous measurement"
-msgstr[0] "+ {} Pfund verglichen mit der letzten Messung"
-msgstr[1] "+ {} Pfund verglichen mit der letzten Messung"
-
-#: src/plugins/weight/summary.rs:158
-msgid "+ {} kilogram compared to previous measurement"
-msgid_plural "+ {} kilograms compared to previous measurement"
-msgstr[0] "+ {} Kilo verglichen mit der letzten Messung"
-msgstr[1] "+ {} Kilo verglichen mit der letzten Messung"
-
-#: src/plugins/weight/summary.rs:169
-msgid "{} pound compared to previous measurement"
-msgid_plural "{} pounds compared to previous measurement"
-msgstr[0] "{} Pfund verglichen mit der letzten Messung"
-msgstr[1] "{} Pfund verglichen mit der letzten Messung"
-
-#: src/plugins/weight/summary.rs:177
-msgid "{} kilogram compared to previous measurement"
-msgid_plural "{} kilograms compared to previous measurement"
-msgstr[0] "{} Kilo verglichen mit der letzten Messung"
-msgstr[1] "{} Kilo verglichen mit der letzten Messung"
-
-#: src/plugins/weight/summary.rs:185
+#: src/plugins/weight/summary.rs:186
 msgid "No change in weight"
 msgstr "Keine Gewichtsveränderung"
 
-#: src/plugins/weight/summary.rs:190
+#: src/plugins/weight/summary.rs:191
 msgid "No weight data available"
 msgstr "Keine Gewichtsdaten verfügbar"
 
@@ -935,7 +922,7 @@ msgstr ""
 msgid "Idle calories"
 msgstr "Kalorien-Grundumsatz"
 
-#: src/views/view_add_activity.rs:228
+#: src/views/view_add_activity.rs:231
 msgid "Activity"
 msgstr "Aktivität"
 
@@ -1045,6 +1032,10 @@ msgstr "lb"
 msgid "Save Activities"
 msgstr "Aktivitäten speichern"
 
+#: src/windows/export_dialog.rs:52 src/windows/export_dialog.rs:94
+msgid "_Save"
+msgstr "_Speichern"
+
 #. TRANSLATORS: Please keep the file extension (.csv.encrypted)
 #: src/windows/export_dialog.rs:56
 msgid "Activities.csv.encrypted"
@@ -1118,11 +1109,62 @@ msgstr "Geschafft!"
 msgid "An error occurred!"
 msgstr "Ein Fehler ist aufgetreten!"
 
-#: src/windows/window.rs:287
+#: src/windows/window.rs:257
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr ""
 "Google Fit-Daten konnten aufgrund eines Fehlers nicht synchronisiert werden: "
 "{}"
+
+#~ msgid "_Cancel"
+#~ msgstr "_Abbrechen"
+
+#~ msgid "Day"
+#~ msgstr "Tag"
+
+#~ msgid "Month"
+#~ msgstr "Monat"
+
+#~ msgid "Year"
+#~ msgstr "Jahr"
+
+#~ msgid "For you"
+#~ msgstr "Für Sie"
+
+#~ msgid "_Disable Current Plugin"
+#~ msgstr "Aktuelles Plugin _deaktivieren"
+
+#~ msgid "Enable plugin"
+#~ msgstr "Plugin aktivieren"
+
+#~ msgid "{} active minute today"
+#~ msgid_plural "{} active minutes today"
+#~ msgstr[0] "Heute {} Minute aktiv"
+#~ msgstr[1] "Heute {} Minuten aktiv"
+
+#~ msgid "{} calorie burned today"
+#~ msgid_plural "{} calories burned today"
+#~ msgstr[0] "Heute {} Kalorie verbraucht"
+#~ msgstr[1] "Heute {} Kalorien verbraucht"
+
+#~ msgid "{} step taken today"
+#~ msgid_plural "{} steps taken today"
+#~ msgstr[0] "Heute {} Schritt gegangen"
+#~ msgstr[1] "Heute {} Schritte gegangen"
+
+#~ msgid "+ {} pound compared to previous measurement"
+#~ msgid_plural "+ {} pounds compared to previous measurement"
+#~ msgstr[0] "+ {} Pfund verglichen mit der letzten Messung"
+#~ msgstr[1] "+ {} Pfund verglichen mit der letzten Messung"
+
+#~ msgid "+ {} kilogram compared to previous measurement"
+#~ msgid_plural "+ {} kilograms compared to previous measurement"
+#~ msgstr[0] "+ {} Kilo verglichen mit der letzten Messung"
+#~ msgstr[1] "+ {} Kilo verglichen mit der letzten Messung"
+
+#~ msgid "{} kilogram compared to previous measurement"
+#~ msgid_plural "{} kilograms compared to previous measurement"
+#~ msgstr[0] "{} Kilo verglichen mit der letzten Messung"
+#~ msgstr[1] "{} Kilo verglichen mit der letzten Messung"
 
 #~ msgid "Websites"
 #~ msgstr "Webseiten"
