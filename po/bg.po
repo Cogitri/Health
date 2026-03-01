@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2025-05-10 19:52+0000\n"
-"PO-Revision-Date: 2025-07-29 13:25+0200\n"
+"POT-Creation-Date: 2025-04-30 12:51+0000\n"
+"PO-Revision-Date: 2026-03-01 19:03+0100\n"
 "Last-Translator: twlvnn kraftwerk <kraft_werk@tutanota.com>\n"
 "Language-Team: Bulgarian <dict-notifications@fsa-bg.org>\n"
 "Language: bg\n"
@@ -90,14 +90,14 @@ msgstr "Широчина на прозореца"
 msgid "Active user ID"
 msgstr "Идентификатор на активния потребител"
 
-#: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
-#: data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.Autostart.desktop.in.in:2
+#: data/dev.Cogitri.Health.desktop.in.in:2
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:10 data/ui/view_home_page.blp:61
 #: data/ui/window.blp:5 src/main.rs:35
 msgid "Health"
 msgstr "Здраве"
 
-#: data/dev.Cogitri.Health.desktop.in.in:9
+#: data/dev.Cogitri.Health.desktop.in.in:8
 msgid "health;fitness;"
 msgstr "здраве;фитнес;health;fitness;"
 
@@ -405,7 +405,7 @@ msgstr "СЗО препоръчва ИТМ от 18,5-24,9."
 msgid "Current weight"
 msgstr "Текущо тегло"
 
-#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:249
+#: data/ui/setup_window.blp:342
 msgid "Current BMI"
 msgstr "Текущ ИТМ"
 
@@ -525,7 +525,16 @@ msgstr "Приложение за следене на здравето за ра
 
 #: src/core/application.rs:199
 msgid "translator-credits"
-msgstr "twlvnn kraftwerk <kraft_werk@tutanota.com>"
+msgstr ""
+"twlvnn kraftwerk &lt;<a "
+"href='mailto:kraft_werk@tutanota.com'>kraft_werk@tutanota.com</a>&gt;\n"
+"\n"
+"\n"
+"Проектът за превод на GNOME има нужда от подкрепа.\n"
+"Научете повече за нас на <a href='https://fsa-bg.org/project/gtp'>уеб сайта</"
+"a> ни.\n"
+"Докладвайте за грешки в превода в <a href='https://fsa-bg.org/project/gtp/"
+"newticket'>съответния раздел</a>."
 
 #: src/model/activity_info.rs:83
 msgid "Basketball"
@@ -612,6 +621,7 @@ msgid "Health: walking reminder"
 msgstr "„Здраве“: напомняне за разходка"
 
 #: src/model/model_notification.rs:233
+#, rust-format
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "Остава {} крачка до дневната цел."
@@ -623,10 +633,12 @@ msgstr "Упражнения"
 
 #. Translators: min is short for Minutes active today. Example: "64 min"
 #: src/plugins/activities/summary.rs:106
+#, rust-format
 msgid "{} min"
 msgstr "{} мин."
 
 #: src/plugins/calories/details.rs:218
+#, rust-format
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -646,10 +658,12 @@ msgstr[1] ""
 
 #. Translators: cal is short for calories burned today. Example: "2666 cal"
 #: src/plugins/calories/summary.rs:116 src/plugins/calories/summary.rs:119
+#, rust-format
 msgid "{} cal"
 msgstr "{} кал."
 
 #: src/plugins/steps/details.rs:185
+#, rust-format
 msgid "Today’s steps: {}"
 msgstr "Днешни крачки: {}"
 
@@ -661,6 +675,7 @@ msgstr ""
 "започнете поредица!"
 
 #: src/plugins/steps/details.rs:208
+#, rust-format
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -679,6 +694,7 @@ msgstr ""
 "поредица!"
 
 #: src/plugins/steps/details.rs:219
+#, rust-format
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "Имате поредица от {} ден. Браво!"
@@ -686,18 +702,21 @@ msgstr[1] "Имате поредица от {} дни. Браво!"
 
 #. TRANSLATORS: X step(s) on DATE
 #: src/plugins/steps/details.rs:236
+#, rust-format
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} крачка на {}"
 msgstr[1] "{} крачки на {}"
 
 #: src/plugins/steps/summary.rs:111
+#, rust-format
 msgid "{} step"
 msgid_plural "{} steps"
 msgstr[0] "{} крачка"
 msgstr[1] "{} крачки"
 
 #: src/plugins/steps/summary.rs:122
+#, rust-format
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Постигнахте {}% от днешната цел за крачки"
@@ -708,11 +727,13 @@ msgid "Well done! You have reached your daily step goal!"
 msgstr "Браво! Постигнахте дневната си цел на крачки!"
 
 #: src/plugins/weight/details.rs:200
+#, rust-format
 msgid "Current BMI: {}"
 msgstr "Текущ ИТМ: {}"
 
 #. TRANSLATORS: Weight X on date Y
 #: src/plugins/weight/details.rs:215
+#, rust-format
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} фунт на {}"
@@ -720,6 +741,7 @@ msgstr[1] "{} фунта на {}"
 
 #. TRANSLATORS: Weight X on date Y
 #: src/plugins/weight/details.rs:218
+#, rust-format
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} килограм на {}"
@@ -730,6 +752,7 @@ msgid "Unknown BMI"
 msgstr "Неизвестен ИТМ"
 
 #: src/plugins/weight/details.rs:282
+#, rust-format
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -744,6 +767,7 @@ msgstr[1] ""
 "видите колко близо сте до постигането му."
 
 #: src/plugins/weight/details.rs:289
+#, rust-format
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -762,24 +786,28 @@ msgid "You’ve reached your weight goal. Great job!"
 msgstr "Постигнахте целевото си тегло. Браво!"
 
 #: src/plugins/weight/details.rs:314
+#, rust-format
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "Целевото ви тегло е {} фунт."
 msgstr[1] "Целевото ви тегло е {} фунта."
 
 #: src/plugins/weight/details.rs:319
+#, rust-format
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "Остава ви {} фунт, за да го достигнете."
 msgstr[1] "Остават ви {} фунта, за да го достигнете."
 
 #: src/plugins/weight/details.rs:326
+#, rust-format
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "Целевото ви тегло е {} килограм."
 msgstr[1] "Целевото ви тегло е {} килограма."
 
 #: src/plugins/weight/details.rs:332
+#, rust-format
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "Остава ви {} килограм, за да го достигнете."
@@ -792,6 +820,7 @@ msgstr ""
 "„Здраве“."
 
 #: src/plugins/weight/summary.rs:135 src/plugins/weight/summary.rs:169
+#, rust-format
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} фунт"
@@ -799,22 +828,26 @@ msgstr[1] "{} фунта"
 
 #. TRANSLATORS: Current user weight. kg is short for kilograms
 #: src/plugins/weight/summary.rs:142
+#, rust-format
 msgid "{} kg"
 msgstr "{} кг."
 
 #: src/plugins/weight/summary.rs:149
+#, rust-format
 msgid "+ {} pound"
 msgid_plural "+ {} pounds"
 msgstr[0] "+ {} фунт"
 msgstr[1] "+ {} фунта"
 
 #: src/plugins/weight/summary.rs:157
+#, rust-format
 msgid "+ {} kilogram"
 msgid_plural "+ {} kilograms"
 msgstr[0] "+ {} килограм"
 msgstr[1] "+ {} килограма"
 
 #: src/plugins/weight/summary.rs:178
+#, rust-format
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} килограм"
@@ -827,18 +860,6 @@ msgstr "Без промяна в теглото"
 #: src/plugins/weight/summary.rs:191
 msgid "No weight data available"
 msgstr "Няма налични данни за теглото"
-
-#: src/sync/csv.rs:81 src/sync/csv.rs:369
-msgid "No activities added yet; can’t create empty export!"
-msgstr ""
-"Все още няма добавени упражнения — не може да се създаде празен файл за "
-"изнасяне!"
-
-#: src/sync/csv.rs:111 src/sync/csv.rs:387
-msgid "No weight measurements added yet; can’t create empty export!"
-msgstr ""
-"Все още няма добавени измервания на теглото — не може да се създаде празен "
-"файл за изнасяне!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:331
 msgid "Can’t parse encrypted backup without encryption key!"
@@ -859,41 +880,36 @@ msgstr ""
 "Данните не може да се дешифрират. Сигурни ли сте, че използвате правилния "
 "ключ?"
 
+#: src/sync/csv.rs:369
+msgid "No activities added yet; can’t create empty export!"
+msgstr ""
+"Все още няма добавени упражнения — не може да се създаде празен файл за "
+"изнасяне!"
+
+#: src/sync/csv.rs:387
+msgid "No weight measurements added yet; can’t create empty export!"
+msgstr ""
+"Все още няма добавени измервания на теглото — не може да се създаде празен "
+"файл за изнасяне!"
+
 #: src/sync/database_receiver.rs:47
+#, rust-format
 msgid "Couldn’t synchronize steps due to error {}"
 msgstr "Крачките не може да се синхронизират поради грешка: {}"
 
 #: src/sync/database_receiver.rs:61
+#, rust-format
 msgid "Couldn’t synchronize weight measurements due to error {}"
 msgstr "Измерванията на теглото не може да се синхронизират поради грешка: {}"
 
-#: src/sync/google_fit.rs:211
-msgid "CRSF Verification failed, got {}, expected {}"
-msgstr "Неуспешна проверка за CRSF, получи се {}, а се очаква {}"
-
-#: src/sync/google_fit.rs:227
-msgid "Requesting OAuth2 token failed due to error {}"
-msgstr "Заявката за жетон OAuth2 е неуспешна поради грешка: {}"
-
-#: src/sync/sync_provider.rs:110
-msgid ""
-"Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
-"authenticate with your sync provider."
-msgstr ""
-"Жетонът OAuth2 не може да се получи, когато не е зададен жетон за "
-"опресняване! Удостоверете наново с услугата си за синхронизация."
-
 #: src/sync/sync_provider.rs:166
+#, rust-format
 msgid "Token for Health sync provider {}"
 msgstr "Жетон за услугата {} за синхронизация на „Здраве“"
 
 #: src/sync/sync_provider.rs:225
 msgid "Successfully authenticated, please return to Health."
 msgstr "Удостоверяването е успешно, върнете се към „Здраве“."
-
-#: src/sync/sync_provider.rs:236
-msgid "Couldn’t parse OAuth2 response"
-msgstr "Отговорът за OAuth2 не може да се разчете"
 
 #: src/views/bar_graph_view.rs:569
 msgid "Enter weight record to calculate idle calories"
@@ -908,6 +924,7 @@ msgid "Activity"
 msgstr "Упражнение"
 
 #: src/widgets/activity_row.rs:68
+#, rust-format
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} от {} минута"
@@ -930,18 +947,21 @@ msgid "Minimum heart rate"
 msgstr "Минимална сърдечна честота"
 
 #: src/widgets/activity_row.rs:115
+#, rust-format
 msgid "{} meter"
 msgid_plural "{} meters"
 msgstr[0] "{} метър"
 msgstr[1] "{} метра"
 
 #: src/widgets/activity_row.rs:118
+#, rust-format
 msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} ярд"
 msgstr[1] "{} ярда"
 
 #: src/widgets/bmi_level_bar.rs:256
+#, rust-format
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Текущ ИТМ: {}</small>"
 
@@ -1027,11 +1047,6 @@ msgstr "Упражнения.csv.encrypted"
 msgid "Activities.csv"
 msgstr "Упражнения.csv"
 
-#: src/windows/export_dialog.rs:79 src/windows/export_dialog.rs:121
-#: src/windows/import_dialog.rs:72 src/windows/import_dialog.rs:107
-msgid "No file selected."
-msgstr "Няма избран файл."
-
 #: src/windows/export_dialog.rs:93
 msgid "Save Weight Measurement"
 msgstr "Запазване на измерването на теглото"
@@ -1091,5 +1106,6 @@ msgid "An error occurred!"
 msgstr "Възникна грешка!"
 
 #: src/windows/window.rs:257
+#, rust-format
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Данните за Google Fit не може да се синхронизират поради грешка: {}"
