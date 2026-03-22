@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: health master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
 "POT-Creation-Date: 2025-04-30 12:51+0000\n"
-"PO-Revision-Date: 2026-03-03 21:22+0100\n"
+"PO-Revision-Date: 2026-03-22 11:58+0100\n"
 "Last-Translator: Guillaume Bernard <associations@guillaume-bernard.fr>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: fr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -316,7 +316,7 @@ msgstr "Objectif de pas"
 
 #: data/ui/preferences_dialog.blp:177
 msgid "7,500 steps per day are recommended."
-msgstr "Il est recommandé de faire 7 500 pas par jour."
+msgstr "Il est recommandé de faire 7 500 pas par jour."
 
 #: data/ui/preferences_dialog.blp:190 data/ui/preferences_dialog.blp:193
 msgid "Weight Goal"
@@ -392,7 +392,7 @@ msgstr "Veuillez saisir votre objectif de pas quotidien."
 
 #: data/ui/setup_window.blp:236
 msgid "The WHO recommends 7.500 steps per day."
-msgstr "L’OMS recommande 7 500 pas par jour."
+msgstr "L’OMS recommande 7 500 pas par jour."
 
 #: data/ui/setup_window.blp:286
 msgid "Please enter your weight goal."
@@ -703,13 +703,11 @@ msgstr[0] "{} pas sur {}"
 msgstr[1] "{} pas sur {}"
 
 #: src/plugins/steps/summary.rs:111
-#, fuzzy, rust-format
-#| msgid "{} step on {}"
-#| msgid_plural "{} steps on {}"
+#, rust-format
 msgid "{} step"
 msgid_plural "{} steps"
-msgstr[0] "{} pas sur {}"
-msgstr[1] "{} pas sur {}"
+msgstr[0] "{} pas"
+msgstr[1] "{} pas"
 
 #: src/plugins/steps/summary.rs:122
 #, rust-format
@@ -732,16 +730,16 @@ msgstr "IMC actuel : {}"
 #, rust-format
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
-msgstr[0] "{} livre le {}"
-msgstr[1] "{} livres le {}"
+msgstr[0] "{} livre le {}"
+msgstr[1] "{} livres le {}"
 
 #. TRANSLATORS: Weight X on date Y
 #: src/plugins/weight/details.rs:218
 #, rust-format
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
-msgstr[0] "{} kilogramme le {}"
-msgstr[1] "{} kilogrammes le {}"
+msgstr[0] "{} kilogramme le {}"
+msgstr[1] "{} kilogrammes le {}"
 
 #: src/plugins/weight/details.rs:259 src/plugins/weight/details.rs:264
 msgid "Unknown BMI"
@@ -756,10 +754,10 @@ msgid_plural ""
 "Your weight goal is {} pounds. Add a first weight measurement to see how "
 "close you are to reaching it."
 msgstr[0] ""
-"Votre objectif de poids est de {} livre. Ajoutez une première mesure de "
+"Votre objectif de poids est de {} livre. Ajoutez une première mesure de "
 "poids pour voir à quel point vous êtes près de l’atteindre."
 msgstr[1] ""
-"Votre objectif de poids est de {} livres. Ajoutez une première mesure de "
+"Votre objectif de poids est de {} livres. Ajoutez une première mesure de "
 "poids pour voir à quel point vous êtes près de l’atteindre."
 
 #: src/plugins/weight/details.rs:289
@@ -771,10 +769,10 @@ msgid_plural ""
 "Your weight goal is {} kilograms. Add a first weight measurement to see how "
 "close you are to reaching it."
 msgstr[0] ""
-"Votre objectif de poids est de {} kilogramme. Ajoutez une première mesure de "
+"Votre objectif de poids est de {} kilogramme. Ajoutez une première mesure de "
 "poids pour voir à quel point vous êtes près de l’atteindre."
 msgstr[1] ""
-"Votre objectif de poids est de {} kilogrammes. Ajoutez une première mesure "
+"Votre objectif de poids est de {} kilogrammes. Ajoutez une première mesure "
 "de poids pour voir à quel point vous êtes près de l’atteindre."
 
 #: src/plugins/weight/details.rs:298
@@ -785,29 +783,29 @@ msgstr "Vous avez atteint votre objectif de poids. Bravo !"
 #, rust-format
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
-msgstr[0] "Votre objectif de poids est {} livre."
-msgstr[1] "Votre objectif de poids est {} livres."
+msgstr[0] "Votre objectif de poids est {} livre."
+msgstr[1] "Votre objectif de poids est {} livres."
 
 #: src/plugins/weight/details.rs:319
 #, rust-format
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
-msgstr[0] "Il vous reste {} livre pour l’atteindre."
-msgstr[1] "Il vous reste {} livres pour l’atteindre."
+msgstr[0] "Il vous reste {} livre pour l’atteindre."
+msgstr[1] "Il vous reste {} livres pour l’atteindre."
 
 #: src/plugins/weight/details.rs:326
 #, rust-format
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
-msgstr[0] "Votre objectif de poids est {} kilogramme."
-msgstr[1] "Votre objectif de poids est {} kilogrammes."
+msgstr[0] "Votre objectif de poids est {} kilogramme."
+msgstr[1] "Votre objectif de poids est {} kilogrammes."
 
 #: src/plugins/weight/details.rs:332
 #, rust-format
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
-msgstr[0] "Il vous reste {} kilogramme pour l’atteindre."
-msgstr[1] "Il vous reste  {} kilogrammes pour l’atteindre."
+msgstr[0] "Il vous reste {} kilogramme pour l’atteindre."
+msgstr[1] "Il vous reste {} kilogrammes pour l’atteindre."
 
 #: src/plugins/weight/details.rs:342
 msgid "No weight goal set yet. You can set it in Health’s preferences."
@@ -819,41 +817,35 @@ msgstr ""
 #, rust-format
 msgid "{} pound"
 msgid_plural "{} pounds"
-msgstr[0] "{} livre"
-msgstr[1] "{} livres"
+msgstr[0] "{} livre"
+msgstr[1] "{} livres"
 
 #. TRANSLATORS: Current user weight. kg is short for kilograms
 #: src/plugins/weight/summary.rs:142
-#, fuzzy, rust-format
-#| msgid "{} kilogram"
-#| msgid_plural "{} kilograms"
+#, rust-format
 msgid "{} kg"
-msgstr "{} kilogramme"
+msgstr "{} kg"
 
 #: src/plugins/weight/summary.rs:149
-#, fuzzy, rust-format
-#| msgid "{} pound"
-#| msgid_plural "{} pounds"
+#, rust-format
 msgid "+ {} pound"
 msgid_plural "+ {} pounds"
-msgstr[0] "{} livre"
-msgstr[1] "{} livres"
+msgstr[0] "+ {} livre"
+msgstr[1] "+ {} livres"
 
 #: src/plugins/weight/summary.rs:157
-#, fuzzy, rust-format
-#| msgid "{} kilogram"
-#| msgid_plural "{} kilograms"
+#, rust-format
 msgid "+ {} kilogram"
 msgid_plural "+ {} kilograms"
-msgstr[0] "{} kilogramme"
-msgstr[1] "{} kilogrammes"
+msgstr[0] "+ {} kilogramme"
+msgstr[1] "+ {} kilogrammes"
 
 #: src/plugins/weight/summary.rs:178
 #, rust-format
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
-msgstr[0] "{} kilogramme"
-msgstr[1] "{} kilogrammes"
+msgstr[0] "{} kilogramme"
+msgstr[1] "{} kilogrammes"
 
 #: src/plugins/weight/summary.rs:186
 msgid "No change in weight"
@@ -953,15 +945,15 @@ msgstr "Fréquence cardiaque minimale"
 #, rust-format
 msgid "{} meter"
 msgid_plural "{} meters"
-msgstr[0] "{} mètre"
-msgstr[1] "{} mètres"
+msgstr[0] "{} mètre"
+msgstr[1] "{} mètres"
 
 #: src/widgets/activity_row.rs:118
 #, rust-format
 msgid "{} yard"
 msgid_plural "{} yards"
-msgstr[0] "{} verge"
-msgstr[1] "{} verges"
+msgstr[0] "{} verge"
+msgstr[1] "{} verges"
 
 #: src/widgets/bmi_level_bar.rs:256
 #, rust-format
