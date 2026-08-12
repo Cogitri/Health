@@ -1,14 +1,15 @@
 # Persian translation for health.
 # Copyright (C) 2024 health's COPYRIGHT HOLDER
 # This file is distributed under the same license as the health package.
-# SPDX-FileCopyrightText: 2024 Sohrab Behdani <behdanisohrab@gmail.com>
+# Sohrab Behdani <behdanisohrab@gmail.com>,  2024.
+# Danial Behzadi <dani.behzi@ubuntu.com>,  2025-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2025-05-10 19:52+0000\n"
-"PO-Revision-Date: 2025-05-18 18:01+0330\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues/\n"
+"POT-Creation-Date: 2025-04-30 12:51+0000\n"
+"PO-Revision-Date: 2026-08-13 03:20+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <kde-i18n-doc@kde.org>\n"
 "Language: fa\n"
@@ -16,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.9\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -90,16 +91,21 @@ msgstr "پهنای پنجره"
 msgid "Active user ID"
 msgstr "شناسهٔ کاربر فعّال"
 
-#: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
-#: data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.Autostart.desktop.in.in:2
+#: data/dev.Cogitri.Health.desktop.in.in:2
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:10 data/ui/view_home_page.blp:61
 #: data/ui/window.blp:5 src/main.rs:35
 msgid "Health"
 msgstr "سلامتی"
 
-#: data/dev.Cogitri.Health.desktop.in.in:9
+#: data/dev.Cogitri.Health.desktop.in.in:8
 msgid "health;fitness;"
 msgstr "health;fitness;سلامتی;آمادگی‌جسمانی;"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:5
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:7
+msgid "Rasmus “Cogitri” Thomsen"
+msgstr "راموس Cogitri تامسن"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
 msgid "Track your fitness goals"
@@ -401,7 +407,7 @@ msgstr "سازمان بهداشت جهانی تودهٔ بدنی‌ای بین �
 msgid "Current weight"
 msgstr "وزن کنونی"
 
-#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:249
+#: data/ui/setup_window.blp:342
 msgid "Current BMI"
 msgstr "تودهٔ بدنی کنونی"
 
@@ -607,6 +613,7 @@ msgid "Health: walking reminder"
 msgstr "سلامتی: یادآور پیاده‌روی"
 
 #: src/model/model_notification.rs:233
+#, rust-format
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "{} قدم تا رسیدن به هدف روزانه‌تان."
@@ -618,10 +625,12 @@ msgstr "فعّالیت‌ها"
 
 #. Translators: min is short for Minutes active today. Example: "64 min"
 #: src/plugins/activities/summary.rs:106
+#, rust-format
 msgid "{} min"
 msgstr "{} دقیقه"
 
 #: src/plugins/calories/details.rs:218
+#, rust-format
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -641,10 +650,12 @@ msgstr[1] ""
 
 #. Translators: cal is short for calories burned today. Example: "2666 cal"
 #: src/plugins/calories/summary.rs:116 src/plugins/calories/summary.rs:119
+#, rust-format
 msgid "{} cal"
 msgstr "{} کالری"
 
 #: src/plugins/steps/details.rs:185
+#, rust-format
 msgid "Today’s steps: {}"
 msgstr "قدم‌های امروز: {}"
 
@@ -654,6 +665,7 @@ msgstr ""
 "هیچ رکوردی وجود ندارد. در طی چندروز به هدف خود برسید تا یک رکورد را شروع کنید!"
 
 #: src/plugins/steps/details.rs:208
+#, rust-format
 msgid "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
 "You’re on a streak for {} days. Reach your step goal today to continue it!"
@@ -665,6 +677,7 @@ msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr "به قدم هدف امروزتان رسیدید. برای آغزا رکوردی جدید ادامه دهید!"
 
 #: src/plugins/steps/details.rs:219
+#, rust-format
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "برای {} روز روی رکورد هستید. آفرین!"
@@ -672,18 +685,21 @@ msgstr[1] "برای {} روز روی رکورد هستید. آفرین!"
 
 #. TRANSLATORS: X step(s) on DATE
 #: src/plugins/steps/details.rs:236
+#, rust-format
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} قدم در {}"
 msgstr[1] "{} قدم در {}"
 
 #: src/plugins/steps/summary.rs:111
+#, rust-format
 msgid "{} step"
 msgid_plural "{} steps"
 msgstr[0] "{} گام"
 msgstr[1] "{} گام"
 
 #: src/plugins/steps/summary.rs:122
+#, rust-format
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "به {} درصد از هدف امروزتان رسیدید"
@@ -694,11 +710,13 @@ msgid "Well done! You have reached your daily step goal!"
 msgstr "آفرین! به هدف روزانه‌تان رسیدید!"
 
 #: src/plugins/weight/details.rs:200
+#, rust-format
 msgid "Current BMI: {}"
 msgstr "تودهٔ بدنی کنونی: {}"
 
 #. TRANSLATORS: Weight X on date Y
 #: src/plugins/weight/details.rs:215
+#, rust-format
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} پوند در {}"
@@ -706,6 +724,7 @@ msgstr[1] "{} پوند در {}"
 
 #. TRANSLATORS: Weight X on date Y
 #: src/plugins/weight/details.rs:218
+#, rust-format
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} کیلوگرم در {}"
@@ -716,6 +735,7 @@ msgid "Unknown BMI"
 msgstr "تودهٔ بدنی نامعلوم"
 
 #: src/plugins/weight/details.rs:282
+#, rust-format
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how close you "
 "are to reaching it."
@@ -728,6 +748,7 @@ msgstr[1] ""
 "وزن هدفتان {} پوند است. برای دیدن مقدار نزدیکیتان به هدف، وزن‌کشی نخست را بیفزایید."
 
 #: src/plugins/weight/details.rs:289
+#, rust-format
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how close "
 "you are to reaching it."
@@ -746,24 +767,28 @@ msgid "You’ve reached your weight goal. Great job!"
 msgstr "به وزن هدفتان رسیدید. آفرین!"
 
 #: src/plugins/weight/details.rs:314
+#, rust-format
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "وزن هدفتان {} پوند است."
 msgstr[1] "وزن هدفتان {} پوند است."
 
 #: src/plugins/weight/details.rs:319
+#, rust-format
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "{} پوند مانده تا به آن برسید."
 msgstr[1] "{} پوند مانده تا به آن برسید."
 
 #: src/plugins/weight/details.rs:326
+#, rust-format
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "وزن هدفتان {} کلیوگرم است."
 msgstr[1] "وزن هدفتان {} کلیوگرم است."
 
 #: src/plugins/weight/details.rs:332
+#, rust-format
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "برای رسیدن به هدف {} کیلوگرم اضافه دارید"
@@ -774,6 +799,7 @@ msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr "هنوز هیچ وزن هدفی تنظیم نشده. می‌توانید در ترجیحات سلامتی تنظیمش کنید."
 
 #: src/plugins/weight/summary.rs:135 src/plugins/weight/summary.rs:169
+#, rust-format
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} پوند"
@@ -781,22 +807,26 @@ msgstr[1] "{} پوند"
 
 #. TRANSLATORS: Current user weight. kg is short for kilograms
 #: src/plugins/weight/summary.rs:142
+#, rust-format
 msgid "{} kg"
 msgstr "{} ک‌گ"
 
 #: src/plugins/weight/summary.rs:149
+#, rust-format
 msgid "+ {} pound"
 msgid_plural "+ {} pounds"
 msgstr[0] "+ {} پوند"
 msgstr[1] "+ {} پوند"
 
 #: src/plugins/weight/summary.rs:157
+#, rust-format
 msgid "+ {} kilogram"
 msgid_plural "+ {} kilograms"
 msgstr[0] "+ {} کیلوگرم"
 msgstr[1] "+ {} کیلوگرم"
 
 #: src/plugins/weight/summary.rs:178
+#, rust-format
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} کیلوگرم"
@@ -809,14 +839,6 @@ msgstr "بدون تغییر در وزن"
 #: src/plugins/weight/summary.rs:191
 msgid "No weight data available"
 msgstr "هیچ دادهٔ وزنی‌ای موجود نیست"
-
-#: src/sync/csv.rs:81 src/sync/csv.rs:369
-msgid "No activities added yet; can’t create empty export!"
-msgstr "هنوز هیچ فعّالیتی اضافه نشده. نمی‌توان برون‌ریزی خالی ایجاد کرد!"
-
-#: src/sync/csv.rs:111 src/sync/csv.rs:387
-msgid "No weight measurements added yet; can’t create empty export!"
-msgstr "هنوز هیچ وزن‌کشی‌ای اضافه نشده. نمی‌توان برون‌ریزی خالی ایجاد کرد!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:331
 msgid "Can’t parse encrypted backup without encryption key!"
@@ -835,41 +857,32 @@ msgid "Couldn’t decrypt data. Are you sure you’re using the right key?"
 msgstr ""
 "نتوانست داده‌ها را رمزگشایی کند. مطمئنید که دارید از کلید درست استفاده می‌کنید؟"
 
+#: src/sync/csv.rs:369
+msgid "No activities added yet; can’t create empty export!"
+msgstr "هنوز هیچ فعّالیتی اضافه نشده. نمی‌توان برون‌ریزی خالی ایجاد کرد!"
+
+#: src/sync/csv.rs:387
+msgid "No weight measurements added yet; can’t create empty export!"
+msgstr "هنوز هیچ وزن‌کشی‌ای اضافه نشده. نمی‌توان برون‌ریزی خالی ایجاد کرد!"
+
 #: src/sync/database_receiver.rs:47
+#, rust-format
 msgid "Couldn’t synchronize steps due to error {}"
 msgstr "به خاطر خطا نتوانست قدم‌ها را هم‌گام کند: {}"
 
 #: src/sync/database_receiver.rs:61
+#, rust-format
 msgid "Couldn’t synchronize weight measurements due to error {}"
 msgstr "به خاطر خطا نتوانست وزن‌کشی‌ها را هم‌گام کند: {}"
 
-#: src/sync/google_fit.rs:211
-msgid "CRSF Verification failed, got {}, expected {}"
-msgstr "صحت‌سنجی CRSF شکست خورد. {} دریافت شد، انتظار {} می‌رفت"
-
-#: src/sync/google_fit.rs:227
-msgid "Requesting OAuth2 token failed due to error {}"
-msgstr "به خاطر خطا درخواست ژتون OAuth2 شکست خورد: {}"
-
-#: src/sync/sync_provider.rs:110
-msgid ""
-"Can’t retrieve OAuth2 token when no refresh token is set! Please re-authenticate "
-"with your sync provider."
-msgstr ""
-"هنگامی که ژتون نوسازی تنظیم نشده باشد نمی‌توان ژتون OAuth2 را بازیابی کرد! لطفا "
-"دوباره با فراهم کنندهٔ هم‌گام سازیتان احراز هویت کنید."
-
 #: src/sync/sync_provider.rs:166
+#, rust-format
 msgid "Token for Health sync provider {}"
 msgstr "ژتون برای فراهم کنندهٔ هم‌گام سازی سلامتی {}"
 
 #: src/sync/sync_provider.rs:225
 msgid "Successfully authenticated, please return to Health."
 msgstr "با موفقیت هویت‌سنجی شد. لطفاً به سلامتی بازگردید."
-
-#: src/sync/sync_provider.rs:236
-msgid "Couldn’t parse OAuth2 response"
-msgstr "نتوانست پاسخ OAuth2 را تجزیه کند"
 
 #: src/views/bar_graph_view.rs:569
 msgid "Enter weight record to calculate idle calories"
@@ -884,6 +897,7 @@ msgid "Activity"
 msgstr "فعّالیت"
 
 #: src/widgets/activity_row.rs:68
+#, rust-format
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} برای {} دقیقه"
@@ -906,18 +920,21 @@ msgid "Minimum heart rate"
 msgstr "کمینهٔ ضربان قلب"
 
 #: src/widgets/activity_row.rs:115
+#, rust-format
 msgid "{} meter"
 msgid_plural "{} meters"
 msgstr[0] "{} متر"
 msgstr[1] "{} متر"
 
 #: src/widgets/activity_row.rs:118
+#, rust-format
 msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} یارد"
 msgstr[1] "{} یارد"
 
 #: src/widgets/bmi_level_bar.rs:256
+#, rust-format
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>تودهٔ بدنی کنونی: {}</small>"
 
@@ -1003,11 +1020,6 @@ msgstr "فعّالیت‌ها.csv.encrypted"
 msgid "Activities.csv"
 msgstr "فعّالیت‌ها.csv"
 
-#: src/windows/export_dialog.rs:79 src/windows/export_dialog.rs:121
-#: src/windows/import_dialog.rs:72 src/windows/import_dialog.rs:107
-msgid "No file selected."
-msgstr "هیچ پرونده‌ای گزیده نشده."
-
 #: src/windows/export_dialog.rs:93
 msgid "Save Weight Measurement"
 msgstr "ذخیرهٔ وزن‌کشی"
@@ -1067,8 +1079,28 @@ msgid "An error occurred!"
 msgstr "خطایی رخ داد!"
 
 #: src/windows/window.rs:257
+#, rust-format
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "به خاطر خطا نتوانست با فیت گوگل هم‌گام شود: {}"
+
+#~ msgid "CRSF Verification failed, got {}, expected {}"
+#~ msgstr "صحت‌سنجی CRSF شکست خورد. {} دریافت شد، انتظار {} می‌رفت"
+
+#~ msgid "Requesting OAuth2 token failed due to error {}"
+#~ msgstr "به خاطر خطا درخواست ژتون OAuth2 شکست خورد: {}"
+
+#~ msgid ""
+#~ "Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
+#~ "authenticate with your sync provider."
+#~ msgstr ""
+#~ "هنگامی که ژتون نوسازی تنظیم نشده باشد نمی‌توان ژتون OAuth2 را بازیابی کرد! لطفا "
+#~ "دوباره با فراهم کنندهٔ هم‌گام سازیتان احراز هویت کنید."
+
+#~ msgid "Couldn’t parse OAuth2 response"
+#~ msgstr "نتوانست پاسخ OAuth2 را تجزیه کند"
+
+#~ msgid "No file selected."
+#~ msgstr "هیچ پرونده‌ای گزیده نشده."
 
 #~ msgid "_Cancel"
 #~ msgstr "_لغو"
