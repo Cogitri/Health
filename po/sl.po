@@ -8,19 +8,19 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2025-05-10 19:52+0000\n"
-"PO-Revision-Date: 2025-05-11 09:53+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues/\n"
+"POT-Creation-Date: 2025-04-30 12:51+0000\n"
+"PO-Revision-Date: 2026-08-12 21:37+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
-"%100==4 ? 3 : 0);\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || "
+"n%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.2.1\n"
+"X-Generator: Poedit 3.8\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -94,16 +94,21 @@ msgstr "Širina okna"
 msgid "Active user ID"
 msgstr "ID aktivnega uporabnika"
 
-#: data/dev.Cogitri.Health.Autostart.desktop.in.in:3
-#: data/dev.Cogitri.Health.desktop.in.in:3
+#: data/dev.Cogitri.Health.Autostart.desktop.in.in:2
+#: data/dev.Cogitri.Health.desktop.in.in:2
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:10 data/ui/view_home_page.blp:61
 #: data/ui/window.blp:5 src/main.rs:35
 msgid "Health"
 msgstr "Zdravje"
 
-#: data/dev.Cogitri.Health.desktop.in.in:9
+#: data/dev.Cogitri.Health.desktop.in.in:8
 msgid "health;fitness;"
 msgstr "zdravje;fitnes;"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:5
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:7
+msgid "Rasmus “Cogitri” Thomsen"
+msgstr "Rasmus “Cogitri” Thomsen"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
 msgid "Track your fitness goals"
@@ -409,7 +414,7 @@ msgstr "Svetovna zdravstvena organizacija priporoča ITM med 18,5 in 24,9."
 msgid "Current weight"
 msgstr "Trenutna telesna masa"
 
-#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:249
+#: data/ui/setup_window.blp:342
 msgid "Current BMI"
 msgstr "Trenutni ITM"
 
@@ -617,6 +622,7 @@ msgid "Health: walking reminder"
 msgstr "Zdravje: opomnik za hojo"
 
 #: src/model/model_notification.rs:233
+#, rust-format
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "Za dokončanje dnevnega cilja je treba narediti še {} korakov."
@@ -630,10 +636,12 @@ msgstr "Dejavnosti"
 
 #. Translators: min is short for Minutes active today. Example: "64 min"
 #: src/plugins/activities/summary.rs:106
+#, rust-format
 msgid "{} min"
 msgstr "{} min"
 
 #: src/plugins/calories/details.rs:218
+#, rust-format
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -661,10 +669,12 @@ msgstr[3] ""
 
 #. Translators: cal is short for calories burned today. Example: "2666 cal"
 #: src/plugins/calories/summary.rs:116 src/plugins/calories/summary.rs:119
+#, rust-format
 msgid "{} cal"
 msgstr "{} kal"
 
 #: src/plugins/steps/details.rs:185
+#, rust-format
 msgid "Today’s steps: {}"
 msgstr "Današnje število korakov: {}"
 
@@ -676,6 +686,7 @@ msgstr ""
 "več dni zapored!"
 
 #: src/plugins/steps/details.rs:208
+#, rust-format
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -700,6 +711,7 @@ msgstr ""
 "postane navada!"
 
 #: src/plugins/steps/details.rs:219
+#, rust-format
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "Vztrajate neprestano že {} dni. Odlično!"
@@ -709,6 +721,7 @@ msgstr[3] "Vztrajate neprestano že {} dni. Odlično!"
 
 #. TRANSLATORS: X step(s) on DATE
 #: src/plugins/steps/details.rs:236
+#, rust-format
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} korakov {}"
@@ -717,6 +730,7 @@ msgstr[2] "{} koraka {}"
 msgstr[3] "{} koraki {}"
 
 #: src/plugins/steps/summary.rs:111
+#, rust-format
 msgid "{} step"
 msgid_plural "{} steps"
 msgstr[0] "{} korakov"
@@ -725,6 +739,7 @@ msgstr[2] "{} koraka"
 msgstr[3] "{} koraki"
 
 #: src/plugins/steps/summary.rs:122
+#, rust-format
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Doseženih je {} odstotkov cilja dnevno opravljenih korakov."
@@ -737,11 +752,13 @@ msgid "Well done! You have reached your daily step goal!"
 msgstr "Zelo dobro! Dosegli ste cilj opravljenih dnevnih korakov!"
 
 #: src/plugins/weight/details.rs:200
+#, rust-format
 msgid "Current BMI: {}"
 msgstr "Trenutni ITM: {}"
 
 #. TRANSLATORS: Weight X on date Y
 #: src/plugins/weight/details.rs:215
+#, rust-format
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} funtov na {}"
@@ -751,6 +768,7 @@ msgstr[3] "{} funti na {}"
 
 #. TRANSLATORS: Weight X on date Y
 #: src/plugins/weight/details.rs:218
+#, rust-format
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogramov na {}"
@@ -763,6 +781,7 @@ msgid "Unknown BMI"
 msgstr "Neznan ITM"
 
 #: src/plugins/weight/details.rs:282
+#, rust-format
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -783,6 +802,7 @@ msgstr[3] ""
 "mase in spremljajte napredek."
 
 #: src/plugins/weight/details.rs:289
+#, rust-format
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -807,6 +827,7 @@ msgid "You’ve reached your weight goal. Great job!"
 msgstr "Dosegli ste ciljno težo! Čestitke!"
 
 #: src/plugins/weight/details.rs:314
+#, rust-format
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "Ciljna telesna masa je {} funtov,"
@@ -815,6 +836,7 @@ msgstr[2] "Ciljna telesna masa je {} funta,"
 msgstr[3] "Ciljna telesna masa je {} funte,"
 
 #: src/plugins/weight/details.rs:319
+#, rust-format
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "torej jih morate izgubiti še {}."
@@ -823,6 +845,7 @@ msgstr[2] "torej morate izgubiti še {}."
 msgstr[3] "torej morate izgubiti še {}."
 
 #: src/plugins/weight/details.rs:326
+#, rust-format
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "Ciljna telesna masa je {} kilogramov,"
@@ -831,6 +854,7 @@ msgstr[2] "Ciljna telesna masa je {} kilograma,"
 msgstr[3] "Ciljna telesna masa je {} kilograme,"
 
 #: src/plugins/weight/details.rs:332
+#, rust-format
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "torej jih morate izgubiti še {}."
@@ -844,6 +868,7 @@ msgstr ""
 "Ni še nastavljenega cilja telesne mase. Določite ga med nastavitvami zdravja."
 
 #: src/plugins/weight/summary.rs:135 src/plugins/weight/summary.rs:169
+#, rust-format
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} funtov"
@@ -853,10 +878,12 @@ msgstr[3] "+ {} funti"
 
 #. TRANSLATORS: Current user weight. kg is short for kilograms
 #: src/plugins/weight/summary.rs:142
+#, rust-format
 msgid "{} kg"
 msgstr "{} kg"
 
 #: src/plugins/weight/summary.rs:149
+#, rust-format
 msgid "+ {} pound"
 msgid_plural "+ {} pounds"
 msgstr[0] "+ {} funtov"
@@ -865,6 +892,7 @@ msgstr[2] "+ {} funta"
 msgstr[3] "+ {} funte"
 
 #: src/plugins/weight/summary.rs:157
+#, rust-format
 msgid "+ {} kilogram"
 msgid_plural "+ {} kilograms"
 msgstr[0] "+ {} kilogramov"
@@ -873,6 +901,7 @@ msgstr[2] "+ {} kilograma"
 msgstr[3] "+ {} kilograme"
 
 #: src/plugins/weight/summary.rs:178
+#, rust-format
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} kilogramov"
@@ -887,16 +916,6 @@ msgstr "Ni spremembe telesne mase"
 #: src/plugins/weight/summary.rs:191
 msgid "No weight data available"
 msgstr "Ni podatkov telesne mase"
-
-#: src/sync/csv.rs:81 src/sync/csv.rs:369
-msgid "No activities added yet; can’t create empty export!"
-msgstr ""
-"Ni še dodanih dejavnosti in ni mogoče ustvariti prazne datoteke izvoza!"
-
-#: src/sync/csv.rs:111 src/sync/csv.rs:387
-msgid "No weight measurements added yet; can’t create empty export!"
-msgstr ""
-"Ni še vpisanih meritev telesne mase, praznega izvoza pa ni mogoče izvesti!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:331
 msgid "Can’t parse encrypted backup without encryption key!"
@@ -917,32 +936,28 @@ msgstr ""
 "Podatkov ni mogoče odšifrirati. Ali ste prepričani, da uporabljate ustrezen "
 "šifrirni ključ?"
 
+#: src/sync/csv.rs:369
+msgid "No activities added yet; can’t create empty export!"
+msgstr ""
+"Ni še dodanih dejavnosti in ni mogoče ustvariti prazne datoteke izvoza!"
+
+#: src/sync/csv.rs:387
+msgid "No weight measurements added yet; can’t create empty export!"
+msgstr ""
+"Ni še vpisanih meritev telesne mase, praznega izvoza pa ni mogoče izvesti!"
+
 #: src/sync/database_receiver.rs:47
+#, rust-format
 msgid "Couldn’t synchronize steps due to error {}"
 msgstr "Zaradi napake {} ni mogoče uskladiti podatkov korakov"
 
 #: src/sync/database_receiver.rs:61
+#, rust-format
 msgid "Couldn’t synchronize weight measurements due to error {}"
 msgstr "Zaradi napake {} ni mogoče uskladiti podatkov meritev telesne mase"
 
-#: src/sync/google_fit.rs:211
-msgid "CRSF Verification failed, got {}, expected {}"
-msgstr ""
-"Overite CRSF je spodletela. Pridobljen je odziv {}, pričakovan pa je {}"
-
-#: src/sync/google_fit.rs:227
-msgid "Requesting OAuth2 token failed due to error {}"
-msgstr "Zahteva za pridobivanje žetona OAuth2 je spodletela zaradi napake {}."
-
-#: src/sync/sync_provider.rs:110
-msgid ""
-"Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
-"authenticate with your sync provider."
-msgstr ""
-"Žetona OAuth2 ni mogoče pridobiti, če žeton za osvežitev ni nastavljen! "
-"Ponovno overite račun s ponudnikom usklajevanja."
-
 #: src/sync/sync_provider.rs:166
+#, rust-format
 msgid "Token for Health sync provider {}"
 msgstr "Žeton za ponudnika usklajevanja Zdravja {}"
 
@@ -950,10 +965,6 @@ msgstr "Žeton za ponudnika usklajevanja Zdravja {}"
 msgid "Successfully authenticated, please return to Health."
 msgstr ""
 "Opravilo je uspešno overjeno in je mogoče nadaljevanje dela s programom."
-
-#: src/sync/sync_provider.rs:236
-msgid "Couldn’t parse OAuth2 response"
-msgstr "Ni mogoče razčleniti odziva OAuth2"
 
 #: src/views/bar_graph_view.rs:569
 msgid "Enter weight record to calculate idle calories"
@@ -968,6 +979,7 @@ msgid "Activity"
 msgstr "Dejavnosti"
 
 #: src/widgets/activity_row.rs:68
+#, rust-format
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{} za {} minut"
@@ -992,6 +1004,7 @@ msgid "Minimum heart rate"
 msgstr "Najpočasnejši srčni utrip"
 
 #: src/widgets/activity_row.rs:115
+#, rust-format
 msgid "{} meter"
 msgid_plural "{} meters"
 msgstr[0] "{} metrov"
@@ -1000,6 +1013,7 @@ msgstr[2] "{} metra"
 msgstr[3] "{} metre"
 
 #: src/widgets/activity_row.rs:118
+#, rust-format
 msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} jardov"
@@ -1008,6 +1022,7 @@ msgstr[2] "{} jarda"
 msgstr[3] "{} jarde"
 
 #: src/widgets/bmi_level_bar.rs:256
+#, rust-format
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Trenutni ITM: {}</small>"
 
@@ -1093,11 +1108,6 @@ msgstr "dejavnosti.csv.encrypted"
 msgid "Activities.csv"
 msgstr "dejavnosti.csv"
 
-#: src/windows/export_dialog.rs:79 src/windows/export_dialog.rs:121
-#: src/windows/import_dialog.rs:72 src/windows/import_dialog.rs:107
-msgid "No file selected."
-msgstr "Izbrana ni nobena datoteka."
-
 #: src/windows/export_dialog.rs:93
 msgid "Save Weight Measurement"
 msgstr "Shrani meritev telesne mase"
@@ -1157,5 +1167,27 @@ msgid "An error occurred!"
 msgstr "Prišlo je do napake!"
 
 #: src/windows/window.rs:257
+#, rust-format
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Usklajevanje podatkov z Google Fit zaradi napake ni mogoče: {}"
+
+#~ msgid "CRSF Verification failed, got {}, expected {}"
+#~ msgstr ""
+#~ "Overite CRSF je spodletela. Pridobljen je odziv {}, pričakovan pa je {}"
+
+#~ msgid "Requesting OAuth2 token failed due to error {}"
+#~ msgstr ""
+#~ "Zahteva za pridobivanje žetona OAuth2 je spodletela zaradi napake {}."
+
+#~ msgid ""
+#~ "Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
+#~ "authenticate with your sync provider."
+#~ msgstr ""
+#~ "Žetona OAuth2 ni mogoče pridobiti, če žeton za osvežitev ni nastavljen! "
+#~ "Ponovno overite račun s ponudnikom usklajevanja."
+
+#~ msgid "Couldn’t parse OAuth2 response"
+#~ msgstr "Ni mogoče razčleniti odziva OAuth2"
+
+#~ msgid "No file selected."
+#~ msgstr "Izbrana ni nobena datoteka."
