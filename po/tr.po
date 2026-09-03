@@ -8,9 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Health master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
-"POT-Creation-Date: 2025-08-10 21:32+0000\n"
-"PO-Revision-Date: 2025-05-11 08:00+0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues/\n"
+"POT-Creation-Date: 2025-04-30 12:51+0000\n"
+"PO-Revision-Date: 2026-09-03 23:26+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Türkçe <takim@gnome.org.tr>\n"
 "Language: tr\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.9\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -102,6 +102,11 @@ msgstr "Sağlık"
 #: data/dev.Cogitri.Health.desktop.in.in:8
 msgid "health;fitness;"
 msgstr "health;fitness;form;sağlık;zindelik;"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:5
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:7
+msgid "Rasmus “Cogitri” Thomsen"
+msgstr "Rasmus “Cogitri” Thomsen"
 
 # Fitness kelimesine uygun çeviri bulamadığım için spor olarak kullandım.
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
@@ -408,7 +413,7 @@ msgstr "Dünya Sağlık Örgütü, 18.5–24.9 arası VKİ önermektedir."
 msgid "Current weight"
 msgstr "Şu anki kilo"
 
-#: data/ui/setup_window.blp:342 src/widgets/bmi_level_bar.rs:249
+#: data/ui/setup_window.blp:342
 msgid "Current BMI"
 msgstr "Geçerli VKİ"
 
@@ -619,6 +624,7 @@ msgid "Health: walking reminder"
 msgstr "Sağlık: yürüyüş anımsatıcı"
 
 #: src/model/model_notification.rs:233
+#, rust-format
 msgid "{} step remaining to complete your daily step goal."
 msgid_plural "{} steps remaining to complete your daily step goal."
 msgstr[0] "Günlük adım hedefinizi bitirmenize {} adım kaldı."
@@ -629,10 +635,12 @@ msgstr "Etkinlikler"
 
 #. Translators: min is short for Minutes active today. Example: "64 min"
 #: src/plugins/activities/summary.rs:106
+#, rust-format
 msgid "{} min"
 msgstr "{} dak"
 
 #: src/plugins/calories/details.rs:218
+#, rust-format
 msgid ""
 "{}:\n"
 "{} calorie\n"
@@ -648,10 +656,12 @@ msgstr[0] ""
 
 #. Translators: cal is short for calories burned today. Example: "2666 cal"
 #: src/plugins/calories/summary.rs:116 src/plugins/calories/summary.rs:119
+#, rust-format
 msgid "{} cal"
 msgstr "{} kal"
 
 #: src/plugins/steps/details.rs:185
+#, rust-format
 msgid "Today’s steps: {}"
 msgstr "Bugünkü adımlar: {}"
 
@@ -663,6 +673,7 @@ msgstr ""
 "ulaşın!"
 
 #: src/plugins/steps/details.rs:208
+#, rust-format
 msgid ""
 "You’re on a streak for {} day. Reach your step goal today to continue it!"
 msgid_plural ""
@@ -674,22 +685,26 @@ msgid "You’ve reached your step goal today. Keep going to start a streak!"
 msgstr "Bugün adım hedefinize ulaştınız. Seri için sürdürün!"
 
 #: src/plugins/steps/details.rs:219
+#, rust-format
 msgid "You’re on a streak for {} day. Good job!"
 msgid_plural "You’re on a streak for {} days. Good job!"
 msgstr[0] "{} gündür seridesin. Başarılar!"
 
 #. TRANSLATORS: X step(s) on DATE
 #: src/plugins/steps/details.rs:236
+#, rust-format
 msgid "{} step on {}"
 msgid_plural "{} steps on {}"
 msgstr[0] "{} adım, {} tarihinde"
 
 #: src/plugins/steps/summary.rs:111
+#, rust-format
 msgid "{} step"
 msgid_plural "{} steps"
 msgstr[0] "{} adım"
 
 #: src/plugins/steps/summary.rs:122
+#, rust-format
 msgid "Reached {} percent of daily step goal"
 msgid_plural "Reached {} percent of daily step goal"
 msgstr[0] "Günlük adım hedefinin yüzde {} bölümüne ulaşıldı"
@@ -700,17 +715,20 @@ msgid "Well done! You have reached your daily step goal!"
 msgstr "Nazar değmesin! Günlük adım hedefinize ulaştınız!"
 
 #: src/plugins/weight/details.rs:200
+#, rust-format
 msgid "Current BMI: {}"
 msgstr "Geçerli VKİ: {}"
 
 #. TRANSLATORS: Weight X on date Y
 #: src/plugins/weight/details.rs:215
+#, rust-format
 msgid "{} pound on {}"
 msgid_plural "{} pounds on {}"
 msgstr[0] "{} pound, {} tarihinde"
 
 #. TRANSLATORS: Weight X on date Y
 #: src/plugins/weight/details.rs:218
+#, rust-format
 msgid "{} kilogram on {}"
 msgid_plural "{} kilograms on {}"
 msgstr[0] "{} kilogram, {} tarihinde"
@@ -720,6 +738,7 @@ msgid "Unknown BMI"
 msgstr "Bilinmeyen VKİ"
 
 #: src/plugins/weight/details.rs:282
+#, rust-format
 msgid ""
 "Your weight goal is {} pound. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -731,6 +750,7 @@ msgstr[0] ""
 "kilo ölçümünü ekleyin."
 
 #: src/plugins/weight/details.rs:289
+#, rust-format
 msgid ""
 "Your weight goal is {} kilogram. Add a first weight measurement to see how "
 "close you are to reaching it."
@@ -746,21 +766,25 @@ msgid "You’ve reached your weight goal. Great job!"
 msgstr "Kilo hedefinize ulaştınız. Harika!"
 
 #: src/plugins/weight/details.rs:314
+#, rust-format
 msgid "Your weight goal is {} pound."
 msgid_plural "Your weight goal is {} pounds."
 msgstr[0] "Kilo hedefiniz {} pound."
 
 #: src/plugins/weight/details.rs:319
+#, rust-format
 msgid "You have {} pound left to reach it."
 msgid_plural "You have {} pounds left to reach it."
 msgstr[0] "Ulaşmanıza {} pound kaldı."
 
 #: src/plugins/weight/details.rs:326
+#, rust-format
 msgid "Your weight goal is {} kilogram."
 msgid_plural "Your weight goal is {} kilograms."
 msgstr[0] "Kilo hedefiniz {} kilogram."
 
 #: src/plugins/weight/details.rs:332
+#, rust-format
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
 msgstr[0] "Ulaşmanıza {} kilogram kaldı."
@@ -770,26 +794,31 @@ msgid "No weight goal set yet. You can set it in Health’s preferences."
 msgstr "Henüz kilo hedefi belirlenmedi. Tercihlerden ayarlanabilir."
 
 #: src/plugins/weight/summary.rs:135 src/plugins/weight/summary.rs:169
+#, rust-format
 msgid "{} pound"
 msgid_plural "{} pounds"
 msgstr[0] "{} pound"
 
 #. TRANSLATORS: Current user weight. kg is short for kilograms
 #: src/plugins/weight/summary.rs:142
+#, rust-format
 msgid "{} kg"
 msgstr "{} kg"
 
 #: src/plugins/weight/summary.rs:149
+#, rust-format
 msgid "+ {} pound"
 msgid_plural "+ {} pounds"
 msgstr[0] "+ {} pound"
 
 #: src/plugins/weight/summary.rs:157
+#, rust-format
 msgid "+ {} kilogram"
 msgid_plural "+ {} kilograms"
 msgstr[0] "+ {} kilogram"
 
 #: src/plugins/weight/summary.rs:178
+#, rust-format
 msgid "{} kilogram"
 msgid_plural "{} kilograms"
 msgstr[0] "{} kilogram"
@@ -801,14 +830,6 @@ msgstr "Kilo değişmemiş"
 #: src/plugins/weight/summary.rs:191
 msgid "No weight data available"
 msgstr "Kilo verisi yok"
-
-#: src/sync/csv.rs:81 src/sync/csv.rs:369
-msgid "No activities added yet; can’t create empty export!"
-msgstr "Etkinlik eklenmemiş; boş dışa aktarma oluşturulamaz!"
-
-#: src/sync/csv.rs:111 src/sync/csv.rs:387
-msgid "No weight measurements added yet; can’t create empty export!"
-msgstr "Kilo ölçümü eklenmemiş; boş dışa aktarma oluşturulamaz!"
 
 #: src/sync/csv.rs:184 src/sync/csv.rs:331
 msgid "Can’t parse encrypted backup without encryption key!"
@@ -827,41 +848,32 @@ msgid "Couldn’t decrypt data. Are you sure you’re using the right key?"
 msgstr ""
 "Verilerin şifresi çözülemedi. Doğru anahtarı kullandığınızdan emin misiniz?"
 
+#: src/sync/csv.rs:369
+msgid "No activities added yet; can’t create empty export!"
+msgstr "Etkinlik eklenmemiş; boş dışa aktarma oluşturulamaz!"
+
+#: src/sync/csv.rs:387
+msgid "No weight measurements added yet; can’t create empty export!"
+msgstr "Kilo ölçümü eklenmemiş; boş dışa aktarma oluşturulamaz!"
+
 #: src/sync/database_receiver.rs:47
+#, rust-format
 msgid "Couldn’t synchronize steps due to error {}"
 msgstr "{} hatası nedeniyle adımlar eşzamanlanamadı"
 
 #: src/sync/database_receiver.rs:61
+#, rust-format
 msgid "Couldn’t synchronize weight measurements due to error {}"
 msgstr "{} hatası nedeniyle kilo ölçümleri eşzamanlanamadı"
 
-#: src/sync/google_fit.rs:211
-msgid "CRSF Verification failed, got {}, expected {}"
-msgstr "CRSF Doğrulaması başarısız oldu, {} alındı, {} beklendi"
-
-#: src/sync/google_fit.rs:227
-msgid "Requesting OAuth2 token failed due to error {}"
-msgstr "{} hatası nedeniyle OAuth2 jetonu istenemedi"
-
-#: src/sync/sync_provider.rs:110
-msgid ""
-"Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
-"authenticate with your sync provider."
-msgstr ""
-"Yenileme jetonu ayarlanmadığında OAuth2 jetonu alınamıyor! Lütfen "
-"eşzamanlama sağlayıcınızla yeniden kimlik doğrulaması yapın."
-
 #: src/sync/sync_provider.rs:166
+#, rust-format
 msgid "Token for Health sync provider {}"
 msgstr "Sağlık eşzamanlama sağlayıcısı için jeton {}"
 
 #: src/sync/sync_provider.rs:225
 msgid "Successfully authenticated, please return to Health."
 msgstr "Kimlik doğrulaması başarıyla yapıldı, lütfen Sağlık’a geri dönün."
-
-#: src/sync/sync_provider.rs:236
-msgid "Couldn’t parse OAuth2 response"
-msgstr "OAuth2 yanıtı ayrıştırılamadı"
 
 #: src/views/bar_graph_view.rs:569
 msgid "Enter weight record to calculate idle calories"
@@ -876,6 +888,7 @@ msgid "Activity"
 msgstr "Etkinlik"
 
 #: src/widgets/activity_row.rs:68
+#, rust-format
 msgid "{} for {} Minute"
 msgid_plural "{} for {} Minutes"
 msgstr[0] "{}, {} dakika"
@@ -897,16 +910,19 @@ msgid "Minimum heart rate"
 msgstr "En az kalp ritmi"
 
 #: src/widgets/activity_row.rs:115
+#, rust-format
 msgid "{} meter"
 msgid_plural "{} meters"
 msgstr[0] "{} metre"
 
 #: src/widgets/activity_row.rs:118
+#, rust-format
 msgid "{} yard"
 msgid_plural "{} yards"
 msgstr[0] "{} yard"
 
 #: src/widgets/bmi_level_bar.rs:256
+#, rust-format
 msgid "<small>Current BMI: {}</small>"
 msgstr "<small>Geçerli VKİ: {}</small>"
 
@@ -993,11 +1009,6 @@ msgstr "Etkinlikler.csv.encrypted"
 msgid "Activities.csv"
 msgstr "Etkinlikler.csv"
 
-#: src/windows/export_dialog.rs:79 src/windows/export_dialog.rs:121
-#: src/windows/import_dialog.rs:72 src/windows/import_dialog.rs:107
-msgid "No file selected."
-msgstr "Dosya seçilmedi."
-
 #: src/windows/export_dialog.rs:93
 msgid "Save Weight Measurement"
 msgstr "Kilo Ölçümlerini Kaydet"
@@ -1057,5 +1068,25 @@ msgid "An error occurred!"
 msgstr "Hata oluştu!"
 
 #: src/windows/window.rs:257
+#, rust-format
 msgid "Couldn’t sync Google Fit data due to error: {}"
 msgstr "Hata nedeniyle Google Fit verileri eşzamanlanamadı: {}"
+
+#~ msgid "CRSF Verification failed, got {}, expected {}"
+#~ msgstr "CRSF Doğrulaması başarısız oldu, {} alındı, {} beklendi"
+
+#~ msgid "Requesting OAuth2 token failed due to error {}"
+#~ msgstr "{} hatası nedeniyle OAuth2 jetonu istenemedi"
+
+#~ msgid ""
+#~ "Can’t retrieve OAuth2 token when no refresh token is set! Please re-"
+#~ "authenticate with your sync provider."
+#~ msgstr ""
+#~ "Yenileme jetonu ayarlanmadığında OAuth2 jetonu alınamıyor! Lütfen "
+#~ "eşzamanlama sağlayıcınızla yeniden kimlik doğrulaması yapın."
+
+#~ msgid "Couldn’t parse OAuth2 response"
+#~ msgstr "OAuth2 yanıtı ayrıştırılamadı"
+
+#~ msgid "No file selected."
+#~ msgstr "Dosya seçilmedi."
