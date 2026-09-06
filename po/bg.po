@@ -1,14 +1,14 @@
 # Bulgarian translation of health po-file.
-# Copyright (C) 2024, 2025 twlvnn kraftwerk <kraft_werk@tutanota.com>.
+# Copyright (C) 2024, 2025, 2026 twlvnn kraftwerk <kraft_werk@tutanota.com>.
 # This file is distributed under the same license as the health package.
-# twlvnn kraftwerk <kraft_werk@tutanota.com>, 2024, 2025.
+# twlvnn kraftwerk <kraft_werk@tutanota.com>, 2024, 2025, 2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: health master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues/\n"
 "POT-Creation-Date: 2025-04-30 12:51+0000\n"
-"PO-Revision-Date: 2026-03-01 19:03+0100\n"
+"PO-Revision-Date: 2026-09-06 12:54+0200\n"
 "Last-Translator: twlvnn kraftwerk <kraft_werk@tutanota.com>\n"
 "Language-Team: Bulgarian <dict-notifications@fsa-bg.org>\n"
 "Language: bg\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.6\n"
+"X-Generator: Poedit 3.9\n"
 
 #: data/dev.Cogitri.Health.gschema.xml:16
 msgid "First time setup done"
@@ -36,7 +36,7 @@ msgstr "Време на известяване"
 
 #: data/dev.Cogitri.Health.gschema.xml:32
 msgid "notification frequency"
-msgstr "Периоди на известяване"
+msgstr "периоди на известяване"
 
 #: data/dev.Cogitri.Health.gschema.xml:36
 msgid "List of recent activity types"
@@ -100,6 +100,11 @@ msgstr "Здраве"
 #: data/dev.Cogitri.Health.desktop.in.in:8
 msgid "health;fitness;"
 msgstr "здраве;фитнес;health;fitness;"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:5
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:7
+msgid "Rasmus “Cogitri” Thomsen"
+msgstr "Rasmus „Cogitri“ Thomsen"
 
 #: data/dev.Cogitri.Health.metainfo.xml.in.in:11
 msgid "Track your fitness goals"
@@ -810,8 +815,8 @@ msgstr[1] "Целевото ви тегло е {} килограма."
 #, rust-format
 msgid "You have {} kilogram left to reach it"
 msgid_plural "You have {} kilograms left to reach it"
-msgstr[0] "Остава ви {} килограм, за да го достигнете."
-msgstr[1] "Остават ви {} килограма, за да го достигнете."
+msgstr[0] "Остава ви {} килограм, за да го достигнете"
+msgstr[1] "Остават ви {} килограма, за да го достигнете"
 
 #: src/plugins/weight/details.rs:342
 msgid "No weight goal set yet. You can set it in Health’s preferences."
