@@ -1,0 +1,1091 @@
+# Norwegian Nynorsk translation for health.
+# Copyright (C) 2026 health's COPYRIGHT HOLDER
+# This file is distributed under the same license as the health package.
+# Roy-Magne Mo <rmo@sunnmore.net>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: health master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/World/Health/issues/\n"
+"POT-Creation-Date: 2025-04-30 12:51+0000\n"
+"PO-Revision-Date: 2026-09-23 22:30+0200\n"
+"Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
+"Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
+"Language: nn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: data/dev.Cogitri.Health.gschema.xml:16
+msgid "First time setup done"
+msgstr "Første oppsett er gjort"
+
+#: data/dev.Cogitri.Health.gschema.xml:20
+msgid "Toggle notifications"
+msgstr "Slå varsel av og på"
+
+#: data/dev.Cogitri.Health.gschema.xml:24
+msgid "Set enabled plugins"
+msgstr "Set påslåtte programtillegg"
+
+#: data/dev.Cogitri.Health.gschema.xml:28
+msgid "Notification time"
+msgstr "Varslingstid"
+
+#: data/dev.Cogitri.Health.gschema.xml:32
+msgid "notification frequency"
+msgstr "Varslingsfrekvens"
+
+#: data/dev.Cogitri.Health.gschema.xml:36
+msgid "List of recent activity types"
+msgstr "Liste over nylege aktivitetstypar"
+
+#: data/dev.Cogitri.Health.gschema.xml:40
+msgid "Google Fit Sync-Provider setup"
+msgstr "Oppsett av Google Fit som synkroniseringsleverandør"
+
+#: data/dev.Cogitri.Health.gschema.xml:44
+msgid "Last sync with Google Fit"
+msgstr "Siste synkronisering med Google Fit"
+
+#: data/dev.Cogitri.Health.gschema.xml:48
+msgid "Unit system used"
+msgstr "Einingssystem som vert brukt"
+
+#: data/dev.Cogitri.Health.gschema.xml:52
+msgid "User age"
+msgstr "Alderen til brukaren"
+
+#: data/dev.Cogitri.Health.gschema.xml:56
+msgid "Absolute user age"
+msgstr "Absolutt alder for brukaren"
+
+#: data/dev.Cogitri.Health.gschema.xml:60
+msgid "User height"
+msgstr "Høgda til brukaren"
+
+#: data/dev.Cogitri.Health.gschema.xml:64
+msgid "User step goal"
+msgstr "Stegmålet til brukaren"
+
+#: data/dev.Cogitri.Health.gschema.xml:68
+msgid "User weight goal"
+msgstr "Vektmålet til brukaren"
+
+#: data/dev.Cogitri.Health.gschema.xml:72
+msgid "Window height"
+msgstr "Vindaugshøgd"
+
+#: data/dev.Cogitri.Health.gschema.xml:76
+msgid "Window maximized"
+msgstr "Vindauget er maksimert"
+
+#: data/dev.Cogitri.Health.gschema.xml:80
+msgid "Window width"
+msgstr "Vindaugsbreidd"
+
+#: data/dev.Cogitri.Health.gschema.xml:84
+msgid "Active user ID"
+msgstr "ID for aktiv brukar"
+
+#: data/dev.Cogitri.Health.Autostart.desktop.in.in:2
+#: data/dev.Cogitri.Health.desktop.in.in:2
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:10 data/ui/view_home_page.blp:61
+#: data/ui/window.blp:5 src/main.rs:35
+msgid "Health"
+msgstr "Helse"
+
+#: data/dev.Cogitri.Health.desktop.in.in:8
+msgid "health;fitness;"
+msgstr "health;fitness;helse;trening;"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:5
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:7
+msgid "Rasmus “Cogitri” Thomsen"
+msgstr "Rasmus «Cogitri» Thomsen"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:11
+msgid "Track your fitness goals"
+msgstr "Hald oversikt over treningsmåla dine"
+
+#: data/dev.Cogitri.Health.metainfo.xml.in.in:13
+msgid ""
+"Health can visualize how many steps you’ve made daily, your weight "
+"development over time and your daily activities. Data can be synched from "
+"Google Fit or manually entered into Health. Afterwards, it can be viewed and "
+"edited in Health."
+msgstr ""
+"Helse kan vise kor mange steg du har teke kvar dag, vektutviklinga di over "
+"tid og dei daglege aktivitetane dine. Data kan synkroniserast frå Google Fit"
+" eller leggjast inn manuelt i Helse. Etterpå kan dei sjåast og redigerast i "
+"Helse."
+
+#: data/ui/date_selector.blp:18
+msgid "January"
+msgstr "Januar"
+
+#: data/ui/date_selector.blp:19 src/widgets/date_selector.rs:213
+msgid "February"
+msgstr "Februar"
+
+#: data/ui/date_selector.blp:20
+msgid "March"
+msgstr "Mars"
+
+#: data/ui/date_selector.blp:21
+msgid "April"
+msgstr "April"
+
+#: data/ui/date_selector.blp:22
+msgid "May"
+msgstr "Mai"
+
+#: data/ui/date_selector.blp:23
+msgid "June"
+msgstr "Juni"
+
+#: data/ui/date_selector.blp:24
+msgid "July"
+msgstr "Juli"
+
+#: data/ui/date_selector.blp:25
+msgid "August"
+msgstr "August"
+
+#: data/ui/date_selector.blp:26
+msgid "September"
+msgstr "September"
+
+#: data/ui/date_selector.blp:27
+msgid "October"
+msgstr "Oktober"
+
+#: data/ui/date_selector.blp:28
+msgid "November"
+msgstr "November"
+
+#: data/ui/date_selector.blp:29
+msgid "December"
+msgstr "Desember"
+
+#: data/ui/distance_action_row.blp:11 src/widgets/activity_row.rs:120
+msgid "Distance"
+msgstr "Avstand"
+
+#: data/ui/import_export_dialog_base.blp:51
+msgid "Export weight measurements"
+msgstr "Eksporter vektmålingar"
+
+#: data/ui/import_export_dialog_base.blp:64
+msgid "Encrypt export"
+msgstr "Krypter eksport"
+
+#: data/ui/import_export_dialog_base.blp:89
+msgid "_Export"
+msgstr "_Eksporter"
+
+#: data/ui/password_entry.blp:9
+msgid "_Password"
+msgstr "_Passord"
+
+#: data/ui/password_entry.blp:40
+msgid "_Confirm password"
+msgstr "_Stadfest passord"
+
+#: data/ui/plugins/activities/details.blp:6
+#: data/ui/plugins/calories/details.blp:5 data/ui/plugins/steps/details.blp:5
+msgid "You can use the <b>+</b> button to add a new activity."
+msgstr "Du kan bruke <b>+</b>-knappen for å leggje til ein ny aktivitet."
+
+#: data/ui/plugins/activities/details.blp:9
+msgid "Recent Activities"
+msgstr "Nylege aktivitetar"
+
+#: data/ui/plugins/activities/summary.blp:5 data/ui/view_add_activity.blp:84
+msgid "Active Minutes"
+msgstr "Aktive minutt"
+
+#: data/ui/plugins/calories/details.blp:8 src/plugins/calories/plugin.rs:39
+msgid "Calories"
+msgstr "Kaloriar"
+
+#: data/ui/plugins/calories/summary.blp:5 data/ui/view_add_activity.blp:66
+msgid "Calories Burned"
+msgstr "Forbrende kaloriar"
+
+#: data/ui/plugins/details.blp:77
+msgid ""
+"This is a preview of how the plugin presents data. Enable the plugin to see "
+"your actual, live data."
+msgstr ""
+"Dette er ei førehandsvising av korleis programtillegget viser data. Slå på "
+"programtillegget for å sjå dei faktiske dataa dine."
+
+#: data/ui/plugins/steps/details.blp:8 data/ui/plugins/steps/summary.blp:5
+#: data/ui/preferences_dialog.blp:173 src/plugins/steps/plugin.rs:39
+msgid "Steps"
+msgstr "Steg"
+
+#: data/ui/plugins/weight/details.blp:6
+msgid "You can use the <b>+</b> button to add a new weight measurement."
+msgstr "Du kan bruke <b>+</b>-knappen for å leggje til ei ny vektmåling."
+
+#: data/ui/plugins/weight/details.blp:9 data/ui/plugins/weight/summary.blp:5
+#: data/ui/view_add_weight.blp:43 src/plugins/weight/plugin.rs:39
+#: src/views/view_add_weight.rs:90
+msgid "Weight"
+msgstr "Vekt"
+
+#: data/ui/plugins/weight/details.blp:10
+msgid "Weight Measurements"
+msgstr "Vektmålingar"
+
+#: data/ui/plugins/weight/summary.blp:16
+msgid "Compared to previous measurement."
+msgstr "Samanlikna med tidlegare måling."
+
+#: data/ui/preferences_dialog.blp:43
+msgid "_Every 1 hour"
+msgstr "_Kvar time"
+
+#: data/ui/preferences_dialog.blp:49
+msgid "_Every 4 hours"
+msgstr "_Kvar 4. time"
+
+#: data/ui/preferences_dialog.blp:55
+msgid "_Fixed Time"
+msgstr "_Fast tid"
+
+#: data/ui/preferences_dialog.blp:63
+msgid "Health Preferences"
+msgstr "Helseinnstillingar"
+
+#: data/ui/preferences_dialog.blp:67 data/ui/shortcuts_window.blp:11
+msgid "General"
+msgstr "Generelt"
+
+#: data/ui/preferences_dialog.blp:70 data/ui/preferences_dialog.blp:102
+#: data/ui/setup_window.blp:183 src/core/database.rs:1117
+msgid "User"
+msgstr "Brukar"
+
+#: data/ui/preferences_dialog.blp:73 data/ui/setup_window.blp:154
+msgid "Unit system"
+msgstr "Einingssystem"
+
+#: data/ui/preferences_dialog.blp:83 data/ui/setup_window.blp:164
+msgid "Imperial"
+msgstr "Imperialt"
+
+#: data/ui/preferences_dialog.blp:89 data/ui/setup_window.blp:170
+msgid "Metric"
+msgstr "Metrisk"
+
+#: data/ui/preferences_dialog.blp:97 data/ui/setup_window.blp:178
+msgid "Username"
+msgstr "Brukarnamn"
+
+#: data/ui/preferences_dialog.blp:107 data/ui/setup_window.blp:188
+msgid "Birthday"
+msgstr "Fødselsdag"
+
+#: data/ui/preferences_dialog.blp:116 data/ui/setup_window.blp:197
+msgid "Height"
+msgstr "Høgd"
+
+#: data/ui/preferences_dialog.blp:129
+msgid "Notifications"
+msgstr "Varslingar"
+
+#: data/ui/preferences_dialog.blp:132
+msgid "Enable notifications"
+msgstr "Slå på varslingar"
+
+#: data/ui/preferences_dialog.blp:143
+msgid "Frequency"
+msgstr "Frekvens"
+
+#: data/ui/preferences_dialog.blp:156
+msgid "Daily reminder time"
+msgstr "Tid for dagleg påminning"
+
+#: data/ui/preferences_dialog.blp:176 data/ui/setup_window.blp:260
+#: src/plugins/steps/details.rs:243
+msgid "Step goal"
+msgstr "Stegmål"
+
+#: data/ui/preferences_dialog.blp:177
+msgid "7,500 steps per day are recommended."
+msgstr "7 500 steg per dag er tilrådd."
+
+#: data/ui/preferences_dialog.blp:190 data/ui/preferences_dialog.blp:193
+msgid "Weight Goal"
+msgstr "Vektmål"
+
+#: data/ui/preferences_dialog.blp:194
+msgid "The WHO recommends a BMI of 18.5-24.9."
+msgstr "WHO tilrår ein BMI på 18,5–24,9."
+
+#: data/ui/preferences_dialog.blp:202 data/ui/setup_window.blp:367
+msgid "Target BMI"
+msgstr "Mål-BMI"
+
+#: data/ui/preferences_dialog.blp:218
+msgid "Sync"
+msgstr "Synkroniser"
+
+#: data/ui/preferences_dialog.blp:222
+msgid "Start sync with third-party providers."
+msgstr "Start synkronisering med tredjepartsleverandørar."
+
+#: data/ui/preferences_dialog.blp:230
+msgid "Importing and exporting data"
+msgstr "Import og eksport av data"
+
+#: data/ui/preferences_dialog.blp:233
+msgid "Export data as CSV"
+msgstr "Eksporter data som CSV"
+
+#: data/ui/preferences_dialog.blp:236
+msgid "Export…"
+msgstr "Eksporter …"
+
+#: data/ui/preferences_dialog.blp:243
+msgid "Import data from CSV"
+msgstr "Importer data frå CSV"
+
+#: data/ui/preferences_dialog.blp:246
+msgid "Import…"
+msgstr "Importer …"
+
+#: data/ui/setup_window.blp:39
+msgid "Health Setup"
+msgstr "Oppsett av Helse"
+
+#: data/ui/setup_window.blp:53
+msgid "_Quit"
+msgstr "_Avslutt"
+
+#: data/ui/setup_window.blp:62
+msgid "_Previous"
+msgstr "_Førre"
+
+#: data/ui/setup_window.blp:77
+msgid "_Next"
+msgstr "_Neste"
+
+#: data/ui/setup_window.blp:90
+msgid "_Done"
+msgstr "_Ferdig"
+
+#: data/ui/setup_window.blp:116
+msgid "Welcome to Health!"
+msgstr "Velkomen til Helse!"
+
+#: data/ui/setup_window.blp:128
+msgid "Please enter some information to get setup."
+msgstr "Skriv inn litt informasjon for å kome i gang."
+
+#: data/ui/setup_window.blp:224
+msgid "Please enter your daily step goal."
+msgstr "Skriv inn det daglege stegmålet ditt."
+
+#: data/ui/setup_window.blp:236
+msgid "The WHO recommends 7.500 steps per day."
+msgstr "WHO tilrår 7 500 steg per dag."
+
+#: data/ui/setup_window.blp:286
+msgid "Please enter your weight goal."
+msgstr "Skriv inn vektmålet ditt."
+
+#: data/ui/setup_window.blp:298
+msgid "The WHO recommends a BMI of 18.5–24.9."
+msgstr "WHO tilrår ein BMI på 18,5–24,9."
+
+#: data/ui/setup_window.blp:326
+msgid "Current weight"
+msgstr "Noverande vekt"
+
+#: data/ui/setup_window.blp:342
+msgid "Current BMI"
+msgstr "Noverande BMI"
+
+#: data/ui/setup_window.blp:350 src/plugins/weight/details.rs:228
+msgid "Weight goal"
+msgstr "Vektmål"
+
+#: data/ui/setup_window.blp:386
+msgid "Setup sync with third-party providers."
+msgstr "Set opp synkronisering med tredjepartsleverandørar."
+
+#: data/ui/setup_window.blp:398
+msgid ""
+"You can sync steps and weight measurements from/to third-party providers."
+msgstr ""
+"Du kan synkronisere steg og vektmålingar frå og til tredjepartsleverandørar."
+
+#: data/ui/shortcuts_window.blp:15
+msgid "Quit the application"
+msgstr "Avslutt programmet"
+
+#: data/ui/shortcuts_window.blp:20
+msgid "Show this shortcuts window"
+msgstr "Vis dette snarvegsvindauget"
+
+#: data/ui/shortcuts_window.blp:25
+msgid "Show help"
+msgstr "Vis hjelp"
+
+#: data/ui/shortcuts_window.blp:30
+msgid "Show primary menu"
+msgstr "Vis hovudmenyen"
+
+#: data/ui/shortcuts_window.blp:35
+msgid "Toggle fullscreen mode"
+msgstr "Slå av/på fullskjermmodus"
+
+#: data/ui/sync_list_box.blp:30
+msgid "Google Fit"
+msgstr "Google Fit"
+
+#: data/ui/view_add_activity.blp:45 data/ui/view_add_weight.blp:34
+msgid "Date"
+msgstr "Dato"
+
+#: data/ui/view_add_activity.blp:57
+msgid "Activity Type"
+msgstr "Aktivitetstype"
+
+#: data/ui/view_add_activity.blp:97
+msgid "Average Heart Rate"
+msgstr "Gjennomsnittspuls"
+
+#: data/ui/view_add_activity.blp:109
+msgid "Minimum Heart Rate"
+msgstr "Minimumspuls"
+
+#: data/ui/view_add_activity.blp:121
+msgid "Maximum Heart Rate"
+msgstr "Maksimumspuls"
+
+#: data/ui/view_add_activity.blp:133
+msgid "Stepcount"
+msgstr "Steg"
+
+#: data/ui/view_add_activity.blp:149
+msgid "Add Activity Data"
+msgstr "Legg til aktivitetsdata"
+
+#: data/ui/view_add_activity.blp:155 data/ui/view_add_weight.blp:20
+msgid "Add"
+msgstr "Legg til"
+
+#: data/ui/view_add_weight.blp:14
+msgid "Add Weight Data"
+msgstr "Legg til vektdata"
+
+#: data/ui/view_home_page.blp:39
+msgid "_Preferences"
+msgstr "_Innstillingar"
+
+#: data/ui/view_home_page.blp:44
+msgid "_Keyboard Shortcuts"
+msgstr "_Tastatursnarvegar"
+
+#: data/ui/view_home_page.blp:51
+msgid "_About Health"
+msgstr "_Om Helse"
+
+#: data/ui/view_home_page.blp:100
+msgid "Add data:"
+msgstr "Legg til data:"
+
+#: data/ui/view_home_page.blp:109
+msgid "Add Weight Measure"
+msgstr "Legg til vektmåling"
+
+#: data/ui/view_home_page.blp:124
+msgid "Add Activity"
+msgstr "Legg til aktivitet"
+
+#: data/ui/view_home_page.blp:144
+msgid ""
+"No plugins enabled. Enable one from the list below to start using Health."
+msgstr ""
+"Ingen programtillegg er slått på. Slå på eitt frå lista nedanfor for å byrje"
+" å bruke Helse."
+
+#: data/ui/view_home_page.blp:165
+msgid "All data"
+msgstr "Alle data"
+
+#: src/core/application.rs:197
+msgid "A health tracking app for the GNOME desktop."
+msgstr "Ein helsesporingsapp for GNOME-skrivebordet."
+
+#: src/core/application.rs:199
+msgid "translator-credits"
+msgstr "Roy-Magne Mo <rmo@sunnmore.net>"
+
+#: src/model/activity_info.rs:83
+msgid "Basketball"
+msgstr "Basketball"
+
+#: src/model/activity_info.rs:93
+msgid "Bicycling"
+msgstr "Sykling"
+
+#: src/model/activity_info.rs:102
+msgid "Boxing"
+msgstr "Boksing"
+
+#: src/model/activity_info.rs:111
+msgid "Dancing"
+msgstr "Dansing"
+
+#: src/model/activity_info.rs:120
+msgid "Football"
+msgstr "Amerikansk fotball"
+
+#: src/model/activity_info.rs:127
+msgid "Golf"
+msgstr "Golf"
+
+#: src/model/activity_info.rs:138
+msgid "Hiking"
+msgstr "Fotturar"
+
+#: src/model/activity_info.rs:147
+msgid "Hockey"
+msgstr "Hockey"
+
+#: src/model/activity_info.rs:157
+msgid "Horse Riding"
+msgstr "Riding"
+
+#: src/model/activity_info.rs:166
+msgid "Other Sports"
+msgstr "Andre idrettar"
+
+#: src/model/activity_info.rs:176
+msgid "Rollerblading"
+msgstr "Rulleskøyter"
+
+#: src/model/activity_info.rs:187
+msgid "Running"
+msgstr "Løping"
+
+#: src/model/activity_info.rs:197
+msgid "Skiing"
+msgstr "Skiløping"
+
+#: src/model/activity_info.rs:206
+msgid "Soccer"
+msgstr "Fotball"
+
+#: src/model/activity_info.rs:215
+msgid "Softball"
+msgstr "Softball"
+
+#: src/model/activity_info.rs:225
+msgid "Swimming"
+msgstr "Symjing"
+
+#: src/model/activity_info.rs:234
+msgid "Tennis"
+msgstr "Tennis"
+
+#: src/model/activity_info.rs:243
+msgid "Track And Field"
+msgstr "Friidrett"
+
+#: src/model/activity_info.rs:254
+msgid "Volleyball"
+msgstr "Volleyball"
+
+#: src/model/activity_info.rs:265
+msgid "Walking"
+msgstr "Gåing"
+
+#: src/model/model_notification.rs:217
+msgid "Health: walking reminder"
+msgstr "Helse: påminning om å gå"
+
+#: src/model/model_notification.rs:233
+#, rust-format
+msgid "{} step remaining to complete your daily step goal."
+msgid_plural "{} steps remaining to complete your daily step goal."
+msgstr[0] "{} steg att til det daglege stegmålet."
+msgstr[1] "{} steg att til det daglege stegmålet."
+
+#: src/plugins/activities/plugin.rs:39
+msgid "Activities"
+msgstr "Aktivitetar"
+
+#. Translators: min is short for Minutes active today. Example: "64 min"
+#: src/plugins/activities/summary.rs:106
+#, rust-format
+msgid "{} min"
+msgstr "{} min"
+
+#: src/plugins/calories/details.rs:218
+#, rust-format
+msgid ""
+"{}:\n"
+"{} calorie\n"
+"{}"
+msgid_plural ""
+"{}:\n"
+"{} calories\n"
+"{}"
+msgstr[0] ""
+"{}:\n"
+"{} kalori\n"
+"{}"
+msgstr[1] ""
+"{}:\n"
+"{} kaloriar\n"
+"{}"
+
+#. Translators: cal is short for calories burned today. Example: "2666 cal"
+#: src/plugins/calories/summary.rs:116 src/plugins/calories/summary.rs:119
+#, rust-format
+msgid "{} cal"
+msgstr "{} kal"
+
+#: src/plugins/steps/details.rs:185
+#, rust-format
+msgid "Today’s steps: {}"
+msgstr "Steg i dag: {}"
+
+#: src/plugins/steps/details.rs:204
+msgid ""
+"No streak yet. Reach your step goal for multiple days to start a streak!"
+msgstr ""
+"Ingen rekkje enno. Nå stegmålet fleire dagar på rad for å starte ei rekkje!"
+
+#: src/plugins/steps/details.rs:208
+#, rust-format
+msgid ""
+"You’re on a streak for {} day. Reach your step goal today to continue it!"
+msgid_plural ""
+"You’re on a streak for {} days. Reach your step goal today to continue it!"
+msgstr[0] ""
+"Du har ei rekkje på {} dag. Nå stegmålet i dag for å halde fram med henne!"
+msgstr[1] ""
+"Du har ei rekkje på {} dagar. Nå stegmålet i dag for å halde fram med henne!"
+
+#: src/plugins/steps/details.rs:216
+msgid "You’ve reached your step goal today. Keep going to start a streak!"
+msgstr "Du har nådd stegmålet i dag. Hald fram for å starte ei rekkje!"
+
+#: src/plugins/steps/details.rs:219
+#, rust-format
+msgid "You’re on a streak for {} day. Good job!"
+msgid_plural "You’re on a streak for {} days. Good job!"
+msgstr[0] "Du har ei rekkje på {} dag. Godt jobba!"
+msgstr[1] "Du har ei rekkje på {} dagar. Godt jobba!"
+
+#. TRANSLATORS: X step(s) on DATE
+#: src/plugins/steps/details.rs:236
+#, rust-format
+msgid "{} step on {}"
+msgid_plural "{} steps on {}"
+msgstr[0] "{} steg den {}"
+msgstr[1] "{} steg den {}"
+
+#: src/plugins/steps/summary.rs:111
+#, rust-format
+msgid "{} step"
+msgid_plural "{} steps"
+msgstr[0] "{} steg"
+msgstr[1] "{} steg"
+
+#: src/plugins/steps/summary.rs:122
+#, rust-format
+msgid "Reached {} percent of daily step goal"
+msgid_plural "Reached {} percent of daily step goal"
+msgstr[0] "Nådde {} prosent av det daglege stegmålet"
+msgstr[1] "Nådde {} prosent av det daglege stegmålet"
+
+#: src/plugins/steps/summary.rs:129
+msgid "Well done! You have reached your daily step goal!"
+msgstr "Godt gjort! Du har nådd det daglege stegmålet ditt!"
+
+#: src/plugins/weight/details.rs:200
+#, rust-format
+msgid "Current BMI: {}"
+msgstr "Noverande BMI: {}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/plugins/weight/details.rs:215
+#, rust-format
+msgid "{} pound on {}"
+msgid_plural "{} pounds on {}"
+msgstr[0] "{} pund den {}"
+msgstr[1] "{} pund den {}"
+
+#. TRANSLATORS: Weight X on date Y
+#: src/plugins/weight/details.rs:218
+#, rust-format
+msgid "{} kilogram on {}"
+msgid_plural "{} kilograms on {}"
+msgstr[0] "{} kilogram den {}"
+msgstr[1] "{} kilogram den {}"
+
+#: src/plugins/weight/details.rs:259 src/plugins/weight/details.rs:264
+msgid "Unknown BMI"
+msgstr "Ukjend BMI"
+
+#: src/plugins/weight/details.rs:282
+#, rust-format
+msgid ""
+"Your weight goal is {} pound. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} pounds. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Vektmålet ditt er {} pund. Legg til ei første vektmåling for å sjå kor nær "
+"du er."
+msgstr[1] ""
+"Vektmålet ditt er {} pund. Legg til ei første vektmåling for å sjå kor nær "
+"du er."
+
+#: src/plugins/weight/details.rs:289
+#, rust-format
+msgid ""
+"Your weight goal is {} kilogram. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgid_plural ""
+"Your weight goal is {} kilograms. Add a first weight measurement to see how "
+"close you are to reaching it."
+msgstr[0] ""
+"Vektmålet ditt er {} kilogram. Legg til ei første vektmåling for å sjå kor "
+"nær du er."
+msgstr[1] ""
+"Vektmålet ditt er {} kilogram. Legg til ei første vektmåling for å sjå kor "
+"nær du er."
+
+#: src/plugins/weight/details.rs:298
+msgid "You’ve reached your weight goal. Great job!"
+msgstr "Du har nådd vektmålet ditt. Godt jobba!"
+
+#: src/plugins/weight/details.rs:314
+#, rust-format
+msgid "Your weight goal is {} pound."
+msgid_plural "Your weight goal is {} pounds."
+msgstr[0] "Vektmålet ditt er {} pund."
+msgstr[1] "Vektmålet ditt er {} pund."
+
+#: src/plugins/weight/details.rs:319
+#, rust-format
+msgid "You have {} pound left to reach it."
+msgid_plural "You have {} pounds left to reach it."
+msgstr[0] "Du har {} pund att for å nå det."
+msgstr[1] "Du har {} pund att for å nå det."
+
+#: src/plugins/weight/details.rs:326
+#, rust-format
+msgid "Your weight goal is {} kilogram."
+msgid_plural "Your weight goal is {} kilograms."
+msgstr[0] "Vektmålet ditt er {} kilogram."
+msgstr[1] "Vektmålet ditt er {} kilogram."
+
+#: src/plugins/weight/details.rs:332
+#, rust-format
+msgid "You have {} kilogram left to reach it"
+msgid_plural "You have {} kilograms left to reach it"
+msgstr[0] "Du har {} kilogram att for å nå det"
+msgstr[1] "Du har {} kilogram att for å nå det"
+
+#: src/plugins/weight/details.rs:342
+msgid "No weight goal set yet. You can set it in Health’s preferences."
+msgstr ""
+"Enno ikkje sett noko vektmål. Du kan setje det i innstillingane til Helse."
+
+#: src/plugins/weight/summary.rs:135 src/plugins/weight/summary.rs:169
+#, rust-format
+msgid "{} pound"
+msgid_plural "{} pounds"
+msgstr[0] "{} pund"
+msgstr[1] "{} pund"
+
+#. TRANSLATORS: Current user weight. kg is short for kilograms
+#: src/plugins/weight/summary.rs:142
+#, rust-format
+msgid "{} kg"
+msgstr "{} kg"
+
+#: src/plugins/weight/summary.rs:149
+#, rust-format
+msgid "+ {} pound"
+msgid_plural "+ {} pounds"
+msgstr[0] "+ {} pund"
+msgstr[1] "+ {} pund"
+
+#: src/plugins/weight/summary.rs:157
+#, rust-format
+msgid "+ {} kilogram"
+msgid_plural "+ {} kilograms"
+msgstr[0] "+ {} kilogram"
+msgstr[1] "+ {} kilogram"
+
+#: src/plugins/weight/summary.rs:178
+#, rust-format
+msgid "{} kilogram"
+msgid_plural "{} kilograms"
+msgstr[0] "{} kilogram"
+msgstr[1] "{} kilogram"
+
+#: src/plugins/weight/summary.rs:186
+msgid "No change in weight"
+msgstr "Inga endring i vekt"
+
+#: src/plugins/weight/summary.rs:191
+msgid "No weight data available"
+msgstr "Ingen vektdata tilgjengeleg"
+
+#: src/sync/csv.rs:184 src/sync/csv.rs:331
+msgid "Can’t parse encrypted backup without encryption key!"
+msgstr "Kan ikkje tolke kryptert sikkerheitskopi utan krypteringsnøkkel!"
+
+#: src/sync/csv.rs:194 src/sync/csv.rs:351
+msgid ""
+"Couldn’t parse CSV. Are you trying to read an unencrypted backup as an "
+"encrypted one?"
+msgstr ""
+"Klarte ikkje tolke CSV-fila. Prøver du å lese ein ukryptert sikkerheitskopi "
+"som ein kryptert?"
+
+#: src/sync/csv.rs:207
+msgid "Couldn’t decrypt data. Are you sure you’re using the right key?"
+msgstr ""
+"Klarte ikkje dekryptere data. Er du sikker på at du brukar rett nøkkel?"
+
+#: src/sync/csv.rs:369
+msgid "No activities added yet; can’t create empty export!"
+msgstr "Ingen aktivitetar er lagde til enno; kan ikkje lage ein tom eksport!"
+
+#: src/sync/csv.rs:387
+msgid "No weight measurements added yet; can’t create empty export!"
+msgstr "Ingen vektmålingar er lagde til enno; kan ikkje lage ein tom eksport!"
+
+#: src/sync/database_receiver.rs:47
+#, rust-format
+msgid "Couldn’t synchronize steps due to error {}"
+msgstr "Klarte ikkje synkronisere steg på grunn av feil {}"
+
+#: src/sync/database_receiver.rs:61
+#, rust-format
+msgid "Couldn’t synchronize weight measurements due to error {}"
+msgstr "Klarte ikkje synkronisere vektmålingar på grunn av feil {}"
+
+#: src/sync/sync_provider.rs:166
+#, rust-format
+msgid "Token for Health sync provider {}"
+msgstr "Token for synkroniseringsleverandøren {} i Helse"
+
+#: src/sync/sync_provider.rs:225
+msgid "Successfully authenticated, please return to Health."
+msgstr "Autentisert. Gå tilbake til Helse."
+
+#: src/views/bar_graph_view.rs:569
+msgid "Enter weight record to calculate idle calories"
+msgstr "Skriv inn ei vektmåling for å rekne ut kvilekaloriar"
+
+#: src/views/bar_graph_view.rs:573
+msgid "Idle calories"
+msgstr "Kvilekaloriar"
+
+#: src/views/view_add_activity.rs:231
+msgid "Activity"
+msgstr "Aktivitet"
+
+#: src/widgets/activity_row.rs:68
+#, rust-format
+msgid "{} for {} Minute"
+msgid_plural "{} for {} Minutes"
+msgstr[0] "{} i {} minutt"
+msgstr[1] "{} i {} minutt"
+
+#: src/widgets/activity_row.rs:80
+msgid "Calories burned"
+msgstr "Forbrende kaloriar"
+
+#: src/widgets/activity_row.rs:90
+msgid "Average heart rate"
+msgstr "Gjennomsnittspuls"
+
+#: src/widgets/activity_row.rs:96
+msgid "Maximum heart rate"
+msgstr "Maksimumspuls"
+
+#: src/widgets/activity_row.rs:102
+msgid "Minimum heart rate"
+msgstr "Minimumspuls"
+
+#: src/widgets/activity_row.rs:115
+#, rust-format
+msgid "{} meter"
+msgid_plural "{} meters"
+msgstr[0] "{} meter"
+msgstr[1] "{} meter"
+
+#: src/widgets/activity_row.rs:118
+#, rust-format
+msgid "{} yard"
+msgid_plural "{} yards"
+msgstr[0] "{} yard"
+msgstr[1] "{} yard"
+
+#: src/widgets/bmi_level_bar.rs:256
+#, rust-format
+msgid "<small>Current BMI: {}</small>"
+msgstr "<small>Noverande BMI: {}</small>"
+
+#: src/widgets/distance_action_row.rs:289
+msgid "KM"
+msgstr "KM"
+
+#: src/widgets/distance_action_row.rs:290
+msgid "Meters"
+msgstr "Meter"
+
+#: src/widgets/distance_action_row.rs:292
+msgid "Miles"
+msgstr "Engelske mil"
+
+#: src/widgets/distance_action_row.rs:293
+msgid "Feet"
+msgstr "Fot"
+
+#: src/widgets/sync_list_box.rs:205
+msgid "Sync Error"
+msgstr "Synkroniseringsfeil"
+
+#: src/widgets/sync_list_box.rs:208
+msgid "Close"
+msgstr "Lukk"
+
+#. TRANSLATORS: Unit abbreviation (centimeters)
+#: src/widgets/unit_spinbutton.rs:464 src/widgets/unit_spinbutton.rs:630
+msgid "cm"
+msgstr "cm"
+
+#. TRANSLATORS: Unit abbreviation (meters)
+#: src/widgets/unit_spinbutton.rs:466
+msgid "m"
+msgstr "m"
+
+#. TRANSLATORS: Unit abbreviation (kilometers)
+#: src/widgets/unit_spinbutton.rs:468
+msgid "km"
+msgstr "km"
+
+#. TRANSLATORS: Unit abbreviation (kilograms)
+#: src/widgets/unit_spinbutton.rs:470
+msgid "kg"
+msgstr "kg"
+
+#. TRANSLATORS: Unit abbreviation (inch)
+#: src/widgets/unit_spinbutton.rs:472 src/widgets/unit_spinbutton.rs:632
+msgid "in"
+msgstr "in"
+
+#. TRANSLATORS: Unit abbreviation (feet)
+#: src/widgets/unit_spinbutton.rs:474
+msgid "ft"
+msgstr "ft"
+
+#. TRANSLATORS: Unit abbreviation (miles)
+#: src/widgets/unit_spinbutton.rs:476
+msgid "mi"
+msgstr "mi"
+
+#. TRANSLATORS: Unit abbreviation (pounds)
+#: src/widgets/unit_spinbutton.rs:478
+msgid "lb"
+msgstr "lb"
+
+#: src/windows/export_dialog.rs:51
+msgid "Save Activities"
+msgstr "Lagre aktivitetar"
+
+#: src/windows/export_dialog.rs:52 src/windows/export_dialog.rs:94
+msgid "_Save"
+msgstr "_Lagre"
+
+#. TRANSLATORS: Please keep the file extension (.csv.encrypted)
+#: src/windows/export_dialog.rs:56
+msgid "Activities.csv.encrypted"
+msgstr "Aktivitetar.csv.encrypted"
+
+#. TRANSLATORS: Please keep the file extension (.csv)
+#: src/windows/export_dialog.rs:59
+msgid "Activities.csv"
+msgstr "Aktivitetar.csv"
+
+#: src/windows/export_dialog.rs:93
+msgid "Save Weight Measurement"
+msgstr "Lagre vektmåling"
+
+#. TRANSLATORS: Please keep the file extension (.csv.encrypted)
+#: src/windows/export_dialog.rs:98
+msgid "Weight Measurements.csv.encrypted"
+msgstr "Vektmålingar.csv.encrypted"
+
+#. TRANSLATORS: Please keep the file extension (.csv)
+#: src/windows/export_dialog.rs:101
+msgid "Weight Measurements.csv"
+msgstr "Vektmålingar.csv"
+
+#: src/windows/export_dialog.rs:142
+msgid "Export data"
+msgstr "Eksporter data"
+
+#: src/windows/import_dialog.rs:51
+msgid "Open Activities"
+msgstr "Opne aktivitetar"
+
+#: src/windows/import_dialog.rs:52 src/windows/import_dialog.rs:87
+msgid "_Open"
+msgstr "_Opne"
+
+#: src/windows/import_dialog.rs:86
+msgid "Open Weight Measurement"
+msgstr "Opne vektmåling"
+
+#: src/windows/import_dialog.rs:129
+msgid "Import data"
+msgstr "Importer data"
+
+#: src/windows/import_export_dialog_base.rs:190
+msgid "Import activities"
+msgstr "Importer aktivitetar"
+
+#: src/windows/import_export_dialog_base.rs:192
+msgid "Import is encrypted"
+msgstr "Importen er kryptert"
+
+#: src/windows/import_export_dialog_base.rs:193
+msgid "Import weights"
+msgstr "Importer vektmålingar"
+
+#: src/windows/import_export_dialog_base.rs:194
+msgid "Import"
+msgstr "Importer"
+
+#: src/windows/import_export_dialog_base.rs:274
+msgid "Success!"
+msgstr "Vellukka!"
+
+#: src/windows/import_export_dialog_base.rs:278
+msgid "An error occurred!"
+msgstr "Det oppstod ein feil!"
+
+#: src/windows/window.rs:257
+#, rust-format
+msgid "Couldn’t sync Google Fit data due to error: {}"
+msgstr "Klarte ikkje synkronisere Google Fit-data på grunn av feil: {}"
